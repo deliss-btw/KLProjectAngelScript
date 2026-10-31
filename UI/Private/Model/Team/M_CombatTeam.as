@@ -61,28 +61,16 @@ struct FM_CombatTeam : FEUIModel
     }
     TArray<uint> CollectUiMemberPlayerUids() const
     {
-        TEUIModelRef<FM_Player> local_12;
         TArray<uint> local_4;
         int local_5 = 0;
         for (; local_5 < this.GetTeamCommonData().Members.Num(); ++local_5)
         {
             const TEUIModelRef<FM_TeamMember>& local_10 = this.GetTeamCommonData().Members[local_5];
-            bool local_8 = !(local_10.IsValid());
-            if (local_8)
-            {
-                local_8 = true;
-            }
-            else
-            {
-                local_12.GetPlayer();
-                local_8 = !(local_12.IsValid());
-            }
-            if (local_8)
+            if (!(local_10.IsValid()) || !(local_10.Get().GetPlayer().IsValid()))
             {
                 continue;
             }
-            local_12.GetPlayer();
-            local_4.Add(local_12.opArrow().GetPlayerUid());
+            local_4.Add(local_10.Get().GetPlayer().opArrow().GetPlayerUid());
         }
         return local_4;
     }
@@ -166,6 +154,7 @@ struct FM_CombatTeam : FEUIModel
         if (local_11)
         {
             TEUIModelRef<FM_TeamMember> local_16 = TEUIModelRef<FM_TeamMember>(nullptr);
+            this.GetModify_TeamCommonData().Members.Remove(local_16);
             local_10 = true;
         }
         int local_12 = this.GetMembers().Num();
@@ -252,11 +241,9 @@ FM_CombatTeam& Create(const UObject ContextObject, const FECSEntity &inout TeamE
 {
     return FM_CombatTeam::CreateByManager(EUIInternal::GetContextManager(ContextObject), TeamEntity);
 }
-FM_CombatTeam CreateByManager(const UEUIManagerSubsystem Manager, const FECSEntity &inout TeamEntity)
+FM_CombatTeam& CreateByManager(const UEUIManagerSubsystem Manager, const FECSEntity &inout TeamEntity)
 {
-    FM_CombatTeam __r;
-    TEUIModelRef<FM_CombatTeam> local_6 = TEUIModelRef<FM_CombatTeam>(EUIInternal::MakeModelWithManager_Generic(Manager, FM_CombatTeam::ModelId, 0, TeamEntity));
-    return __r;
+    return TEUIModelRef<FM_CombatTeam>(EUIInternal::MakeModelWithManager_Generic(Manager, FM_CombatTeam::ModelId, 0, TeamEntity)).Get();
 }
 void GetModelInfo(FEUIModelOnlyMetaInfo &inout Result)
 {

@@ -99,8 +99,7 @@ class UBTDecorator_CheckLocationIsInCurrentCombatArea : UBTDecorator_ECSScriptBa
             {
                 return false;
             }
-            AActor local_56;
-            local_60 = (Cast<AECSRegionVolume>(local_56));
+            local_60 = (Cast<AECSRegionVolume>(local_54.RegionVolume.Get()));
             if (local_60 == nullptr || !(local_60.bAffectCombat))
             {
                 return false;

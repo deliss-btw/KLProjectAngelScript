@@ -16,6 +16,8 @@ struct FVMS_CommissionPanel : FEUIViewModelSingleton
             return;
         }
         TArray<TEUIModelRef<FM_Commission>> local_14 = ::FMS_CommissionData::Get(this.GetContext().Manager).GetCommissionListByType(ECommissionType(1));
+        __Lambda_UI_Private_ViewModel_InGame_Commission_VMS_CommissionPanel_11 local_16;
+        local_14.Sort(local_16);
         for (auto& local_30 : local_14)
         {
             this.GetModify_CommissionList().Add(FEUIModelRef(::FVM_CommissionInfo::Create(this.GetContext().Manager, local_30)));
@@ -89,11 +91,9 @@ FVMS_CommissionPanel& Get(const UObject ContextObject)
 {
     return FVMS_CommissionPanel::GetByManager(EUIInternal::GetContextManager(ContextObject));
 }
-FVMS_CommissionPanel GetByManager(const UEUIManagerSubsystem Manager)
+FVMS_CommissionPanel& GetByManager(const UEUIManagerSubsystem Manager)
 {
-    FVMS_CommissionPanel __r;
-    TEUIModelRef<FVMS_CommissionPanel> local_6 = TEUIModelRef<FVMS_CommissionPanel>(EUIInternal::MakeModelWithManager(Manager, FVMS_CommissionPanel::ModelId));
-    return __r;
+    return TEUIModelRef<FVMS_CommissionPanel>(EUIInternal::MakeModelWithManager(Manager, FVMS_CommissionPanel::ModelId)).Get();
 }
 void GetModelInfo(FEUIViewModelMetaInfo &inout Result)
 {
@@ -135,7 +135,6 @@ namespace __GeneratedProperties_FVMS_CommissionPanel
 {
 UScriptStruct StaticStruct()
 {
-    UScriptStruct local_2;
-    return local_2;
+    return __GeneratedProperties_FVMS_CommissionPanel.Get();
 }
 }

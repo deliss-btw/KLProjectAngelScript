@@ -34,13 +34,13 @@ class UWidget_AnnularProgressBar : UEUIUserWidget
     UFUNCTION()
     void SetProgress(const float InProgress)
     {
-        this.ProgressBarMaterialDynamic.SetScalarParameterValue(n"Progress", float32(GetShowProgress()));
+        this.ProgressBarMaterialDynamic.SetScalarParameterValue(n"Progress", float32(this.CurrencyBar.Get().GetShowProgress()));
         return;
     }
     void HandleObservedModelChanges(FEUIReactiveSubscriberIterator &inout It)
     {
-        FVM_CommonAnnularProgressBar& local_6;
         TEUIModelRef<FVM_CommonAnnularProgressBar> local_2 = this.CurrencyBar.AsRef();
+        FVM_CommonAnnularProgressBar& local_6 = local_2.Get();
         for (; It; )
         {
             FEUIReactiveSubscriberTrackScope local_56 = FEUIReactiveSubscriberTrackScope(It);

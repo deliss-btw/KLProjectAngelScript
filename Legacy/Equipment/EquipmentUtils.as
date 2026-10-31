@@ -2,7 +2,6 @@ namespace FEquipmentUtils
 {
 int AddEquipmentByTraits(const FECSEntity &inout OwnerEntity, const FEquipmentConfig &inout EquipmentConfig, const EEquipSlotType Slot, const TArray<FTraitParam> &inout Traits)
 {
-    const FTraitConfig& local_82;
     FTraitCapabilities local_178;
     FTraitModifiers local_188;
     TArray<FCapabilityConfigWithLevel> local_4;
@@ -16,12 +15,13 @@ int AddEquipmentByTraits(const FECSEntity &inout OwnerEntity, const FEquipmentCo
             XError(ELog(60), FString().Append("Invalid trait in Equipment ").Append(EquipmentConfig.GetDataName()).Append("."));
             continue;
         }
+        const FTraitConfig& local_82 = local_24.GetTrait().Get();
         if (local_82.GetAdaptAvatar())
         {
             bool local_131;
             TDataObjectPtr<FAvatarPrefabConfig> local_130 = GetAvatarConfig(OwnerEntity);
             local_131 = false;
-            for (auto& local_146 : GetAvatar())
+            for (auto& local_146 : local_82.GetAdaptAvatar().Get().GetAvatar())
             {
                 if ((local_146 == local_130.opImplConv()))
                 {
@@ -208,7 +208,7 @@ TDataObjectPtr<FWeaponConfig> GetGameModeOverrideWeapon(const FECSWorldPtr &inou
         if ((int(local_62.GetGameModeType())) != 0)
         {
             TDataObjectPtr<FGameModeOverrideAvatarConfig> local_90;
-            if (!(GetGameModeOverride().Find(local_62.GetGameModeType(), local_90)))
+            if (!(AvatarConfig.Get().GetGameModeOverride().Find(local_62.GetGameModeType(), local_90)))
             {
                 local_1 = false;
             }
@@ -216,15 +216,15 @@ TDataObjectPtr<FWeaponConfig> GetGameModeOverrideWeapon(const FECSWorldPtr &inou
             {
                 local_1 = local_90;
             }
-            local_1 = local_1 && !((GetDefaultWeapon() == nullptr));
+            local_1 = local_1 && !((local_90.Get().GetDefaultWeapon() == nullptr));
             if (local_1)
             {
-                return GetDefaultWeapon();
+                return local_90.Get().GetDefaultWeapon();
             }
-            TDataObjectPtr<FPVPOverrideAvatarConfig> local_114 = GetPVPOverride();
-            if (local_114 && !((GetDefaultWeapon() == nullptr)))
+            TDataObjectPtr<FPVPOverrideAvatarConfig> local_114 = AvatarConfig.Get().GetPVPOverride();
+            if (local_114 && !((local_114.Get().GetDefaultWeapon() == nullptr)))
             {
-                return GetDefaultWeapon();
+                return local_114.Get().GetDefaultWeapon();
             }
         }
     }
@@ -232,7 +232,23 @@ TDataObjectPtr<FWeaponConfig> GetGameModeOverrideWeapon(const FECSWorldPtr &inou
 }
 void AddInitEquipmentWithoutGS(const FECSEntity &inout PawnEntity)
 {
-    // body not fully recovered — stub [argmismatch:argint]
+    TDataObjectPtr<FAvatarPrefabConfig> local_24 = GetAvatarConfig(PawnEntity);
+    if ((local_24 == nullptr))
+    {
+        return;
+    }
+    TDataObjectPtr<FWeaponConfig> local_74 = local_24.Get().GetDefaultWeapon();
+    TDataObjectPtr<FWeaponConfig> local_98 = FEquipmentUtils::GetGameModeOverrideWeapon(PawnEntity.GetWorld(), local_24);
+    if ((!((local_98 == nullptr))))
+    {
+        local_74 = local_98;
+    }
+    if ((local_74 == nullptr))
+    {
+        return;
+    }
+    FEquipmentUtils::AddEquipmentByTraits(PawnEntity, local_74.Get(), EEquipSlotType(1), local_74.Get().DefaultTrait);
+    return;
 }
 uint64 GetAvatarEquipmentUid(const FECSEntity &inout PlayerEntity, const EEquipSlotType Slot, const TDataObjectPtr<FAvatarPrefabConfig> &inout AvatarConfig)
 {

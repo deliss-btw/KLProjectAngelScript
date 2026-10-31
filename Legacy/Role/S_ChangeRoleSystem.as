@@ -105,8 +105,7 @@ class US_ChangeRoleSystem : UECSScriptSystem
             XError(ELog(0), FString().Append("TryReplaceAvatarAtSlot: Cannot find AvatarConfig for AvatarId: ").Append(AvatarId));
             return EChangeRoleReplaceOutcome(2);
         }
-        FSoftObjectPath local_64;
-        UClass local_70 = (Cast<UClass>(local_64.TryLoad()));
+        UClass local_70 = (Cast<UClass>(local_24.Get().CharacterPrefab.ToSoftObjectPath().TryLoad()));
         if (local_70 == nullptr)
         {
             XError(ELog(0), FString().Append("TryReplaceAvatarAtSlot: Prefab is null for AvatarId: ").Append(AvatarId));
@@ -131,7 +130,7 @@ class US_ChangeRoleSystem : UECSScriptSystem
         }
         if (local_76)
         {
-            local_96.SetConfigPtr(TDataObjectPtr<FBasePrefabConfig>());
+            local_96.SetConfigPtr(TDataObjectPtr<FBasePrefabConfig>(local_24.Get()));
             local_96.SetPrefabType(EPrefabType(1));
             return EChangeRoleReplaceOutcome(1);
         }
@@ -190,8 +189,6 @@ class US_ChangeRoleSystem : UECSScriptSystem
     void ServerJob_FinishPlayerChangeRole(const FCE_ServerToClientChangeRole &inout Event) const
     {
         int local_6 = 0;
-        bool local_73 = false;
-        int local_81 = 0;
         if (!(local_6))
         {
             XError(ELog(0), "PlayerController is null");
@@ -210,16 +207,16 @@ class US_ChangeRoleSystem : UECSScriptSystem
         {
             ::FEquipmentUtils::AddInitEquipmentWithoutGS(Event.NewPawnEntity);
         }
-        if (::GetAvatarConfig(Event.NewPawnEntity))
+        TDataObjectPtr<FAvatarPrefabConfig> local_48 = ::GetAvatarConfig(Event.NewPawnEntity);
+        if (local_48)
         {
-            local_73 = local_73 && Event.NewPawnEntity.IsActive();
-            if (local_73)
+            if (local_48.Get().bIsMainPlayer && Event.NewPawnEntity.IsActive())
             {
                 Modify local_78;
                 FC_DSPlayerInfo& local_80 = local_78.opCall();
                 if (local_80)
                 {
-                    local_80.SetPlayerSpecialtyID(local_81);
+                    local_80.SetPlayerSpecialtyID(local_48.Get().DataId);
                 }
             }
         }

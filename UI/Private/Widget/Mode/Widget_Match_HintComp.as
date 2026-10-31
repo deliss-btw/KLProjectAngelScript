@@ -28,7 +28,7 @@ class UWidget_Match_HintComp : UEUIUserWidget
     {
         if (this.Match_HintComp.IsValid())
         {
-            JumpToMatch();
+            this.Match_HintComp.Get().JumpToMatch();
         }
         return;
     }

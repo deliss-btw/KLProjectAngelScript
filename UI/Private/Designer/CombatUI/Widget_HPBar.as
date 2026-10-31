@@ -63,20 +63,20 @@ class UWidget_HPBar : UEUIUserWidget
     UFUNCTION()
     float32 HPBar_CurrentHPRatio() const
     {
-        FVM_HPBar& local_2;
+        FVM_HPBar& local_2 = this.HPBar.Get();
         return local_2 ? local_2.GetCurrentHPRatio() : 0.0f;
     }
     UFUNCTION()
     FText HPBar_HPInfo() const
     {
-        FVM_HPBar& local_2;
+        FVM_HPBar& local_2 = this.HPBar.Get();
         FText local_12 = local_2 ? local_2.GetHPInfo() : FText();
         return local_12;
     }
     void HandleObservedModelChanges(FEUIReactiveSubscriberIterator &inout It)
     {
-        FVM_HPBar& local_6;
         TEUIModelRef<FVM_HPBar> local_2 = this.HPBar.AsRef();
+        FVM_HPBar& local_6 = local_2.Get();
         for (; It; )
         {
             FEUIReactiveSubscriberTrackScope local_56 = FEUIReactiveSubscriberTrackScope(It);

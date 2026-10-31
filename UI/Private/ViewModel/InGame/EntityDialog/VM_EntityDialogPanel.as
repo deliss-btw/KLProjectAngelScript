@@ -80,11 +80,9 @@ FVMS_EntityDialogPanel& Get(const UObject ContextObject)
 {
     return FVMS_EntityDialogPanel::GetByManager(EUIInternal::GetContextManager(ContextObject));
 }
-FVMS_EntityDialogPanel GetByManager(const UEUIManagerSubsystem Manager)
+FVMS_EntityDialogPanel& GetByManager(const UEUIManagerSubsystem Manager)
 {
-    FVMS_EntityDialogPanel __r;
-    TEUIModelRef<FVMS_EntityDialogPanel> local_6 = TEUIModelRef<FVMS_EntityDialogPanel>(EUIInternal::MakeModelWithManager(Manager, FVMS_EntityDialogPanel::ModelId));
-    return __r;
+    return TEUIModelRef<FVMS_EntityDialogPanel>(EUIInternal::MakeModelWithManager(Manager, FVMS_EntityDialogPanel::ModelId)).Get();
 }
 void GetModelInfo(FEUIViewModelMetaInfo &inout Result)
 {
@@ -129,7 +127,6 @@ namespace __GeneratedProperties_FVMS_EntityDialogPanel
 {
 UScriptStruct StaticStruct()
 {
-    UScriptStruct local_2;
-    return local_2;
+    return __GeneratedProperties_FVMS_EntityDialogPanel.Get();
 }
 }

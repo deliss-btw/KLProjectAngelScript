@@ -32,7 +32,7 @@ class US_CombatSystem : UECSScriptSystem
         {
             return;
         }
-        FAttackData local_70;
+        const FAttackData& local_70 = Event.AttackData.Get();
         float32 local_71 = local_70.FreezeFrameTime;
         if (local_71 > 0.0f)
         {
@@ -136,7 +136,7 @@ class US_CombatSystem : UECSScriptSystem
         {
             return;
         }
-        FAttackData local_72;
+        const FAttackData& local_72 = local_4.AttackData.Get();
         float32 local_73 = local_72.BeHitFreezeFrameTime;
         if (local_73 <= 0.0f)
         {
@@ -767,6 +767,7 @@ class US_CombatSystem : UECSScriptSystem
     {
         int local_8 = 0;
         int local_52 = 0;
+        ModifyOrAdd local_74;
         if (!(::FASCommonUtils::IsBossPrefab(Entity)))
         {
             return;
@@ -801,7 +802,6 @@ class US_CombatSystem : UECSScriptSystem
                 local_68.opCall(local_70);
                 FECSEntityId local_75 = Entity.GetId();
                 FECSWorldPtr local_46_2 = Entity.GetWorld();
-                ModifyOrAdd local_74;
                 local_74.opCall().GetModify_BossLowHPList().AddUnique(local_75);
                 return;
             }
@@ -820,6 +820,7 @@ class US_CombatSystem : UECSScriptSystem
                 local_80.opCall();
                 FECSEntityId local_75_2 = Entity.GetId();
                 FECSWorldPtr local_46_3 = Entity.GetWorld();
+                local_74.opCall().GetModify_BossLowHPList().Remove(local_75_2);
             }
         }
         return;
@@ -838,18 +839,19 @@ class US_CombatSystem : UECSScriptSystem
         bool local_1 = local_8.opCall();
         OutEntityType = local_1 ? 1 : 2;
         OutEntityConfigId = 0;
-        int local_2 = Entity.GetIdValue();
-        OutEntityInstanceId = local_2;
-        if (::GetAvatarConfig(Entity))
+        OutEntityInstanceId = Entity.GetIdValue();
+        TDataObjectPtr<FAvatarPrefabConfig> local_34 = ::GetAvatarConfig(Entity);
+        if (local_34)
         {
-            OutEntityConfigId = local_2;
+            OutEntityConfigId = local_34.Get().DataId;
         }
         else
         {
             Get local_62;
-            if (local_62.opCall())
+            const FC_MonsterInfo& local_64 = local_62.opCall();
+            if (local_64)
             {
-                OutEntityConfigId = local_2;
+                OutEntityConfigId = local_64.GetMonsterConfig().Get().DataId;
             }
         }
         if (local_1)
@@ -1019,7 +1021,6 @@ class US_CombatSystem : UECSScriptSystem
     UFUNCTION()
     void ServerJob_DataTrackCombatEffectDamage(const FCE_DamageEvent &inout Event) const
     {
-        int local_37 = 0;
         int local_1 = 0;
         int local_3 = 0;
         int local_4 = 0;
@@ -1059,7 +1060,7 @@ class US_CombatSystem : UECSScriptSystem
             local_30.SetSourceEntityInstanceId(local_7);
             if (Event.AttackData)
             {
-                local_30.SetAttackCategory(local_37);
+                local_30.SetAttackCategory(Event.AttackData.Get().AttackCategory);
             }
             FPbPlayerLogDsCombatCommon local_48 = local_30.GetCommon();
             ::FCombatStateUtils::GetDataTrackPbCombatCommonData(local_16, local_48);
@@ -1082,7 +1083,7 @@ class US_CombatSystem : UECSScriptSystem
             local_30.SetSourceEntityInstanceId(local_7);
             if (Event.AttackData)
             {
-                local_30.SetAttackCategory(local_37);
+                local_30.SetAttackCategory(Event.AttackData.Get().AttackCategory);
             }
             FPbPlayerLogDsCombatCommon local_58 = local_30.GetCommon();
             ::FCombatStateUtils::GetDataTrackPbCombatCommonData(local_16, local_58);
@@ -1113,7 +1114,7 @@ class US_CombatSystem : UECSScriptSystem
             local_30.SetSourceEntityInstanceId(local_7);
             if (Event.AttackData)
             {
-                local_30.SetAttackCategory(local_37);
+                local_30.SetAttackCategory(Event.AttackData.Get().AttackCategory);
             }
             FPbPlayerLogDsCombatCommon local_48_2 = local_30.GetCommon();
             ::FCombatStateUtils::GetDataTrackPbCombatCommonData(local_16, local_48_2);
@@ -1319,9 +1320,10 @@ class US_CombatSystem : UECSScriptSystem
             CombatState.SelfCombatSession.UncontrollableDuration = local_6;
             for (auto& local_24 : CombatState.BossCombatSessions)
             {
-                local_24;
                 float local_4_2 = FixedTime.DeltaTime.ToSeconds();
+                local_6 = local_24.GetValue().UncontrollableDuration;
                 local_6 = local_6 + float32(local_4_2);
+                local_24.GetValue().UncontrollableDuration = local_6;
             }
         }
         return;
@@ -1381,7 +1383,6 @@ class US_CombatSystem : UECSScriptSystem
     UFUNCTION()
     void ServerJob_DataTrackOnCombatStateDestroy(const FECSEntity &inout Entity, FC_CombatState &inout CombatState, const FCS_FixedTime &inout FixedTime) const
     {
-        int local_64 = 0;
         Has local_4;
         bool local_5 = local_4.opCall();
         if (local_5)
@@ -1430,8 +1431,7 @@ class US_CombatSystem : UECSScriptSystem
             return;
         }
         bool local_5_3 = (int(::FLevelUtils::GetCurrentLevelType()) != 1);
-        int local_63 = CombatState.SelfCombatSession.SessionID;
-        if ((local_63 != 0 && (int(CombatState.SelfCombatSession.EndReason) == 0)))
+        if ((CombatState.SelfCombatSession.SessionID != 0 && (int(CombatState.SelfCombatSession.EndReason) == 0)))
         {
             if (local_5_3)
             {
@@ -1451,23 +1451,20 @@ class US_CombatSystem : UECSScriptSystem
         {
             for (auto& local_122 : CombatState.BossCombatSessions)
             {
-                local_122;
-                if (local_63 == 0)
+                if (int(local_122.GetValue()._base_FCombatSession) == 0)
                 {
                     continue;
                 }
                 FPbPlayerLogDsBossCombatEnd local_132;
                 FPbPlayerLogDsCombatCommon local_96 = local_132.GetCommon();
                 ::FCombatStateUtils::GetDataTrackPbCombatCommonData(Entity, local_96);
-                local_132.SetBossCombatSessionId(local_64);
-                local_132.SetBossId(local_63);
-                local_132.SetBossInstanceId(local_64);
+                local_132.SetBossCombatSessionId(int(local_122.GetValue()._base_FCombatSession));
+                local_132.SetBossId(local_122.GetValue().BossId);
+                local_132.SetBossInstanceId(local_122.GetValue().BossInstanceId);
                 local_132.SetEndStatus(3);
-                float32 local_97_2 = ::FCombatStateUtils::GetDataTrackCombatDuration(FixedTime.Time);
-                local_132.SetCombatDuration(local_97_2);
-                local_132.SetEngagementDuration(::FCombatStateUtils::GetDataTrackEngagementDuration(FixedTime.Time));
-                local_97_2 = local_97_2 * 1000.0f;
-                local_132.SetUncontrollableDuration(local_97_2);
+                local_132.SetCombatDuration(::FCombatStateUtils::GetDataTrackCombatDuration(local_122.GetValue(), FixedTime.Time));
+                local_132.SetEngagementDuration(::FCombatStateUtils::GetDataTrackEngagementDuration(local_122.GetValue(), FixedTime.Time));
+                local_132.SetUncontrollableDuration((local_122.GetValue().UncontrollableDuration * 1000.0f));
                 ::ServerDataTrackerHelper::LogProtoMessage3WithPawn(Entity, 102504, local_132.ToWrapper());
             }
         }

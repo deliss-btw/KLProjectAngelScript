@@ -147,11 +147,9 @@ FVM_CombatSettingPresetSelector& Create(const UObject ContextObject)
 {
     return FVM_CombatSettingPresetSelector::CreateByManager(EUIInternal::GetContextManager(ContextObject));
 }
-FVM_CombatSettingPresetSelector CreateByManager(const UEUIManagerSubsystem Manager)
+FVM_CombatSettingPresetSelector& CreateByManager(const UEUIManagerSubsystem Manager)
 {
-    FVM_CombatSettingPresetSelector __r;
-    TEUIModelRef<FVM_CombatSettingPresetSelector> local_6 = TEUIModelRef<FVM_CombatSettingPresetSelector>(EUIInternal::MakeModelWithManager(Manager, FVM_CombatSettingPresetSelector::ModelId));
-    return __r;
+    return TEUIModelRef<FVM_CombatSettingPresetSelector>(EUIInternal::MakeModelWithManager(Manager, FVM_CombatSettingPresetSelector::ModelId)).Get();
 }
 void GetModelInfo(FEUIViewModelMetaInfo &inout Result)
 {
@@ -198,8 +196,7 @@ namespace __GeneratedProperties_FVM_CombatSettingPresetSelector
 {
 UScriptStruct StaticStruct()
 {
-    UScriptStruct local_2;
-    return local_2;
+    return __GeneratedProperties_FVM_CombatSettingPresetSelector.Get();
 }
 }
 namespace FVMS_CombatSettingPresetSelectorCache
@@ -208,11 +205,9 @@ FVMS_CombatSettingPresetSelectorCache& Get(const UObject ContextObject)
 {
     return FVMS_CombatSettingPresetSelectorCache::GetByManager(EUIInternal::GetContextManager(ContextObject));
 }
-FVMS_CombatSettingPresetSelectorCache GetByManager(const UEUIManagerSubsystem Manager)
+FVMS_CombatSettingPresetSelectorCache& GetByManager(const UEUIManagerSubsystem Manager)
 {
-    FVMS_CombatSettingPresetSelectorCache __r;
-    TEUIModelRef<FVMS_CombatSettingPresetSelectorCache> local_6 = TEUIModelRef<FVMS_CombatSettingPresetSelectorCache>(EUIInternal::MakeModelWithManager(Manager, FVMS_CombatSettingPresetSelectorCache::ModelId));
-    return __r;
+    return TEUIModelRef<FVMS_CombatSettingPresetSelectorCache>(EUIInternal::MakeModelWithManager(Manager, FVMS_CombatSettingPresetSelectorCache::ModelId)).Get();
 }
 void GetModelInfo(FEUIModelOnlyMetaInfo &inout Result)
 {

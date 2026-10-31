@@ -30,7 +30,7 @@ class US_DivineSkillSystem : UECSScriptSystem
             {
                 EDivineSkillType local_29;
                 FName local_28 = ::FGameModeUtils::GetDivineSkillDisplayTag();
-                local_29 = EDivineSkillType(0);
+                local_29 = EDivineSkillType::DivineType_Main;
                 if ((!((local_28 == NAME_None))))
                 {
                     local_29 = ::DivineSkillUtils::FilterTagToDivineSkillType(local_28);
@@ -86,7 +86,6 @@ class US_DivineSkillSystem : UECSScriptSystem
         {
             if (local_16.GetDivineSkillData().GetSkillConfig())
             {
-                const FDivineSkillConfig& local_28;
                 local_17 = ::DivineSkillUtils::SuitForPlayerCurrentAvatars(local_16.GetDivineSkillData().GetSkillConfig(), ControlledByPlayer.GetPlayerEntity());
                 if (!(local_17) != !(local_16.GetbHasSuitableCharacter()))
                 {
@@ -95,6 +94,7 @@ class US_DivineSkillSystem : UECSScriptSystem
                     local_24.opCall(local_26);
                     local_16.SetbHasSuitableCharacter(local_17);
                 }
+                const FDivineSkillConfig& local_28 = local_16.GetDivineSkillData().GetSkillConfig().Get();
                 local_30 = local_28.SkillConfig;
                 if (local_30 != nullptr)
                 {
@@ -209,10 +209,10 @@ class US_DivineSkillSystem : UECSScriptSystem
         {
             local_6 = local_12.GetDivineSkillData().GetSkillConfig();
         }
-        USkillConfig local_16;
-        if ((local_6 && (local_16 != nullptr)) && (PlayerController.GetAllPlayerPawnEntities().Num() > 0))
+        if ((local_6 && ((local_12.GetDivineSkillData().GetSkillConfig().Get().SkillConfig != nullptr))) && (PlayerController.GetAllPlayerPawnEntities().Num() > 0))
         {
             bool local_23;
+            local_22 = local_12.GetDivineSkillData().GetSkillConfig().Get().SkillConfig;
             local_23 = true;
             for (auto& local_38 : PlayerController.GetAllPlayerPawnEntities())
             {
@@ -285,9 +285,9 @@ class US_DivineSkillSystem : UECSScriptSystem
     {
         if (!(::FGameModeUtils::ShouldDisableDivineSkillPassive()) && DivineSkill.GetbHasSuitableCharacter())
         {
-            const FDivineSkillConfig& local_4;
             if (DivineSkill.GetDivineSkillData().GetSkillConfig())
             {
+                const FDivineSkillConfig& local_4 = DivineSkill.GetDivineSkillData().GetSkillConfig().Get();
                 if (PlayerController.GetPlayerPawnEntity().IsValid())
                 {
                     ::DivineSkillUtils::AddDivineSkillModifier(PlayerController.GetPlayerPawnEntity(), DivineSkill, FFPTime(-1));
@@ -303,18 +303,18 @@ class US_DivineSkillSystem : UECSScriptSystem
         }
         else
         {
-            const FDivineSkillConfig& local_4;
             if (DivineSkill.GetDivineSkillData().GetSkillConfig())
             {
+                const FDivineSkillConfig& local_4_2 = DivineSkill.GetDivineSkillData().GetSkillConfig().Get();
                 if (PlayerController.GetPlayerPawnEntity().IsValid())
                 {
                     ::DivineSkillUtils::RemoveDivineSkillModifier(PlayerController.GetPlayerPawnEntity(), DivineSkill);
                 }
                 for (auto& local_22 : PlayerController.GetAllPlayerPawnEntities())
                 {
-                    if (local_4.BuffConfig.IsValid())
+                    if (local_4_2.BuffConfig.IsValid())
                     {
-                        FBuffUtils::RemoveBuff(local_22, local_4.BuffConfig, FixedTime.Time, EBuffEndType(0));
+                        FBuffUtils::RemoveBuff(local_22, local_4_2.BuffConfig, FixedTime.Time, EBuffEndType(0));
                     }
                 }
             }

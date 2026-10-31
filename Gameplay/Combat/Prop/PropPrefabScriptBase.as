@@ -138,6 +138,7 @@ class APropPrefabScriptBase : APropPrefabBase
     }
     void ResetEcologyPropLayoutInfo()
     {
+        this.Modify(true);
         return;
     }
 }

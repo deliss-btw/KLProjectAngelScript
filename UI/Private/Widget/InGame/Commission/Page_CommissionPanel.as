@@ -28,7 +28,17 @@ class UPage_CommissionPanel : UEUIActivatableWidget
     UFUNCTION()
     void Tick_Implementation(const FGeometry &inout MyGeometry, const float32 InDeltaTime)
     {
-        // body not fully recovered — stub [unresolved-operand]
+        FEUIModelWeakRef local_2 = this.CommissionList.GetSelectedItem();
+        if (local_2.Get())
+        {
+            this.SelectedCommissionInfo.SetRef(FEUIModelRef(local_2.Get()));
+        }
+        else
+        {
+            this.CommissionList.SetSelectedIndex(0);
+            this.SelectedCommissionInfo.SetRef(FEUIModelRef());
+        }
+        return;
     }
     UFUNCTION()
     void Page_ClosePage() const
@@ -51,7 +61,7 @@ class UPage_CommissionPanel : UEUIActivatableWidget
     UFUNCTION()
     TArray<FEUIModelWeakRef> CommissionPanel_CommissionList() const
     {
-        FVMS_CommissionPanel& local_2;
+        FVMS_CommissionPanel& local_2 = this.CommissionPanel.Get();
         TArray<FEUIModelWeakRef> local_16;
         if (local_2)
         {
@@ -66,14 +76,14 @@ class UPage_CommissionPanel : UEUIActivatableWidget
     UFUNCTION()
     FEUIModelRef SelectedCommissionInfo_CommissionRewardList() const
     {
-        FVM_CommissionInfo& local_2;
+        FVM_CommissionInfo& local_2 = this.SelectedCommissionInfo.Get();
         FEUIModelRef local_8 = local_2 ? local_2.GetCommissionRewardList() : FEUIModelRef();
         return local_8;
     }
     UFUNCTION()
     FEUIModelRef SelectedCommissionInfo_CommissionFirstTimeRewardList() const
     {
-        FVM_CommissionInfo& local_2;
+        FVM_CommissionInfo& local_2 = this.SelectedCommissionInfo.Get();
         FEUIModelRef local_8 = local_2 ? local_2.GetCommissionFirstTimeRewardList() : FEUIModelRef();
         return local_8;
     }

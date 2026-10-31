@@ -21,7 +21,6 @@ namespace __FNPCSkinOverrideFunctions
 UFUNCTION()
 FText __FNPCSkinOverride_GetDisplayName(const TDataObjectPtr<FNPCSkinOverride> &inout DataObject)
 {
-    FText __r;
     if ((DataObject == nullptr))
     {
         if (!(EUIGlobals::GIsDuringPropertyConversion))
@@ -31,12 +30,11 @@ FText __FNPCSkinOverride_GetDisplayName(const TDataObjectPtr<FNPCSkinOverride> &
         FNPCSkinOverride local_28;
         return local_28.DisplayName;
     }
-    return __r;
+    return DataObject.Get().DisplayName;
 }
 UFUNCTION()
 TSoftClassPtr<ACharacterPrefab> __FNPCSkinOverride_GetPrefabOverride(const TDataObjectPtr<FNPCSkinOverride> &inout DataObject)
 {
-    TSoftClassPtr<ACharacterPrefab> __r;
     if ((DataObject == nullptr))
     {
         if (!(EUIGlobals::GIsDuringPropertyConversion))
@@ -46,7 +44,7 @@ TSoftClassPtr<ACharacterPrefab> __FNPCSkinOverride_GetPrefabOverride(const TData
         FNPCSkinOverride local_28;
         return local_28.PrefabOverride;
     }
-    return __r;
+    return DataObject.Get().PrefabOverride;
 }
 UFUNCTION()
 FNPCSkinOverride CastToFNPCSkinOverride(const TDataObjectPtr<FNPCSkinOverride> &inout DataObject)
@@ -69,7 +67,7 @@ TDataObjectPtr<FNPCRoleConfig> __FNPCMainConfig_GetRole(const TDataObjectPtr<FNP
         FNPCMainConfig local_286;
         return local_286.GetRole();
     }
-    return GetRole();
+    return DataObject.Get().GetRole();
 }
 UFUNCTION()
 TDataObjectPtr<FNPCPresentationConfig> __FNPCMainConfig_GetPresentationConfig(const TDataObjectPtr<FNPCMainConfig> &inout DataObject)
@@ -83,7 +81,7 @@ TDataObjectPtr<FNPCPresentationConfig> __FNPCMainConfig_GetPresentationConfig(co
         FNPCMainConfig local_286;
         return local_286.GetPresentationConfig();
     }
-    return GetPresentationConfig();
+    return DataObject.Get().GetPresentationConfig();
 }
 UFUNCTION()
 TDataObjectPtr<FNPCSkinOverride> __FNPCMainConfig_GetSkinOverride(const TDataObjectPtr<FNPCMainConfig> &inout DataObject)
@@ -97,7 +95,7 @@ TDataObjectPtr<FNPCSkinOverride> __FNPCMainConfig_GetSkinOverride(const TDataObj
         FNPCMainConfig local_286;
         return local_286.GetSkinOverride();
     }
-    return GetSkinOverride();
+    return DataObject.Get().GetSkinOverride();
 }
 UFUNCTION()
 TDataObjectPtr<FNPCDailyRouteConfig> __FNPCMainConfig_GetDailyRouteConfig(const TDataObjectPtr<FNPCMainConfig> &inout DataObject)
@@ -111,12 +109,11 @@ TDataObjectPtr<FNPCDailyRouteConfig> __FNPCMainConfig_GetDailyRouteConfig(const 
         FNPCMainConfig local_286;
         return local_286.GetDailyRouteConfig();
     }
-    return GetDailyRouteConfig();
+    return DataObject.Get().GetDailyRouteConfig();
 }
 UFUNCTION()
 ENPCCombatPriority __FNPCMainConfig_GetCombatPriority(const TDataObjectPtr<FNPCMainConfig> &inout DataObject)
 {
-    int local_287 = 0;
     if ((DataObject == nullptr))
     {
         if (!(EUIGlobals::GIsDuringPropertyConversion))
@@ -124,31 +121,27 @@ ENPCCombatPriority __FNPCMainConfig_GetCombatPriority(const TDataObjectPtr<FNPCM
             FBlueprintDebugFunctions::ThrowScriptException("Get 'CombatPriority' from a null 'FNPCMainConfig' DataObject!");
         }
         FNPCMainConfig local_286;
-        local_287 = int(local_286.CombatPriority);
-        return ENPCCombatPriority(local_287);
+        return local_286.CombatPriority;
     }
-    return ENPCCombatPriority(local_287);
+    return DataObject.Get().CombatPriority;
 }
 UFUNCTION()
 bool __FNPCMainConfig_GetbShowInWorldMap(const TDataObjectPtr<FNPCMainConfig> &inout DataObject)
 {
-    bool local_1 = false;
     if ((DataObject == nullptr))
     {
-        local_1 = !(EUIGlobals::GIsDuringPropertyConversion);
-        if (local_1)
+        if (!(EUIGlobals::GIsDuringPropertyConversion))
         {
             FBlueprintDebugFunctions::ThrowScriptException("Get 'bShowInWorldMap' from a null 'FNPCMainConfig' DataObject!");
         }
         FNPCMainConfig local_286;
         return local_286.bShowInWorldMap;
     }
-    return local_1;
+    return DataObject.Get().bShowInWorldMap;
 }
 UFUNCTION()
 FVector2D __FNPCMainConfig_GetWorldMapFixedPosition(const TDataObjectPtr<FNPCMainConfig> &inout DataObject)
 {
-    FVector2D __r;
     if ((DataObject == nullptr))
     {
         if (!(EUIGlobals::GIsDuringPropertyConversion))
@@ -158,7 +151,7 @@ FVector2D __FNPCMainConfig_GetWorldMapFixedPosition(const TDataObjectPtr<FNPCMai
         FNPCMainConfig local_286;
         return local_286.WorldMapFixedPosition;
     }
-    return __r;
+    return DataObject.Get().WorldMapFixedPosition;
 }
 UFUNCTION()
 TDataObjectPtr<FLevelInfoConfig> __FNPCMainConfig_GetWorldMapRegion(const TDataObjectPtr<FNPCMainConfig> &inout DataObject)
@@ -172,12 +165,11 @@ TDataObjectPtr<FLevelInfoConfig> __FNPCMainConfig_GetWorldMapRegion(const TDataO
         FNPCMainConfig local_286;
         return local_286.GetWorldMapRegion();
     }
-    return GetWorldMapRegion();
+    return DataObject.Get().GetWorldMapRegion();
 }
 UFUNCTION()
 TArray<FNPCComponentSwitchOverride> __FNPCMainConfig_GetComponentSwitchOverrides(const TDataObjectPtr<FNPCMainConfig> &inout DataObject)
 {
-    TArray<FNPCComponentSwitchOverride> __r;
     if ((DataObject == nullptr))
     {
         if (!(EUIGlobals::GIsDuringPropertyConversion))
@@ -187,7 +179,7 @@ TArray<FNPCComponentSwitchOverride> __FNPCMainConfig_GetComponentSwitchOverrides
         FNPCMainConfig local_286;
         return local_286.ComponentSwitchOverrides;
     }
-    return __r;
+    return DataObject.Get().ComponentSwitchOverrides;
 }
 UFUNCTION()
 FNPCMainConfig CastToFNPCMainConfig(const TDataObjectPtr<FNPCMainConfig> &inout DataObject)

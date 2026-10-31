@@ -146,7 +146,6 @@ class AKLGameModeMP : AECSGameModeMPBase
     }
     void OnDSFinishFork()
     {
-        int local_22 = 0;
         XLog(ELog(33), FString().Append("OnDSFinishFork"));
         AECSWorldSettingsBase local_14 = (Cast<AAS_ECSWorldSettings>(this.GetWorld().GetWorldSettings()));
         if (local_14 != nullptr)
@@ -158,7 +157,7 @@ class AKLGameModeMP : AECSGameModeMPBase
                 local_20.DSRegisterLevelKey = int(local_14.LevelKey);
                 if (local_14.LevelInfoConfig)
                 {
-                    local_20.DSRegisterLevelType = local_22;
+                    local_20.DSRegisterLevelType = int(local_14.LevelInfoConfig.Get().LevelType);
                 }
             }
             WorldUtils::AddWorldURLOption(this.GetWorld(), FString().Append("level_key=").Append(local_14.LevelKey));

@@ -136,7 +136,7 @@ void PlayCharacterReactionSound(const FECSEntity &inout Entity, const TSoftObjec
         FC_BreathAudio local_8;
         if (int(local_8.CurrentSoundId) != INDEX_NONE)
         {
-            UBreathAudioSubsystem local_12 = UBreathAudioSubsystem::Get();
+            UBreathAudioSubsystem::Get().BreathAudioMap.Remove(local_8.CurrentSoundId);
             if (!(local_8.CurrentStopAudioEvent.IsNull()) == !(false))
             {
                 FGameAudioUtils::PlayEventOnEmitter(local_8.CurrentStopAudioEvent, Entity, FLoadEventCallback(), EGameAudioEmitterPartType(0), true, false, false, FGameAudioUtils::GetCachedAudioWorld(), true);

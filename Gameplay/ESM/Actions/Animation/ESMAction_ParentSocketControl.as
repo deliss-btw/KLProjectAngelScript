@@ -35,7 +35,7 @@ class UESMAction_ParentSocketControl : UESMBPBaseSpanTickAction
     UFUNCTION()
     void ViewEnter_Implementation(const FESMViewContext &inout Context, const FESMActionTime &inout Time) const
     {
-        UMeshComponent local_26;
+        const AActor local_22;
         FName local_5 = this.GetSocketNameFromEnum(this.TargetSocketType);
         if (((this.MeshComponentName == NAME_None) || (local_5 == NAME_None)))
         {
@@ -45,8 +45,10 @@ class UESMAction_ParentSocketControl : UESMBPBaseSpanTickAction
         if (local_12)
         {
             FName local_18;
-            if (Context.GetEntity().GetActor() != nullptr)
+            local_22 = Context.GetEntity().GetActor();
+            if (local_22 != nullptr)
             {
+                UMeshComponent local_26 = Cast<UMeshComponent>(local_22.GetComponent(UMeshComponent, this.MeshComponentName));
                 if (local_26 != nullptr)
                 {
                     USceneComponent local_30 = local_26.GetAttachParent();
@@ -63,7 +65,7 @@ class UESMAction_ParentSocketControl : UESMBPBaseSpanTickAction
     UFUNCTION()
     void ViewExit_Implementation(const FESMViewContext &inout Context, const FESMActionTime &inout Time) const
     {
-        UMeshComponent local_26;
+        const AActor local_22;
         FName local_5 = this.GetSocketNameFromEnum(this.OriginalSocketType);
         if (((this.MeshComponentName == NAME_None) || (local_5 == NAME_None)))
         {
@@ -73,8 +75,10 @@ class UESMAction_ParentSocketControl : UESMBPBaseSpanTickAction
         if (local_12)
         {
             FName local_18;
-            if (Context.GetEntity().GetActor() != nullptr)
+            local_22 = Context.GetEntity().GetActor();
+            if (local_22 != nullptr)
             {
+                UMeshComponent local_26 = Cast<UMeshComponent>(local_22.GetComponent(UMeshComponent, this.MeshComponentName));
                 if (local_26 != nullptr)
                 {
                     USceneComponent local_30 = local_26.GetAttachParent();

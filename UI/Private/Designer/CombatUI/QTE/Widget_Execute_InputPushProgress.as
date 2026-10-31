@@ -43,10 +43,10 @@ class UWidget_Execute_InputPushProgress : UEUIUserWidget
     UFUNCTION()
     void Tick_Implementation(const FGeometry &inout MyGeometry, const float32 InDeltaTime)
     {
+        FVM_Execute_InputPushProgress& local_2 = this.InputPushProgressVM.Get();
         this.timer -= InDeltaTime;
         if (this.timer <= 0.0f)
         {
-            FVM_Execute_InputPushProgress local_2;
             FEUIWidget::RemoveWidget(local_2.GetPageHandle());
             this.timer = 9999.0f;
         }
@@ -77,15 +77,15 @@ class UWidget_Execute_InputPushProgress : UEUIUserWidget
         }
         if (int(State) >= 3)
         {
-            FVM_Execute_InputPushProgress& local_14;
+            FVM_Execute_InputPushProgress& local_14 = this.InputPushProgressVM.Get();
             this.timer = ((local_14.GetMaxTime() - local_14.GetCurTime()) + 0.6f);
         }
         return;
     }
     void HandleObservedModelChanges(FEUIReactiveSubscriberIterator &inout It)
     {
-        FVM_Execute_InputPushProgress& local_6;
         TEUIModelRef<FVM_Execute_InputPushProgress> local_2 = this.InputPushProgressVM.AsRef();
+        FVM_Execute_InputPushProgress& local_6 = local_2.Get();
         for (; It; )
         {
             FEUIReactiveSubscriberTrackScope local_56 = FEUIReactiveSubscriberTrackScope(It);

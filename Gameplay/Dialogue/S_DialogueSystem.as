@@ -80,7 +80,7 @@ class US_DialogueSystem : UECSScriptSystem
                 FDialogueInfoList& local_88 = local_82.NPCDialogueMap[local_44];
                 for (auto& local_106 : local_88.GetDialogueInfos())
                 {
-                    if (::DialogueUtils::ActivateGlobalDialogue(GetDialogueConfig(), Entity))
+                    if (::DialogueUtils::ActivateGlobalDialogue(local_106.GetValue().GetDialogueConfig(), Entity))
                     {
                         XLog(ELog(64), FString().Append("[Dialogue] Pending NPC Dialogue for Entity Activated: ").Append(Entity.GetEntityName()).Append(", Dialogue: ").Append(local_106.GetKey()));
                         local_86.Add(local_106.GetKey());
@@ -88,12 +88,13 @@ class US_DialogueSystem : UECSScriptSystem
                 }
                 if (local_86.Num() == local_88.GetDialogueInfos().Num())
                 {
+                    local_82.NPCDialogueMap.Remove(local_44);
                 }
                 else
                 {
                     for (auto& local_124 : local_86)
                     {
-                        local_124;
+                        local_88.GetDialogueInfos().Remove(local_124);
                     }
                 }
             }
@@ -104,24 +105,19 @@ class US_DialogueSystem : UECSScriptSystem
     void ServerJob_HandleNotifyStartAmbientDialogue(const FCE_NotifyStartAmbientDialogue &inout Event) const
     {
         int local_12 = 0;
-        int local_73 = 0;
         const UDialogueSettings local_106;
         float local_118;
         Has local_4;
         bool local_5 = local_4.opCall();
         if (local_5)
         {
-            FName local_20;
-            local_20 = local_12.GetDialogueContext().GetDialogueName();
-            XError(ELog(64), FString().Append("[Dialogue] Start ambient dialogue failed, ").Append(Event.DialogueEntity.GetEntityName()).Append(" is already playing: ").Append(local_20));
+            XError(ELog(64), FString().Append("[Dialogue] Start ambient dialogue failed, ").Append(Event.DialogueEntity.GetEntityName()).Append(" is already playing: ").Append(local_12.GetDialogueContext().GetDialogueName()));
             return;
         }
         FName local_23;
         if (Event.DialogueConfig.IsSet())
         {
-            FName local_20;
-            local_20.GetDataName();
-            local_23 = local_20;
+            local_23 = Event.DialogueConfig.Get().GetDataName();
         }
         else
         {
@@ -130,7 +126,7 @@ class US_DialogueSystem : UECSScriptSystem
         XLog(ELog(64), FString().Append("[Dialogue] Handle Notify Start Ambient Dialogue: ").Append(Event.DialogueEntity.GetEntityName()).Append(", Dialogue: ").Append(local_23));
         FDialogueDeliveryContext local_72;
         local_72.SetDialogueName(local_23);
-        local_72.SetDialogueType(EDialogueType(local_73));
+        local_72.SetDialogueType(Event.DialogueConfig.Get().DialogueType);
         local_72.SetInteractTarget(Event.DialogueEntity);
         CastTo local_78;
         local_72.SetDialogueConfig(local_78.opCall());
@@ -154,7 +150,7 @@ class US_DialogueSystem : UECSScriptSystem
         local_12.SetTriggerPlayer(Event.TriggerPlayer);
         local_12.SetDialogueContext(local_72);
         local_12.SetBroadcastScope(Event.BroadcastScope);
-        local_12.SetSection(FDialogueSection(local_72.GetDialogueName(), EDialogueType(local_72.GetDialogueType()), Event.DialogueEntity));
+        local_12.SetSection(FDialogueSection(local_72.GetDialogueName(), local_72.GetDialogueType(), Event.DialogueEntity));
         FC_DialogueNextSectionTag local_312;
         Assign local_310;
         local_310.opCall(local_312);
@@ -175,7 +171,6 @@ class US_DialogueSystem : UECSScriptSystem
     }
     void StartSimpleDialogue(const FECSEntity &inout PlayerEntity, const FECSEntity &inout InteractTarget, const TDataObjectPtr<FDialogueConfig> &inout DialogueConfig, const bool bAddAttachableDialogues) const
     {
-        int local_57 = 0;
         const UDialogueSettings local_60;
         float local_104;
         int local_184 = 0;
@@ -186,10 +181,8 @@ class US_DialogueSystem : UECSScriptSystem
             return;
         }
         FDialogueDeliveryContext local_54;
-        FName local_56;
-        local_56.GetDataName();
-        local_54.SetDialogueName(local_56);
-        local_54.SetDialogueType(EDialogueType(local_57));
+        local_54.SetDialogueName(DialogueConfig.Get().GetDataName());
+        local_54.SetDialogueType(DialogueConfig.Get().DialogueType);
         local_54.SetInteractTarget(InteractTarget);
         local_54.SetDialogueConfig(DialogueConfig);
         local_54.SetStartAtNodeId(0);
@@ -224,7 +217,7 @@ class US_DialogueSystem : UECSScriptSystem
             }
         }
         local_184.SetDialogueContext(local_54);
-        local_232.SetSection(FDialogueSection(local_54.GetDialogueName(), EDialogueType(local_57), PlayerEntity));
+        local_232.SetSection(FDialogueSection(local_54.GetDialogueName(), DialogueConfig.Get().DialogueType, PlayerEntity));
         FC_DialogueNextSectionTag local_278;
         Assign local_276;
         local_276.opCall(local_278);
@@ -233,9 +226,7 @@ class US_DialogueSystem : UECSScriptSystem
     UFUNCTION()
     void ServerJob_HandleDialogueSimpleQuickStart(const FECSEntity &inout Entity, const FC_DialogueSimpleQuickStart &inout DialogueSimpleQuickStart) const
     {
-        FName local_8;
-        local_8.GetDataName();
-        XLog(ELog(64), FString().Append("Handle dialogue simple quick start: ").Append(Entity.GetEntityName()).Append(", dialogue config: ").Append(local_8));
+        XLog(ELog(64), FString().Append("Handle dialogue simple quick start: ").Append(Entity.GetEntityName()).Append(", dialogue config: ").Append(DialogueSimpleQuickStart.GetDialogueConfig().Get().GetDataName()));
         this.StartSimpleDialogue(Entity, DialogueSimpleQuickStart.GetInteractTarget(), DialogueSimpleQuickStart.GetDialogueConfig(), false);
         Remove local_14;
         local_14.opCall();
@@ -279,8 +270,7 @@ class US_DialogueSystem : UECSScriptSystem
                     const FDialogueInfoList& local_70 = local_10.GetNPCDialogueMap()[local_42];
                     for (auto& local_88 : local_70.GetDialogueInfos())
                     {
-                        local_88;
-                        local_4.Add();
+                        local_4.Add(local_88.GetValue());
                     }
                 }
             }
@@ -291,10 +281,11 @@ class US_DialogueSystem : UECSScriptSystem
         {
             for (auto& local_88 : local_96.GetDialogueInfos())
             {
-                local_88;
-                local_4.Add();
+                local_4.Add(local_88.GetValue());
             }
         }
+        __Lambda_Gameplay_Dialogue_S_DialogueSystem_275 local_98;
+        local_4.Sort(local_98);
         return local_4;
     }
     TDataObjectPtr<FDialogueConfig> FindBestDialogue(const FCE_OnDialogueInteraction &inout Event) const
@@ -337,10 +328,9 @@ class US_DialogueSystem : UECSScriptSystem
                     const FDialogueInfoList& local_70 = local_10.GetNPCDialogueMap()[local_42];
                     for (auto& local_88 : local_70.GetDialogueInfos())
                     {
-                        local_88;
-                        if (GetbIsAttachable())
+                        if (local_88.GetValue().GetbIsAttachable())
                         {
-                            AttachableDialogues.Add();
+                            AttachableDialogues.Add(local_88.GetValue());
                         }
                     }
                 }
@@ -577,7 +567,7 @@ struct __Lambda_Gameplay_Dialogue_S_DialogueSystem_275
     }
     bool opCall(const FDialogueInfo &inout A, const FDialogueInfo &inout B)
     {
-        return (0 > 0);
+        return (A.GetDialogueConfig().Get().DialoguePriority > B.GetDialogueConfig().Get().DialoguePriority);
     }
 }
 

@@ -39,6 +39,8 @@ struct FGTCAICommandAction : FGTCAction
     UPROPERTY()
     FString EntityIdRemap;
 
+    default m_ScriptOverrideMeta = Cast<UASStruct>(FGTCAICommandAction.Get());
+
     FGTCAICommandAction()
     {
         this.Time = 0.0f;

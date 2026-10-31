@@ -8,6 +8,8 @@ struct FBuffModifierHealHp : FBuffModifierOnceScriptable
     UPROPERTY()
     EHealHPType HealHPType;
 
+    default m_ScriptOverrideMeta = Cast<UASStruct>(FBuffModifierHealHp.Get());
+
     FBuffModifierHealHp()
     {
         this.HealHPType = EHealHPType(0);

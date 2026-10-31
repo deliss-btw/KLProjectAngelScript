@@ -23,6 +23,7 @@ FJsonObjectWrapper GetJobResult(const FString &inout JobId)
     {
         return FJsonObjectWrapper();
     }
+    local_12.JobMap.Remove(JobId);
     FJsonObjectWrapper local_34;
     ThrowIf(!(FJsonObjectConverter::JsonObjectStringToUStruct(local_16, local_34, 0, 0)), "ResultJson deserialize failed.");
     return local_34;

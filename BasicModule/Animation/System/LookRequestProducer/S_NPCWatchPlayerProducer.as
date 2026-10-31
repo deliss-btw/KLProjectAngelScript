@@ -138,12 +138,13 @@ class US_LookRequestNPCWatchPlayerProducerSystemAS : UECSScriptSystem
             ::FC_LookRequest::ReleaseViewBySource(Entity, EAnimLookSource(10));
             return;
         }
-        if (!(GetWatchPlayerLookPreset().IsSet()))
+        TDataObjectPtr<FNPCWatchPlayerLookPresetConfig> local_26 = NPCInfo.GetMainConfig().Get().GetWatchPlayerLookPreset();
+        if (!(local_26.IsSet()))
         {
             ::FC_LookRequest::ReleaseViewBySource(Entity, EAnimLookSource(10));
             return;
         }
-        FNPCWatchPlayerLookPresetConfig local_52;
+        const FNPCWatchPlayerLookPresetConfig& local_52 = local_26.Get();
         if (!(::FNPCWatchPlayerLookUtils::ShouldWatchPlayerNow(Entity, ::FNPCWatchPlayerLookUtils::ResolveWatchPlayerLookMode(Entity, local_52))))
         {
             ::FC_LookRequest::ReleaseViewBySource(Entity, EAnimLookSource(10));

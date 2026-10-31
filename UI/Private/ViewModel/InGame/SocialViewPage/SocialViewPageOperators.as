@@ -301,9 +301,7 @@ class USocialViewPageOperator_KickOutTeam : USocialViewPageOperator
         {
             return;
         }
-        FString local_10;
-        local_10.GetNickName();
-        FText local_22 = FText::Format(NSLOCTEXT("Team", "KickMemberMessage", "是否确认请离{0}"), FText::FromString(local_10));
+        FText local_22 = FText::Format(NSLOCTEXT("Team", "KickMemberMessage", "是否确认请离{0}"), FText::FromString(Context.TargetPlayerModel.Get().GetNickName()));
         FDialogDynamicCallback local_26;
         local_26.BindUFunction(this, n"OnConfirmKickOut");
         FText local_14 = NSLOCTEXT("Team", "KickPlayerCancel", "否");
@@ -360,9 +358,7 @@ class USocialViewPageOperator_GiveTeamLeader : USocialViewPageOperator
         {
             return;
         }
-        FString local_10;
-        local_10.GetNickName();
-        FText local_22 = FText::Format(NSLOCTEXT("Mail", "SetCaptainMessage", "是否确认将队长转让给{0}"), FText::FromString(local_10));
+        FText local_22 = FText::Format(NSLOCTEXT("Mail", "SetCaptainMessage", "是否确认将队长转让给{0}"), FText::FromString(Context.TargetPlayerModel.Get().GetNickName()));
         FDialogDynamicCallback local_26;
         local_26.BindUFunction(this, n"OnConfirmGiveLeader");
         FText local_14 = NSLOCTEXT("Team", "GiveTeamLeaderCancel", "否");

@@ -226,7 +226,6 @@ void BossBattleForAreaStartInBattle(const FECSEntity &inout AttackerFlock, const
 void BossBattleForAreaWinnerCheck(const FECSEntity &inout AttackerFlock, const FECSEntity &inout DefenderFlock, const FEcologyBossBattleInstanceContext &inout Context)
 {
     FC_EcologyFlockBossBattleForAreaComponent local_32;
-    UResourceRequestFilterConfigAsset local_112;
     int local_142 = 0;
     int local_2 = FEcologyBattleForAreaUtils::BossBattleForAreaCheckWinnerCondition(Context);
     if (local_2 == 0)
@@ -274,7 +273,7 @@ void BossBattleForAreaWinnerCheck(const FECSEntity &inout AttackerFlock, const F
         return;
     }
     FResourceRequestFilterConfig local_108;
-    if (local_112 != nullptr)
+    if (local_32.BossBattleForAreaInfo.ChangeAreaRequestFilter.Get() != nullptr)
     {
     }
     FGameplayTag local_116 = FGameplayTag(FEcologyGameplayTagDefine::Ecology_ChangeAreaReasonBattleForAreaReasonTag);

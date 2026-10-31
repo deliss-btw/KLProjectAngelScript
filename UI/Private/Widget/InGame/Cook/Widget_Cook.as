@@ -49,7 +49,7 @@ class UWidget_Cook : UEUIActivatableWidget
     UFUNCTION()
     TArray<FEUIModelWeakRef> Cook_CurrentDisplayItems() const
     {
-        FVM_Cook& local_2;
+        FVM_Cook& local_2 = this.Cook.Get();
         TArray<FEUIModelWeakRef> local_16;
         if (local_2)
         {
@@ -110,8 +110,8 @@ class UWidget_Cook : UEUIActivatableWidget
     }
     void HandleObservedModelChanges(FEUIReactiveSubscriberIterator &inout It)
     {
-        FVM_Cook& local_6;
         TEUIModelRef<FVM_Cook> local_2 = this.Cook.AsRef();
+        FVM_Cook& local_6 = local_2.Get();
         for (; It; )
         {
             FEUIReactiveSubscriberTrackScope local_56 = FEUIReactiveSubscriberTrackScope(It);

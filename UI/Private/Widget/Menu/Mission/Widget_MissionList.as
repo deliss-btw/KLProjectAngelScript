@@ -43,7 +43,7 @@ class UWidget_MissionList : UEUIUserWidget
         {
             return;
         }
-        Index.OnMissionEntryIndexSelectionChanged();
+        this.MissionList.Get().OnMissionEntryIndexSelectionChanged(Index);
         this.RefreshMissionButtons();
         return;
     }
@@ -74,39 +74,26 @@ class UWidget_MissionList : UEUIUserWidget
     {
         if ((int(this.GetCurrentInputType())) == 1)
         {
-            bool local_4 = IsChapterEntryHighlighted() || !(this.IsPartOfFocusPath(this));
+            bool local_4 = this.MissionList.Get().IsChapterEntryHighlighted() || !(this.IsPartOfFocusPath(this));
             this.ViewLocation.SetCollapsed(local_4);
-            bool local_6 = !(local_4);
-            local_6.SetbShowTrackingButton();
+            this.MissionList.Get().SetbShowTrackingButton(!(local_4));
             return;
         }
-        TEUIModelRef<FVM_MissionListEntry> local_8;
-        local_8.GetSelectedMissionEntry();
-        bool local_5 = !(local_8.IsValid());
-        if (local_5)
-        {
-            local_5 = true;
-        }
-        else
-        {
-            local_8.GetSelectedMissionEntry();
-            local_5 = !(IsMissionEntry());
-        }
+        bool local_5 = !(this.MissionList.Get().GetSelectedMissionEntry().IsValid()) || !(this.MissionList.Get().GetSelectedMissionEntry().Get().IsMissionEntry());
         this.ViewLocation.SetCollapsed(local_5);
-        bool local_6_2 = !(local_5);
-        local_6_2.SetbShowTrackingButton();
+        this.MissionList.Get().SetbShowTrackingButton(!(local_5));
         return;
     }
     void RefreshChapterButtons()
     {
-        if (!(this.MissionList.IsValid()) || !(IsChapterEntryHighlighted()) || (int(this.GetCurrentInputType()) != 1))
+        if (!(this.MissionList.IsValid()) || !(this.MissionList.Get().IsChapterEntryHighlighted()) || (int(this.GetCurrentInputType()) != 1))
         {
             this.ExpandChapter.SetCollapsed(true);
             this.CollapseChapter.SetCollapsed(true);
             return;
         }
-        this.ExpandChapter.SetCollapsed(GetbIsHighlightedChapterExpanded());
-        this.CollapseChapter.SetCollapsed(!(GetbIsHighlightedChapterExpanded()));
+        this.ExpandChapter.SetCollapsed(this.MissionList.Get().GetbIsHighlightedChapterExpanded());
+        this.CollapseChapter.SetCollapsed(!(this.MissionList.Get().GetbIsHighlightedChapterExpanded()));
         return;
     }
     UFUNCTION()
@@ -151,8 +138,8 @@ class UWidget_MissionList : UEUIUserWidget
     }
     void HandleObservedModelChanges(FEUIReactiveSubscriberIterator &inout It)
     {
-        FVM_MissionList& local_6;
         TEUIModelRef<FVM_MissionList> local_2 = this.MissionList.AsRef();
+        FVM_MissionList& local_6 = local_2.Get();
         for (; It; )
         {
             FEUIReactiveSubscriberTrackScope local_56 = FEUIReactiveSubscriberTrackScope(It);

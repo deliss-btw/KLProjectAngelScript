@@ -342,11 +342,9 @@ FVM_SkillInfoItem_Monster_Test& Create(const UObject ContextObject, const USkill
 {
     return FVM_SkillInfoItem_Monster_Test::CreateByManager(EUIInternal::GetContextManager(ContextObject), SkillConfig, SkillIndex);
 }
-FVM_SkillInfoItem_Monster_Test CreateByManager(const UEUIManagerSubsystem Manager, const USkillConfig SkillConfig, const int SkillIndex)
+FVM_SkillInfoItem_Monster_Test& CreateByManager(const UEUIManagerSubsystem Manager, const USkillConfig SkillConfig, const int SkillIndex)
 {
-    FVM_SkillInfoItem_Monster_Test __r;
-    TEUIModelRef<FVM_SkillInfoItem_Monster_Test> local_6 = TEUIModelRef<FVM_SkillInfoItem_Monster_Test>(EUIInternal::MakeModelWithManager_Generic(Manager, FVM_SkillInfoItem_Monster_Test::ModelId, 0, SkillConfig, SkillIndex));
-    return __r;
+    return TEUIModelRef<FVM_SkillInfoItem_Monster_Test>(EUIInternal::MakeModelWithManager_Generic(Manager, FVM_SkillInfoItem_Monster_Test::ModelId, 0, SkillConfig, SkillIndex)).Get();
 }
 void GetModelInfo(FEUIViewModelMetaInfo &inout Result)
 {
@@ -497,7 +495,6 @@ namespace __GeneratedProperties_FVM_SkillInfoItem_Monster_Test
 {
 UScriptStruct StaticStruct()
 {
-    UScriptStruct local_2;
-    return local_2;
+    return __GeneratedProperties_FVM_SkillInfoItem_Monster_Test.Get();
 }
 }

@@ -20,6 +20,8 @@ class US_GameModeUniversalSystem : US_ECSScriptGameModeSystemBase
             return;
         }
         FECSWorldPtr local_14 = this.GetECSWorld();
+        local_20.GameModeFlowSettings = local_8.GameModeProfile.Get().GameModeFlowSettings;
+        local_20.GameModeBehaviorSettings = local_8.GameModeProfile.Get().GameModeBehaviorSettings;
         UGameModeFlow local_24 = local_20.GetGameModeFlow();
         if (local_24 == nullptr)
         {
@@ -41,6 +43,7 @@ class US_GameModeUniversalSystem : US_ECSScriptGameModeSystemBase
     UFUNCTION()
     void ClientJob_Init() const
     {
+        int local_20 = 0;
         UAS_GameModeSettings local_8 = (Cast<UAS_GameModeSettings>(UECSGameModeSettingsBase::Get(ECS::GetUEWorld())));
         if (local_8 == nullptr || !(local_8.GameModeProfile.IsSet()))
         {
@@ -48,6 +51,8 @@ class US_GameModeUniversalSystem : US_ECSScriptGameModeSystemBase
             return;
         }
         FECSWorldPtr local_14 = this.GetECSWorld();
+        local_20.GameModeFlowSettings = local_8.GameModeProfile.Get().GameModeFlowSettings;
+        local_20.GameModeBehaviorSettings = local_8.GameModeProfile.Get().GameModeBehaviorSettings;
         return;
     }
     UFUNCTION()
@@ -288,9 +293,7 @@ class US_GameModeUniversalSystem : US_ECSScriptGameModeSystemBase
             FECSWorldPtr local_2_5 = this.GetECSWorld();
             for (auto& local_70 : local_52.TimerEntries)
             {
-                local_70;
-                FFPTime local_42;
-                FFPTime local_38 = (local_42 - local_46);
+                local_70.GetValue().TriggerTime = (FFPTime(local_70.GetValue().TriggerTime) - local_46);
             }
             local_52.RefreshNextTriggerTime();
             local_52.LastCheckedMatchStartTime = local_28;
@@ -325,10 +328,11 @@ class US_GameModeUniversalSystem : US_ECSScriptGameModeSystemBase
             {
                 continue;
             }
-            if ((!((FInstancedStruct::GetPtr(Timer.TimerEntries[local_22].Action).opCall() == nullptr))))
+            TConstRawPtr<FGameModeTimerActionBase> local_32 = FInstancedStruct::GetPtr(Timer.TimerEntries[local_22].Action).opCall();
+            if ((!((local_32 == nullptr))))
             {
-                Execute();
-                XLog(ELog(33), FString().Append(" >>> ServerJob_HandleGameModeTimer ").Append(GetScriptOverrideMeta().StructType.GetName()).Append(" ").Append(FString::ApplyFormat(local_26.ToSeconds(), ".1f")).Append("s"));
+                local_32.Get().Execute();
+                XLog(ELog(33), FString().Append(" >>> ServerJob_HandleGameModeTimer ").Append(local_32.Get().GetScriptOverrideMeta().StructType.GetName()).Append(" ").Append(FString::ApplyFormat(local_26.ToSeconds(), ".1f")).Append("s"));
             }
             if (!(Timer.TimerEntries.Contains(local_22)))
             {
@@ -351,6 +355,7 @@ class US_GameModeUniversalSystem : US_ECSScriptGameModeSystemBase
         }
         for (auto local_22 : local_8)
         {
+            Timer.TimerEntries.Remove(local_22);
         }
         Timer.RefreshNextTriggerTime();
         return;
@@ -506,7 +511,6 @@ class US_GameModeUniversalSystem : US_ECSScriptGameModeSystemBase
     UFUNCTION()
     void Monitor_PVXEntryUIByStage(const FCS_GameStates &inout GameStates) const
     {
-        UClass local_28;
         UAS_GameModeSettingsPVX local_8 = (Cast<UAS_GameModeSettingsPVX>(::GameModeSettings::GetGameModeSettings(ECS::GetUEWorld())));
         if (local_8 == nullptr)
         {
@@ -528,7 +532,7 @@ class US_GameModeUniversalSystem : US_ECSScriptGameModeSystemBase
             return;
         }
         TSubclassOf<UUserWidget> local_26 = TSubclassOf<UUserWidget>(::GameModeSettings::GetGameModeSettings(ECS::GetUEWorld()).EntryUIClass);
-        if (!(local_26.IsValid()) || !(local_28.IsChildOf(UEUIUserWidget)))
+        if (!(local_26.IsValid()) || !(local_26.Get().IsChildOf(UEUIUserWidget)))
         {
             return;
         }

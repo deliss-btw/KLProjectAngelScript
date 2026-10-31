@@ -98,9 +98,8 @@ struct FVM_Item : FEUIViewModel
     }
     void PostConstruct()
     {
-        FM_ItemData& local_6;
         this.SetNum(0);
-        TEUIModelRef<FM_ItemData> local_4 = this.GetItemDataModel();
+        FM_ItemData& local_6 = this.GetItemDataModel().Get();
         if (local_6)
         {
             this.SetItemConfig(local_6.GetConfig());
@@ -109,7 +108,7 @@ struct FVM_Item : FEUIViewModel
             if (::FMS_ItemDataCache::Get(this.GetContext().Manager).TryGetItemUid(this.GetItemDataModel(), local_10) && (local_10 > 0))
             {
                 TEUIModelRef<FM_Equipment> local_20 = ::FMS_EquipmentDataCache::Get(this.GetContext().Manager).GetEquipment(local_10);
-                if (local_20.IsValid() && GetEquipmentConfig().IsSet())
+                if (local_20.IsValid() && local_20.Get().GetEquipmentConfig().IsSet())
                 {
                     this.SetCurEquipItemInfoDetail(TEUIModelRef<FVM_AvatarEquipmentItemInfoDetail>(::FVM_AvatarEquipmentItemInfoDetail::Create(this.GetContext().Manager, (TEUIModelRef<FVM_EquipmentInfo>(::FVM_EquipmentInfo::Create(this.GetContext().Manager, local_20))))));
                 }
@@ -123,7 +122,7 @@ struct FVM_Item : FEUIViewModel
         if (::FMS_ItemDataCache::Get(this.GetContext().Manager).TryGetItemUid(this.GetItemDataModel(), local_2) && (local_2 > 0))
         {
             TEUIModelRef<FM_Equipment> local_12 = ::FMS_EquipmentDataCache::Get(this.GetContext().Manager).GetEquipment(local_2);
-            if (local_12.IsValid() && GetEquipmentConfig().IsSet())
+            if (local_12.IsValid() && local_12.Get().GetEquipmentConfig().IsSet())
             {
                 return local_12;
             }
@@ -133,25 +132,27 @@ struct FVM_Item : FEUIViewModel
     bool GetIsEquiped() const
     {
         TEUIModelRef<FM_Equipment> local_2 = this.GetValidEquipmentModel();
-        return local_2.IsValid() && GetEquiptingAvatar().IsSet();
+        return local_2.IsValid() && local_2.Get().GetEquiptingAvatar().IsSet();
     }
     FText GetEquiptingAvatarText() const
     {
+        TEUIModelRef<FM_Equipment> local_2 = this.GetValidEquipmentModel();
         FText local_10;
-        if (this.GetValidEquipmentModel().IsValid() && GetEquiptingAvatar().IsSet())
+        if (local_2.IsValid() && local_2.Get().GetEquiptingAvatar().IsSet())
         {
             local_10 = NSLOCTEXT("EquiptingAvatarText", "{0} <Beige20F>装备中</>");
-            return FText();
+            return FText::Format(local_10, local_2.Get().GetEquiptingAvatar().Get().DisplayName);
         }
         return local_10;
     }
     FText GetEquiptingAvatarTextWithoutColor() const
     {
+        TEUIModelRef<FM_Equipment> local_2 = this.GetValidEquipmentModel();
         FText local_10;
-        if (this.GetValidEquipmentModel().IsValid() && GetEquiptingAvatar().IsSet())
+        if (local_2.IsValid() && local_2.Get().GetEquiptingAvatar().IsSet())
         {
             local_10 = NSLOCTEXT("EquiptingAvatarEquippingText", "{0}装备中");
-            return FText();
+            return FText::Format(local_10, local_2.Get().GetEquiptingAvatar().Get().DisplayName);
         }
         return local_10;
     }
@@ -161,19 +162,19 @@ struct FVM_Item : FEUIViewModel
     }
     FText GetEquipmentLevelText() const
     {
-        int local_2 = 0;
         int local_1 = 0;
         CastTo local_30;
-        if (local_30.opCall())
+        TDataObjectPtr<FEquipmentConfig> local_54 = local_30.opCall();
+        if (local_54)
         {
-            local_1 = local_2;
+            local_1 = local_54.Get().Level;
         }
         else
         {
             TEUIModelRef<FM_Equipment> local_58 = this.GetValidEquipmentModel();
             if (local_58.IsValid())
             {
-                local_1 = local_2;
+                local_1 = local_58.Get().GetEquipmentConfig().Get().Level;
             }
         }
         FText local_72;
@@ -203,8 +204,7 @@ struct FVM_Item : FEUIViewModel
         int local_5;
         if (this.GetItemDataModel())
         {
-            TEUIModelRef<FM_ItemData> local_2 = this.GetItemDataModel();
-            local_5 = GetNum();
+            local_5 = this.GetItemDataModel().Get().GetNum();
         }
         else
         {
@@ -555,26 +555,22 @@ struct FVM_ItemIconAdapter : FEUIViewModel
     }
     void SetupFromItem(const TEUIModelRef<FVM_Item> &inout InItem)
     {
-        int local_75 = 0;
         int local_195;
-        if (!(InItem.IsValid()) || !(GetItemConfig().IsSet()))
+        if (!(InItem.IsValid()) || !(InItem.Get().GetItemConfig().IsSet()))
         {
+            this.Clear();
             return;
         }
-        FSlateBrush local_48;
-        local_48.GetItemIcon();
-        this.SetIcon(local_48);
-        FSlateBrush local_188 = ::UGlobalItemSettings::Get().GetRarityConfig(EItemRarity(local_75)).IsSet() ? local_48 : FSlateBrush();
+        this.SetIcon(InItem.Get().GetItemIcon());
+        TDataObjectPtr<FItemRarityConfig> local_100 = ::UGlobalItemSettings::Get().GetRarityConfig(EItemRarity(InItem.Get().GetItemConfig().Get().Rarity));
+        FSlateBrush local_188 = local_100.IsSet() ? local_100.Get().RarityImage.LoadBrush() : FSlateBrush();
         this.SetGrade(local_188);
-        FText local_192;
-        local_192.GetItemNumTimesText();
-        this.SetNumText(local_192);
-        local_192.GetItemNumRichText();
-        this.SetRichNumText(local_192);
+        this.SetNumText(InItem.Get().GetItemNumTimesText());
+        this.SetRichNumText(InItem.Get().GetItemNumRichText());
         this.SetIconSwitcherIndex(1);
-        int local_193 = HasAtLeastOne() ? 1 : 0;
+        int local_193 = InItem.Get().HasAtLeastOne() ? 1 : 0;
         this.SetNumSwitcherIndex(local_193);
-        if (GetShouldShowNum())
+        if (InItem.Get().GetShouldShowNum())
         {
             int local_196;
             local_196 = 4;
@@ -591,21 +587,29 @@ struct FVM_ItemIconAdapter : FEUIViewModel
     }
     void SetupFromCommonItem(const TEUIModelRef<FVM_CommonItem> &inout InCommonItem)
     {
-        // body not fully recovered — stub [argmismatch:argtype]
+        if (!(InCommonItem.IsValid()))
+        {
+            this.Clear();
+            return;
+        }
+        this.ApplyCommonItemProjection(InCommonItem.Get(), InCommonItem.Get().GetItemImageBG());
+        return;
     }
     void SetupFromDisplayItem(const TEUIModelRef<FVM_DisplayItem> &inout InDisplayItem)
     {
         if (!(InDisplayItem.IsValid()))
         {
+            this.Clear();
             return;
         }
-        TEUIModelRef<FVM_CommonItem> local_6;
-        local_6.GetCommonItemVM();
+        TEUIModelRef<FVM_CommonItem> local_6 = InDisplayItem.Get().GetCommonItemVM();
         TEUIModelRef<FVM_CommonItem> local_4;
         if (!(local_4.IsValid()))
         {
+            this.Clear();
             return;
         }
+        this.ApplyCommonItemProjection(local_4.Get(), InDisplayItem.Get().GetItemImageBG());
         return;
     }
     void ApplyCommonItemProjection(const FVM_CommonItem &inout InCommonItem, const FSoftBrush &inout InGradeBrush)
@@ -866,11 +870,9 @@ FVM_Item& Create(const UObject ContextObject, const TEUIModelRef<FM_ItemData> &i
 {
     return FVM_Item::CreateByManager(EUIInternal::GetContextManager(ContextObject), ItemDataModel);
 }
-FVM_Item CreateByManager(const UEUIManagerSubsystem Manager, const TEUIModelRef<FM_ItemData> &inout ItemDataModel)
+FVM_Item& CreateByManager(const UEUIManagerSubsystem Manager, const TEUIModelRef<FM_ItemData> &inout ItemDataModel)
 {
-    FVM_Item __r;
-    TEUIModelRef<FVM_Item> local_6 = TEUIModelRef<FVM_Item>(EUIInternal::MakeModelWithManager_Generic(Manager, FVM_Item::ModelId, 0, ItemDataModel));
-    return __r;
+    return TEUIModelRef<FVM_Item>(EUIInternal::MakeModelWithManager_Generic(Manager, FVM_Item::ModelId, 0, ItemDataModel)).Get();
 }
 void GetModelInfo(FEUIViewModelMetaInfo &inout Result)
 {
@@ -1226,8 +1228,7 @@ namespace __GeneratedProperties_FVM_Item
 {
 UScriptStruct StaticStruct()
 {
-    UScriptStruct local_2;
-    return local_2;
+    return __GeneratedProperties_FVM_Item.Get();
 }
 }
 namespace FVM_ItemIconAdapter
@@ -1236,11 +1237,9 @@ FVM_ItemIconAdapter& Create(const UObject ContextObject)
 {
     return FVM_ItemIconAdapter::CreateByManager(EUIInternal::GetContextManager(ContextObject));
 }
-FVM_ItemIconAdapter CreateByManager(const UEUIManagerSubsystem Manager)
+FVM_ItemIconAdapter& CreateByManager(const UEUIManagerSubsystem Manager)
 {
-    FVM_ItemIconAdapter __r;
-    TEUIModelRef<FVM_ItemIconAdapter> local_6 = TEUIModelRef<FVM_ItemIconAdapter>(EUIInternal::MakeModelWithManager(Manager, FVM_ItemIconAdapter::ModelId));
-    return __r;
+    return TEUIModelRef<FVM_ItemIconAdapter>(EUIInternal::MakeModelWithManager(Manager, FVM_ItemIconAdapter::ModelId)).Get();
 }
 void GetModelInfo(FEUIViewModelMetaInfo &inout Result)
 {
@@ -1360,7 +1359,6 @@ namespace __GeneratedProperties_FVM_ItemIconAdapter
 {
 UScriptStruct StaticStruct()
 {
-    UScriptStruct local_2;
-    return local_2;
+    return __GeneratedProperties_FVM_ItemIconAdapter.Get();
 }
 }

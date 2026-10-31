@@ -20,13 +20,12 @@ class UESMAction_AirMovementFloating : UESMBPBaseSpanTickAction
     void Enter_Implementation(const FESMContext &inout Context, const FESMActionTime &inout Time) const
     {
         int local_8 = 0;
-        float32 local_10 = 0.0f;
-        float32 local_11 = 0.0f;
-        float32 local_14 = 0.0f;
         const FECSEntity& local_2 = Context.GetEntity();
         if (local_8)
         {
             local_8.SetbFlyFloating(true);
+            float32 local_11 = this.FloatingHeight.GetValue(Context.GetEntityBB());
+            float32 local_10 = this.FloatingHeightMin.GetValue(Context.GetEntityBB());
             float32 local_12 = FMath::Min(local_10, local_11);
             float32 local_13 = FMath::Max(local_10, local_11);
             if (local_12 < 0.0f)
@@ -37,7 +36,7 @@ class UESMAction_AirMovementFloating : UESMBPBaseSpanTickAction
             }
             local_8.SetFloatingHeight(local_13);
             local_8.SetFloatingHeightMin(local_12);
-            local_8.SetFloatingAdjustSpeed(local_14);
+            local_8.SetFloatingAdjustSpeed(this.FloatingAdjustSpeed.GetValue(Context.GetEntityBB()));
         }
         return;
     }

@@ -172,8 +172,8 @@ class UHTNTask_RequestResourceWithContext : UHTNTask_ECSScriptBase
             {
                 continue;
             }
-            AActor local_22;
-            local_16 = Cast<AECSRegionVolume>(local_22);
+            GetDefaulted local_20;
+            local_16 = Cast<AECSRegionVolume>(local_20.opCall().RegionVolume.Get());
             if ((!((local_16 != nullptr)) || !(local_16.bAffectCombat)))
             {
                 continue;
@@ -445,10 +445,10 @@ class UHTNTask_SearchResourceInCurrentCombatRegion : UHTNTask_ECSScriptBase
         if (local_44.IsValid())
         {
             Get local_80;
-            if (local_80.opCall())
+            const FC_RegionVolume& local_82 = local_80.opCall();
+            if (local_82)
             {
-                AActor local_84;
-                local_76 = (Cast<AECSRegionVolume>(local_84));
+                local_76 = (Cast<AECSRegionVolume>(local_82.RegionVolume.Get()));
             }
         }
         if (local_76 == nullptr)

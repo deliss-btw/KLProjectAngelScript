@@ -3,7 +3,6 @@ namespace FSkillPresentationOverrideUtils
 void ApplyOverride(const FECSEntity &inout Entity, const TDataObjectPtr<FSkillPresentationOverrideConfig> &inout Config, const bool bEnable)
 {
     FC_SkillPresentationOverride local_12;
-    int local_18 = 0;
     if (!(ECS::GetRuntimeInfo().IsServer) || !(Config) || !(Entity.IsValid()))
     {
         return;
@@ -13,6 +12,7 @@ void ApplyOverride(const FECSEntity &inout Entity, const TDataObjectPtr<FSkillPr
     {
         return;
     }
+    int local_18 = Config.Get().DataId;
     int local_17 = local_18;
     if (bEnable)
     {
@@ -26,7 +26,7 @@ void ApplyOverride(const FECSEntity &inout Entity, const TDataObjectPtr<FSkillPr
         int local_71 = 0;
         for (; local_71 < local_12.ActiveEntries.Num(); ++local_71)
         {
-            if (local_12.ActiveEntries[local_71].Config && (local_18 == local_17))
+            if (local_12.ActiveEntries[local_71].Config && ((local_12.ActiveEntries[local_71].Config.Get().DataId == local_17)))
             {
                 local_12.ActiveEntries.RemoveAt(local_71);
                 break;
@@ -43,13 +43,10 @@ void ApplyOverride(const FECSEntity &inout Entity, const TDataObjectPtr<FSkillPr
 }
 void Reconcile(const FECSEntity &inout PC, const FECSEntity &inout Owner, FC_SkillPresentationOverride &inout Comp)
 {
-    int local_4 = 0;
-    int local_6 = 0;
     bool local_7;
     bool local_8;
-    int local_11 = 0;
-    USkillConfig local_46;
-    const FSkillPresentationOverrideConfig& local_56;
+    int local_10;
+    const USkillConfig local_46;
     int local_58 = 0;
     USkillConfig local_78;
     int local_1 = -1;
@@ -60,12 +57,19 @@ void Reconcile(const FECSEntity &inout PC, const FECSEntity &inout Owner, FC_Ski
         {
             continue;
         }
-        if (local_1 < 0 || (local_4 > local_6) || (local_4 == local_6 && (Comp.ActiveEntries[local_3].Serial < Comp.ActiveEntries[local_1].Serial)))
+        if (local_1 < 0 || (Comp.ActiveEntries[local_3].Config.Get().Priority > Comp.ActiveEntries[local_1].Config.Get().Priority) || (Comp.ActiveEntries[local_3].Config.Get().Priority == Comp.ActiveEntries[local_1].Config.Get().Priority && (Comp.ActiveEntries[local_3].Serial < Comp.ActiveEntries[local_1].Serial)))
         {
             local_1 = local_3;
         }
     }
-    int local_10 = local_1 >= 0 ? local_11 : 0;
+    if (local_1 >= 0)
+    {
+        local_10 = Comp.ActiveEntries[local_1].Config.Get().DataId;
+    }
+    else
+    {
+        local_10 = 0;
+    }
     if (local_10 == int(Comp.AppliedDataId))
     {
         return;
@@ -114,6 +118,7 @@ void Reconcile(const FECSEntity &inout PC, const FECSEntity &inout Owner, FC_Ski
     {
         return;
     }
+    const FSkillPresentationOverrideConfig& local_56 = Comp.ActiveEntries[local_1].Config.Get();
     if (!(local_56.bEnableChangeSkillPanel))
     {
         local_8 = false;
@@ -156,8 +161,7 @@ void Reconcile(const FECSEntity &inout PC, const FECSEntity &inout Owner, FC_Ski
                 int local_2 = FSkillUtils::GetSkillIndex(Owner, ESkillSlot(local_76.Slot));
                 if (local_2 >= 0)
                 {
-                    TSoftObjectPtr<USkillConfig> local_94 = FSkillUtils::GetSkillInstance(Owner, local_2).GetSkillConfig();
-                    local_84.OriginalSkillConfig = local_46;
+                    local_46 = FSkillUtils::GetSkillInstance(Owner, local_2).GetSkillConfig().Get();
                 }
             }
             FSkillUtils::CreateSkillEntityAndAddSkill(local_14, Owner, local_76.SkillConfig, ESkillSlot(local_76.Slot), local_76.bReplaceInSameSlot, false, 1);

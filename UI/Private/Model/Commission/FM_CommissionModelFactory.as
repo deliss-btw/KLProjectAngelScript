@@ -67,11 +67,9 @@ FMS_CommissionModelFactory& Get(const UObject ContextObject)
 {
     return FMS_CommissionModelFactory::GetByManager(EUIInternal::GetContextManager(ContextObject));
 }
-FMS_CommissionModelFactory GetByManager(const UEUIManagerSubsystem Manager)
+FMS_CommissionModelFactory& GetByManager(const UEUIManagerSubsystem Manager)
 {
-    FMS_CommissionModelFactory __r;
-    TEUIModelRef<FMS_CommissionModelFactory> local_6 = TEUIModelRef<FMS_CommissionModelFactory>(EUIInternal::MakeModelWithManager(Manager, FMS_CommissionModelFactory::ModelId));
-    return __r;
+    return TEUIModelRef<FMS_CommissionModelFactory>(EUIInternal::MakeModelWithManager(Manager, FMS_CommissionModelFactory::ModelId)).Get();
 }
 void GetModelInfo(FEUIModelOnlyMetaInfo &inout Result)
 {

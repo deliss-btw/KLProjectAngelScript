@@ -2,11 +2,12 @@ namespace FEcologyConditionUtils
 {
 bool CheckDOTCondition(const FEcologyDOTCondition &inout Condition, const FName &inout Weather, const int DaySegment, FCS_EcologyDataCacheContext &inout CacheContext = FEcologyUtils::ModifyDataCacheContext())
 {
-    if (!(FEcologySceneInfoUtils::FindDOTTagBitContainer(CacheContext, Weather, DaySegment)))
+    TRawPtr<FGameplayTagBitContainer> local_2 = FEcologySceneInfoUtils::FindDOTTagBitContainer(CacheContext, Weather, DaySegment);
+    if (!(local_2))
     {
         return false;
     }
-    return Condition.DOTConditionQuery.MatchesQuery();
+    return local_2.Get().MatchesQuery(Condition.DOTConditionQuery);
 }
 bool SetupConditionComponent(const FECSEntity &inout Entity, const FEcologyDOTCondition &inout DOTCondition)
 {

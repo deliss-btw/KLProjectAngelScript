@@ -46,7 +46,7 @@ class UWidget_PVX_MainAvatar : UEUIActivatableWidget
     UFUNCTION()
     void OnViewBind_Implementation()
     {
-        if (this.PVX_MainAvatar.IsValid() && IsPVPMode())
+        if (this.PVX_MainAvatar.IsValid() && this.PVX_MainAvatar.Get().IsPVPMode())
         {
             this.ClosePanelActionBinding.Register(this, n"OnClosePanelPressed");
             this.ClosePanelActionBinding2.Register(this, n"OnClosePanelPressed");
@@ -57,7 +57,7 @@ class UWidget_PVX_MainAvatar : UEUIActivatableWidget
         }
         TEUIModelRef<FVM_AvatarShowcase> local_8;
         local_8;
-        local_8.SetCurrentShowcase();
+        this.PVX_MainAvatar.Get().SetCurrentShowcase(local_8);
         return;
     }
     UFUNCTION()
@@ -69,7 +69,7 @@ class UWidget_PVX_MainAvatar : UEUIActivatableWidget
     UFUNCTION()
     void HandleConfirmButtonEnabledChange(const bool bEnabled)
     {
-        if (this.PVX_MainAvatar.IsValid() && IsPVPMode())
+        if (this.PVX_MainAvatar.IsValid() && this.PVX_MainAvatar.Get().IsPVPMode())
         {
             return;
         }
@@ -80,7 +80,7 @@ class UWidget_PVX_MainAvatar : UEUIActivatableWidget
     UFUNCTION()
     void HandleAvatarReadyChage(const bool bReady)
     {
-        if (this.PVX_MainAvatar.IsValid() && IsPVPMode())
+        if (this.PVX_MainAvatar.IsValid() && this.PVX_MainAvatar.Get().IsPVPMode())
         {
             return;
         }
@@ -114,7 +114,7 @@ class UWidget_PVX_MainAvatar : UEUIActivatableWidget
     UFUNCTION()
     void HandleCampusChange(const bool bMonsterCampus)
     {
-        if (!(this.PVX_MainAvatar.IsValid()) || !(IsPVXMode()))
+        if (!(this.PVX_MainAvatar.IsValid()) || !(this.PVX_MainAvatar.Get().IsPVXMode()))
         {
             return;
         }
@@ -128,7 +128,7 @@ class UWidget_PVX_MainAvatar : UEUIActivatableWidget
     UFUNCTION()
     void HandleFinishPrepareGameChange(const bool bPrepareFinish)
     {
-        if (!(this.PVX_MainAvatar.IsValid()) || !(IsPVXMode()))
+        if (!(this.PVX_MainAvatar.IsValid()) || !(this.PVX_MainAvatar.Get().IsPVXMode()))
         {
             return;
         }
@@ -216,8 +216,8 @@ class UWidget_PVX_MainAvatar : UEUIActivatableWidget
     }
     void HandleObservedModelChanges(FEUIReactiveSubscriberIterator &inout It)
     {
-        FVM_PVX_MainAvatar& local_6;
         TEUIModelRef<FVM_PVX_MainAvatar> local_2 = this.PVX_MainAvatar.AsRef();
+        FVM_PVX_MainAvatar& local_6 = local_2.Get();
         for (; It; )
         {
             FEUIReactiveSubscriberTrackScope local_56 = FEUIReactiveSubscriberTrackScope(It);

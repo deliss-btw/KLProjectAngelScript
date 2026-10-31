@@ -96,11 +96,9 @@ FVM_PlayerAvatar& Create(const UObject ContextObject, const TDataObjectPtr<FAvat
 {
     return FVM_PlayerAvatar::CreateByManager(EUIInternal::GetContextManager(ContextObject), AvatarConfig);
 }
-FVM_PlayerAvatar CreateByManager(const UEUIManagerSubsystem Manager, const TDataObjectPtr<FAvatarPrefabConfig> &inout AvatarConfig)
+FVM_PlayerAvatar& CreateByManager(const UEUIManagerSubsystem Manager, const TDataObjectPtr<FAvatarPrefabConfig> &inout AvatarConfig)
 {
-    FVM_PlayerAvatar __r;
-    TEUIModelRef<FVM_PlayerAvatar> local_6 = TEUIModelRef<FVM_PlayerAvatar>(EUIInternal::MakeModelWithManager_Generic(Manager, FVM_PlayerAvatar::ModelId, 0, AvatarConfig));
-    return __r;
+    return TEUIModelRef<FVM_PlayerAvatar>(EUIInternal::MakeModelWithManager_Generic(Manager, FVM_PlayerAvatar::ModelId, 0, AvatarConfig)).Get();
 }
 void GetModelInfo(FEUIViewModelMetaInfo &inout Result)
 {
@@ -169,7 +167,6 @@ namespace __GeneratedProperties_FVM_PlayerAvatar
 {
 UScriptStruct StaticStruct()
 {
-    UScriptStruct local_2;
-    return local_2;
+    return __GeneratedProperties_FVM_PlayerAvatar.Get();
 }
 }

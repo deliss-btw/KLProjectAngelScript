@@ -33,6 +33,7 @@ struct FC_TuneESMBBFloatValueHistory : FECSComponent
     }
     void Clear()
     {
+        this.History.Clear();
         return;
     }
     bool GetInterpoValue(const FFPTime &inout WorldTime, FC_TuneESMBBFloatValue &inout OutValue) const

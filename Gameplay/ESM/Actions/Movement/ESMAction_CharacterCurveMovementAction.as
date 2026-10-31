@@ -77,10 +77,7 @@ class UESMAction_CharacterCurveMovementAction : UESMBPBaseSpanTickAction
     void Tick_Implementation(const FESMContext &inout Context, const FESMActionTime &inout Time) const
     {
         int local_14 = 0;
-        float32 local_35 = 0.0f;
-        float32 local_36 = 0.0f;
         int local_58 = 0;
-        float32 local_89 = 0.0f;
         float32 local_90;
         float32 local_109;
         float32 local_110;
@@ -95,6 +92,7 @@ class UESMAction_CharacterCurveMovementAction : UESMBPBaseSpanTickAction
         FVector local_32(FVector::ZeroVector);
         if (int(this.DirectionType) != 4)
         {
+            float32 local_36 = this.ForwardDistScale.GetValue(Context.GetEntityBB());
             FQuat local_44;
             if (int(this.DirectionType) == 8)
             {
@@ -110,7 +108,14 @@ class UESMAction_CharacterCurveMovementAction : UESMBPBaseSpanTickAction
             local_26 = (local_44.GetForwardVector() * local_36);
             if (this.bApplyRightOffset)
             {
-                local_90 = this.bCopyForwardDistToRightOffsetDist ? local_36 : local_35;
+                if (this.bCopyForwardDistToRightOffsetDist)
+                {
+                    local_90 = local_36;
+                }
+                else
+                {
+                    local_90 = this.RightOffsetDistScale.GetValue(Context.GetEntityBB());
+                }
                 local_32 = (local_44.GetRightVector() * local_90);
             }
         }
@@ -123,6 +128,7 @@ class UESMAction_CharacterCurveMovementAction : UESMBPBaseSpanTickAction
                 {
                     return;
                 }
+                local_26 = this.GetInstanceData(Context).DeltaMovement;
                 if (this.bApplyRightOffset)
                 {
                     FVector local_108 = (local_26 == FVector::ZeroVector) ? local_58.GetRotation().GetRightVector() : local_26.Rotation().Quaternion().GetRightVector();
@@ -132,16 +138,16 @@ class UESMAction_CharacterCurveMovementAction : UESMBPBaseSpanTickAction
                     }
                     else
                     {
-                        local_109 = local_89;
+                        local_109 = this.RightOffsetDistScale.GetValue(Context.GetEntityBB());
                     }
                     local_32 = (local_108 * local_109);
                 }
             }
         }
-        local_89 = float32((FFPTime(Time.ActionLastTime) / Time.ActionDuration));
-        local_36 = float32((FFPTime(Time.ActionTime) / Time.ActionDuration));
+        float32 local_89 = float32((FFPTime(Time.ActionLastTime) / Time.ActionDuration));
+        float32 local_36_2 = float32((FFPTime(Time.ActionTime) / Time.ActionDuration));
         local_109 = this.ForwardCurve.GetFloatValue(local_89, 0.0f);
-        local_35 = this.ForwardCurve.GetFloatValue(local_36, 0.0f) - local_109;
+        float32 local_35 = this.ForwardCurve.GetFloatValue(local_36_2, 0.0f) - local_109;
         float local_4_4 = local_35;
         FVector local_102 = (local_26 * local_4_4);
         local_20 += local_102;
@@ -149,7 +155,7 @@ class UESMAction_CharacterCurveMovementAction : UESMBPBaseSpanTickAction
         if (this.bApplyRightOffset)
         {
             float32 local_111 = this.ForwardCurve.GetFloatValue(local_89, 0.0f);
-            local_4_4 = (this.ForwardCurve.GetFloatValue(local_36, 0.0f) - local_111);
+            local_4_4 = (this.ForwardCurve.GetFloatValue(local_36_2, 0.0f) - local_111);
             FVector local_66 = (local_32 * local_4_4);
             local_20 += local_66;
         }
@@ -159,9 +165,9 @@ class UESMAction_CharacterCurveMovementAction : UESMBPBaseSpanTickAction
         local_109 = float32(this.ForwardBlendInOut.X);
         float32 local_111_2 = float32(this.ForwardBlendInOut.Y);
         float32 local_112 = FMathUtils::InverseLerpPreferTo(Time.ActionTime, FFPTime(0), FFPTime(local_109));
-        local_35 = FMathUtils::InverseLerpPreferTo(Time.ActionTime, Time.ActionDuration, (FFPTime(Time.ActionDuration) - FFPTime(local_111_2)));
-        local_90 = local_112 * local_35;
-        float32 local_115 = local_112 * local_35;
+        float32 local_35_2 = FMathUtils::InverseLerpPreferTo(Time.ActionTime, Time.ActionDuration, (FFPTime(Time.ActionDuration) - FFPTime(local_111_2)));
+        local_90 = local_112 * local_35_2;
+        float32 local_115 = local_112 * local_35_2;
         if (local_90 > 0.0f)
         {
             local_120 = local_109 / local_90;

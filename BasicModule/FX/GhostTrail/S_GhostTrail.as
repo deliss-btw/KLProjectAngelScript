@@ -27,25 +27,31 @@ class US_GhostTrail : UECSScriptSystem
     UFUNCTION()
     void Job_HandleSpawnGhostTrailActor(const FCE_SpawnGhostTrailActor &inout SpawnGhostTrailActor) const
     {
+        const AActor local_8;
+        USkeletalMeshComponent local_14;
         UObject local_30;
         AGhostTrailActor local_58;
         int local_64 = 0;
         FECSEntity local_4 = SpawnGhostTrailActor.Receiver;
-        if (local_4.GetActor() != nullptr)
+        local_8 = local_4.GetActor();
+        if (local_8 != nullptr)
         {
+            local_14 = Cast<USkeletalMeshComponent>(local_8.GetComponent(USkeletalMeshComponent, NAME_None));
         }
         else
         {
         }
-        USkeletalMeshComponent local_14;
         USkeletalMeshComponent local_16 = local_14;
         if (((local_4 && (local_16 != nullptr)) && !((SpawnGhostTrailActor.GhostClass == nullptr))))
         {
             local_30 = SpawnGhostTrailActor.GhostClass.ToSoftObjectPath().TryLoad();
             if (local_30 != nullptr)
             {
+                AGhostTrailActor local_66;
                 local_58 = Cast<AGhostTrailActor>(SpawnActor(SpawnGhostTrailActor.GhostClass.Get(), local_16.GetWorldLocation(), local_16.GetWorldRotation(), NAME_None, false, nullptr, nullptr));
                 local_58.WhenSpawned(local_16);
+                local_66 = nullptr;
+                local_64.Ghosts.Remove(local_66);
                 local_64.Ghosts.Add(local_58);
             }
         }

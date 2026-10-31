@@ -17,7 +17,7 @@ class UWidget_Title : UEUIUserListItemWidget
     UFUNCTION()
     FText Key_TitleText() const
     {
-        FVM_Title& local_2;
+        FVM_Title& local_2 = this.Key.Get();
         FText local_12 = local_2 ? local_2.GetTitleText() : FText();
         return local_12;
     }

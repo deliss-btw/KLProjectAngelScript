@@ -48,7 +48,7 @@ class UWidget_CommissionPanel : UEUIActivatableWidget
         }
         this.SelectedCommission.SetRef(this.CommissionPanel.opArrow().GetSelectedCommission());
         this.RecruitActionDisplayName = this.RecruitActionBinding.GetConfigDisplayName();
-        this.RefreshRecruitActionButton(GetRecruitCountdownSeconds());
+        this.RefreshRecruitActionButton(this.CommissionPanel.Get().GetRecruitCountdownSeconds());
         this.RefreshActionBindings();
         return;
     }
@@ -84,10 +84,10 @@ class UWidget_CommissionPanel : UEUIActivatableWidget
         bool local_5;
         bool local_6;
         bool local_2 = this.SelectedCommission.IsValid();
-        local_3 = GetbSelectedCommissionCanMatch();
-        local_4 = GetbRecruitSendDisabled();
-        local_5 = GetbSelectedCommissionMatching();
-        local_6 = GetbGlobalMatching();
+        local_3 = this.CommissionPanel.Get().GetbSelectedCommissionCanMatch();
+        local_4 = this.CommissionPanel.Get().GetbRecruitSendDisabled();
+        local_5 = this.CommissionPanel.Get().GetbSelectedCommissionMatching();
+        local_6 = this.CommissionPanel.Get().GetbGlobalMatching();
         this.EscapeActionBinding.SetCollapsed(false);
         if (local_3)
         {
@@ -197,14 +197,14 @@ class UWidget_CommissionPanel : UEUIActivatableWidget
     UFUNCTION()
     FEUIModelRef SelectedCommission_CommissionRewardList() const
     {
-        FVM_CommissionInfo& local_2;
+        FVM_CommissionInfo& local_2 = this.SelectedCommission.Get();
         FEUIModelRef local_8 = local_2 ? local_2.GetCommissionRewardList() : FEUIModelRef();
         return local_8;
     }
     UFUNCTION()
     FEUIModelRef SelectedCommission_CommissionFirstTimeRewardList() const
     {
-        FVM_CommissionInfo& local_2;
+        FVM_CommissionInfo& local_2 = this.SelectedCommission.Get();
         FEUIModelRef local_8 = local_2 ? local_2.GetCommissionFirstTimeRewardList() : FEUIModelRef();
         return local_8;
     }
@@ -219,8 +219,8 @@ class UWidget_CommissionPanel : UEUIActivatableWidget
     }
     void HandleObservedModelChanges(FEUIReactiveSubscriberIterator &inout It)
     {
-        FVM_CommissionPanel& local_6;
         TEUIModelRef<FVM_CommissionPanel> local_2 = this.CommissionPanel.AsRef();
+        FVM_CommissionPanel& local_6 = local_2.Get();
         for (; It; )
         {
             FEUIReactiveSubscriberTrackScope local_56 = FEUIReactiveSubscriberTrackScope(It);

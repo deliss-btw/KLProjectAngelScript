@@ -87,8 +87,7 @@ struct FVM_TalentUpgradeFormulaTree : FEUIViewModel
     {
         if (this.GetTreeM().IsValid())
         {
-            TEUIModelWeakRef<FM_TalentTree> local_2 = this.GetTreeM();
-            return GetTalentBaseData().IsSet();
+            return this.GetTreeM().Get().GetLayoutConfig().Get().GetTalentBaseData().IsSet();
         }
         return false;
     }
@@ -98,61 +97,28 @@ struct FVM_TalentUpgradeFormulaTree : FEUIViewModel
     }
     FText GetTreeName() const
     {
-        FText __return;
         if (this.GetTreeM().IsValid())
         {
-            TEUIModelWeakRef<FM_TalentTree> local_2 = this.GetTreeM();
+            return this.GetTreeM().Get().GetLayoutConfig().Get().TitleName;
         }
-        else
-        {
-            __return = FText();
-        }
-        return __return;
+        return FText();
     }
     FSoftBrush GetTreeImage() const
     {
-        FSoftBrush __return;
         if (this.GetTreeM().IsValid())
         {
-            TEUIModelWeakRef<FM_TalentTree> local_2 = this.GetTreeM();
+            return this.GetTreeM().Get().GetLayoutConfig().Get().TitleImage;
         }
-        else
-        {
-            __return = FSoftBrush();
-        }
-        return __return;
+        return FSoftBrush();
     }
     bool GetTalentIsEquipped() const
     {
-        int local_33 = 0;
-        bool local_3 = this.GetTreeM().IsValid();
-        if (!(local_3))
-        {
-            local_3 = false;
-        }
-        else
-        {
-            TEUIModelWeakRef<FM_TalentTree> local_2 = this.GetTreeM();
-            local_3 = GetAvatar().IsSet();
-        }
-        if (!(local_3))
-        {
-            local_3 = false;
-        }
-        else
-        {
-            TEUIModelWeakRef<FM_TalentTree> local_2_2 = this.GetTreeM();
-            local_3 = GetTalentBaseData().IsSet();
-        }
-        if (local_3)
+        if (this.GetTreeM().IsValid() && this.GetTreeM().Get().GetLayoutConfig().Get().GetAvatar().IsSet() && this.GetTreeM().Get().GetLayoutConfig().Get().GetTalentBaseData().IsSet())
         {
             FAvatarEquippedTalentInfo local_32;
-            TEUIModelWeakRef<FM_TalentTree> local_2_3 = this.GetTreeM();
-            if (::FMS_Talent::Get(this.GetContext().Manager).GetAvatarEquippedTalentInfo(local_33, local_32))
+            if (::FMS_Talent::Get(this.GetContext().Manager).GetAvatarEquippedTalentInfo(this.GetTreeM().Get().GetLayoutConfig().Get().GetAvatar().Get().DataId, local_32))
             {
-                local_33 = int(local_32.FoundationId);
-                TEUIModelWeakRef<FM_TalentTree> local_2_4 = this.GetTreeM();
-                if (local_33 == 0)
+                if (int(local_32.FoundationId) == this.GetTreeM().Get().GetLayoutConfig().Get().GetTalentBaseData().Get().DataId)
                 {
                     return true;
                 }
@@ -178,24 +144,14 @@ struct FVM_TalentUpgradeFormulaTree : FEUIViewModel
     }
     int GetTalentDivision() const
     {
-        ETalentDivision local_7 = ETalentDivision(0);
         TEUIModelWeakRef<FM_TalentTree> local_2 = this.GetTreeM();
-        bool local_3 = !(local_2.IsValid());
-        if (local_3)
-        {
-            local_3 = true;
-        }
-        else
-        {
-            TEUIModelWeakRef<FM_TalentTree> local_2_2 = this.GetTreeM();
-            local_3 = !(GetTalentBaseData().IsSet());
-        }
-        if (local_3)
+        if (!(local_2.IsValid()) || !(this.GetTreeM().Get().GetLayoutConfig().Get().GetTalentBaseData().IsSet()))
         {
             return 3;
         }
-        TEUIModelWeakRef<FM_TalentTree> local_2_3 = this.GetTreeM();
-        switch (int(local_7))
+        TEUIModelWeakRef<FM_TalentTree> local_2_2 = this.GetTreeM();
+        ETalentDivision local_6 = local_2_2.Get().GetLayoutConfig().Get().GetTalentBaseData().Get().TalentDivision;
+        switch (int(local_6))
         {
         case 1:
         {
@@ -219,8 +175,7 @@ struct FVM_TalentUpgradeFormulaTree : FEUIViewModel
     {
         if (this.GetTreeM().IsValid())
         {
-            TEUIModelWeakRef<FM_TalentTree> local_2 = this.GetTreeM();
-            return IsFoundationTreeAnyTalentNormal();
+            return this.GetTreeM().Get().IsFoundationTreeAnyTalentNormal();
         }
         return false;
     }
@@ -228,8 +183,7 @@ struct FVM_TalentUpgradeFormulaTree : FEUIViewModel
     {
         if (this.GetTreeM().IsValid())
         {
-            TEUIModelWeakRef<FM_TalentTree> local_2 = this.GetTreeM();
-            return IsFoundationTreeAnyTalentUnlocked();
+            return this.GetTreeM().Get().IsFoundationTreeAnyTalentUnlocked();
         }
         return false;
     }
@@ -259,31 +213,28 @@ struct FVM_TalentUpgradeFormulaTree : FEUIViewModel
     }
     void PostConstruct()
     {
-        int local_5 = 0;
         TEUIModelWeakRef<FM_TalentTree> local_2 = this.GetTreeM();
         if (local_2.IsValid())
         {
             int local_4;
             local_4 = 0;
             TEUIModelWeakRef<FM_TalentTree> local_2_2 = this.GetTreeM();
-            if (GetAvatar().IsSet())
+            if (local_2_2.Get().GetLayoutConfig().Get().GetAvatar().IsSet())
             {
                 FAvatarEquippedTalentInfo local_34;
                 TEUIModelWeakRef<FM_TalentTree> local_2_3 = this.GetTreeM();
-                if (::FMS_Talent::Get(this.GetContext().Manager).GetAvatarEquippedTalentInfo(local_5, local_34))
+                if (::FMS_Talent::Get(this.GetContext().Manager).GetAvatarEquippedTalentInfo(local_2_3.Get().GetLayoutConfig().Get().GetAvatar().Get().DataId, local_34))
                 {
-                    local_5 = int(local_34.FoundationId);
-                    local_4 = local_5;
+                    local_4 = int(local_34.FoundationId);
                 }
             }
             TEUIModelWeakRef<FM_TalentTree> local_2_4 = this.GetTreeM();
-            for (auto& local_48 : GetNodeList())
+            for (auto& local_48 : local_2_4.Get().GetNodeList())
             {
-                if ((int(GetTalentType())) == 6)
+                if ((int(local_48.Get().GetTalentType())) == 6)
                 {
-                    TDataObjectPtr<FTalentConfig> local_100;
-                    local_100.GetConfig(0);
-                    if (!(local_100) || !(GetFoundationTalent().IsSet()) || (local_5 != local_4))
+                    TDataObjectPtr<FTalentConfig> local_100 = local_48.Get().GetConfig(0);
+                    if (!(local_100) || !(local_100.Get().GetFoundationTalent().IsSet()) || ((local_100.Get().GetFoundationTalent().Get().DataId != local_4)))
                     {
                         continue;
                     }
@@ -291,24 +242,13 @@ struct FVM_TalentUpgradeFormulaTree : FEUIViewModel
                 this.GetModify_NodeList().Add(local_48);
             }
             TEUIModelWeakRef<FM_TalentTree> local_2_5 = this.GetTreeM();
-            this.SetBranchType(GetBranchType());
+            this.SetBranchType(local_2_5.Get().GetBranchType());
         }
         TEUIModelWeakRef<FM_TalentTree> local_2_6 = this.GetTreeM();
-        bool local_101 = local_2_6.IsValid();
-        if (!(local_101))
-        {
-            local_101 = false;
-        }
-        else
+        if (local_2_6.IsValid() && this.GetTreeM().Get().GetLayoutConfig().Get().GetTalentBaseData().IsSet())
         {
             TEUIModelWeakRef<FM_TalentTree> local_2_7 = this.GetTreeM();
-            local_101 = GetTalentBaseData().IsSet();
-        }
-        if (local_101)
-        {
-            TEUIModelWeakRef<FM_TalentTree> local_2_8 = this.GetTreeM();
-            ETalentDivision local_104;
-            this.SetDivisionTypeIconVM(TEUIModelRef<FVM_TalentDivisionTypeIcon>(::FVM_TalentDivisionTypeIcon::Create(this.GetContext().Manager, ETalentDivision(local_104))));
+            this.SetDivisionTypeIconVM(TEUIModelRef<FVM_TalentDivisionTypeIcon>(::FVM_TalentDivisionTypeIcon::Create(this.GetContext().Manager, ETalentDivision(local_2_7.Get().GetLayoutConfig().Get().GetTalentBaseData().Get().TalentDivision))));
         }
         return;
     }
@@ -518,11 +458,9 @@ FVM_TalentUpgradeFormulaTree& Create(const UObject ContextObject, const TEUIMode
 {
     return FVM_TalentUpgradeFormulaTree::CreateByManager(EUIInternal::GetContextManager(ContextObject), TalentEditVM, TreeM, Index, WidthOverride);
 }
-FVM_TalentUpgradeFormulaTree CreateByManager(const UEUIManagerSubsystem Manager, const TEUIModelWeakRef<FVM_TalentEditPage> &inout TalentEditVM, const TEUIModelWeakRef<FM_TalentTree> &inout TreeM, const int Index, const float32 WidthOverride)
+FVM_TalentUpgradeFormulaTree& CreateByManager(const UEUIManagerSubsystem Manager, const TEUIModelWeakRef<FVM_TalentEditPage> &inout TalentEditVM, const TEUIModelWeakRef<FM_TalentTree> &inout TreeM, const int Index, const float32 WidthOverride)
 {
-    FVM_TalentUpgradeFormulaTree __r;
-    TEUIModelRef<FVM_TalentUpgradeFormulaTree> local_6 = TEUIModelRef<FVM_TalentUpgradeFormulaTree>(EUIInternal::MakeModelWithManager_Generic(Manager, FVM_TalentUpgradeFormulaTree::ModelId, 0, TalentEditVM, TreeM, Index, WidthOverride));
-    return __r;
+    return TEUIModelRef<FVM_TalentUpgradeFormulaTree>(EUIInternal::MakeModelWithManager_Generic(Manager, FVM_TalentUpgradeFormulaTree::ModelId, 0, TalentEditVM, TreeM, Index, WidthOverride)).Get();
 }
 void GetModelInfo(FEUIViewModelMetaInfo &inout Result)
 {
@@ -732,7 +670,6 @@ namespace __GeneratedProperties_FVM_TalentUpgradeFormulaTree
 {
 UScriptStruct StaticStruct()
 {
-    UScriptStruct local_2;
-    return local_2;
+    return __GeneratedProperties_FVM_TalentUpgradeFormulaTree.Get();
 }
 }

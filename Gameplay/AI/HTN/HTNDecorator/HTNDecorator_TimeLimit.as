@@ -29,35 +29,32 @@ class UHTNDecorator_ExecutionTimeLimit : UHTNDecorator_ECSScriptBase
     void ExecutionStart_Implementation(const FHTNContext &inout Context)
     {
         float32 local_10;
-        float32 local_3 = 0.0f;
-        FHTNDecorator_ExecutionTimeLimitInstanceData local_2;
+        FHTNDecorator_ExecutionTimeLimitInstanceData& local_2 = this.GetInstanceData(Context);
         local_2.ExecutionTimeCount = 0.0f;
-        FAISmartValueContext local_6 = Context.opImplConv();
-        FAISmartValueContext local_6_2 = Context.opImplConv();
-        if (local_3 == 0.0f)
+        float32 local_3_2 = this.TimeLimiteRandomDeviation.GetValue(Context.opImplConv());
+        float32 local_4 = this.TimeLimit.GetValue(Context.opImplConv());
+        if (local_3_2 == 0.0f)
         {
             local_10 = 0.0f;
         }
         else
         {
-            float32 local_7 = -local_3;
-            local_10 = FMath::RandRange(local_7, local_3);
+            float32 local_7 = -local_3_2;
+            local_10 = FMath::RandRange(local_7, local_3_2);
         }
-        local_2.TimeLimitValue = (0.0f + local_10);
+        local_2.TimeLimitValue = (local_4 + local_10);
         return;
     }
     UFUNCTION()
     void Tick_Implementation(const FHTNContext &inout Context, const float32 DeltaTime)
     {
-        FHTNDecorator_ExecutionTimeLimitInstanceData local_2;
-        local_2.ExecutionTimeCount += DeltaTime;
+        this.GetInstanceData(Context).ExecutionTimeCount += DeltaTime;
         return;
     }
     UFUNCTION()
     void ExecutionFinish_Implementation(const FHTNContext &inout Context, const EHTNNodeResult NodeResult)
     {
-        FHTNDecorator_ExecutionTimeLimitInstanceData local_2;
-        local_2.TimeLimitValue = -1.0f;
+        this.GetInstanceData(Context).TimeLimitValue = -1.0f;
         return;
     }
     UFUNCTION()
@@ -65,7 +62,7 @@ class UHTNDecorator_ExecutionTimeLimit : UHTNDecorator_ECSScriptBase
     {
         if (int(CheckType) == 3)
         {
-            FHTNDecorator_ExecutionTimeLimitInstanceData& local_6;
+            FHTNDecorator_ExecutionTimeLimitInstanceData& local_6 = this.GetInstanceData(Context);
             if (local_6.TimeLimitValue > 0.0f)
             {
                 if (local_6.ExecutionTimeCount >= local_6.TimeLimitValue)

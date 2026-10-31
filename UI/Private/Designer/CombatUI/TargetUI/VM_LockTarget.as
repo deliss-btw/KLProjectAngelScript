@@ -89,11 +89,9 @@ FVMS_LockTarget& Get(const UObject ContextObject)
 {
     return FVMS_LockTarget::GetByManager(EUIInternal::GetContextManager(ContextObject));
 }
-FVMS_LockTarget GetByManager(const UEUIManagerSubsystem Manager)
+FVMS_LockTarget& GetByManager(const UEUIManagerSubsystem Manager)
 {
-    FVMS_LockTarget __r;
-    TEUIModelRef<FVMS_LockTarget> local_6 = TEUIModelRef<FVMS_LockTarget>(EUIInternal::MakeModelWithManager(Manager, FVMS_LockTarget::ModelId));
-    return __r;
+    return TEUIModelRef<FVMS_LockTarget>(EUIInternal::MakeModelWithManager(Manager, FVMS_LockTarget::ModelId)).Get();
 }
 void GetModelInfo(FEUIViewModelMetaInfo &inout Result)
 {
@@ -139,7 +137,6 @@ namespace __GeneratedProperties_FVMS_LockTarget
 {
 UScriptStruct StaticStruct()
 {
-    UScriptStruct local_2;
-    return local_2;
+    return __GeneratedProperties_FVMS_LockTarget.Get();
 }
 }

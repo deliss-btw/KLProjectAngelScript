@@ -11,24 +11,14 @@ class UESMAction_OverrideSightConfig : UESMBPBaseSpanAction
     void Enter_Implementation(const FESMContext &inout Context, const FESMActionTime &inout Time) const
     {
         int local_8 = 0;
-        bool local_69 = false;
         const FECSEntity& local_2 = Context.GetEntity();
         if (!(local_8))
         {
             XError(ELog(0), FString().Append("AIKnowledgeLog: ").Append(local_2.GetEntityName()).Append(" Missing AIKnowledge Component When OverrideSightConfig"));
             return;
         }
-        bool local_9 = (::FAIPerceptionUtils::GetPerceptionConfig(local_2) == nullptr) || (0 == 0);
-        if (local_9)
-        {
-            local_9 = true;
-        }
-        else
-        {
-            local_69 = !local_69;
-            local_9 = local_69;
-        }
-        if (local_9)
+        TDataObjectPtr<FAIPerceptionConfig> local_42 = ::FAIPerceptionUtils::GetPerceptionConfig(local_2);
+        if ((local_42 == nullptr) || (local_42.Get().OverrideSightConfigMap.Num() == 0) || !(local_42.Get().OverrideSightConfigMap.Contains(this.OverrideSightConfigKey)))
         {
             XError(ELog(0), FString().Append("AIKnowledgeLog: ").Append(local_2.GetEntityName()).Append(" Does Not Exist SightConfigKey:").Append(this.OverrideSightConfigKey.ToString()).Append(" When Try To Override In ESM"));
         }

@@ -6,6 +6,8 @@ struct FEUIActionBindingMinimapAction : FEUIActionBindingCustom
     UPROPERTY()
     FEUIModelWeakRef OwnerModel;
 
+    default m_ScriptOverrideMeta = Cast<UASStruct>(FEUIActionBindingMinimapAction.Get());
+
     FEUIActionBindingMinimapAction()
     {
         this.__InitDefaults();

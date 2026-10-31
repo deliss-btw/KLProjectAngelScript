@@ -134,11 +134,9 @@ FVM_MotionTab& Create(const UObject ContextObject, const int MotionIndex)
 {
     return FVM_MotionTab::CreateByManager(EUIInternal::GetContextManager(ContextObject), MotionIndex);
 }
-FVM_MotionTab CreateByManager(const UEUIManagerSubsystem Manager, const int MotionIndex)
+FVM_MotionTab& CreateByManager(const UEUIManagerSubsystem Manager, const int MotionIndex)
 {
-    FVM_MotionTab __r;
-    TEUIModelRef<FVM_MotionTab> local_6 = TEUIModelRef<FVM_MotionTab>(EUIInternal::MakeModelWithManager_Generic(Manager, FVM_MotionTab::ModelId, 0, MotionIndex));
-    return __r;
+    return TEUIModelRef<FVM_MotionTab>(EUIInternal::MakeModelWithManager_Generic(Manager, FVM_MotionTab::ModelId, 0, MotionIndex)).Get();
 }
 void GetModelInfo(FEUIViewModelMetaInfo &inout Result)
 {
@@ -197,7 +195,6 @@ namespace __GeneratedProperties_FVM_MotionTab
 {
 UScriptStruct StaticStruct()
 {
-    UScriptStruct local_2;
-    return local_2;
+    return __GeneratedProperties_FVM_MotionTab.Get();
 }
 }

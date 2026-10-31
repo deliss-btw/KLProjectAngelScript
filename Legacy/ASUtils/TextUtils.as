@@ -16,8 +16,7 @@ FText GetFormatText(const FText &inout FormatText, const ETextArgType_DEPRECATED
         }
         if ((!((local_32 == nullptr))))
         {
-            FText local_110;
-            local_4 = local_110;
+            local_4 = FText::Format(FormatText, local_32.Get().Text);
         }
     }
     return local_4;

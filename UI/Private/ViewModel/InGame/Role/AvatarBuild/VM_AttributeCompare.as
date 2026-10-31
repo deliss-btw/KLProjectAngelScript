@@ -84,11 +84,9 @@ FVM_AttributeCompare& Create(const UObject ContextObject, const EAttributeCompar
 {
     return FVM_AttributeCompare::CreateByManager(EUIInternal::GetContextManager(ContextObject), EAttributeCompareResult(CompareResult));
 }
-FVM_AttributeCompare CreateByManager(const UEUIManagerSubsystem Manager, const EAttributeCompareResult CompareResult)
+FVM_AttributeCompare& CreateByManager(const UEUIManagerSubsystem Manager, const EAttributeCompareResult CompareResult)
 {
-    FVM_AttributeCompare __r;
-    TEUIModelRef<FVM_AttributeCompare> local_6 = TEUIModelRef<FVM_AttributeCompare>(EUIInternal::MakeModelWithManager_Generic(Manager, FVM_AttributeCompare::ModelId, 0, CompareResult));
-    return __r;
+    return TEUIModelRef<FVM_AttributeCompare>(EUIInternal::MakeModelWithManager_Generic(Manager, FVM_AttributeCompare::ModelId, 0, CompareResult)).Get();
 }
 void GetModelInfo(FEUIViewModelMetaInfo &inout Result)
 {
@@ -139,7 +137,6 @@ namespace __GeneratedProperties_FVM_AttributeCompare
 {
 UScriptStruct StaticStruct()
 {
-    UScriptStruct local_2;
-    return local_2;
+    return __GeneratedProperties_FVM_AttributeCompare.Get();
 }
 }

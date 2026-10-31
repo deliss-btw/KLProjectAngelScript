@@ -3,7 +3,6 @@ namespace __FPlayerLevelConfigFunctions
 UFUNCTION()
 bool __FPlayerLevelConfig_GetIsBreakthroughLevel(const TDataObjectPtr<FPlayerLevelConfig> &inout DataObject)
 {
-    bool local_1 = false;
     if ((DataObject == nullptr))
     {
         if (!(EUIGlobals::GIsDuringPropertyConversion))
@@ -13,12 +12,11 @@ bool __FPlayerLevelConfig_GetIsBreakthroughLevel(const TDataObjectPtr<FPlayerLev
         FPlayerLevelConfig local_100;
         return local_100.IsBreakthroughLevel;
     }
-    return local_1;
+    return DataObject.Get().IsBreakthroughLevel;
 }
 UFUNCTION()
 FText __FPlayerLevelConfig_GetBreakthroughLevelName(const TDataObjectPtr<FPlayerLevelConfig> &inout DataObject)
 {
-    FText __r;
     if ((DataObject == nullptr))
     {
         if (!(EUIGlobals::GIsDuringPropertyConversion))
@@ -28,7 +26,7 @@ FText __FPlayerLevelConfig_GetBreakthroughLevelName(const TDataObjectPtr<FPlayer
         FPlayerLevelConfig local_100;
         return local_100.BreakthroughLevelName;
     }
-    return __r;
+    return DataObject.Get().BreakthroughLevelName;
 }
 UFUNCTION()
 TArray<TDataObjectPtr<FServerConditionConfigBase>> __FPlayerLevelConfig_GetBreakthroughCondition(const TDataObjectPtr<FPlayerLevelConfig> &inout DataObject)
@@ -42,7 +40,7 @@ TArray<TDataObjectPtr<FServerConditionConfigBase>> __FPlayerLevelConfig_GetBreak
         FPlayerLevelConfig local_100;
         return local_100.GetBreakthroughCondition();
     }
-    return GetBreakthroughCondition();
+    return DataObject.Get().GetBreakthroughCondition();
 }
 UFUNCTION()
 TDataObjectPtr<FCommissionConfig> __FPlayerLevelConfig_GetBreakthroughLevel(const TDataObjectPtr<FPlayerLevelConfig> &inout DataObject)
@@ -56,7 +54,7 @@ TDataObjectPtr<FCommissionConfig> __FPlayerLevelConfig_GetBreakthroughLevel(cons
         FPlayerLevelConfig local_100;
         return local_100.GetBreakthroughLevel();
     }
-    return GetBreakthroughLevel();
+    return DataObject.Get().GetBreakthroughLevel();
 }
 UFUNCTION()
 TDataObjectPtr<FServerConditionConfigBase> __FPlayerLevelConfig_GetAchieveCondition(const TDataObjectPtr<FPlayerLevelConfig> &inout DataObject)
@@ -70,7 +68,7 @@ TDataObjectPtr<FServerConditionConfigBase> __FPlayerLevelConfig_GetAchieveCondit
         FPlayerLevelConfig local_100;
         return local_100.GetAchieveCondition();
     }
-    return GetAchieveCondition();
+    return DataObject.Get().GetAchieveCondition();
 }
 UFUNCTION()
 TDataObjectPtr<FRewardConfig> __FPlayerLevelConfig_GetBreakthroughRewardConfig(const TDataObjectPtr<FPlayerLevelConfig> &inout DataObject)
@@ -84,12 +82,11 @@ TDataObjectPtr<FRewardConfig> __FPlayerLevelConfig_GetBreakthroughRewardConfig(c
         FPlayerLevelConfig local_100;
         return local_100.GetBreakthroughRewardConfig();
     }
-    return GetBreakthroughRewardConfig();
+    return DataObject.Get().GetBreakthroughRewardConfig();
 }
 UFUNCTION()
 bool __FPlayerLevelConfig_GetbIsStigmataLevel(const TDataObjectPtr<FPlayerLevelConfig> &inout DataObject)
 {
-    bool local_1 = false;
     if ((DataObject == nullptr))
     {
         if (!(EUIGlobals::GIsDuringPropertyConversion))
@@ -99,7 +96,7 @@ bool __FPlayerLevelConfig_GetbIsStigmataLevel(const TDataObjectPtr<FPlayerLevelC
         FPlayerLevelConfig local_100;
         return local_100.bIsStigmataLevel;
     }
-    return local_1;
+    return DataObject.Get().bIsStigmataLevel;
 }
 UFUNCTION()
 int __FPlayerLevelConfig_GetFakeStigmataPointNum(const TDataObjectPtr<FPlayerLevelConfig> &inout DataObject)
@@ -137,7 +134,7 @@ TDataObjectPtr<FVirtualItemConfig> __FExpOverflowConfig_GetConvertResourceType(c
         FExpOverflowConfig local_68;
         return local_68.GetConvertResourceType();
     }
-    return GetConvertResourceType();
+    return DataObject.Get().GetConvertResourceType();
 }
 UFUNCTION()
 TDataObjectPtr<FRefreshRuleConfig> __FExpOverflowConfig_GetHotSpringExpRefreshRule(const TDataObjectPtr<FExpOverflowConfig> &inout DataObject)
@@ -151,7 +148,7 @@ TDataObjectPtr<FRefreshRuleConfig> __FExpOverflowConfig_GetHotSpringExpRefreshRu
         FExpOverflowConfig local_68;
         return local_68.GetHotSpringExpRefreshRule();
     }
-    return GetHotSpringExpRefreshRule();
+    return DataObject.Get().GetHotSpringExpRefreshRule();
 }
 UFUNCTION()
 FExpOverflowConfig CastToFExpOverflowConfig(const TDataObjectPtr<FExpOverflowConfig> &inout DataObject)
@@ -174,12 +171,11 @@ TDataObjectPtr<FRefreshRuleConfig> __FPlayerLevelScheduleConfig_GetRefreshRule(c
         FPlayerLevelScheduleConfig local_44;
         return local_44.GetRefreshRule();
     }
-    return GetRefreshRule();
+    return DataObject.Get().GetRefreshRule();
 }
 UFUNCTION()
 FString __FPlayerLevelScheduleConfig_GetLevelCapUnlockTime(const TDataObjectPtr<FPlayerLevelScheduleConfig> &inout DataObject)
 {
-    FString __r;
     if ((DataObject == nullptr))
     {
         if (!(EUIGlobals::GIsDuringPropertyConversion))
@@ -189,7 +185,7 @@ FString __FPlayerLevelScheduleConfig_GetLevelCapUnlockTime(const TDataObjectPtr<
         FPlayerLevelScheduleConfig local_44;
         return local_44.LevelCapUnlockTime;
     }
-    return __r;
+    return DataObject.Get().LevelCapUnlockTime;
 }
 UFUNCTION()
 FPlayerLevelScheduleConfig CastToFPlayerLevelScheduleConfig(const TDataObjectPtr<FPlayerLevelScheduleConfig> &inout DataObject)

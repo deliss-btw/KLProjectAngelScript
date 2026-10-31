@@ -145,11 +145,9 @@ FVM_CommissionEntrance& Create(const UObject ContextObject)
 {
     return FVM_CommissionEntrance::CreateByManager(EUIInternal::GetContextManager(ContextObject));
 }
-FVM_CommissionEntrance CreateByManager(const UEUIManagerSubsystem Manager)
+FVM_CommissionEntrance& CreateByManager(const UEUIManagerSubsystem Manager)
 {
-    FVM_CommissionEntrance __r;
-    TEUIModelRef<FVM_CommissionEntrance> local_6 = TEUIModelRef<FVM_CommissionEntrance>(EUIInternal::MakeModelWithManager(Manager, FVM_CommissionEntrance::ModelId));
-    return __r;
+    return TEUIModelRef<FVM_CommissionEntrance>(EUIInternal::MakeModelWithManager(Manager, FVM_CommissionEntrance::ModelId)).Get();
 }
 void GetModelInfo(FEUIViewModelMetaInfo &inout Result)
 {
@@ -290,7 +288,6 @@ namespace __GeneratedProperties_FVM_CommissionEntrance
 {
 UScriptStruct StaticStruct()
 {
-    UScriptStruct local_2;
-    return local_2;
+    return __GeneratedProperties_FVM_CommissionEntrance.Get();
 }
 }

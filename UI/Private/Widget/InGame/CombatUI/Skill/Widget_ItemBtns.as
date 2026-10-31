@@ -16,19 +16,19 @@ class UWidget_ItemBtns : UEUIUserWidget
     UFUNCTION()
     void OnTriggerRightShoulderPress()
     {
-        1.SetbGamepadLeftShoulderPress();
+        this.ItemBts.Get().SetbGamepadLeftShoulderPress(true);
         return;
     }
     UFUNCTION()
     void OnTriggerRightShoulderRelease()
     {
-        0.SetbGamepadLeftShoulderPress();
+        this.ItemBts.Get().SetbGamepadLeftShoulderPress(false);
         return;
     }
     UFUNCTION()
     void OnPadChordStarted()
     {
-        TestRequireFocus();
+        this.ItemBts.Get().TestRequireFocus();
         FECSEntity local_4 = ::FASCommonUtils::GetLocalPlayerPawnEntity();
         if (local_4.IsValid())
         {
@@ -42,7 +42,7 @@ class UWidget_ItemBtns : UEUIUserWidget
     UFUNCTION()
     void OnPadChordCompleted()
     {
-        TestReleaseFocus();
+        this.ItemBts.Get().TestReleaseFocus();
         FECSEntity local_4 = ::FASCommonUtils::GetLocalPlayerPawnEntity();
         if (local_4.IsValid())
         {

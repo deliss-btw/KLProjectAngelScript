@@ -32,8 +32,7 @@ class UCommissionBadgeSettings : UGameplaySettingsBase
     }
     TArray<TDataObjectPtr<FCommissionBadgeConfig>> GetAllCommissionBadgeConfig() const
     {
-        // body not fully recovered — stub [no-return]
-        TArray<TDataObjectPtr<FCommissionBadgeConfig>> __r; return __r;
+        return FInstancedStruct::GetPtr(this.GetCacheData()).opCall().Get().BadgeConfigs;
     }
 }
 

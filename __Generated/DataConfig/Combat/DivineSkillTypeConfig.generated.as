@@ -3,7 +3,6 @@ namespace __FDivineSkillTypeConfigFunctions
 UFUNCTION()
 FText __FDivineSkillTypeConfig_GetTypeName(const TDataObjectPtr<FDivineSkillTypeConfig> &inout DataObject)
 {
-    FText __r;
     if ((DataObject == nullptr))
     {
         if (!(EUIGlobals::GIsDuringPropertyConversion))
@@ -13,12 +12,11 @@ FText __FDivineSkillTypeConfig_GetTypeName(const TDataObjectPtr<FDivineSkillType
         FDivineSkillTypeConfig local_76;
         return local_76.TypeName;
     }
-    return __r;
+    return DataObject.Get().TypeName;
 }
 UFUNCTION()
 FSoftBrush __FDivineSkillTypeConfig_GetTypeIcon(const TDataObjectPtr<FDivineSkillTypeConfig> &inout DataObject)
 {
-    FSoftBrush __r;
     if ((DataObject == nullptr))
     {
         if (!(EUIGlobals::GIsDuringPropertyConversion))
@@ -28,12 +26,11 @@ FSoftBrush __FDivineSkillTypeConfig_GetTypeIcon(const TDataObjectPtr<FDivineSkil
         FDivineSkillTypeConfig local_76;
         return local_76.TypeIcon;
     }
-    return __r;
+    return DataObject.Get().TypeIcon;
 }
 UFUNCTION()
 FText __FDivineSkillTypeConfig_GetDescription(const TDataObjectPtr<FDivineSkillTypeConfig> &inout DataObject)
 {
-    FText __r;
     if ((DataObject == nullptr))
     {
         if (!(EUIGlobals::GIsDuringPropertyConversion))
@@ -43,12 +40,11 @@ FText __FDivineSkillTypeConfig_GetDescription(const TDataObjectPtr<FDivineSkillT
         FDivineSkillTypeConfig local_76;
         return local_76.Description;
     }
-    return __r;
+    return DataObject.Get().Description;
 }
 UFUNCTION()
 EAvatarIllustrate __FDivineSkillTypeConfig_GetTargetIllustrate(const TDataObjectPtr<FDivineSkillTypeConfig> &inout DataObject)
 {
-    int local_77 = 0;
     if ((DataObject == nullptr))
     {
         if (!(EUIGlobals::GIsDuringPropertyConversion))
@@ -56,15 +52,13 @@ EAvatarIllustrate __FDivineSkillTypeConfig_GetTargetIllustrate(const TDataObject
             FBlueprintDebugFunctions::ThrowScriptException("Get 'TargetIllustrate' from a null 'FDivineSkillTypeConfig' DataObject!");
         }
         FDivineSkillTypeConfig local_76;
-        local_77 = int(local_76.TargetIllustrate);
-        return EAvatarIllustrate(local_77);
+        return local_76.TargetIllustrate;
     }
-    return EAvatarIllustrate(local_77);
+    return DataObject.Get().TargetIllustrate;
 }
 UFUNCTION()
 FString __FDivineSkillTypeConfig_GetRichTextImageName(const TDataObjectPtr<FDivineSkillTypeConfig> &inout DataObject)
 {
-    FString __r;
     if ((DataObject == nullptr))
     {
         if (!(EUIGlobals::GIsDuringPropertyConversion))
@@ -74,7 +68,7 @@ FString __FDivineSkillTypeConfig_GetRichTextImageName(const TDataObjectPtr<FDivi
         FDivineSkillTypeConfig local_76;
         return local_76.RichTextImageName;
     }
-    return __r;
+    return DataObject.Get().RichTextImageName;
 }
 UFUNCTION()
 FDivineSkillTypeConfig CastToFDivineSkillTypeConfig(const TDataObjectPtr<FDivineSkillTypeConfig> &inout DataObject)

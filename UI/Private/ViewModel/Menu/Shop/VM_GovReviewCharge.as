@@ -79,11 +79,9 @@ struct FVM_GovReviewCharge : FEUIViewModel
         {
             return;
         }
-        int local_1 = this.GetSelectedTabIndex();
-        0.SetbIsSelected();
+        this.GetTabEntries()[this.GetSelectedTabIndex()].Get().SetbIsSelected(false);
         this.SetSelectedTabIndex(Index);
-        int local_1_2 = this.GetSelectedTabIndex();
-        1.SetbIsSelected();
+        this.GetTabEntries()[this.GetSelectedTabIndex()].Get().SetbIsSelected(true);
         this.SetSelectedTab(this.GetTabEntries()[this.GetSelectedTabIndex()]);
         return;
     }
@@ -108,6 +106,8 @@ struct FVM_GovReviewCharge : FEUIViewModel
             local_4.Add(local_20.GetDataPtr());
             local_20.opPreInc();
         }
+        __Lambda_UI_Private_ViewModel_Menu_Shop_VM_GovReviewCharge_78 local_48;
+        local_4.Sort(local_48);
         for (auto& local_62 : local_4)
         {
             this.GetModify_RechargeTiers().Add(TEUIModelRef<FVM_SubmitRechargeTier>(::FVM_SubmitRechargeTier::Create(this.GetContext().Manager, local_62)));
@@ -263,11 +263,9 @@ FVM_GovReviewCharge& Create(const UObject ContextObject)
 {
     return FVM_GovReviewCharge::CreateByManager(EUIInternal::GetContextManager(ContextObject));
 }
-FVM_GovReviewCharge CreateByManager(const UEUIManagerSubsystem Manager)
+FVM_GovReviewCharge& CreateByManager(const UEUIManagerSubsystem Manager)
 {
-    FVM_GovReviewCharge __r;
-    TEUIModelRef<FVM_GovReviewCharge> local_6 = TEUIModelRef<FVM_GovReviewCharge>(EUIInternal::MakeModelWithManager(Manager, FVM_GovReviewCharge::ModelId));
-    return __r;
+    return TEUIModelRef<FVM_GovReviewCharge>(EUIInternal::MakeModelWithManager(Manager, FVM_GovReviewCharge::ModelId)).Get();
 }
 void GetModelInfo(FEUIViewModelMetaInfo &inout Result)
 {
@@ -366,7 +364,6 @@ namespace __GeneratedProperties_FVM_GovReviewCharge
 {
 UScriptStruct StaticStruct()
 {
-    UScriptStruct local_2;
-    return local_2;
+    return __GeneratedProperties_FVM_GovReviewCharge.Get();
 }
 }

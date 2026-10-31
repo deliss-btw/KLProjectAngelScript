@@ -3,7 +3,6 @@ namespace __FAnimAimPoseConfigFunctions
 UFUNCTION()
 TArray<FAimPoseSegmentConfig> __FAnimAimPoseConfig_GetSegments(const TDataObjectPtr<FAnimAimPoseConfig> &inout DataObject)
 {
-    TArray<FAimPoseSegmentConfig> __r;
     if ((DataObject == nullptr))
     {
         if (!(EUIGlobals::GIsDuringPropertyConversion))
@@ -13,12 +12,11 @@ TArray<FAimPoseSegmentConfig> __FAnimAimPoseConfig_GetSegments(const TDataObject
         FAnimAimPoseConfig local_22;
         return local_22.Segments;
     }
-    return __r;
+    return DataObject.Get().Segments;
 }
 UFUNCTION()
 TArray<FAimPoseCompensatorConfig> __FAnimAimPoseConfig_GetCompensators(const TDataObjectPtr<FAnimAimPoseConfig> &inout DataObject)
 {
-    TArray<FAimPoseCompensatorConfig> __r;
     if ((DataObject == nullptr))
     {
         if (!(EUIGlobals::GIsDuringPropertyConversion))
@@ -28,7 +26,7 @@ TArray<FAimPoseCompensatorConfig> __FAnimAimPoseConfig_GetCompensators(const TDa
         FAnimAimPoseConfig local_22;
         return local_22.Compensators;
     }
-    return __r;
+    return DataObject.Get().Compensators;
 }
 UFUNCTION()
 FAnimAimPoseConfig CastToFAnimAimPoseConfig(const TDataObjectPtr<FAnimAimPoseConfig> &inout DataObject)

@@ -15,50 +15,46 @@ class US_EcosimAIV2TokenSystem : UECSScriptSystem
     UFUNCTION()
     void Job_UpdateAITokenByTarget(FCS_EcosimAIV2TokenByTarget &inout TokenByTarget) const
     {
-        int local_21 = 0;
-        int local_22 = 0;
-        float local_24 = 0.0;
-        const FAITokenByTargetConfig& local_26;
-        int local_28 = 0;
         if (TokenByTarget.DataMap.IsEmpty())
         {
             return;
         }
         for (auto& local_20 : TokenByTarget.DataMap)
         {
-            local_20;
-            if (local_21 == 0)
+            if (local_20.GetValue().CurrentConsumedTokenNum == 0)
             {
-                local_24 = 0.0;
+                local_20.GetValue().ParallelRecoverTimers.Empty(0);
+                local_20.GetValue().RecoverTokenElapsedTimeCount = 0.0;
                 continue;
             }
-            local_21 = int(local_26.RecoverMode);
-            if (local_21 == 1)
+            const FAITokenByTargetConfig& local_26 = local_20.GetValue().Config.Get();
+            if (int(local_26.RecoverMode) == 1)
             {
-                while (local_22 < local_21)
+                while (local_20.GetValue().ParallelRecoverTimers.Num() < local_20.GetValue().CurrentConsumedTokenNum)
                 {
-                    local_24 = 0.0;
+                    local_20.GetValue().ParallelRecoverTimers.Add(0.0);
                 }
-                int local_29 = local_22 - 1;
+                int local_29 = local_20.GetValue().ParallelRecoverTimers.Num() - 1;
                 for (; local_29 >= 0; --local_29)
                 {
                     float local_32 = 1.0;
-                    local_24 = local_24 + local_32;
-                    local_24 = local_26.TokenRecoverTime;
-                    if (local_32 >= local_24)
+                    float local_24_3 = local_20.GetValue().ParallelRecoverTimers[local_29];
+                    local_24_3 = local_24_3 + local_32;
+                    if (local_20.GetValue().ParallelRecoverTimers[local_29] >= local_26.TokenRecoverTime)
                     {
-                        local_28 = local_28 - 1;
-                        int local_35 = FMath::Max(0, local_28);
+                        local_20.GetValue().ParallelRecoverTimers.RemoveAt(local_29);
+                        local_20.GetValue().CurrentConsumedTokenNum = FMath::Max(0, (local_20.GetValue().CurrentConsumedTokenNum - 1));
                     }
                 }
                 continue;
             }
-            float local_32_2 = 1.0;
-            local_24 = local_24 + local_32_2;
-            if (local_32_2 >= local_26.TokenRecoverTime)
+            float local_24_4 = local_20.GetValue().RecoverTokenElapsedTimeCount + 1.0;
+            local_20.GetValue().RecoverTokenElapsedTimeCount = local_24_4;
+            if (local_20.GetValue().RecoverTokenElapsedTimeCount >= local_26.TokenRecoverTime)
             {
-                local_21 = FMath::Max(0, local_21 - 1);
-                local_24 = 0.0;
+                local_20.GetValue().CurrentConsumedTokenNum = FMath::Max(0, (local_20.GetValue().CurrentConsumedTokenNum - 1));
+                local_24_4 = 0.0;
+                local_20.GetValue().RecoverTokenElapsedTimeCount = 0.0;
             }
         }
         return;

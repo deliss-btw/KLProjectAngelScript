@@ -193,11 +193,9 @@ FVM_PlayPiano& Create(const UObject ContextObject)
 {
     return FVM_PlayPiano::CreateByManager(EUIInternal::GetContextManager(ContextObject));
 }
-FVM_PlayPiano CreateByManager(const UEUIManagerSubsystem Manager)
+FVM_PlayPiano& CreateByManager(const UEUIManagerSubsystem Manager)
 {
-    FVM_PlayPiano __r;
-    TEUIModelRef<FVM_PlayPiano> local_6 = TEUIModelRef<FVM_PlayPiano>(EUIInternal::MakeModelWithManager(Manager, FVM_PlayPiano::ModelId));
-    return __r;
+    return TEUIModelRef<FVM_PlayPiano>(EUIInternal::MakeModelWithManager(Manager, FVM_PlayPiano::ModelId)).Get();
 }
 void GetModelInfo(FEUIViewModelMetaInfo &inout Result)
 {
@@ -254,7 +252,6 @@ namespace __GeneratedProperties_FVM_PlayPiano
 {
 UScriptStruct StaticStruct()
 {
-    UScriptStruct local_2;
-    return local_2;
+    return __GeneratedProperties_FVM_PlayPiano.Get();
 }
 }

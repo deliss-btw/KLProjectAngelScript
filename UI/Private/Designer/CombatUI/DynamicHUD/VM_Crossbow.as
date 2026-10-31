@@ -121,11 +121,9 @@ FVMS_Crossbow& Get(const UObject ContextObject)
 {
     return FVMS_Crossbow::GetByManager(EUIInternal::GetContextManager(ContextObject));
 }
-FVMS_Crossbow GetByManager(const UEUIManagerSubsystem Manager)
+FVMS_Crossbow& GetByManager(const UEUIManagerSubsystem Manager)
 {
-    FVMS_Crossbow __r;
-    TEUIModelRef<FVMS_Crossbow> local_6 = TEUIModelRef<FVMS_Crossbow>(EUIInternal::MakeModelWithManager(Manager, FVMS_Crossbow::ModelId));
-    return __r;
+    return TEUIModelRef<FVMS_Crossbow>(EUIInternal::MakeModelWithManager(Manager, FVMS_Crossbow::ModelId)).Get();
 }
 void GetModelInfo(FEUIViewModelMetaInfo &inout Result)
 {
@@ -177,7 +175,6 @@ namespace __GeneratedProperties_FVMS_Crossbow
 {
 UScriptStruct StaticStruct()
 {
-    UScriptStruct local_2;
-    return local_2;
+    return __GeneratedProperties_FVMS_Crossbow.Get();
 }
 }

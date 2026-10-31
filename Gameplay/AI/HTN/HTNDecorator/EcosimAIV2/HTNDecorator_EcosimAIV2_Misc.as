@@ -267,7 +267,6 @@ class UHTNDecorator_EcosimAIV2_CheckDistanceToTarget : UHTNDecorator_ECSScriptBa
     {
         bool local_13 = false;
         float local_42;
-        float32 local_47 = 0.0f;
         if (FECSEntity(this.EntityID.GetValue(Context.opImplConv())).IsValid())
         {
             GetDefaulted local_24;
@@ -290,8 +289,7 @@ class UHTNDecorator_EcosimAIV2_CheckDistanceToTarget : UHTNDecorator_ECSScriptBa
             {
                 local_42 = local_20.DistSquared(local_30);
             }
-            FAISmartValueContext local_6 = Context.opImplConv();
-            float local_46 = local_47;
+            float local_46 = this.CompareValue.GetValue(Context.opImplConv());
             float local_44 = local_46 * local_46;
             switch (int(this.CompareType))
             {
@@ -346,13 +344,7 @@ class UHTNDecorator_EcosimAIV2_EntityInteractingWithTarget : UHTNDecorator_ECSSc
     UFUNCTION()
     bool PerformConditionCheck_Implementation(const FHTNContext &inout Context, const EHTNDecoratorConditionCheckType CheckType) const
     {
-        int local_17 = 0;
-        int local_18 = 0;
-        FECSEntity local_12 = FECSEntity(this.EntityID.GetValue(Context.opImplConv()));
-        FECSEntity local_4 = FECSEntity(this.TargetEntityID.GetValue(Context.opImplConv()));
-        FAISmartValueContext local_6 = Context.opImplConv();
-        FAISmartValueContext local_6_2 = Context.opImplConv();
-        return ::FEcosimAIV2Utils::IsEntityInteractingWithTarget(local_12, (this.bIsTargetEntityIDVar), local_4, (this.bByIndex), this.InteractBehaviorClass, local_18, local_17);
+        return ::FEcosimAIV2Utils::IsEntityInteractingWithTarget(FECSEntity(this.EntityID.GetValue(Context.opImplConv())), (this.bIsTargetEntityIDVar), FECSEntity(this.TargetEntityID.GetValue(Context.opImplConv())), (this.bByIndex), this.InteractBehaviorClass, this.InteractPointIndex.GetValue(Context.opImplConv()), this.InteractBehaviorIndex.GetValue(Context.opImplConv()));
     }
 }
 
@@ -380,7 +372,6 @@ class UHTNDecorator_EcosimAIV2_EntityCanInteractWithTarget : UHTNDecorator_ECSSc
     UFUNCTION()
     bool PerformConditionCheck_Implementation(const FHTNContext &inout Context, const EHTNDecoratorConditionCheckType CheckType) const
     {
-        int local_18 = 0;
         bool local_20;
         int local_42 = 0;
         FECSEntity local_12 = FECSEntity(this.SourceEntityID.GetValue(Context.opImplConv()));
@@ -389,10 +380,8 @@ class UHTNDecorator_EcosimAIV2_EntityCanInteractWithTarget : UHTNDecorator_ECSSc
         int local_19 = -1;
         if (this.bByIndex)
         {
-            FAISmartValueContext local_6 = Context.opImplConv();
-            local_17 = local_18;
-            FAISmartValueContext local_6_2 = Context.opImplConv();
-            local_19 = local_18;
+            local_17 = this.InteractPointIndex.GetValue(Context.opImplConv());
+            local_19 = this.InteractBehaviorIndex.GetValue(Context.opImplConv());
         }
         else
         {
@@ -428,7 +417,7 @@ class UHTNDecorator_EcosimAIV2_EntityCanInteractWithTarget : UHTNDecorator_ECSSc
         {
             local_16 = ENTITY_NULL;
         }
-        local_18 = ::FEcosimAIV2Utils::CountInteractSources(local_4, local_17, local_19, EEcosimAIV2RelationType(2), local_16);
+        int local_18 = ::FEcosimAIV2Utils::CountInteractSources(local_4, local_17, local_19, EEcosimAIV2RelationType(2), local_16);
         if (local_42)
         {
             TArray<FECSEntity> local_50 = ::FInteractUtils::GetInteractingEntitiesAtPointWithBehavior(local_4, local_17, local_19);
@@ -514,13 +503,9 @@ class UHTNDecorator_EcosimAIV2_NPCCheckTraceDistanceToTarget : UHTNDecorator_ECS
     UFUNCTION()
     bool PerformConditionCheck_Implementation(const FHTNContext &inout Context, const EHTNDecoratorConditionCheckType CheckType) const
     {
-        bool local_3 = false;
         float local_42;
-        float32 local_59 = 0.0f;
         Modify local_66;
-        FAISmartValueContext local_2 = Context.opImplConv();
-        local_3 = !local_3;
-        if (local_3)
+        if (!(this.EnableTrace.GetValue(Context.opImplConv())))
         {
             return true;
         }
@@ -551,8 +536,7 @@ class UHTNDecorator_EcosimAIV2_NPCCheckTraceDistanceToTarget : UHTNDecorator_ECS
             }
             if (local_45)
             {
-                FAISmartValueContext local_2_2 = Context.opImplConv();
-                float local_44_3 = local_59;
+                float local_44_3 = this.ExitRange.GetValue(Context.opImplConv());
                 float local_58 = local_44_3;
                 local_44_3 = local_58 * local_58;
                 if (local_42 > local_44_3)
@@ -566,8 +550,7 @@ class UHTNDecorator_EcosimAIV2_NPCCheckTraceDistanceToTarget : UHTNDecorator_ECS
                 }
                 return true;
             }
-            FAISmartValueContext local_2_3 = Context.opImplConv();
-            float local_44_4 = local_59;
+            float local_44_4 = this.EnterRange.GetValue(Context.opImplConv());
             float local_62 = local_44_4 * local_44_4;
             if (local_42 < local_62)
             {
@@ -580,7 +563,6 @@ class UHTNDecorator_EcosimAIV2_NPCCheckTraceDistanceToTarget : UHTNDecorator_ECS
             }
             return false;
         }
-        local_3 = true;
         return true;
     }
 }

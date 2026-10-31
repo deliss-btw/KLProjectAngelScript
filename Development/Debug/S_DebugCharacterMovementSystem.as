@@ -285,11 +285,9 @@ class US_DebugEntityMovementSystem : UECSScriptSystem
     {
         return !(CVar_Charactermovenet_Debug.GetBool());
     }
-    FDebugMovementStatInfo GetStatInfo() const
+    FDebugMovementStatInfo& GetStatInfo() const
     {
-        FDebugMovementStatInfo __r;
-        TRawPtr<FDebugMovementStatInfo> local_6 = FInstancedStruct::GetMutablePtr_Const(this.StatInfoData).opCall();
-        return __r;
+        return FInstancedStruct::GetMutablePtr_Const(this.StatInfoData).opCall().Get();
     }
     FECSEntity GetDebugEntity() const
     {
@@ -656,7 +654,7 @@ class US_DebugEntityMovementSystem : UECSScriptSystem
     UFUNCTION()
     void ClientDebugPrint() const
     {
-        float32 local_63 = 0.0f;
+        int local_78 = 0;
         FDebugMovementStatInfo& local_2 = this.GetStatInfo();
         int local_6 = local_2.PrintLines.Num() - 1;
         for (; local_6 >= 0; )
@@ -680,7 +678,7 @@ class US_DebugEntityMovementSystem : UECSScriptSystem
                     FECSDebugDraw::DrawDebugPoint(n"CharacterMovementDebug", local_38, 8.0f, FColor::Red, FColor::Orange, -1.0f, uint8(1));
                 }
             }
-            FFPTime local_72 = FFPTime(ECS::GetRuntimeInfo().Time);
+            float32 local_63 = local_78.GetValue(FFPTime(ECS::GetRuntimeInfo().Time));
             FColor local_64_2 = FLinearColor::LerpUsingHSV(FLinearColor::Purple, FLinearColor::Blue, local_63).ToFColor(false);
             FECSDebugDraw::DrawDebugCapsule(n"CharacterMovementDebug", local_2.ShapeInfo.GetCollisionPosition(), local_2.ShapeInfo.GetCapsuleHalfHeight(), local_2.ShapeInfo.GetCapsuleRadius(), local_2.ShapeInfo.GetCollisionRotation(), local_64_2, FColor(uint8(0), uint8(0), uint8(0), uint8(0)), -1.0f, uint8(0), 0.0f);
             if (int(local_2.ShapeInfo.GetFloorColor().A) != 0)

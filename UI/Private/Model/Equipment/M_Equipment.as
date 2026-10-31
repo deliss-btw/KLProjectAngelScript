@@ -165,7 +165,6 @@ struct FMS_EquipmentDataCache : FEUIModelSingleton
     bool IsEquipByHiddenAvatar(const uint64 ItemUid)
     {
         int local_3;
-        bool local_7 = false;
         if (ItemUid == 0)
         {
             return false;
@@ -173,12 +172,13 @@ struct FMS_EquipmentDataCache : FEUIModelSingleton
         TEUIModelRef<FM_Equipment> local_6;
         if (this.GetCachedEquipments().Find(ItemUid, local_6))
         {
-            if (!(GetEquiptingAvatar().IsSet()))
+            if (!(local_6.Get().GetEquiptingAvatar().IsSet()))
             {
                 local_3 = 0;
             }
             else
             {
+                bool local_7 = local_6.Get().GetEquiptingAvatar().Get().bAlwaysHidden;
                 local_3 = local_7;
             }
             return (local_3 != 0);
@@ -213,10 +213,8 @@ struct FMS_EquipmentDataCache : FEUIModelSingleton
         local_2.SetEquipmentConfig(Config);
         if (Config)
         {
-            TArrayConstIterator<FTraitParam> local_10;
-            for (; local_10.CanProceed;)
+            for (auto& local_18 : Config.Get().DefaultTrait)
             {
-                const FTraitParam& local_18 = local_10.Proceed();
                 local_2.GetModify_EquipmentTraits().Add(TEUIModelRef<FM_Trait>(::FM_Trait::Create(this.GetContext().Manager, local_18.GetTrait(), local_18.GetLevel())));
             }
         }
@@ -229,10 +227,8 @@ struct FMS_EquipmentDataCache : FEUIModelSingleton
         local_4.SetEquipmentConfig(Config);
         if (Config)
         {
-            TArrayConstIterator<FTraitParam> local_12;
-            for (; local_12.CanProceed;)
+            for (auto& local_20 : Config.Get().DefaultTrait)
             {
-                const FTraitParam& local_20 = local_12.Proceed();
                 local_4.GetModify_EquipmentTraits().Add(TEUIModelRef<FM_Trait>(::FM_Trait::Create(this.GetContext().Manager, local_20.GetTrait(), local_20.GetLevel())));
             }
         }
@@ -266,10 +262,8 @@ struct FMS_EquipmentDataCache : FEUIModelSingleton
     }
     void RefreshWeaponCanChangeRedDot(const bool bAllowGenerate, const bool bFilterByWeaponType, const TSet<EWeaponType> &inout AffectedWeaponTypes)
     {
-        int local_52 = 0;
         bool local_54;
         CastTo local_82;
-        int local_108 = 0;
         int local_152;
         bool local_169;
         bool local_170;
@@ -287,21 +281,25 @@ struct FMS_EquipmentDataCache : FEUIModelSingleton
         TMap<EWeaponType, int> local_30;
         for (auto& local_48 : this.GetCachedEquipments())
         {
-            local_48;
-            if (!(GetEquipmentConfig().IsSet()) || ((0 != 2)))
+            const TDataObjectPtr<FEquipmentConfig>& local_50 = local_48.GetValue().Get().GetEquipmentConfig();
+            if (!(local_50.IsSet()) || (int(local_50.Get().ItemType) != 2))
             {
                 continue;
             }
-            if (local_82.opCall())
+            TDataObjectPtr<FWeaponConfig> local_106 = local_82.opCall();
+            if (local_106)
             {
+                int local_108 = local_30.FindOrAdd(local_106.Get().WeaponType);
+                int local_52 = local_50.Get().Level;
                 local_108 = FMath::Max(int(local_108), local_52);
             }
         }
         TSet<uint> local_130;
         for (auto& local_144 : ::FVMS_PlayerOwnedAvatarInfo::Get(this.GetContext().Manager).GetUnLockAvatarList())
         {
-            if (local_144.IsValid() && GetAvatarConfig().IsSet())
+            if (local_144.IsValid() && local_144.Get().GetAvatarConfig().IsSet())
             {
+                local_130.Add(local_144.Get().GetAvatarConfig().Get().DataId);
             }
         }
         FMS_RedDotSystem& local_146 = ::FMS_RedDotSystem::Get(this.GetContext().Manager);
@@ -313,14 +311,14 @@ struct FMS_EquipmentDataCache : FEUIModelSingleton
             local_170 = false;
             if (local_168.GetEquipmentInfos().Find(EEquipSlotType(1), local_200))
             {
-                if (local_82.opCall())
+                TDataObjectPtr<FWeaponConfig> local_78 = local_82.opCall();
+                if (local_78)
                 {
                     EWeaponType local_202;
-                    EWeaponType local_203;
-                    local_202 = local_203;
+                    local_202 = local_78.Get().WeaponType;
                     local_170 = AffectedWeaponTypes.Contains(local_202);
                     int local_204 = 0;
-                    if (local_30.Find(local_202, local_204) && (local_52 < local_204))
+                    if (local_30.Find(local_202, local_204) && (local_200.GetEquipmentData().GetEquipmentConfig().Get().Level < local_204))
                     {
                         local_169 = true;
                     }
@@ -376,9 +374,8 @@ struct FMS_EquipmentDataCache : FEUIModelSingleton
         int local_13 = 0;
         for (auto& local_32 : this.GetCachedEquipments())
         {
-            local_32;
-            const TDataObjectPtr<FEquipmentConfig>& local_34 = GetEquipmentConfig();
-            if (local_34.IsSet() && (0 == 7) && !(GetEquiptingAvatar().IsSet()))
+            const TDataObjectPtr<FEquipmentConfig>& local_34 = local_32.GetValue().Get().GetEquipmentConfig();
+            if (local_34.IsSet() && (int(local_34.Get().ItemType) == 7) && !(local_32.GetValue().Get().GetEquiptingAvatar().IsSet()))
             {
                 ++local_13;
             }
@@ -426,7 +423,6 @@ struct FMS_EquipmentDataCache : FEUIModelSingleton
     {
         bool local_32;
         TArray<uint64> local_4;
-        int local_156 = 0;
         TArray<uint64> local_8;
         TSet<EWeaponType> local_28;
         int local_29 = 0;
@@ -440,24 +436,26 @@ struct FMS_EquipmentDataCache : FEUIModelSingleton
             {
                 if (!(this.GetCachedEquipments().Contains(local_42.GetGuid())) && !(local_42.HasStackableItem()))
                 {
-                    if (local_156 == 2)
+                    if (int(local_152.Get().ItemType) == 2)
                     {
                         local_4.Add(local_42.GetGuid());
                     }
                     else
                     {
-                        if (local_156 == 7)
+                        if (int(local_152.Get().ItemType) == 7)
                         {
                             local_8.Add(local_42.GetGuid());
                         }
                     }
                 }
                 this.CacheEquipmentData(local_152, local_42);
-                if (local_156 == 2)
+                if (int(local_152.Get().ItemType) == 2)
                 {
                     CastTo local_186;
-                    if (local_186.opCall())
+                    TDataObjectPtr<FWeaponConfig> local_210 = local_186.opCall();
+                    if (local_210)
                     {
+                        local_28.Add(local_210.Get().WeaponType);
                     }
                 }
             }
@@ -484,8 +482,9 @@ struct FMS_EquipmentDataCache : FEUIModelSingleton
             TSet<uint> local_238;
             for (auto& local_254 : ::FVMS_PlayerOwnedAvatarInfo::Get(this.GetManager()).GetUnLockAvatarList())
             {
-                if (local_254.IsValid() && GetAvatarConfig().IsSet())
+                if (local_254.IsValid() && local_254.Get().GetAvatarConfig().IsSet())
                 {
+                    local_238.Add(local_254.Get().GetAvatarConfig().Get().DataId);
                 }
             }
             FECSEntity local_258 = this.GetContext().GetLocalPlayer();
@@ -527,7 +526,6 @@ struct FMS_EquipmentDataCache : FEUIModelSingleton
     void GS_OnInventoryItemRemoved(const FPbInventoryDelItemNotify &inout Notify)
     {
         int local_25;
-        int local_37 = 0;
         FMS_RedDotSystem& local_2 = ::FMS_RedDotSystem::Get(this.GetContext().Manager);
         TSet<EWeaponType> local_22;
         bool local_23 = false;
@@ -541,14 +539,16 @@ struct FMS_EquipmentDataCache : FEUIModelSingleton
             {
                 continue;
             }
-            const TDataObjectPtr<FEquipmentConfig>& local_36 = GetEquipmentConfig();
+            const TDataObjectPtr<FEquipmentConfig>& local_36 = local_34.Get().GetEquipmentConfig();
             if (local_36.IsSet())
             {
-                if (local_37 == 2)
+                if (int(local_36.Get().ItemType) == 2)
                 {
                     CastTo local_68;
-                    if (local_68.opCall())
+                    TDataObjectPtr<FWeaponConfig> local_92 = local_68.opCall();
+                    if (local_92)
                     {
+                        local_22.Add(local_92.Get().WeaponType);
                     }
                     if (local_2.HasRedDotByEvent(ERedPointEvent(13), local_32))
                     {
@@ -557,7 +557,7 @@ struct FMS_EquipmentDataCache : FEUIModelSingleton
                 }
                 else
                 {
-                    if (local_37 == 7)
+                    if (int(local_36.Get().ItemType) == 7)
                     {
                         local_23 = true;
                         if (local_2.HasRedDotByEvent(ERedPointEvent(12), local_32))
@@ -567,6 +567,8 @@ struct FMS_EquipmentDataCache : FEUIModelSingleton
                     }
                 }
             }
+            this.GetModify_EquipmentToItemUid().Remove(local_34);
+            this.GetModify_CachedEquipments().Remove(local_32);
         }
         if (!(local_22.IsEmpty()))
         {
@@ -587,12 +589,10 @@ struct FMS_EquipmentDataCache : FEUIModelSingleton
             {
                 for (auto& local_54 : local_36.GetEquipmentInfos())
                 {
-                    local_54;
                     int local_79 = local_36.GetAvatarId();
                     GetDataObjectByGSDataId<FAvatarPrefabConfig> local_78;
-                    TEUIModelRef<FM_Equipment> local_84 = this.GetEquipment(GetGuid());
-                    local_78.opImplConv().SetEquiptingAvatar();
-                    local_20.Add(GetGuid());
+                    this.GetEquipment(local_54.GetValue().GetGuid()).Get().SetEquiptingAvatar(local_78.opImplConv());
+                    local_20.Add(local_54.GetValue().GetGuid());
                 }
             }
         }
@@ -600,7 +600,7 @@ struct FMS_EquipmentDataCache : FEUIModelSingleton
         {
             if (!(local_20.Contains(local_126.GetKey())))
             {
-                TDataObjectPtr<FAvatarPrefabConfig>(nullptr).SetEquiptingAvatar();
+                local_126.GetValue().Get().SetEquiptingAvatar(TDataObjectPtr<FAvatarPrefabConfig>(nullptr));
             }
         }
         FEUIModelRef local_132 = FEUIModelRef(this);
@@ -663,13 +663,12 @@ struct FMS_EquipmentDataCache : FEUIModelSingleton
     }
     void ProcessEquipmentTraits(const TEUIModelRef<FM_Equipment> &inout Equipment)
     {
-        const FEquipmentConfig& local_2;
-        FM_Trait& local_22;
         FDataObjectPtr local_108;
-        TArray<TEUIModelRef<FM_Trait>>& local_4 = GetModify_EquipmentTraits();
+        const FEquipmentConfig& local_2 = Equipment.Get().GetEquipmentConfig().Get();
+        TArray<TEUIModelRef<FM_Trait>>& local_4 = Equipment.Get().GetModify_EquipmentTraits();
         for (auto& local_20 : local_4)
         {
-            local_20;
+            FM_Trait& local_22 = local_20.Get();
             local_22.SetbIsRandomTrait(true);
             for (auto& local_36 : local_2.DefaultTrait)
             {
@@ -683,6 +682,8 @@ struct FMS_EquipmentDataCache : FEUIModelSingleton
                 }
             }
         }
+        __Lambda_UI_Private_Model_Equipment_M_Equipment_585 local_110;
+        local_4.Sort(local_110);
         return;
     }
     const TMap<uint64, TEUIModelRef<FM_Equipment>> GetCachedEquipments() const property
@@ -820,42 +821,20 @@ struct FMS_Talisman : FEUIModelSingleton
     }
     void GenerateNewTalismanSlotRedDots(const uint OldSlotCount, const uint NewSlotCount)
     {
-        bool local_5;
-        TEUIModelRef<FM_Avatar> local_26;
         TArray<uint64> local_4;
         if (NewSlotCount > OldSlotCount)
         {
             FVMS_PlayerOwnedAvatarInfo& local_10 = ::FVMS_PlayerOwnedAvatarInfo::Get(this.GetManager());
             for (auto& local_24 : local_10.GetUnLockAvatarList())
             {
-                if (!(local_24.IsValid()))
-                {
-                    local_5 = false;
-                }
-                else
-                {
-                    local_26.GetAvatar();
-                    local_5 = local_26.IsValid();
-                }
-                if (!(local_5))
-                {
-                    local_5 = false;
-                }
-                else
-                {
-                    local_26.GetAvatar();
-                    local_5 = GetAvatarConfig().IsSet();
-                }
-                if (local_5)
+                if (local_24.IsValid() && local_24.Get().GetAvatar().IsValid() && local_24.Get().GetAvatar().Get().GetAvatarConfig().IsSet())
                 {
                     int64 local_30 = OldSlotCount;
                     for (; local_30 < NewSlotCount; ++local_30)
                     {
-                        int64 local_34 = local_30 + 2;
-                        int local_37 = 32;
-                        local_34 = local_34 << local_37;
-                        local_26.GetAvatar();
-                        local_34 = local_34 | local_37;
+                        int64 local_34 = (local_30 + 2) << 32;
+                        TEUIModelRef<FM_Avatar> local_26 = local_24.Get().GetAvatar();
+                        local_34 = local_34 | local_26.Get().GetAvatarConfig().Get().DataId;
                         if (!(::FMS_RedDotSystem::Get(this.GetContext().Manager).HasRedDotByEvent(ERedPointEvent(11), local_34)))
                         {
                             local_4.Add(local_34);
@@ -926,7 +905,7 @@ struct __Lambda_UI_Private_Model_Equipment_M_Equipment_585
     }
     bool opCall(const TEUIModelRef<FM_Trait> &inout A, const TEUIModelRef<FM_Trait> &inout B)
     {
-        return GetbIsRandomTrait()) == !(GetbIsRandomTrait() && GetbIsRandomTrait();
+        return A.Get().GetbIsRandomTrait()) == !(B.Get().GetbIsRandomTrait() && B.Get().GetbIsRandomTrait();
     }
 }
 
@@ -936,11 +915,9 @@ FM_Equipment& Create(const UObject ContextObject)
 {
     return FM_Equipment::CreateByManager(EUIInternal::GetContextManager(ContextObject));
 }
-FM_Equipment CreateByManager(const UEUIManagerSubsystem Manager)
+FM_Equipment& CreateByManager(const UEUIManagerSubsystem Manager)
 {
-    FM_Equipment __r;
-    TEUIModelRef<FM_Equipment> local_6 = TEUIModelRef<FM_Equipment>(EUIInternal::MakeModelWithManager(Manager, FM_Equipment::ModelId));
-    return __r;
+    return TEUIModelRef<FM_Equipment>(EUIInternal::MakeModelWithManager(Manager, FM_Equipment::ModelId)).Get();
 }
 void GetModelInfo(FEUIModelOnlyMetaInfo &inout Result)
 {
@@ -971,11 +948,9 @@ FMS_EquipmentDataCache& Get(const UObject ContextObject)
 {
     return FMS_EquipmentDataCache::GetByManager(EUIInternal::GetContextManager(ContextObject));
 }
-FMS_EquipmentDataCache GetByManager(const UEUIManagerSubsystem Manager)
+FMS_EquipmentDataCache& GetByManager(const UEUIManagerSubsystem Manager)
 {
-    FMS_EquipmentDataCache __r;
-    TEUIModelRef<FMS_EquipmentDataCache> local_6 = TEUIModelRef<FMS_EquipmentDataCache>(EUIInternal::MakeModelWithManager(Manager, FMS_EquipmentDataCache::ModelId));
-    return __r;
+    return TEUIModelRef<FMS_EquipmentDataCache>(EUIInternal::MakeModelWithManager(Manager, FMS_EquipmentDataCache::ModelId)).Get();
 }
 void GetModelInfo(FEUIModelOnlyMetaInfo &inout Result)
 {
@@ -1047,11 +1022,9 @@ FMS_Talisman& Get(const UObject ContextObject)
 {
     return FMS_Talisman::GetByManager(EUIInternal::GetContextManager(ContextObject));
 }
-FMS_Talisman GetByManager(const UEUIManagerSubsystem Manager)
+FMS_Talisman& GetByManager(const UEUIManagerSubsystem Manager)
 {
-    FMS_Talisman __r;
-    TEUIModelRef<FMS_Talisman> local_6 = TEUIModelRef<FMS_Talisman>(EUIInternal::MakeModelWithManager(Manager, FMS_Talisman::ModelId));
-    return __r;
+    return TEUIModelRef<FMS_Talisman>(EUIInternal::MakeModelWithManager(Manager, FMS_Talisman::ModelId)).Get();
 }
 void GetModelInfo(FEUIModelOnlyMetaInfo &inout Result)
 {

@@ -85,11 +85,9 @@ FVMS_TransformSkillSelection& Get(const UObject ContextObject)
 {
     return FVMS_TransformSkillSelection::GetByManager(EUIInternal::GetContextManager(ContextObject));
 }
-FVMS_TransformSkillSelection GetByManager(const UEUIManagerSubsystem Manager)
+FVMS_TransformSkillSelection& GetByManager(const UEUIManagerSubsystem Manager)
 {
-    FVMS_TransformSkillSelection __r;
-    TEUIModelRef<FVMS_TransformSkillSelection> local_6 = TEUIModelRef<FVMS_TransformSkillSelection>(EUIInternal::MakeModelWithManager(Manager, FVMS_TransformSkillSelection::ModelId));
-    return __r;
+    return TEUIModelRef<FVMS_TransformSkillSelection>(EUIInternal::MakeModelWithManager(Manager, FVMS_TransformSkillSelection::ModelId)).Get();
 }
 void GetModelInfo(FEUIViewModelMetaInfo &inout Result)
 {
@@ -137,7 +135,6 @@ namespace __GeneratedProperties_FVMS_TransformSkillSelection
 {
 UScriptStruct StaticStruct()
 {
-    UScriptStruct local_2;
-    return local_2;
+    return __GeneratedProperties_FVMS_TransformSkillSelection.Get();
 }
 }

@@ -17,14 +17,14 @@ class UWidget_MotionTab : UEUIUserListItemWidget
     UFUNCTION()
     FText Tab_TabName() const
     {
-        FVM_MotionTab& local_2;
+        FVM_MotionTab& local_2 = this.Tab.Get();
         FText local_12 = local_2 ? local_2.GetTabName() : FText();
         return local_12;
     }
     UFUNCTION()
     FLinearColor Tab_TabColor() const
     {
-        FVM_MotionTab& local_2;
+        FVM_MotionTab& local_2 = this.Tab.Get();
         FLinearColor local_11 = local_2 ? local_2.GetTabColor() : FLinearColor();
         return local_11;
     }

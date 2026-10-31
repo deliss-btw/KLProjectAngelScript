@@ -95,8 +95,6 @@ struct FVMS_ChangeRole : FEUIViewModelSingleton
     {
         bool local_1;
         TDataObjectPtr<FAvatarPrefabConfig> local_52;
-        UDataTable local_148;
-        UDataTable local_834;
         UClass local_858;
         ACharacterPrefab local_862;
         this.SetbShouldClose(false);
@@ -107,17 +105,15 @@ struct FVMS_ChangeRole : FEUIViewModelSingleton
             return;
         }
         this.SetSlotIndex(local_4.GetSlotIndex());
-        FAvatarPrefabConfig local_56;
+        const FAvatarPrefabConfig& local_56 = local_4.GetSubAvatarConfig().Get();
+        const FAvatarPrefabConfig& local_58 = local_4.GetMainAvatarConfig().Get();
         TDataObjectPtr<FGameAttribute_DefaultConfig> local_82 = TDataObjectPtr<FGameAttribute_DefaultConfig>(local_56.InitValues);
-        FAvatarPrefabConfig local_58;
         TDataObjectPtr<FGameAttribute_DefaultConfig> local_82_2 = TDataObjectPtr<FGameAttribute_DefaultConfig>(local_58.InitValues);
         if (this.GetSlotIndex() == 0)
         {
-            FSlateBrush local_132;
             FGameAttribute_DefaultConfig local_86;
             this.SetOtherAvatarBrush(local_56.PlayerTachieBack.LoadBrush());
-            local_132 = local_58.PlayerTachie.LoadBrush();
-            this.SetSelectAvatarBrush(local_132);
+            this.SetSelectAvatarBrush(local_58.PlayerTachie.LoadBrush());
             local_28 = TDataObjectPtr<FAvatarPrefabConfig>(local_58);
             this.SetSelectedAvatar(FEUIModelRef(::FVM_PlayerAvatar::Create(this.GetContext().Manager, local_28)));
             this.SetSelectAvatarClass(local_58.PlayerPowerName);
@@ -127,18 +123,19 @@ struct FVMS_ChangeRole : FEUIViewModelSingleton
         }
         else
         {
-            FSlateBrush local_132;
             FGameAttribute_DefaultConfig local_84;
-            this.SetOtherAvatarBrush(local_132);
-            this.SetSelectAvatarBrush(local_132);
+            this.SetOtherAvatarBrush(::FVMS_CurrentRole::Get(this.GetContext().Manager).GetMainAvatarConfig().Get().PlayerTachieBack.LoadBrush());
+            this.SetSelectAvatarBrush(::FVMS_CurrentRole::Get(this.GetContext().Manager).GetSubAvatarConfig().Get().PlayerTachie.LoadBrush());
             local_52 = TDataObjectPtr<FAvatarPrefabConfig>(local_56);
             this.SetSelectedAvatar(FEUIModelRef(::FVM_PlayerAvatar::Create(this.GetContext().Manager, local_52)));
+            this.SetSelectAvatarClass(::FVMS_CurrentRole::Get(this.GetContext().Manager).GetSubAvatarConfig().Get().PlayerPowerName);
+            this.SetSelectAvatarIllustrate(::FVMS_CurrentRole::Get(this.GetContext().Manager).GetSubAvatarConfig().Get().PlayerIllustrate1);
             this.SetSelectAvatarAttack(this.MakeAttackDisplayText(local_84.Attack));
             this.SetSelectAvatarPostureAttack(this.MakePostureAttackDisplayText(local_84.PostureAttack));
         }
         GetDefaulted local_144;
         TWeakObjectPtr<UDataTable> local_146 = TWeakObjectPtr<UDataTable>(local_144.opCall().DTRoles);
-        if (!((local_148 != nullptr)))
+        if (!((local_146.Get() != nullptr)))
         {
             XError(ELog(0), "DTRoles is null");
             return;
@@ -158,7 +155,7 @@ struct FVMS_ChangeRole : FEUIViewModelSingleton
                 {
                     FName local_832 = ::GetPrefabAvatarName(local_160.GetAllPlayerPawnEntities()[local_161]);
                     this.GetModify_CurrentRoleNames().Add(local_832);
-                    if (local_834.FindRow(local_832, local_828))
+                    if (local_146.Get().FindRow(local_832, local_828))
                     {
                         if (local_828.bIsMainPlayer)
                         {
@@ -176,8 +173,7 @@ struct FVMS_ChangeRole : FEUIViewModelSingleton
         for (; local_161_2 < local_844.Num(); ++local_161_2)
         {
             FAvatarPrefabConfig local_828;
-            FSoftObjectPath local_852;
-            local_858 = Cast<UClass>(local_852.TryLoad());
+            local_858 = Cast<UClass>(local_844[local_161_2].Get().CharacterPrefab.ToSoftObjectPath().TryLoad());
             if (local_858 == nullptr)
             {
                 continue;
@@ -188,7 +184,7 @@ struct FVMS_ChangeRole : FEUIViewModelSingleton
                 continue;
             }
             FName local_830 = local_862.PrefabConfig.Config_FC_PrefabConfig.GetPrefabAvatarName();
-            if (local_834.FindRow(local_830, local_828))
+            if (local_146.Get().FindRow(local_830, local_828))
             {
                 bool local_863;
                 local_863 = this.GetCurrentRoleNames().Contains(local_830);
@@ -265,7 +261,6 @@ struct FVMS_ChangeRole : FEUIViewModelSingleton
     void OnConfirm()
     {
         int local_28 = 0;
-        int local_41 = 0;
         if (this.GetCurrentSelectedRoleIndex() < 0 || (this.GetCurrentSelectedRoleIndex() >= this.GetAllRoles().Num()))
         {
             return;
@@ -295,7 +290,8 @@ struct FVMS_ChangeRole : FEUIViewModelSingleton
         FCE_ClientToServerChangeRole local_40;
         local_40.SlotIndex = this.GetSlotIndex();
         int local_1 = this.GetCurrentSelectedRoleIndex();
-        local_40.AvatarId = local_41;
+        Get local_26;
+        local_40.AvatarId = local_26.opCall().GetAvatarConfig().Get().DataId;
         return;
     }
     void OnChangeRoleResult(const FCE_ServerToClientChangeRole &inout Event)
@@ -309,7 +305,7 @@ struct FVMS_ChangeRole : FEUIViewModelSingleton
         int local_1 = this.GetCurrentSelectedRoleIndex();
         Get local_6;
         TDataObjectPtr<FAvatarPrefabConfig> local_30 = local_6.opCall().GetAvatarConfig();
-        FAvatarPrefabConfig local_56;
+        const FAvatarPrefabConfig& local_56 = local_30.Get();
         TDataObjectPtr<FGameAttribute_DefaultConfig> local_80 = TDataObjectPtr<FGameAttribute_DefaultConfig>(local_56.InitValues);
         this.SetSelectAvatarBrush(local_56.PlayerTachie.LoadBrush());
         this.SetSelectedAvatar(FEUIModelRef(::FVM_PlayerAvatar::Create(this.GetContext().Manager, TDataObjectPtr<FAvatarPrefabConfig>(local_56))));
@@ -686,11 +682,9 @@ FVMS_ChangeRole& Get(const UObject ContextObject)
 {
     return FVMS_ChangeRole::GetByManager(EUIInternal::GetContextManager(ContextObject));
 }
-FVMS_ChangeRole GetByManager(const UEUIManagerSubsystem Manager)
+FVMS_ChangeRole& GetByManager(const UEUIManagerSubsystem Manager)
 {
-    FVMS_ChangeRole __r;
-    TEUIModelRef<FVMS_ChangeRole> local_6 = TEUIModelRef<FVMS_ChangeRole>(EUIInternal::MakeModelWithManager(Manager, FVMS_ChangeRole::ModelId));
-    return __r;
+    return TEUIModelRef<FVMS_ChangeRole>(EUIInternal::MakeModelWithManager(Manager, FVMS_ChangeRole::ModelId)).Get();
 }
 void GetModelInfo(FEUIViewModelMetaInfo &inout Result)
 {
@@ -879,7 +873,6 @@ namespace __GeneratedProperties_FVMS_ChangeRole
 {
 UScriptStruct StaticStruct()
 {
-    UScriptStruct local_2;
-    return local_2;
+    return __GeneratedProperties_FVMS_ChangeRole.Get();
 }
 }

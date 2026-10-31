@@ -170,6 +170,7 @@ struct FVM_BuffHoverDialogItem : FEUIViewModel
             }
             else
             {
+                this.GetModify_RemainingCounterDown().Clear();
                 return;
             }
         }
@@ -275,42 +276,36 @@ struct FVM_BuffHoverDialogItem : FEUIViewModel
     {
         int local_38 = 0;
         const UAttributeSettingsSettings local_176;
-        FText local_268;
         int local_308 = 0;
         Has local_34;
-        bool local_29 = !(FECSEntity(this.GetBuffEntityData().BuffEntityId).IsValid()) || !(local_34.opCall());
-        if (local_29)
+        if (!(FECSEntity(this.GetBuffEntityData().BuffEntityId).IsValid()) || !(local_34.opCall()))
         {
             return;
         }
-        int local_67 = local_38.GetStackCount();
-        TDataObjectPtr<FBuffConfig> local_66 = TDataObjectPtr<FBuffConfig>(this.GetBuffEntityData().ConfigRef);
+        TArray<FBuffModifierAttributeDescriptionInfos> local_72 = FBuffUtils::GetBuffModifierAttributeDescriptionInfos(TDataObjectPtr<FBuffConfig>(this.GetBuffEntityData().ConfigRef).Get(), local_38.GetStackCount());
         TArray<TDataObjectPtr<FGameplayModifierConfig>> local_80;
         for (auto local_93 : this.GetAppendModifiersDataIDs())
         {
             TDataObjectPtr<FGameplayModifierConfig> local_118 = ::FGameplayModifier::GetByDataId(local_93);
-            local_29 = !((local_118 == nullptr));
-            if (local_29)
+            if ((!((local_118 == nullptr))))
             {
                 local_80.Add(local_118);
             }
         }
         TArray<FBuffModifierAttributeDescriptionInfos> local_76 = FGameplayModifierUtils::GetModifierAttributeDescriptionBGameplayModifierConfig(local_80);
-        TArray<FBuffModifierAttributeDescriptionInfos> local_72;
         local_72.Append(local_76);
         FDataObjectPtr local_170 = FDataObjectPtr(TDataObjectPtr<FBuffConfig>(this.GetBuffEntityData().ConfigRef).opArrow().PresentationConfig);
         TArray<FBuffHintDescParamItem> local_174;
         GetGameplaySettings<UAttributeSettingsSettings> local_178;
         local_176 = local_178;
         TDataObjectPtr<FBuffPresentationConfig> local_204 = TDataObjectPtr<FBuffPresentationConfig>(local_170);
-        local_29 = !local_29;
-        if (local_29)
+        if (!(local_204.Get().HintDescAdditional.IsEmpty()))
         {
             FBuffHintDescParamItem local_256;
-            int local_67_2 = local_38.GetStackCount();
-            TDataObjectPtr<FBuffConfig> local_66_2 = TDataObjectPtr<FBuffConfig>(this.GetBuffEntityData().ConfigRef);
-            local_268 = FText::FromString(FString());
-            local_256.Desc = local_268;
+            FString local_260;
+            FBuffUtils::ParseModifierAttributeFormattedString(local_204.Get().HintDescAdditional.ToString(), local_260, TDataObjectPtr<FBuffConfig>(this.GetBuffEntityData().ConfigRef).Get(), local_38.GetStackCount());
+            local_256.Desc = FText::FromString(local_260);
+            local_256.Icon = local_204.Get().HintDescAdditionalIcon;
             local_174.Add(local_256);
         }
         for (auto& local_282 : local_72)
@@ -334,7 +329,7 @@ struct FVM_BuffHoverDialogItem : FEUIViewModel
                     Make local_362;
                     local_356.Add(local_362.opImplConv());
                     local_356.Add(FTextArgument(FInstancedStruct::Make(local_282)));
-                    local_256.Desc = local_268;
+                    local_256.Desc = ::MessageHintUtils::ParseText(local_204.Get().DefaultAttributeDesc, local_356);
                     if (local_256.Desc.IsEmptyOrWhitespace())
                     {
                         continue;
@@ -778,11 +773,9 @@ FVM_BuffHoverDialogItem& Create(const UObject ContextObject, const FBuffEntityDa
 {
     return FVM_BuffHoverDialogItem::CreateByManager(EUIInternal::GetContextManager(ContextObject), BuffEntityData, OverrideEndTime, AppendModifiersDataIDs);
 }
-FVM_BuffHoverDialogItem CreateByManager(const UEUIManagerSubsystem Manager, const FBuffEntityData &inout BuffEntityData, const FFPTime &inout OverrideEndTime, const TArray<uint> &inout AppendModifiersDataIDs)
+FVM_BuffHoverDialogItem& CreateByManager(const UEUIManagerSubsystem Manager, const FBuffEntityData &inout BuffEntityData, const FFPTime &inout OverrideEndTime, const TArray<uint> &inout AppendModifiersDataIDs)
 {
-    FVM_BuffHoverDialogItem __r;
-    TEUIModelRef<FVM_BuffHoverDialogItem> local_6 = TEUIModelRef<FVM_BuffHoverDialogItem>(EUIInternal::MakeModelWithManager_Generic(Manager, FVM_BuffHoverDialogItem::ModelId, 0, BuffEntityData, OverrideEndTime, AppendModifiersDataIDs));
-    return __r;
+    return TEUIModelRef<FVM_BuffHoverDialogItem>(EUIInternal::MakeModelWithManager_Generic(Manager, FVM_BuffHoverDialogItem::ModelId, 0, BuffEntityData, OverrideEndTime, AppendModifiersDataIDs)).Get();
 }
 void GetModelInfo(FEUIViewModelMetaInfo &inout Result)
 {
@@ -1200,7 +1193,6 @@ namespace __GeneratedProperties_FVM_BuffHoverDialogItem
 {
 UScriptStruct StaticStruct()
 {
-    UScriptStruct local_2;
-    return local_2;
+    return __GeneratedProperties_FVM_BuffHoverDialogItem.Get();
 }
 }

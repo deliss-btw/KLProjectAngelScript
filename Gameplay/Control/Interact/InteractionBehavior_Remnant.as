@@ -64,8 +64,8 @@ class UInteractionBehavior_RemnantPickup : UInteractionBehaviorBase
             {
                 if (local_16.GetItems()[0].IsSet())
                 {
-                    FString local_22 = local_8.ToString();
-                    FString local_26 = (local_22 + " ");
+                    FString local_26 = (local_8.ToString() + " ");
+                    FString local_22 = (local_26 + local_16.GetItems()[0].Get().ItemName);
                     return FText::FromString(local_22);
                 }
             }

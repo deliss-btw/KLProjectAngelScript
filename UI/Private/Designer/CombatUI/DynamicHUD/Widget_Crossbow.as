@@ -26,8 +26,8 @@ class UWidget_Crossbow : UEUIUserWidget
     UFUNCTION()
     ESlateVisibility Crossbow_SlateVisibilityPanelVisible() const
     {
-        FVMS_Crossbow& local_2;
         int local_5;
+        FVMS_Crossbow& local_2 = this.Crossbow.Get();
         if (local_2)
         {
             local_5 = int(local_2.PanelVisibleAsSlateVisibility());
@@ -40,8 +40,8 @@ class UWidget_Crossbow : UEUIUserWidget
     }
     void HandleObservedModelChanges(FEUIReactiveSubscriberIterator &inout It)
     {
-        FVMS_Crossbow& local_6;
         TEUIModelRef<FVMS_Crossbow> local_2 = this.Crossbow.AsRef();
+        FVMS_Crossbow& local_6 = local_2.Get();
         for (; It; )
         {
             FEUIReactiveSubscriberTrackScope local_56 = FEUIReactiveSubscriberTrackScope(It);

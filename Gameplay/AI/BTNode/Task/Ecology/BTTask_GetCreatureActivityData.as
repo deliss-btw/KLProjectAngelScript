@@ -38,14 +38,8 @@ class UBTTask_EcologyGetCreatureActivityData : UBTTask_ECSScriptBase
     EBTNodeResult ExecuteTask_Implementation(const FAIBehaviorTreeContext &inout Context, const FBTNodeMemory &inout NodeMemory) const
     {
         FC_CreatureEcologyState local_10;
-        UEcologyBehaviorDefine local_22;
-        UEcologyBehaviorDefine local_40;
         int local_46 = 0;
-        UEcologyBehaviorDefine local_50;
         bool local_51;
-        UEcologyBehaviorDefine local_54;
-        UEcologyBehaviorDefine local_56;
-        UEcologyBehaviorDefine local_60;
         float32 local_61;
         float32 local_62;
         FECSEntity local_4 = FECSEntity(Context.PawnEntity);
@@ -59,7 +53,7 @@ class UBTTask_EcologyGetCreatureActivityData : UBTTask_ECSScriptBase
         if (!(this.ForNoResourceBehavior))
         {
             local_20 = local_10.ActivityData.BehaviorDefine;
-            if (!((local_22 != nullptr)))
+            if (!((local_20.Get() != nullptr)))
             {
                 return EBTNodeResult(1);
             }
@@ -72,18 +66,19 @@ class UBTTask_EcologyGetCreatureActivityData : UBTTask_ECSScriptBase
             {
                 return EBTNodeResult(1);
             }
-            if (!(local_34[local_30.NextRangeInt(0, (local_34.Num() - 1))]))
+            int local_38 = local_30.NextRangeInt(0, (local_34.Num() - 1));
+            if (!(local_34[local_38]))
             {
                 return EBTNodeResult(1);
             }
-            if (!((local_40 != nullptr)))
+            local_20 = local_34[local_38].Get().BehaviorDefine;
+            if (!((local_20.Get() != nullptr)))
             {
                 return EBTNodeResult(1);
             }
             local_46.ActivityData.BehaviorDefine = local_20;
         }
-        UEcologyBehaviorDefine local_48;
-        bool local_11 = local_48.bHasBehaviorTreeAsset;
+        bool local_11 = local_20.Get().bHasBehaviorTreeAsset;
         if (local_11)
         {
             local_16.SetValueAsBool(this.DyncBehaviorMark.SelectedKeyName, true);
@@ -92,18 +87,18 @@ class UBTTask_EcologyGetCreatureActivityData : UBTTask_ECSScriptBase
         {
             local_16.SetValueAsBool(this.DyncBehaviorMark.SelectedKeyName, false);
         }
-        if (local_48 != nullptr)
+        if (local_20.Get() != nullptr)
         {
-            local_51 = local_50.bIsDefaultBehavior;
+            local_51 = local_20.Get().bIsDefaultBehavior;
         }
         else
         {
             local_51 = false;
         }
         local_16.SetValueAsBool(this.bIsDefaultBehaviorKey.SelectedKeyName, local_51);
-        if (local_50 != nullptr)
+        if (local_20.Get() != nullptr)
         {
-            local_11 = local_54.bIsLoopBehavior;
+            local_11 = local_20.Get().bIsLoopBehavior;
         }
         else
         {
@@ -111,28 +106,27 @@ class UBTTask_EcologyGetCreatureActivityData : UBTTask_ECSScriptBase
         }
         local_16.SetValueAsBool(this.bIsLoopBehavior.SelectedKeyName, local_11);
         FName local_58;
-        if (local_54 != nullptr)
+        if (local_20.Get() != nullptr)
         {
-            local_58 = local_56.LegacyBehaviorName;
+            local_58 = local_20.Get().LegacyBehaviorName;
         }
         else
         {
             local_58 = NAME_None;
         }
         local_16.SetValueAsName(this.BehaviorNameKey.SelectedKeyName, local_58);
-        if (local_56 != nullptr)
+        if (local_20.Get() != nullptr)
         {
-            local_61 = local_60.LoopDuration;
+            local_61 = local_20.Get().LoopDuration;
         }
         else
         {
             local_61 = 0.0f;
         }
         local_16.SetValueAsFloat(this.LoopDurationKey.SelectedKeyName, local_61);
-        if (local_60 != nullptr)
+        if (local_20.Get() != nullptr)
         {
-            UEcologyBehaviorDefine local_64;
-            local_62 = local_64.LoopRand;
+            local_62 = local_20.Get().LoopRand;
         }
         else
         {

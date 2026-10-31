@@ -51,7 +51,7 @@ class UWidget_CommonHoverItemTips : UEUIUserWidget
     {
         if (this.TipHost.IsValid())
         {
-            EnsureDisplayTip();
+            this.TipHost.Get().EnsureDisplayTip();
         }
         this.RefreshDisplayTip();
         this.RefreshOperationHoverAnchors();
@@ -75,10 +75,8 @@ class UWidget_CommonHoverItemTips : UEUIUserWidget
         TEUIModelRef<FVM_CommonItemTip> local_2 = InDisplayTip;
         if (!(local_2.IsValid()) && this.TipHost.IsValid())
         {
-            TEUIModelRef<FVM_CommonItemTip> local_6;
-            EnsureDisplayTip();
-            local_6.GetDisplayTip();
-            local_2 = local_6;
+            this.TipHost.Get().EnsureDisplayTip();
+            local_2 = this.TipHost.Get().GetDisplayTip();
         }
         this.DisplayTip.SetRef(local_2);
         this.RefreshDisplayModels();
@@ -123,19 +121,19 @@ class UWidget_CommonHoverItemTips : UEUIUserWidget
         {
             return;
         }
-        if (!(GetbChainNavigationEnterRequested()))
+        if (!(this.CommonHoverContent.Get().GetbChainNavigationEnterRequested()))
         {
             return;
         }
         if (this.TryEnterTipByChainNavigation())
         {
-            ClearEnterByChainNavigationRequest();
+            this.CommonHoverContent.Get().ClearEnterByChainNavigationRequest();
         }
         return;
     }
     bool TryEnterTipByChainNavigation()
     {
-        if (this.OperationList.IsValid() && GetShowList())
+        if (this.OperationList.IsValid() && this.OperationList.Get().GetShowList())
         {
             this.MarkPendingFocusOperationList();
             this.FocusOperationListIfPending();
@@ -154,7 +152,7 @@ class UWidget_CommonHoverItemTips : UEUIUserWidget
         int local_1 = 0;
         for (; local_1 < this.TipActions.Num(); ++local_1)
         {
-            if (this.TipActions[local_1].IsValid() && this.IsMoreTipAction())
+            if (this.TipActions[local_1].IsValid() && this.IsMoreTipAction(this.TipActions[local_1].Get()))
             {
                 return local_1;
             }
@@ -172,9 +170,7 @@ class UWidget_CommonHoverItemTips : UEUIUserWidget
             this.ResetTipActionBindings();
             return;
         }
-        TEUIModelRef<FVM_CommonItemTip> local_6;
-        local_6.GetDisplayTip();
-        this.DisplayTip.SetRef(local_6);
+        this.DisplayTip.SetRef(this.TipHost.Get().GetDisplayTip());
         this.RefreshDisplayModels();
         return;
     }
@@ -188,15 +184,9 @@ class UWidget_CommonHoverItemTips : UEUIUserWidget
             this.ResetTipActionBindings();
             return;
         }
-        TEUIModelRef<FVM_Item> local_6;
-        local_6.GetItem();
-        this.DisplayItem.SetRef(local_6);
-        TEUIModelRef<FVM_CommonItemTipDisplayAdapter> local_8;
-        local_8.GetTipDisplay();
-        this.TipDisplay.SetRef(local_8);
-        TEUIModelRef<FVM_CommonItemTipOperationList> local_10;
-        local_10.GetOperationList();
-        this.OperationList.SetRef(local_10);
+        this.DisplayItem.SetRef(this.DisplayTip.Get().GetItem());
+        this.TipDisplay.SetRef(this.DisplayTip.Get().GetTipDisplay());
+        this.OperationList.SetRef(this.DisplayTip.Get().GetOperationList());
         this.RefreshOperationHoverAnchors();
         this.RefreshTipActionBindings();
         this.FocusOperationListIfPending();
@@ -225,7 +215,7 @@ class UWidget_CommonHoverItemTips : UEUIUserWidget
             return;
         }
         this.TipActions.SetNum(3);
-        const TArray<TEUIModelRef<FVM_InputAction>>& local_4 = GetTipActions();
+        const TArray<TEUIModelRef<FVM_InputAction>>& local_4 = this.DisplayTip.Get().GetTipActions();
         int local_5 = 0;
         while (local_1)
         {
@@ -234,7 +224,7 @@ class UWidget_CommonHoverItemTips : UEUIUserWidget
             }
             else
             {
-                if (GetInputAction().IsNull())
+                if (local_4[local_5].Get().GetInputAction().IsNull())
                 {
                 }
                 else
@@ -246,7 +236,7 @@ class UWidget_CommonHoverItemTips : UEUIUserWidget
                     else
                     {
                         this.TipActions[local_5] = local_4[local_5];
-                        this.RegisterTipActionBinding(local_5, GetInputAction(), local_11, this.ShouldDisableTipAction());
+                        this.RegisterTipActionBinding(local_5, local_4[local_5].Get().GetInputAction(), local_11, this.ShouldDisableTipAction(local_4[local_5].Get()));
                     }
                 }
             }
@@ -294,7 +284,7 @@ class UWidget_CommonHoverItemTips : UEUIUserWidget
     }
     bool ShouldDisableTipAction(const FVM_InputAction &inout Action) const
     {
-        return this.IsMoreTipAction(Action) && this.OperationList.IsValid() && GetShowList();
+        return this.IsMoreTipAction(Action) && this.OperationList.IsValid() && this.OperationList.Get().GetShowList();
     }
     FName GetTipActionHandlerName(const int Index) const
     {
@@ -326,14 +316,14 @@ class UWidget_CommonHoverItemTips : UEUIUserWidget
         {
             return;
         }
-        bool local_2 = this.ShouldFocusOperationListAfterTipAction();
+        bool local_2 = this.ShouldFocusOperationListAfterTipAction(local_6.Get());
         if (local_2)
         {
             this.MarkPendingFocusOperationList();
         }
         if (local_2 && this.CommonHoverContent.IsValid())
         {
-            PinHoverPassThrough();
+            this.CommonHoverContent.Get().PinHoverPassThrough();
         }
         FEUIWidgetModelCallbackBuilder local_28 = FEUIWidgetModelCallbackBuilder::MakeCallback(local_6.opImplConv(), FVM_InputAction::ExecuteAction);
         local_28.EnqueueCallback();
@@ -365,7 +355,7 @@ class UWidget_CommonHoverItemTips : UEUIUserWidget
         {
             return;
         }
-        if (!(this.OperationList.IsValid()) || !(GetShowList()))
+        if (!(this.OperationList.IsValid()) || !(this.OperationList.Get().GetShowList()))
         {
             return;
         }
@@ -416,7 +406,7 @@ class UWidget_CommonHoverItemTips : UEUIUserWidget
     {
         if (this.OperationList.IsValid())
         {
-            this.HoverAnchor.SetSharedHoverAnchor();
+            this.OperationList.Get().SetSharedHoverAnchor(this.HoverAnchor);
         }
         return;
     }
@@ -521,7 +511,7 @@ class UWidget_CommonHoverItemTips : UEUIUserWidget
     UFUNCTION()
     TDataObjectPtr<FItemConfig> DisplayItem_ItemConfig() const
     {
-        FVM_Item& local_2;
+        FVM_Item& local_2 = this.DisplayItem.Get();
         TDataObjectPtr<FItemConfig> local_52;
         if (local_2)
         {
@@ -536,8 +526,8 @@ class UWidget_CommonHoverItemTips : UEUIUserWidget
     UFUNCTION()
     int DisplayItem_Num() const
     {
-        FVM_Item& local_2;
         int local_5;
+        FVM_Item& local_2 = this.DisplayItem.Get();
         if (local_2)
         {
             local_5 = local_2.GetNum();
@@ -551,20 +541,20 @@ class UWidget_CommonHoverItemTips : UEUIUserWidget
     UFUNCTION()
     int DisplayItem_OptionalNum() const
     {
-        FVM_Item& local_2;
+        FVM_Item& local_2 = this.DisplayItem.Get();
         return local_2 ? local_2.GetOptionalNum() : 0;
     }
     UFUNCTION()
     FText DisplayItem_ItemCategory() const
     {
-        FVM_Item& local_2;
+        FVM_Item& local_2 = this.DisplayItem.Get();
         FText local_16 = local_2 ? local_2.GetItemCategory() : FText();
         return local_16;
     }
     UFUNCTION()
     FSlateBrush DisplayItem_ItemIcon() const
     {
-        FVM_Item& local_2;
+        FVM_Item& local_2 = this.DisplayItem.Get();
         FSlateBrush local_136;
         if (local_2)
         {
@@ -579,15 +569,15 @@ class UWidget_CommonHoverItemTips : UEUIUserWidget
     UFUNCTION()
     FText DisplayItem_ItemOwnLimit() const
     {
-        FVM_Item& local_2;
+        FVM_Item& local_2 = this.DisplayItem.Get();
         FText local_16 = local_2 ? local_2.GetItemOwnLimit() : FText();
         return local_16;
     }
     UFUNCTION()
     bool DisplayItem_ShouldShowNum() const
     {
-        FVM_Item& local_2;
         bool local_5;
+        FVM_Item& local_2 = this.DisplayItem.Get();
         if (local_2)
         {
             local_5 = local_2.GetShouldShowNum();
@@ -601,8 +591,8 @@ class UWidget_CommonHoverItemTips : UEUIUserWidget
     UFUNCTION()
     bool DisplayItem_ShouldShowOptionalNum() const
     {
-        FVM_Item& local_2;
         bool local_5;
+        FVM_Item& local_2 = this.DisplayItem.Get();
         if (local_2)
         {
             local_5 = local_2.GetShouldShowOptionalNum();
@@ -616,8 +606,8 @@ class UWidget_CommonHoverItemTips : UEUIUserWidget
     UFUNCTION()
     bool DisplayItem_ShouldShowOfMark() const
     {
-        FVM_Item& local_2;
         bool local_5;
+        FVM_Item& local_2 = this.DisplayItem.Get();
         if (local_2)
         {
             local_5 = local_2.GetShouldShowOfMark();
@@ -631,8 +621,8 @@ class UWidget_CommonHoverItemTips : UEUIUserWidget
     UFUNCTION()
     bool DisplayItem_ShouldShowRangeMark() const
     {
-        FVM_Item& local_2;
         bool local_5;
+        FVM_Item& local_2 = this.DisplayItem.Get();
         if (local_2)
         {
             local_5 = local_2.GetShouldShowRangeMark();
@@ -646,15 +636,15 @@ class UWidget_CommonHoverItemTips : UEUIUserWidget
     UFUNCTION()
     FSlateColor DisplayItem_NumTextColor() const
     {
-        FVM_Item& local_2;
+        FVM_Item& local_2 = this.DisplayItem.Get();
         FSlateColor local_18 = local_2 ? local_2.GetNumTextColor() : FSlateColor();
         return local_18;
     }
     UFUNCTION()
     bool DisplayItem_HasOwnLimit() const
     {
-        FVM_Item& local_2;
         bool local_5;
+        FVM_Item& local_2 = this.DisplayItem.Get();
         if (local_2)
         {
             local_5 = local_2.HasOwnLimit();
@@ -703,12 +693,12 @@ class UWidget_CommonHoverItemTips : UEUIUserWidget
     }
     void HandleObservedModelChanges(FEUIReactiveSubscriberIterator &inout It)
     {
-        FVM_CommonItemTipHost& local_6;
-        FVM_CommonItemTipOperationList& local_12;
-        FVM_CommonHoverContent& local_18;
         TEUIModelRef<FVM_CommonItemTipHost> local_2 = this.TipHost.AsRef();
+        FVM_CommonItemTipHost& local_6 = local_2.Get();
         TEUIModelRef<FVM_CommonItemTipOperationList> local_8 = this.OperationList.AsRef();
+        FVM_CommonItemTipOperationList& local_12 = local_8.Get();
         TEUIModelRef<FVM_CommonHoverContent> local_14 = this.CommonHoverContent.AsRef();
+        FVM_CommonHoverContent& local_18 = local_14.Get();
         for (; It; )
         {
             FEUIReactiveSubscriberTrackScope local_68 = FEUIReactiveSubscriberTrackScope(It);

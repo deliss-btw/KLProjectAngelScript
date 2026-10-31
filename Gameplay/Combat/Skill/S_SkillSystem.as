@@ -103,9 +103,7 @@ class US_SkillSystem : UECSScriptSystem
         UDataTable local_86;
         int local_122 = 0;
         int local_130 = 0;
-        int local_132 = 0;
         int local_165;
-        USkillConfig local_216;
         int local_346 = 0;
         if (!(local_6))
         {
@@ -141,22 +139,23 @@ class US_SkillSystem : UECSScriptSystem
         if (local_87)
         {
             int local_131;
+            int local_132 = local_32.Get().DataId;
             local_131 = local_132;
             for (auto& local_146 : local_122.GetAvatarList())
             {
-                local_132 = local_146.GetAvatarId();
-                if (local_132 != local_131)
+                if (local_146.GetAvatarId() != local_131)
                 {
                     continue;
                 }
                 for (auto& local_164 : local_146.GetAvatarTalentEquipList().GetTalentIdBySkillSlot())
                 {
-                    local_165 = local_132;
+                    local_165 = local_164.GetValue();
                     if (local_130)
                     {
-                        local_165 = ::FTalentUtils::GetHighestUnlockedTalentIdInChain(local_132, local_130.GetUnlockTalentList());
+                        local_165 = ::FTalentUtils::GetHighestUnlockedTalentIdInChain(local_164.GetValue(), local_130.GetUnlockTalentList());
                     }
-                    if (!(::FTalentUtils::GetSkillInitConfigByTalentId(local_165)) || !((local_216 != nullptr)))
+                    TDataObjectPtr<FSkillInitConfig> local_214 = ::FTalentUtils::GetSkillInitConfigByTalentId(local_165);
+                    if (!(local_214) || (!((local_214.Get().SkillConfig != nullptr))))
                     {
                         continue;
                     }
@@ -164,8 +163,10 @@ class US_SkillSystem : UECSScriptSystem
                     TDataObjectPtr<FTalentConfig> local_240 = local_264.opImplConv();
                     FSkillInitInfo local_316;
                     ESkillSlot local_317 = local_164.GetKey();
+                    local_316.SkillConfig = local_214.Get().SkillConfig;
                     if (local_240)
                     {
+                        int local_94 = local_240.Get().SkillCapabilityLevel;
                     }
                     else
                     {
@@ -180,7 +181,7 @@ class US_SkillSystem : UECSScriptSystem
             {
                 if (local_82)
                 {
-                    const FSkillInitConfig& local_320;
+                    const FSkillInitConfig& local_320 = local_82.Get();
                     if (local_320.bIsDefault && ((local_320.SkillConfig != nullptr)))
                     {
                         if (local_116.Contains(local_320.DefaultSkillSlot))
@@ -197,8 +198,7 @@ class US_SkillSystem : UECSScriptSystem
         }
         for (auto& local_340 : local_116)
         {
-            local_340;
-            local_346.InitSkills.Add();
+            local_346.InitSkills.Add(local_340.GetValue());
         }
         return;
     }
@@ -206,7 +206,6 @@ class US_SkillSystem : UECSScriptSystem
     void Job_UpdateESMTriggerInputBinding(const FECSEntity &inout Entity, const FC_ESMTriggerInputBinding &inout Bindings, const FC_Input &inout Input, const FCS_FixedTime &inout FixedTime, FC_ESMTrigger &inout ESMTrigger) const
     {
         int local_14 = 0;
-        TArrayConstIterator<FESMInputTriggerItem> local_42;
         int local_78 = 0;
         ::FASCommonUtils::GetUniquePlayerEntity(Entity);
         for (auto& local_34 : Bindings.GetBindingsBySlot())
@@ -215,9 +214,8 @@ class US_SkillSystem : UECSScriptSystem
             {
                 continue;
             }
-            for (; local_42.CanProceed;)
+            for (auto& local_50 : local_34.GetValue().TriggerItems)
             {
-                const FESMInputTriggerItem& local_50 = local_42.Proceed();
                 FActiveTriggerResult local_66 = FCharacterInputUtils::TestInputTriggerItem(local_50, Input, FixedTime.LastTime, FixedTime.Time, ESMTrigger.Storage);
                 if (local_66.bClear || (local_66.bActive && ((FFPTime(local_66.TriggerTime).opCmp(FixedTime.Time) <= 0)) && ((local_66.GetTriggerExpireTime().opCmp(FixedTime.LastTime) >= 0))))
                 {
@@ -289,7 +287,6 @@ class US_SkillSystem : UECSScriptSystem
     UFUNCTION()
     void Job_UpdateSkillInput(const FECSEntity &inout Entity, FC_Skill &inout Skill, const FC_ESMCommonTriggerInputResult &inout InputResult, const FCS_FixedTime &inout FixedTime, FC_ESMTrigger &inout ESMTrigger) const
     {
-        const USkillConfig local_42;
         const USkillConfig local_44;
         int local_2 = Skill.GetSkillRuntimeInfos().Num();
         int local_3 = 0;
@@ -301,8 +298,7 @@ class US_SkillSystem : UECSScriptSystem
                 FActiveTriggerResult local_30;
                 if (InputResult.ActiveTriggerResultByName.Find(local_22, local_30))
                 {
-                    TSoftObjectPtr<USkillConfig> local_40 = Skill.GetSkillRuntimeInfos()[local_3].GetSkillConfig();
-                    local_44 = local_42;
+                    local_44 = Skill.GetSkillRuntimeInfos()[local_3].GetSkillConfig().Get();
                     if (local_44 == nullptr)
                     {
                         continue;
@@ -349,8 +345,127 @@ class US_SkillSystem : UECSScriptSystem
     }
     bool ValidateSkillTrigger(const FECSEntity &inout Entity, FC_Skill &inout Skill, const FSkillInputTriggerConfig &inout SkillInputConfig, const FActiveTriggerResult &inout InResult, const int SkillIndex, const FC_SkillInstance &inout Instance, FC_ESMTrigger &inout ESMTrigger, const FCS_FixedTime &inout FixedTime) const
     {
-        // body not fully recovered — stub [argmismatch:argtype]
-        bool __r; return __r;
+        bool local_14;
+        FActiveTriggerResult local_8 = InResult;
+        if (local_8.bClear)
+        {
+            if (SkillInputConfig.bUseForSkillTransit)
+            {
+                FESMTriggerUtils::ClearTrigger(Entity, ESMTrigger.Storage, SkillInputConfig.CoreTriggerItem.OutputTrigger);
+            }
+        }
+        else
+        {
+            if (local_8.bActive && (FFPTime(local_8.TriggerTime).opCmp(FixedTime.Time) <= 0) && (local_8.GetTriggerExpireTime().opCmp(FixedTime.LastTime) >= 0))
+            {
+                if (Debug::CVar_Debug_SkillNoCD.GetInt() != 0 && (CVar_Skill_AllowPreInputInCD.GetInt() == 0))
+                {
+                    bool local_16;
+                    local_16 = false;
+                    Get local_20;
+                    const FC_CheatComponent& local_22 = local_20.opCall();
+                    if (local_22)
+                    {
+                        if (local_22.GetbHasNoCDBuff() || local_22.GetbSkillNoCD())
+                        {
+                            local_16 = true;
+                        }
+                    }
+                    if (!(local_16))
+                    {
+                        local_14 = !(Instance.GetCDConfig().bApplyInputValidateTimeForCD);
+                        if (local_14 == !(false))
+                        {
+                            if (Instance.GetCDCost().Evaluate(local_8.TriggerTime) < 1.0f)
+                            {
+                                return false;
+                            }
+                        }
+                    }
+                }
+                FFPTime local_26 = FFPTime(local_8.TriggerTime);
+                FFPTime local_28 = FFPTime(local_8.ValidateTime);
+                FESMBlackboard local_60 = FESMBlackboard::GetBlackboard(Entity);
+                FFPTime local_98;
+                if (local_28.opCmp(0.0) >= 0)
+                {
+                    local_98 = (local_28 + local_26);
+                }
+                else
+                {
+                    local_98 = local_26;
+                }
+                FFPTimeRange local_102;
+                local_14 = Instance.GetUseConditionConfig().UsableValidation.EvaluateWithCostCondition(local_60, local_26, local_98, local_102);
+                if (local_14)
+                {
+                    for (auto local_116 : Instance.GetUseConditionConfig().AdditionalConditions)
+                    {
+                        if (!(local_116.Evaluate(Entity, Instance, local_26)))
+                        {
+                            local_14 = false;
+                            break;
+                        }
+                    }
+                }
+                if (local_14)
+                {
+                    if (SkillInputConfig.TriggersToClear.Num() > 0)
+                    {
+                        for (auto& local_130 : SkillInputConfig.TriggersToClear)
+                        {
+                            UESMInputTriggerAsset::ClearTriggersOnActivate(local_8, ESMTrigger.Storage, local_130.GetTriggerName(), int16(local_130.GetTriggerConsumeKey()), NAME_None);
+                        }
+                    }
+                    if (SkillInputConfig.TriggersToClearByGroup.Num() > 0)
+                    {
+                        for (auto& local_148 : SkillInputConfig.TriggersToClearByGroup)
+                        {
+                            FESMTriggerUtils::ClearTriggersByGroupOnActivate(Entity, local_8, ESMTrigger.Storage, local_148.Name, NAME_None);
+                        }
+                    }
+                    if (SkillInputConfig.BanTriggersToCache.Num() > 0)
+                    {
+                        for (auto& local_130 : SkillInputConfig.BanTriggersToCache)
+                        {
+                            UESMInputTriggerAsset::BanTriggerCache(local_8, ESMTrigger.Storage, FixedTime.Time, local_130.GetTriggerName(), int16(local_130.GetTriggerConsumeKey()));
+                        }
+                    }
+                    if (SkillInputConfig.bUseForSkillTransit)
+                    {
+                        FESMTriggerUtils::ActivateTrigger(Entity, ESMTrigger.Storage, SkillInputConfig.CoreTriggerItem.OutputTrigger, local_26, local_28, int(SkillInputConfig.CoreTriggerItem.TriggerConsumeKey));
+                    }
+                    else
+                    {
+                        FFPTime local_150 = FFPTime(local_102.Start);
+                        FFPTime local_94 = (FFPTime(local_102.End) - local_102.Start);
+                        FC_EASAbilityInstance& local_154 = FSkillUtils::TryGetSkillAbilityInstance(Entity, SkillIndex);
+                        if (local_154)
+                        {
+                            if (SkillInputConfig.bDirectlyActivateAbility)
+                            {
+                                Modify local_158;
+                                FC_EASAbility& local_160 = local_158.opCall();
+                                if (local_160)
+                                {
+                                    FAbilityUtils::ActivateAbility(local_154, local_160, Entity, local_150);
+                                }
+                            }
+                            if (!((FName(SkillInputConfig.AbilitySignal) == NAME_None)))
+                            {
+                                FAbilityUtils::InvokeSignal(local_154, Entity, SkillInputConfig.AbilitySignal, local_150, true);
+                            }
+                        }
+                        for (auto& local_174 : SkillInputConfig.ExtraActions)
+                        {
+                            FSkillUtils::InvokeSkillInputAction(FInstancedStruct::GetPtr(local_174).opCall().Get(), Entity, local_150, local_94, Instance, local_60);
+                        }
+                    }
+                }
+                return true;
+            }
+        }
+        return false;
     }
     UFUNCTION()
     void Job_HandleSimpleSkillRecoverSpeedChange(const FECSEntity &inout Entity, const FC_GameAttributeChanged &inout GameAttributeChanged) const
@@ -358,7 +473,6 @@ class US_SkillSystem : UECSScriptSystem
         int local_8 = 0;
         int local_14 = 0;
         int local_56 = 0;
-        const USkillConfig local_102;
         FECSWorldPtr local_2 = this.GetECSWorld();
         bool local_15 = false;
         int local_17 = 0;
@@ -393,8 +507,7 @@ class US_SkillSystem : UECSScriptSystem
                 FC_SkillInstance& local_90 = local_88.opCall();
                 if (local_90)
                 {
-                    TSoftObjectPtr<USkillConfig> local_100 = local_90.GetSkillConfig();
-                    if (this.CheckSkillSlotIsSimpleSkill(local_102.Slot))
+                    if (this.CheckSkillSlotIsSimpleSkill(local_90.GetSkillConfig().Get().Slot))
                     {
                         float32 local_104;
                         float32 local_59 = local_90.GetSimpleSkillRecoverSpeed();

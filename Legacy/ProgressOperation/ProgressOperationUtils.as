@@ -15,6 +15,7 @@ FECSEntity StartProgressOperation(const FECSEntity &inout InitiatorEntity, const
         XError(ELog(0), FString().Append("ProgressOperationConfig is invalid! entity: ").Append(InitiatorEntity.GetEntityName()));
         return FECSEntity();
     }
+    const FProgressOperationConfig& local_16 = ConfigPtr.Get();
     FECSEntity local_6 = ECS::CreateEmptyEntity(ECS::GetECSWorld(), EECSRegType(0), 9, n"ProgressOperation", false);
     ModifyOrAdd local_28;
     local_28.opCall().RelevancePolicyType = false;
@@ -35,7 +36,6 @@ FECSEntity StartProgressOperation(const FECSEntity &inout InitiatorEntity, const
     local_104.SetTargetEntity(TargetEntity);
     local_104.SetState(EProgressOperationState(0));
     local_104.SetNextState(EProgressOperationState(1));
-    FProgressOperationConfig local_16;
     local_104.SetProgressValue(local_16.InitProgressValue);
     local_104.SetProgressMaxValue(local_16.ProgressMaxValue);
     local_104.SetTotalTime(local_16.OperationTotalTime);
@@ -54,7 +54,6 @@ FECSEntity StartProgressOperation(const FECSEntity &inout InitiatorEntity, const
 bool JoinProgressOperation(const FECSEntity &inout OperationEntity, const FECSEntity &inout ParticipantEntity)
 {
     int local_8 = 0;
-    const FProgressOperationConfig& local_14;
     int local_20 = 0;
     if (!(ECS::GetRuntimeInfo().IsServer))
     {
@@ -64,6 +63,7 @@ bool JoinProgressOperation(const FECSEntity &inout OperationEntity, const FECSEn
     {
         return false;
     }
+    const FProgressOperationConfig& local_14 = local_8.GetConfig().Get();
     if (local_8.GetParticipantEntities().Num() >= (int(local_14.MaxOperationMemberNum)))
     {
         return false;
@@ -86,7 +86,6 @@ bool JoinProgressOperation(const FECSEntity &inout OperationEntity, const FECSEn
 void LeaveProgressOperation(const FECSEntity &inout OperationEntity, const FECSEntity &inout ParticipantEntity)
 {
     int local_6 = 0;
-    const FProgressOperationConfig& local_14;
     int local_40 = 0;
     if (!(local_6) || (int(local_6.GetState()) >= 3))
     {
@@ -96,6 +95,7 @@ void LeaveProgressOperation(const FECSEntity &inout OperationEntity, const FECSE
     {
         return;
     }
+    const FProgressOperationConfig& local_14 = local_6.GetConfig().Get();
     FProgressOperationActionArray local_18;
     if (local_14.Actions.Find(EProgressOperationActionTime(7), local_18))
     {
@@ -110,6 +110,7 @@ void LeaveProgressOperation(const FECSEntity &inout OperationEntity, const FECSE
     local_40.SetFinalProgressTime(float32(local_6.GetCurTime().ToSeconds()));
     local_40.SetFinalProgressTotalTime(float32(local_6.GetTotalTime().ToSeconds()));
     local_40.SetbIsLeave(true);
+    local_6.GetModify_ParticipantEntities().Remove(ParticipantEntity);
     Remove local_48;
     local_48.opCall();
     return;

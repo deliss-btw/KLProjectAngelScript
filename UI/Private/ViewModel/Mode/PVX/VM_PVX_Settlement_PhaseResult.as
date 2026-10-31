@@ -59,7 +59,6 @@ struct FVM_PVX_Settlement_PhaseResult : FEUIViewModel
     {
         int local_52 = 0;
         FPvxRewardFactorData local_114;
-        int local_549 = 0;
         int local_573;
         FECSWorldPtr local_4 = ECS::GetECSWorld();
         if (local_4.IsValid())
@@ -78,12 +77,10 @@ struct FVM_PVX_Settlement_PhaseResult : FEUIViewModel
                     {
                         if (local_114.Reward)
                         {
-                            TArrayConstIterator<FRewardEntry> local_538;
-                            for (; local_538.CanProceed;)
+                            for (auto& local_546 : local_114.Reward.Get().RewardItems)
                             {
-                                const FRewardEntry& local_546 = local_538.Proceed();
                                 int local_548 = local_74.FindOrAdd(local_546.Item);
-                                local_549 = int(local_546.Count);
+                                int local_549 = int(local_546.Count);
                                 local_548 = (int(local_548) + local_549);
                             }
                         }
@@ -92,9 +89,10 @@ struct FVM_PVX_Settlement_PhaseResult : FEUIViewModel
                 for (auto& local_568 : local_74)
                 {
                     TEUIModelRef<FM_ItemData> local_570 = TEUIModelRef<FM_ItemData>(::FM_ItemData::Create(this.GetContext().Manager));
-                    local_573 = local_549;
-                    local_568.GetKey().SetConfig();
-                    local_573.SetNum();
+                    int local_549_2 = local_568.GetValue();
+                    local_573 = local_549_2;
+                    local_570.Get().SetConfig(local_568.GetKey());
+                    local_570.Get().SetNum(local_573);
                     FVM_ComposableItem& local_576 = ::FVM_ComposableItem::Create(this.GetContext().Manager, local_570, EItemDisplayScenario(3));
                     ::ComposableItemUtility::SetItemCountText(local_576, FText::AsNumber(local_573, FNumberFormattingOptions::DefaultNoGrouping()));
                     this.GetModify_RewardItems().Add(TEUIModelRef<FVM_ComposableItem>(local_576));
@@ -192,11 +190,9 @@ FVM_PVX_Settlement_PhaseResult& Create(const UObject ContextObject, const EFacti
 {
     return FVM_PVX_Settlement_PhaseResult::CreateByManager(EUIInternal::GetContextManager(ContextObject), EFaction(LocalPlayerFaction), bIsSuccess);
 }
-FVM_PVX_Settlement_PhaseResult CreateByManager(const UEUIManagerSubsystem Manager, const EFaction LocalPlayerFaction, const bool bIsSuccess)
+FVM_PVX_Settlement_PhaseResult& CreateByManager(const UEUIManagerSubsystem Manager, const EFaction LocalPlayerFaction, const bool bIsSuccess)
 {
-    FVM_PVX_Settlement_PhaseResult __r;
-    TEUIModelRef<FVM_PVX_Settlement_PhaseResult> local_6 = TEUIModelRef<FVM_PVX_Settlement_PhaseResult>(EUIInternal::MakeModelWithManager_Generic(Manager, FVM_PVX_Settlement_PhaseResult::ModelId, 0, LocalPlayerFaction, bIsSuccess));
-    return __r;
+    return TEUIModelRef<FVM_PVX_Settlement_PhaseResult>(EUIInternal::MakeModelWithManager_Generic(Manager, FVM_PVX_Settlement_PhaseResult::ModelId, 0, LocalPlayerFaction, bIsSuccess)).Get();
 }
 void GetModelInfo(FEUIViewModelMetaInfo &inout Result)
 {
@@ -260,7 +256,6 @@ namespace __GeneratedProperties_FVM_PVX_Settlement_PhaseResult
 {
 UScriptStruct StaticStruct()
 {
-    UScriptStruct local_2;
-    return local_2;
+    return __GeneratedProperties_FVM_PVX_Settlement_PhaseResult.Get();
 }
 }

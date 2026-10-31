@@ -102,11 +102,9 @@ FVM_BuffHoverDialogAttrItem& Create(const UObject ContextObject, const FBuffHint
 {
     return FVM_BuffHoverDialogAttrItem::CreateByManager(EUIInternal::GetContextManager(ContextObject), AffectRow);
 }
-FVM_BuffHoverDialogAttrItem CreateByManager(const UEUIManagerSubsystem Manager, const FBuffHintDescParamItem &inout AffectRow)
+FVM_BuffHoverDialogAttrItem& CreateByManager(const UEUIManagerSubsystem Manager, const FBuffHintDescParamItem &inout AffectRow)
 {
-    FVM_BuffHoverDialogAttrItem __r;
-    TEUIModelRef<FVM_BuffHoverDialogAttrItem> local_6 = TEUIModelRef<FVM_BuffHoverDialogAttrItem>(EUIInternal::MakeModelWithManager_Generic(Manager, FVM_BuffHoverDialogAttrItem::ModelId, 0, AffectRow));
-    return __r;
+    return TEUIModelRef<FVM_BuffHoverDialogAttrItem>(EUIInternal::MakeModelWithManager_Generic(Manager, FVM_BuffHoverDialogAttrItem::ModelId, 0, AffectRow)).Get();
 }
 void GetModelInfo(FEUIViewModelMetaInfo &inout Result)
 {
@@ -166,7 +164,6 @@ namespace __GeneratedProperties_FVM_BuffHoverDialogAttrItem
 {
 UScriptStruct StaticStruct()
 {
-    UScriptStruct local_2;
-    return local_2;
+    return __GeneratedProperties_FVM_BuffHoverDialogAttrItem.Get();
 }
 }

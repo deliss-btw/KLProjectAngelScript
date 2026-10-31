@@ -70,6 +70,8 @@ struct FFixedCameraPresentation
         {
             return;
         }
+        float32 local_3 = this.Params.CameraConfig.Get().BlendConfig.BlendInDuration;
+        this.SetBlendPhaseByParams(ECameraBlendPhase(Phase), WorldTime, this.Params.CameraConfig.Get().BlendConfig.BlendInEasing, local_3);
         return;
     }
     void SetBlendPhaseByParams(const ECameraBlendPhase Phase, const FFPTime &inout WorldTime, const FCameraBlendType &inout BlendType, const float32 Duration)
@@ -79,8 +81,7 @@ struct FFixedCameraPresentation
     }
     FCameraBlendConfig GetBlendConfig() const
     {
-        // body not fully recovered — stub [no-return]
-        FCameraBlendConfig __r; return __r;
+        return this.Params.CameraConfig.Get().BlendConfig;
     }
 }
 

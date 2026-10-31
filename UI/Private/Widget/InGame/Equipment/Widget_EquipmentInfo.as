@@ -18,7 +18,7 @@ class UWidget_EquipmentInfo : UEUIUserWidget
     UFUNCTION()
     TArray<FEUIModelWeakRef> EquipmentInfo_EquipmentTraits() const
     {
-        FVM_EquipmentInfo& local_2;
+        FVM_EquipmentInfo& local_2 = this.EquipmentInfo.Get();
         TArray<FEUIModelWeakRef> local_16;
         if (local_2)
         {
@@ -33,7 +33,7 @@ class UWidget_EquipmentInfo : UEUIUserWidget
     UFUNCTION()
     TArray<FEUIModelWeakRef> EquipmentInfo_EquipmentAttributes() const
     {
-        FVM_EquipmentInfo& local_2;
+        FVM_EquipmentInfo& local_2 = this.EquipmentInfo.Get();
         TArray<FEUIModelWeakRef> local_16;
         if (local_2)
         {
@@ -48,8 +48,8 @@ class UWidget_EquipmentInfo : UEUIUserWidget
     UFUNCTION()
     bool EquipmentInfo_bShowDescription() const
     {
-        FVM_EquipmentInfo& local_2;
         bool local_5;
+        FVM_EquipmentInfo& local_2 = this.EquipmentInfo.Get();
         if (local_2)
         {
             local_5 = local_2.GetbShowDescription();

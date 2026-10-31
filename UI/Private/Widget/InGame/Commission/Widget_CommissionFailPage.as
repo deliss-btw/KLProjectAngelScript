@@ -29,7 +29,7 @@ class UWidget_CommissionFailPage : UEUIUserWidget
     UFUNCTION()
     void Tick_Implementation(const FGeometry &inout MyGeometry, const float32 InDeltaTime)
     {
-        int local_13 = FMath::CeilToInt(FMath::Max(0.0, GetLeaveTime() - (this.GetWorld().GetTimeSeconds() - this.ShowStartTime)));
+        int local_13 = FMath::CeilToInt(FMath::Max(0.0, this.CommissionFail.Get().GetLeaveTime() - (this.GetWorld().GetTimeSeconds() - this.ShowStartTime)));
         this.TextBlock_LeaveTips.SetText(FText::FromString(this.LeaveTipsTemplate.Replace("{Time}", String::Conv_IntToString(local_13), ESearchCase(1))));
         return;
     }

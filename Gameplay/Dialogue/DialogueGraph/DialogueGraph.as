@@ -12,7 +12,8 @@ struct FDialogueGraphScriptBase : FDialogueGraphBase
     {
         for (auto& local_16 : this._base_FDialogueGraphBase)
         {
-            if (FInstancedStruct::GetPtr(local_16).opCall() && (0 == InNodeId))
+            TConstRawPtr<FDialogueNodeBase> local_22 = FInstancedStruct::GetPtr(local_16).opCall();
+            if (local_22 && (int(local_22.Get().NodeId) == InNodeId))
             {
                 return local_16;
             }
@@ -24,7 +25,7 @@ struct FDialogueGraphScriptBase : FDialogueGraphBase
         for (auto& local_16 : this._base_FDialogueGraphBase)
         {
             TConstRawPtr<FDialogueNodeBase> local_22 = FInstancedStruct::GetPtr(local_16).opCall();
-            if ((local_22 && (0 == InNodeId)))
+            if (local_22 && (int(local_22.Get().NodeId) == InNodeId))
             {
                 return local_22;
             }
@@ -34,17 +35,17 @@ struct FDialogueGraphScriptBase : FDialogueGraphBase
     TArray<FInstancedStruct> GetNodesToOption(const uint StartAtNodeId, const bool bIncludeStartNode = true) const
     {
         TArray<FInstancedStruct> local_4;
-        bool local_23 = false;
         int local_26 = 0;
         FInstancedStruct local_8 = this.GetNode(StartAtNodeId);
         if (bIncludeStartNode)
         {
             local_4.Add(local_8);
         }
-        FInstancedStruct::GetPtr local_18;
         while (true)
         {
-            if ((local_18.opCall() == nullptr) || local_23)
+            FInstancedStruct::GetPtr local_18;
+            TConstRawPtr<FDialogueNodeBase> local_20 = local_18.opCall();
+            if ((local_20 == nullptr) || local_20.Get().NextNodeIds.IsEmpty())
             {
                 break;
             }
@@ -69,17 +70,16 @@ struct FDialogueGraphScriptBase : FDialogueGraphBase
     }
     TDataObjectPtr<FDialogueLineConfig> FindFirstSpeakerLine() const
     {
-        TArrayConstIterator<TDataObjectPtr<FDialogueLineConfig>> local_30;
         for (auto& local_16 : this._base_FDialogueGraphBase)
         {
-            if ((FInstancedStruct::GetPtr(local_16).opCall() == nullptr))
+            TConstRawPtr<FDialogueNode_Speech> local_22 = FInstancedStruct::GetPtr(local_16).opCall();
+            if ((local_22 == nullptr))
             {
                 continue;
             }
-            for (; local_30.CanProceed;)
+            for (auto& local_38 : local_22.Get().DialogueLines)
             {
-                const TDataObjectPtr<FDialogueLineConfig>& local_38 = local_30.Proceed();
-                if (GetSpeakerNPC().IsSet())
+                if (local_38.Get().GetSpeakerNPC().IsSet())
                 {
                     return local_38;
                 }
@@ -89,19 +89,18 @@ struct FDialogueGraphScriptBase : FDialogueGraphBase
     }
     TDataObjectPtr<FNPCMainConfig> FindFirstSpeakerNPC() const
     {
-        TArrayConstIterator<TDataObjectPtr<FDialogueLineConfig>> local_30;
         for (auto& local_16 : this._base_FDialogueGraphBase)
         {
-            if ((FInstancedStruct::GetPtr(local_16).opCall() == nullptr))
+            TConstRawPtr<FDialogueNode_Speech> local_22 = FInstancedStruct::GetPtr(local_16).opCall();
+            if ((local_22 == nullptr))
             {
                 continue;
             }
-            for (; local_30.CanProceed;)
+            for (auto& local_38 : local_22.Get().DialogueLines)
             {
-                local_30.Proceed();
-                if (GetSpeakerNPC().IsSet())
+                if (local_38.Get().GetSpeakerNPC().IsSet())
                 {
-                    return GetSpeakerNPC();
+                    return local_38.Get().GetSpeakerNPC();
                 }
             }
         }
@@ -109,10 +108,10 @@ struct FDialogueGraphScriptBase : FDialogueGraphBase
     }
     bool HasAttachPoint() const
     {
-        bool local_13 = false;
         for (auto& local_16 : this._base_FDialogueGraphBase)
         {
-            if (FInstancedStruct::GetPtr(local_16).opCall() && local_13)
+            TConstRawPtr<FDialogueNode_Speech> local_22 = FInstancedStruct::GetPtr(local_16).opCall();
+            if (!(!(local_22)) && local_22.Get().bIsAttachPoint)
             {
                 return true;
             }

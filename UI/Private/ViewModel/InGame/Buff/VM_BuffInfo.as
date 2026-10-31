@@ -153,6 +153,8 @@ struct FVM_BuffInfo : FEUIViewModel
         {
             local_30.Add(local_26[0]);
         }
+        __Lambda_UI_Private_ViewModel_InGame_Buff_VM_BuffInfo_113 local_154;
+        local_30.Sort(local_154);
         this.GetModify_BuffModels().Empty(0);
         for (auto local_50 : local_30)
         {
@@ -322,11 +324,9 @@ FVM_BuffInfo& Create(const UObject ContextObject, const FECSEntity &inout Target
 {
     return FVM_BuffInfo::CreateByManager(EUIInternal::GetContextManager(ContextObject), TargetEntity);
 }
-FVM_BuffInfo CreateByManager(const UEUIManagerSubsystem Manager, const FECSEntity &inout TargetEntity)
+FVM_BuffInfo& CreateByManager(const UEUIManagerSubsystem Manager, const FECSEntity &inout TargetEntity)
 {
-    FVM_BuffInfo __r;
-    TEUIModelRef<FVM_BuffInfo> local_6 = TEUIModelRef<FVM_BuffInfo>(EUIInternal::MakeModelWithManager_Generic(Manager, FVM_BuffInfo::ModelId, 0, TargetEntity));
-    return __r;
+    return TEUIModelRef<FVM_BuffInfo>(EUIInternal::MakeModelWithManager_Generic(Manager, FVM_BuffInfo::ModelId, 0, TargetEntity)).Get();
 }
 void GetModelInfo(FEUIViewModelMetaInfo &inout Result)
 {
@@ -407,7 +407,6 @@ namespace __GeneratedProperties_FVM_BuffInfo
 {
 UScriptStruct StaticStruct()
 {
-    UScriptStruct local_2;
-    return local_2;
+    return __GeneratedProperties_FVM_BuffInfo.Get();
 }
 }

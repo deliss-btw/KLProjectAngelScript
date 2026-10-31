@@ -3,7 +3,6 @@ namespace __FViewportSelectTargetParamsFunctions
 UFUNCTION()
 TSoftClassPtr<UEUIUserWidget> __FViewportSelectTargetParams_GetSelectUMG(const TDataObjectPtr<FViewportSelectTargetParams> &inout DataObject)
 {
-    TSoftClassPtr<UEUIUserWidget> __r;
     if ((DataObject == nullptr))
     {
         if (!(EUIGlobals::GIsDuringPropertyConversion))
@@ -13,12 +12,11 @@ TSoftClassPtr<UEUIUserWidget> __FViewportSelectTargetParams_GetSelectUMG(const T
         FViewportSelectTargetParams local_234;
         return local_234.SelectUMG;
     }
-    return __r;
+    return DataObject.Get().SelectUMG;
 }
 UFUNCTION()
 uint8 __FViewportSelectTargetParams_GetTargetRelation(const TDataObjectPtr<FViewportSelectTargetParams> &inout DataObject)
 {
-    int local_235 = 0;
     if ((DataObject == nullptr))
     {
         if (!(EUIGlobals::GIsDuringPropertyConversion))
@@ -28,12 +26,11 @@ uint8 __FViewportSelectTargetParams_GetTargetRelation(const TDataObjectPtr<FView
         FViewportSelectTargetParams local_234;
         return int(local_234.TargetRelation);
     }
-    return local_235;
+    return DataObject.Get().TargetRelation;
 }
 UFUNCTION()
 EViewportSelectTeammateType __FViewportSelectTargetParams_GetTargetTeammateType(const TDataObjectPtr<FViewportSelectTargetParams> &inout DataObject)
 {
-    int local_235 = 0;
     if ((DataObject == nullptr))
     {
         if (!(EUIGlobals::GIsDuringPropertyConversion))
@@ -41,26 +38,23 @@ EViewportSelectTeammateType __FViewportSelectTargetParams_GetTargetTeammateType(
             FBlueprintDebugFunctions::ThrowScriptException("Get 'TargetTeammateType' from a null 'FViewportSelectTargetParams' DataObject!");
         }
         FViewportSelectTargetParams local_234;
-        local_235 = int(local_234.TargetTeammateType);
-        return EViewportSelectTeammateType(local_235);
+        return local_234.TargetTeammateType;
     }
-    return EViewportSelectTeammateType(local_235);
+    return DataObject.Get().TargetTeammateType;
 }
 UFUNCTION()
 bool __FViewportSelectTargetParams_GetbIgnoreObstacleOnViewPath(const TDataObjectPtr<FViewportSelectTargetParams> &inout DataObject)
 {
-    bool local_1 = false;
     if ((DataObject == nullptr))
     {
-        local_1 = !(EUIGlobals::GIsDuringPropertyConversion);
-        if (local_1)
+        if (!(EUIGlobals::GIsDuringPropertyConversion))
         {
             FBlueprintDebugFunctions::ThrowScriptException("Get 'bIgnoreObstacleOnViewPath' from a null 'FViewportSelectTargetParams' DataObject!");
         }
         FViewportSelectTargetParams local_234;
         return local_234.bIgnoreObstacleOnViewPath;
     }
-    return local_1;
+    return DataObject.Get().bIgnoreObstacleOnViewPath;
 }
 UFUNCTION()
 int __FViewportSelectTargetParams_GetTargetNum(const TDataObjectPtr<FViewportSelectTargetParams> &inout DataObject)
@@ -140,7 +134,6 @@ float32 __FViewportSelectTargetParams_GetMaxDistance(const TDataObjectPtr<FViewp
 UFUNCTION()
 FRuntimeFloatCurve __FViewportSelectTargetParams_GetDistanceWeight(const TDataObjectPtr<FViewportSelectTargetParams> &inout DataObject)
 {
-    FRuntimeFloatCurve __r;
     if ((DataObject == nullptr))
     {
         if (!(EUIGlobals::GIsDuringPropertyConversion))
@@ -150,12 +143,11 @@ FRuntimeFloatCurve __FViewportSelectTargetParams_GetDistanceWeight(const TDataOb
         FViewportSelectTargetParams local_234;
         return local_234.DistanceWeight;
     }
-    return __r;
+    return DataObject.Get().DistanceWeight;
 }
 UFUNCTION()
 FRuntimeFloatCurve __FViewportSelectTargetParams_GetAngleWeight(const TDataObjectPtr<FViewportSelectTargetParams> &inout DataObject)
 {
-    FRuntimeFloatCurve __r;
     if ((DataObject == nullptr))
     {
         if (!(EUIGlobals::GIsDuringPropertyConversion))
@@ -165,12 +157,11 @@ FRuntimeFloatCurve __FViewportSelectTargetParams_GetAngleWeight(const TDataObjec
         FViewportSelectTargetParams local_234;
         return local_234.AngleWeight;
     }
-    return __r;
+    return DataObject.Get().AngleWeight;
 }
 UFUNCTION()
 FRuntimeFloatCurve __FViewportSelectTargetParams_GetVerticalDistanceToCrosshairWeight(const TDataObjectPtr<FViewportSelectTargetParams> &inout DataObject)
 {
-    FRuntimeFloatCurve __r;
     if ((DataObject == nullptr))
     {
         if (!(EUIGlobals::GIsDuringPropertyConversion))
@@ -180,12 +171,11 @@ FRuntimeFloatCurve __FViewportSelectTargetParams_GetVerticalDistanceToCrosshairW
         FViewportSelectTargetParams local_234;
         return local_234.VerticalDistanceToCrosshairWeight;
     }
-    return __r;
+    return DataObject.Get().VerticalDistanceToCrosshairWeight;
 }
 UFUNCTION()
 FGameplayTagContainer __FViewportSelectTargetParams_GetIncludeTags(const TDataObjectPtr<FViewportSelectTargetParams> &inout DataObject)
 {
-    FGameplayTagContainer __r;
     if ((DataObject == nullptr))
     {
         if (!(EUIGlobals::GIsDuringPropertyConversion))
@@ -195,12 +185,11 @@ FGameplayTagContainer __FViewportSelectTargetParams_GetIncludeTags(const TDataOb
         FViewportSelectTargetParams local_234;
         return local_234.IncludeTags;
     }
-    return __r;
+    return DataObject.Get().IncludeTags;
 }
 UFUNCTION()
 FGameplayTagContainer __FViewportSelectTargetParams_GetExcludeTags(const TDataObjectPtr<FViewportSelectTargetParams> &inout DataObject)
 {
-    FGameplayTagContainer __r;
     if ((DataObject == nullptr))
     {
         if (!(EUIGlobals::GIsDuringPropertyConversion))
@@ -210,23 +199,21 @@ FGameplayTagContainer __FViewportSelectTargetParams_GetExcludeTags(const TDataOb
         FViewportSelectTargetParams local_234;
         return local_234.ExcludeTags;
     }
-    return __r;
+    return DataObject.Get().ExcludeTags;
 }
 UFUNCTION()
 bool __FViewportSelectTargetParams_GetbNeedConfirm(const TDataObjectPtr<FViewportSelectTargetParams> &inout DataObject)
 {
-    bool local_1 = false;
     if ((DataObject == nullptr))
     {
-        local_1 = !(EUIGlobals::GIsDuringPropertyConversion);
-        if (local_1)
+        if (!(EUIGlobals::GIsDuringPropertyConversion))
         {
             FBlueprintDebugFunctions::ThrowScriptException("Get 'bNeedConfirm' from a null 'FViewportSelectTargetParams' DataObject!");
         }
         FViewportSelectTargetParams local_234;
         return local_234.bNeedConfirm;
     }
-    return local_1;
+    return DataObject.Get().bNeedConfirm;
 }
 UFUNCTION()
 TDataObjectPtr<FEnhancedInputContextConfig> __FViewportSelectTargetParams_GetConfirmInputContextConfig(const TDataObjectPtr<FViewportSelectTargetParams> &inout DataObject)
@@ -240,12 +227,11 @@ TDataObjectPtr<FEnhancedInputContextConfig> __FViewportSelectTargetParams_GetCon
         FViewportSelectTargetParams local_234;
         return local_234.GetConfirmInputContextConfig();
     }
-    return GetConfirmInputContextConfig();
+    return DataObject.Get().GetConfirmInputContextConfig();
 }
 UFUNCTION()
 FName __FViewportSelectTargetParams_GetConfirmTriggerName(const TDataObjectPtr<FViewportSelectTargetParams> &inout DataObject)
 {
-    FName __r;
     if ((DataObject == nullptr))
     {
         if (!(EUIGlobals::GIsDuringPropertyConversion))
@@ -255,7 +241,7 @@ FName __FViewportSelectTargetParams_GetConfirmTriggerName(const TDataObjectPtr<F
         FViewportSelectTargetParams local_234;
         return local_234.ConfirmTriggerName;
     }
-    return __r;
+    return DataObject.Get().ConfirmTriggerName;
 }
 UFUNCTION()
 float32 __FViewportSelectTargetParams_GetConfirmTriggerValidateTime(const TDataObjectPtr<FViewportSelectTargetParams> &inout DataObject)
@@ -290,7 +276,6 @@ UESMInputTriggerAsset __FViewportSelectTargetParams_GetConfirmInput(const TDataO
 UFUNCTION()
 TMap<UESMInputTriggerAsset, ESelectTargetQuickSelectType> __FViewportSelectTargetParams_GetQuickSelectInputs(const TDataObjectPtr<FViewportSelectTargetParams> &inout DataObject)
 {
-    TMap<UESMInputTriggerAsset, ESelectTargetQuickSelectType> __r;
     if ((DataObject == nullptr))
     {
         if (!(EUIGlobals::GIsDuringPropertyConversion))
@@ -300,7 +285,7 @@ TMap<UESMInputTriggerAsset, ESelectTargetQuickSelectType> __FViewportSelectTarge
         FViewportSelectTargetParams local_234;
         return local_234.QuickSelectInputs;
     }
-    return __r;
+    return DataObject.Get().QuickSelectInputs;
 }
 UFUNCTION()
 float32 __FViewportSelectTargetParams_GetQuickSelectMaxDistance(const TDataObjectPtr<FViewportSelectTargetParams> &inout DataObject)
@@ -329,7 +314,7 @@ TDataObjectPtr<FMessageHintConfig> __FViewportSelectTargetParams_GetQuickSelectO
         FViewportSelectTargetParams local_234;
         return local_234.GetQuickSelectOutOfRangeMessageHint();
     }
-    return GetQuickSelectOutOfRangeMessageHint();
+    return DataObject.Get().GetQuickSelectOutOfRangeMessageHint();
 }
 UFUNCTION()
 FViewportSelectTargetParams CastToFViewportSelectTargetParams(const TDataObjectPtr<FViewportSelectTargetParams> &inout DataObject)
@@ -493,7 +478,6 @@ float32 __FSkillTargetPositionSelectParams_GetTraceDownFloorDistance(const TData
 UFUNCTION()
 FDataObjectPtr __FSkillTargetPositionSelectParams_GetCameraLookAtTargetConfig(const TDataObjectPtr<FSkillTargetPositionSelectParams> &inout DataObject)
 {
-    FDataObjectPtr __r;
     if ((DataObject == nullptr))
     {
         if (!(EUIGlobals::GIsDuringPropertyConversion))
@@ -503,7 +487,7 @@ FDataObjectPtr __FSkillTargetPositionSelectParams_GetCameraLookAtTargetConfig(co
         FSkillTargetPositionSelectParams local_78;
         return local_78.CameraLookAtTargetConfig;
     }
-    return __r;
+    return DataObject.Get().CameraLookAtTargetConfig;
 }
 UFUNCTION()
 FSkillTargetPositionFXConfig __FSkillTargetPositionSelectParams_GetHintFxConfig(const TDataObjectPtr<FSkillTargetPositionSelectParams> &inout DataObject)

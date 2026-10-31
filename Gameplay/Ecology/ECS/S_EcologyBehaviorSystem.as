@@ -6,11 +6,11 @@ class US_EcologyBehaviorSystem : UECSScriptSystem
     }
     bool CheckChangeAreaTaskCondition(FFlockChangeAreaTaskInstance &inout Instance, const FChangeAreaTaskConditionContext &inout Context) const
     {
-        UCommonChangeAreaTriggerDefinitionAsset local_6;
         if (!(Instance.IsValid()))
         {
             return false;
         }
+        UCommonChangeAreaTriggerDefinitionAsset local_6 = Instance.Definition.Get();
         if ((local_6.bTriggerOnce && (int(Instance.SuccessCount) > 0)))
         {
             return false;
@@ -19,8 +19,6 @@ class US_EcologyBehaviorSystem : UECSScriptSystem
     }
     void UpdateChangeAreaTrigger(const FECSEntity &inout Entity, const FCS_FixedTime &inout FixedTime, FC_EcologyFlockBehaviorComponent &inout BehaviorComponent, const FC_EcologyFlockComponent &inout FlockComponent) const
     {
-        UCommonChangeAreaTriggerDefinitionAsset local_50;
-        UCommonChangeAreaTriggerDefinitionAsset local_56;
         if (!(FECSEntity(FlockComponent.LeaderEntity)))
         {
             return;
@@ -34,14 +32,14 @@ class US_EcologyBehaviorSystem : UECSScriptSystem
         local_26.Setup(Entity, FixedTime, BehaviorComponent, FlockComponent);
         for (auto& local_40 : BehaviorComponent.ChangeAreaTriggers)
         {
-            if (((FFPTime(FixedTime.Time) - local_40.LastTriggerTime).ToSeconds()) < local_50.TriggerCD)
+            if (((FFPTime(FixedTime.Time) - local_40.LastTriggerTime).ToSeconds()) < local_40.Definition.Get().TriggerCD)
             {
                 continue;
             }
             if (this.CheckChangeAreaTaskCondition(local_40, local_26))
             {
-                UResourceRequestFilterConfigAsset local_58;
-                ::FEcologyBehaviorUtils::AddFlockChangeAreaRequest(Entity, local_58.Filter, local_56.ReasonTag, FEcologyGameplayTagDefine::Ecology_ChangeAreaSource_Common, local_56.bUseNearestCombatRegionPolicy, local_56.MessageInfo, local_56.CombatRegionPolicyRadiusLayer1, local_56.CombatRegionPolicyRadiusLayer2, int(local_56.Priority), local_56.bNeedChangeAreaMessage, local_56.bForceUpdateTargetResource);
+                UCommonChangeAreaTriggerDefinitionAsset local_56 = local_40.Definition.Get();
+                ::FEcologyBehaviorUtils::AddFlockChangeAreaRequest(Entity, local_56.ChangeAreaRequestFilter.Get().Filter, local_56.ReasonTag, FEcologyGameplayTagDefine::Ecology_ChangeAreaSource_Common, local_56.bUseNearestCombatRegionPolicy, local_56.MessageInfo, local_56.CombatRegionPolicyRadiusLayer1, local_56.CombatRegionPolicyRadiusLayer2, int(local_56.Priority), local_56.bNeedChangeAreaMessage, local_56.bForceUpdateTargetResource);
                 ++local_40.SuccessCount;
                 local_40.LastTriggerTime = FixedTime.Time;
             }

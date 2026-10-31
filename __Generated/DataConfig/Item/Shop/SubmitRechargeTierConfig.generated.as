@@ -48,7 +48,6 @@ int __FSubmitRechargeTierConfig_GetPriceAmount(const TDataObjectPtr<FSubmitRecha
 UFUNCTION()
 FSoftBrush __FSubmitRechargeTierConfig_GetIcon(const TDataObjectPtr<FSubmitRechargeTierConfig> &inout DataObject)
 {
-    FSoftBrush __r;
     if ((DataObject == nullptr))
     {
         if (!(EUIGlobals::GIsDuringPropertyConversion))
@@ -58,7 +57,7 @@ FSoftBrush __FSubmitRechargeTierConfig_GetIcon(const TDataObjectPtr<FSubmitRecha
         FSubmitRechargeTierConfig local_64;
         return local_64.Icon;
     }
-    return __r;
+    return DataObject.Get().Icon;
 }
 UFUNCTION()
 FSubmitRechargeTierConfig CastToFSubmitRechargeTierConfig(const TDataObjectPtr<FSubmitRechargeTierConfig> &inout DataObject)

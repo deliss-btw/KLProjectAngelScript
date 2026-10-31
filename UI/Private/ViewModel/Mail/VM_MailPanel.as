@@ -745,11 +745,9 @@ FVM_MailPanel& Create(const UObject ContextObject)
 {
     return FVM_MailPanel::CreateByManager(EUIInternal::GetContextManager(ContextObject));
 }
-FVM_MailPanel CreateByManager(const UEUIManagerSubsystem Manager)
+FVM_MailPanel& CreateByManager(const UEUIManagerSubsystem Manager)
 {
-    FVM_MailPanel __r;
-    TEUIModelRef<FVM_MailPanel> local_6 = TEUIModelRef<FVM_MailPanel>(EUIInternal::MakeModelWithManager(Manager, FVM_MailPanel::ModelId));
-    return __r;
+    return TEUIModelRef<FVM_MailPanel>(EUIInternal::MakeModelWithManager(Manager, FVM_MailPanel::ModelId)).Get();
 }
 void GetModelInfo(FEUIViewModelMetaInfo &inout Result)
 {
@@ -1013,7 +1011,6 @@ namespace __GeneratedProperties_FVM_MailPanel
 {
 UScriptStruct StaticStruct()
 {
-    UScriptStruct local_2;
-    return local_2;
+    return __GeneratedProperties_FVM_MailPanel.Get();
 }
 }

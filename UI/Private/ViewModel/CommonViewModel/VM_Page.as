@@ -80,11 +80,9 @@ FVM_Page& Create(const UObject ContextObject)
 {
     return FVM_Page::CreateByManager(EUIInternal::GetContextManager(ContextObject));
 }
-FVM_Page CreateByManager(const UEUIManagerSubsystem Manager)
+FVM_Page& CreateByManager(const UEUIManagerSubsystem Manager)
 {
-    FVM_Page __r;
-    TEUIModelRef<FVM_Page> local_6 = TEUIModelRef<FVM_Page>(EUIInternal::MakeModelWithManager(Manager, FVM_Page::ModelId));
-    return __r;
+    return TEUIModelRef<FVM_Page>(EUIInternal::MakeModelWithManager(Manager, FVM_Page::ModelId)).Get();
 }
 void GetModelInfo(FEUIViewModelMetaInfo &inout Result)
 {
@@ -117,7 +115,6 @@ namespace __GeneratedProperties_FVM_Page
 {
 UScriptStruct StaticStruct()
 {
-    UScriptStruct local_2;
-    return local_2;
+    return __GeneratedProperties_FVM_Page.Get();
 }
 }

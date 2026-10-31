@@ -41,14 +41,14 @@ class UWidget_ComposableItem : UEUIUserListItemWidget
     {
         if (this.ComposableItem.IsValid())
         {
-            int(this.CurDisplayType).RebuildFeaturesWithDisplayType();
+            this.ComposableItem.Get().RebuildFeaturesWithDisplayType(this.CurDisplayType);
         }
         return;
     }
     void HandleObservedModelChanges(FEUIReactiveSubscriberIterator &inout It)
     {
-        FVM_ComposableItem& local_6;
         TEUIModelRef<FVM_ComposableItem> local_2 = this.ComposableItem.AsRef();
+        FVM_ComposableItem& local_6 = local_2.Get();
         for (; It; )
         {
             FEUIReactiveSubscriberTrackScope local_56 = FEUIReactiveSubscriberTrackScope(It);

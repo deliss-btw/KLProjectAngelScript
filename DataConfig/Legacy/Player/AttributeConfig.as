@@ -33,7 +33,6 @@ TArray<TDataObjectPtr<FAttributeConfig>> GetAttributeConfigsByShowType(const int
 {
     const UAvatarBuildSettings local_6;
     TArray<TDataObjectPtr<FAttributeConfig>> local_4;
-    int local_99 = 0;
     GetGameplaySettings<UAvatarBuildSettings> local_8;
     local_6 = local_8;
     if (!(local_6.AttributeConfigDataTable.IsNull()))
@@ -42,7 +41,7 @@ TArray<TDataObjectPtr<FAttributeConfig>> GetAttributeConfigsByShowType(const int
         for (; local_26; )
         {
             TDataObjectPtr<FAttributeConfig> local_98 = TDataObjectPtr<FAttributeConfig>(local_26.GetDataPtr());
-            int local_100 = ShowType & (1 << local_99);
+            int local_100 = ShowType & (1 << int(local_98.Get().ShowType));
             if (local_100 != 0)
             {
                 local_4.Add(local_98);
@@ -63,7 +62,7 @@ TDataObjectPtr<FAttributeConfig> GetAttributeConfigByAttribute(const FGameAttrib
         for (; local_22; )
         {
             TDataObjectPtr<FAttributeConfig> local_94 = TDataObjectPtr<FAttributeConfig>(local_22.GetDataPtr());
-            if (0 == Attribute.GetGlobalIndex())
+            if (local_94.Get().Attribute.GetGlobalIndex() == Attribute.GetGlobalIndex())
             {
                 return local_94;
             }

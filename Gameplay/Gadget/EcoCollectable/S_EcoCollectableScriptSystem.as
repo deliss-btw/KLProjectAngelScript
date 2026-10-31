@@ -352,10 +352,11 @@ class US_EcoCollectableScriptSystem : UECSScriptSystem
         {
             if (local_10.GetStatic2DynamicEntityIdMap().Contains(SyncedRuntime.GetStaticEntityId()))
             {
+                local_10.GetModify_Static2DynamicEntityIdMap().Remove(SyncedRuntime.GetStaticEntityId());
             }
             if (local_10.GetDynamic2StaticEntityIdMap().Contains(SyncedEntity.GetId()))
             {
-                FECSEntityId local_1 = SyncedEntity.GetId();
+                local_10.GetModify_Dynamic2StaticEntityIdMap().Remove(SyncedEntity.GetId());
             }
         }
         return;
@@ -839,8 +840,7 @@ class US_EcoCollectableScriptSystem : UECSScriptSystem
     UFUNCTION()
     void ServerJob_InitEcoCollectableSpawner(const FC_PrefabLoaded &inout PrefabLoaded, FC_EcoCollectableSpawnerRuntime &inout SpawnerRuntime) const
     {
-        AECSPrefab local_2;
-        AEcoCollectableSpawner local_6 = (Cast<AEcoCollectableSpawner>(local_2));
+        AEcoCollectableSpawner local_6 = (Cast<AEcoCollectableSpawner>(PrefabLoaded.Prefab.Get()));
         if (local_6 != nullptr)
         {
             if (local_6.BakedDataArray.IsEmpty())

@@ -118,7 +118,7 @@ struct FVM_AvatarSelection : FEUIViewModel
         FText local_12;
         if (this.GetSelectedAvatar())
         {
-            TEUIModelRef<FVM_AvatarInfo> local_2 = this.GetSelectedAvatar();
+            local_12 = this.GetSelectedAvatar().Get().GetAvatarConfig().Get().DisplayName;
         }
         else
         {
@@ -132,20 +132,9 @@ struct FVM_AvatarSelection : FEUIViewModel
         {
             return this.GetSelectionTargetSlotIndex();
         }
-        bool local_9 = this.GetSelectedAvatar();
-        if (!(local_9))
+        if (this.GetSelectedAvatar() && this.GetSelectedAvatar().Get().IsCombatAvatar())
         {
-            local_9 = false;
-        }
-        else
-        {
-            TEUIModelRef<FVM_AvatarInfo> local_8 = this.GetSelectedAvatar();
-            local_9 = IsCombatAvatar();
-        }
-        if (local_9)
-        {
-            TEUIModelRef<FVM_AvatarInfo> local_8_2 = this.GetSelectedAvatar();
-            return GetSlotIndex();
+            return this.GetSelectedAvatar().Get().GetSlotIndex();
         }
         return 0;
     }
@@ -153,8 +142,7 @@ struct FVM_AvatarSelection : FEUIViewModel
     {
         if (this.GetSelectedAvatar())
         {
-            TEUIModelRef<FVM_AvatarInfo> local_2 = this.GetSelectedAvatar();
-            return IsCombatAvatar();
+            return this.GetSelectedAvatar().Get().IsCombatAvatar();
         }
         return false;
     }
@@ -169,8 +157,7 @@ struct FVM_AvatarSelection : FEUIViewModel
         local_32.AddModel(FEUIModelRef(::FVM_Image::Create(this.GetManager(), local_14.CommonCategoryAllIcon)), false);
         FVM_CommonTabItem& local_38 = ::FVM_CommonTabItem::Create(this.GetManager());
         local_38.SetTitleText(NSLOCTEXT("AvatarIllustrateAll", "全部"));
-        FEUIModelRef local_36 = FEUIModelRef(local_38);
-        local_32.AddModel(local_36, false);
+        local_32.AddModel(FEUIModelRef(local_38), false);
         this.GetModify_IllustrateTypes().Add(local_32);
         this.GetModify_AvailableIllustrateTypes().Add(EAvatarIllustrate(3));
         GetGameplaySettings<UAvatarBuildSettings> local_44;
@@ -180,12 +167,14 @@ struct FVM_AvatarSelection : FEUIViewModel
             int local_48 = 0;
             for (; local_48 < 3; ++local_48)
             {
-                if (local_42.AvatarIllustrateInfos.Find(EAvatarIllustrate(local_48)))
+                TRawPtr<FAvatarIllustrateInfo> local_50 = local_42.AvatarIllustrateInfos.Find(EAvatarIllustrate(local_48));
+                if (local_50)
                 {
                     FEUIModelContainer local_66;
-                    UEUIManagerSubsystem local_10 = this.GetManager();
-                    local_66.AddModel(local_36, false);
-                    local_66.AddModel(FEUIModelRef(::FVM_CommonTabItem::Create(this.GetManager())), false);
+                    local_66.AddModel(FEUIModelRef(::FVM_Image::Create(this.GetManager(), local_50.Get().Icon)), false);
+                    FVM_CommonTabItem& local_68 = ::FVM_CommonTabItem::Create(this.GetManager());
+                    local_68.SetTitleText(local_50.Get().DisplayName);
+                    local_66.AddModel(FEUIModelRef(local_68), false);
                     this.GetModify_IllustrateTypes().Add(local_66);
                     this.GetModify_AvailableIllustrateTypes().Add(EAvatarIllustrate(local_48));
                 }
@@ -245,7 +234,6 @@ struct FVM_AvatarSelection : FEUIViewModel
     }
     void RefreshFilteredAvatarList()
     {
-        int local_37 = 0;
         TArray<FEUIModelContainer>& local_2 = this.GetModify_FilteredAvatars();
         int local_4 = INDEX_NONE;
         int local_3 = local_4;
@@ -254,9 +242,9 @@ struct FVM_AvatarSelection : FEUIViewModel
         for (; local_5 < this.GetAllAvatars().Num(); ++local_5)
         {
             const TEUIModelRef<FVM_AvatarInfo>& local_10 = this.GetAllAvatars()[local_5];
-            if (local_10.IsValid() && GetAvatarConfig().IsSet())
+            if (local_10.IsValid() && local_10.Get().GetAvatarConfig().IsSet())
             {
-                if (int(this.GetFilterByIllustrate()) == 3 || (0 == int(this.GetFilterByIllustrate())))
+                if (int(this.GetFilterByIllustrate()) == 3 || (int(local_10.Get().GetAvatarConfig().Get().AvatarIllustrate) == int(this.GetFilterByIllustrate())))
                 {
                     if ((local_10 == this.GetSelectedAvatar().opImplConv()))
                     {
@@ -264,7 +252,7 @@ struct FVM_AvatarSelection : FEUIViewModel
                     }
                     FEUIModelContainer local_32;
                     local_32.AddModel(local_10.opImplConv(), true);
-                    int64 local_40 = local_37;
+                    int64 local_40 = local_10.Get().GetAvatarConfig().Get().DataId;
                     FVM_RedDot& local_42 = ::FVM_RedDot::Create(this.GetContext().Manager, FRedDotNodeData(this.GetRedDotNewAvatarTag(), local_40));
                     local_32.AddModel(FEUIModelRef(local_42), false);
                     local_2.Add(local_32);
@@ -286,14 +274,12 @@ struct FVM_AvatarSelection : FEUIViewModel
     }
     void RefreshSelectedAvatar()
     {
-        int local_9 = 0;
         int local_20 = 0;
         if (this.GetFilteredAvatars().IsValidIndex(this.GetSelectedAvatarIndex()))
         {
             this.SetSelectedAvatar(TEUIModelRef<FVM_AvatarInfo>(nullptr));
             this.SetSelectedAvatar(TEUIModelRef<FVM_AvatarInfo>(FEUIModelContainer::GetModel(this.GetFilteredAvatars()[this.GetSelectedAvatarIndex()]).opCall()));
-            TEUIModelRef<FVM_AvatarInfo> local_4 = this.GetSelectedAvatar();
-            int64 local_12 = local_9;
+            int64 local_12 = this.GetSelectedAvatar().Get().GetAvatarConfig().Get().DataId;
             ::FMS_RedDotSystem::Get(this.GetContext().Manager).ConsumeRedDot(this.GetRedDotNewAvatarTag(), local_12);
             FEUIModelRef local_18 = FEUIModelRef(this);
             FEUIMessageBus::Publish(EUIMessageBus);
@@ -345,16 +331,12 @@ struct FVM_AvatarSelection : FEUIViewModel
         {
             if (this.GetSelectedAvatar().opArrow().GetAvatarEquipment())
             {
-                TEUIModelRef<FVM_EquipmentInfo> local_10;
-                TEUIModelRef<FVM_AvatarEquipment> local_8 = this.GetSelectedAvatar().opArrow().GetAvatarEquipment();
-                local_10.GetEquipment();
-                local_2 = local_10;
+                local_2 = this.GetSelectedAvatar().opArrow().GetAvatarEquipment().Get().GetEquipment();
             }
         }
         if (this.GetWeaponEntry().IsValid())
         {
-            TEUIModelRef<FVM_MainMenuAvatarBuildTypeEntry> local_12 = this.GetWeaponEntry();
-            local_2.InitialzeAsWeapon();
+            this.GetWeaponEntry().Get().InitialzeAsWeapon(local_2);
         }
         return;
     }
@@ -725,7 +707,7 @@ struct FVM_AvatarSelectionShowcase : FEUIViewModel
         TDataObjectPtr<FDivineSkillConfig> local_54;
         if (local_2)
         {
-            local_54 = GetConfig();
+            local_54 = local_2.Get().GetConfig();
         }
         else
         {
@@ -743,9 +725,7 @@ struct FVM_AvatarSelectionShowcase : FEUIViewModel
         if (local_5)
         {
             this.SetbIsShowcaseAvatarChange(false);
-            TEUIModelRef<FVM_AvatarSelection> local_130 = this.GetSelection();
-            TEUIModelRef<FVM_AvatarInfo> local_136;
-            local_136.GetSelectedAvatar();
+            TEUIModelRef<FVM_AvatarInfo> local_136 = this.GetSelection().Get().GetSelectedAvatar();
             TArray<FAvatarShowcaseEntry> local_140;
             int local_141 = 0;
             for (; local_141 < this.GetTeamAvatars().Num(); ++local_141)
@@ -798,8 +778,7 @@ struct FVM_AvatarSelectionShowcase : FEUIViewModel
                     }
                 }
             }
-            TEUIModelRef<FVM_AvatarShowcase> local_128 = this.GetShowcase();
-            local_140.SetNextAvatarEntries();
+            this.GetShowcase().Get().SetNextAvatarEntries(local_140);
         }
         return;
     }
@@ -941,11 +920,9 @@ FVM_AvatarSelection& Create(const UObject ContextObject)
 {
     return FVM_AvatarSelection::CreateByManager(EUIInternal::GetContextManager(ContextObject));
 }
-FVM_AvatarSelection CreateByManager(const UEUIManagerSubsystem Manager)
+FVM_AvatarSelection& CreateByManager(const UEUIManagerSubsystem Manager)
 {
-    FVM_AvatarSelection __r;
-    TEUIModelRef<FVM_AvatarSelection> local_6 = TEUIModelRef<FVM_AvatarSelection>(EUIInternal::MakeModelWithManager(Manager, FVM_AvatarSelection::ModelId));
-    return __r;
+    return TEUIModelRef<FVM_AvatarSelection>(EUIInternal::MakeModelWithManager(Manager, FVM_AvatarSelection::ModelId)).Get();
 }
 void GetModelInfo(FEUIViewModelMetaInfo &inout Result)
 {
@@ -1199,8 +1176,7 @@ namespace __GeneratedProperties_FVM_AvatarSelection
 {
 UScriptStruct StaticStruct()
 {
-    UScriptStruct local_2;
-    return local_2;
+    return __GeneratedProperties_FVM_AvatarSelection.Get();
 }
 }
 namespace FVM_AvatarSelectionShowcase
@@ -1209,11 +1185,9 @@ FVM_AvatarSelectionShowcase& Create(const UObject ContextObject)
 {
     return FVM_AvatarSelectionShowcase::CreateByManager(EUIInternal::GetContextManager(ContextObject));
 }
-FVM_AvatarSelectionShowcase CreateByManager(const UEUIManagerSubsystem Manager)
+FVM_AvatarSelectionShowcase& CreateByManager(const UEUIManagerSubsystem Manager)
 {
-    FVM_AvatarSelectionShowcase __r;
-    TEUIModelRef<FVM_AvatarSelectionShowcase> local_6 = TEUIModelRef<FVM_AvatarSelectionShowcase>(EUIInternal::MakeModelWithManager(Manager, FVM_AvatarSelectionShowcase::ModelId));
-    return __r;
+    return TEUIModelRef<FVM_AvatarSelectionShowcase>(EUIInternal::MakeModelWithManager(Manager, FVM_AvatarSelectionShowcase::ModelId)).Get();
 }
 void GetModelInfo(FEUIViewModelMetaInfo &inout Result)
 {
@@ -1312,7 +1286,6 @@ namespace __GeneratedProperties_FVM_AvatarSelectionShowcase
 {
 UScriptStruct StaticStruct()
 {
-    UScriptStruct local_2;
-    return local_2;
+    return __GeneratedProperties_FVM_AvatarSelectionShowcase.Get();
 }
 }

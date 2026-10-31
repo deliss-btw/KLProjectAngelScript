@@ -77,7 +77,7 @@ class US_CommissionSubTargetSystem : UECSScriptSystem
         {
             return;
         }
-        if (0 == 0)
+        if (int(CommissionSubTarget.GetSubTargetConfig().Get().ObjectiveType) == 0)
         {
             if (CommissionSubTarget.GetObjectiveInstanceId() == int(Event.ObjectiveInstanceId))
             {
@@ -95,21 +95,19 @@ class US_CommissionSubTargetSystem : UECSScriptSystem
             }
             return;
         }
-        int local_12 = CommissionSubTarget.GetObjectiveInstanceId();
-        if (::ObjectiveUtils::TryFindActivetedObjectiveInstance(local_12, local_162))
+        if (::ObjectiveUtils::TryFindActivetedObjectiveInstance(CommissionSubTarget.GetObjectiveInstanceId(), local_162))
         {
-            int local_11 = int(Event.ObjectiveInstanceId);
-            if (::ObjectiveUtils::GroupContainsChildInstance(local_162, local_11))
+            if (::ObjectiveUtils::GroupContainsChildInstance(local_162, int(Event.ObjectiveInstanceId)))
             {
                 FECSWorldPtr local_2_4 = ECS::GetECSWorld();
                 for (auto& local_182 : local_162.ChildObjectiveMap)
                 {
-                    local_182;
+                    int local_11 = local_182.GetValue();
                     if (local_11 == 0)
                     {
                         continue;
                     }
-                    if (::ObjectiveUtils::TryFindActivetedObjectiveInstance(local_12, local_328))
+                    if (::ObjectiveUtils::TryFindActivetedObjectiveInstance(local_182.GetValue(), local_328))
                     {
                         if (local_164.Contains(local_328.ObjectiveId))
                         {
@@ -146,7 +144,36 @@ class US_CommissionSubTargetSystem : UECSScriptSystem
     UFUNCTION()
     void ClientJob_DebugCommissionSubTarget(const FCS_CommissionSubTarget &inout CommissionSubTarget) const
     {
-        // body not fully recovered — stub [argmismatch:argint]
+        if (!(CommissionSubTarget.GetSubTargetConfig().IsSet()))
+        {
+            return;
+        }
+        FString local_6 = FString().Append("CommissionSubTarget: Status: ").Append(CommissionSubTarget.GetStatus());
+        System::PrintString(__GetWorldContext(), local_6, true, false, FLinearColor::Green, -1.0f, n"CommissionSubTarget");
+        CastTo local_20;
+        TDataObjectPtr<FObjectiveSingleConfig> local_44 = local_20.opCall();
+        if (local_44)
+        {
+            this.DebugSingleSubObjective(local_44.Get(), CommissionSubTarget.GetProgress().GetSuccessProgressValue(), CommissionSubTarget.GetProgress().GetFailedProgressValue());
+        }
+        else
+        {
+            CastTo local_74;
+            TDataObjectPtr<FObjectiveGroupConfig> local_98 = local_74.opCall();
+            if (local_98)
+            {
+                for (auto& local_136 : local_98.Get().GetChildObjectives())
+                {
+                    if (CommissionSubTarget.GetChildProgress().Contains(local_136.Get().DataId))
+                    {
+                        this.DebugSingleSubObjective(local_136.Get(), CommissionSubTarget.GetChildProgress()[local_136.Get().DataId].GetSuccessProgressValue(), CommissionSubTarget.GetChildProgress()[local_136.Get().DataId].GetFailedProgressValue());
+                        continue;
+                    }
+                    this.DebugSingleSubObjective(local_136.Get(), 0, 0);
+                }
+            }
+        }
+        return;
     }
     UFUNCTION()
     void Run_ServerJob_CommissionSubTargetHandleConditionReachStateUpdate() const

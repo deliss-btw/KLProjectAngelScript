@@ -49,20 +49,19 @@ class US_MountSystem : UECSScriptSystem
     UFUNCTION()
     void ServerJob_ApplyGameRuleMountRestriction(const FECSEntity &inout PawnEntity) const
     {
-        bool local_50 = false;
-        if (!(::FLevelUtils::GetCurrentLevelInfoConfig(nullptr).IsSet()) || !(GetGameRuleConfig().IsSet()))
+        TDataObjectPtr<FLevelInfoConfig> local_24 = ::FLevelUtils::GetCurrentLevelInfoConfig(nullptr);
+        if (!(local_24.IsSet()) || !(local_24.Get().GetGameRuleConfig().IsSet()))
         {
             return;
         }
-        local_50 = !local_50;
-        if (local_50)
+        if (!(local_24.Get().GetGameRuleConfig().Get().CombatRestriction.HasFlag(ECombatRestrictionFlags(1))))
         {
             return;
         }
         ModifyOrAdd local_56;
         local_56.opCall().SetbIsDisallowed(true);
         Has local_60;
-        local_50 = local_60.opCall();
+        bool local_50 = local_60.opCall();
         if (local_50)
         {
             ::FMountUtils::EndMountAsDriver(PawnEntity, ECS::GetECSWorld().GetFixedTime().Time);
@@ -72,11 +71,12 @@ class US_MountSystem : UECSScriptSystem
     UFUNCTION()
     void ServerJob_ApplyGameRuleCombatRestriction() const
     {
-        int local_52 = 0;
-        if (!(::FLevelUtils::GetCurrentLevelInfoConfig(nullptr).IsSet()) || !(GetGameRuleConfig().IsSet()))
+        TDataObjectPtr<FLevelInfoConfig> local_24 = ::FLevelUtils::GetCurrentLevelInfoConfig(nullptr);
+        if (!(local_24.IsSet()) || !(local_24.Get().GetGameRuleConfig().IsSet()))
         {
             return;
         }
+        int local_52 = local_24.Get().GetGameRuleConfig().Get().CombatRestriction.Flags;
         int local_51 = local_52;
         if (local_51 == 0)
         {

@@ -337,7 +337,7 @@ struct FEcologyVoxelSceneRegion
         int local_4 = Pos.ToCellIndex();
         if (local_8.Contains(local_4))
         {
-            FEcologyVoxelSceneRegionSlot& local_12 = local_8[local_4];
+            local_8[local_4].SlotData.Remove(Entity);
         }
         return;
     }
@@ -428,6 +428,7 @@ struct FEcologyVoxelScene
             return;
         }
         FEcologyVoxelSceneRegion& local_10 = this.RegionMap[local_6];
+        local_10.Remove(Pos, Entity, EEcologyVoxelUnitSlot(Slot));
         return;
     }
     void AddEntity(const FVoxelPosition &inout Pos, const FEcologyVoxelSceneUnitSummary &inout Summary, const EEcologyVoxelUnitSlot Slot)
@@ -508,8 +509,7 @@ struct FVolumeProxy
         {
             return false;
         }
-        AECSRegionVolume local_4;
-        return local_4.QuickEncompassesPoint(Point);
+        return this.Volume.Get().QuickEncompassesPoint(Point);
     }
     FBox GetBounds() const
     {
@@ -517,8 +517,7 @@ struct FVolumeProxy
         {
             return FBox();
         }
-        AECSRegionVolume local_18;
-        return local_18.GetVolumeBoundsWithCache().GetBox();
+        return this.Volume.Get().GetVolumeBoundsWithCache().GetBox();
     }
     FECSEntity GetRegionEntity()
     {
@@ -526,8 +525,7 @@ struct FVolumeProxy
         {
             return ENTITY_NULL;
         }
-        AECSRegionVolume local_4;
-        return local_4.GetRegionEntity();
+        return this.Volume.Get().GetRegionEntity();
     }
 }
 

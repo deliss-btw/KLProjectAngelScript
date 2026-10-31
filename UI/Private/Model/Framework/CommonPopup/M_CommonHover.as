@@ -789,11 +789,9 @@ FMS_CommonHoverManager& Get(const UObject ContextObject)
 {
     return FMS_CommonHoverManager::GetByManager(EUIInternal::GetContextManager(ContextObject));
 }
-FMS_CommonHoverManager GetByManager(const UEUIManagerSubsystem Manager)
+FMS_CommonHoverManager& GetByManager(const UEUIManagerSubsystem Manager)
 {
-    FMS_CommonHoverManager __r;
-    TEUIModelRef<FMS_CommonHoverManager> local_6 = TEUIModelRef<FMS_CommonHoverManager>(EUIInternal::MakeModelWithManager(Manager, FMS_CommonHoverManager::ModelId));
-    return __r;
+    return TEUIModelRef<FMS_CommonHoverManager>(EUIInternal::MakeModelWithManager(Manager, FMS_CommonHoverManager::ModelId)).Get();
 }
 void GetModelInfo(FEUIModelOnlyMetaInfo &inout Result)
 {

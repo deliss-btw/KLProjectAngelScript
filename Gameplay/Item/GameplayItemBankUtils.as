@@ -28,16 +28,16 @@ void RestockItemToInventory(const FECSEntity &inout Player)
     TArray<TDataObjectPtr<FItemConfig>> local_28;
     for (auto& local_46 : local_18.GetItems())
     {
-        if (0 <= 0)
+        if (local_46.GetValue() <= 0)
         {
             continue;
         }
         TDataObjectPtr<FItemConfig> local_50 = local_46.GetKey();
-        if ((local_50 && (0 > 0)))
+        if (local_50 && (local_50.Get().BringMax > 0))
         {
             if (local_24.ConfigToUidList.Contains(local_50))
             {
-                if (local_24.ConfigToUidList[local_50].GetUids().Num() < 0)
+                if (local_24.ConfigToUidList[local_50].GetUids().Num() < local_50.Get().BringMax)
                 {
                     local_28.Add(local_50);
                 }
@@ -59,7 +59,7 @@ void RestockItemToInventory(const FECSEntity &inout Player)
                 if (local_48 > 0)
                 {
                     local_18.GetModify_Items()[local_50_2] = (local_65 - local_48);
-                    InventoryUtils::LowLevelAddInventoryItem(true, false, local_48, Player);
+                    InventoryUtils::LowLevelAddInventoryItem(Player, local_50_2.Get(), local_48, false, true);
                     GameplayItemBankUtils::ShowItemInventoryRestockFromBankMessage(Player, local_50_2, local_48);
                 }
             }

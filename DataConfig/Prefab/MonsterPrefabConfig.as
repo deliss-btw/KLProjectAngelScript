@@ -85,11 +85,10 @@ TDataObjectPtr<FMonsterPrefabConfig> GetMonsterConfig(const FECSEntity &inout En
 const FMonsterPrefabConfig GetDefaultedMonsterConfig(const FECSEntity &inout Entity)
 {
     const FMonsterPrefabConfig __r;
-    if (GetMonsterConfig(Entity))
+    TDataObjectPtr<FMonsterPrefabConfig> local_24 = GetMonsterConfig(Entity);
+    if (local_24)
     {
-    }
-    else
-    {
+        return local_24.Get();
     }
     return __r;
 }

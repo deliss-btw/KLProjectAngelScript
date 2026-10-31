@@ -18,7 +18,7 @@ class UWidget_AvatarSelectBar : UEUIActivatableWidget
     UFUNCTION()
     TArray<FEUIModelWeakRef> AvatarSelectBar_AvatarList() const
     {
-        FVM_AvatarSelectBar& local_2;
+        FVM_AvatarSelectBar& local_2 = this.AvatarSelectBar.Get();
         TArray<FEUIModelWeakRef> local_16;
         if (local_2)
         {

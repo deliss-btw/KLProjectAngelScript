@@ -14,10 +14,9 @@ class UESMConduitPreEvaluateCallback_SoftLockTarget : UESMConduitPreEvaluateCall
     UFUNCTION()
     void OnPreEvaluate_Implementation(const FESMContext &inout Context, const FFPTime &inout WorldTime) const
     {
-        float32 local_1 = 0.0f;
         int local_16 = 0;
         int local_4 = this.bOverrideMaxDistance;
-        ::FLockTargetUtils::EnterSoftLock(Context.GetEntity(), WorldTime, (local_4 != 0), local_1, false, this.bWriteMultiLockTargetExtraInfo, this.Config);
+        ::FLockTargetUtils::EnterSoftLock(Context.GetEntity(), WorldTime, (local_4 != 0), this.OverrideMaxDistance.GetValue(Context.GetEntityBB()), false, this.bWriteMultiLockTargetExtraInfo, this.Config);
         FECSEntity local_8;
         int local_9 = -1;
         if (!(local_16))
@@ -33,7 +32,7 @@ class UESMConduitPreEvaluateCallback_SoftLockTarget : UESMConduitPreEvaluateCall
             local_8 = local_16.GetTargetEntity();
             local_9 = local_16.GetLockPointIndex();
         }
-        ::FLockTargetUtils::ExitSoftLock(Context.GetEntity(), WorldTime, (this.bOverrideMaxDistance), local_1, false, false, (this.bRepickTargetWhenExit), this.Config, local_8, local_9);
+        ::FLockTargetUtils::ExitSoftLock(Context.GetEntity(), WorldTime, (this.bOverrideMaxDistance), this.OverrideMaxDistance.GetValue(Context.GetEntityBB()), false, false, (this.bRepickTargetWhenExit), this.Config, local_8, local_9);
         return;
     }
 }

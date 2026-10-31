@@ -51,19 +51,19 @@ class UWidget_GamepadTips : UEUIUserWidget
     UFUNCTION()
     void OnTriggerLeftShoulderPress()
     {
-        1.SetbGamepadLeftShoulderPress();
+        this.GamepadTips.Get().SetbGamepadLeftShoulderPress(true);
         return;
     }
     UFUNCTION()
     void OnTriggerLeftShoulderRelease()
     {
-        0.SetbGamepadLeftShoulderPress();
+        this.GamepadTips.Get().SetbGamepadLeftShoulderPress(false);
         return;
     }
     void HandleObservedModelChanges(FEUIReactiveSubscriberIterator &inout It)
     {
-        FVM_GamepadTips& local_6;
         TEUIModelRef<FVM_GamepadTips> local_2 = this.GamepadTips.AsRef();
+        FVM_GamepadTips& local_6 = local_2.Get();
         for (; It; )
         {
             FEUIReactiveSubscriberTrackScope local_56 = FEUIReactiveSubscriberTrackScope(It);

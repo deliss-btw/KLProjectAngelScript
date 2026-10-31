@@ -3,7 +3,6 @@ namespace __FRichTextKeyHintDataFunctions
 UFUNCTION()
 FEUIInputAction __FRichTextKeyHintData_GetInputAction(const TDataObjectPtr<FRichTextKeyHintData> &inout DataObject)
 {
-    FEUIInputAction __r;
     if ((DataObject == nullptr))
     {
         if (!(EUIGlobals::GIsDuringPropertyConversion))
@@ -13,7 +12,7 @@ FEUIInputAction __FRichTextKeyHintData_GetInputAction(const TDataObjectPtr<FRich
         FRichTextKeyHintData local_20;
         return local_20.InputAction;
     }
-    return __r;
+    return DataObject.Get().InputAction;
 }
 UFUNCTION()
 FRichTextKeyHintData CastToFRichTextKeyHintData(const TDataObjectPtr<FRichTextKeyHintData> &inout DataObject)

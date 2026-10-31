@@ -41,7 +41,6 @@ struct FVMS_SkillInfo_Monster_Test : FEUIViewModelSingleton
     }
     void RefreshSkillListForPawn()
     {
-        const USkillConfig local_40;
         int local_57;
         int local_58;
         bool local_61;
@@ -62,8 +61,7 @@ struct FVMS_SkillInfo_Monster_Test : FEUIViewModelSingleton
                 const FSimpleInputSkillConfig& local_28 = local_26.GetSimpleInputSkillConfig();
                 if (local_28.IsValid())
                 {
-                    TSoftObjectPtr<USkillConfig> local_38 = local_26.GetSkillConfig();
-                    FVM_SkillInfoItem_Monster_Test& local_42 = ::FVM_SkillInfoItem_Monster_Test::Create(this.GetContext().Manager, local_40, local_21);
+                    FVM_SkillInfoItem_Monster_Test& local_42 = ::FVM_SkillInfoItem_Monster_Test::Create(this.GetContext().Manager, local_26.GetSkillConfig().Get(), local_21);
                     local_42.SetSkillName(local_28.SkillName.ToString());
                     local_42.SetInputName(local_28.GetSimpleInputTrigger().FriendlyTriggerName);
                     FFPTime local_50 = local_26.GetCDDuration();
@@ -106,8 +104,7 @@ struct FVMS_SkillInfo_Monster_Test : FEUIViewModelSingleton
                     continue;
                 }
                 local_61 = false;
-                TSoftObjectPtr<USkillConfig> local_38_2 = local_26.GetSkillConfig();
-                for (auto& local_76 : local_40.InputConfig)
+                for (auto& local_76 : local_26.GetSkillConfig().Get().InputConfig)
                 {
                     if (local_76.bUseForSkillTransit)
                     {
@@ -117,8 +114,7 @@ struct FVMS_SkillInfo_Monster_Test : FEUIViewModelSingleton
                 if (local_61)
                 {
                     local_13 = local_26.GetUseConditionConfig().Condition.Evaluate(this.GetLocalPlayerPawnEntity());
-                    TSoftObjectPtr<USkillConfig> local_38_3 = local_26.GetSkillConfig();
-                    FVM_SkillInfoItem_Monster_Test& local_42_2 = ::FVM_SkillInfoItem_Monster_Test::Create(this.GetContext().Manager, local_40, local_21);
+                    FVM_SkillInfoItem_Monster_Test& local_42_2 = ::FVM_SkillInfoItem_Monster_Test::Create(this.GetContext().Manager, local_26.GetSkillConfig().Get(), local_21);
                     FFPTime local_50_2 = local_26.GetCDDuration();
                     if (!((local_50_2 == 0.0)))
                     {
@@ -171,7 +167,6 @@ struct FVMS_SkillInfo_Monster_Test : FEUIViewModelSingleton
     }
     void RefreshSkillInfoCD()
     {
-        FVM_SkillInfoItem_Monster_Test& local_6;
         bool local_7;
         int local_25;
         bool local_27;
@@ -187,6 +182,7 @@ struct FVMS_SkillInfo_Monster_Test : FEUIViewModelSingleton
         int local_4 = 0;
         for (; local_4 < this.GetSkillList().Num(); ++local_4)
         {
+            FVM_SkillInfoItem_Monster_Test& local_6 = this.GetSkillList()[local_4].Get();
             if ((local_6 == nullptr))
             {
                 continue;
@@ -388,11 +384,9 @@ FVMS_SkillInfo_Monster_Test& Get(const UObject ContextObject)
 {
     return FVMS_SkillInfo_Monster_Test::GetByManager(EUIInternal::GetContextManager(ContextObject));
 }
-FVMS_SkillInfo_Monster_Test GetByManager(const UEUIManagerSubsystem Manager)
+FVMS_SkillInfo_Monster_Test& GetByManager(const UEUIManagerSubsystem Manager)
 {
-    FVMS_SkillInfo_Monster_Test __r;
-    TEUIModelRef<FVMS_SkillInfo_Monster_Test> local_6 = TEUIModelRef<FVMS_SkillInfo_Monster_Test>(EUIInternal::MakeModelWithManager(Manager, FVMS_SkillInfo_Monster_Test::ModelId));
-    return __r;
+    return TEUIModelRef<FVMS_SkillInfo_Monster_Test>(EUIInternal::MakeModelWithManager(Manager, FVMS_SkillInfo_Monster_Test::ModelId)).Get();
 }
 void GetModelInfo(FEUIViewModelMetaInfo &inout Result)
 {
@@ -446,7 +440,6 @@ namespace __GeneratedProperties_FVMS_SkillInfo_Monster_Test
 {
 UScriptStruct StaticStruct()
 {
-    UScriptStruct local_2;
-    return local_2;
+    return __GeneratedProperties_FVMS_SkillInfo_Monster_Test.Get();
 }
 }

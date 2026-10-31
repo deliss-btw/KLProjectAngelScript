@@ -15,7 +15,7 @@ class UWidget_CancelButton : UEUIUserWidget
     UFUNCTION()
     TArray<FEUIModelWeakRef> MotionPage_DisplayMotionRefs() const
     {
-        FVMS_MotionPage& local_2;
+        FVMS_MotionPage& local_2 = this.MotionPage.Get();
         TArray<FEUIModelWeakRef> local_16;
         if (local_2)
         {
@@ -30,7 +30,7 @@ class UWidget_CancelButton : UEUIUserWidget
     UFUNCTION()
     FEUIModelRef MotionPage_MotionTabs_0() const
     {
-        FVMS_MotionPage& local_2;
+        FVMS_MotionPage& local_2 = this.MotionPage.Get();
         FEUIModelRef local_10;
         if (local_2 && local_2.GetMotionTabs().IsValidIndex(0))
         {
@@ -45,7 +45,7 @@ class UWidget_CancelButton : UEUIUserWidget
     UFUNCTION()
     FEUIModelRef MotionPage_MotionTabs_1() const
     {
-        FVMS_MotionPage& local_2;
+        FVMS_MotionPage& local_2 = this.MotionPage.Get();
         FEUIModelRef local_10;
         if (local_2 && local_2.GetMotionTabs().IsValidIndex(1))
         {
@@ -60,7 +60,7 @@ class UWidget_CancelButton : UEUIUserWidget
     UFUNCTION()
     FEUIModelRef MotionPage_MotionTabs_2() const
     {
-        FVMS_MotionPage& local_2;
+        FVMS_MotionPage& local_2 = this.MotionPage.Get();
         FEUIModelRef local_10;
         if (local_2 && local_2.GetMotionTabs().IsValidIndex(2))
         {

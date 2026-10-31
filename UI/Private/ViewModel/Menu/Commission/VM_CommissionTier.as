@@ -160,21 +160,17 @@ FVM_CommissionTier& Create(const UObject ContextObject, const TEUIModelRef<FM_Co
 {
     return FVM_CommissionTier::CreateByManager(EUIInternal::GetContextManager(ContextObject), CommissionTier);
 }
-FVM_CommissionTier CreateByManager(const UEUIManagerSubsystem Manager, const TEUIModelRef<FM_CommissionTier> &inout CommissionTier)
+FVM_CommissionTier& CreateByManager(const UEUIManagerSubsystem Manager, const TEUIModelRef<FM_CommissionTier> &inout CommissionTier)
 {
-    FVM_CommissionTier __r;
-    TEUIModelRef<FVM_CommissionTier> local_6 = TEUIModelRef<FVM_CommissionTier>(EUIInternal::MakeModelWithManager_Generic(Manager, FVM_CommissionTier::ModelId, 0, CommissionTier));
-    return __r;
+    return TEUIModelRef<FVM_CommissionTier>(EUIInternal::MakeModelWithManager_Generic(Manager, FVM_CommissionTier::ModelId, 0, CommissionTier)).Get();
 }
 FVM_CommissionTier& Create(const UObject ContextObject, const TEUIModelRef<FM_CommissionTier> &inout CommissionTier, const ECommissionTier SpecifiedHighlightedTier)
 {
     return FVM_CommissionTier::CreateByManager(EUIInternal::GetContextManager(ContextObject), CommissionTier, ECommissionTier(SpecifiedHighlightedTier));
 }
-FVM_CommissionTier CreateByManager(const UEUIManagerSubsystem Manager, const TEUIModelRef<FM_CommissionTier> &inout CommissionTier, const ECommissionTier SpecifiedHighlightedTier)
+FVM_CommissionTier& CreateByManager(const UEUIManagerSubsystem Manager, const TEUIModelRef<FM_CommissionTier> &inout CommissionTier, const ECommissionTier SpecifiedHighlightedTier)
 {
-    FVM_CommissionTier __r;
-    TEUIModelRef<FVM_CommissionTier> local_6 = TEUIModelRef<FVM_CommissionTier>(EUIInternal::MakeModelWithManager_Generic(Manager, FVM_CommissionTier::ModelId, 1, CommissionTier, SpecifiedHighlightedTier));
-    return __r;
+    return TEUIModelRef<FVM_CommissionTier>(EUIInternal::MakeModelWithManager_Generic(Manager, FVM_CommissionTier::ModelId, 1, CommissionTier, SpecifiedHighlightedTier)).Get();
 }
 void GetModelInfo(FEUIViewModelMetaInfo &inout Result)
 {
@@ -265,7 +261,6 @@ namespace __GeneratedProperties_FVM_CommissionTier
 {
 UScriptStruct StaticStruct()
 {
-    UScriptStruct local_2;
-    return local_2;
+    return __GeneratedProperties_FVM_CommissionTier.Get();
 }
 }

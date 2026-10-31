@@ -82,29 +82,20 @@ struct FVM_TeamInvitationItem : FEUIViewModel
     }
     void OnButtonClick()
     {
-        TEUIModelRef<FVM_PlayerInfo> local_2 = this.GetPlayerInfo();
-        TEUIModelRef<FM_Player> local_4;
-        local_4.GetPlayer();
-        ::FSocialTeamUtils::ClientSendTeamUp(this.GetContext().GetLocalPlayer(), GetPlayerUid());
+        ::FSocialTeamUtils::ClientSendTeamUp(this.GetContext().GetLocalPlayer(), this.GetPlayerInfo().Get().GetPlayer().Get().GetPlayerUid());
         FCommonTipsParam local_18;
         ::CommonPopup::Tips(NSLOCTEXT("TeamInvitationItem", "SendTeamUpRequest", "邀请请求已发送"), local_18);
         return;
     }
     FText GetPlayerName() const
     {
-        TEUIModelRef<FVM_PlayerInfo> local_2 = this.GetPlayerInfo();
-        FText local_6;
-        local_6.GetPlayerName();
-        return local_6;
+        return this.GetPlayerInfo().Get().GetPlayerName();
     }
     bool bIsShowFriendIcon() const
     {
         if ((int(this.GetInvitationType())) == 1)
         {
-            TEUIModelRef<FVM_PlayerInfo> local_6 = this.GetPlayerInfo();
-            TEUIModelRef<FM_Player> local_8;
-            local_8.GetPlayer();
-            return ::FriendUtil::IsFriend(GetPlayerUid());
+            return ::FriendUtil::IsFriend(this.GetPlayerInfo().Get().GetPlayer().Get().GetPlayerUid());
         }
         return false;
     }
@@ -237,11 +228,9 @@ FVM_TeamInvitationItem& Create(const UObject ContextObject, const TEUIModelRef<F
 {
     return FVM_TeamInvitationItem::CreateByManager(EUIInternal::GetContextManager(ContextObject), PlayerInfo, ETeamInvitationType(InvitationType), PlayerBrief, CurDistance);
 }
-FVM_TeamInvitationItem CreateByManager(const UEUIManagerSubsystem Manager, const TEUIModelRef<FVM_PlayerInfo> &inout PlayerInfo, const ETeamInvitationType InvitationType, const FPlayerBriefInfo &inout PlayerBrief, const float32 CurDistance)
+FVM_TeamInvitationItem& CreateByManager(const UEUIManagerSubsystem Manager, const TEUIModelRef<FVM_PlayerInfo> &inout PlayerInfo, const ETeamInvitationType InvitationType, const FPlayerBriefInfo &inout PlayerBrief, const float32 CurDistance)
 {
-    FVM_TeamInvitationItem __r;
-    TEUIModelRef<FVM_TeamInvitationItem> local_6 = TEUIModelRef<FVM_TeamInvitationItem>(EUIInternal::MakeModelWithManager_Generic(Manager, FVM_TeamInvitationItem::ModelId, 0, PlayerInfo, InvitationType, PlayerBrief, CurDistance));
-    return __r;
+    return TEUIModelRef<FVM_TeamInvitationItem>(EUIInternal::MakeModelWithManager_Generic(Manager, FVM_TeamInvitationItem::ModelId, 0, PlayerInfo, InvitationType, PlayerBrief, CurDistance)).Get();
 }
 void GetModelInfo(FEUIViewModelMetaInfo &inout Result)
 {
@@ -345,7 +334,6 @@ namespace __GeneratedProperties_FVM_TeamInvitationItem
 {
 UScriptStruct StaticStruct()
 {
-    UScriptStruct local_2;
-    return local_2;
+    return __GeneratedProperties_FVM_TeamInvitationItem.Get();
 }
 }

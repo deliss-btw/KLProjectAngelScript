@@ -418,11 +418,11 @@ class UESMAnimInstance_Base : UKLAnimInstance
     }
     void UpdateDynamicAdditiveAnimData()
     {
-        UAnimSequence local_68;
         if (this.DynamicAdditiveAnimDataConfig.GetConfigPtr())
         {
-            this.DynamicAdditiveAnimData.SetTargetSequenceAsset(local_68);
-            this.DynamicAdditiveAnimData.SetSourceSequenceAsset(local_68);
+            FAnimDynamicAdditiveConfig local_34;
+            this.DynamicAdditiveAnimData.SetTargetSequenceAsset(local_34.TargetSequence.Get());
+            this.DynamicAdditiveAnimData.SetSourceSequenceAsset(local_34.SourceSequence.Get());
             if (this.DynamicAdditiveAnimData.GetTargetSequenceAsset() == nullptr || (this.DynamicAdditiveAnimData.GetSourceSequenceAsset() == nullptr))
             {
                 this.DynamicAdditiveAnimData.SetTargetSequenceAsset(nullptr);

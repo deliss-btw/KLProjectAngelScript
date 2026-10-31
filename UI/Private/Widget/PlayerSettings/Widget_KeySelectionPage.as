@@ -73,7 +73,7 @@ class UWidget_KeySelectionPage : UEUIActivatableWidget
     UFUNCTION()
     TArray<FEUIModelContainer> Keys_Keys() const
     {
-        FVM_KeyList& local_2;
+        FVM_KeyList& local_2 = this.Keys.Get();
         TArray<FEUIModelContainer> local_12;
         if (local_2)
         {
@@ -88,7 +88,7 @@ class UWidget_KeySelectionPage : UEUIActivatableWidget
     UFUNCTION()
     FText Keys_ActionName() const
     {
-        FVM_KeyList& local_2;
+        FVM_KeyList& local_2 = this.Keys.Get();
         FText local_12 = local_2 ? local_2.GetActionName() : FText();
         return local_12;
     }

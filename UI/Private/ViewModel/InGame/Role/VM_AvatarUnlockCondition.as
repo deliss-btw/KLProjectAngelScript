@@ -65,8 +65,7 @@ struct FVM_AvatarUnlockCondition : FEUIViewModel
     }
     FText GetConditionText() const
     {
-        // body not fully recovered — stub [no-return]
-        FText __r; return __r;
+        return this.GetCondition().Get().ConditionTips;
     }
     bool GetIsUnlock() const
     {
@@ -78,15 +77,14 @@ struct FVM_AvatarUnlockCondition : FEUIViewModel
     }
     void PostConstruct()
     {
-        int local_54 = 0;
-        int local_61 = 0;
         CastTo local_28;
-        if (local_28.opCall())
+        TDataObjectPtr<FConditionConfig> local_52 = local_28.opCall();
+        if (local_52)
         {
-            this.SetTargetValue(local_54);
+            this.SetTargetValue(local_52.Get().CmpValue);
             TEUIModelRef<FMS_Condition> local_56 = TEUIModelRef<FMS_Condition>(::FMS_Condition::Get(this.GetManager()));
-            this.SetbIsUnlock(local_56.opArrow().IsConditionFinish());
-            this.SetProgress(local_56.opArrow().GetConditionProgress(local_61));
+            this.SetbIsUnlock(local_56.opArrow().IsConditionFinish(local_52.Get()));
+            this.SetProgress(local_56.opArrow().GetConditionProgress(local_52.Get().DataId));
         }
         return;
     }
@@ -200,8 +198,7 @@ struct FVM_AvatarAllUnlockConditions : FEUIViewModel
     void PostConstruct()
     {
         this.GetModify_UnlockConditions().Empty(0);
-        TEUIModelRef<FM_Avatar> local_4 = this.GetAvatar();
-        for (auto& local_20 : GetUnlockCondition())
+        for (auto& local_20 : this.GetAvatar().Get().GetAvatarConfig().Get().GetUnlockCondition())
         {
             TEUIModelRef<FVM_AvatarUnlockCondition> local_22 = TEUIModelRef<FVM_AvatarUnlockCondition>(::FVM_AvatarUnlockCondition::Create(this.GetManager(), local_20));
             this.GetModify_UnlockConditions().Add(local_22);
@@ -280,11 +277,9 @@ FVM_AvatarUnlockCondition& Create(const UObject ContextObject, const TDataObject
 {
     return FVM_AvatarUnlockCondition::CreateByManager(EUIInternal::GetContextManager(ContextObject), Condition);
 }
-FVM_AvatarUnlockCondition CreateByManager(const UEUIManagerSubsystem Manager, const TDataObjectPtr<FServerConditionConfigBase> &inout Condition)
+FVM_AvatarUnlockCondition& CreateByManager(const UEUIManagerSubsystem Manager, const TDataObjectPtr<FServerConditionConfigBase> &inout Condition)
 {
-    FVM_AvatarUnlockCondition __r;
-    TEUIModelRef<FVM_AvatarUnlockCondition> local_6 = TEUIModelRef<FVM_AvatarUnlockCondition>(EUIInternal::MakeModelWithManager_Generic(Manager, FVM_AvatarUnlockCondition::ModelId, 0, Condition));
-    return __r;
+    return TEUIModelRef<FVM_AvatarUnlockCondition>(EUIInternal::MakeModelWithManager_Generic(Manager, FVM_AvatarUnlockCondition::ModelId, 0, Condition)).Get();
 }
 void GetModelInfo(FEUIViewModelMetaInfo &inout Result)
 {
@@ -357,8 +352,7 @@ namespace __GeneratedProperties_FVM_AvatarUnlockCondition
 {
 UScriptStruct StaticStruct()
 {
-    UScriptStruct local_2;
-    return local_2;
+    return __GeneratedProperties_FVM_AvatarUnlockCondition.Get();
 }
 }
 namespace FVM_AvatarAllUnlockConditions
@@ -367,11 +361,9 @@ FVM_AvatarAllUnlockConditions& Create(const UObject ContextObject, const TEUIMod
 {
     return FVM_AvatarAllUnlockConditions::CreateByManager(EUIInternal::GetContextManager(ContextObject), Avatar);
 }
-FVM_AvatarAllUnlockConditions CreateByManager(const UEUIManagerSubsystem Manager, const TEUIModelRef<FM_Avatar> &inout Avatar)
+FVM_AvatarAllUnlockConditions& CreateByManager(const UEUIManagerSubsystem Manager, const TEUIModelRef<FM_Avatar> &inout Avatar)
 {
-    FVM_AvatarAllUnlockConditions __r;
-    TEUIModelRef<FVM_AvatarAllUnlockConditions> local_6 = TEUIModelRef<FVM_AvatarAllUnlockConditions>(EUIInternal::MakeModelWithManager_Generic(Manager, FVM_AvatarAllUnlockConditions::ModelId, 0, Avatar));
-    return __r;
+    return TEUIModelRef<FVM_AvatarAllUnlockConditions>(EUIInternal::MakeModelWithManager_Generic(Manager, FVM_AvatarAllUnlockConditions::ModelId, 0, Avatar)).Get();
 }
 void GetModelInfo(FEUIViewModelMetaInfo &inout Result)
 {
@@ -418,7 +410,6 @@ namespace __GeneratedProperties_FVM_AvatarAllUnlockConditions
 {
 UScriptStruct StaticStruct()
 {
-    UScriptStruct local_2;
-    return local_2;
+    return __GeneratedProperties_FVM_AvatarAllUnlockConditions.Get();
 }
 }

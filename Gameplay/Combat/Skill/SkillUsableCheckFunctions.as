@@ -23,13 +23,13 @@ class USkillUsableCheckFunctions_Default : USkillUsableCheckFunctions
     {
         if (SkillInstance.GetConsumeConfig().ConsumeItemRow.IsValid())
         {
-            TDataObjectPtr<FItemConfig> local_50 = TDataObjectPtr<FItemConfig>(SkillInstance.GetConsumeConfig().ConsumeItemRow);
-            if (::InventoryUtils::GetInventoryItemNumber(OwnerEntity, local_50) < int(SkillInstance.GetConsumeConfig().ConsumeItemNumber))
+            TDataObjectPtr<FItemConfig> local_26 = TDataObjectPtr<FItemConfig>(SkillInstance.GetConsumeConfig().ConsumeItemRow);
+            if (::InventoryUtils::GetInventoryItemNumber(OwnerEntity, local_26) < int(SkillInstance.GetConsumeConfig().ConsumeItemNumber))
             {
                 TDataObjectPtr<FMessageHintConfig> local_100;
-                if (GetItemShortageTips())
+                if (local_26.Get().GetItemShortageTips())
                 {
-                    local_100 = GetItemShortageTips();
+                    local_100 = local_26.Get().GetItemShortageTips();
                 }
                 else
                 {
@@ -44,7 +44,6 @@ class USkillUsableCheckFunctions_Default : USkillUsableCheckFunctions
     UFUNCTION()
     bool CheckCosumeAttribute_Implementation(const FECSEntity &inout OwnerEntity, const FC_SkillInstance &inout SkillInstance, const FFPTime &inout Time) const
     {
-        float32 local_29 = 0.0f;
         UCombatGlobalSettings local_40;
         float32 local_1 = 0.0f;
         if (!(SkillInstance.GetConsumeConfig().ConsumeAttribute.IsEmpty()))
@@ -61,6 +60,7 @@ class USkillUsableCheckFunctions_Default : USkillUsableCheckFunctions
                 for (auto& local_28 : SkillInstance.GetConsumeConfig().ConsumeAttribute)
                 {
                     float32 local_2 = local_10.GetAttributeValue(local_28.GetKey(), Time);
+                    float32 local_29 = local_28.GetValue().GetValue(OwnerEntity, SkillInstance);
                     if (local_2 < (local_29 + local_1))
                     {
                         if (local_2 < local_29)
@@ -90,7 +90,6 @@ class USkillUsableCheckFunctions_Default : USkillUsableCheckFunctions
                 return false;
             }
         }
-        local_29 = 0.0f;
         if (!(SkillInstance.GetConsumeConfig().BlockWhenNegativeAttributes.IsEmpty()))
         {
             Make local_110;
@@ -103,7 +102,7 @@ class USkillUsableCheckFunctions_Default : USkillUsableCheckFunctions
                 for (auto& local_132 : SkillInstance.GetConsumeConfig().BlockWhenNegativeAttributes)
                 {
                     float32 local_30 = local_10_2.GetAttributeValue(local_132, Time);
-                    if (local_30 < local_29)
+                    if (local_30 < 0.0f)
                     {
                         if (local_30 < 0.0f)
                         {

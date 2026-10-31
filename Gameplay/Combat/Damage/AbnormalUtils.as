@@ -29,15 +29,14 @@ struct FAccumulateAbnormalParams
 
 EAbnormalState GetTargetAbnormalWeakness(const FECSEntity &inout Entity)
 {
-    EAbnormalState local_2 = EAbnormalState(0);
-    EAbnormalState local_1 = local_2;
+    EAbnormalState local_1 = EAbnormalState::None;
     Get local_6;
     const FC_MonsterInfo& local_8 = local_6.opCall();
     if (local_8)
     {
         if (local_8.GetMonsterConfig())
         {
-            local_1 = local_2;
+            local_1 = local_8.GetMonsterConfig().Get().WeaknessAbnormalState;
         }
     }
     return local_1;
@@ -241,8 +240,7 @@ void AccumulateAbnormalValue(const FECSEntity &inout Entity, const FAbnormalStat
         {
             local_445 = local_452.GetAbnormalStateRatio();
         }
-        int local_26 = int(Params.AbnormalState);
-        local_444 = (int(FAbnormalStateUtils::GetTargetAbnormalWeakness(Entity)) == local_26);
+        local_444 = (int(FAbnormalStateUtils::GetTargetAbnormalWeakness(Entity)) == int(Params.AbnormalState));
         if ((local_442.StateTag.IsValid() && Entity.MatchGameplayTag(local_442.StateTag)))
         {
             if ((local_443 && local_442.MonsterEnhancedConfig.StateTag.IsValid() && !(Entity.MatchGameplayTag(local_442.MonsterEnhancedConfig.StateTag))))
@@ -260,8 +258,7 @@ void AccumulateAbnormalValue(const FECSEntity &inout Entity, const FAbnormalStat
             }
             return;
         }
-        bool local_7_5 = local_442.MonsterEnhancedConfig.StateTag.IsValid() && Entity.MatchGameplayTag(local_442.MonsterEnhancedConfig.StateTag);
-        if (local_7_5)
+        if ((local_442.MonsterEnhancedConfig.StateTag.IsValid() && Entity.MatchGameplayTag(local_442.MonsterEnhancedConfig.StateTag)))
         {
             return;
         }
@@ -284,9 +281,9 @@ void AccumulateAbnormalValue(const FECSEntity &inout Entity, const FAbnormalStat
             const FC_MonsterInfo& local_466 = local_464.opCall();
             if (local_466)
             {
-                if ((local_466.GetMonsterConfig() && (local_26 > 0)))
+                if ((local_466.GetMonsterConfig() && (local_466.GetMonsterConfig().Get().AbnormalStateResistanceArr.Num() > 0)))
                 {
-                    local_460 = local_7_5;
+                    local_460 = local_466.GetMonsterConfig().Get().AbnormalStateResistanceArr.Contains(Params.AbnormalState);
                 }
             }
             if (local_460)
@@ -330,11 +327,13 @@ void OnTriggerAbnormalState(const FECSEntity &inout AbnormalEntity, const FECSEn
     int local_6 = 0;
     if (bIsValidEnhancedAbnormalDamage)
     {
-        local_2 = EAbnormalActiveState(2);
+        EAbnormalActiveState local_3 = EAbnormalActiveState::EnhancedActive;
+        local_2 = local_3;
     }
     else
     {
-        local_2 = EAbnormalActiveState(1);
+        EAbnormalActiveState local_3_2 = EAbnormalActiveState::NormalActive;
+        local_2 = local_3_2;
     }
     int local_11 = 0;
     for (; local_11 < local_6.GetAbnormalStates().Num(); ++local_11)
@@ -435,7 +434,8 @@ void RemoveSingleAbnormal(const FECSEntity &inout ComponentEntity, const EAbnorm
 void OnTriggerAbnormalAccumulating(const FECSEntity &inout AbnormalEntity, const FECSEntity &inout ComponentEntity, const FAbnormalStateConfig &inout AbnormalStateConfig, const FAbnormalStateUtils::FAccumulateAbnormalParams &inout Params)
 {
     int local_4 = 0;
-    int local_1 = EAbnormalActiveState(0);
+    EAbnormalActiveState local_2 = EAbnormalActiveState::AccumulateExceedThreshold;
+    int local_1 = local_2;
     int local_9 = 0;
     for (; local_9 < local_4.GetAbnormalStates().Num(); ++local_9)
     {
@@ -649,7 +649,7 @@ FAbnormalFXConfig GetAbnormalFXConfig(const FECSEntity &inout Entity, const TMap
     {
         bool local_27;
         EAbnormalFXPrefabType local_25;
-        local_25 = EAbnormalFXPrefabType(0);
+        local_25 = EAbnormalFXPrefabType::Avatar;
         local_27 = false;
         local_30 = Entity.GetActor();
         if (local_30 != nullptr)
@@ -668,25 +668,25 @@ FAbnormalFXConfig GetAbnormalFXConfig(const FECSEntity &inout Entity, const TMap
         {
             if (FASCommonUtils::IsAvatarPrefab(Entity))
             {
-                local_25 = EAbnormalFXPrefabType(0);
+                local_25 = EAbnormalFXPrefabType::Avatar;
             }
             else
             {
                 if ((int(FASCommonUtils::GetMonsterRank(Entity))) == 1)
                 {
-                    local_25 = EAbnormalFXPrefabType(3);
+                    local_25 = EAbnormalFXPrefabType::Elite;
                 }
                 else
                 {
                     if (FASCommonUtils::IsBossPrefab(Entity))
                     {
-                        local_25 = EAbnormalFXPrefabType(2);
+                        local_25 = EAbnormalFXPrefabType::Boss;
                     }
                     else
                     {
                         if (FASCommonUtils::IsMonsterPrefab(Entity))
                         {
-                            local_25 = EAbnormalFXPrefabType(1);
+                            local_25 = EAbnormalFXPrefabType::Monster;
                         }
                     }
                 }

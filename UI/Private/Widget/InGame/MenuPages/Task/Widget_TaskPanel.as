@@ -43,9 +43,7 @@ class UWidget_TaskPanel : UEUIActivatableWidget
     TArray<FEUIModelWeakRef> GetTaskChildren(const FEUIModelWeakRef &inout Task) const
     {
         TArray<FEUIModelWeakRef> local_4;
-        TArray<FEUIModelRef> local_10;
-        local_10.GetTaskChildren(FEUIModelRef());
-        for (auto& local_26 : local_10)
+        for (auto& local_26 : this.TaskPanel.Get().GetTaskChildren(FEUIModelRef(Task.Get())))
         {
             local_4.Add(FEUIModelWeakRef(local_26));
         }
@@ -72,7 +70,7 @@ class UWidget_TaskPanel : UEUIActivatableWidget
     UFUNCTION()
     TArray<FEUIModelWeakRef> TaskPanel_TaskList() const
     {
-        FVM_TaskPanel& local_2;
+        FVM_TaskPanel& local_2 = this.TaskPanel.Get();
         TArray<FEUIModelWeakRef> local_16;
         if (local_2)
         {
@@ -87,7 +85,7 @@ class UWidget_TaskPanel : UEUIActivatableWidget
     UFUNCTION()
     TArray<FEUIModelWeakRef> TaskPanel_TaskTargetList() const
     {
-        FVM_TaskPanel& local_2;
+        FVM_TaskPanel& local_2 = this.TaskPanel.Get();
         TArray<FEUIModelWeakRef> local_16;
         if (local_2)
         {
@@ -102,7 +100,7 @@ class UWidget_TaskPanel : UEUIActivatableWidget
     UFUNCTION()
     FEUIModelRef TaskPanel_TaskRewardList() const
     {
-        FVM_TaskPanel& local_2;
+        FVM_TaskPanel& local_2 = this.TaskPanel.Get();
         FEUIModelRef local_8 = local_2 ? local_2.GetTaskRewardList() : FEUIModelRef();
         return local_8;
     }
@@ -119,8 +117,8 @@ class UWidget_TaskPanel : UEUIActivatableWidget
     }
     void HandleObservedModelChanges(FEUIReactiveSubscriberIterator &inout It)
     {
-        FVM_TaskPanel& local_6;
         TEUIModelRef<FVM_TaskPanel> local_2 = this.TaskPanel.AsRef();
+        FVM_TaskPanel& local_6 = local_2.Get();
         for (; It; )
         {
             FEUIReactiveSubscriberTrackScope local_56 = FEUIReactiveSubscriberTrackScope(It);

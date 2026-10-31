@@ -71,7 +71,6 @@ class US_HitTestSystemAS : UECSScriptSystem
     {
         int local_6 = 0;
         bool local_13;
-        UPrimitiveComponent local_16;
         UStaticMeshComponent local_28;
         UHierarchicalInstancedStaticMeshComponent local_32;
         bool local_57 = false;
@@ -80,10 +79,10 @@ class US_HitTestSystemAS : UECSScriptSystem
         FVector local_12;
         if (Result.HitComponent.IsValid())
         {
-            local_12 = local_16.GetWorldLocation();
+            local_12 = Result.HitComponent.Get().GetWorldLocation();
             if (int(Result.HitItemIndex) == INDEX_NONE)
             {
-                local_28 = (Cast<UStaticMeshComponent>(local_16));
+                local_28 = (Cast<UStaticMeshComponent>(Result.HitComponent.Get()));
                 if (local_28 != nullptr)
                 {
                     local_12 = local_28.GetWorldLocation();
@@ -93,7 +92,7 @@ class US_HitTestSystemAS : UECSScriptSystem
             {
                 while (local_57)
                 {
-                    local_32 = Cast<UHierarchicalInstancedStaticMeshComponent>(local_16);
+                    local_32 = Cast<UHierarchicalInstancedStaticMeshComponent>(Result.HitComponent.Get());
                     if (local_32 != nullptr)
                     {
                         FTransform local_56;
@@ -103,7 +102,7 @@ class US_HitTestSystemAS : UECSScriptSystem
                         }
                         break;
                     }
-                    local_62 = Cast<UInstancedSkinnedMeshComponent>(local_16);
+                    local_62 = Cast<UInstancedSkinnedMeshComponent>(Result.HitComponent.Get());
                     if (local_62 != nullptr)
                     {
                         FTransform local_56;
@@ -267,19 +266,15 @@ class US_HitTestSystemAS : UECSScriptSystem
         bool local_27;
         int local_76 = 0;
         FAttackData local_102;
-        int local_191 = 0;
-        int local_192 = 0;
         const FC_BodyPartsConfig& local_214;
         int local_228 = 0;
         Get local_232;
         bool local_379 = false;
         bool local_384;
-        int local_416 = 0;
         const FHitBoxData& local_422;
         UCharacterBodyPartDataAsset local_618;
         int local_636 = 0;
         bool local_639;
-        UPrimitiveComponent local_690;
         UCharacterBodyPartDataAsset local_778;
         int local_816 = 0;
         int local_822 = 0;
@@ -437,9 +432,7 @@ class US_HitTestSystemAS : UECSScriptSystem
                     }
                 }
                 FHitTestCheckResult local_190 = ::FCombatUtils::CheckHitTestResult(local_10, TDataObjectPtr<FAttackData>(local_76), EAttackType(local_102.AttackType), local_102.AttackTag, uint8(int(local_102.AffectFactionRelation)), local_166, Event.HitTestProtectData);
-                local_191 = int(local_190.CheckResult);
-                local_192 = local_191;
-                local_1_2 = (local_192 == 0 || (int(local_190.CheckResult) == 9)) && local_174.IsValid();
+                local_1_2 = (int(local_190.CheckResult) == 0 || (int(local_190.CheckResult) == 9)) && local_174.IsValid();
                 if (local_1_2)
                 {
                     if (local_22.Num() == 1)
@@ -643,16 +636,13 @@ class US_HitTestSystemAS : UECSScriptSystem
                 }
                 else
                 {
-                    local_191 = int(local_190.CheckResult);
-                    local_192 = local_191;
-                    local_1_2 = local_192 == 4 || (int(local_190.CheckResult) == 5);
+                    local_1_2 = int(local_190.CheckResult) == 4 || (int(local_190.CheckResult) == 5);
                     local_384 = local_1_2 || (int(local_190.CheckResult) == 6);
                     local_1_2 = local_384 || (int(local_190.CheckResult) == 7);
-                    if (local_1_2 || ((int(local_190.CheckResult) == 8)))
+                    if (local_1_2 || (int(local_190.CheckResult) == 8))
                     {
-                        local_416 = int(local_190.CheckResult);
-                        local_1_2 = local_416 == 5 || ((int(local_190.CheckResult) == 6));
-                        if (local_1_2 || ((int(local_190.CheckResult) == 7)))
+                        local_1_2 = int(local_190.CheckResult) == 5 || (int(local_190.CheckResult) == 6);
+                        if (local_1_2 || (int(local_190.CheckResult) == 7))
                         {
                             local_384 = this.GetECSRuntime().IsServer;
                             if (local_384 || ECS::IsAuthorityOrPrediction(local_174))
@@ -685,8 +675,7 @@ class US_HitTestSystemAS : UECSScriptSystem
                     }
                     else
                     {
-                        local_191 = int(local_190.CheckResult);
-                        if (local_191 == 10)
+                        if (int(local_190.CheckResult) == 10)
                         {
                             local_384 = this.GetECSRuntime().IsClient;
                             if (local_384 && !(local_6.opCall()))
@@ -708,12 +697,9 @@ class US_HitTestSystemAS : UECSScriptSystem
                         }
                         else
                         {
-                            local_191 = int(local_190.CheckResult);
-                            if (local_191 == 11)
+                            if (int(local_190.CheckResult) == 11)
                             {
-                                local_192 = int(local_102.HitLevel);
-                                local_192 = local_192;
-                                if (local_192 >= 2)
+                                if (int(local_102.HitLevel) >= 2)
                                 {
                                     FCE_DestructibleHitEvent local_648;
                                     local_648.Receiver = local_174;
@@ -725,14 +711,13 @@ class US_HitTestSystemAS : UECSScriptSystem
                             }
                             else
                             {
-                                local_191 = int(local_190.CheckResult);
-                                if (local_191 == 1)
+                                if (int(local_190.CheckResult) == 1)
                                 {
                                     local_639 = ECS::GetRuntimeInfo().IsServer;
                                     if (local_639)
                                     {
                                         FSimpleDestructibleBreakResult local_688;
-                                        if (::SimpleDestructibleUtils::ServerTryBreakFromHitResult(local_10, local_690, int(local_166.HitItemIndex), local_102.GetDestructibleClassLevelFromDamage(local_10), true, EImpactType(local_102.ImpactType), EImpactStrength(local_102.ImpactStrengthValue), this.GetImpactDir(local_10, Event, local_166, local_102), local_688))
+                                        if (::SimpleDestructibleUtils::ServerTryBreakFromHitResult(local_10, local_166.HitComponent.Get(), int(local_166.HitItemIndex), local_102.GetDestructibleClassLevelFromDamage(local_10), true, EImpactType(local_102.ImpactType), EImpactStrength(local_102.ImpactStrengthValue), this.GetImpactDir(local_10, Event, local_166, local_102), local_688))
                                         {
                                             if (local_688.bWasAlreadyDestroyed)
                                             {
@@ -771,23 +756,24 @@ class US_HitTestSystemAS : UECSScriptSystem
                     ::FCombatUtils::AddMultiStrikeProtectRecord(local_174_2, Event.HitTestProtectData, Time);
                     ::FCombatUtils::AddForceHitInvincibleRecord(local_174_2, Event.HitTestProtectData, Time);
                     FHitBoxData local_772;
-                    if (local_416 >= 0)
+                    if (local_708.GetValue().HitBoxDataIndex >= 0)
                     {
                         const FC_HitBoxConfig& local_774 = local_232.opCall();
                         if (local_774)
                         {
-                            local_416 = local_774.HitBoxDatas.Num();
-                            if (local_192 < local_416)
+                            if (local_708.GetValue().HitBoxDataIndex < local_774.HitBoxDatas.Num())
                             {
-                                local_772 = local_774.HitBoxDatas[local_416];
+                                local_772 = local_774.HitBoxDatas[local_708.GetValue().HitBoxDataIndex];
                             }
                         }
                     }
                     local_1_3 = false;
+                    local_778 = local_708.GetValue().BodyPartData;
                     if (local_778 != nullptr && !(local_772.BodyPartKey.IsNone()))
                     {
-                        if (unresolved.BodyPartData.BodyParts.Contains(local_772.BodyPartKey))
+                        if (local_708.GetValue().BodyPartData.BodyParts.Contains(local_772.BodyPartKey))
                         {
+                            local_639 = local_708.GetValue().BodyPartData.BodyParts[local_772.BodyPartKey].IsWeakness;
                         }
                     }
                     bool local_638 = Event.GetbAttackHitFXSpawnToStrikeCenterLine();
@@ -797,7 +783,7 @@ class US_HitTestSystemAS : UECSScriptSystem
                     FTransform local_60_3 = Event.GetTransform();
                     if (ECS::IsAuthorityOrPrediction(local_174_2))
                     {
-                        if (local_191 == 9)
+                        if (int(local_708.GetValue().HitTestCheckResult.CheckResult) == 9)
                         {
                             ::FCombatUtils::MakeInvincibleCounterEvent(local_174_2, local_10, EHitTestCheckResult(9), Time, Event.GetbLocalPrediction());
                         }
@@ -845,6 +831,7 @@ class US_HitTestSystemAS : UECSScriptSystem
                 local_822.AttackIdentifier = Event.AttackIdentifier;
                 local_822.StrikeEventData = Event.StrikeEventData;
                 local_822.HitDecal = Event.HitDecalConfig;
+                local_816.AttackIdentifierSet.Remove(Event.AttackIdentifier);
             }
         }
         return local_28;
@@ -1091,10 +1078,10 @@ class US_HitTestSystemAS : UECSScriptSystem
     UFUNCTION()
     void Job_ClearHitTestProtectRecord(const FECSEntity &inout Entity, FC_HitTestProtectRecord &inout HitTestProtectRecord, const FCS_FixedTime &inout FixedTime) const
     {
-        FFPTime local_26;
         TArray<FName> local_4;
         for (auto& local_24 : HitTestProtectRecord.GetDodgeProtect())
         {
+            FFPTime local_26 = local_24.GetValue();
             if (local_26.opCmp(FixedTime.Time) < 0)
             {
                 local_4.Add(local_24.GetKey());
@@ -1102,31 +1089,33 @@ class US_HitTestSystemAS : UECSScriptSystem
         }
         for (auto& local_42 : local_4)
         {
-            local_42;
+            HitTestProtectRecord.GetModify_DodgeProtect().Remove(local_42);
         }
         local_4.Reset(0);
         for (auto& local_24_2 : HitTestProtectRecord.GetMultiStrikeProtect())
         {
-            if (local_26.opCmp(FixedTime.Time) < 0)
+            FFPTime local_26_2 = local_24_2.GetValue();
+            if (local_26_2.opCmp(FixedTime.Time) < 0)
             {
                 local_4.Add(local_24_2.GetKey());
             }
         }
         for (auto& local_42 : local_4)
         {
-            local_42;
+            HitTestProtectRecord.GetModify_MultiStrikeProtect().Remove(local_42);
         }
         local_4.Reset(0);
         for (auto& local_24_3 : HitTestProtectRecord.GetForceHitInvincible())
         {
-            if (local_26.opCmp(FixedTime.Time) < 0)
+            FFPTime local_26_3 = local_24_3.GetValue();
+            if (local_26_3.opCmp(FixedTime.Time) < 0)
             {
                 local_4.Add(local_24_3.GetKey());
             }
         }
         for (auto& local_42 : local_4)
         {
-            local_42;
+            HitTestProtectRecord.GetModify_ForceHitInvincible().Remove(local_42);
         }
         if (HitTestProtectRecord.GetDodgeProtect().IsEmpty() && HitTestProtectRecord.GetMultiStrikeProtect().IsEmpty() && HitTestProtectRecord.GetForceHitInvincible().IsEmpty())
         {

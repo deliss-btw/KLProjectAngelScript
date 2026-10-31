@@ -35,8 +35,7 @@ class US_EcologyWorldState : UECSScriptSystem
         FECSWorldPtr local_2_2 = ECS::GetECSWorld();
         if (!(!(local_64)) && local_64.CommissionConfig)
         {
-            FCommissionConfig local_68;
-            local_34.BaseWorldMonsterLevel = int(local_68.MonsterBaseLevel);
+            local_34.BaseWorldMonsterLevel = int(local_64.CommissionConfig.Get().MonsterBaseLevel);
         }
         return;
     }
@@ -110,8 +109,7 @@ class US_EcologyWorldState : UECSScriptSystem
         }
         if (Volume.RegionVolume.IsValid())
         {
-            AActor local_14;
-            local_12 = (Cast<AECSRegionVolume>(local_14));
+            local_12 = (Cast<AECSRegionVolume>(Volume.RegionVolume.Get()));
             if (local_12 != nullptr)
             {
                 FBoxSphereBounds local_30 = local_12.GetBounds();
@@ -135,6 +133,7 @@ class US_EcologyWorldState : UECSScriptSystem
                     }
                     if (local_92.VolumeData.Contains(local_67))
                     {
+                        local_92.VolumeData.Remove(local_67);
                     }
                 }
             }
@@ -166,8 +165,7 @@ class US_EcologyWorldState : UECSScriptSystem
         {
             if (local_22.RegionVolume.IsValid())
             {
-                AActor local_26;
-                local_24 = (Cast<AECSRegionVolumeBase>(local_26));
+                local_24 = (Cast<AECSRegionVolumeBase>(local_22.RegionVolume.Get()));
                 if (local_24 != nullptr)
                 {
                     FVoxelRegionScope local_64 = FVoxelRegionScope(local_24.GetBounds().GetBox());

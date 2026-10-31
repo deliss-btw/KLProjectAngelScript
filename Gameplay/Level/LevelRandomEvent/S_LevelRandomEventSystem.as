@@ -8,7 +8,6 @@ class US_LevelRandomEventSystem : UECSScriptSystem
     void ServerJob_InitRandomEventData(const FCE_LevelLoadingPassBegin &inout Event) const
     {
         int local_12 = 0;
-        int local_21 = 0;
         FString local_28;
         ALevelRandomEventPoint local_104;
         UClass local_160;
@@ -25,7 +24,7 @@ class US_LevelRandomEventSystem : UECSScriptSystem
         }
         FECSWorldPtr local_6 = ECS::GetECSWorld();
         AAS_ECSWorldSettings local_14 = (Cast<AAS_ECSWorldSettings>(this.GetWorld().GetWorldSettings()));
-        if (local_14 != nullptr && ((local_14.RandomEventPoints.Num() <= 0)))
+        if (local_14 != nullptr && (local_14.RandomEventPoints.Num() <= 0))
         {
             XLog(ELog(22), FString().Append("Init Level Random Event: No random event points found"));
             return;
@@ -34,7 +33,7 @@ class US_LevelRandomEventSystem : UECSScriptSystem
         TDataObjectPtr<FCommissionConfig> local_54 = ::CommissionUtils::GetCurrentCommissionConfig();
         if (local_54)
         {
-            local_30 = local_21;
+            local_30 = local_54.Get().MaxRandomEventCount;
         }
         if (local_30 <= 0)
         {
@@ -112,10 +111,8 @@ class US_LevelRandomEventSystem : UECSScriptSystem
         TArray<FRandomEventTypeCountLimit> local_206;
         if (local_54)
         {
-            TArrayConstIterator<FRandomEventTypeCountLimit> local_212;
-            for (; local_212.CanProceed;)
+            for (auto local_220 : local_54.Get().RandomEventTypeCountLimits)
             {
-                FRandomEventTypeCountLimit local_220 = local_212.Proceed();
                 FRandomEventTypeCountLimit local_224;
                 FRandomEventTypeCountLimit local_228;
                 local_228 = local_220;
@@ -133,7 +130,7 @@ class US_LevelRandomEventSystem : UECSScriptSystem
             {
                 FRandomEventTypeCountLimit local_224;
                 local_224 = local_206[local_101_2];
-                local_21 = local_101_2 - 1;
+                int local_21 = local_101_2 - 1;
                 if (local_21 >= 0 && (int(local_206[local_21].LevelRandomEventType) < int(local_224.LevelRandomEventType)))
                 {
                     int local_22_2 = local_21 + 1;
@@ -191,12 +188,13 @@ class US_LevelRandomEventSystem : UECSScriptSystem
         TArray<FRandomEventDistanceTier> local_406;
         if (local_54)
         {
-            local_21 = 1;
-            for (; local_21 < local_406.Num(); )
+            local_406 = local_54.Get().RandomEventDistanceTiers;
+            int local_21_2 = 1;
+            for (; local_21_2 < local_406.Num(); )
             {
                 FRandomEventDistanceTier local_408;
-                local_408 = local_406[local_21];
-                local_166 = local_21 - 1;
+                local_408 = local_406[local_21_2];
+                local_166 = local_21_2 - 1;
                 while (local_166 >= 0 && (local_406[local_166].MaxDistance > local_408.MaxDistance))
                 {
                     local_165_2 = local_166 + 1;
@@ -205,32 +203,30 @@ class US_LevelRandomEventSystem : UECSScriptSystem
                 }
                 int local_171_3 = local_166 + 1;
                 local_406[local_171_3] = local_408;
-                ++local_21;
+                ++local_21_2;
             }
         }
-        int local_22_3 = local_406.Num();
-        XLog(ELog(22), FString().Append("Init Level Random Event: DistanceTiers=").Append(local_22_3));
-        local_21 = 0;
-        for (; local_21 < local_406.Num(); )
+        XLog(ELog(22), FString().Append("Init Level Random Event: DistanceTiers=").Append(local_406.Num()));
+        int local_21_3 = 0;
+        for (; local_21_3 < local_406.Num(); )
         {
-            XLog(ELog(22), FString().Append("Init Level Random Event: Tier[").Append(local_21).Append("]: MaxDistance=").Append(local_406[local_21].MaxDistance).Append("m, Weight=").Append(local_406[local_21].Weight));
-            ++local_21;
+            XLog(ELog(22), FString().Append("Init Level Random Event: Tier[").Append(local_21_3).Append("]: MaxDistance=").Append(local_406[local_21_3].MaxDistance).Append("m, Weight=").Append(local_406[local_21_3].Weight));
+            ++local_21_3;
         }
         this.ExecutePhase1_GuaranteeMinCount(local_84, local_100, local_206, local_406, local_241, local_350);
         XLog(ELog(22), FString().Append("Init Level Random Event: Phase1 done, selected ").Append(local_84.CurrentEventCount).Append(" events so far"));
         this.ExecutePhase2_FreeFill(local_84, local_100, local_202, local_406, local_241, local_350);
         XLog(ELog(22), FString().Append("Init Level Random Event: ===== Final Summary ====="));
         XLog(ELog(22), FString().Append("Init Level Random Event: TotalSelected=").Append(local_84.CurrentEventCount).Append("/").Append(local_84.MaxEventCount));
-        auto local_416 = local_206.Iterator();
-        for (; local_416.CanProceed;)
+        for (auto local_220 : local_206)
         {
-            FRandomEventTypeCountLimit local_220_2 = local_416.Proceed();
             local_166 = 0;
-            if (local_84.EventTypeCountMap.Find(local_220_2.LevelRandomEventType))
+            TRawPtr<int> local_424 = local_84.EventTypeCountMap.Find(local_220.LevelRandomEventType);
+            if (local_424)
             {
-                local_166 = local_22_3;
+                local_166 = local_424.Get();
             }
-            XLog(ELog(22), FString().Append("Init Level Random Event: Type ").Append(int(local_220_2.LevelRandomEventType)).Append(": count=").Append(local_166).Append(", Min=").Append(local_220_2.MinCount).Append(", Max=").Append(local_220_2.MaxCount));
+            XLog(ELog(22), FString().Append("Init Level Random Event: Type ").Append(int(local_220.LevelRandomEventType)).Append(": count=").Append(local_166).Append(", Min=").Append(local_220.MinCount).Append(", Max=").Append(local_220.MaxCount));
         }
         auto local_432 = local_84.SelectedEventPointIndexes.Iterator();
         for (; local_432.CanProceed;)
@@ -238,7 +234,7 @@ class US_LevelRandomEventSystem : UECSScriptSystem
             int local_101_3 = local_432.Proceed();
             FRuntimeEventPointData& local_440 = local_84.RandomLevelEventPointData[local_101_3];
             local_170 = FString("NULL");
-            local_441 = ELevelRandomEventType(0);
+            local_441 = ELevelRandomEventType::Normal;
             if (int(local_440.SelectedLBPIndex) >= 0 && local_440.EventInfoConfigs.IsValidIndex(int(local_440.SelectedLBPIndex)))
             {
                 TDataObjectPtr<FLevelEventInfoConfigBase>& local_174_2 = local_440.EventInfoConfigs[int(local_440.SelectedLBPIndex)];
@@ -484,13 +480,13 @@ class US_LevelRandomEventSystem : UECSScriptSystem
     }
     ELevelRandomEventType GetEventTypeFromEventInfo(const TDataObjectPtr<FLevelEventInfoConfigBase> &inout EventInfoConfig) const
     {
-        int local_55 = 0;
         if (EventInfoConfig)
         {
             CastTo local_6;
-            if (local_6.opCall())
+            TDataObjectPtr<FLevelRandomEventInfoConfig> local_30 = local_6.opCall();
+            if (local_30)
             {
-                return ELevelRandomEventType(local_55);
+                return local_30.Get().LevelRandomEventType;
             }
         }
         return ELevelRandomEventType(0);
@@ -524,7 +520,6 @@ class US_LevelRandomEventSystem : UECSScriptSystem
     bool AreSameEventFamily(const TDataObjectPtr<FLevelEventInfoConfigBase> &inout ConfigA, const TDataObjectPtr<FLevelEventInfoConfigBase> &inout ConfigB) const
     {
         bool local_77;
-        bool local_78 = false;
         CastTo local_4;
         TDataObjectPtr<FLevelRandomEventInfoConfig> local_28 = local_4.opCall();
         TDataObjectPtr<FLevelRandomEventInfoConfig> local_52 = local_4.opCall();
@@ -534,21 +529,18 @@ class US_LevelRandomEventSystem : UECSScriptSystem
         }
         else
         {
-            local_78 = local_52;
-            local_77 = local_78;
+            local_77 = local_52;
         }
-        local_77 = local_77 && local_78;
-        local_77 = local_77 && local_78;
+        local_77 = local_77 && local_28.Get().EventFamilyTag.IsValid();
+        local_77 = local_77 && local_52.Get().EventFamilyTag.IsValid();
         if (local_77)
         {
-            return local_78;
+            return (FGameplayTag(local_28.Get().EventFamilyTag) == local_52.Get().EventFamilyTag);
         }
         return (ConfigA == ConfigB.opImplConv());
     }
     bool CheckSameConfigDistanceConstraint(const TDataObjectPtr<FLevelEventInfoConfigBase> &inout EventInfoConfig, const FRuntimeEventPointData &inout EventPointData, const FCS_LevelRandomEventData &inout LevelRandomEventData) const
     {
-        bool local_13 = false;
-        FString local_42;
         for (auto local_14 : LevelRandomEventData.SelectedEventPointIndexes)
         {
             const FRuntimeEventPointData& local_18 = LevelRandomEventData.RandomLevelEventPointData[local_14];
@@ -576,8 +568,7 @@ class US_LevelRandomEventSystem : UECSScriptSystem
                     FString local_36;
                     if (local_22)
                     {
-                        local_42 = local_22.GetDataName().ToString();
-                        local_36 = local_42;
+                        local_36 = local_22.GetDataName().ToString();
                     }
                     else
                     {
@@ -585,11 +576,12 @@ class US_LevelRandomEventSystem : UECSScriptSystem
                     }
                     FString local_54 = "None";
                     CastTo local_58;
-                    if (local_58.opCall() && local_13)
+                    TDataObjectPtr<FLevelRandomEventInfoConfig> local_82 = local_58.opCall();
+                    if (local_82 && local_82.Get().EventFamilyTag.IsValid())
                     {
-                        local_54 = local_42;
+                        local_54 = local_82.Get().EventFamilyTag.ToString();
                     }
-                    XLog(ELog(22), local_42.Append("Init Level Random Event: SameConfigDistCheck - EventPoint [").Append(EventPointData.RandomEventPoint.GetActorNameOrLabel()).Append("] config=[").Append(local_46).Append("] (family=[").Append(local_54).Append("]) too close to selected EventPoint [").Append(local_18.RandomEventPoint.GetActorNameOrLabel()).Append("] config=[").Append(local_36).Append("] (idx=").Append(local_14).Append("), dist=").Append(local_28).Append("m < minRequired=").Append(local_29).Append("m"));
+                    XLog(ELog(22), FString().Append("Init Level Random Event: SameConfigDistCheck - EventPoint [").Append(EventPointData.RandomEventPoint.GetActorNameOrLabel()).Append("] config=[").Append(local_46).Append("] (family=[").Append(local_54).Append("]) too close to selected EventPoint [").Append(local_18.RandomEventPoint.GetActorNameOrLabel()).Append("] config=[").Append(local_36).Append("] (idx=").Append(local_14).Append("), dist=").Append(local_28).Append("m < minRequired=").Append(local_29).Append("m"));
                     return false;
                 }
             }
@@ -598,22 +590,20 @@ class US_LevelRandomEventSystem : UECSScriptSystem
     }
     float32 GetBaseScoreFromEventInfo(const TDataObjectPtr<FLevelEventInfoConfigBase> &inout EventInfoConfig) const
     {
-        float32 local_2 = 0.0f;
         if (!(EventInfoConfig))
         {
             return 100.0f;
         }
         CastTo local_6;
-        if (!(local_6.opCall()))
+        TDataObjectPtr<FLevelRandomEventInfoConfig> local_30 = local_6.opCall();
+        if (!(local_30))
         {
             return 100.0f;
         }
-        return local_2;
+        return local_30.Get().BaseScore;
     }
     float32 CalculateEventScore(const TDataObjectPtr<FLevelEventInfoConfigBase> &inout EventInfoConfig, const FEventScoreContext &inout ScoreContext) const
     {
-        float32 local_1 = 0.0f;
-        float32 local_10 = 0.0f;
         float32 local_2 = this.GetBaseScoreFromEventInfo(EventInfoConfig);
         float32 local_3 = local_2;
         if (!(EventInfoConfig))
@@ -623,19 +613,21 @@ class US_LevelRandomEventSystem : UECSScriptSystem
         }
         FString local_8 = EventInfoConfig.GetDataName().ToString();
         CastTo local_20;
-        if (!(local_20.opCall()) || !(GetScoreModifierConfig()))
+        TDataObjectPtr<FLevelRandomEventInfoConfig> local_44 = local_20.opCall();
+        if (!(local_44) || !(local_44.Get().GetScoreModifierConfig()))
         {
             XLog(ELog(22), FString().Append("CalculateEventScore: config=[").Append(local_8).Append("], BaseScore=").Append(local_2).Append(", no ScoreModifier, FinalScore=").Append(local_3));
             return FMath::Max(local_3, 0.0f);
         }
-        FEventScoreModifierConfig local_72;
+        const FEventScoreModifierConfig& local_72 = local_44.Get().GetScoreModifierConfig().Get();
         FString local_14 = local_72.Name.ToString();
         if (ScoreContext.CurrentWeather && (local_72.GetWeatherModifier().Num() > 0))
         {
             float32 local_83;
-            if (local_72.GetWeatherModifier().Find(ScoreContext.CurrentWeather))
+            TConstRawPtr<float32> local_80 = local_72.GetWeatherModifier().Find(ScoreContext.CurrentWeather);
+            if (local_80)
             {
-                local_83 = local_1;
+                local_83 = local_80.Get();
                 local_3 = local_3 + local_83;
                 FString local_76 = ScoreContext.CurrentWeather.GetDataName().ToString();
                 FString local_88 = FString();
@@ -651,9 +643,10 @@ class US_LevelRandomEventSystem : UECSScriptSystem
                 {
                     continue;
                 }
-                if (local_72.GetCommissionBossModifier().Find(local_102))
+                TConstRawPtr<float32> local_82 = local_72.GetCommissionBossModifier().Find(local_102);
+                if (local_82)
                 {
-                    local_83 = local_10;
+                    local_83 = local_82.Get();
                     local_3 = local_3 + local_83;
                     FString local_88_2 = local_102.GetDataName().ToString();
                     FString local_76_2 = FString();
@@ -664,9 +657,10 @@ class US_LevelRandomEventSystem : UECSScriptSystem
         if (ScoreContext.CurrentTimeConfig && (local_72.GetCommissionTimeModifier().Num() > 0))
         {
             float32 local_83;
-            if (local_72.GetCommissionTimeModifier().Find(ScoreContext.CurrentTimeConfig))
+            TConstRawPtr<float32> local_80_2 = local_72.GetCommissionTimeModifier().Find(ScoreContext.CurrentTimeConfig);
+            if (local_80_2)
             {
-                local_83 = local_1;
+                local_83 = local_80_2.Get();
                 local_3 = local_3 + local_83;
                 FString local_76_3 = ScoreContext.CurrentTimeConfig.GetDataName().ToString();
                 FString local_88_3 = FString();
@@ -798,7 +792,6 @@ class US_LevelRandomEventSystem : UECSScriptSystem
     }
     bool TrySelectLBPForEventPoint(FRuntimeEventPointData &inout EventPointData, const FCS_LevelRandomEventData &inout LevelRandomEventData, FRandomGenerator &inout RandomGenerator, const TMap<ELevelRandomEventType, FRandomEventTypeCountLimit> &inout TypeCountLimitMap, const FEventScoreContext &inout ScoreContext) const
     {
-        int local_27 = 0;
         int local_35;
         if ((EventPointData.EventInfoConfigs.Num()) <= 0)
         {
@@ -813,22 +806,23 @@ class US_LevelRandomEventSystem : UECSScriptSystem
             TDataObjectPtr<FLevelEventInfoConfigBase>& local_26 = EventPointData.EventInfoConfigs[local_23];
             if (!(local_26))
             {
-                int local_2 = TypeCountLimitMap.Num();
-                if (local_2 > 0)
+                if (TypeCountLimitMap.Num() > 0)
                 {
                     int local_28;
-                    local_28 = ELevelRandomEventType(0);
-                    if (TypeCountLimitMap.Find(ELevelRandomEventType(local_28)))
+                    ELevelRandomEventType local_29 = ELevelRandomEventType::Normal;
+                    local_28 = local_29;
+                    TConstRawPtr<FRandomEventTypeCountLimit> local_32 = TypeCountLimitMap.Find(ELevelRandomEventType(local_28));
+                    if (local_32)
                     {
                         local_35 = 0;
-                        if (LevelRandomEventData.EventTypeCountMap.Find(ELevelRandomEventType(local_28)))
+                        TConstRawPtr<int> local_38 = LevelRandomEventData.EventTypeCountMap.Find(ELevelRandomEventType(local_28));
+                        if (local_38)
                         {
-                            local_35 = local_2;
+                            local_35 = local_38.Get();
                         }
-                        if (local_35 >= local_27)
+                        if (local_35 >= local_32.Get().MaxCount)
                         {
-                            FString local_12 = EventPointData.RandomEventPoint.GetActorNameOrLabel();
-                            FString local_8 = FString();
+                            XLog(ELog(22), FString().Append("Init Level Random Event: Phase2 - EventPoint [").Append(EventPointData.RandomEventPoint.GetActorNameOrLabel()).Append("] LBP[").Append(local_23).Append("] EventInfo is null, type=Normal reached MaxCount (").Append(local_35).Append("/").Append(local_32.Get().MaxCount).Append("), skip"));
                             continue;
                         }
                     }
@@ -839,23 +833,23 @@ class US_LevelRandomEventSystem : UECSScriptSystem
                 XLog(ELog(22), FString().Append("Init Level Random Event: Phase2 - EventPoint [").Append(EventPointData.RandomEventPoint.GetActorNameOrLabel()).Append("] LBP[").Append(local_23).Append("] EventInfo is null, candidate weight=").Append(local_42));
                 continue;
             }
-            FString local_8_2 = local_26.GetDataName().ToString();
-            int local_2_2 = TypeCountLimitMap.Num();
-            if (local_2_2 > 0)
+            FString local_8 = local_26.GetDataName().ToString();
+            if (TypeCountLimitMap.Num() > 0)
             {
-                ELevelRandomEventType local_29 = this.GetEventTypeFromEventInfo(local_26);
-                if (TypeCountLimitMap.Find(local_29))
+                ELevelRandomEventType local_29_2 = this.GetEventTypeFromEventInfo(local_26);
+                TConstRawPtr<FRandomEventTypeCountLimit> local_34 = TypeCountLimitMap.Find(local_29_2);
+                if (local_34)
                 {
                     local_35 = 0;
-                    if (LevelRandomEventData.EventTypeCountMap.Find(local_29))
+                    TConstRawPtr<int> local_40 = LevelRandomEventData.EventTypeCountMap.Find(local_29_2);
+                    if (local_40)
                     {
-                        local_35 = local_27;
+                        local_35 = local_40.Get();
                     }
-                    if (local_35 >= local_2_2)
+                    int local_2 = local_34.Get().MaxCount;
+                    if (local_35 >= local_2)
                     {
-                        local_2_2 = int(local_29);
-                        FString local_12_2 = EventPointData.RandomEventPoint.GetActorNameOrLabel();
-                        FString local_46 = FString();
+                        XLog(ELog(22), FString().Append("Init Level Random Event: Phase2 - EventPoint [").Append(EventPointData.RandomEventPoint.GetActorNameOrLabel()).Append("] config=[").Append(local_8).Append("] type=").Append(int(local_29_2)).Append(" reached MaxCount (").Append(local_35).Append("/").Append(local_34.Get().MaxCount).Append("), skip"));
                         continue;
                     }
                 }
@@ -867,24 +861,24 @@ class US_LevelRandomEventSystem : UECSScriptSystem
             float32 local_41 = this.CalculateEventScore(local_26, ScoreContext);
             if (local_41 <= 0.0f)
             {
-                XLog(ELog(22), FString().Append("Init Level Random Event: Phase2 - EventPoint [").Append(EventPointData.RandomEventPoint.GetActorNameOrLabel()).Append("] config=[").Append(local_8_2).Append("] score=").Append(local_41).Append(" <= 0, skip"));
+                XLog(ELog(22), FString().Append("Init Level Random Event: Phase2 - EventPoint [").Append(EventPointData.RandomEventPoint.GetActorNameOrLabel()).Append("] config=[").Append(local_8).Append("] score=").Append(local_41).Append(" <= 0, skip"));
                 continue;
             }
             local_18.Add(local_23);
             local_22.Add(local_41);
-            XLog(ELog(22), FString().Append("Init Level Random Event: Phase2 - EventPoint [").Append(EventPointData.RandomEventPoint.GetActorNameOrLabel()).Append("] candidate config=[").Append(local_8_2).Append("] weight=").Append(local_41));
+            XLog(ELog(22), FString().Append("Init Level Random Event: Phase2 - EventPoint [").Append(EventPointData.RandomEventPoint.GetActorNameOrLabel()).Append("] candidate config=[").Append(local_8).Append("] weight=").Append(local_41));
         }
         if (local_18.Num() <= 0)
         {
             XLog(ELog(22), FString().Append("Init Level Random Event: Phase2 - EventPoint [").Append(EventPointData.RandomEventPoint.GetActorNameOrLabel()).Append("] no valid candidates"));
             return false;
         }
-        local_27 = this.WeightedRandomSelectFromCandidates(local_18, local_22, RandomGenerator);
-        if (local_27 < 0)
+        int local_27_2 = this.WeightedRandomSelectFromCandidates(local_18, local_22, RandomGenerator);
+        if (local_27_2 < 0)
         {
             return false;
         }
-        EventPointData.SelectedLBPIndex = local_27;
+        EventPointData.SelectedLBPIndex = local_27_2;
         return true;
     }
     TArray<int> ReGenerateAvailableEventPointIndexes(FCS_LevelRandomEventData &inout LevelRandomEventData) const
@@ -948,15 +942,14 @@ class US_LevelRandomEventSystem : UECSScriptSystem
     }
     void ActivateDatalayer(const TSubclassOf<AKLLevelScriptAreaTargetEvent> &inout LBPClass) const
     {
-        UClass local_2;
-        ::FLevelDataLayerUtils::SetDatalayerRuntimeStateByName(this.GetWorld(), local_2.GetFName(), EDataLayerRuntimeState(2));
-        bool local_8 = ::FInitialLevelLoadingPassUtils::TryToAddGroupToInitialLoadingPass(FLevelGroupLoadingPassNames::RandomEventPassName, local_2.GetFName());
+        ::FLevelDataLayerUtils::SetDatalayerRuntimeStateByName(this.GetWorld(), LBPClass.Get().GetFName(), EDataLayerRuntimeState(2));
+        bool local_8 = ::FInitialLevelLoadingPassUtils::TryToAddGroupToInitialLoadingPass(FLevelGroupLoadingPassNames::RandomEventPassName, LBPClass.Get().GetFName());
         if (local_8)
         {
-            XLog(ELog(22), FString().Append("Init Level Random Event:: ActivateDatalayer: ").Append(local_2.GetFName()));
+            XLog(ELog(22), FString().Append("Init Level Random Event:: ActivateDatalayer: ").Append(LBPClass.Get().GetFName()));
             return;
         }
-        XError(ELog(22), FString().Append("Init Level Random Event:: Failed to Activate Datalayer: ").Append(local_2.GetFName()));
+        XError(ELog(22), FString().Append("Init Level Random Event:: Failed to Activate Datalayer: ").Append(LBPClass.Get().GetFName()));
         return;
     }
     TSet<TDataObjectPtr<FEcologyCreatureDefinitionRow>> FindTargetMonsterCreatureTypes(const TDataObjectPtr<FCommissionConfig> &inout CommissionConfig) const
@@ -966,7 +959,7 @@ class US_LevelRandomEventSystem : UECSScriptSystem
         {
             return local_20;
         }
-        TArray<TDataObjectPtr<FEcologyCreatureDefinitionRow>> local_26 = GetRandomEventFilterTargetCreatures();
+        TArray<TDataObjectPtr<FEcologyCreatureDefinitionRow>> local_26 = CommissionConfig.Get().GetRandomEventFilterTargetCreatures();
         if (local_26.Num() > 0)
         {
             for (auto& local_42 : local_26)
@@ -982,10 +975,9 @@ class US_LevelRandomEventSystem : UECSScriptSystem
             TArray<TDataObjectPtr<FMonsterMainConfig>> local_46 = ::FLevelUtils::GetTargetMonsterConfigsFromCommission(CommissionConfig);
             for (auto& local_64 : local_46)
             {
-                local_64;
-                if (GetCreature())
+                if (local_64.Get().GetCreature())
                 {
-                    local_20.Add(GetCreature());
+                    local_20.Add(local_64.Get().GetCreature());
                 }
             }
         }
@@ -994,7 +986,6 @@ class US_LevelRandomEventSystem : UECSScriptSystem
     bool FindMatchedResourcePrefabsFromCommission(const TDataObjectPtr<FCommissionConfig> &inout CommissionConfig, const AAS_ECSWorldSettings WorldSettings, TArray<AEcologyResourcePrefab> &inout OutResourcePrefabs) const
     {
         FVirtualConfigData local_104;
-        FName local_130;
         TSet<TDataObjectPtr<FEcologyCreatureDefinitionRow>> local_40 = this.FindTargetMonsterCreatureTypes(CommissionConfig);
         if (local_40.Num() <= 0)
         {
@@ -1024,23 +1015,25 @@ class US_LevelRandomEventSystem : UECSScriptSystem
                 ++local_88;
                 continue;
             }
-            if (FInstancedStruct::GetPtr(local_104.GetConfigData()).opCall())
+            TConstRawPtr<FSingleResourceConfig> local_110 = FInstancedStruct::GetPtr(local_104.GetConfigData()).opCall();
+            if (local_110)
             {
-                if (local_70.Contains(unresolved.ResourceType))
+                if (local_70.Contains(local_110.Get().ResourceType))
                 {
                     FVector local_124 = local_102.GetActorLocation();
-                    XLog(ELog(22), FString().Append("Init Level Random Event: FindMatchedResources - Matched ResourcePrefab [").Append(local_102.GetActorNameOrLabel()).Append("] (Single), resourceType=[").Append(local_130).Append("], location=(").Append(local_124.X).Append(", ").Append(local_124.Y).Append(", ").Append(local_124).Append(")"));
+                    XLog(ELog(22), FString().Append("Init Level Random Event: FindMatchedResources - Matched ResourcePrefab [").Append(local_102.GetActorNameOrLabel()).Append("] (Single), resourceType=[").Append(local_110.Get().ResourceType.GetDataName()).Append("], location=(").Append(local_124.X).Append(", ").Append(local_124.Y).Append(", ").Append(local_124).Append(")"));
                     OutResourcePrefabs.Add(local_102);
                 }
             }
             else
             {
-                if (FInstancedStruct::GetPtr(local_104.GetConfigData()).opCall())
+                TConstRawPtr<FResourceAreaConfig> local_136 = FInstancedStruct::GetPtr(local_104.GetConfigData()).opCall();
+                if (local_136)
                 {
-                    if (local_70.Contains(unresolved.ResourceType))
+                    if (local_70.Contains(local_136.Get().ResourceType))
                     {
                         FVector local_118 = local_102.GetActorLocation();
-                        XLog(ELog(22), FString().Append("Init Level Random Event: FindMatchedResources - Matched ResourcePrefab [").Append(local_102.GetActorNameOrLabel()).Append("] (Area), resourceType=[").Append(local_130).Append("], location=(").Append(local_118.X).Append(", ").Append(local_118.Y).Append(", ").Append(local_118).Append(")"));
+                        XLog(ELog(22), FString().Append("Init Level Random Event: FindMatchedResources - Matched ResourcePrefab [").Append(local_102.GetActorNameOrLabel()).Append("] (Area), resourceType=[").Append(local_136.Get().ResourceType.GetDataName()).Append("], location=(").Append(local_118.X).Append(", ").Append(local_118.Y).Append(", ").Append(local_118).Append(")"));
                         OutResourcePrefabs.Add(local_102);
                     }
                 }
@@ -1051,7 +1044,6 @@ class US_LevelRandomEventSystem : UECSScriptSystem
     }
     TArray<ALevelRandomEventPoint> FilterRandomEventPointByDistance(const TDataObjectPtr<FCommissionConfig> &inout CommissionConfig, const AAS_ECSWorldSettings WorldSettings, TArray<float32> &inout OutDistancesM) const
     {
-        float32 local_12 = 0.0f;
         int local_2 = WorldSettings.RandomEventPoints.Num();
         if (!(CommissionConfig))
         {
@@ -1060,7 +1052,6 @@ class US_LevelRandomEventSystem : UECSScriptSystem
             int local_10 = 0;
             for (; local_10 < local_2; )
             {
-                local_12 = -1.0f;
                 OutDistancesM[local_10] = -1.0f;
                 ++local_10;
             }
@@ -1068,7 +1059,7 @@ class US_LevelRandomEventSystem : UECSScriptSystem
         }
         TArray<AEcologyResourcePrefab> local_16;
         this.FindMatchedResourcePrefabsFromCommission(CommissionConfig, WorldSettings, local_16);
-        float32 local_17 = local_12;
+        float32 local_17 = CommissionConfig.Get().RandomEventFilterDistance;
         XLog(ELog(22), FString().Append("Init Level Random Event: FilterByDistance - TotalPoints=").Append(local_2).Append(", MatchedResources=").Append(local_16.Num()).Append(", FilterDistance=").Append(local_17).Append("m"));
         if (local_16.Num() <= 0)
         {
@@ -1082,8 +1073,8 @@ class US_LevelRandomEventSystem : UECSScriptSystem
             }
             return WorldSettings.RandomEventPoints;
         }
-        local_12 = local_17 * 100.0f;
-        float local_20 = FMath::Square(local_12);
+        float32 local_12_3 = local_17 * 100.0f;
+        float local_20 = FMath::Square(local_12_3);
         TArray<ALevelRandomEventPoint> local_28;
         TArray<FString> local_32;
         for (auto local_46 : WorldSettings.RandomEventPoints)
@@ -1111,16 +1102,16 @@ class US_LevelRandomEventSystem : UECSScriptSystem
             if (local_60 < local_20)
             {
                 local_28.Add(local_46);
-                local_12 = float32(FMath::Sqrt(local_60));
-                local_12 = local_12 / 100.0f;
-                OutDistancesM.Add(local_12);
+                local_12_3 = float32(FMath::Sqrt(local_60));
+                local_12_3 = local_12_3 / 100.0f;
+                OutDistancesM.Add(local_12_3);
                 local_32.Add(local_64);
             }
             else
             {
                 float32 local_21 = float32(FMath::Sqrt(local_60));
-                local_12 = 100.0f;
-                local_21 = local_21 / local_12;
+                local_12_3 = 100.0f;
+                local_21 = local_21 / local_12_3;
                 XLog(ELog(22), FString().Append("Init Level Random Event: FilterByDistance - EventPoint [").Append(local_46.GetActorNameOrLabel()).Append("] filtered out, nearestResource=[").Append(local_64).Append("], nearestResourceDist=").Append(local_21).Append("m > threshold=").Append(local_17).Append("m"));
             }
         }

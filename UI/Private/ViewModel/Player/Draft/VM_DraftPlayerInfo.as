@@ -162,11 +162,9 @@ FVM_DraftPlayerInfo& Create(const UObject ContextObject, const TEUIModelRef<FM_D
 {
     return FVM_DraftPlayerInfo::CreateByManager(EUIInternal::GetContextManager(ContextObject), DraftPlayer);
 }
-FVM_DraftPlayerInfo CreateByManager(const UEUIManagerSubsystem Manager, const TEUIModelRef<FM_DraftPlayer> &inout DraftPlayer)
+FVM_DraftPlayerInfo& CreateByManager(const UEUIManagerSubsystem Manager, const TEUIModelRef<FM_DraftPlayer> &inout DraftPlayer)
 {
-    FVM_DraftPlayerInfo __r;
-    TEUIModelRef<FVM_DraftPlayerInfo> local_6 = TEUIModelRef<FVM_DraftPlayerInfo>(EUIInternal::MakeModelWithManager_Generic(Manager, FVM_DraftPlayerInfo::ModelId, 0, DraftPlayer));
-    return __r;
+    return TEUIModelRef<FVM_DraftPlayerInfo>(EUIInternal::MakeModelWithManager_Generic(Manager, FVM_DraftPlayerInfo::ModelId, 0, DraftPlayer)).Get();
 }
 void GetModelInfo(FEUIViewModelMetaInfo &inout Result)
 {
@@ -267,7 +265,6 @@ namespace __GeneratedProperties_FVM_DraftPlayerInfo
 {
 UScriptStruct StaticStruct()
 {
-    UScriptStruct local_2;
-    return local_2;
+    return __GeneratedProperties_FVM_DraftPlayerInfo.Get();
 }
 }

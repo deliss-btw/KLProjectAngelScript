@@ -119,11 +119,13 @@ class AKLLookDevLightingTool : AKLEditorTickableActor
     void MarkLightingStateDirty()
     {
         this.bNeedResetLighting = true;
+        this.Modify(true);
         return;
     }
     UFUNCTION()
     void MarkLightingShowStatesDirty()
     {
+        this.Modify(true);
         this.UpdateShowStates();
         return;
     }
@@ -133,9 +135,9 @@ class AKLLookDevLightingTool : AKLEditorTickableActor
     }
     void SetupAssetReviewLighting()
     {
-        switch (int(this.AssetReviewLightingType))
+        switch (this.AssetReviewLightingType)
         {
-        case 0:
+        case ELookDevAssetReviewLighting::LowContrast:
         {
             this.DirectionalLightComponent.SetIntensity(0.8f);
             this.DirectionalLightComponent.SetLightSourceAngle(50.0f);
@@ -144,7 +146,7 @@ class AKLLookDevLightingTool : AKLEditorTickableActor
             this.SkyLightComponent.SetIntensity(this.SkyLightIntensityLow);
             break;
         }
-        case 1:
+        case ELookDevAssetReviewLighting::MediumContrast:
         {
             this.DirectionalLightComponent.SetIntensity(2.3f);
             this.DirectionalLightComponent.SetLightSourceAngle(20.0f);
@@ -153,7 +155,7 @@ class AKLLookDevLightingTool : AKLEditorTickableActor
             this.SkyLightComponent.SetIntensity(this.SkyLightIntensityMedium);
             break;
         }
-        case 2:
+        case ELookDevAssetReviewLighting::HighContrast:
         {
             this.DirectionalLightComponent.SetIntensity(7.0f);
             this.DirectionalLightComponent.SetLightSourceAngle(0.5f);
@@ -204,30 +206,29 @@ class AKLLookDevLightingTool : AKLEditorTickableActor
     void SetupTODLighting()
     {
         KLWeather::KLWeather_CreateWeatherManager(__GetWorldContext());
-        switch (int(this.TODLightingType))
+        switch (this.TODLightingType)
         {
-        case 0:
+        case ELookDevTODLighting::CloudyDay:
         {
             KLWeather::KLWeather_SetWeather(__GetWorldContext(), n"HG_Cloudy_TOD_Lookdev", 32400.0f, 0.0f, true);
             return;
         }
-        case 1:
+        case ELookDevTODLighting::CloudyNight:
         {
             KLWeather::KLWeather_SetWeather(__GetWorldContext(), n"HG_Cloudy_TOD_Lookdev", 75600.0f, 0.0f, true);
             return;
         }
-        case 2:
+        case ELookDevTODLighting::OvercastDay:
         {
             KLWeather::KLWeather_SetWeather(__GetWorldContext(), n"HG_Overcast_TOD_Standard", 32400.0f, 0.0f, true);
             return;
         }
-        case 3:
+        case ELookDevTODLighting::OvercastNight:
         {
             KLWeather::KLWeather_SetWeather(__GetWorldContext(), n"HG_Overcast_TOD_Standard", 75600.0f, 0.0f, true);
             return;
         }
         }
-        return;
     }
     void UpdateShowStates()
     {

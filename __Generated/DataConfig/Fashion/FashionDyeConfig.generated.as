@@ -3,7 +3,6 @@ namespace __FFashionHairDyeConfigFunctions
 UFUNCTION()
 FLinearColor __FFashionHairDyeConfig_GetBaseColor(const TDataObjectPtr<FFashionHairDyeConfig> &inout DataObject)
 {
-    FLinearColor __r;
     if ((DataObject == nullptr))
     {
         if (!(EUIGlobals::GIsDuringPropertyConversion))
@@ -13,12 +12,11 @@ FLinearColor __FFashionHairDyeConfig_GetBaseColor(const TDataObjectPtr<FFashionH
         FFashionHairDyeConfig local_60;
         return local_60.BaseColor;
     }
-    return __r;
+    return DataObject.Get().BaseColor;
 }
 UFUNCTION()
 FLinearColor __FFashionHairDyeConfig_GetRootColor(const TDataObjectPtr<FFashionHairDyeConfig> &inout DataObject)
 {
-    FLinearColor __r;
     if ((DataObject == nullptr))
     {
         if (!(EUIGlobals::GIsDuringPropertyConversion))
@@ -28,12 +26,11 @@ FLinearColor __FFashionHairDyeConfig_GetRootColor(const TDataObjectPtr<FFashionH
         FFashionHairDyeConfig local_60;
         return local_60.RootColor;
     }
-    return __r;
+    return DataObject.Get().RootColor;
 }
 UFUNCTION()
 FLinearColor __FFashionHairDyeConfig_GetTipColor(const TDataObjectPtr<FFashionHairDyeConfig> &inout DataObject)
 {
-    FLinearColor __r;
     if ((DataObject == nullptr))
     {
         if (!(EUIGlobals::GIsDuringPropertyConversion))
@@ -43,12 +40,11 @@ FLinearColor __FFashionHairDyeConfig_GetTipColor(const TDataObjectPtr<FFashionHa
         FFashionHairDyeConfig local_60;
         return local_60.TipColor;
     }
-    return __r;
+    return DataObject.Get().TipColor;
 }
 UFUNCTION()
 FLinearColor __FFashionHairDyeConfig_GetIDColor(const TDataObjectPtr<FFashionHairDyeConfig> &inout DataObject)
 {
-    FLinearColor __r;
     if ((DataObject == nullptr))
     {
         if (!(EUIGlobals::GIsDuringPropertyConversion))
@@ -58,7 +54,7 @@ FLinearColor __FFashionHairDyeConfig_GetIDColor(const TDataObjectPtr<FFashionHai
         FFashionHairDyeConfig local_60;
         return local_60.IDColor;
     }
-    return __r;
+    return DataObject.Get().IDColor;
 }
 UFUNCTION()
 float32 __FFashionHairDyeConfig_GetScatter(const TDataObjectPtr<FFashionHairDyeConfig> &inout DataObject)
@@ -93,7 +89,6 @@ float32 __FFashionHairDyeConfig_GetBrightness(const TDataObjectPtr<FFashionHairD
 UFUNCTION()
 TArray<FName> __FFashionHairDyeConfig_GetSlotNames(const TDataObjectPtr<FFashionHairDyeConfig> &inout DataObject)
 {
-    TArray<FName> __r;
     if ((DataObject == nullptr))
     {
         if (!(EUIGlobals::GIsDuringPropertyConversion))
@@ -103,12 +98,11 @@ TArray<FName> __FFashionHairDyeConfig_GetSlotNames(const TDataObjectPtr<FFashion
         FFashionHairDyeConfig local_60;
         return local_60.SlotNames;
     }
-    return __r;
+    return DataObject.Get().SlotNames;
 }
 UFUNCTION()
 FLinearColor __FFashionHairDyeConfig_GetDecoColor1(const TDataObjectPtr<FFashionHairDyeConfig> &inout DataObject)
 {
-    FLinearColor __r;
     if ((DataObject == nullptr))
     {
         if (!(EUIGlobals::GIsDuringPropertyConversion))
@@ -118,7 +112,7 @@ FLinearColor __FFashionHairDyeConfig_GetDecoColor1(const TDataObjectPtr<FFashion
         FFashionHairDyeConfig local_60;
         return local_60.DecoColor1;
     }
-    return __r;
+    return DataObject.Get().DecoColor1;
 }
 UFUNCTION()
 float32 __FFashionHairDyeConfig_GetDecoDye1(const TDataObjectPtr<FFashionHairDyeConfig> &inout DataObject)
@@ -138,7 +132,6 @@ float32 __FFashionHairDyeConfig_GetDecoDye1(const TDataObjectPtr<FFashionHairDye
 UFUNCTION()
 FLinearColor __FFashionHairDyeConfig_GetDecoColor2(const TDataObjectPtr<FFashionHairDyeConfig> &inout DataObject)
 {
-    FLinearColor __r;
     if ((DataObject == nullptr))
     {
         if (!(EUIGlobals::GIsDuringPropertyConversion))
@@ -148,7 +141,7 @@ FLinearColor __FFashionHairDyeConfig_GetDecoColor2(const TDataObjectPtr<FFashion
         FFashionHairDyeConfig local_60;
         return local_60.DecoColor2;
     }
-    return __r;
+    return DataObject.Get().DecoColor2;
 }
 UFUNCTION()
 float32 __FFashionHairDyeConfig_GetDecoDye2(const TDataObjectPtr<FFashionHairDyeConfig> &inout DataObject)
@@ -168,7 +161,6 @@ float32 __FFashionHairDyeConfig_GetDecoDye2(const TDataObjectPtr<FFashionHairDye
 UFUNCTION()
 FLinearColor __FFashionHairDyeConfig_GetDecoColor3(const TDataObjectPtr<FFashionHairDyeConfig> &inout DataObject)
 {
-    FLinearColor __r;
     if ((DataObject == nullptr))
     {
         if (!(EUIGlobals::GIsDuringPropertyConversion))
@@ -178,7 +170,7 @@ FLinearColor __FFashionHairDyeConfig_GetDecoColor3(const TDataObjectPtr<FFashion
         FFashionHairDyeConfig local_60;
         return local_60.DecoColor3;
     }
-    return __r;
+    return DataObject.Get().DecoColor3;
 }
 UFUNCTION()
 float32 __FFashionHairDyeConfig_GetDecoDye3(const TDataObjectPtr<FFashionHairDyeConfig> &inout DataObject)
@@ -198,7 +190,6 @@ float32 __FFashionHairDyeConfig_GetDecoDye3(const TDataObjectPtr<FFashionHairDye
 UFUNCTION()
 FLinearColor __FFashionHairDyeConfig_GetDecoColor4(const TDataObjectPtr<FFashionHairDyeConfig> &inout DataObject)
 {
-    FLinearColor __r;
     if ((DataObject == nullptr))
     {
         if (!(EUIGlobals::GIsDuringPropertyConversion))
@@ -208,7 +199,7 @@ FLinearColor __FFashionHairDyeConfig_GetDecoColor4(const TDataObjectPtr<FFashion
         FFashionHairDyeConfig local_60;
         return local_60.DecoColor4;
     }
-    return __r;
+    return DataObject.Get().DecoColor4;
 }
 UFUNCTION()
 float32 __FFashionHairDyeConfig_GetDecoDye4(const TDataObjectPtr<FFashionHairDyeConfig> &inout DataObject)
@@ -228,7 +219,6 @@ float32 __FFashionHairDyeConfig_GetDecoDye4(const TDataObjectPtr<FFashionHairDye
 UFUNCTION()
 TArray<FName> __FFashionHairDyeConfig_GetDecoSlotNames(const TDataObjectPtr<FFashionHairDyeConfig> &inout DataObject)
 {
-    TArray<FName> __r;
     if ((DataObject == nullptr))
     {
         if (!(EUIGlobals::GIsDuringPropertyConversion))
@@ -238,7 +228,7 @@ TArray<FName> __FFashionHairDyeConfig_GetDecoSlotNames(const TDataObjectPtr<FFas
         FFashionHairDyeConfig local_60;
         return local_60.DecoSlotNames;
     }
-    return __r;
+    return DataObject.Get().DecoSlotNames;
 }
 UFUNCTION()
 FFashionHairDyeConfig CastToFFashionHairDyeConfig(const TDataObjectPtr<FFashionHairDyeConfig> &inout DataObject)
@@ -267,7 +257,6 @@ float32 __FFashionClothDyeConfig_GetDye1(const TDataObjectPtr<FFashionClothDyeCo
 UFUNCTION()
 FLinearColor __FFashionClothDyeConfig_GetDyeColor1(const TDataObjectPtr<FFashionClothDyeConfig> &inout DataObject)
 {
-    FLinearColor __r;
     if ((DataObject == nullptr))
     {
         if (!(EUIGlobals::GIsDuringPropertyConversion))
@@ -277,7 +266,7 @@ FLinearColor __FFashionClothDyeConfig_GetDyeColor1(const TDataObjectPtr<FFashion
         FFashionClothDyeConfig local_38;
         return local_38.DyeColor1;
     }
-    return __r;
+    return DataObject.Get().DyeColor1;
 }
 UFUNCTION()
 float32 __FFashionClothDyeConfig_GetDye2(const TDataObjectPtr<FFashionClothDyeConfig> &inout DataObject)
@@ -297,7 +286,6 @@ float32 __FFashionClothDyeConfig_GetDye2(const TDataObjectPtr<FFashionClothDyeCo
 UFUNCTION()
 FLinearColor __FFashionClothDyeConfig_GetDyeColor2(const TDataObjectPtr<FFashionClothDyeConfig> &inout DataObject)
 {
-    FLinearColor __r;
     if ((DataObject == nullptr))
     {
         if (!(EUIGlobals::GIsDuringPropertyConversion))
@@ -307,7 +295,7 @@ FLinearColor __FFashionClothDyeConfig_GetDyeColor2(const TDataObjectPtr<FFashion
         FFashionClothDyeConfig local_38;
         return local_38.DyeColor2;
     }
-    return __r;
+    return DataObject.Get().DyeColor2;
 }
 UFUNCTION()
 float32 __FFashionClothDyeConfig_GetDye3(const TDataObjectPtr<FFashionClothDyeConfig> &inout DataObject)
@@ -327,7 +315,6 @@ float32 __FFashionClothDyeConfig_GetDye3(const TDataObjectPtr<FFashionClothDyeCo
 UFUNCTION()
 FLinearColor __FFashionClothDyeConfig_GetDyeColor3(const TDataObjectPtr<FFashionClothDyeConfig> &inout DataObject)
 {
-    FLinearColor __r;
     if ((DataObject == nullptr))
     {
         if (!(EUIGlobals::GIsDuringPropertyConversion))
@@ -337,7 +324,7 @@ FLinearColor __FFashionClothDyeConfig_GetDyeColor3(const TDataObjectPtr<FFashion
         FFashionClothDyeConfig local_38;
         return local_38.DyeColor3;
     }
-    return __r;
+    return DataObject.Get().DyeColor3;
 }
 UFUNCTION()
 float32 __FFashionClothDyeConfig_GetDye4(const TDataObjectPtr<FFashionClothDyeConfig> &inout DataObject)
@@ -357,7 +344,6 @@ float32 __FFashionClothDyeConfig_GetDye4(const TDataObjectPtr<FFashionClothDyeCo
 UFUNCTION()
 FLinearColor __FFashionClothDyeConfig_GetDyeColor4(const TDataObjectPtr<FFashionClothDyeConfig> &inout DataObject)
 {
-    FLinearColor __r;
     if ((DataObject == nullptr))
     {
         if (!(EUIGlobals::GIsDuringPropertyConversion))
@@ -367,12 +353,11 @@ FLinearColor __FFashionClothDyeConfig_GetDyeColor4(const TDataObjectPtr<FFashion
         FFashionClothDyeConfig local_38;
         return local_38.DyeColor4;
     }
-    return __r;
+    return DataObject.Get().DyeColor4;
 }
 UFUNCTION()
 TArray<FName> __FFashionClothDyeConfig_GetSlotNames(const TDataObjectPtr<FFashionClothDyeConfig> &inout DataObject)
 {
-    TArray<FName> __r;
     if ((DataObject == nullptr))
     {
         if (!(EUIGlobals::GIsDuringPropertyConversion))
@@ -382,7 +367,7 @@ TArray<FName> __FFashionClothDyeConfig_GetSlotNames(const TDataObjectPtr<FFashio
         FFashionClothDyeConfig local_38;
         return local_38.SlotNames;
     }
-    return __r;
+    return DataObject.Get().SlotNames;
 }
 UFUNCTION()
 FFashionClothDyeConfig CastToFFashionClothDyeConfig(const TDataObjectPtr<FFashionClothDyeConfig> &inout DataObject)

@@ -404,11 +404,11 @@ class UPVXGameModeFlow : UGameModeFlow
                 {
                     continue;
                 }
-                if (int(GetFinalState()) != 0)
+                if (int(local_922.GetValue().GetFinalState()) != 0)
                 {
                     continue;
                 }
-                if (local_858.GetWinnerTeamIds().Contains(GetTeamId()))
+                if (local_858.GetWinnerTeamIds().Contains(local_922.GetValue().GetTeamId()))
                 {
                     local_884.Add(local_922.GetKey());
                     continue;
@@ -470,11 +470,13 @@ class UPVXGameModeFlow : UGameModeFlow
             local_76.SetUID(local_59);
             if (local_61 == 1)
             {
-                local_77 = EFaction(1);
+                EFaction local_78 = EFaction::Player;
+                local_77 = local_78;
             }
             else
             {
-                local_77 = EFaction(6);
+                EFaction local_78_2 = EFaction::Boss;
+                local_77 = local_78_2;
             }
             local_76.SetFaction(EFaction(local_77));
             local_76.SetBossPrefabIdx(local_36);
@@ -550,14 +552,15 @@ class UPVXGameModeFlow : UGameModeFlow
         {
             FPVPGameAttributeByLevelConfig local_130;
             bool local_128;
-            bool local_17 = !(::GetAvatarConfig(Entity));
+            TDataObjectPtr<FAvatarPrefabConfig> local_76 = ::GetAvatarConfig(Entity);
+            bool local_17 = !(local_76);
             if (local_17)
             {
                 return FDataObjectPtr();
             }
             else
             {
-                const FAvatarPrefabConfig& local_102;
+                const FAvatarPrefabConfig& local_102 = local_76.Get();
                 TDataObjectPtr<FGameModeOverrideAvatarConfig> local_126;
                 if (!(local_102.GetGameModeOverride().Find(EGameModeType(1), local_126)))
                 {
@@ -585,8 +588,7 @@ class UPVXGameModeFlow : UGameModeFlow
                 }
                 else
                 {
-                    FPVPOverrideAvatarConfig local_156;
-                    local_130 = local_156.GameAttributeConfig;
+                    local_130 = local_102.GetPVPOverride().Get().GameAttributeConfig;
                     if (!(local_130.IsValid()))
                     {
                         return FDataObjectPtr();
@@ -603,13 +605,14 @@ class UPVXGameModeFlow : UGameModeFlow
         {
             FPVPGameAttributeByLevelConfig local_130;
             bool local_128;
-            if (!(::GetMonsterConfig(Entity)))
+            TDataObjectPtr<FMonsterPrefabConfig> local_180 = ::GetMonsterConfig(Entity);
+            if (!(local_180))
             {
                 return FDataObjectPtr();
             }
             else
             {
-                const FMonsterPrefabConfig& local_206;
+                const FMonsterPrefabConfig& local_206 = local_180.Get();
                 TDataObjectPtr<FGameModeOverrideMonsterConfig> local_230;
                 if (!(local_206.GetGameModeOverride().Find(EGameModeType(1), local_230)))
                 {
@@ -636,8 +639,7 @@ class UPVXGameModeFlow : UGameModeFlow
                 }
                 else
                 {
-                    FPVPOverrideMonsterConfig local_232;
-                    local_130 = local_232.GameAttributeConfig;
+                    local_130 = local_206.GetPVPOverride().Get().GameAttributeConfig;
                     XLog(ELog(27), FString().Append("GetOverrideAttributeData ").Append(local_130.RowNamePrefix));
                     if (!(local_130.IsValid()))
                     {
@@ -677,8 +679,7 @@ class UPVXGameModeFlow : UGameModeFlow
         FECSWorldPtr local_6_2 = ECS::GetECSWorld();
         for (auto& local_36 : local_18.GetPlayerMatchDatas())
         {
-            local_36;
-            int local_39 = GetTeamID();
+            int local_39 = local_36.GetValue().GetTeamID();
             if (local_39 != WinnerTeam && !(local_4.Contains(local_39)))
             {
                 local_4.Add(local_39);
@@ -710,7 +711,6 @@ class UPVXGameModeFlow : UGameModeFlow
     void InitNewPlayer(const FECSEntity &inout PlayerEntity, uint &inout InOutPieAssignIndex) const
     {
         int local_28 = 0;
-        int local_38 = 0;
         int local_64 = 0;
         int local_72 = 0;
         Has local_4;
@@ -739,6 +739,7 @@ class UPVXGameModeFlow : UGameModeFlow
         {
             bool local_31_2 = local_34.IsConnectedToGameServer();
         }
+        int local_38 = local_20.ChangeRoleDataObjects[0].Get().DataId;
         int local_37 = local_38;
         Has local_42;
         bool local_5_2 = local_42.opCall();
@@ -750,18 +751,18 @@ class UPVXGameModeFlow : UGameModeFlow
         PlayerEntity.GetId();
         FECSEntityId local_51;
         XLog(ELog(27), FString().Append("PVX InitNewPlayer ").Append(local_51));
-        local_38 = ::FASCommonUtils::GetPlayerUidFromPlayerEntity(PlayerEntity);
+        int local_38_2 = ::FASCommonUtils::GetPlayerUidFromPlayerEntity(PlayerEntity);
         local_64.SetPlayerAvatarID(local_37);
-        if (local_28.GetPlayerMatchDatas().Contains(local_38))
+        if (local_28.GetPlayerMatchDatas().Contains(local_38_2))
         {
-            const FGameModePlayerMatchDataBase& local_66 = local_28.GetPlayerMatchDatas()[local_38];
+            const FGameModePlayerMatchDataBase& local_66 = local_28.GetPlayerMatchDatas()[local_38_2];
             int local_73 = local_66.GetTeamID();
             local_72.SetTeam(uint8(local_73));
-            XLog(ELog(27), FString().Append("PVX InitNewPlayer ").Append(local_38).Append(" Team=").Append(local_66.GetTeamID()).Append(" Faction=").Append(local_66.GetFaction()));
+            XLog(ELog(27), FString().Append("PVX InitNewPlayer ").Append(local_38_2).Append(" Team=").Append(local_66.GetTeamID()).Append(" Faction=").Append(local_66.GetFaction()));
             this.SetupInitCameraTransform(PlayerEntity, local_64, local_66.GetTeamID(), local_66.GetPlayerInTeamIndex());
             return;
         }
-        XError(ELog(27), FString().Append("PVX InitNewPlayer ").Append(local_38).Append(" not found in MatchData"));
+        XError(ELog(27), FString().Append("PVX InitNewPlayer ").Append(local_38_2).Append(" not found in MatchData"));
         return;
     }
     void SetupInitCameraTransform(const FECSEntity &inout PlayerEntity, FC_PVXPlayerRuntime &inout Runtime, const int TeamID, const int PlayerInTeamIndex) const
@@ -913,7 +914,7 @@ class UPVXGameModeFlow : UGameModeFlow
         TArray<uint> local_32;
         for (auto& local_50 : local_18.GetPlayerMatchDatas())
         {
-            int local_27 = GetTeamID();
+            int local_27 = local_50.GetValue().GetTeamID();
             if (local_27 != local_25)
             {
                 continue;
@@ -1009,8 +1010,7 @@ class UPVXGameModeFlow : UGameModeFlow
         local_96.SetPlayerName(local_102.opCall().GetNickName());
         local_96.SetPlayerUID(local_41);
         Get local_112;
-        int local_113 = local_112.opCall().GetPlayerAvatarID();
-        int local_107 = local_113;
+        int local_107 = local_112.opCall().GetPlayerAvatarID();
         if (local_107 != 0)
         {
             local_5 = false;
@@ -1023,8 +1023,7 @@ class UPVXGameModeFlow : UGameModeFlow
         if (local_5)
         {
             Get local_124;
-            local_113 = local_124.opCall().GetPlayerSpecialtyID();
-            local_107 = local_113;
+            local_107 = local_124.opCall().GetPlayerSpecialtyID();
         }
         local_96.SetPlayerAvatarID(local_107);
         Has local_128;
@@ -1033,6 +1032,7 @@ class UPVXGameModeFlow : UGameModeFlow
         {
             if (local_134.GetDivineSkillData().GetSkillConfig())
             {
+                int local_113 = local_134.GetDivineSkillData().GetSkillConfig().Get().DataId;
                 local_96.SetPlayerDivineSkillID(local_113);
             }
         }
@@ -1142,14 +1142,12 @@ class UPVXGameModeFlow : UGameModeFlow
         {
             int local_925;
             Get local_930;
-            int local_931 = local_930.opCall().GetPlayerAvatarID();
-            local_925 = local_931;
+            local_925 = local_930.opCall().GetPlayerAvatarID();
             TDataObjectPtr<FAvatarPrefabConfig> local_956;
             if (local_925 <= 0)
             {
                 Get local_960;
-                local_931 = local_960.opCall().GetPlayerSpecialtyID();
-                local_925 = local_931;
+                local_925 = local_960.opCall().GetPlayerSpecialtyID();
             }
             if (local_925 > 0)
             {
@@ -1161,6 +1159,7 @@ class UPVXGameModeFlow : UGameModeFlow
                 if (local_924.ChangeRoleDataObjects.Num() > 0)
                 {
                     local_956 = local_924.ChangeRoleDataObjects[0];
+                    int local_931 = local_956.Get().DataId;
                     local_925 = local_931;
                 }
             }
@@ -1831,8 +1830,6 @@ class UPVXGameModeFlow : UGameModeFlow
     void SendSettlementRewardsToGS(const FECSEntity &inout PlayerEntity) const
     {
         int local_20 = 0;
-        int local_922 = 0;
-        int local_923 = 0;
         Has local_6;
         if (!(PlayerEntity.IsValid()) || !(local_6.opCall()))
         {
@@ -1861,9 +1858,7 @@ class UPVXGameModeFlow : UGameModeFlow
                 local_859 = local_859 * local_920.Coefficient;
                 if (local_920.Reward)
                 {
-                    local_923 = int(local_922);
-                    local_923 = local_923 + 1;
-                    local_922 = local_923;
+                    int local_922 = (int(local_880.FindOrAdd(local_920.Reward.Get().DataId)) + 1);
                 }
             }
         }
@@ -1878,10 +1873,10 @@ class UPVXGameModeFlow : UGameModeFlow
             {
                 FPbGsOpRewardEntry local_990 = local_952.AddRewardList();
                 local_990.SetRewardId(local_980.GetKey());
-                local_990.SetNum(local_923);
+                local_990.SetNum(local_980.GetValue());
                 FPVX_SettlementRewardEntry local_1002;
                 local_1002.RewardId = local_980.GetKey();
-                local_1002.Num = local_923;
+                local_1002.Num = local_980.GetValue();
                 local_930.RewardEntries.Add(local_1002);
             }
             ::UGameDSConnectionSubsystem::Get().AddGsOpAndSendExecuteRequest(PlayerEntity, local_942);
@@ -2049,8 +2044,7 @@ class UPVXGameModeFlow : UGameModeFlow
             {
                 local_1024 = local_1124.ImpactPoint;
             }
-            UClass local_1148;
-            ::BlueprintFunctions_Common::SpawnProp(FECSEntityAdapter(local_844), TSoftClassPtr<APropPrefab>(local_1148), local_1024, local_1000, local_1146, false, 1000.0f, 50.0f);
+            ::BlueprintFunctions_Common::SpawnProp(FECSEntityAdapter(local_844), TSoftClassPtr<APropPrefab>(local_418.DoomHeartPrefab.Get()), local_1024, local_1000, local_1146, false, 1000.0f, 50.0f);
             if (!(local_844.IsValid()))
             {
                 local_1125 = false;

@@ -235,9 +235,10 @@ class ULevelEventManager : UScriptWorldSubsystem
     {
         if ((SpecificEntity == ENTITY_NULL))
         {
+            this.LevelListeningEntityAttributes[int(AttributeType)].AnyEntityAttributeChangedEvents.Callbacks.Remove(Callback);
             return;
         }
-        int local_3 = SpecificEntity.GetIdValue();
+        this.LevelListeningEntityAttributes[int(AttributeType)].SpecificEntityAttributeChangedEvents.FindOrAdd(SpecificEntity.GetIdValue()).Callbacks.Remove(Callback);
         return;
     }
     UFUNCTION()
@@ -319,6 +320,7 @@ class ULevelEventManager : UScriptWorldSubsystem
         if (local_4.IsBound())
         {
             local_4.ExecuteIfBound();
+            this.ObjectiveFinishCallbacks.Remove(ObjectiveInstanceId);
         }
         return;
     }
@@ -348,6 +350,7 @@ class ULevelEventManager : UScriptWorldSubsystem
         if (local_12.Callback.IsBound())
         {
             local_12.Callback.ExecuteIfBound(local_4);
+            this.RandomFriendNameRequests.Remove(local_6);
         }
         return;
     }
@@ -377,8 +380,10 @@ class ULevelEventManager : UScriptWorldSubsystem
         if (local_10.IsBound())
         {
             local_10.ExecuteIfBound(PlayerEntity);
+            local_4.ByPlayer.Remove(local_6);
             if (local_4.ByPlayer.Num() == 0)
             {
+                this.CGPlayFinishedCallbacks.Remove(CGConfig);
             }
         }
         return;
@@ -403,7 +408,7 @@ class ULevelEventManager : UScriptWorldSubsystem
             {
                 local_18.Execute();
             }
-            FECSEntityId local_1_2 = Entity.GetId();
+            this.OnCreatureCreateFinishEventMap.Remove(Entity.GetId());
         }
         return;
     }
@@ -425,12 +430,14 @@ class ULevelEventManager : UScriptWorldSubsystem
         {
             return;
         }
+        local_4.ByTriggerName[TriggerName].Callbacks.Remove(Callback);
         if (local_4.ByTriggerName[TriggerName].Callbacks.IsEmpty())
         {
+            local_4.ByTriggerName.Remove(TriggerName);
         }
         if (local_4.ByTriggerName.Num() == 0)
         {
-            int local_1 = SpecificEntity.GetIdValue();
+            this.EntityESMTriggerCallbacks.Remove(SpecificEntity.GetIdValue());
         }
         return;
     }
@@ -550,8 +557,10 @@ class ULevelEventManager : UScriptWorldSubsystem
         {
             return;
         }
+        this.ESMActionEventCallbacks[EventName].Callbacks.Remove(Callback);
         if (this.ESMActionEventCallbacks[EventName].Callbacks.IsEmpty())
         {
+            this.ESMActionEventCallbacks.Remove(EventName);
         }
         return;
     }
@@ -613,12 +622,14 @@ class ULevelEventManager : UScriptWorldSubsystem
         {
             return;
         }
+        local_4.ByName[TriggerName].Handles.Remove(Handle);
         if (local_4.ByName[TriggerName].Handles.IsEmpty())
         {
+            local_4.ByName.Remove(TriggerName);
         }
         if (local_4.ByName.Num() == 0)
         {
-            int local_1 = SpecificEntity.GetIdValue();
+            this.EntityESMTriggerAsyncHandles.Remove(SpecificEntity.GetIdValue());
         }
         return;
     }
@@ -638,12 +649,14 @@ class ULevelEventManager : UScriptWorldSubsystem
         {
             return;
         }
+        local_4.ByName[EventName].Handles.Remove(Handle);
         if (local_4.ByName[EventName].Handles.IsEmpty())
         {
+            local_4.ByName.Remove(EventName);
         }
         if (local_4.ByName.Num() == 0)
         {
-            int local_1 = SpecificEntity.GetIdValue();
+            this.ESMActionAsyncHandles.Remove(SpecificEntity.GetIdValue());
         }
         return;
     }
@@ -666,8 +679,10 @@ class ULevelEventManager : UScriptWorldSubsystem
             return;
         }
         FESMAsyncHandleArray& local_6 = this.EntityESMStateEntryHandles[local_2];
+        local_6.Handles.Remove(Handle);
         if (local_6.Handles.IsEmpty())
         {
+            this.EntityESMStateEntryHandles.Remove(local_2);
             if (local_2 != 0)
             {
                 Remove local_12;
@@ -784,33 +799,36 @@ class ULevelEventManager : UScriptWorldSubsystem
         {
             return;
         }
+        this.TutorialGraphicClosedHandles.FindOrAdd(GraphicConfig.Get().DataId).Handles.AddUnique(Handle);
         return;
     }
     void UnRegisterTutorialGraphicClosedAction(const TDataObjectPtr<FGuideGroupConfig> &inout GraphicConfig, const uint Handle)
     {
-        int local_3 = 0;
         if (!(GraphicConfig.IsSet()))
         {
             return;
         }
+        int local_3 = GraphicConfig.Get().DataId;
         int local_2 = local_3;
         if (!(this.TutorialGraphicClosedHandles.Contains(local_2)))
         {
             return;
         }
+        this.TutorialGraphicClosedHandles[local_2].Handles.Remove(Handle);
         if (this.TutorialGraphicClosedHandles[local_2].Handles.IsEmpty())
         {
+            this.TutorialGraphicClosedHandles.Remove(local_2);
         }
         return;
     }
     void BroadcastTutorialGraphicClosed(const TDataObjectPtr<FGuideGroupConfig> &inout GraphicConfig)
     {
-        int local_3 = 0;
         int local_40 = 0;
         if (!(GraphicConfig.IsSet()))
         {
             return;
         }
+        int local_3 = GraphicConfig.Get().DataId;
         int local_2 = local_3;
         if (!(this.TutorialGraphicClosedHandles.Contains(local_2)))
         {

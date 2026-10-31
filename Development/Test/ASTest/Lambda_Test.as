@@ -149,11 +149,11 @@ struct __Lambda_Development_Test_ASTest_Lambda_Test_79
     }
     float32 GetFloat_0() property
     {
-        float32 __r;
-        return __r;
+        return this.__Float_0.Get();
     }
     void SetFloat_0(const float32 &inout Value) property
     {
+        this.__Float_0.Get() = int(Value);
         return;
     }
     int opCall(const int Other_0, const float32 Other_1)
@@ -187,6 +187,8 @@ void Test_Lambda(FUnitTest &inout T)
     __Lambda_Development_Test_ASTest_Lambda_Test_55 local_28;
     T.AssertEquals(-1, local_4.IndexOfByPredicate(local_28), "");
     TArray<int> local_32 = {1, -2, 5, -4, 3};
+    __Lambda_Development_Test_ASTest_Lambda_Test_59 local_34;
+    local_32.Sort(local_34);
     T.AssertEquals(5, local_32[0], "");
     T.AssertEquals(3, local_32[1], "");
     T.AssertEquals(1, local_32[2], "");

@@ -81,53 +81,16 @@ struct FVM_TeamMemberPrepareItem : FEUIViewModel
     }
     void PostConstruct()
     {
-        TEUIModelRef<FM_Player> local_10;
         if (this.GetTeammateInfo().IsValid())
         {
-            TEUIModelRef<FM_TeamMember> local_8;
-            TEUIModelRef<FVM_PlayerBasicItem> local_6;
-            TEUIModelRef<FVM_TeammateInfo> local_2 = this.GetTeammateInfo();
-            local_6.GetPlayerBasicItem();
-            this.SetPlayerBasicItem(local_6);
-            TEUIModelRef<FVM_TeammateInfo> local_2_2 = this.GetTeammateInfo();
-            local_8.GetTeamMember();
-            bool local_3 = local_8.IsValid();
-            if (!(local_3))
+            this.SetPlayerBasicItem(this.GetTeammateInfo().Get().GetPlayerBasicItem());
+            if (this.GetTeammateInfo().Get().GetTeamMember().IsValid() && this.GetTeammateInfo().Get().GetTeamMember().Get().GetPlayer().IsValid())
             {
-                local_3 = false;
+                this.SetName(FText::FromString(this.GetTeammateInfo().Get().GetTeamMember().Get().GetPlayer().Get().GetNickName()));
             }
-            else
-            {
-                TEUIModelRef<FVM_TeammateInfo> local_2_3 = this.GetTeammateInfo();
-                local_8.GetTeamMember();
-                local_10.GetPlayer();
-                local_3 = local_10.IsValid();
-            }
-            if (local_3)
-            {
-                FString local_16;
-                TEUIModelRef<FVM_TeammateInfo> local_2_4 = this.GetTeammateInfo();
-                local_8.GetTeamMember();
-                local_10.GetPlayer();
-                local_16.GetNickName();
-                this.SetName(FText::FromString(local_16));
-            }
-            TEUIModelRef<FVM_TeammateInfo> local_2_5 = this.GetTeammateInfo();
-            this.SetbSelf(IsSelf());
-            bool local_3_2 = this.GetPlayerBasicItem().IsValid();
-            if (!(local_3_2))
-            {
-                local_3_2 = false;
-            }
-            else
-            {
-                local_6 = this.GetPlayerBasicItem();
-                local_3_2 = (GetAvatarID() > 0);
-            }
-            this.SetbHasSelectedAvatar(local_3_2);
-            TEUIModelRef<FVM_TeammateInfo> local_2_6 = this.GetTeammateInfo();
-            local_8.GetTeamMember();
-            this.SetbCaptain(IsCaptain());
+            this.SetbSelf(this.GetTeammateInfo().Get().IsSelf());
+            this.SetbHasSelectedAvatar(this.GetPlayerBasicItem().IsValid() && (this.GetPlayerBasicItem().Get().GetAvatarID() > 0));
+            this.SetbCaptain(this.GetTeammateInfo().Get().GetTeamMember().Get().IsCaptain());
         }
         return;
     }
@@ -135,21 +98,8 @@ struct FVM_TeamMemberPrepareItem : FEUIViewModel
     {
         if (this.GetTeammateInfo().IsValid())
         {
-            TEUIModelRef<FVM_PlayerBasicItem> local_6;
-            TEUIModelRef<FVM_TeammateInfo> local_2 = this.GetTeammateInfo();
-            local_6.GetPlayerBasicItem();
-            this.SetPlayerBasicItem(local_6);
-            bool local_3 = this.GetPlayerBasicItem().IsValid();
-            if (!(local_3))
-            {
-                local_3 = false;
-            }
-            else
-            {
-                local_6 = this.GetPlayerBasicItem();
-                local_3 = (GetAvatarID() > 0);
-            }
-            this.SetbHasSelectedAvatar(local_3);
+            this.SetPlayerBasicItem(this.GetTeammateInfo().Get().GetPlayerBasicItem());
+            this.SetbHasSelectedAvatar(this.GetPlayerBasicItem().IsValid() && (this.GetPlayerBasicItem().Get().GetAvatarID() > 0));
         }
         return;
     }
@@ -304,11 +254,9 @@ FVM_TeamMemberPrepareItem& Create(const UObject ContextObject, const TEUIModelRe
 {
     return FVM_TeamMemberPrepareItem::CreateByManager(EUIInternal::GetContextManager(ContextObject), TeammateInfo);
 }
-FVM_TeamMemberPrepareItem CreateByManager(const UEUIManagerSubsystem Manager, const TEUIModelRef<FVM_TeammateInfo> &inout TeammateInfo)
+FVM_TeamMemberPrepareItem& CreateByManager(const UEUIManagerSubsystem Manager, const TEUIModelRef<FVM_TeammateInfo> &inout TeammateInfo)
 {
-    FVM_TeamMemberPrepareItem __r;
-    TEUIModelRef<FVM_TeamMemberPrepareItem> local_6 = TEUIModelRef<FVM_TeamMemberPrepareItem>(EUIInternal::MakeModelWithManager_Generic(Manager, FVM_TeamMemberPrepareItem::ModelId, 0, TeammateInfo));
-    return __r;
+    return TEUIModelRef<FVM_TeamMemberPrepareItem>(EUIInternal::MakeModelWithManager_Generic(Manager, FVM_TeamMemberPrepareItem::ModelId, 0, TeammateInfo)).Get();
 }
 void GetModelInfo(FEUIViewModelMetaInfo &inout Result)
 {
@@ -461,7 +409,6 @@ namespace __GeneratedProperties_FVM_TeamMemberPrepareItem
 {
 UScriptStruct StaticStruct()
 {
-    UScriptStruct local_2;
-    return local_2;
+    return __GeneratedProperties_FVM_TeamMemberPrepareItem.Get();
 }
 }

@@ -3,7 +3,6 @@ namespace __FClientConditionGroupFunctions
 UFUNCTION()
 TArray<FInstancedStruct> __FClientConditionGroup_GetConditions(const TDataObjectPtr<FClientConditionGroup> &inout DataObject)
 {
-    TArray<FInstancedStruct> __r;
     if ((DataObject == nullptr))
     {
         if (!(EUIGlobals::GIsDuringPropertyConversion))
@@ -13,7 +12,7 @@ TArray<FInstancedStruct> __FClientConditionGroup_GetConditions(const TDataObject
         FClientConditionGroup local_18;
         return local_18.Conditions;
     }
-    return __r;
+    return DataObject.Get().Conditions;
 }
 UFUNCTION()
 FClientConditionGroup CastToFClientConditionGroup(const TDataObjectPtr<FClientConditionGroup> &inout DataObject)

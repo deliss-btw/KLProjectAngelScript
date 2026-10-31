@@ -43,7 +43,7 @@ class UWidget_ItemNumOperationPanel : UEUIUserWidget
     UFUNCTION()
     bool ShouldShowResultPreview() const
     {
-        return this.ResultPreview.IsValid() && HasRewards();
+        return this.ResultPreview.IsValid() && this.ResultPreview.Get().HasRewards();
     }
     void RefreshChildModels()
     {
@@ -52,9 +52,7 @@ class UWidget_ItemNumOperationPanel : UEUIUserWidget
             this.ResultPreview.SetRef(FEUIModelRef());
             return;
         }
-        TEUIModelRef<FVM_CommonRewardList> local_6;
-        local_6.GetResultPreview();
-        this.ResultPreview.SetRef(local_6);
+        this.ResultPreview.SetRef(this.ItemNumOperation.Get().GetResultPreview());
         return;
     }
     UFUNCTION()
@@ -69,7 +67,7 @@ class UWidget_ItemNumOperationPanel : UEUIUserWidget
     UFUNCTION()
     TArray<FEUIModelWeakRef> ResultPreview_Rewards() const
     {
-        FVM_CommonRewardList& local_2;
+        FVM_CommonRewardList& local_2 = this.ResultPreview.Get();
         TArray<FEUIModelWeakRef> local_16;
         if (local_2)
         {
@@ -92,8 +90,8 @@ class UWidget_ItemNumOperationPanel : UEUIUserWidget
     }
     void HandleObservedModelChanges(FEUIReactiveSubscriberIterator &inout It)
     {
-        FVM_ItemNumOperation& local_6;
         TEUIModelRef<FVM_ItemNumOperation> local_2 = this.ItemNumOperation.AsRef();
+        FVM_ItemNumOperation& local_6 = local_2.Get();
         for (; It; )
         {
             FEUIReactiveSubscriberTrackScope local_56 = FEUIReactiveSubscriberTrackScope(It);

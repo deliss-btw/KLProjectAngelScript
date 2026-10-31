@@ -24,7 +24,7 @@ class UWidget_MinimapTempMarkDialog : UEUIUserWidget
         if (!(::MinimapUtils::IsValidHandle(this.DisplayingIconHandle)) && this.MinimapTempMarkDialog.IsValid())
         {
             FMinimapIconInfo local_46 = ::MarkUtil::BuildIconInfoFromMarkConfigForUIDisplay(::MarkUtil::GetMarkConfigSetting().MinimapTempMark, this.DisplayIconWidget);
-            local_46.WorldPosition = GetMarkWorldPosition();
+            local_46.WorldPosition = this.MinimapTempMarkDialog.Get().GetMarkWorldPosition();
             this.DisplayingIconHandle = ::MinimapUtils::AddSystemIcon(local_46);
         }
         return;

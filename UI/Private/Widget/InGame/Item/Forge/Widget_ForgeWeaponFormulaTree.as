@@ -59,11 +59,11 @@ class UWidget_ForgeWeaponFormulaTree : UEUIUserWidget
         {
             return;
         }
-        if (!(this.AutoLineNodeWidgetMap.Contains(GetDataId())))
+        if (!(this.AutoLineNodeWidgetMap.Contains(NodeM.Get().GetDataId())))
         {
             return;
         }
-        this.AutoLineCanvas.UpdateNodeStyleState(::ForgeWeaponRuntimeAutoLineBuilder::MakeNodeId(), ::ForgeWeaponRuntimeAutoLineBuilder::ResolveNodeStyleState());
+        this.AutoLineCanvas.UpdateNodeStyleState(::ForgeWeaponRuntimeAutoLineBuilder::MakeNodeId(NodeM.Get()), ::ForgeWeaponRuntimeAutoLineBuilder::ResolveNodeStyleState(NodeM.Get()));
         return;
     }
     void RefreshAutoLineGraph()
@@ -72,13 +72,12 @@ class UWidget_ForgeWeaponFormulaTree : UEUIUserWidget
         {
             return;
         }
-        ::ForgeWeaponRuntimeAutoLineBuilder::BuildAndApplyGraph(this, this.AutoLineCanvas, GetNodeList(), this.AutoLineNodeWidgetMap, this.AutoLineBranchFromExtend, this.AutoLineBranchToExtend, this.AutoLineSameBranchFromExtend, this.AutoLineSameBranchToExtend, this.AutoLineRouteOverrides);
+        ::ForgeWeaponRuntimeAutoLineBuilder::BuildAndApplyGraph(this, this.AutoLineCanvas, this.FormulaTree.Get().GetNodeList(), this.AutoLineNodeWidgetMap, this.AutoLineBranchFromExtend, this.AutoLineBranchToExtend, this.AutoLineSameBranchFromExtend, this.AutoLineSameBranchToExtend, this.AutoLineRouteOverrides);
         return;
     }
     UFUNCTION()
     void HandleFormulaTreeNodeListChanged(const TArray<TEUIModelWeakRef<FM_ForgeNode>> &inout NodeList)
     {
-        TEUIModelWeakRef<FM_ForgeNode> local_22;
         int local_24 = 0;
         bool local_29;
         UWidget_ForgeWeaponItem local_52;
@@ -89,31 +88,28 @@ class UWidget_ForgeWeaponFormulaTree : UEUIUserWidget
         {
             this.AutoLineCanvas.ClearAutoLineGraph();
         }
-        GetModify_ItemNodeMap().Reset();
+        this.FormulaTree.Get().GetModify_ItemNodeMap().Reset();
         int local_6 = 2147483647;
         TEUIModelWeakRef<FVM_ForgeWeaponItem> local_8;
         int local_11 = NodeList.Num() - 1;
         for (; local_11 >= 0; --local_11)
         {
             const TEUIModelWeakRef<FM_ForgeNode>& local_14 = NodeList[local_11];
-            if (local_14.IsValid() && CheckValid())
+            if (local_14.IsValid() && local_14.Get().CheckValid())
             {
-                TEUIModelWeakRef<FVM_WeaponForge> local_26;
-                int local_17 = ::ForgeCommonUtil::ConvertForgeNodeLevel2Row(GetConfig().ForgeLv);
-                int local_9 = ::ForgeCommonUtil::ConvertForgeTreeBranchType2Column(GetBranchType(), GetBranchType());
-                local_26.GetWeaponForgeVM();
-                if (local_26.IsValid())
+                int local_17 = ::ForgeCommonUtil::ConvertForgeNodeLevel2Row(local_14.Get().GetConfig().ForgeLv);
+                int local_9 = ::ForgeCommonUtil::ConvertForgeTreeBranchType2Column(this.FormulaTree.Get().GetBranchType(), local_14.Get().GetBranchType());
+                TEUIModelWeakRef<FM_ForgeNode> local_22 = TEUIModelWeakRef<FM_ForgeNode>(local_14.Get());
+                if (this.FormulaTree.Get().GetWeaponForgeVM().IsValid())
                 {
-                    local_26.GetWeaponForgeVM();
-                    local_22.GetCurrentSelectNode();
-                    local_29 = (local_22 == local_14.opImplConv());
+                    local_29 = (this.FormulaTree.Get().GetWeaponForgeVM().Get().GetCurrentSelectNode() == local_14.opImplConv());
                 }
                 else
                 {
                     local_29 = false;
                 }
                 local_24.SetbSelected(local_29);
-                GetModify_ItemNodeMap().Add(local_22, TEUIModelWeakRef<FVM_ForgeWeaponItem>(local_24));
+                this.FormulaTree.Get().GetModify_ItemNodeMap().Add(TEUIModelWeakRef<FM_ForgeNode>(local_14.Get()), TEUIModelWeakRef<FVM_ForgeWeaponItem>(local_24));
                 FEUIWidgetRef local_50 = FEUIWidget::CreateWidget(this.GetOwningLocalPlayer(), TSoftClassPtr<UEUIUserWidget>(this.NodeItemWidgetClass), FEUIModelRef(local_24));
                 FEUIWidgetHolder local_34 = local_50;
                 local_52 = Cast<UWidget_ForgeWeaponItem>(local_34.RequireWidget());
@@ -122,7 +118,7 @@ class UWidget_ForgeWeaponFormulaTree : UEUIUserWidget
                     local_24.SetForgeWeaponItemWidget(local_52);
                     local_24.SetOwnerFormulaTreeWidget(this);
                     this.ItemHolderList.Add(local_34);
-                    this.AutoLineNodeWidgetMap.Add(GetDataId(), local_52);
+                    this.AutoLineNodeWidgetMap.Add(local_14.Get().GetDataId(), local_52);
                     UUniformGridSlot local_60 = this.TreeGrid.AddChildToUniformGrid(local_52, local_17, local_9);
                     if (local_60 != nullptr)
                     {
@@ -130,7 +126,7 @@ class UWidget_ForgeWeaponFormulaTree : UEUIUserWidget
                         local_60.SetVerticalAlignment(EVerticalAlignment(2));
                     }
                 }
-                if (int(GetBranchType()) == 1 && (local_17 < local_6))
+                if (int(local_14.Get().GetBranchType()) == 1 && (local_17 < local_6))
                 {
                     local_6 = local_17;
                     local_8 = (TEUIModelWeakRef<FVM_ForgeWeaponItem>(local_24));
@@ -140,27 +136,24 @@ class UWidget_ForgeWeaponFormulaTree : UEUIUserWidget
         this.RefreshAutoLineGraph();
         FEUIMessageBus::PublishWithWidgetReferencedModels(EUIMessageBus);
         FMsg_ForgeTreeUpdateFinish local_66;
-        local_66.TreeIndex = GetIndex();
+        local_66.TreeIndex = this.FormulaTree.Get().GetIndex();
         TEUIModelWeakRef<FM_ForgeNode> local_74;
         if (local_8.IsValid())
         {
-            TEUIModelWeakRef<FM_ForgeNode> local_72;
-            local_72.GetNode();
-            local_74 = local_72;
+            local_74 = local_8.Get().GetNode();
         }
         else
         {
-            local_74 = local_22;
+            local_74 = TEUIModelWeakRef<FM_ForgeNode>();
         }
         local_66.FirstItemNodeM = local_74;
-        TEUIModelWeakRef<FVM_ForgeWeaponFormulaTree> local_76;
-        local_66.FormulaTreeVM = local_76;
+        local_66.FormulaTreeVM = TEUIModelWeakRef<FVM_ForgeWeaponFormulaTree>(this.FormulaTree.Get());
         return;
     }
     void HandleObservedModelChanges(FEUIReactiveSubscriberIterator &inout It)
     {
-        FVM_ForgeWeaponFormulaTree& local_6;
         TEUIModelRef<FVM_ForgeWeaponFormulaTree> local_2 = this.FormulaTree.AsRef();
+        FVM_ForgeWeaponFormulaTree& local_6 = local_2.Get();
         for (; It; )
         {
             FEUIReactiveSubscriberTrackScope local_56 = FEUIReactiveSubscriberTrackScope(It);

@@ -25,7 +25,7 @@ class UWidget_TestEUICanvasSlot : UEUIUserWidget
         UCanvasPanelSlot local_8 = (Cast<UCanvasPanelSlot>(local_4));
         if (local_8 != nullptr)
         {
-            FVM_TestEUICanvasSlot& local_10;
+            FVM_TestEUICanvasSlot& local_10 = this.TestSlot.Get();
             local_8.SetPosition(FVector2D((FMath::IntegerDivisionTrunc(local_10.GetIndex(), 4) * 100), ((local_10.GetIndex() % 4) * 100)));
             local_8.SetAutoSize(true);
         }

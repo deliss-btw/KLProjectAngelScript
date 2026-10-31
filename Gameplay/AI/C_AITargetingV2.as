@@ -249,6 +249,8 @@ struct FAITargetingFilter_FactionRelation : FAITargetingFilter
     UPROPERTY()
     uint8 FactionRelation;
 
+    default m_ScriptOverrideMeta = Cast<UASStruct>(FAITargetingFilter_FactionRelation.Get());
+
     FAITargetingFilter_FactionRelation()
     {
         this.FactionRelation = (2 != 0);
@@ -282,6 +284,8 @@ struct FAITargetingFilter_Distance : FAITargetingFilter
     float32 DistanceXY;
     UPROPERTY()
     float32 DistanceZ;
+
+    default m_ScriptOverrideMeta = Cast<UASStruct>(FAITargetingFilter_Distance.Get());
 
     FAITargetingFilter_Distance()
     {
@@ -332,6 +336,8 @@ struct FAITargetingFilter_ExcludeTargets : FAITargetingFilter
     UPROPERTY()
     TArray<FAISmart_EntityId> ExcludeTargets;
 
+    default m_ScriptOverrideMeta = Cast<UASStruct>(FAITargetingFilter_ExcludeTargets.Get());
+
     FAITargetingFilter_ExcludeTargets()
     {
         this.__InitDefaults();
@@ -371,6 +377,8 @@ struct FAITargetingFilter_HasBuff : FAITargetingFilter
     FBuffConfigRef BuffConfig;
     UPROPERTY()
     bool bRequireHasBuff;
+
+    default m_ScriptOverrideMeta = Cast<UASStruct>(FAITargetingFilter_HasBuff.Get());
 
     FAITargetingFilter_HasBuff()
     {
@@ -412,6 +420,8 @@ struct FAITargetingFilter_TargetType : FAITargetingFilter
     TArray<EMonsterRank> AllowedMonsterRanks;
     UPROPERTY()
     bool bIncludeFallback;
+
+    default m_ScriptOverrideMeta = Cast<UASStruct>(FAITargetingFilter_TargetType.Get());
 
     FAITargetingFilter_TargetType()
     {
@@ -479,6 +489,8 @@ struct FAITargetingFilter_TargetType : FAITargetingFilter
 struct FAITargetingFilter_CaptainTarget : FAITargetingFilter
 {
     FAITargetingFilter _base_FAITargetingFilter;
+
+    default m_ScriptOverrideMeta = Cast<UASStruct>(FAITargetingFilter_CaptainTarget.Get());
 
     FAITargetingFilter_CaptainTarget()
     {
@@ -583,6 +595,8 @@ struct FAITargetingScorer_Distance : FAITargetingScorer
     UPROPERTY()
     float32 NavDistanceUpdateInterval;
 
+    default m_ScriptOverrideMeta = Cast<UASStruct>(FAITargetingScorer_Distance.Get());
+
     FAITargetingScorer_Distance()
     {
         this.BaseScoreByDistance = FRuntimeCurveUtils::CreateLinear(0.0f, 10.0f, 4000.0f, -10.0f);
@@ -678,6 +692,8 @@ struct FAITargetingScorer_HP : FAITargetingScorer
     UPROPERTY()
     bool bUsePercentageHP;
 
+    default m_ScriptOverrideMeta = Cast<UASStruct>(FAITargetingScorer_HP.Get());
+
     FAITargetingScorer_HP()
     {
         this.bUseMultiplierCurve = false;
@@ -738,6 +754,8 @@ struct FAITargetingScorer_HealHP : FAITargetingScorer
     UPROPERTY()
     float32 StatisticTime;
 
+    default m_ScriptOverrideMeta = Cast<UASStruct>(FAITargetingScorer_HealHP.Get());
+
     FAITargetingScorer_HealHP()
     {
         this.bUseMultiplierCurve = false;
@@ -789,6 +807,8 @@ struct FAITargetingScorer_DamageReceived : FAITargetingScorer
     float32 StatisticTime;
     UPROPERTY()
     bool bUsePercentageDamage;
+
+    default m_ScriptOverrideMeta = Cast<UASStruct>(FAITargetingScorer_DamageReceived.Get());
 
     FAITargetingScorer_DamageReceived()
     {
@@ -904,6 +924,8 @@ struct FAITargetingScorer_Hostility : FAITargetingScorer
     UPROPERTY()
     FRuntimeFloatCurve MultiplierByHostility;
 
+    default m_ScriptOverrideMeta = Cast<UASStruct>(FAITargetingScorer_Hostility.Get());
+
     FAITargetingScorer_Hostility()
     {
         this.RatingByHostility = FRuntimeCurveUtils::CreateLinear(0.0f, 0.0f, 0.5f, 40.0f);
@@ -953,6 +975,8 @@ struct FAITargetingScorer_BaseHatred : FAITargetingScorer
     UPROPERTY()
     FRuntimeFloatCurve MultiplierByBaseHatred;
 
+    default m_ScriptOverrideMeta = Cast<UASStruct>(FAITargetingScorer_BaseHatred.Get());
+
     FAITargetingScorer_BaseHatred()
     {
         this.bUseMultiplierCurve = false;
@@ -999,6 +1023,8 @@ struct FAITargetingScorer_GameplayTag : FAITargetingScorer
     UPROPERTY()
     float32 Multiplier;
 
+    default m_ScriptOverrideMeta = Cast<UASStruct>(FAITargetingScorer_GameplayTag.Get());
+
     FAITargetingScorer_GameplayTag()
     {
         this.MultiTagScoreMode = EMultiTagScoreMode(0);
@@ -1008,7 +1034,6 @@ struct FAITargetingScorer_GameplayTag : FAITargetingScorer
     }
     float32 CalculateScore_Implementation(const FECSEntity &inout SourceEntity, const FECSEntity &inout TargetEntity, const FAISmartValueContext &inout Context) const
     {
-        float32 local_3 = 0.0f;
         float32 local_29;
         if (!(SourceEntity.IsValid()) || !(TargetEntity.IsValid()))
         {
@@ -1023,13 +1048,12 @@ struct FAITargetingScorer_GameplayTag : FAITargetingScorer
                 local_5 = true;
                 if (int(this.MultiTagScoreMode) == 0)
                 {
-                    local_4 = local_4 + local_3;
+                    local_4 = local_4 + local_24.GetValue();
                     continue;
                 }
-                local_3 = FMath::Abs(local_4);
-                if (FMath::Abs(local_3) > local_3)
+                if (FMath::Abs(local_24.GetValue()) > FMath::Abs(local_4))
                 {
-                    local_4 = local_3;
+                    local_4 = local_24.GetValue();
                 }
             }
         }
@@ -1052,6 +1076,8 @@ struct FAITargetingScorer_EBBEntity : FAITargetingScorer
     TArray<FAISmartEntityScore> SpecificTargetScoreMap;
     UPROPERTY()
     float32 Multiplier;
+
+    default m_ScriptOverrideMeta = Cast<UASStruct>(FAITargetingScorer_EBBEntity.Get());
 
     FAITargetingScorer_EBBEntity()
     {
@@ -1091,6 +1117,8 @@ struct FAITargetingScorer_TargetType : FAITargetingScorer
     float32 FallbackScore;
     UPROPERTY()
     float32 Multiplier;
+
+    default m_ScriptOverrideMeta = Cast<UASStruct>(FAITargetingScorer_TargetType.Get());
 
     FAITargetingScorer_TargetType()
     {
@@ -1150,6 +1178,8 @@ struct FAITargetingScorer_BeTaunted : FAITargetingScorer
     UPROPERTY()
     float32 Multiplier;
 
+    default m_ScriptOverrideMeta = Cast<UASStruct>(FAITargetingScorer_BeTaunted.Get());
+
     FAITargetingScorer_BeTaunted()
     {
         this.TauntScore = 100.0f;
@@ -1185,6 +1215,8 @@ struct FAITargetingScorer_ExternalTarget : FAITargetingScorer
     UPROPERTY()
     float32 Multiplier;
 
+    default m_ScriptOverrideMeta = Cast<UASStruct>(FAITargetingScorer_ExternalTarget.Get());
+
     FAITargetingScorer_ExternalTarget()
     {
         this.Multiplier = 1.0f;
@@ -1204,7 +1236,7 @@ struct FAITargetingScorer_ExternalTarget : FAITargetingScorer
         }
         FTargetEntity local_14 = FTargetEntity(TargetEntity);
         bool local_15 = false;
-        EAIExternalTargetPriority local_16 = EAIExternalTargetPriority(0);
+        EAIExternalTargetPriority local_16 = EAIExternalTargetPriority::Low;
         for (auto& local_32 : local_10.ExternalTargets)
         {
             if (!((local_32.Target == local_14)))
@@ -1241,6 +1273,8 @@ struct FAITargetingScorer_TimeAsTarget : FAITargetingScorer
     float32 Multiplier;
     UPROPERTY()
     FRuntimeFloatCurve MultiplierByTimeAsTarget;
+
+    default m_ScriptOverrideMeta = Cast<UASStruct>(FAITargetingScorer_TimeAsTarget.Get());
 
     FAITargetingScorer_TimeAsTarget()
     {
@@ -1292,6 +1326,8 @@ struct FAITargetingScorer_SelectedTargets : FAITargetingScorer
     UPROPERTY()
     float32 Score;
 
+    default m_ScriptOverrideMeta = Cast<UASStruct>(FAITargetingScorer_SelectedTargets.Get());
+
     FAITargetingScorer_SelectedTargets()
     {
         this.Multiplier = 1.0f;
@@ -1325,6 +1361,8 @@ struct FAITargetingScorer_BeTargetedStress : FAITargetingScorer
     FRuntimeFloatCurve RatingByBeTargetedStress;
     UPROPERTY()
     float32 Multiplier;
+
+    default m_ScriptOverrideMeta = Cast<UASStruct>(FAITargetingScorer_BeTargetedStress.Get());
 
     FAITargetingScorer_BeTargetedStress()
     {

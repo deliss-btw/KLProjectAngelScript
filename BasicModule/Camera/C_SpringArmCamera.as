@@ -68,12 +68,12 @@ struct FSpringArmCameraPresentation
     }
     void SetBlendPhaseByConfig(const ECameraBlendPhase Phase, const FFPTime &inout WorldTime)
     {
-        const FTPCameraStateConfig& local_4;
         float32 local_8;
         if (!(this.Params.CameraConfig))
         {
             return;
         }
+        const FTPCameraStateConfig& local_4 = this.Params.CameraConfig.Get();
         if (local_4.BlendInDuration >= 0.0f)
         {
             local_8 = local_4.BlendInDuration;
@@ -93,7 +93,7 @@ struct FSpringArmCameraPresentation
     FCameraBlendConfig GetBlendConfig() const
     {
         FCameraBlendConfig local_76;
-        FTPCameraStateConfig local_78;
+        const FTPCameraStateConfig& local_78 = this.Params.CameraConfig.Get();
         local_76.BlendInEasing = local_78.BlendInEasing;
         local_76.BlendOutEasing = local_78.BlendOutEasing;
         return local_76;

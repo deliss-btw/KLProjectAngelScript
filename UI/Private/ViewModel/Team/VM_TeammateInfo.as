@@ -135,8 +135,7 @@ struct FVM_TeammateInfo : FEUIViewModel
             return false;
         }
         int local_11 = ::FASCommonUtils::GetPlayerUidFromPlayerEntity(this.GetContext().GetLocalPlayer());
-        TEUIModelRef<FM_Player> local_4 = this.GetTeamMember().opArrow().GetPlayer();
-        return (GetPlayerUid() == local_11);
+        return (this.GetTeamMember().opArrow().GetPlayer().Get().GetPlayerUid() == local_11);
     }
     bool IsCaptain() const
     {
@@ -169,8 +168,7 @@ struct FVM_TeammateInfo : FEUIViewModel
         }
         if (local_2)
         {
-            TEUIModelRef<FM_Player> local_6 = this.GetTeamMember().opArrow().GetPlayer();
-            local_1 = VOXState.MutedPlayerUids.Contains(GetPlayerUid());
+            local_1 = VOXState.MutedPlayerUids.Contains(this.GetTeamMember().opArrow().GetPlayer().Get().GetPlayerUid());
         }
         this.SetbIsMuted(local_1);
         return;
@@ -180,8 +178,7 @@ struct FVM_TeammateInfo : FEUIViewModel
         bool local_1 = false;
         if (this.GetTeamMember().opArrow().GetPlayer())
         {
-            TEUIModelRef<FM_Player> local_6 = this.GetTeamMember().opArrow().GetPlayer();
-            local_1 = ::VOXUtils::IsPlayerSpeaking(GetPlayerUid());
+            local_1 = ::VOXUtils::IsPlayerSpeaking(this.GetTeamMember().opArrow().GetPlayer().Get().GetPlayerUid());
         }
         this.SetbIsSpeaking(local_1);
         return;
@@ -367,8 +364,8 @@ struct FVM_TeammateInfo : FEUIViewModel
         {
             FOperatorBtnData local_108;
             TEUIModelRef<FVM_BtnOperationItem> local_110 = TEUIModelRef<FVM_BtnOperationItem>(::FVM_BtnOperationItem::Create(this.GetContext().Manager, local_108.ButtonText, local_108.Icon));
-            GetOnClickGoToCallback().Bind(this, FVM_TeammateInfo::ViewInfo);
-            FEUIModelRef(this).SetClickModelRef();
+            local_110.Get().GetOnClickGoToCallback().Bind(this, FVM_TeammateInfo::ViewInfo);
+            local_110.Get().SetClickModelRef(FEUIModelRef(this));
             local_6.Add(local_110);
         }
         if (this.IsSocialTeam() && ::FMS_LocalPlayerTeamData::Get(this.GetManager()).SelfIsSocialTeamCaptain())
@@ -376,10 +373,10 @@ struct FVM_TeammateInfo : FEUIViewModel
             if (local_8.OperatorIconConfigs.Contains(ETeamOtherPlayerOperatorType(1)))
             {
                 FOperatorBtnData local_108;
-                TEUIModelRef<FVM_BtnOperationItem> local_110 = TEUIModelRef<FVM_BtnOperationItem>(::FVM_BtnOperationItem::Create(this.GetContext().Manager, local_108.ButtonText, local_108.Icon));
-                GetOnClickGoToCallback().Bind(this, FVM_TeammateInfo::SetCaptain);
-                FEUIModelRef(this).SetClickModelRef();
-                local_6.Add(local_110);
+                TEUIModelRef<FVM_BtnOperationItem> local_110_2 = TEUIModelRef<FVM_BtnOperationItem>(::FVM_BtnOperationItem::Create(this.GetContext().Manager, local_108.ButtonText, local_108.Icon));
+                local_110_2.Get().GetOnClickGoToCallback().Bind(this, FVM_TeammateInfo::SetCaptain);
+                local_110_2.Get().SetClickModelRef(FEUIModelRef(this));
+                local_6.Add(local_110_2);
             }
         }
         if (this.IsSocialTeam() && ::FMS_LocalPlayerTeamData::Get(this.GetManager()).SelfIsSocialTeamCaptain())
@@ -387,32 +384,22 @@ struct FVM_TeammateInfo : FEUIViewModel
             if (local_8.OperatorIconConfigs.Contains(ETeamOtherPlayerOperatorType(2)))
             {
                 FOperatorBtnData local_108;
-                TEUIModelRef<FVM_BtnOperationItem> local_110 = TEUIModelRef<FVM_BtnOperationItem>(::FVM_BtnOperationItem::Create(this.GetContext().Manager, local_108.ButtonText, local_108.Icon));
-                GetOnClickGoToCallback().Bind(this, FVM_TeammateInfo::KickMember);
-                FEUIModelRef(this).SetClickModelRef();
-                local_6.Add(local_110);
+                TEUIModelRef<FVM_BtnOperationItem> local_110_3 = TEUIModelRef<FVM_BtnOperationItem>(::FVM_BtnOperationItem::Create(this.GetContext().Manager, local_108.ButtonText, local_108.Icon));
+                local_110_3.Get().GetOnClickGoToCallback().Bind(this, FVM_TeammateInfo::KickMember);
+                local_110_3.Get().SetClickModelRef(FEUIModelRef(this));
+                local_6.Add(local_110_3);
             }
         }
         if (local_8.OperatorIconConfigs.Contains(ETeamOtherPlayerOperatorType(3)))
         {
             bool local_119;
             FOperatorBtnData local_108;
-            local_119 = this.GetTeamMember().opArrow().GetPlayer();
-            if (!(local_119))
-            {
-                local_119 = false;
-            }
-            else
-            {
-                TEUIModelRef<FM_Player> local_130 = this.GetTeamMember().opArrow().GetPlayer();
-                local_119 = ::VOXUtils::IsPlayerMuted(GetPlayerUid());
-            }
+            local_119 = this.GetTeamMember().opArrow().GetPlayer() && ::VOXUtils::IsPlayerMuted(this.GetTeamMember().opArrow().GetPlayer().Get().GetPlayerUid());
             FText local_142 = local_119 ? NSLOCTEXT("Team", "UnmutePlayer", "取消静音") : local_108.ButtonText;
-            TEUIModelRef<FVM_BtnOperationItem> local_112 = TEUIModelRef<FVM_BtnOperationItem>(::FVM_BtnOperationItem::Create(this.GetContext().Manager, local_142, local_108.Icon));
-            TEUIModelRef<FVM_BtnOperationItem> local_110;
-            GetOnClickGoToCallback().Bind(this, FVM_TeammateInfo::ToggleMute);
-            FEUIModelRef(this).SetClickModelRef();
-            local_6.Add(local_112);
+            TEUIModelRef<FVM_BtnOperationItem> local_110_4 = TEUIModelRef<FVM_BtnOperationItem>(::FVM_BtnOperationItem::Create(this.GetContext().Manager, local_142, local_108.Icon));
+            local_110_4.Get().GetOnClickGoToCallback().Bind(this, FVM_TeammateInfo::ToggleMute);
+            local_110_4.Get().SetClickModelRef(FEUIModelRef(this));
+            local_6.Add(local_110_4);
         }
         TEUIModelRef<FVM_BtnOperationList> local_144 = TEUIModelRef<FVM_BtnOperationList>(::FVM_BtnOperationList::Create(this.GetContext().Manager, local_6));
         if (local_6.IsEmpty())
@@ -438,15 +425,11 @@ struct FVM_TeammateInfo : FEUIViewModel
         this.SetPendingKickMemberTargetUid(0);
         if (this.GetTeamMember().opArrow().GetPlayer())
         {
-            TEUIModelRef<FM_Player> local_6 = this.GetTeamMember().opArrow().GetPlayer();
-            this.SetPendingKickMemberTargetUid(GetPlayerUid());
+            this.SetPendingKickMemberTargetUid(this.GetTeamMember().opArrow().GetPlayer().Get().GetPlayerUid());
         }
         FDialogModelCallback local_34;
         local_34.Bind(this, FVM_TeammateInfo::KickMemberConfirm);
-        TEUIModelRef<FM_Player> local_6_2 = this.GetTeamMember().opArrow().GetPlayer();
-        FString local_42;
-        local_42.GetNickName();
-        FText local_54 = FText::Format(NSLOCTEXT("Team", "KickMemberMessage", "是否确认请离{0}"), FText::FromString(local_42));
+        FText local_54 = FText::Format(NSLOCTEXT("Team", "KickMemberMessage", "是否确认请离{0}"), FText::FromString(this.GetTeamMember().opArrow().GetPlayer().Get().GetNickName()));
         FCommonDialogParam local_88;
         ::CommonPopup::Dialog_Decision(NSLOCTEXT("Team", "KickMemberTitle", "提示"), local_54, FDialogCallback(local_34), NSLOCTEXT("Team", "KickMemberConfirm", "是"), NSLOCTEXT("Team", "KickMemberCancel", "否"), local_88);
         this.CloseHoverMenu();
@@ -465,17 +448,7 @@ struct FVM_TeammateInfo : FEUIViewModel
         {
             return true;
         }
-        bool local_6 = !(this.GetTeamMember().opArrow().GetPlayer());
-        if (local_6)
-        {
-            local_6 = true;
-        }
-        else
-        {
-            TEUIModelRef<FM_Player> local_10 = this.GetTeamMember().opArrow().GetPlayer();
-            local_6 = (GetPlayerUid() != local_1);
-        }
-        if (local_6)
+        if (!(this.GetTeamMember().opArrow().GetPlayer()) || (this.GetTeamMember().opArrow().GetPlayer().Get().GetPlayerUid() != local_1))
         {
             FCommonTipsParam local_20;
             ::CommonPopup::WeakTips(NSLOCTEXT("Team", "TeamChangedCannotKick", "队伍已发生变化"), local_20);
@@ -489,15 +462,11 @@ struct FVM_TeammateInfo : FEUIViewModel
         this.SetPendingSetCaptainTargetUid(0);
         if (this.GetTeamMember().opArrow().GetPlayer())
         {
-            TEUIModelRef<FM_Player> local_6 = this.GetTeamMember().opArrow().GetPlayer();
-            this.SetPendingSetCaptainTargetUid(GetPlayerUid());
+            this.SetPendingSetCaptainTargetUid(this.GetTeamMember().opArrow().GetPlayer().Get().GetPlayerUid());
         }
         FDialogModelCallback local_34;
         local_34.Bind(this, FVM_TeammateInfo::SetCaptainConfirm);
-        TEUIModelRef<FM_Player> local_6_2 = this.GetTeamMember().opArrow().GetPlayer();
-        FString local_42;
-        local_42.GetNickName();
-        FText local_54 = FText::Format(NSLOCTEXT("Team", "SetCaptainMessage", "是否确认将队长转让给{0}"), FText::FromString(local_42));
+        FText local_54 = FText::Format(NSLOCTEXT("Team", "SetCaptainMessage", "是否确认将队长转让给{0}"), FText::FromString(this.GetTeamMember().opArrow().GetPlayer().Get().GetNickName()));
         FCommonDialogParam local_88;
         ::CommonPopup::Dialog_Decision(NSLOCTEXT("Team", "SetCaptainTitle", "提示"), local_54, FDialogCallback(local_34), NSLOCTEXT("Team", "SetCaptainConfirm", "是"), NSLOCTEXT("Team", "SetCaptainCancel", "否"), local_88);
         this.CloseHoverMenu();
@@ -516,17 +485,7 @@ struct FVM_TeammateInfo : FEUIViewModel
         {
             return true;
         }
-        bool local_6 = !(this.GetTeamMember().opArrow().GetPlayer());
-        if (local_6)
-        {
-            local_6 = true;
-        }
-        else
-        {
-            TEUIModelRef<FM_Player> local_10 = this.GetTeamMember().opArrow().GetPlayer();
-            local_6 = (GetPlayerUid() != local_1);
-        }
-        if (local_6)
+        if (!(this.GetTeamMember().opArrow().GetPlayer()) || (this.GetTeamMember().opArrow().GetPlayer().Get().GetPlayerUid() != local_1))
         {
             FCommonTipsParam local_20;
             ::CommonPopup::WeakTips(NSLOCTEXT("Team", "TeamChangedCannotSetCaptain", "队伍已发生变化"), local_20);
@@ -543,25 +502,18 @@ struct FVM_TeammateInfo : FEUIViewModel
             this.CloseHoverMenu();
             return true;
         }
-        TEUIModelRef<FM_Player> local_4 = this.GetTeamMember().opArrow().GetPlayer();
-        local_6 = GetPlayerUid();
+        local_6 = this.GetTeamMember().opArrow().GetPlayer().Get().GetPlayerUid();
         if (::VOXUtils::IsPlayerMuted(local_6))
         {
             FCommonTipsParam local_28;
-            FString local_12;
             ::VOXUtils::UnmutePlayer(local_6);
-            TEUIModelRef<FM_Player> local_4_2 = this.GetTeamMember().opArrow().GetPlayer();
-            local_12.GetNickName();
-            ::CommonPopup::WeakTips(FText::Format(NSLOCTEXT("Team", "UnmutedPlayer", "已取消静音{0}"), FText::FromString(local_12)), local_28);
+            ::CommonPopup::WeakTips(FText::Format(NSLOCTEXT("Team", "UnmutedPlayer", "已取消静音{0}"), FText::FromString(this.GetTeamMember().opArrow().GetPlayer().Get().GetNickName())), local_28);
         }
         else
         {
             FCommonTipsParam local_28;
-            FString local_12;
             ::VOXUtils::MutePlayer(local_6);
-            TEUIModelRef<FM_Player> local_4_3 = this.GetTeamMember().opArrow().GetPlayer();
-            local_12.GetNickName();
-            ::CommonPopup::WeakTips(FText::Format(NSLOCTEXT("Team", "MutedPlayer", "已静音{0}"), FText::FromString(local_12)), local_28);
+            ::CommonPopup::WeakTips(FText::Format(NSLOCTEXT("Team", "MutedPlayer", "已静音{0}"), FText::FromString(this.GetTeamMember().opArrow().GetPlayer().Get().GetNickName())), local_28);
         }
         this.CloseHoverMenu();
         return true;
@@ -573,22 +525,11 @@ struct FVM_TeammateInfo : FEUIViewModel
         this.SetPlayerInfo(TEUIModelRef<FVM_PlayerInfo>(::FVM_PlayerInfo::Create(this.GetContext().Manager, this.GetPlayer())));
         if (this.GetPlayer())
         {
-            TEUIModelRef<FM_Player> local_4_2 = this.GetPlayer();
-            this.SetPlayerBasicItem(TEUIModelRef<FVM_PlayerBasicItem>(::FVM_PlayerBasicItem::Create(this.GetContext().Manager, ::FMS_PlayerBriefInfo::Get(this.GetManager()).CacheFromPlayer())));
+            this.SetPlayerBasicItem(TEUIModelRef<FVM_PlayerBasicItem>(::FVM_PlayerBasicItem::Create(this.GetContext().Manager, ::FMS_PlayerBriefInfo::Get(this.GetManager()).CacheFromPlayer(this.GetPlayer().Get()))));
             this.RefreshPlayerBasicItemExtend();
         }
         this.OnPlayerEntityChanged();
-        bool local_55 = this.GetTeamMember().opArrow().GetPlayer();
-        if (!(local_55))
-        {
-            local_55 = false;
-        }
-        else
-        {
-            TEUIModelRef<FM_Player> local_54 = this.GetTeamMember().opArrow().GetPlayer();
-            local_55 = ::VOXUtils::IsPlayerMuted(GetPlayerUid());
-        }
-        this.SetbIsMuted(local_55);
+        this.SetbIsMuted(this.GetTeamMember().opArrow().GetPlayer() && ::VOXUtils::IsPlayerMuted(this.GetTeamMember().opArrow().GetPlayer().Get().GetPlayerUid()));
         return;
     }
     void OnPlayerLevelAttrChanged()
@@ -629,8 +570,7 @@ struct FVM_TeammateInfo : FEUIViewModel
         this.SetPlayerInfo(TEUIModelRef<FVM_PlayerInfo>(::FVM_PlayerInfo::Create(this.GetContext().Manager, this.GetPlayer())));
         if (this.GetPlayer())
         {
-            TEUIModelRef<FM_Player> local_2 = this.GetPlayer();
-            this.SetPlayerBasicItem(TEUIModelRef<FVM_PlayerBasicItem>(::FVM_PlayerBasicItem::Create(this.GetContext().Manager, ::FMS_PlayerBriefInfo::Get(this.GetManager()).CacheFromPlayer())));
+            this.SetPlayerBasicItem(TEUIModelRef<FVM_PlayerBasicItem>(::FVM_PlayerBasicItem::Create(this.GetContext().Manager, ::FMS_PlayerBriefInfo::Get(this.GetManager()).CacheFromPlayer(this.GetPlayer().Get()))));
             this.RefreshPlayerBasicItemExtend();
         }
         return;
@@ -638,8 +578,7 @@ struct FVM_TeammateInfo : FEUIViewModel
     void RefreshPlayerBasicItemExtend()
     {
         this.SetPlayerBasicItemExtend(TEUIModelRef<FVM_PlayerBasicItemExtend>(::FVM_PlayerBasicItemExtend::Create(this.GetContext().Manager)));
-        TEUIModelRef<FVM_PlayerBasicItemExtend> local_2 = this.GetPlayerBasicItemExtend();
-        (int(::FLevelUtils::GetCurrentLevelType()) != 5).SetbShowLevelText();
+        this.GetPlayerBasicItemExtend().Get().SetbShowLevelText((int(::FLevelUtils::GetCurrentLevelType()) != 5));
         return;
     }
     void HandlePlayerEntityChanged(const FMsg_PlayerEntityChanged &inout Msg)
@@ -1082,11 +1021,9 @@ FVM_TeammateInfo& Create(const UObject ContextObject, const TEUIModelRef<FM_Team
 {
     return FVM_TeammateInfo::CreateByManager(EUIInternal::GetContextManager(ContextObject), TeamMember);
 }
-FVM_TeammateInfo CreateByManager(const UEUIManagerSubsystem Manager, const TEUIModelRef<FM_TeamMember> &inout TeamMember)
+FVM_TeammateInfo& CreateByManager(const UEUIManagerSubsystem Manager, const TEUIModelRef<FM_TeamMember> &inout TeamMember)
 {
-    FVM_TeammateInfo __r;
-    TEUIModelRef<FVM_TeammateInfo> local_6 = TEUIModelRef<FVM_TeammateInfo>(EUIInternal::MakeModelWithManager_Generic(Manager, FVM_TeammateInfo::ModelId, 0, TeamMember));
-    return __r;
+    return TEUIModelRef<FVM_TeammateInfo>(EUIInternal::MakeModelWithManager_Generic(Manager, FVM_TeammateInfo::ModelId, 0, TeamMember)).Get();
 }
 void GetModelInfo(FEUIViewModelMetaInfo &inout Result)
 {
@@ -1590,7 +1527,6 @@ namespace __GeneratedProperties_FVM_TeammateInfo
 {
 UScriptStruct StaticStruct()
 {
-    UScriptStruct local_2;
-    return local_2;
+    return __GeneratedProperties_FVM_TeammateInfo.Get();
 }
 }

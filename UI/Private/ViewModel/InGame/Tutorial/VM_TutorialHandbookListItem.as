@@ -149,11 +149,9 @@ FVM_TutorialHandbookListItem& Create(const UObject ContextObject, const int Item
 {
     return FVM_TutorialHandbookListItem::CreateByManager(EUIInternal::GetContextManager(ContextObject), ItemIndex);
 }
-FVM_TutorialHandbookListItem CreateByManager(const UEUIManagerSubsystem Manager, const int ItemIndex)
+FVM_TutorialHandbookListItem& CreateByManager(const UEUIManagerSubsystem Manager, const int ItemIndex)
 {
-    FVM_TutorialHandbookListItem __r;
-    TEUIModelRef<FVM_TutorialHandbookListItem> local_6 = TEUIModelRef<FVM_TutorialHandbookListItem>(EUIInternal::MakeModelWithManager_Generic(Manager, FVM_TutorialHandbookListItem::ModelId, 0, ItemIndex));
-    return __r;
+    return TEUIModelRef<FVM_TutorialHandbookListItem>(EUIInternal::MakeModelWithManager_Generic(Manager, FVM_TutorialHandbookListItem::ModelId, 0, ItemIndex)).Get();
 }
 void GetModelInfo(FEUIViewModelMetaInfo &inout Result)
 {
@@ -216,7 +214,6 @@ namespace __GeneratedProperties_FVM_TutorialHandbookListItem
 {
 UScriptStruct StaticStruct()
 {
-    UScriptStruct local_2;
-    return local_2;
+    return __GeneratedProperties_FVM_TutorialHandbookListItem.Get();
 }
 }

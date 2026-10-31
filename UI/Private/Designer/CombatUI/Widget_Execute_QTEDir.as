@@ -32,7 +32,7 @@ class UWidget_Execute_QTEDir : UEUIUserWidget
     UFUNCTION()
     void Tick_Implementation(const FGeometry &inout MyGeometry, const float32 InDeltaTime)
     {
-        FVMS_ProgressOperation local_2;
+        FVMS_ProgressOperation& local_2 = this.VMS_ProgressOperation.Get();
         FECSEntity local_6 = FECSEntity(local_2.GetTargetEntity());
         if (!(local_6.IsValid()))
         {
@@ -79,7 +79,7 @@ class UWidget_Execute_QTEDir : UEUIUserWidget
         }
         if (int(State) == 3)
         {
-            FVMS_ProgressOperation& local_26;
+            FVMS_ProgressOperation& local_26 = this.VMS_ProgressOperation.Get();
             this.timer = ((local_26.GetMaxTime() - local_26.GetCurTime()) + 0.6f);
         }
         return;
@@ -87,14 +87,14 @@ class UWidget_Execute_QTEDir : UEUIUserWidget
     UFUNCTION()
     float32 VMS_ProgressOperation_ValueProgress() const
     {
-        FVMS_ProgressOperation& local_2;
+        FVMS_ProgressOperation& local_2 = this.VMS_ProgressOperation.Get();
         return local_2 ? local_2.GetValueProgress() : 0.0f;
     }
     UFUNCTION()
     float32 VMS_ProgressOperation_TimeProgress() const
     {
-        FVMS_ProgressOperation& local_2;
         float32 local_4;
+        FVMS_ProgressOperation& local_2 = this.VMS_ProgressOperation.Get();
         if (local_2)
         {
             local_4 = local_2.GetTimeProgress();
@@ -108,14 +108,14 @@ class UWidget_Execute_QTEDir : UEUIUserWidget
     UFUNCTION()
     FWidgetTransform VMS_ProgressOperation_PointerTrans() const
     {
-        FVMS_ProgressOperation& local_2;
+        FVMS_ProgressOperation& local_2 = this.VMS_ProgressOperation.Get();
         FWidgetTransform local_32 = local_2 ? local_2.GetPointerTrans() : FWidgetTransform();
         return local_32;
     }
     void HandleObservedModelChanges(FEUIReactiveSubscriberIterator &inout It)
     {
-        FVMS_ProgressOperation& local_6;
         TEUIModelRef<FVMS_ProgressOperation> local_2 = this.VMS_ProgressOperation.AsRef();
+        FVMS_ProgressOperation& local_6 = local_2.Get();
         for (; It; )
         {
             FEUIReactiveSubscriberTrackScope local_56 = FEUIReactiveSubscriberTrackScope(It);

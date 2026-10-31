@@ -132,7 +132,7 @@ class US_ASGameModeSystemTraining : US_ECSScriptGameModeSystemBase
             XError(ELog(33), "TrainConfig is null in SpawnTrainingPlayer");
             return;
         }
-        const TArray<TDataObjectPtr<FAvatarBuildOverrideConfig>>& local_60 = GetTrainingAvatarConfigs();
+        const TArray<TDataObjectPtr<FAvatarBuildOverrideConfig>>& local_60 = local_32.Get().GetTrainingAvatarConfigs();
         if (local_60.IsEmpty())
         {
             XError(ELog(33), "TrainingAvatarConfigs is empty in SpawnTrainingPlayer");
@@ -195,33 +195,33 @@ class US_ASGameModeSystemTraining : US_ECSScriptGameModeSystemBase
     }
     TDataObjectPtr<FAvatarPrefabConfig> ResolveTrainingAvatarConfig(const FECSEntity &inout PlayerEntity, const TDataObjectPtr<FAvatarBuildOverrideConfig> &inout TrainingAvatarBuildConfig) const
     {
-        TDataObjectPtr<FAvatarMappingConfig> local_24 = GetAvatarMappingConfig();
+        TDataObjectPtr<FAvatarMappingConfig> local_24 = TrainingAvatarBuildConfig.Get().GetAvatarMappingConfig();
         if ((local_24 == nullptr))
         {
             XError(ELog(33), "AvatarMappingConfig is null");
             return TDataObjectPtr<FAvatarPrefabConfig>();
         }
-        if (GetAvatar().IsEmpty())
+        if (local_24.Get().GetAvatar().IsEmpty())
         {
             XError(ELog(33), "AvatarMappingConfig.Avatar is empty");
             return TDataObjectPtr<FAvatarPrefabConfig>();
         }
-        TDataObjectPtr<FAvatarPrefabConfig> local_122 = GetAvatar()[0];
-        if (GetAvatar().Num() > 1)
+        TDataObjectPtr<FAvatarPrefabConfig> local_122 = local_24.Get().GetAvatar()[0];
+        if (local_24.Get().GetAvatar().Num() > 1)
         {
             Get local_128;
             const FC_DSPlayerInfo& local_130 = local_128.opCall();
             if (local_130)
             {
                 EGenderType local_131;
-                EGenderType local_132 = local_130.GetGender();
-                local_131 = local_132;
+                local_131 = local_130.GetGender();
                 int local_133 = 0;
-                for (; local_133 < GetAvatar().Num(); ++local_133)
+                for (; local_133 < local_24.Get().GetAvatar().Num(); ++local_133)
                 {
+                    EGenderType local_132 = local_24.Get().GetAvatar()[local_133].Get().GenderType;
                     if (int(local_132) == (int(local_131)))
                     {
-                        local_122 = GetAvatar()[local_133];
+                        local_122 = local_24.Get().GetAvatar()[local_133];
                         break;
                     }
                 }
@@ -231,11 +231,9 @@ class US_ASGameModeSystemTraining : US_ECSScriptGameModeSystemBase
     }
     void InitTrainingInfo() const
     {
-        TDataObjectPtr<FTrainingInfoConfig> local_24;
-        int local_61 = 0;
         UAS_GameModeSettingsTraining local_118;
+        TDataObjectPtr<FTrainingInfoConfig> local_24;
         int local_130 = 0;
-        FString local_138;
         UGameDSConnectionSubsystem local_26 = ::UGameDSConnectionSubsystem::Get();
         if (local_26 != nullptr)
         {
@@ -253,9 +251,11 @@ class US_ASGameModeSystemTraining : US_ECSScriptGameModeSystemBase
             local_118 = (Cast<UAS_GameModeSettingsTraining>(UECSGameModeSettingsBase::Get(ECS::GetUEWorld())));
             if (local_118 != nullptr)
             {
-                if (local_118.TrainingInfos.IsValidIndex(int(local_118.SelectIndex)))
+                int local_119;
+                local_119 = local_118.SelectIndex;
+                if (local_118.TrainingInfos.IsValidIndex(local_119))
                 {
-                    local_24 = ::FTrainingInfoConfig::GetByDataId(local_61);
+                    local_24 = ::FTrainingInfoConfig::GetByDataId(local_118.TrainingInfos[local_119].Get().DataId);
                 }
             }
         }
@@ -266,6 +266,7 @@ class US_ASGameModeSystemTraining : US_ECSScriptGameModeSystemBase
         }
         FECSWorldPtr local_124 = this.GetECSWorld();
         local_130.TrainingInfo = local_24;
+        FString local_138 = local_24.Get().LBPClass.GetAssetName();
         if (!(local_138.IsEmpty()))
         {
             ::FLevelDataLayerUtils::SetDatalayerRuntimeStateByName(ECS::GetUEWorld(), FName(local_138), EDataLayerRuntimeState(2));

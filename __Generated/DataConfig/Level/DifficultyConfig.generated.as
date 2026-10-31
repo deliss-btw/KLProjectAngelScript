@@ -18,7 +18,6 @@ int __FDifficultyLevelAttributeConfig_GetLevel(const TDataObjectPtr<FDifficultyL
 UFUNCTION()
 TMap<EDifficultyRank, FDifficultyAttributeScale> __FDifficultyLevelAttributeConfig_GetAttributeByRank(const TDataObjectPtr<FDifficultyLevelAttributeConfig> &inout DataObject)
 {
-    TMap<EDifficultyRank, FDifficultyAttributeScale> __r;
     if ((DataObject == nullptr))
     {
         if (!(EUIGlobals::GIsDuringPropertyConversion))
@@ -28,7 +27,7 @@ TMap<EDifficultyRank, FDifficultyAttributeScale> __FDifficultyLevelAttributeConf
         FDifficultyLevelAttributeConfig local_36;
         return local_36.AttributeByRank;
     }
-    return __r;
+    return DataObject.Get().AttributeByRank;
 }
 UFUNCTION()
 FDifficultyLevelAttributeConfig CastToFDifficultyLevelAttributeConfig(const TDataObjectPtr<FDifficultyLevelAttributeConfig> &inout DataObject)

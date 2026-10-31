@@ -21,7 +21,7 @@ class UWidget_ServerItem : UEUIUserWidget
     UFUNCTION()
     void OnViewBind_Implementation()
     {
-        this.bIsSelected = GetIsSelected();
+        this.bIsSelected = this.RegionVM.Get().GetIsSelected();
         int local_2 = this.bIsSelected ? 1 : 0;
         this.w_switcher_state.SetActiveWidgetIndex(local_2);
         return;

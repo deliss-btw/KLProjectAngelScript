@@ -57,7 +57,6 @@ namespace __FAttackDataFunctions
 UFUNCTION()
 FName __FAttackData_GetAttackTag(const TDataObjectPtr<FAttackData> &inout DataObject)
 {
-    FName __r;
     if ((DataObject == nullptr))
     {
         if (!(EUIGlobals::GIsDuringPropertyConversion))
@@ -67,12 +66,11 @@ FName __FAttackData_GetAttackTag(const TDataObjectPtr<FAttackData> &inout DataOb
         FAttackData local_840;
         return local_840.AttackTag;
     }
-    return __r;
+    return DataObject.Get().AttackTag;
 }
 UFUNCTION()
 FGameplayTag __FAttackData_GetSpecialHitType(const TDataObjectPtr<FAttackData> &inout DataObject)
 {
-    FGameplayTag __r;
     if ((DataObject == nullptr))
     {
         if (!(EUIGlobals::GIsDuringPropertyConversion))
@@ -82,12 +80,11 @@ FGameplayTag __FAttackData_GetSpecialHitType(const TDataObjectPtr<FAttackData> &
         FAttackData local_840;
         return local_840.SpecialHitType;
     }
-    return __r;
+    return DataObject.Get().SpecialHitType;
 }
 UFUNCTION()
 EDamageCalculationType __FAttackData_GetDamageCalculationType(const TDataObjectPtr<FAttackData> &inout DataObject)
 {
-    int local_841 = 0;
     if ((DataObject == nullptr))
     {
         if (!(EUIGlobals::GIsDuringPropertyConversion))
@@ -95,15 +92,13 @@ EDamageCalculationType __FAttackData_GetDamageCalculationType(const TDataObjectP
             FBlueprintDebugFunctions::ThrowScriptException("Get 'DamageCalculationType' from a null 'FAttackData' DataObject!");
         }
         FAttackData local_840;
-        local_841 = int(local_840.DamageCalculationType);
-        return EDamageCalculationType(local_841);
+        return local_840.DamageCalculationType;
     }
-    return EDamageCalculationType(local_841);
+    return DataObject.Get().DamageCalculationType;
 }
 UFUNCTION()
 FAttackDataFloatVariant __FAttackData_GetDamageRatio(const TDataObjectPtr<FAttackData> &inout DataObject)
 {
-    FAttackDataFloatVariant __r;
     if ((DataObject == nullptr))
     {
         if (!(EUIGlobals::GIsDuringPropertyConversion))
@@ -113,12 +108,11 @@ FAttackDataFloatVariant __FAttackData_GetDamageRatio(const TDataObjectPtr<FAttac
         FAttackData local_840;
         return local_840.DamageRatio;
     }
-    return __r;
+    return DataObject.Get().DamageRatio;
 }
 UFUNCTION()
 FAttackDataFloatVariant __FAttackData_GetDamageConstVal(const TDataObjectPtr<FAttackData> &inout DataObject)
 {
-    FAttackDataFloatVariant __r;
     if ((DataObject == nullptr))
     {
         if (!(EUIGlobals::GIsDuringPropertyConversion))
@@ -128,12 +122,11 @@ FAttackDataFloatVariant __FAttackData_GetDamageConstVal(const TDataObjectPtr<FAt
         FAttackData local_840;
         return local_840.DamageConstVal;
     }
-    return __r;
+    return DataObject.Get().DamageConstVal;
 }
 UFUNCTION()
 FAttackDataFloatVariant __FAttackData_GetPercentDamage(const TDataObjectPtr<FAttackData> &inout DataObject)
 {
-    FAttackDataFloatVariant __r;
     if ((DataObject == nullptr))
     {
         if (!(EUIGlobals::GIsDuringPropertyConversion))
@@ -143,12 +136,11 @@ FAttackDataFloatVariant __FAttackData_GetPercentDamage(const TDataObjectPtr<FAtt
         FAttackData local_840;
         return local_840.PercentDamage;
     }
-    return __r;
+    return DataObject.Get().PercentDamage;
 }
 UFUNCTION()
 FGameAttributeCompositeCoefficient __FAttackData_GetDamageAttributeCoefficient(const TDataObjectPtr<FAttackData> &inout DataObject)
 {
-    FGameAttributeCompositeCoefficient __r;
     if ((DataObject == nullptr))
     {
         if (!(EUIGlobals::GIsDuringPropertyConversion))
@@ -158,12 +150,11 @@ FGameAttributeCompositeCoefficient __FAttackData_GetDamageAttributeCoefficient(c
         FAttackData local_840;
         return local_840.DamageAttributeCoefficient;
     }
-    return __r;
+    return DataObject.Get().DamageAttributeCoefficient;
 }
 UFUNCTION()
 FAttackDataFloatVariant __FAttackData_GetPostureDamageRatio(const TDataObjectPtr<FAttackData> &inout DataObject)
 {
-    FAttackDataFloatVariant __r;
     if ((DataObject == nullptr))
     {
         if (!(EUIGlobals::GIsDuringPropertyConversion))
@@ -173,12 +164,11 @@ FAttackDataFloatVariant __FAttackData_GetPostureDamageRatio(const TDataObjectPtr
         FAttackData local_840;
         return local_840.PostureDamageRatio;
     }
-    return __r;
+    return DataObject.Get().PostureDamageRatio;
 }
 UFUNCTION()
 FAttackDataFloatVariant __FAttackData_GetPostureDamageConstVal(const TDataObjectPtr<FAttackData> &inout DataObject)
 {
-    FAttackDataFloatVariant __r;
     if ((DataObject == nullptr))
     {
         if (!(EUIGlobals::GIsDuringPropertyConversion))
@@ -188,12 +178,11 @@ FAttackDataFloatVariant __FAttackData_GetPostureDamageConstVal(const TDataObject
         FAttackData local_840;
         return local_840.PostureDamageConstVal;
     }
-    return __r;
+    return DataObject.Get().PostureDamageConstVal;
 }
 UFUNCTION()
 EEcologyPostureDamageRatioType __FAttackData_GetEcologyPostureDamageRatioType(const TDataObjectPtr<FAttackData> &inout DataObject)
 {
-    int local_841 = 0;
     if ((DataObject == nullptr))
     {
         if (!(EUIGlobals::GIsDuringPropertyConversion))
@@ -201,10 +190,9 @@ EEcologyPostureDamageRatioType __FAttackData_GetEcologyPostureDamageRatioType(co
             FBlueprintDebugFunctions::ThrowScriptException("Get 'EcologyPostureDamageRatioType' from a null 'FAttackData' DataObject!");
         }
         FAttackData local_840;
-        local_841 = int(local_840.EcologyPostureDamageRatioType);
-        return EEcologyPostureDamageRatioType(local_841);
+        return local_840.EcologyPostureDamageRatioType;
     }
-    return EEcologyPostureDamageRatioType(local_841);
+    return DataObject.Get().EcologyPostureDamageRatioType;
 }
 UFUNCTION()
 float32 __FAttackData_GetEcologyPostureDamageRatio(const TDataObjectPtr<FAttackData> &inout DataObject)
@@ -239,7 +227,6 @@ float32 __FAttackData_GetEcologyPostureDamageConstVal(const TDataObjectPtr<FAtta
 UFUNCTION()
 FGameplayTagContainer __FAttackData_GetAttackCalculationTags(const TDataObjectPtr<FAttackData> &inout DataObject)
 {
-    FGameplayTagContainer __r;
     if ((DataObject == nullptr))
     {
         if (!(EUIGlobals::GIsDuringPropertyConversion))
@@ -249,7 +236,7 @@ FGameplayTagContainer __FAttackData_GetAttackCalculationTags(const TDataObjectPt
         FAttackData local_840;
         return local_840.AttackCalculationTags;
     }
-    return __r;
+    return DataObject.Get().AttackCalculationTags;
 }
 UFUNCTION()
 TDataObjectPtr<FComboHitDamageReduction> __FAttackData_GetComboDamageReduction(const TDataObjectPtr<FAttackData> &inout DataObject)
@@ -263,12 +250,11 @@ TDataObjectPtr<FComboHitDamageReduction> __FAttackData_GetComboDamageReduction(c
         FAttackData local_840;
         return local_840.GetComboDamageReduction();
     }
-    return GetComboDamageReduction();
+    return DataObject.Get().GetComboDamageReduction();
 }
 UFUNCTION()
 uint8 __FAttackData_GetAffectFactionRelation(const TDataObjectPtr<FAttackData> &inout DataObject)
 {
-    int local_841 = 0;
     if ((DataObject == nullptr))
     {
         if (!(EUIGlobals::GIsDuringPropertyConversion))
@@ -278,7 +264,7 @@ uint8 __FAttackData_GetAffectFactionRelation(const TDataObjectPtr<FAttackData> &
         FAttackData local_840;
         return int(local_840.AffectFactionRelation);
     }
-    return local_841;
+    return DataObject.Get().AffectFactionRelation;
 }
 UFUNCTION()
 int __FAttackData_GetAttackCategory(const TDataObjectPtr<FAttackData> &inout DataObject)
@@ -298,7 +284,6 @@ int __FAttackData_GetAttackCategory(const TDataObjectPtr<FAttackData> &inout Dat
 UFUNCTION()
 EAttackType __FAttackData_GetAttackType(const TDataObjectPtr<FAttackData> &inout DataObject)
 {
-    int local_841 = 0;
     if ((DataObject == nullptr))
     {
         if (!(EUIGlobals::GIsDuringPropertyConversion))
@@ -306,15 +291,13 @@ EAttackType __FAttackData_GetAttackType(const TDataObjectPtr<FAttackData> &inout
             FBlueprintDebugFunctions::ThrowScriptException("Get 'AttackType' from a null 'FAttackData' DataObject!");
         }
         FAttackData local_840;
-        local_841 = int(local_840.AttackType);
-        return EAttackType(local_841);
+        return local_840.AttackType;
     }
-    return EAttackType(local_841);
+    return DataObject.Get().AttackType;
 }
 UFUNCTION()
 EHitBreakLevel __FAttackData_GetHitBreakLevel(const TDataObjectPtr<FAttackData> &inout DataObject)
 {
-    int local_841 = 0;
     if ((DataObject == nullptr))
     {
         if (!(EUIGlobals::GIsDuringPropertyConversion))
@@ -322,15 +305,13 @@ EHitBreakLevel __FAttackData_GetHitBreakLevel(const TDataObjectPtr<FAttackData> 
             FBlueprintDebugFunctions::ThrowScriptException("Get 'HitBreakLevel' from a null 'FAttackData' DataObject!");
         }
         FAttackData local_840;
-        local_841 = int(local_840.HitBreakLevel);
-        return EHitBreakLevel(local_841);
+        return local_840.HitBreakLevel;
     }
-    return EHitBreakLevel(local_841);
+    return DataObject.Get().HitBreakLevel;
 }
 UFUNCTION()
 EAttackDataHitState __FAttackData_GetHitLevel(const TDataObjectPtr<FAttackData> &inout DataObject)
 {
-    int local_841 = 0;
     if ((DataObject == nullptr))
     {
         if (!(EUIGlobals::GIsDuringPropertyConversion))
@@ -338,15 +319,13 @@ EAttackDataHitState __FAttackData_GetHitLevel(const TDataObjectPtr<FAttackData> 
             FBlueprintDebugFunctions::ThrowScriptException("Get 'HitLevel' from a null 'FAttackData' DataObject!");
         }
         FAttackData local_840;
-        local_841 = int(local_840.HitLevel);
-        return EAttackDataHitState(local_841);
+        return local_840.HitLevel;
     }
-    return EAttackDataHitState(local_841);
+    return DataObject.Get().HitLevel;
 }
 UFUNCTION()
 EHitStunDuration __FAttackData_GetHitStunDurationConfigType(const TDataObjectPtr<FAttackData> &inout DataObject)
 {
-    int local_841 = 0;
     if ((DataObject == nullptr))
     {
         if (!(EUIGlobals::GIsDuringPropertyConversion))
@@ -354,10 +333,9 @@ EHitStunDuration __FAttackData_GetHitStunDurationConfigType(const TDataObjectPtr
             FBlueprintDebugFunctions::ThrowScriptException("Get 'HitStunDurationConfigType' from a null 'FAttackData' DataObject!");
         }
         FAttackData local_840;
-        local_841 = int(local_840.HitStunDurationConfigType);
-        return EHitStunDuration(local_841);
+        return local_840.HitStunDurationConfigType;
     }
-    return EHitStunDuration(local_841);
+    return DataObject.Get().HitStunDurationConfigType;
 }
 UFUNCTION()
 float32 __FAttackData_GetCustomHitStunDuration(const TDataObjectPtr<FAttackData> &inout DataObject)
@@ -392,7 +370,6 @@ float32 __FAttackData_GetCustomHitStunDetach(const TDataObjectPtr<FAttackData> &
 UFUNCTION()
 EHitDirection __FAttackData_GetHitDirection(const TDataObjectPtr<FAttackData> &inout DataObject)
 {
-    int local_841 = 0;
     if ((DataObject == nullptr))
     {
         if (!(EUIGlobals::GIsDuringPropertyConversion))
@@ -400,15 +377,13 @@ EHitDirection __FAttackData_GetHitDirection(const TDataObjectPtr<FAttackData> &i
             FBlueprintDebugFunctions::ThrowScriptException("Get 'HitDirection' from a null 'FAttackData' DataObject!");
         }
         FAttackData local_840;
-        local_841 = int(local_840.HitDirection);
-        return EHitDirection(local_841);
+        return local_840.HitDirection;
     }
-    return EHitDirection(local_841);
+    return DataObject.Get().HitDirection;
 }
 UFUNCTION()
 EDamageType __FAttackData_GetDamageType(const TDataObjectPtr<FAttackData> &inout DataObject)
 {
-    int local_841 = 0;
     if ((DataObject == nullptr))
     {
         if (!(EUIGlobals::GIsDuringPropertyConversion))
@@ -416,15 +391,13 @@ EDamageType __FAttackData_GetDamageType(const TDataObjectPtr<FAttackData> &inout
             FBlueprintDebugFunctions::ThrowScriptException("Get 'DamageType' from a null 'FAttackData' DataObject!");
         }
         FAttackData local_840;
-        local_841 = int(local_840.DamageType);
-        return EDamageType(local_841);
+        return local_840.DamageType;
     }
-    return EDamageType(local_841);
+    return DataObject.Get().DamageType;
 }
 UFUNCTION()
 EAbnormalState __FAttackData_GetAbnormalState(const TDataObjectPtr<FAttackData> &inout DataObject)
 {
-    int local_841 = 0;
     if ((DataObject == nullptr))
     {
         if (!(EUIGlobals::GIsDuringPropertyConversion))
@@ -432,31 +405,27 @@ EAbnormalState __FAttackData_GetAbnormalState(const TDataObjectPtr<FAttackData> 
             FBlueprintDebugFunctions::ThrowScriptException("Get 'AbnormalState' from a null 'FAttackData' DataObject!");
         }
         FAttackData local_840;
-        local_841 = int(local_840.AbnormalState);
-        return EAbnormalState(local_841);
+        return local_840.AbnormalState;
     }
-    return EAbnormalState(local_841);
+    return DataObject.Get().AbnormalState;
 }
 UFUNCTION()
 bool __FAttackData_GetbIsAbnormalEnhanced(const TDataObjectPtr<FAttackData> &inout DataObject)
 {
-    bool local_1 = false;
     if ((DataObject == nullptr))
     {
-        local_1 = !(EUIGlobals::GIsDuringPropertyConversion);
-        if (local_1)
+        if (!(EUIGlobals::GIsDuringPropertyConversion))
         {
             FBlueprintDebugFunctions::ThrowScriptException("Get 'bIsAbnormalEnhanced' from a null 'FAttackData' DataObject!");
         }
         FAttackData local_840;
         return local_840.bIsAbnormalEnhanced;
     }
-    return local_1;
+    return DataObject.Get().bIsAbnormalEnhanced;
 }
 UFUNCTION()
 FCapability_Float __FAttackData_GetAbnormalStateAccumulation(const TDataObjectPtr<FAttackData> &inout DataObject)
 {
-    FCapability_Float __r;
     if ((DataObject == nullptr))
     {
         if (!(EUIGlobals::GIsDuringPropertyConversion))
@@ -466,28 +435,25 @@ FCapability_Float __FAttackData_GetAbnormalStateAccumulation(const TDataObjectPt
         FAttackData local_840;
         return local_840.AbnormalStateAccumulation;
     }
-    return __r;
+    return DataObject.Get().AbnormalStateAccumulation;
 }
 UFUNCTION()
 bool __FAttackData_GetbHitRecoverSkillEnergyEffectByExternalCoefficient(const TDataObjectPtr<FAttackData> &inout DataObject)
 {
-    bool local_1 = false;
     if ((DataObject == nullptr))
     {
-        local_1 = !(EUIGlobals::GIsDuringPropertyConversion);
-        if (local_1)
+        if (!(EUIGlobals::GIsDuringPropertyConversion))
         {
             FBlueprintDebugFunctions::ThrowScriptException("Get 'bHitRecoverSkillEnergyEffectByExternalCoefficient' from a null 'FAttackData' DataObject!");
         }
         FAttackData local_840;
         return local_840.bHitRecoverSkillEnergyEffectByExternalCoefficient;
     }
-    return local_1;
+    return DataObject.Get().bHitRecoverSkillEnergyEffectByExternalCoefficient;
 }
 UFUNCTION()
 FCapability_Float __FAttackData_GetHitRecoverCustomSkillEnergy(const TDataObjectPtr<FAttackData> &inout DataObject)
 {
-    FCapability_Float __r;
     if ((DataObject == nullptr))
     {
         if (!(EUIGlobals::GIsDuringPropertyConversion))
@@ -497,12 +463,11 @@ FCapability_Float __FAttackData_GetHitRecoverCustomSkillEnergy(const TDataObject
         FAttackData local_840;
         return local_840.HitRecoverCustomSkillEnergy;
     }
-    return __r;
+    return DataObject.Get().HitRecoverCustomSkillEnergy;
 }
 UFUNCTION()
 FCapability_Float __FAttackData_GetHitRecoverCustomSkillEnergy_2(const TDataObjectPtr<FAttackData> &inout DataObject)
 {
-    FCapability_Float __r;
     if ((DataObject == nullptr))
     {
         if (!(EUIGlobals::GIsDuringPropertyConversion))
@@ -512,12 +477,11 @@ FCapability_Float __FAttackData_GetHitRecoverCustomSkillEnergy_2(const TDataObje
         FAttackData local_840;
         return local_840.HitRecoverCustomSkillEnergy_2;
     }
-    return __r;
+    return DataObject.Get().HitRecoverCustomSkillEnergy_2;
 }
 UFUNCTION()
 FCapability_Float __FAttackData_GetHitRecoverCustomSkillEnergy_3(const TDataObjectPtr<FAttackData> &inout DataObject)
 {
-    FCapability_Float __r;
     if ((DataObject == nullptr))
     {
         if (!(EUIGlobals::GIsDuringPropertyConversion))
@@ -527,12 +491,11 @@ FCapability_Float __FAttackData_GetHitRecoverCustomSkillEnergy_3(const TDataObje
         FAttackData local_840;
         return local_840.HitRecoverCustomSkillEnergy_3;
     }
-    return __r;
+    return DataObject.Get().HitRecoverCustomSkillEnergy_3;
 }
 UFUNCTION()
 FCapability_Float __FAttackData_GetHitRecoverCustomSkillEnergy_4(const TDataObjectPtr<FAttackData> &inout DataObject)
 {
-    FCapability_Float __r;
     if ((DataObject == nullptr))
     {
         if (!(EUIGlobals::GIsDuringPropertyConversion))
@@ -542,7 +505,7 @@ FCapability_Float __FAttackData_GetHitRecoverCustomSkillEnergy_4(const TDataObje
         FAttackData local_840;
         return local_840.HitRecoverCustomSkillEnergy_4;
     }
-    return __r;
+    return DataObject.Get().HitRecoverCustomSkillEnergy_4;
 }
 UFUNCTION()
 float32 __FAttackData_GetHitRecoverSwitchPlayerEnergy(const TDataObjectPtr<FAttackData> &inout DataObject)
@@ -562,7 +525,6 @@ float32 __FAttackData_GetHitRecoverSwitchPlayerEnergy(const TDataObjectPtr<FAtta
 UFUNCTION()
 FCapability_Float __FAttackData_GetHitRecoverUltraSkillEnergy(const TDataObjectPtr<FAttackData> &inout DataObject)
 {
-    FCapability_Float __r;
     if ((DataObject == nullptr))
     {
         if (!(EUIGlobals::GIsDuringPropertyConversion))
@@ -572,12 +534,11 @@ FCapability_Float __FAttackData_GetHitRecoverUltraSkillEnergy(const TDataObjectP
         FAttackData local_840;
         return local_840.HitRecoverUltraSkillEnergy;
     }
-    return __r;
+    return DataObject.Get().HitRecoverUltraSkillEnergy;
 }
 UFUNCTION()
 FBuffConfigRef __FAttackData_GetHitApplyBuffToTarget(const TDataObjectPtr<FAttackData> &inout DataObject)
 {
-    FBuffConfigRef __r;
     if ((DataObject == nullptr))
     {
         if (!(EUIGlobals::GIsDuringPropertyConversion))
@@ -587,12 +548,11 @@ FBuffConfigRef __FAttackData_GetHitApplyBuffToTarget(const TDataObjectPtr<FAttac
         FAttackData local_840;
         return local_840.HitApplyBuffToTarget;
     }
-    return __r;
+    return DataObject.Get().HitApplyBuffToTarget;
 }
 UFUNCTION()
 FBuffConfigRef __FAttackData_GetHitApplyBuffToSelf(const TDataObjectPtr<FAttackData> &inout DataObject)
 {
-    FBuffConfigRef __r;
     if ((DataObject == nullptr))
     {
         if (!(EUIGlobals::GIsDuringPropertyConversion))
@@ -602,12 +562,11 @@ FBuffConfigRef __FAttackData_GetHitApplyBuffToSelf(const TDataObjectPtr<FAttackD
         FAttackData local_840;
         return local_840.HitApplyBuffToSelf;
     }
-    return __r;
+    return DataObject.Get().HitApplyBuffToSelf;
 }
 UFUNCTION()
 FNameHandle_EntityBBVarInt __FAttackData_GetHitAddEntityBB(const TDataObjectPtr<FAttackData> &inout DataObject)
 {
-    FNameHandle_EntityBBVarInt __r;
     if ((DataObject == nullptr))
     {
         if (!(EUIGlobals::GIsDuringPropertyConversion))
@@ -617,7 +576,7 @@ FNameHandle_EntityBBVarInt __FAttackData_GetHitAddEntityBB(const TDataObjectPtr<
         FAttackData local_840;
         return local_840.HitAddEntityBB;
     }
-    return __r;
+    return DataObject.Get().HitAddEntityBB;
 }
 UFUNCTION()
 int __FAttackData_GetHitAddEntityBBValue(const TDataObjectPtr<FAttackData> &inout DataObject)
@@ -637,7 +596,6 @@ int __FAttackData_GetHitAddEntityBBValue(const TDataObjectPtr<FAttackData> &inou
 UFUNCTION()
 FVector2D __FAttackData_GetHitAddEntityBBValueMinMax(const TDataObjectPtr<FAttackData> &inout DataObject)
 {
-    FVector2D __r;
     if ((DataObject == nullptr))
     {
         if (!(EUIGlobals::GIsDuringPropertyConversion))
@@ -647,12 +605,11 @@ FVector2D __FAttackData_GetHitAddEntityBBValueMinMax(const TDataObjectPtr<FAttac
         FAttackData local_840;
         return local_840.HitAddEntityBBValueMinMax;
     }
-    return __r;
+    return DataObject.Get().HitAddEntityBBValueMinMax;
 }
 UFUNCTION()
 EDamageTargetDeathType __FAttackData_GetTargetDeathType(const TDataObjectPtr<FAttackData> &inout DataObject)
 {
-    int local_841 = 0;
     if ((DataObject == nullptr))
     {
         if (!(EUIGlobals::GIsDuringPropertyConversion))
@@ -660,10 +617,9 @@ EDamageTargetDeathType __FAttackData_GetTargetDeathType(const TDataObjectPtr<FAt
             FBlueprintDebugFunctions::ThrowScriptException("Get 'TargetDeathType' from a null 'FAttackData' DataObject!");
         }
         FAttackData local_840;
-        local_841 = int(local_840.TargetDeathType);
-        return EDamageTargetDeathType(local_841);
+        return local_840.TargetDeathType;
     }
-    return EDamageTargetDeathType(local_841);
+    return DataObject.Get().TargetDeathType;
 }
 UFUNCTION()
 float32 __FAttackData_GetFreezeFrameTime(const TDataObjectPtr<FAttackData> &inout DataObject)
@@ -683,7 +639,6 @@ float32 __FAttackData_GetFreezeFrameTime(const TDataObjectPtr<FAttackData> &inou
 UFUNCTION()
 FFPTime __FAttackData_GetFreezeUpdateTime(const TDataObjectPtr<FAttackData> &inout DataObject)
 {
-    FFPTime __r;
     if ((DataObject == nullptr))
     {
         if (!(EUIGlobals::GIsDuringPropertyConversion))
@@ -693,12 +648,11 @@ FFPTime __FAttackData_GetFreezeUpdateTime(const TDataObjectPtr<FAttackData> &ino
         FAttackData local_840;
         return local_840.FreezeUpdateTime;
     }
-    return __r;
+    return DataObject.Get().FreezeUpdateTime;
 }
 UFUNCTION()
 EFreezeFrameCurve __FAttackData_GetFreezeCurve(const TDataObjectPtr<FAttackData> &inout DataObject)
 {
-    int local_841 = 0;
     if ((DataObject == nullptr))
     {
         if (!(EUIGlobals::GIsDuringPropertyConversion))
@@ -706,26 +660,23 @@ EFreezeFrameCurve __FAttackData_GetFreezeCurve(const TDataObjectPtr<FAttackData>
             FBlueprintDebugFunctions::ThrowScriptException("Get 'FreezeCurve' from a null 'FAttackData' DataObject!");
         }
         FAttackData local_840;
-        local_841 = int(local_840.FreezeCurve);
-        return EFreezeFrameCurve(local_841);
+        return local_840.FreezeCurve;
     }
-    return EFreezeFrameCurve(local_841);
+    return DataObject.Get().FreezeCurve;
 }
 UFUNCTION()
 bool __FAttackData_GetbUseFreezeAttenuationCurve(const TDataObjectPtr<FAttackData> &inout DataObject)
 {
-    bool local_1 = false;
     if ((DataObject == nullptr))
     {
-        local_1 = !(EUIGlobals::GIsDuringPropertyConversion);
-        if (local_1)
+        if (!(EUIGlobals::GIsDuringPropertyConversion))
         {
             FBlueprintDebugFunctions::ThrowScriptException("Get 'bUseFreezeAttenuationCurve' from a null 'FAttackData' DataObject!");
         }
         FAttackData local_840;
         return local_840.bUseFreezeAttenuationCurve;
     }
-    return local_1;
+    return DataObject.Get().bUseFreezeAttenuationCurve;
 }
 UFUNCTION()
 float32 __FAttackData_GetBeHitFreezeFrameTime(const TDataObjectPtr<FAttackData> &inout DataObject)
@@ -745,7 +696,6 @@ float32 __FAttackData_GetBeHitFreezeFrameTime(const TDataObjectPtr<FAttackData> 
 UFUNCTION()
 FFPTime __FAttackData_GetBeHitFreezeUpdateTime(const TDataObjectPtr<FAttackData> &inout DataObject)
 {
-    FFPTime __r;
     if ((DataObject == nullptr))
     {
         if (!(EUIGlobals::GIsDuringPropertyConversion))
@@ -755,12 +705,11 @@ FFPTime __FAttackData_GetBeHitFreezeUpdateTime(const TDataObjectPtr<FAttackData>
         FAttackData local_840;
         return local_840.BeHitFreezeUpdateTime;
     }
-    return __r;
+    return DataObject.Get().BeHitFreezeUpdateTime;
 }
 UFUNCTION()
 EFreezeFrameCurve __FAttackData_GetBeHitFreezeCurve(const TDataObjectPtr<FAttackData> &inout DataObject)
 {
-    int local_841 = 0;
     if ((DataObject == nullptr))
     {
         if (!(EUIGlobals::GIsDuringPropertyConversion))
@@ -768,26 +717,23 @@ EFreezeFrameCurve __FAttackData_GetBeHitFreezeCurve(const TDataObjectPtr<FAttack
             FBlueprintDebugFunctions::ThrowScriptException("Get 'BeHitFreezeCurve' from a null 'FAttackData' DataObject!");
         }
         FAttackData local_840;
-        local_841 = int(local_840.BeHitFreezeCurve);
-        return EFreezeFrameCurve(local_841);
+        return local_840.BeHitFreezeCurve;
     }
-    return EFreezeFrameCurve(local_841);
+    return DataObject.Get().BeHitFreezeCurve;
 }
 UFUNCTION()
 bool __FAttackData_GetbUseDefaultFreezeAttenuationCurve(const TDataObjectPtr<FAttackData> &inout DataObject)
 {
-    bool local_1 = false;
     if ((DataObject == nullptr))
     {
-        local_1 = !(EUIGlobals::GIsDuringPropertyConversion);
-        if (local_1)
+        if (!(EUIGlobals::GIsDuringPropertyConversion))
         {
             FBlueprintDebugFunctions::ThrowScriptException("Get 'bUseDefaultFreezeAttenuationCurve' from a null 'FAttackData' DataObject!");
         }
         FAttackData local_840;
         return local_840.bUseDefaultFreezeAttenuationCurve;
     }
-    return local_1;
+    return DataObject.Get().bUseDefaultFreezeAttenuationCurve;
 }
 UFUNCTION()
 UCurveFloat __FAttackData_GetFreezeAttenuationCurve(const TDataObjectPtr<FAttackData> &inout DataObject)
@@ -807,18 +753,16 @@ UCurveFloat __FAttackData_GetFreezeAttenuationCurve(const TDataObjectPtr<FAttack
 UFUNCTION()
 bool __FAttackData_GetbEnableBeHitShakePause(const TDataObjectPtr<FAttackData> &inout DataObject)
 {
-    bool local_1 = false;
     if ((DataObject == nullptr))
     {
-        local_1 = !(EUIGlobals::GIsDuringPropertyConversion);
-        if (local_1)
+        if (!(EUIGlobals::GIsDuringPropertyConversion))
         {
             FBlueprintDebugFunctions::ThrowScriptException("Get 'bEnableBeHitShakePause' from a null 'FAttackData' DataObject!");
         }
         FAttackData local_840;
         return local_840.bEnableBeHitShakePause;
     }
-    return local_1;
+    return DataObject.Get().bEnableBeHitShakePause;
 }
 UFUNCTION()
 float32 __FAttackData_GetBeHitShakePauseTime(const TDataObjectPtr<FAttackData> &inout DataObject)
@@ -913,18 +857,16 @@ float32 __FAttackData_GetDynamicShakeTimeScale(const TDataObjectPtr<FAttackData>
 UFUNCTION()
 bool __FAttackData_GetbForceShowDamageNumber(const TDataObjectPtr<FAttackData> &inout DataObject)
 {
-    bool local_1 = false;
     if ((DataObject == nullptr))
     {
-        local_1 = !(EUIGlobals::GIsDuringPropertyConversion);
-        if (local_1)
+        if (!(EUIGlobals::GIsDuringPropertyConversion))
         {
             FBlueprintDebugFunctions::ThrowScriptException("Get 'bForceShowDamageNumber' from a null 'FAttackData' DataObject!");
         }
         FAttackData local_840;
         return local_840.bForceShowDamageNumber;
     }
-    return local_1;
+    return DataObject.Get().bForceShowDamageNumber;
 }
 UFUNCTION()
 TDataObjectPtr<FSpecialDamageTextConfig> __FAttackData_GetSpecialDamageTextConfig(const TDataObjectPtr<FAttackData> &inout DataObject)
@@ -938,7 +880,7 @@ TDataObjectPtr<FSpecialDamageTextConfig> __FAttackData_GetSpecialDamageTextConfi
         FAttackData local_840;
         return local_840.GetSpecialDamageTextConfig();
     }
-    return GetSpecialDamageTextConfig();
+    return DataObject.Get().GetSpecialDamageTextConfig();
 }
 UFUNCTION()
 float32 __FAttackData_GetDamageNumberRandomRatio(const TDataObjectPtr<FAttackData> &inout DataObject)
@@ -958,7 +900,6 @@ float32 __FAttackData_GetDamageNumberRandomRatio(const TDataObjectPtr<FAttackDat
 UFUNCTION()
 FDataObjectPtr __FAttackData_GetHitCameraShakeSelf(const TDataObjectPtr<FAttackData> &inout DataObject)
 {
-    FDataObjectPtr __r;
     if ((DataObject == nullptr))
     {
         if (!(EUIGlobals::GIsDuringPropertyConversion))
@@ -968,12 +909,11 @@ FDataObjectPtr __FAttackData_GetHitCameraShakeSelf(const TDataObjectPtr<FAttackD
         FAttackData local_840;
         return local_840.HitCameraShakeSelf;
     }
-    return __r;
+    return DataObject.Get().HitCameraShakeSelf;
 }
 UFUNCTION()
 FDataObjectPtr __FAttackData_GetHitCameraShakeTarget(const TDataObjectPtr<FAttackData> &inout DataObject)
 {
-    FDataObjectPtr __r;
     if ((DataObject == nullptr))
     {
         if (!(EUIGlobals::GIsDuringPropertyConversion))
@@ -983,7 +923,7 @@ FDataObjectPtr __FAttackData_GetHitCameraShakeTarget(const TDataObjectPtr<FAttac
         FAttackData local_840;
         return local_840.HitCameraShakeTarget;
     }
-    return __r;
+    return DataObject.Get().HitCameraShakeTarget;
 }
 UFUNCTION()
 float32 __FAttackData_GetHitWeaknessCameraShakeRatio(const TDataObjectPtr<FAttackData> &inout DataObject)
@@ -1003,7 +943,6 @@ float32 __FAttackData_GetHitWeaknessCameraShakeRatio(const TDataObjectPtr<FAttac
 UFUNCTION()
 FName __FAttackData_GetHitCameraShakeToSelf(const TDataObjectPtr<FAttackData> &inout DataObject)
 {
-    FName __r;
     if ((DataObject == nullptr))
     {
         if (!(EUIGlobals::GIsDuringPropertyConversion))
@@ -1013,12 +952,11 @@ FName __FAttackData_GetHitCameraShakeToSelf(const TDataObjectPtr<FAttackData> &i
         FAttackData local_840;
         return local_840.HitCameraShakeToSelf;
     }
-    return __r;
+    return DataObject.Get().HitCameraShakeToSelf;
 }
 UFUNCTION()
 FName __FAttackData_GetHitCameraShakeToTarget(const TDataObjectPtr<FAttackData> &inout DataObject)
 {
-    FName __r;
     if ((DataObject == nullptr))
     {
         if (!(EUIGlobals::GIsDuringPropertyConversion))
@@ -1028,44 +966,39 @@ FName __FAttackData_GetHitCameraShakeToTarget(const TDataObjectPtr<FAttackData> 
         FAttackData local_840;
         return local_840.HitCameraShakeToTarget;
     }
-    return __r;
+    return DataObject.Get().HitCameraShakeToTarget;
 }
 UFUNCTION()
 bool __FAttackData_GetbEnableImpactVFX(const TDataObjectPtr<FAttackData> &inout DataObject)
 {
-    bool local_1 = false;
     if ((DataObject == nullptr))
     {
-        local_1 = !(EUIGlobals::GIsDuringPropertyConversion);
-        if (local_1)
+        if (!(EUIGlobals::GIsDuringPropertyConversion))
         {
             FBlueprintDebugFunctions::ThrowScriptException("Get 'bEnableImpactVFX' from a null 'FAttackData' DataObject!");
         }
         FAttackData local_840;
         return local_840.bEnableImpactVFX;
     }
-    return local_1;
+    return DataObject.Get().bEnableImpactVFX;
 }
 UFUNCTION()
 bool __FAttackData_GetbEnableImpactSFX(const TDataObjectPtr<FAttackData> &inout DataObject)
 {
-    bool local_1 = false;
     if ((DataObject == nullptr))
     {
-        local_1 = !(EUIGlobals::GIsDuringPropertyConversion);
-        if (local_1)
+        if (!(EUIGlobals::GIsDuringPropertyConversion))
         {
             FBlueprintDebugFunctions::ThrowScriptException("Get 'bEnableImpactSFX' from a null 'FAttackData' DataObject!");
         }
         FAttackData local_840;
         return local_840.bEnableImpactSFX;
     }
-    return local_1;
+    return DataObject.Get().bEnableImpactSFX;
 }
 UFUNCTION()
 TSoftObjectPtr<UAkAudioEvent> __FAttackData_GetImpactSFXEvent(const TDataObjectPtr<FAttackData> &inout DataObject)
 {
-    TSoftObjectPtr<UAkAudioEvent> __r;
     if ((DataObject == nullptr))
     {
         if (!(EUIGlobals::GIsDuringPropertyConversion))
@@ -1075,12 +1008,11 @@ TSoftObjectPtr<UAkAudioEvent> __FAttackData_GetImpactSFXEvent(const TDataObjectP
         FAttackData local_840;
         return local_840.ImpactSFXEvent;
     }
-    return __r;
+    return DataObject.Get().ImpactSFXEvent;
 }
 UFUNCTION()
 EAttackFXConfigType __FAttackData_GetFXConfigType(const TDataObjectPtr<FAttackData> &inout DataObject)
 {
-    int local_841 = 0;
     if ((DataObject == nullptr))
     {
         if (!(EUIGlobals::GIsDuringPropertyConversion))
@@ -1088,15 +1020,13 @@ EAttackFXConfigType __FAttackData_GetFXConfigType(const TDataObjectPtr<FAttackDa
             FBlueprintDebugFunctions::ThrowScriptException("Get 'FXConfigType' from a null 'FAttackData' DataObject!");
         }
         FAttackData local_840;
-        local_841 = int(local_840.FXConfigType);
-        return EAttackFXConfigType(local_841);
+        return local_840.FXConfigType;
     }
-    return EAttackFXConfigType(local_841);
+    return DataObject.Get().FXConfigType;
 }
 UFUNCTION()
 FFXConfig __FAttackData_GetHitFXConfig(const TDataObjectPtr<FAttackData> &inout DataObject)
 {
-    FFXConfig __r;
     if ((DataObject == nullptr))
     {
         if (!(EUIGlobals::GIsDuringPropertyConversion))
@@ -1106,28 +1036,25 @@ FFXConfig __FAttackData_GetHitFXConfig(const TDataObjectPtr<FAttackData> &inout 
         FAttackData local_840;
         return local_840.HitFXConfig;
     }
-    return __r;
+    return DataObject.Get().HitFXConfig;
 }
 UFUNCTION()
 bool __FAttackData_GetbUseDefaultHitWeaknessFX(const TDataObjectPtr<FAttackData> &inout DataObject)
 {
-    bool local_1 = false;
     if ((DataObject == nullptr))
     {
-        local_1 = !(EUIGlobals::GIsDuringPropertyConversion);
-        if (local_1)
+        if (!(EUIGlobals::GIsDuringPropertyConversion))
         {
             FBlueprintDebugFunctions::ThrowScriptException("Get 'bUseDefaultHitWeaknessFX' from a null 'FAttackData' DataObject!");
         }
         FAttackData local_840;
         return local_840.bUseDefaultHitWeaknessFX;
     }
-    return local_1;
+    return DataObject.Get().bUseDefaultHitWeaknessFX;
 }
 UFUNCTION()
 FSoftClassPath __FAttackData_GetHitWeaknessFXAsset(const TDataObjectPtr<FAttackData> &inout DataObject)
 {
-    FSoftClassPath __r;
     if ((DataObject == nullptr))
     {
         if (!(EUIGlobals::GIsDuringPropertyConversion))
@@ -1137,12 +1064,11 @@ FSoftClassPath __FAttackData_GetHitWeaknessFXAsset(const TDataObjectPtr<FAttackD
         FAttackData local_840;
         return local_840.HitWeaknessFXAsset;
     }
-    return __r;
+    return DataObject.Get().HitWeaknessFXAsset;
 }
 UFUNCTION()
 EImpactType __FAttackData_GetImpactType(const TDataObjectPtr<FAttackData> &inout DataObject)
 {
-    int local_841 = 0;
     if ((DataObject == nullptr))
     {
         if (!(EUIGlobals::GIsDuringPropertyConversion))
@@ -1150,15 +1076,13 @@ EImpactType __FAttackData_GetImpactType(const TDataObjectPtr<FAttackData> &inout
             FBlueprintDebugFunctions::ThrowScriptException("Get 'ImpactType' from a null 'FAttackData' DataObject!");
         }
         FAttackData local_840;
-        local_841 = int(local_840.ImpactType);
-        return EImpactType(local_841);
+        return local_840.ImpactType;
     }
-    return EImpactType(local_841);
+    return DataObject.Get().ImpactType;
 }
 UFUNCTION()
 EImpactStrength __FAttackData_GetImpactStrengthValue(const TDataObjectPtr<FAttackData> &inout DataObject)
 {
-    int local_841 = 0;
     if ((DataObject == nullptr))
     {
         if (!(EUIGlobals::GIsDuringPropertyConversion))
@@ -1166,15 +1090,13 @@ EImpactStrength __FAttackData_GetImpactStrengthValue(const TDataObjectPtr<FAttac
             FBlueprintDebugFunctions::ThrowScriptException("Get 'ImpactStrengthValue' from a null 'FAttackData' DataObject!");
         }
         FAttackData local_840;
-        local_841 = int(local_840.ImpactStrengthValue);
-        return EImpactStrength(local_841);
+        return local_840.ImpactStrengthValue;
     }
-    return EImpactStrength(local_841);
+    return DataObject.Get().ImpactStrengthValue;
 }
 UFUNCTION()
 EEnvBreakDamage __FAttackData_GetEnvBreakDamage(const TDataObjectPtr<FAttackData> &inout DataObject)
 {
-    int local_841 = 0;
     if ((DataObject == nullptr))
     {
         if (!(EUIGlobals::GIsDuringPropertyConversion))
@@ -1182,10 +1104,9 @@ EEnvBreakDamage __FAttackData_GetEnvBreakDamage(const TDataObjectPtr<FAttackData
             FBlueprintDebugFunctions::ThrowScriptException("Get 'EnvBreakDamage' from a null 'FAttackData' DataObject!");
         }
         FAttackData local_840;
-        local_841 = int(local_840.EnvBreakDamage);
-        return EEnvBreakDamage(local_841);
+        return local_840.EnvBreakDamage;
     }
-    return EEnvBreakDamage(local_841);
+    return DataObject.Get().EnvBreakDamage;
 }
 UFUNCTION()
 float32 __FAttackData_GetCustomEnvBreakDamage(const TDataObjectPtr<FAttackData> &inout DataObject)
@@ -1205,23 +1126,20 @@ float32 __FAttackData_GetCustomEnvBreakDamage(const TDataObjectPtr<FAttackData> 
 UFUNCTION()
 bool __FAttackData_GetbOverridePrefabDestructDamageLevel(const TDataObjectPtr<FAttackData> &inout DataObject)
 {
-    bool local_1 = false;
     if ((DataObject == nullptr))
     {
-        local_1 = !(EUIGlobals::GIsDuringPropertyConversion);
-        if (local_1)
+        if (!(EUIGlobals::GIsDuringPropertyConversion))
         {
             FBlueprintDebugFunctions::ThrowScriptException("Get 'bOverridePrefabDestructDamageLevel' from a null 'FAttackData' DataObject!");
         }
         FAttackData local_840;
         return local_840.bOverridePrefabDestructDamageLevel;
     }
-    return local_1;
+    return DataObject.Get().bOverridePrefabDestructDamageLevel;
 }
 UFUNCTION()
 EDestructibleClassLevel __FAttackData_GetCustomDestructibleDamageLevel(const TDataObjectPtr<FAttackData> &inout DataObject)
 {
-    int local_841 = 0;
     if ((DataObject == nullptr))
     {
         if (!(EUIGlobals::GIsDuringPropertyConversion))
@@ -1229,10 +1147,9 @@ EDestructibleClassLevel __FAttackData_GetCustomDestructibleDamageLevel(const TDa
             FBlueprintDebugFunctions::ThrowScriptException("Get 'CustomDestructibleDamageLevel' from a null 'FAttackData' DataObject!");
         }
         FAttackData local_840;
-        local_841 = int(local_840.CustomDestructibleDamageLevel);
-        return EDestructibleClassLevel(local_841);
+        return local_840.CustomDestructibleDamageLevel;
     }
-    return EDestructibleClassLevel(local_841);
+    return DataObject.Get().CustomDestructibleDamageLevel;
 }
 UFUNCTION()
 FAttackData CastToFAttackData(const TDataObjectPtr<FAttackData> &inout DataObject)

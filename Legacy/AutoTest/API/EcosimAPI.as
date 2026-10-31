@@ -14,17 +14,17 @@ bool IsEntityInCombat(const uint EntityId)
 TMap<FString, float32> GetEntityAlertnessMap(const uint EntityId)
 {
     ThrowIf(!(FECSEntity(EntityId).IsValid()), FString().Append("EntityID: ").Append(EntityId).Append(" is unvalid."));
+    TMap<FString, float32> local_34;
     Get local_38;
     const FC_AITargetingV2& local_40 = local_38.opCall();
     if (local_40)
     {
         for (auto& local_58 : local_40.EntityAlertnessMap)
         {
-            int local_59 = local_58.GetKey().GetEntity().GetIdValue();
-            FString local_12 = FString();
+            local_34.Add(FString().Append(local_58.GetKey().GetEntity().GetIdValue()), local_58.GetValue().AlertnessValue);
         }
     }
-    return TMap<FString, float32>();
+    return local_34;
 }
 float32 GetEntityAlertnessMax(const uint EntityId)
 {

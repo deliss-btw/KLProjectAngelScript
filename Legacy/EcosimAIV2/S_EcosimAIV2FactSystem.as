@@ -139,6 +139,7 @@ class US_EcosimAIV2FactSystem : UECSScriptSystem
             {
                 if (this.HitDamageMemoryLastTime.opCmp(((ECS::GetContextTime() - local_10).ToSeconds())) <= 0)
                 {
+                    local_6.HitDamageTmpMemory.Remove(Event.HitDamageSource);
                     ::FEcosimAIV2Utils::RemoveEntityRelation(Event.HitDamageSource, Event.Sender, EEcosimAIV2EntityRelation(5), false);
                     ::FEcosimAIV2Utils::SendRelationChangeEvent(ENTITY_NULL, Event.Sender, EEcosimAIV2EntityRelation(5), false);
                 }

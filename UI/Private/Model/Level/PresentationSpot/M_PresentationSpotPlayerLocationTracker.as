@@ -82,11 +82,9 @@ FMS_PresentationSpotPlayerLocationTracker& Get(const UObject ContextObject)
 {
     return FMS_PresentationSpotPlayerLocationTracker::GetByManager(EUIInternal::GetContextManager(ContextObject));
 }
-FMS_PresentationSpotPlayerLocationTracker GetByManager(const UEUIManagerSubsystem Manager)
+FMS_PresentationSpotPlayerLocationTracker& GetByManager(const UEUIManagerSubsystem Manager)
 {
-    FMS_PresentationSpotPlayerLocationTracker __r;
-    TEUIModelRef<FMS_PresentationSpotPlayerLocationTracker> local_6 = TEUIModelRef<FMS_PresentationSpotPlayerLocationTracker>(EUIInternal::MakeModelWithManager(Manager, FMS_PresentationSpotPlayerLocationTracker::ModelId));
-    return __r;
+    return TEUIModelRef<FMS_PresentationSpotPlayerLocationTracker>(EUIInternal::MakeModelWithManager(Manager, FMS_PresentationSpotPlayerLocationTracker::ModelId)).Get();
 }
 void GetModelInfo(FEUIModelOnlyMetaInfo &inout Result)
 {

@@ -107,11 +107,9 @@ FVM_TeamPanelTypeItem& Create(const UObject ContextObject, const TEUIModelWeakRe
 {
     return FVM_TeamPanelTypeItem::CreateByManager(EUIInternal::GetContextManager(ContextObject), TeamPanel, ETeamType(TeamType));
 }
-FVM_TeamPanelTypeItem CreateByManager(const UEUIManagerSubsystem Manager, const TEUIModelWeakRef<FVM_TeamPanel> &inout TeamPanel, const ETeamType TeamType)
+FVM_TeamPanelTypeItem& CreateByManager(const UEUIManagerSubsystem Manager, const TEUIModelWeakRef<FVM_TeamPanel> &inout TeamPanel, const ETeamType TeamType)
 {
-    FVM_TeamPanelTypeItem __r;
-    TEUIModelRef<FVM_TeamPanelTypeItem> local_6 = TEUIModelRef<FVM_TeamPanelTypeItem>(EUIInternal::MakeModelWithManager_Generic(Manager, FVM_TeamPanelTypeItem::ModelId, 0, TeamPanel, TeamType));
-    return __r;
+    return TEUIModelRef<FVM_TeamPanelTypeItem>(EUIInternal::MakeModelWithManager_Generic(Manager, FVM_TeamPanelTypeItem::ModelId, 0, TeamPanel, TeamType)).Get();
 }
 void GetModelInfo(FEUIViewModelMetaInfo &inout Result)
 {
@@ -157,7 +155,6 @@ namespace __GeneratedProperties_FVM_TeamPanelTypeItem
 {
 UScriptStruct StaticStruct()
 {
-    UScriptStruct local_2;
-    return local_2;
+    return __GeneratedProperties_FVM_TeamPanelTypeItem.Get();
 }
 }

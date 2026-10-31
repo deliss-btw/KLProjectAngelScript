@@ -77,8 +77,7 @@ struct FVM_CommonAvatarTeamEnterItem : FEUIViewModel
             this.SetPlayerBasicItem(TEUIModelRef<FVM_PlayerBasicItem>());
             return;
         }
-        TEUIModelRef<FM_Player> local_2 = this.GetPlayer();
-        this.SetPlayerBasicItem(TEUIModelRef<FVM_PlayerBasicItem>(::FVM_PlayerBasicItem::Create(this.GetContext().Manager, ::FMS_PlayerBriefInfo::Get(this.GetContext().Manager).CacheFromPlayer())));
+        this.SetPlayerBasicItem(TEUIModelRef<FVM_PlayerBasicItem>(::FVM_PlayerBasicItem::Create(this.GetContext().Manager, ::FMS_PlayerBriefInfo::Get(this.GetContext().Manager).CacheFromPlayer(this.GetPlayer().Get()))));
         return;
     }
     void OnPlayerNickNameChanged()
@@ -329,11 +328,9 @@ FVM_CommonAvatarTeamEnterItem& Create(const UObject ContextObject, const int Slo
 {
     return FVM_CommonAvatarTeamEnterItem::CreateByManager(EUIInternal::GetContextManager(ContextObject), SlotIndex, bIsAddSlot, Player);
 }
-FVM_CommonAvatarTeamEnterItem CreateByManager(const UEUIManagerSubsystem Manager, const int SlotIndex, const bool bIsAddSlot, const TEUIModelRef<FM_Player> &inout Player)
+FVM_CommonAvatarTeamEnterItem& CreateByManager(const UEUIManagerSubsystem Manager, const int SlotIndex, const bool bIsAddSlot, const TEUIModelRef<FM_Player> &inout Player)
 {
-    FVM_CommonAvatarTeamEnterItem __r;
-    TEUIModelRef<FVM_CommonAvatarTeamEnterItem> local_6 = TEUIModelRef<FVM_CommonAvatarTeamEnterItem>(EUIInternal::MakeModelWithManager_Generic(Manager, FVM_CommonAvatarTeamEnterItem::ModelId, 0, SlotIndex, bIsAddSlot, Player));
-    return __r;
+    return TEUIModelRef<FVM_CommonAvatarTeamEnterItem>(EUIInternal::MakeModelWithManager_Generic(Manager, FVM_CommonAvatarTeamEnterItem::ModelId, 0, SlotIndex, bIsAddSlot, Player)).Get();
 }
 void GetModelInfo(FEUIViewModelMetaInfo &inout Result)
 {
@@ -459,8 +456,7 @@ namespace __GeneratedProperties_FVM_CommonAvatarTeamEnterItem
 {
 UScriptStruct StaticStruct()
 {
-    UScriptStruct local_2;
-    return local_2;
+    return __GeneratedProperties_FVM_CommonAvatarTeamEnterItem.Get();
 }
 }
 namespace FVM_CommonAvatarTeamEnter
@@ -469,11 +465,9 @@ FVM_CommonAvatarTeamEnter& Create(const UObject ContextObject)
 {
     return FVM_CommonAvatarTeamEnter::CreateByManager(EUIInternal::GetContextManager(ContextObject));
 }
-FVM_CommonAvatarTeamEnter CreateByManager(const UEUIManagerSubsystem Manager)
+FVM_CommonAvatarTeamEnter& CreateByManager(const UEUIManagerSubsystem Manager)
 {
-    FVM_CommonAvatarTeamEnter __r;
-    TEUIModelRef<FVM_CommonAvatarTeamEnter> local_6 = TEUIModelRef<FVM_CommonAvatarTeamEnter>(EUIInternal::MakeModelWithManager(Manager, FVM_CommonAvatarTeamEnter::ModelId));
-    return __r;
+    return TEUIModelRef<FVM_CommonAvatarTeamEnter>(EUIInternal::MakeModelWithManager(Manager, FVM_CommonAvatarTeamEnter::ModelId)).Get();
 }
 void GetModelInfo(FEUIViewModelMetaInfo &inout Result)
 {
@@ -535,7 +529,6 @@ namespace __GeneratedProperties_FVM_CommonAvatarTeamEnter
 {
 UScriptStruct StaticStruct()
 {
-    UScriptStruct local_2;
-    return local_2;
+    return __GeneratedProperties_FVM_CommonAvatarTeamEnter.Get();
 }
 }

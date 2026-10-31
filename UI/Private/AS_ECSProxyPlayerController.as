@@ -73,10 +73,8 @@ class AAS_ECSProxyPlayerController : AAS_ECSPlayerController
     UFUNCTION()
     void BeginPlay_Implementation()
     {
-        int local_33 = 0;
         UInputAction local_98;
         APXECSPlayerController local_154;
-        UClass local_188;
         if (System::IsServer(__GetWorldContext()) || (int(this.GetLocalRole()) < 2))
         {
             return;
@@ -86,11 +84,11 @@ class AAS_ECSProxyPlayerController : AAS_ECSPlayerController
         {
             for (auto& local_30 : this.FrontendSystems)
             {
-                local_12.BindAction(local_30.GetKey(), ETriggerEvent(local_33), this, FName("OnTriggerEnterSystemAction"));
+                local_12.BindAction(local_30.GetKey(), ETriggerEvent(local_30.GetValue().TriggerEvent), this, FName("OnTriggerEnterSystemAction"));
             }
             for (auto& local_56 : this.SystemPages)
             {
-                local_12.BindAction(local_56.GetKey(), ETriggerEvent(local_33), this, FName("OnTriggerOpenPageAction"));
+                local_12.BindAction(local_56.GetKey(), ETriggerEvent(local_56.GetValue().TriggerEvent), this, FName("OnTriggerOpenPageAction"));
             }
             TDataObjectIterator<FMenuConfig> local_72;
             for (; local_72; )
@@ -137,14 +135,13 @@ class AAS_ECSProxyPlayerController : AAS_ECSPlayerController
             TSubclassOf<UUserWidget> local_186 = TSubclassOf<UUserWidget>(::GameModeSettings::GetGameModeSettings(this).EntryUIClass);
             if (local_186.IsValid())
             {
-                UClass local_190 = UEUIUserWidget;
-                if (local_188.IsChildOf(local_190))
+                if (local_186.Get().IsChildOf(UEUIUserWidget))
                 {
                     FEUIWidget::AddWidgetByClass(this.GetLocalPlayer(), TSoftClassPtr<UEUIUserWidget>(local_186));
                 }
                 else
                 {
-                    XWarning(ELog(16), FString().Append("EntryUIClass ").Append(local_190.ToString()).Append(" config in game mode ").Append(::GameModeSettings::GetGameModeSettings(this).ToString()).Append(" is not a child of UEUIUserWidget, add to viewport directly"));
+                    XWarning(ELog(16), FString().Append("EntryUIClass ").Append(local_186.Get().ToString()).Append(" config in game mode ").Append(::GameModeSettings::GetGameModeSettings(this).ToString()).Append(" is not a child of UEUIUserWidget, add to viewport directly"));
                     WidgetBlueprint::CreateWidget(__GetWorldContext(), local_186, this).AddToViewport(0);
                 }
             }

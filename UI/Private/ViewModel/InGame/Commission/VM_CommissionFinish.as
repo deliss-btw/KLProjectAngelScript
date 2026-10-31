@@ -471,7 +471,209 @@ struct FVM_CommissionFinish : FEUIViewModel
     }
     void UpdateRewardItem()
     {
-        // body not fully recovered — stub [argmismatch:argtype]
+        CastTo local_160;
+        TDataObjectPtr<FVirtualItemConfig> local_184;
+        TDataObjectPtr<FVirtualItemConfig> local_208;
+        int local_508 = 0;
+        if (!(FECSEntity(this.GetContext().GetLocalPlayer()).IsValid()))
+        {
+            return;
+        }
+        Has local_14;
+        if (!(local_14.opCall()))
+        {
+            return;
+        }
+        Get local_18;
+        const FC_CommissionFinishRaceResult& local_20 = local_18.opCall();
+        if (local_20)
+        {
+            TEUIModelRef<FM_Commission> local_48 = ::FMS_CommissionData::Get(this.GetManager()).FindFirstCommissionsByConfig(::CommissionUtils::GetCurrentCommissionConfig());
+            if (local_48.IsValid())
+            {
+                this.GetModify_CommissionTiers().Empty(0);
+                this.SetCurrentTier(ECommissionTier(local_48.opArrow().GetTierFromTimeSec(local_20.GetCostTimeSec())));
+                auto local_62 = local_48.opArrow().GetCommissionTiers().Iterator();
+                for (; local_62.CanProceed;)
+                {
+                    this.GetModify_CommissionTiers().Add(TEUIModelRef<FVM_CommissionTier>(::FVM_CommissionTier::Create(this.GetContext().Manager, local_62.Proceed(), ECommissionTier(this.GetCurrentTier()))));
+                }
+            }
+            this.SetbIsRaceCommission(true);
+            this.GetModify_AchievedTierList().Empty(local_20.GetAchievedTierList().Num());
+            for (auto local_85 : local_20.GetAchievedTierList())
+            {
+                this.GetModify_AchievedTierList().Add(local_85);
+            }
+            this.SetCostTimeSec(local_20.GetCostTimeSec());
+            this.SetOldBestCostTimeSec(local_20.GetOldBestCostTimeSec());
+            this.SetbIsNewBest(local_20.GetbIsNewBest());
+            this.BuildNewTierRewardItems();
+        }
+        Get local_90;
+        const FC_CommissionFinishReward& local_92 = local_90.opCall();
+        if (local_92)
+        {
+            for (auto& local_106 : local_92.GetCommissionReward())
+            {
+                int local_107 = local_106.GetItemID();
+                if (::FItemConfig::GetByDataId(local_107))
+                {
+                    local_184 = local_160.opCall();
+                    if (local_184)
+                    {
+                        if (int(local_184.Get().VirtualType) == 2)
+                        {
+                            int local_210 = this.GetMoneyCount();
+                            int local_211 = local_106.GetCount();
+                            this.SetMoneyCount(local_210 + local_211);
+                        }
+                        if (int(local_184.Get().VirtualType) == 1)
+                        {
+                            int local_210_2 = this.GetExpCount();
+                            int local_211_2 = local_106.GetCount();
+                            this.SetExpCount(local_210_2 + local_211_2);
+                        }
+                    }
+                }
+            }
+            this.SetBaseMoneyCount(0);
+            this.SetBaseExpCount(0);
+            TDataObjectPtr<FCommissionConfig> local_46 = ::CommissionUtils::GetCurrentCommissionConfig();
+            if (local_46)
+            {
+                TDataObjectPtr<FDropItemConfigBase> local_260 = local_46.opArrow().GetCommissionReward();
+                if (local_260)
+                {
+                    FDropItemConfigParser local_304;
+                    local_304.ParseDropItemConfig(local_260);
+                    for (auto& local_322 : local_304.ParsedDropItemDataMap)
+                    {
+                        local_208 = local_160.opCall();
+                        if (local_208)
+                        {
+                            if (int(local_208.Get().VirtualType) == 2)
+                            {
+                                this.SetBaseMoneyCount((this.GetBaseMoneyCount() + local_322.GetValue().MinNum));
+                            }
+                            if (int(local_208.Get().VirtualType) == 1)
+                            {
+                                this.SetBaseExpCount((this.GetBaseExpCount() + local_322.GetValue().MinNum));
+                            }
+                        }
+                    }
+                }
+                TDataObjectPtr<FRewardConfig> local_346 = local_46.opArrow().GetMedalRewardConfig();
+                if (local_346)
+                {
+                    int local_371;
+                    local_371 = int(::CommissionUtils::GetCommissionSettings().MainObjectiveScore);
+                    for (auto& local_388 : local_346.Get().RewardItems)
+                    {
+                        if (!(local_388.Item.IsSet()))
+                        {
+                            continue;
+                        }
+                        local_184 = local_160.opCall();
+                        if (local_184)
+                        {
+                            if (int(local_184.Get().VirtualType) == 2)
+                            {
+                                this.SetBaseMoneyCount(this.GetBaseMoneyCount() + (int(local_388.Count) * local_371));
+                            }
+                            if (int(local_184.Get().VirtualType) == 1)
+                            {
+                                int local_210_5 = int(local_388.Count) * local_371;
+                                this.SetBaseExpCount(this.GetBaseExpCount() + local_210_5);
+                            }
+                        }
+                    }
+                }
+            }
+            TMap<uint, uint> local_410;
+            for (auto& local_106 : local_92.GetCommissionReward())
+            {
+                int local_211_3 = local_106.GetItemID();
+                if (local_410.Contains(local_211_3))
+                {
+                    local_211_3 = local_106.GetCount();
+                    int local_107_2 = local_106.GetItemID();
+                    int local_411 = local_410[local_107_2] + local_211_3;
+                    continue;
+                }
+                local_211_3 = local_106.GetCount();
+                int local_107_3 = local_106.GetItemID();
+                local_410.Add(local_107_3, local_211_3);
+            }
+            TMap<uint, uint> local_432;
+            for (auto& local_106 : local_92.GetCommissionFirstReward())
+            {
+                if (local_432.Contains(local_106.GetItemID()))
+                {
+                    int local_107_4 = local_106.GetCount();
+                    int local_211_4 = local_106.GetItemID();
+                    int local_411_2 = local_432[local_211_4] + local_107_4;
+                    continue;
+                }
+                int local_107_5 = local_106.GetCount();
+                int local_211_5 = local_106.GetItemID();
+                local_432.Add(local_211_5, local_107_5);
+            }
+            FCommonRewardListBuilder local_436;
+            for (auto& local_454 : local_410)
+            {
+                if (::FItemConfig::GetByDataId(local_454.GetKey()))
+                {
+                    if (local_160.opCall())
+                    {
+                        continue;
+                    }
+                    FText local_458 = FText();
+                    FName local_460 = FName();
+                    int local_211_6 = local_454.GetValue();
+                    int local_107_6 = local_454.GetKey();
+                    local_436.AddItem(local_107_6, local_211_6, local_460, local_458, false);
+                }
+            }
+            for (auto& local_454_2 : local_432)
+            {
+                int local_211_7 = local_454_2.GetKey();
+                if (::FItemConfig::GetByDataId(local_211_7))
+                {
+                    if (local_160.opCall())
+                    {
+                        continue;
+                    }
+                    FText local_458_2 = FText();
+                    int local_107_7 = local_454_2.GetValue();
+                    local_436.AddItem(local_454_2.GetKey(), local_107_7, n"CommissionFirstTime", local_458_2, false);
+                }
+            }
+            this.GetModify_RewardsData().Empty(0);
+            for (auto& local_478 : local_436.Build())
+            {
+                int local_107_8 = int(local_478.ItemId);
+                TDataObjectPtr<FItemConfig> local_156 = ::FItemConfig::GetByDataId(local_107_8);
+                if (!(local_156))
+                {
+                    continue;
+                }
+                FM_ItemData& local_480 = ::FM_ItemData::Create(this.GetContext().Manager);
+                local_480.SetConfig(local_156);
+                local_480.SetNum(int(local_478.Count));
+                TEUIModelRef<FVM_ComposableItem> local_482 = TEUIModelRef<FVM_ComposableItem>(::FVM_ComposableItem::Create(this.GetContext().Manager, (TEUIModelRef<FM_ItemData>(local_480)), EItemDisplayScenario(3)));
+                ::ComposableItemUtility::SetItemCountText(local_482.Get(), FText::AsNumber(local_480.GetNum(), FNumberFormattingOptions::DefaultNoGrouping()));
+                FText local_458_3 = ::RewardSortUtils::ResolveTagDisplayText(local_478.TagKey, local_478.TagText);
+                ::ComposableItemUtility::SetIsShowTag(local_482.Get(), !(local_458_3.IsEmpty()));
+                ::ComposableItemUtility::SetDisplayTagText(local_482.Get(), local_458_3);
+                FEUIModelContainer local_506 = FEUIModelContainer(::FVM_Item::Create(this.GetManager(), TEUIModelRef<FM_ItemData>(local_480)));
+                UEUIManagerSubsystem local_22 = this.GetManager();
+                local_508.SetComposableItemVM(local_482);
+                this.GetModify_RewardsData().Add(FEUIModelRef(local_508));
+            }
+            this.SetbHasNormalReward(this.GetRewardsData().Num() > 0 || (this.GetMoneyCount() > 0) || (this.GetExpCount() > 0));
+        }
+        return;
     }
     void OnCommissionRewardRsp(const FCE_OnCommissionFinishRewardRspEvent &inout CommissionRewardRsp)
     {
@@ -484,8 +686,7 @@ struct FVM_CommissionFinish : FEUIViewModel
         FMS_CommissionModelFactory& local_6 = ::FMS_CommissionModelFactory::Get(this.GetManager());
         if (local_6.GetCommissionPopup())
         {
-            TEUIModelRef<FM_CommissionPopup> local_8 = local_6.GetCommissionPopup();
-"CommissionFinishClose".EndFullScreenRewardFlow();
+            local_6.GetCommissionPopup().Get().EndFullScreenRewardFlow("CommissionFinishClose");
         }
         return;
     }
@@ -494,8 +695,7 @@ struct FVM_CommissionFinish : FEUIViewModel
         FMS_CommissionModelFactory& local_4 = ::FMS_CommissionModelFactory::Get(this.GetManager());
         if (local_4.GetCommissionPopup())
         {
-            TEUIModelRef<FM_CommissionPopup> local_6 = local_4.GetCommissionPopup();
-            SkipCurrentWaitPhase();
+            local_4.GetCommissionPopup().Get().SkipCurrentWaitPhase();
         }
         return;
     }
@@ -528,10 +728,12 @@ struct FVM_CommissionFinish : FEUIViewModel
     }
     FEUIModelContainer MakeTaggedRewardContainer(const TEUIModelRef<FM_ItemData> &inout ItemData, const FText &inout TagText)
     {
-        TEUIModelRef<FVM_ComposableItem> local_6 = TEUIModelRef<FVM_ComposableItem>(::FVM_ComposableItem::Create(this.GetContext().Manager, ItemData, EItemDisplayScenario(3)));
-        FText::AsNumber(ItemData.opArrow().GetNum(), FNumberFormattingOptions::DefaultNoGrouping());
+        TEUIModelRef<FVM_ComposableItem> local_2 = TEUIModelRef<FVM_ComposableItem>(::FVM_ComposableItem::Create(this.GetContext().Manager, ItemData, EItemDisplayScenario(3)));
+        ::ComposableItemUtility::SetItemCountText(local_2.Get(), FText::AsNumber(ItemData.opArrow().GetNum(), FNumberFormattingOptions::DefaultNoGrouping()));
+        ::ComposableItemUtility::SetIsShowTag(local_2.Get(), true);
+        ::ComposableItemUtility::SetDisplayTagText(local_2.Get(), TagText);
         FEUIModelContainer local_28;
-        local_28.AddModel(local_6.opImplConv(), false);
+        local_28.AddModel(local_2.opImplConv(), false);
         return local_28;
     }
     bool GetbPendingClose() const property
@@ -1257,11 +1459,9 @@ FVM_CommissionFinish& Create(const UObject ContextObject)
 {
     return FVM_CommissionFinish::CreateByManager(EUIInternal::GetContextManager(ContextObject));
 }
-FVM_CommissionFinish CreateByManager(const UEUIManagerSubsystem Manager)
+FVM_CommissionFinish& CreateByManager(const UEUIManagerSubsystem Manager)
 {
-    FVM_CommissionFinish __r;
-    TEUIModelRef<FVM_CommissionFinish> local_6 = TEUIModelRef<FVM_CommissionFinish>(EUIInternal::MakeModelWithManager(Manager, FVM_CommissionFinish::ModelId));
-    return __r;
+    return TEUIModelRef<FVM_CommissionFinish>(EUIInternal::MakeModelWithManager(Manager, FVM_CommissionFinish::ModelId)).Get();
 }
 void GetModelInfo(FEUIViewModelMetaInfo &inout Result)
 {
@@ -1929,7 +2129,6 @@ namespace __GeneratedProperties_FVM_CommissionFinish
 {
 UScriptStruct StaticStruct()
 {
-    UScriptStruct local_2;
-    return local_2;
+    return __GeneratedProperties_FVM_CommissionFinish.Get();
 }
 }

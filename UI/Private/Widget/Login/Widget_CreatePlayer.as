@@ -35,10 +35,10 @@ class UWidget_CreatePlayer : UEUIActivatableWidget
     UFUNCTION()
     void OnViewBind_Implementation()
     {
-        this.GetOwningLocalPlayer().InjectTipsLocalPlayerFromWidget();
+        this.CreatePlayerVM.Get().InjectTipsLocalPlayerFromWidget(this.GetOwningLocalPlayer());
         if (this.w_tile_select_face != nullptr)
         {
-            this.w_tile_select_face.SetSelectedIndex(GetSelectedFaceItemIndex());
+            this.w_tile_select_face.SetSelectedIndex(this.CreatePlayerVM.Get().GetSelectedFaceItemIndex());
         }
         this.RefreshFashionList();
         this.RefreshTabList();
@@ -57,7 +57,7 @@ class UWidget_CreatePlayer : UEUIActivatableWidget
         {
             return;
         }
-        InDeltaTime.WidgetTick();
+        this.CreatePlayerVM.Get().WidgetTick(InDeltaTime);
         return;
     }
     UFUNCTION()
@@ -70,15 +70,15 @@ class UWidget_CreatePlayer : UEUIActivatableWidget
     UFUNCTION()
     void OnCreatePlayerPhaseChanged()
     {
-        if (int(GetCreatePlayerPhase()) == 3)
+        if (int(this.CreatePlayerVM.Get().GetCreatePlayerPhase()) == 3)
         {
-            this.w_editText_rename.SetText(FText::FromString(GetInputNickname()));
+            this.w_editText_rename.SetText(FText::FromString(this.CreatePlayerVM.Get().GetInputNickname()));
         }
-        if (int(GetCreatePlayerPhase()) == 0)
+        if (int(this.CreatePlayerVM.Get().GetCreatePlayerPhase()) == 0)
         {
             if (this.w_tile_select_face != nullptr)
             {
-                this.w_tile_select_face.SetSelectedIndex(GetSelectedFaceItemIndex());
+                this.w_tile_select_face.SetSelectedIndex(this.CreatePlayerVM.Get().GetSelectedFaceItemIndex());
             }
             this.RefreshFashionList();
             this.RefreshTabList();
@@ -94,7 +94,7 @@ class UWidget_CreatePlayer : UEUIActivatableWidget
             return;
         }
         ECreatePlayerPhase local_2;
-        local_2 = GetCreatePlayerPhase();
+        local_2 = this.CreatePlayerVM.Get().GetCreatePlayerPhase();
         if ((int(local_2) == 1 && (this.w_tile_select_face != nullptr)))
         {
             this.RuleSetUserFocus(this.w_tile_select_face);
@@ -116,7 +116,7 @@ class UWidget_CreatePlayer : UEUIActivatableWidget
     UFUNCTION()
     void OnInputTextChanged(const FText &inout InText)
     {
-        InText.OnNicknameTextChanged();
+        this.CreatePlayerVM.Get().OnNicknameTextChanged(InText);
         this.RefreshBtnState();
         return;
     }
@@ -127,6 +127,7 @@ class UWidget_CreatePlayer : UEUIActivatableWidget
         {
             return;
         }
+        this.CreatePlayerVM.Get().OnNicknameTextCommitted(InText, ETextCommit(CommitMethod));
         this.RefreshBtnState();
         return;
     }
@@ -142,22 +143,22 @@ class UWidget_CreatePlayer : UEUIActivatableWidget
         {
             return;
         }
-        if (GetbMaskActive())
+        if (this.CreatePlayerVM.Get().GetbMaskActive())
         {
             this.PrevBtnActionBinding.SetCollapsed(true);
             this.NextBtnActionBinding.SetCollapsed(true);
             this.ConfirmBtnActionBinding.SetCollapsed(true);
             return;
         }
-        bool local_1 = (GetPhaseOrderCursor() == 0);
-        bool local_2 = IsOnLastActivePhase();
-        bool local_5 = CanAdvanceFromCurrentPhase();
+        bool local_1 = (this.CreatePlayerVM.Get().GetPhaseOrderCursor() == 0);
+        bool local_2 = this.CreatePlayerVM.Get().IsOnLastActivePhase();
+        bool local_5 = this.CreatePlayerVM.Get().CanAdvanceFromCurrentPhase();
         bool local_7 = local_2;
-        if (local_2 && (int(GetCreatePlayerPhase()) == 2))
+        if (local_2 && (int(this.CreatePlayerVM.Get().GetCreatePlayerPhase()) == 2))
         {
-            local_7 = (GetSelectedFashionSlotTypeIndex() >= (GetAvailableFashionSlotTypes().Num() - 1));
+            local_7 = (this.CreatePlayerVM.Get().GetSelectedFashionSlotTypeIndex() >= (this.CreatePlayerVM.Get().GetAvailableFashionSlotTypes().Num() - 1));
         }
-        this.PrevBtnActionBinding.SetCollapsed(local_1 || GetbConfirmLocked());
+        this.PrevBtnActionBinding.SetCollapsed(local_1 || this.CreatePlayerVM.Get().GetbConfirmLocked());
         this.NextBtnActionBinding.SetCollapsed(local_7 || !(local_5));
         this.ConfirmBtnActionBinding.SetCollapsed(!(local_7) || !(local_5));
         return;
@@ -166,7 +167,7 @@ class UWidget_CreatePlayer : UEUIActivatableWidget
     {
         if (this.w_list_tab != nullptr)
         {
-            this.w_list_tab.SetSelectedIndex(GetSelectedFashionSlotTypeIndex());
+            this.w_list_tab.SetSelectedIndex(this.CreatePlayerVM.Get().GetSelectedFashionSlotTypeIndex());
         }
         return;
     }
@@ -174,7 +175,7 @@ class UWidget_CreatePlayer : UEUIActivatableWidget
     {
         if (this.w_tile_fashion != nullptr)
         {
-            this.w_tile_fashion.SetSelectedIndex(GetSelectedFashionItemIndex());
+            this.w_tile_fashion.SetSelectedIndex(this.CreatePlayerVM.Get().GetSelectedFashionItemIndex());
         }
         return;
     }
@@ -258,8 +259,8 @@ class UWidget_CreatePlayer : UEUIActivatableWidget
     }
     void HandleObservedModelChanges(FEUIReactiveSubscriberIterator &inout It)
     {
-        FVM_CreatePlayer& local_6;
         TEUIModelRef<FVM_CreatePlayer> local_2 = this.CreatePlayerVM.AsRef();
+        FVM_CreatePlayer& local_6 = local_2.Get();
         for (; It; )
         {
             FEUIReactiveSubscriberTrackScope local_56 = FEUIReactiveSubscriberTrackScope(It);

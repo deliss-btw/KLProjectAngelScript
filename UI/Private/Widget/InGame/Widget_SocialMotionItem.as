@@ -23,8 +23,8 @@ class UWidget_SocialMotionItem : UEUIUserWidget
     UFUNCTION()
     bool SocialMotionItem_IsLock() const
     {
-        FVM_SocialMotionItem& local_2;
         bool local_5;
+        FVM_SocialMotionItem& local_2 = this.SocialMotionItem.Get();
         if (local_2)
         {
             local_5 = local_2.GetIsLock();
@@ -38,7 +38,7 @@ class UWidget_SocialMotionItem : UEUIUserWidget
     UFUNCTION()
     FText SocialMotionItem_Name() const
     {
-        FVM_SocialMotionItem& local_2;
+        FVM_SocialMotionItem& local_2 = this.SocialMotionItem.Get();
         FText local_16;
         if (local_2)
         {
@@ -53,8 +53,8 @@ class UWidget_SocialMotionItem : UEUIUserWidget
     UFUNCTION()
     UTexture2D SocialMotionItem_ActionIcon() const
     {
-        FVM_SocialMotionItem& local_2;
         UTexture2D local_8;
+        FVM_SocialMotionItem& local_2 = this.SocialMotionItem.Get();
         if (local_2)
         {
             local_8 = local_2.GetActionIcon();

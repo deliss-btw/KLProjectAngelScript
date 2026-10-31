@@ -292,11 +292,9 @@ FVMS_StoryDialog& Get(const UObject ContextObject)
 {
     return FVMS_StoryDialog::GetByManager(EUIInternal::GetContextManager(ContextObject));
 }
-FVMS_StoryDialog GetByManager(const UEUIManagerSubsystem Manager)
+FVMS_StoryDialog& GetByManager(const UEUIManagerSubsystem Manager)
 {
-    FVMS_StoryDialog __r;
-    TEUIModelRef<FVMS_StoryDialog> local_6 = TEUIModelRef<FVMS_StoryDialog>(EUIInternal::MakeModelWithManager(Manager, FVMS_StoryDialog::ModelId));
-    return __r;
+    return TEUIModelRef<FVMS_StoryDialog>(EUIInternal::MakeModelWithManager(Manager, FVMS_StoryDialog::ModelId)).Get();
 }
 void GetModelInfo(FEUIViewModelMetaInfo &inout Result)
 {
@@ -390,7 +388,6 @@ namespace __GeneratedProperties_FVMS_StoryDialog
 {
 UScriptStruct StaticStruct()
 {
-    UScriptStruct local_2;
-    return local_2;
+    return __GeneratedProperties_FVMS_StoryDialog.Get();
 }
 }

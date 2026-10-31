@@ -8,13 +8,11 @@ class USkillTransitCondition_SkillTargetEntityNum : USkillTransitComplexConditio
     UFUNCTION()
     bool Evaluate_Implementation(const FECSEntity &inout Entity, const FC_SkillInstance &inout SkillInstance, const FFPTime &inout ContextTime) const
     {
-        const USkillConfig local_14;
         if ((SkillInstance.GetSkillConfig() == nullptr))
         {
             return false;
         }
-        TSoftObjectPtr<USkillConfig> local_10 = SkillInstance.GetSkillConfig();
-        TArray<FECSEntity> local_22 = ::FTargetSelectUtils::GetSelectTargetEntitiesByRequestType(Entity, ESelectTargetRequestType(1), local_14.GetSkillName());
+        TArray<FECSEntity> local_22 = ::FTargetSelectUtils::GetSelectTargetEntitiesByRequestType(Entity, ESelectTargetRequestType(1), SkillInstance.GetSkillConfig().Get().GetSkillName());
         if (local_22.Num() >= this.MinTargetNum && (local_22.Num() <= this.MaxTargetNum))
         {
             return true;

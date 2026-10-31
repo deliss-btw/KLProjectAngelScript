@@ -105,7 +105,7 @@ struct FMS_Login : FEUIModelSingleton
         }
         if (this.GetLoginSettings() != nullptr && Msg.CGConfig.IsSet())
         {
-            if (this.GetLoginSettings().LoginCGConfig.GetUniqueID() == GetUniqueID())
+            if (this.GetLoginSettings().LoginCGConfig.GetUniqueID() == Msg.CGConfig.Get().GetUniqueID())
             {
                 this.GoToLoginNextPhase(ELoginShowPhase(4));
             }
@@ -141,12 +141,10 @@ struct FMS_Login : FEUIModelSingleton
     void GoToLoginNextPhase(const ELoginShowPhase NextPhase)
     {
         int local_2 = int(NextPhase);
-        bool local_5 = true;
-        bool local_4 = local_5;
+        bool local_4 = true;
         if (this.GetLoginSettings().LoginPhaseInfos.Contains(NextPhase))
         {
-            local_5 = this.GetLoginSettings().LoginPhaseInfos[NextPhase].bIsSkip;
-            local_4 = local_5;
+            local_4 = this.GetLoginSettings().LoginPhaseInfos[NextPhase].bIsSkip;
         }
         if (local_4)
         {
@@ -182,7 +180,7 @@ struct FMS_Login : FEUIModelSingleton
                 {
                     if (this.GetLoginSettings().LoginPhaseInfos.Contains(ELoginShowPhase(local_9)))
                     {
-                        ULoginSettings local_8 = this.GetLoginSettings();
+                        bool local_5 = this.GetLoginSettings().LoginCreatePlayerConfig.Get().bOpenPre;
                         this.SetbIsCreatePlayerPreOpen(local_5);
                     }
                     if (this.GetbIsCreatePlayerPreOpen())
@@ -272,11 +270,9 @@ FMS_Login& Get(const UObject ContextObject)
 {
     return FMS_Login::GetByManager(EUIInternal::GetContextManager(ContextObject));
 }
-FMS_Login GetByManager(const UEUIManagerSubsystem Manager)
+FMS_Login& GetByManager(const UEUIManagerSubsystem Manager)
 {
-    FMS_Login __r;
-    TEUIModelRef<FMS_Login> local_6 = TEUIModelRef<FMS_Login>(EUIInternal::MakeModelWithManager(Manager, FMS_Login::ModelId));
-    return __r;
+    return TEUIModelRef<FMS_Login>(EUIInternal::MakeModelWithManager(Manager, FMS_Login::ModelId)).Get();
 }
 void GetModelInfo(FEUIModelOnlyMetaInfo &inout Result)
 {

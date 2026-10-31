@@ -88,12 +88,12 @@ struct FM_PresentationData_Mark : FEUIModel
     {
         TEUIModelRef<FM_Player> local_2;
         FFPTime local_4;
-        FFPTime local_26;
         for (auto& local_24 : this.GetPlayerMarkDataMap())
         {
-            if (!(local_2) || (local_26.opCmp(local_4) > 0))
+            if (!(local_2) || (FFPTime(local_24.GetValue().MarkTime).opCmp(local_4) > 0))
             {
                 local_2 = local_24.GetKey();
+                local_4 = local_24.GetValue().MarkTime;
             }
         }
         return local_2;
@@ -200,6 +200,7 @@ TEUIModelRef<FM_PresentationData_Mark> GetMarkData(const FM_Spot &inout Spot, co
 TEUIModelRef<FM_PresentationData_Mark> AddMarkData(FM_Spot &inout Spot, const bool bIsPositionMark, const TEUIModelRef<FM_SpotRegistry> &inout Registry = FEUIModelRef())
 {
     int local_6 = 0;
+    TEUIModelWeakRef<FM_SpotRegistry> local_2 = TEUIModelWeakRef<FM_SpotRegistry>(Registry.Get());
     TEUIModelWeakRef<FM_Spot> local_4 = TEUIModelWeakRef<FM_Spot>(Spot);
     PresentationDataUtils::AddPresentationData(Spot, EPresentationDataType(6), FInstancedStruct::Make(FEUIModelRef(local_6)), Registry);
     return TEUIModelRef<FM_PresentationData_Mark>(local_6);
@@ -218,11 +219,9 @@ FM_PresentationData_Mark& Create(const UObject ContextObject, const bool bIsPosi
 {
     return FM_PresentationData_Mark::CreateByManager(EUIInternal::GetContextManager(ContextObject), bIsPositionMark, OwnerSpot, OwnerRegistry);
 }
-FM_PresentationData_Mark CreateByManager(const UEUIManagerSubsystem Manager, const bool bIsPositionMark, const TEUIModelWeakRef<FM_Spot> &inout OwnerSpot, const TEUIModelWeakRef<FM_SpotRegistry> &inout OwnerRegistry)
+FM_PresentationData_Mark& CreateByManager(const UEUIManagerSubsystem Manager, const bool bIsPositionMark, const TEUIModelWeakRef<FM_Spot> &inout OwnerSpot, const TEUIModelWeakRef<FM_SpotRegistry> &inout OwnerRegistry)
 {
-    FM_PresentationData_Mark __r;
-    TEUIModelRef<FM_PresentationData_Mark> local_6 = TEUIModelRef<FM_PresentationData_Mark>(EUIInternal::MakeModelWithManager_Generic(Manager, FM_PresentationData_Mark::ModelId, 0, bIsPositionMark, OwnerSpot, OwnerRegistry));
-    return __r;
+    return TEUIModelRef<FM_PresentationData_Mark>(EUIInternal::MakeModelWithManager_Generic(Manager, FM_PresentationData_Mark::ModelId, 0, bIsPositionMark, OwnerSpot, OwnerRegistry)).Get();
 }
 void GetModelInfo(FEUIModelOnlyMetaInfo &inout Result)
 {

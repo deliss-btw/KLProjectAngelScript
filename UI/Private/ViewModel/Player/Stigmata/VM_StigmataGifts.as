@@ -202,10 +202,9 @@ struct FVM_StigmataGifts : FEUIViewModel
         int local_1 = local_2;
         for (auto& local_18 : this.GetGiftItems())
         {
-            local_18;
-            if (!(GetIsUnlocked()))
+            if (!(local_18.Get().GetIsUnlocked()))
             {
-                int local_19 = GetConfig().opArrow().RoleLevel;
+                int local_19 = local_18.Get().GetConfig().opArrow().RoleLevel;
                 local_1 = local_19;
                 break;
             }
@@ -231,8 +230,7 @@ struct FVM_StigmataGifts : FEUIViewModel
             int local_7 = 0;
             for (auto& local_22 : this.GetGiftItems())
             {
-                local_22;
-                if (GetIsUnlocked())
+                if (local_22.Get().GetIsUnlocked())
                 {
                     ++local_7;
                 }
@@ -531,11 +529,9 @@ FVM_StigmataGifts& Create(const UObject ContextObject)
 {
     return FVM_StigmataGifts::CreateByManager(EUIInternal::GetContextManager(ContextObject));
 }
-FVM_StigmataGifts CreateByManager(const UEUIManagerSubsystem Manager)
+FVM_StigmataGifts& CreateByManager(const UEUIManagerSubsystem Manager)
 {
-    FVM_StigmataGifts __r;
-    TEUIModelRef<FVM_StigmataGifts> local_6 = TEUIModelRef<FVM_StigmataGifts>(EUIInternal::MakeModelWithManager(Manager, FVM_StigmataGifts::ModelId));
-    return __r;
+    return TEUIModelRef<FVM_StigmataGifts>(EUIInternal::MakeModelWithManager(Manager, FVM_StigmataGifts::ModelId)).Get();
 }
 void GetModelInfo(FEUIViewModelMetaInfo &inout Result)
 {
@@ -748,7 +744,6 @@ namespace __GeneratedProperties_FVM_StigmataGifts
 {
 UScriptStruct StaticStruct()
 {
-    UScriptStruct local_2;
-    return local_2;
+    return __GeneratedProperties_FVM_StigmataGifts.Get();
 }
 }

@@ -161,16 +161,11 @@ struct FVM_MainMenuAvatarBuildTypeEntry : FEUIViewModel
         bool local_3 = ::FEquipmentUtils::IsTalismanSlot(this.GetEquipSlotType());
         if (local_3)
         {
-            TEUIModelRef<FVM_EquipmentSlotInfo> local_8;
-            TEUIModelRef<FVM_AvatarEquipment> local_6 = this.GetAvatarEquipment();
-            local_8.GetEquipmentSlotInfo();
-            if (GetbIsLocked())
+            if (this.GetAvatarEquipment().Get().GetEquipmentSlotInfo().Get().GetbIsLocked())
             {
                 return 2;
             }
-            TEUIModelRef<FVM_AvatarEquipment> local_6_2 = this.GetAvatarEquipment();
-            local_8.GetEquipmentSlotInfo();
-            if (GetbIsEmpty())
+            if (this.GetAvatarEquipment().Get().GetEquipmentSlotInfo().Get().GetbIsEmpty())
             {
                 return 1;
             }
@@ -188,8 +183,6 @@ struct FVM_MainMenuAvatarBuildTypeEntry : FEUIViewModel
     void OnAvatarEquipmentChanged()
     {
         bool local_8;
-        FText local_38;
-        int local_133 = 0;
         TEUIModelRef<FVM_AvatarEquipment> local_2 = this.GetAvatarEquipment();
         if (!(local_2.IsValid()))
         {
@@ -197,35 +190,20 @@ struct FVM_MainMenuAvatarBuildTypeEntry : FEUIViewModel
         }
         this.ResetToEmpty();
         TEUIModelRef<FVM_AvatarEquipment> local_2_2 = this.GetAvatarEquipment();
-        TEUIModelRef<FVM_EquipmentSlotInfo> local_6;
-        local_6.GetEquipmentSlotInfo();
-        this.SetbIsAvatarUnLocked(GetbIsAvatarUnLocked());
-        if (!(this.GetbIsAvatarUnLocked()))
-        {
-            local_8 = true;
-        }
-        else
-        {
-            TEUIModelRef<FVM_AvatarEquipment> local_2_3 = this.GetAvatarEquipment();
-            local_6.GetEquipmentSlotInfo();
-            local_8 = GetbIsLocked();
-        }
+        this.SetbIsAvatarUnLocked(local_2_2.Get().GetEquipmentSlotInfo().Get().GetbIsAvatarUnLocked());
+        local_8 = !(this.GetbIsAvatarUnLocked()) || this.GetAvatarEquipment().Get().GetEquipmentSlotInfo().Get().GetbIsLocked();
         this.SetbIsLocked(local_8);
         TEUIModelRef<FVM_AvatarEquipment> local_2_4 = this.GetAvatarEquipment();
-        local_6.GetEquipmentSlotInfo();
-        this.SetbIsEmpty(GetbIsEmpty());
+        this.SetbIsEmpty(local_2_4.Get().GetEquipmentSlotInfo().Get().GetbIsEmpty());
         TEUIModelRef<FVM_AvatarEquipment> local_2_5 = this.GetAvatarEquipment();
-        this.SetEquipSlotType(GetEquipSlot());
+        this.SetEquipSlotType(local_2_5.Get().GetEquipSlot());
         TEUIModelRef<FVM_AvatarEquipment> local_2_6 = this.GetAvatarEquipment();
-        TEUIModelRef<FVM_EquipmentInfo> local_14;
-        local_14.GetEquipment();
+        TEUIModelRef<FVM_EquipmentInfo> local_14 = local_2_6.Get().GetEquipment();
         TEUIModelRef<FVM_EquipmentInfo> local_12;
         if (local_12.IsValid())
         {
-            FLinearColor local_132;
-            FSoftBrush local_84;
             TEUIModelRef<FVM_AvatarEquipment> local_2_7 = this.GetAvatarEquipment();
-            int64 local_22 = ::FEquipmentUtils::GetAvatarEquipmentUid(this.GetContext().GetLocalPlayer(), this.GetEquipSlotType(), GetAvatarConfig());
+            int64 local_22 = ::FEquipmentUtils::GetAvatarEquipmentUid(this.GetContext().GetLocalPlayer(), this.GetEquipSlotType(), local_2_7.Get().GetAvatarConfig());
             if (local_22 != 0)
             {
                 TEUIModelRef<FM_ItemData> local_26 = ::FMS_ItemDataCache::Get(this.GetContext().Manager).RequireItemData(local_22);
@@ -233,20 +211,15 @@ struct FVM_MainMenuAvatarBuildTypeEntry : FEUIViewModel
             }
             if (int(this.GetEquipSlotType()) == 1 && !(this.GetbIsAvatarUnLocked()))
             {
-                local_38.GetWeaponCategoryFullName();
-                this.SetTitle(local_38);
+                this.SetTitle(local_12.Get().GetWeaponCategoryFullName());
             }
             else
             {
-                local_38.GetEquipmentName();
-                this.SetTitle(local_38);
+                this.SetTitle(local_12.Get().GetEquipmentName());
             }
-            local_84.GetEquipmentIcon();
-            this.SetIcon(local_84.LoadBrush());
-            local_132.GetEquipmentRarityColor();
-            this.SetRarityColor(local_132);
-            local_84.GetEquipmentRarityImage();
-            this.SetRarityImage(local_84);
+            this.SetIcon(local_12.Get().GetEquipmentIcon().LoadBrush());
+            this.SetRarityColor(local_12.Get().GetEquipmentRarityColor());
+            this.SetRarityImage(local_12.Get().GetEquipmentRarityImage());
         }
         if (!(this.GetbIsLocked()))
         {
@@ -254,7 +227,7 @@ struct FVM_MainMenuAvatarBuildTypeEntry : FEUIViewModel
             {
                 FRedDotNodeData local_138;
                 TEUIModelRef<FVM_AvatarEquipment> local_2_8 = this.GetAvatarEquipment();
-                int64 local_16 = local_133;
+                int64 local_16 = local_2_8.Get().GetAvatarConfig().Get().DataId;
                 local_138 = FRedDotNodeData(GameplayTags::RedDotSystem_Weapon_NewWeaponCanChange, local_16);
                 this.SetRedDotVM(TEUIModelRef<FVM_RedDot>(::FVM_RedDot::Create(this.GetContext().Manager, local_138)));
             }
@@ -263,11 +236,9 @@ struct FVM_MainMenuAvatarBuildTypeEntry : FEUIViewModel
                 FRedDotNodeData local_138;
                 if (int(this.GetEquipSlotType()) >= 2 && (int(this.GetEquipSlotType()) <= 5))
                 {
-                    int64 local_16_2 = int(this.GetEquipSlotType());
-                    local_133 = 32;
-                    local_16_2 = local_16_2 << local_133;
+                    int64 local_16_2 = int(this.GetEquipSlotType()) << 32;
                     TEUIModelRef<FVM_AvatarEquipment> local_2_9 = this.GetAvatarEquipment();
-                    local_16_2 = local_16_2 | local_133;
+                    local_16_2 = local_16_2 | local_2_9.Get().GetAvatarConfig().Get().DataId;
                     local_138 = FRedDotNodeData(GameplayTags::RedDotSystem_Talisman_NewTalismanSlot, local_16_2);
                     this.SetRedDotVM(TEUIModelRef<FVM_RedDot>(::FVM_RedDot::Create(this.GetContext().Manager, local_138)));
                 }
@@ -282,13 +253,10 @@ struct FVM_MainMenuAvatarBuildTypeEntry : FEUIViewModel
         {
             if (local_12.IsValid())
             {
-                TEUIModelRef<FVM_ComposableItem> local_32 = this.GetComposableItemVM();
-                ::ComposableItemUtility::SetIsShowLevel((this.GetbIsAvatarUnLocked() && (GetEquipmentLevel() > 0)));
+                ::ComposableItemUtility::SetIsShowLevel(this.GetComposableItemVM().Get(), this.GetbIsAvatarUnLocked() && (local_12.Get().GetEquipmentLevel() > 0));
             }
-            bool local_7 = this.GetbIsLocked();
-            TEUIModelRef<FVM_ComposableItem> local_32_2 = this.GetComposableItemVM();
-            ::ComposableItemUtility::SetItemMaskEnable(local_7);
-            TEUIModelRef<FVM_ComposableItem> local_32_3 = this.GetComposableItemVM();
+            ::ComposableItemUtility::SetItemMaskEnable(this.GetComposableItemVM().Get(), this.GetbIsLocked());
+            ::ComposableItemUtility::SetItemMaskType(this.GetComposableItemVM().Get(), 1);
         }
         return;
     }
@@ -305,8 +273,7 @@ struct FVM_MainMenuAvatarBuildTypeEntry : FEUIViewModel
             this.SetIcon(Equipment.opArrow().GetEquipmentIcon().LoadBrush());
             this.SetRarityColor(Equipment.opArrow().GetEquipmentRarityColor());
             this.SetRarityImage(Equipment.opArrow().GetEquipmentRarityImage());
-            TEUIModelRef<FVM_AvatarEquipment> local_104 = this.GetAvatarEquipment();
-            int64 local_112 = ::FEquipmentUtils::GetAvatarEquipmentUid(this.GetContext().GetLocalPlayer(), this.GetEquipSlotType(), GetAvatarConfig());
+            int64 local_112 = ::FEquipmentUtils::GetAvatarEquipmentUid(this.GetContext().GetLocalPlayer(), this.GetEquipSlotType(), this.GetAvatarEquipment().Get().GetAvatarConfig());
             if (local_112 != 0)
             {
                 TEUIModelRef<FM_ItemData> local_116 = ::FMS_ItemDataCache::Get(this.GetContext().Manager).RequireItemData(local_112);
@@ -335,16 +302,13 @@ struct FVM_MainMenuAvatarBuildTypeEntry : FEUIViewModel
     }
     FVM_MainMenuAvatarBuildTypeEntry& InitialzeAsTalent(const TEUIModelRef<FVM_AvatarInfo> &inout AvatarInfo, const bool bAvatarUnLocked)
     {
-        int local_19 = 0;
         this.ResetToEmpty();
         this.SetbIsAvatarUnLocked(bAvatarUnLocked);
         bool local_1 = !(bAvatarUnLocked);
         if (local_1)
         {
-            FText local_6;
             this.SetbIsLocked(true);
-            local_6 = NSLOCTEXT("TalentUnlockedText", "角色未解锁，无法查看此信息");
-            this.SetSubTitle(local_6);
+            this.SetSubTitle(NSLOCTEXT("TalentUnlockedText", "角色未解锁，无法查看此信息"));
             FVM_TitleAndDesc& local_10 = ::FVM_TitleAndDesc::Create(this.GetManager(), this.GetTitle(), this.GetSubTitle());
             this.BindTalentHoverTips(local_10, 1, false);
             FRedDotNodeData local_16;
@@ -352,10 +316,8 @@ struct FVM_MainMenuAvatarBuildTypeEntry : FEUIViewModel
         }
         else
         {
-            FText local_6;
-            this.SetRedDotVM(TEUIModelRef<FVM_RedDot>(::FVM_RedDot::Create(this.GetContext().Manager, FRedDotNodeData(GameplayTags::RedDotSystem_Talent_Entrance, local_19))));
-            TEUIModelRef<FM_TalentNode> local_26;
-            local_26.GetFoundationNode();
+            this.SetRedDotVM(TEUIModelRef<FVM_RedDot>(::FVM_RedDot::Create(this.GetContext().Manager, FRedDotNodeData(GameplayTags::RedDotSystem_Talent_Entrance, AvatarInfo.Get().GetAvatarConfig().Get().DataId))));
+            TEUIModelRef<FM_TalentNode> local_26 = AvatarInfo.Get().GetFoundationNode();
             TEUIModelRef<FM_TalentNode> local_24;
             local_1 = !(local_24.IsValid());
             if (local_1)
@@ -363,28 +325,20 @@ struct FVM_MainMenuAvatarBuildTypeEntry : FEUIViewModel
             }
             else
             {
-                TArray<TEUIModelWeakRef<FM_TalentTree>> local_34;
                 this.SetbIsLocked(false);
-                local_6.GetNodeName(0);
-                this.SetTitle(local_6);
-                local_6.GetNodeDesc(0);
-                this.SetSubTitle(local_6);
-                TEUIModelRef<FMS_Talent> local_28 = TEUIModelRef<FMS_Talent>(::FMS_Talent::Get(this.GetContext().Manager));
-                local_34.GetTalentTreeListByAvatar(GetAvatarConfig());
+                this.SetTitle(local_24.Get().GetNodeName(0));
+                this.SetSubTitle(local_24.Get().GetNodeDesc(0));
+                TArray<TEUIModelWeakRef<FM_TalentTree>> local_34 = TEUIModelRef<FMS_Talent>(::FMS_Talent::Get(this.GetContext().Manager)).Get().GetTalentTreeListByAvatar(AvatarInfo.Get().GetAvatarConfig());
                 for (auto& local_52 : local_34)
                 {
-                    local_52;
                     FTalentLayoutTreeConfig local_168;
                     if (local_168.GetTalentBaseData().IsSet())
                     {
                         int local_285;
-                        local_285 = local_19;
-                        TDataObjectPtr<FTalentConfig> local_310;
-                        local_310.GetConfig(0);
-                        if (local_285 == local_19)
+                        local_285 = local_168.GetTalentBaseData().Get().DataId;
+                        if (local_285 == local_24.Get().GetConfig(0).Get().DataId)
                         {
-                            FSlateBrush local_356;
-                            this.SetIcon(local_356);
+                            this.SetIcon(local_52.Get().GetLayoutConfig().Get().TitleImage.LoadBrush());
                             break;
                         }
                     }
@@ -1000,30 +954,7 @@ struct FVM_MainMenuAvatar : FEUIViewModel
     }
     bool GetIsTalismanEntranceUnlock() const
     {
-        bool local_3 = this.GetSelectedAvatar().IsValid();
-        if (!(local_3))
-        {
-            local_3 = false;
-        }
-        else
-        {
-            TEUIModelRef<FM_Avatar> local_6;
-            TEUIModelRef<FVM_AvatarInfo> local_2 = this.GetSelectedAvatar();
-            local_6.GetAvatar();
-            local_3 = local_6.IsValid();
-        }
-        if (!(local_3))
-        {
-            local_3 = false;
-        }
-        else
-        {
-            TEUIModelRef<FM_Avatar> local_6;
-            TEUIModelRef<FVM_AvatarInfo> local_2_2 = this.GetSelectedAvatar();
-            local_6.GetAvatar();
-            local_3 = GetbIsUnlocked();
-        }
-        if (local_3)
+        if (this.GetSelectedAvatar().IsValid() && this.GetSelectedAvatar().Get().GetAvatar().IsValid() && this.GetSelectedAvatar().Get().GetAvatar().Get().GetbIsUnlocked())
         {
             return ::FMS_SystemControl::Get(this.GetContext().Manager).IsSystemUnlock(ESystemModule(9), false);
         }
@@ -1043,30 +974,7 @@ struct FVM_MainMenuAvatar : FEUIViewModel
         {
             return false;
         }
-        bool local_1 = !(this.GetSelectedAvatar().IsValid());
-        if (local_1)
-        {
-            local_1 = true;
-        }
-        else
-        {
-            TEUIModelRef<FM_Avatar> local_6;
-            TEUIModelRef<FVM_AvatarInfo> local_4 = this.GetSelectedAvatar();
-            local_6.GetAvatar();
-            local_1 = !(local_6.IsValid());
-        }
-        if (local_1)
-        {
-            local_1 = true;
-        }
-        else
-        {
-            TEUIModelRef<FM_Avatar> local_6;
-            TEUIModelRef<FVM_AvatarInfo> local_4_2 = this.GetSelectedAvatar();
-            local_6.GetAvatar();
-            local_1 = !(GetbIsUnlocked());
-        }
-        if (local_1)
+        if (!(this.GetSelectedAvatar().IsValid()) || !(this.GetSelectedAvatar().Get().GetAvatar().IsValid()) || !(this.GetSelectedAvatar().Get().GetAvatar().Get().GetbIsUnlocked()))
         {
             return false;
         }
@@ -1082,43 +990,17 @@ struct FVM_MainMenuAvatar : FEUIViewModel
     }
     bool IsShowHoverTalismanLocked() const
     {
-        bool local_3 = this.GetHoveredTalismanEquipment().IsValid();
-        if (!(local_3))
-        {
-            local_3 = false;
-        }
-        else
-        {
-            TEUIModelRef<FVM_AvatarEquipment> local_2 = this.GetHoveredTalismanEquipment();
-            TEUIModelRef<FVM_EquipmentSlotInfo> local_6;
-            local_6.GetEquipmentSlotInfo();
-            local_3 = GetbIsLocked();
-        }
-        return local_3;
+        return this.GetHoveredTalismanEquipment().IsValid() && this.GetHoveredTalismanEquipment().Get().GetEquipmentSlotInfo().Get().GetbIsLocked();
     }
     bool IsShowHoverTalismanNotEquipped() const
     {
-        bool local_3 = this.GetHoveredTalismanEquipment().IsValid();
-        if (!(local_3))
-        {
-            local_3 = false;
-        }
-        else
-        {
-            TEUIModelRef<FVM_AvatarEquipment> local_2 = this.GetHoveredTalismanEquipment();
-            TEUIModelRef<FVM_EquipmentSlotInfo> local_6;
-            local_6.GetEquipmentSlotInfo();
-            local_3 = GetbIsEmpty();
-        }
-        return local_3;
+        return this.GetHoveredTalismanEquipment().IsValid() && this.GetHoveredTalismanEquipment().Get().GetEquipmentSlotInfo().Get().GetbIsEmpty();
     }
     bool IsSelectAvatarMainPlayer() const
     {
-        bool local_3 = this.GetSelectedAvatar().IsValid();
-        if (local_3)
+        if (this.GetSelectedAvatar().IsValid())
         {
-            TEUIModelRef<FVM_AvatarInfo> local_2 = this.GetSelectedAvatar();
-            return local_3;
+            return this.GetSelectedAvatar().Get().GetAvatarConfig().Get().bIsMainPlayer;
         }
         return false;
     }
@@ -1133,24 +1015,16 @@ struct FVM_MainMenuAvatar : FEUIViewModel
     }
     void OnHoveredEquipmentSlotChanged()
     {
-        TEUIModelRef<FVM_EquipmentInfo> local_18;
         TEUIModelRef<FVM_AvatarEquipmentItemInfo> local_4 = TEUIModelRef<FVM_AvatarEquipmentItemInfo>(FEUIModelRef());
         this.SetHoveredEquipmentInfo(local_4);
-        TEUIModelRef<FVM_AvatarEquipment> local_6;
-        this.SetHoveredTalismanEquipment(local_6);
-        TEUIModelRef<FVM_AvatarInfo> local_8 = this.GetSelectedAvatar();
-        TEUIModelRef<FM_Avatar> local_10;
-        local_10.GetAvatar();
-        if (local_10.opArrow().GetbIsUnlocked())
+        this.SetHoveredTalismanEquipment(TEUIModelRef<FVM_AvatarEquipment>());
+        if (this.GetSelectedAvatar().Get().GetAvatar().opArrow().GetbIsUnlocked())
         {
             switch (int(this.GetHoveredEquipmentSlot()))
             {
             case 1:
             {
-                TEUIModelRef<FVM_MainMenuAvatarBuildTypeEntry> local_16 = this.GetWeaponEntry();
-                local_6.GetAvatarEquipment();
-                local_18 = local_6.opArrow().GetEquipment();
-                TEUIModelRef<FVM_AvatarEquipmentItemInfo> local_4_2 = TEUIModelRef<FVM_AvatarEquipmentItemInfo>(::FVM_AvatarEquipmentItemInfo::Create(this.GetManager(), local_18));
+                TEUIModelRef<FVM_AvatarEquipmentItemInfo> local_4_2 = TEUIModelRef<FVM_AvatarEquipmentItemInfo>(::FVM_AvatarEquipmentItemInfo::Create(this.GetManager(), this.GetWeaponEntry().Get().GetAvatarEquipment().opArrow().GetEquipment()));
                 this.SetHoveredEquipmentInfo(local_4_2);
                 break;
             }
@@ -1160,24 +1034,10 @@ struct FVM_MainMenuAvatar : FEUIViewModel
             case 5:
             {
                 int local_13 = int(this.GetHoveredEquipmentSlot()) - 2;
-                local_6.GetAvatarEquipment();
-                this.SetHoveredTalismanEquipment(local_6);
-                local_6 = this.GetHoveredTalismanEquipment();
-                bool local_11 = local_6.IsValid();
-                if (!(local_11))
+                this.SetHoveredTalismanEquipment(this.GetTalismanEquipments()[local_13].Get().GetAvatarEquipment());
+                if (this.GetHoveredTalismanEquipment().IsValid() && this.GetHoveredTalismanEquipment().Get().GetEquipment().IsValid())
                 {
-                    local_11 = false;
-                }
-                else
-                {
-                    local_6 = this.GetHoveredTalismanEquipment();
-                    local_18.GetEquipment();
-                    local_11 = local_18.IsValid();
-                }
-                if (local_11)
-                {
-                    local_6.GetAvatarEquipment();
-                    TEUIModelRef<FVM_AvatarEquipmentItemInfo> local_4_3 = TEUIModelRef<FVM_AvatarEquipmentItemInfo>(::FVM_AvatarEquipmentItemInfo::Create(this.GetManager(), local_6.opArrow().GetEquipment()));
+                    TEUIModelRef<FVM_AvatarEquipmentItemInfo> local_4_3 = TEUIModelRef<FVM_AvatarEquipmentItemInfo>(::FVM_AvatarEquipmentItemInfo::Create(this.GetManager(), this.GetTalismanEquipments()[local_13].Get().GetAvatarEquipment().opArrow().GetEquipment()));
                     this.SetHoveredEquipmentInfo(local_4_3);
                 }
                 break;
@@ -1188,13 +1048,12 @@ struct FVM_MainMenuAvatar : FEUIViewModel
             {
                 bool local_22 = false;
                 TEUIModelRef<FVM_AvatarEquipmentItemInfo> local_4_5 = this.GetHoveredEquipmentInfo();
-                local_22.SetIsEquipmentDescriptionShow();
-                int local_12 = int(this.GetHoveredEquipmentSlot());
+                local_4_5.Get().SetIsEquipmentDescriptionShow(local_22);
                 TEUIModelRef<FVM_AvatarEquipmentItemInfo> local_4_6 = this.GetHoveredEquipmentInfo();
-                local_12.SetEquipSlot();
+                local_4_6.Get().SetEquipSlot(this.GetHoveredEquipmentSlot());
                 bool local_22_2 = true;
                 TEUIModelRef<FVM_AvatarEquipmentItemInfo> local_4_7 = this.GetHoveredEquipmentInfo();
-                local_22_2.SetbShowGoToBtn();
+                local_4_7.Get().SetbShowGoToBtn(local_22_2);
             }
         }
         return;
@@ -1224,9 +1083,10 @@ struct FVM_MainMenuAvatar : FEUIViewModel
             int local_4 = 0;
             for (; local_4 < this.GetAvatarList().Num(); ++local_4)
             {
-                if (FEUIModelContainer::GetModel(this.GetAvatarList()[local_4]).opCall())
+                FVM_AvatarInfo& local_10 = FEUIModelContainer::GetModel(this.GetAvatarList()[local_4]).opCall();
+                if (local_10)
                 {
-                    if (0 == 0)
+                    if (local_10.GetAvatarConfig().Get().DataId == NewAvatar.Get().GetAvatarConfig().Get().DataId)
                     {
                         local_1 = local_4;
                         break;
@@ -1247,15 +1107,11 @@ struct FVM_MainMenuAvatar : FEUIViewModel
         {
             return;
         }
-        TEUIModelRef<FVM_AvatarInfo> local_2 = this.GetSelectedAvatar();
-        TEUIModelRef<FM_Avatar> local_6;
-        local_6.GetAvatar();
-        if (!(local_6.opArrow().GetbIsUnlocked()))
+        if (!(this.GetSelectedAvatar().Get().GetAvatar().opArrow().GetbIsUnlocked()))
         {
             return;
         }
-        TEUIModelRef<FVM_AvatarInfo> local_2_2 = this.GetSelectedAvatar();
-        if (!(GetAvatarConfig().IsSet()))
+        if (!(this.GetSelectedAvatar().Get().GetAvatarConfig().IsSet()))
         {
             return;
         }
@@ -1263,56 +1119,34 @@ struct FVM_MainMenuAvatar : FEUIViewModel
         {
             return;
         }
-        TEUIModelRef<FVM_AvatarInfo> local_2_3 = this.GetSelectedAvatar();
+        TEUIModelRef<FVM_AvatarInfo> local_2 = this.GetSelectedAvatar();
         UEUIManagerSubsystem local_10 = this.GetManager();
         FEUIWidget::AddWidget(this.GetContext().UELocalPlayer, GameplayTags::UI_Type_TrainingEntry, FEUIModelRef(local_12));
         return;
     }
     void RefreshTrainingRedDotVM()
     {
-        int local_9 = 0;
         TEUIModelRef<FVM_AvatarInfo> local_2 = this.GetSelectedAvatar();
-        bool local_3 = !(local_2.IsValid());
-        if (local_3)
-        {
-            local_3 = true;
-        }
-        else
-        {
-            TEUIModelRef<FVM_AvatarInfo> local_2_2 = this.GetSelectedAvatar();
-            local_3 = !(GetAvatarConfig().IsSet());
-        }
-        if (local_3)
+        if (!(local_2.IsValid()) || !(this.GetSelectedAvatar().Get().GetAvatarConfig().IsSet()))
         {
             return;
         }
         bool local_4 = false;
-        bool local_3_2 = ::FMS_SystemControl::Get(this.GetContext().Manager).IsSystemUnlock(ESystemModule(103), local_4);
-        if (!(local_3_2))
+        bool local_3 = ::FMS_SystemControl::Get(this.GetContext().Manager).IsSystemUnlock(ESystemModule(103), local_4);
+        if (!(local_3))
         {
             return;
         }
-        TEUIModelRef<FVM_AvatarInfo> local_2_3 = this.GetSelectedAvatar();
-        this.SetTrainingRedDotVM(TEUIModelRef<FVM_RedDot>(::FVM_RedDot::Create(this.GetContext().Manager, FRedDotNodeData(GameplayTags::RedDotSystem_AvatarTraining, local_9))));
+        TEUIModelRef<FVM_AvatarInfo> local_2_2 = this.GetSelectedAvatar();
+        this.SetTrainingRedDotVM(TEUIModelRef<FVM_RedDot>(::FVM_RedDot::Create(this.GetContext().Manager, FRedDotNodeData(GameplayTags::RedDotSystem_AvatarTraining, local_2_2.Get().GetAvatarConfig().Get().DataId))));
         return;
     }
     void RefreshAvatarHasUnlockedTraining()
     {
         bool local_1 = false;
-        bool local_2 = this.GetSelectedAvatar().IsValid();
-        if (!(local_2))
+        if (this.GetSelectedAvatar().IsValid() && this.GetSelectedAvatar().Get().GetAvatarConfig().IsSet())
         {
-            local_2 = false;
-        }
-        else
-        {
-            TEUIModelRef<FVM_AvatarInfo> local_4 = this.GetSelectedAvatar();
-            local_2 = GetAvatarConfig().IsSet();
-        }
-        if (local_2)
-        {
-            TEUIModelRef<FVM_AvatarInfo> local_4_2 = this.GetSelectedAvatar();
-            local_1 = ::FMS_TrainingModel::Get(this.GetManager()).HasUnlockedTraining(GetAvatarConfig());
+            local_1 = ::FMS_TrainingModel::Get(this.GetManager()).HasUnlockedTraining(this.GetSelectedAvatar().Get().GetAvatarConfig());
         }
         if (!(this.GetbAvatarHasUnlockedTraining()) != !(local_1))
         {
@@ -1331,28 +1165,17 @@ struct FVM_MainMenuAvatar : FEUIViewModel
         this.SetPlayerOwnedAvatarInfo(TEUIModelRef<FVMS_PlayerOwnedAvatarInfo>(::FVMS_PlayerOwnedAvatarInfo::Get(this.GetManager())));
         this.SetHoverTalismanLockedTips(TEUIModelRef<FVM_Text>(::FVM_Text::Create(this.GetManager(), NSLOCTEXT("HoverTalismanUnlockedText", "该灵饰槽位未解锁"))));
         this.SetHoverTalismanEmptyTips(TEUIModelRef<FVM_EquipHoverTips>(::FVM_EquipHoverTips::Create(this.GetManager())));
-        FText local_8 = NSLOCTEXT("HoverTalismanEmptyText", "未装备灵饰");
-        TEUIModelRef<FVM_EquipHoverTips> local_12 = this.GetHoverTalismanEmptyTips();
-        local_8.SetDisplayName();
-        int local_13 = 0;
-        TEUIModelRef<FVM_EquipHoverTips> local_12_2 = this.GetHoverTalismanEmptyTips();
-        local_13.SetbIsShowLevel();
-        TEUIModelRef<FVM_EquipHoverTips> local_12_3 = this.GetHoverTalismanEmptyTips();
-        GetOnClickGoToCallback().Bind(this, FVM_MainMenuAvatar::GotoAvatarTalismanPageWithModelRef);
+        this.GetHoverTalismanEmptyTips().Get().SetDisplayName(NSLOCTEXT("HoverTalismanEmptyText", "未装备灵饰"));
+        this.GetHoverTalismanEmptyTips().Get().SetbIsShowLevel(false);
+        this.GetHoverTalismanEmptyTips().Get().GetOnClickGoToCallback().Bind(this, FVM_MainMenuAvatar::GotoAvatarTalismanPageWithModelRef);
         this.SetWeaponEntry(TEUIModelRef<FVM_MainMenuAvatarBuildTypeEntry>(::FVM_MainMenuAvatarBuildTypeEntry::Create(this.GetManager())));
-        TEUIModelRef<FVM_MainMenuAvatarBuildTypeEntry> local_16 = this.GetWeaponEntry();
-        1.SetEquipSlotType();
-        TEUIModelRef<FVM_MainMenuAvatarBuildTypeEntry> local_16_2 = this.GetWeaponEntry();
-        GetOnEnterClickCallback().Bind(this, FVM_MainMenuAvatar::GotoAvatarWeaponPageWithModelRef);
-        TEUIModelRef<FVM_MainMenuAvatarBuildTypeEntry> local_16_3 = this.GetWeaponEntry();
-        GetOnHoverEquipSlotChanged().Bind(this, FVM_MainMenuAvatar::OnHoverEquipSlotChangedCallback);
+        this.GetWeaponEntry().Get().SetEquipSlotType(EEquipSlotType(1));
+        this.GetWeaponEntry().Get().GetOnEnterClickCallback().Bind(this, FVM_MainMenuAvatar::GotoAvatarWeaponPageWithModelRef);
+        this.GetWeaponEntry().Get().GetOnHoverEquipSlotChanged().Bind(this, FVM_MainMenuAvatar::OnHoverEquipSlotChangedCallback);
         this.BuildTalismanEntries();
         this.SetTalentEntry(TEUIModelRef<FVM_MainMenuAvatarBuildTypeEntry>(::FVM_MainMenuAvatarBuildTypeEntry::Create(this.GetManager())));
-        int local_17_2 = 0;
-        TEUIModelRef<FVM_MainMenuAvatarBuildTypeEntry> local_16_4 = this.GetTalentEntry();
-        local_17_2.SetEquipSlotType();
-        TEUIModelRef<FVM_MainMenuAvatarBuildTypeEntry> local_16_5 = this.GetTalentEntry();
-        GetOnEnterClickCallback().Bind(this, FVM_MainMenuAvatar::GotoAvatarTalentPageWithModelRef);
+        this.GetTalentEntry().Get().SetEquipSlotType(EEquipSlotType(0));
+        this.GetTalentEntry().Get().GetOnEnterClickCallback().Bind(this, FVM_MainMenuAvatar::GotoAvatarTalentPageWithModelRef);
         this.SetAvatarDetailInfo(TEUIModelRef<FVM_AvatarDetailInfo>(::FVM_AvatarDetailInfo::Create(this.GetManager())));
         this.UpdateAvatarList();
         this.SetSelectedAvatarIndex(0);
@@ -1375,22 +1198,19 @@ struct FVM_MainMenuAvatar : FEUIViewModel
     }
     void UpdateAvatarList()
     {
-        int local_7 = 0;
-        int local_23 = 0;
-        ::FMS_PlayerData::Get(this.GetManager()).GetLocalPlayerData();
-        int local_8 = GetPlayerSpecialtyID();
+        int local_8 = ::FMS_PlayerData::Get(this.GetManager()).GetLocalPlayerData().Get().GetPlayerSpecialtyID();
         this.GetModify_MainAvatarSpecialtyList().Empty(0);
         ::FMS_PlayerAvatarData::Get(this.GetContext().Manager).RefreshAvatarListEntryRedDot();
         TArray<FEUIModelContainer> local_14;
-        TEUIModelRef<FVMS_PlayerOwnedAvatarInfo> local_16 = this.GetPlayerOwnedAvatarInfo();
-        TArray<TEUIModelRef<FVM_AvatarInfo>> local_20 = GetAllConfigAvatars();
+        TArray<TEUIModelRef<FVM_AvatarInfo>> local_20 = this.GetPlayerOwnedAvatarInfo().Get().GetAllConfigAvatars();
         int local_21 = 0;
         for (; local_21 < local_20.Num(); ++local_21)
         {
+            int local_23 = local_20[local_21].Get().GetAvatarConfig().Get().bIsMainPlayer;
             if (local_23 != 0)
             {
                 this.GetModify_MainAvatarSpecialtyList().Add(local_20[local_21]);
-                if (local_7 != local_8)
+                if (local_20[local_21].Get().GetAvatarConfig().Get().DataId != local_8)
                 {
                     continue;
                 }
@@ -1400,7 +1220,7 @@ struct FVM_MainMenuAvatar : FEUIViewModel
             FEUIModelRef local_40;
             local_40;
             local_38.AddModel(local_40, local_20[local_21]);
-            int64 local_46 = local_7;
+            int64 local_46 = local_20[local_21].Get().GetAvatarConfig().Get().DataId;
             FVM_RedDot& local_48 = ::FVM_RedDot::Create(this.GetContext().Manager, FRedDotNodeData(GameplayTags::RedDotSystem_Avatar_ListEntry, local_46));
             local_38.AddModel(FEUIModelRef(local_48), false);
             local_14.Add(local_38);
@@ -1410,33 +1230,19 @@ struct FVM_MainMenuAvatar : FEUIViewModel
     }
     void OnSelectedAvatarIndexChanged()
     {
-        int local_19 = 0;
         if (this.GetAvatarList().IsValidIndex(this.GetSelectedAvatarIndex()))
         {
-            TEUIModelRef<FM_Avatar> local_16;
             this.SetSelectedAvatar(TEUIModelRef<FVM_AvatarInfo>(FEUIModelContainer::GetModel(this.GetAvatarList()[this.GetSelectedAvatarIndex()]).opCall()));
             this.SetSelectedAvatarEquipment(this.GetSelectedAvatar().opArrow().GetAvatarEquipment());
             this.SetFoundationNode(this.GetSelectedAvatar().opArrow().GetFoundationNode());
-            TEUIModelRef<FVM_AvatarInfo> local_8 = this.GetSelectedAvatar();
-            local_16.GetAvatar();
-            bool local_2 = local_16.opArrow().GetbIsUnlocked();
-            TEUIModelRef<FVM_AvatarInfo> local_8_2 = this.GetSelectedAvatar();
-            TEUIModelRef<FVM_MainMenuAvatarBuildTypeEntry> local_14 = this.GetTalentEntry();
-            local_8_2.InitialzeAsTalent(local_2);
+            this.GetTalentEntry().Get().InitialzeAsTalent(this.GetSelectedAvatar(), this.GetSelectedAvatar().Get().GetAvatar().opArrow().GetbIsUnlocked());
             this.RefreshEntries();
             this.RefreshShowcaseAvatars();
-            TEUIModelRef<FVM_AvatarInfo> local_8_3 = this.GetSelectedAvatar();
-            local_16.GetAvatar();
-            TEUIModelRef<FVM_AvatarDetailInfo> local_18 = this.GetAvatarDetailInfo();
-            local_16.SetCurrentAvatar();
-            bool local_2_2 = this.GetbDisplayAttributeOrSkill();
-            TEUIModelRef<FVM_AvatarDetailInfo> local_18_2 = this.GetAvatarDetailInfo();
-            local_2_2.TrySetShowAttributeOrSkill();
-            TEUIModelRef<FVM_AvatarInfo> local_8_4 = this.GetSelectedAvatar();
-            if (GetAvatarConfig().IsSet())
+            this.GetAvatarDetailInfo().Get().SetCurrentAvatar(this.GetSelectedAvatar().Get().GetAvatar());
+            this.GetAvatarDetailInfo().Get().TrySetShowAttributeOrSkill(this.GetbDisplayAttributeOrSkill());
+            if (this.GetSelectedAvatar().Get().GetAvatarConfig().IsSet())
             {
-                TEUIModelRef<FVM_AvatarInfo> local_8_5 = this.GetSelectedAvatar();
-                int64 local_22 = local_19;
+                int64 local_22 = this.GetSelectedAvatar().Get().GetAvatarConfig().Get().DataId;
                 ::FMS_RedDotSystem::Get(this.GetContext().Manager).ConsumeRedDot(this.GetRedDotNewAvatarTag(), local_22);
                 ::FMS_PlayerAvatarData::Get(this.GetContext().Manager).RefreshAvatarListEntryRedDot();
             }
@@ -1447,21 +1253,14 @@ struct FVM_MainMenuAvatar : FEUIViewModel
     }
     void UpdateWeaponEntry()
     {
-        TEUIModelRef<FVM_MainMenuAvatarBuildTypeEntry> local_2 = this.GetWeaponEntry();
-        this.GetSelectedAvatarEquipment().opArrow().GetEquipment().InitialzeAsWeapon();
+        this.GetWeaponEntry().Get().InitialzeAsWeapon(this.GetSelectedAvatarEquipment().opArrow().GetEquipment());
         return;
     }
     void OnFoundationNodeChanged()
     {
         if (this.GetTalentEntry().IsValid() && this.GetSelectedAvatar().IsValid())
         {
-            TEUIModelRef<FM_Avatar> local_10;
-            TEUIModelRef<FVM_AvatarInfo> local_6 = this.GetSelectedAvatar();
-            local_10.GetAvatar();
-            bool local_3 = local_10.opArrow().GetbIsUnlocked();
-            TEUIModelRef<FVM_AvatarInfo> local_6_2 = this.GetSelectedAvatar();
-            TEUIModelRef<FVM_MainMenuAvatarBuildTypeEntry> local_2 = this.GetTalentEntry();
-            local_6_2.InitialzeAsTalent(local_3);
+            this.GetTalentEntry().Get().InitialzeAsTalent(this.GetSelectedAvatar(), this.GetSelectedAvatar().Get().GetAvatar().opArrow().GetbIsUnlocked());
         }
         return;
     }
@@ -1481,10 +1280,7 @@ struct FVM_MainMenuAvatar : FEUIViewModel
     }
     bool GotoAvatarWeaponPage()
     {
-        TEUIModelRef<FVM_AvatarInfo> local_2 = this.GetSelectedAvatar();
-        TEUIModelRef<FM_Avatar> local_4;
-        local_4.GetAvatar();
-        if (!(local_4.opArrow().GetbIsUnlocked()))
+        if (!(this.GetSelectedAvatar().Get().GetAvatar().opArrow().GetbIsUnlocked()))
         {
             return false;
         }
@@ -1499,20 +1295,9 @@ struct FVM_MainMenuAvatar : FEUIViewModel
             FVM_MainMenuAvatarBuildTypeEntry& local_4 = local_8.opCall();
             if (local_4)
             {
-                bool local_1 = local_4.GetRedDotVM().IsValid();
-                if (!(local_1))
+                if (local_4.GetRedDotVM().IsValid() && local_4.GetRedDotVM().Get().HasRedDot())
                 {
-                    local_1 = false;
-                }
-                else
-                {
-                    TEUIModelRef<FVM_RedDot> local_10 = local_4.GetRedDotVM();
-                    local_1 = HasRedDot();
-                }
-                if (local_1)
-                {
-                    TEUIModelRef<FVM_RedDot> local_10_2 = local_4.GetRedDotVM();
-                    ::FMS_RedDotSystem::Get(this.GetContext().Manager).ConsumeRedDot(GetNodeData());
+                    ::FMS_RedDotSystem::Get(this.GetContext().Manager).ConsumeRedDot(local_4.GetRedDotVM().Get().GetNodeData());
                     ::FMS_PlayerAvatarData::Get(this.GetContext().Manager).RefreshAvatarListEntryRedDot();
                 }
             }
@@ -1521,10 +1306,7 @@ struct FVM_MainMenuAvatar : FEUIViewModel
     }
     bool GotoAvatarTalismanPage()
     {
-        TEUIModelRef<FVM_AvatarInfo> local_2 = this.GetSelectedAvatar();
-        TEUIModelRef<FM_Avatar> local_4;
-        local_4.GetAvatar();
-        if (!(local_4.opArrow().GetbIsUnlocked()))
+        if (!(this.GetSelectedAvatar().Get().GetAvatar().opArrow().GetbIsUnlocked()))
         {
             return false;
         }
@@ -1548,50 +1330,23 @@ struct FVM_MainMenuAvatar : FEUIViewModel
             FVM_MainMenuAvatarBuildTypeEntry& local_4 = local_8.opCall();
             if (local_4)
             {
-                TEUIModelRef<FVM_RedDot> local_10 = local_4.GetRedDotVM();
-                bool local_1 = local_10.IsValid();
-                if (!(local_1))
+                if (local_4.GetRedDotVM().IsValid() && local_4.GetRedDotVM().Get().HasRedDot())
                 {
-                    local_1 = false;
-                }
-                else
-                {
-                    local_10 = local_4.GetRedDotVM();
-                    local_1 = HasRedDot();
-                }
-                if (local_1)
-                {
-                    TEUIModelRef<FVM_MainMenuAvatarBuildTypeEntry> local_14 = this.GetTalisman1Entry();
-                    local_10.GetRedDotVM();
-                    if (local_10.IsValid())
+                    if (this.GetTalisman1Entry().Get().GetRedDotVM().IsValid())
                     {
-                        TEUIModelRef<FVM_MainMenuAvatarBuildTypeEntry> local_14_2 = this.GetTalisman1Entry();
-                        local_10.GetRedDotVM();
-                        ::FMS_RedDotSystem::Get(this.GetContext().Manager).ConsumeRedDot(GetNodeData());
+                        ::FMS_RedDotSystem::Get(this.GetContext().Manager).ConsumeRedDot(this.GetTalisman1Entry().Get().GetRedDotVM().Get().GetNodeData());
                     }
-                    TEUIModelRef<FVM_MainMenuAvatarBuildTypeEntry> local_14_3 = this.GetTalisman2Entry();
-                    local_10.GetRedDotVM();
-                    if (local_10.IsValid())
+                    if (this.GetTalisman2Entry().Get().GetRedDotVM().IsValid())
                     {
-                        TEUIModelRef<FVM_MainMenuAvatarBuildTypeEntry> local_14_4 = this.GetTalisman2Entry();
-                        local_10.GetRedDotVM();
-                        ::FMS_RedDotSystem::Get(this.GetContext().Manager).ConsumeRedDot(GetNodeData());
+                        ::FMS_RedDotSystem::Get(this.GetContext().Manager).ConsumeRedDot(this.GetTalisman2Entry().Get().GetRedDotVM().Get().GetNodeData());
                     }
-                    TEUIModelRef<FVM_MainMenuAvatarBuildTypeEntry> local_14_5 = this.GetTalisman3Entry();
-                    local_10.GetRedDotVM();
-                    if (local_10.IsValid())
+                    if (this.GetTalisman3Entry().Get().GetRedDotVM().IsValid())
                     {
-                        TEUIModelRef<FVM_MainMenuAvatarBuildTypeEntry> local_14_6 = this.GetTalisman3Entry();
-                        local_10.GetRedDotVM();
-                        ::FMS_RedDotSystem::Get(this.GetContext().Manager).ConsumeRedDot(GetNodeData());
+                        ::FMS_RedDotSystem::Get(this.GetContext().Manager).ConsumeRedDot(this.GetTalisman3Entry().Get().GetRedDotVM().Get().GetNodeData());
                     }
-                    TEUIModelRef<FVM_MainMenuAvatarBuildTypeEntry> local_14_7 = this.GetTalisman4Entry();
-                    local_10.GetRedDotVM();
-                    if (local_10.IsValid())
+                    if (this.GetTalisman4Entry().Get().GetRedDotVM().IsValid())
                     {
-                        TEUIModelRef<FVM_MainMenuAvatarBuildTypeEntry> local_14_8 = this.GetTalisman4Entry();
-                        local_10.GetRedDotVM();
-                        ::FMS_RedDotSystem::Get(this.GetContext().Manager).ConsumeRedDot(GetNodeData());
+                        ::FMS_RedDotSystem::Get(this.GetContext().Manager).ConsumeRedDot(this.GetTalisman4Entry().Get().GetRedDotVM().Get().GetNodeData());
                     }
                     ::FMS_PlayerAvatarData::Get(this.GetContext().Manager).RefreshAvatarListEntryRedDot();
                 }
@@ -1625,22 +1380,21 @@ struct FVM_MainMenuAvatar : FEUIViewModel
             return;
         }
         TEUIModelRef<FVM_AvatarEquipment> local_8 = this.GetSelectedAvatarEquipment();
-        TEUIModelRef<FVM_MainMenuAvatarBuildTypeEntry> local_6 = this.GetWeaponEntry();
-        local_8.SetAvatarEquipment();
+        this.GetWeaponEntry().Get().SetAvatarEquipment(local_8);
         int local_9 = 0;
         for (; local_9 < this.GetTalismanEquipments().Num(); ++local_9)
         {
             if (this.GetSelectedAvatar().opArrow().GetTalismanEquipments().IsValidIndex(local_9))
             {
-                this.GetSelectedAvatar().opArrow().GetTalismanEquipments()[local_9].SetAvatarEquipment();
+                this.GetTalismanEquipments()[local_9].Get().SetAvatarEquipment(this.GetSelectedAvatar().opArrow().GetTalismanEquipments()[local_9]);
                 continue;
             }
-            local_8.SetAvatarEquipment();
+            this.GetTalismanEquipments()[local_9].Get().SetAvatarEquipment(local_8);
         }
         TEUIModelRef<FVM_AvatarSpecialtyInfo> local_18 = TEUIModelRef<FVM_AvatarSpecialtyInfo>(::FVM_AvatarSpecialtyInfo::Create(this.GetManager(), this.GetSelectedAvatar().opArrow().GetAvatarConfig()));
         this.SetSelectedAvatarSpecialtyInfo(local_18);
         TEUIModelRef<FVM_AvatarSpecialtyInfo> local_18_2 = this.GetSelectedAvatarSpecialtyInfo();
-        GetOnHoverChanged().Bind(this, FVM_MainMenuAvatar::OnSpecialtyHoverChangedCallback);
+        local_18_2.Get().GetOnHoverChanged().Bind(this, FVM_MainMenuAvatar::OnSpecialtyHoverChangedCallback);
         if ((int(this.GetHoveredEquipmentSlot())) != 0)
         {
             this.OnHoveredEquipmentSlotChanged();
@@ -1649,23 +1403,12 @@ struct FVM_MainMenuAvatar : FEUIViewModel
     }
     bool OnSpecialtyHoverChangedCallback(const bool bHovered)
     {
-        bool local_6;
         this.SetbIsShowSpecialtyHoverTips(false);
         if (this.GetSelectedAvatarSpecialtyInfo().IsValid())
         {
-            if (!(bHovered))
+            if (bHovered && this.GetSelectedAvatarSpecialtyInfo().Get().GetbIsHover())
             {
-                local_6 = false;
-            }
-            else
-            {
-                TEUIModelRef<FVM_AvatarSpecialtyInfo> local_4 = this.GetSelectedAvatarSpecialtyInfo();
-                local_6 = GetbIsHover();
-            }
-            if (local_6)
-            {
-                TEUIModelRef<FVM_AvatarSpecialtyInfo> local_4_2 = this.GetSelectedAvatarSpecialtyInfo();
-                this.SetbIsShowSpecialtyHoverTips(GetbIsMainPlayer());
+                this.SetbIsShowSpecialtyHoverTips(this.GetSelectedAvatarSpecialtyInfo().Get().GetbIsMainPlayer());
             }
         }
         return true;
@@ -1675,8 +1418,7 @@ struct FVM_MainMenuAvatar : FEUIViewModel
         bool local_1 = false;
         if (this.GetSelectedAvatarSpecialtyInfo().IsValid())
         {
-            TEUIModelRef<FVM_AvatarSpecialtyInfo> local_4 = this.GetSelectedAvatarSpecialtyInfo();
-            local_1 = GetbIsMainPlayer();
+            local_1 = this.GetSelectedAvatarSpecialtyInfo().Get().GetbIsMainPlayer();
         }
         this.SetbIsShowSpecialtyHoverTips(this.GetbIsShowSpecialtyHoverTips() && local_1);
         return;
@@ -1686,39 +1428,24 @@ struct FVM_MainMenuAvatar : FEUIViewModel
         if (this.GetTalismanEquipments().IsEmpty())
         {
             this.SetTalisman1Entry(TEUIModelRef<FVM_MainMenuAvatarBuildTypeEntry>(::FVM_MainMenuAvatarBuildTypeEntry::Create(this.GetManager())));
-            TEUIModelRef<FVM_MainMenuAvatarBuildTypeEntry> local_6 = this.GetTalisman1Entry();
-            2.SetEquipSlotType();
-            TEUIModelRef<FVM_MainMenuAvatarBuildTypeEntry> local_6_2 = this.GetTalisman1Entry();
-            GetOnEnterClickCallback().Bind(this, FVM_MainMenuAvatar::GotoAvatarTalismanPageWithModelRef);
-            TEUIModelRef<FVM_MainMenuAvatarBuildTypeEntry> local_6_3 = this.GetTalisman1Entry();
-            GetOnHoverEquipSlotChanged().Bind(this, FVM_MainMenuAvatar::OnHoverEquipSlotChangedCallback);
+            this.GetTalisman1Entry().Get().SetEquipSlotType(EEquipSlotType(2));
+            this.GetTalisman1Entry().Get().GetOnEnterClickCallback().Bind(this, FVM_MainMenuAvatar::GotoAvatarTalismanPageWithModelRef);
+            this.GetTalisman1Entry().Get().GetOnHoverEquipSlotChanged().Bind(this, FVM_MainMenuAvatar::OnHoverEquipSlotChangedCallback);
             this.GetModify_TalismanEquipments().Add(this.GetTalisman1Entry());
             this.SetTalisman2Entry(TEUIModelRef<FVM_MainMenuAvatarBuildTypeEntry>(::FVM_MainMenuAvatarBuildTypeEntry::Create(this.GetManager())));
-            int local_7 = 3;
-            TEUIModelRef<FVM_MainMenuAvatarBuildTypeEntry> local_6_4 = this.GetTalisman2Entry();
-            local_7.SetEquipSlotType();
-            TEUIModelRef<FVM_MainMenuAvatarBuildTypeEntry> local_6_5 = this.GetTalisman2Entry();
-            GetOnEnterClickCallback().Bind(this, FVM_MainMenuAvatar::GotoAvatarTalismanPageWithModelRef);
-            TEUIModelRef<FVM_MainMenuAvatarBuildTypeEntry> local_6_6 = this.GetTalisman2Entry();
-            GetOnHoverEquipSlotChanged().Bind(this, FVM_MainMenuAvatar::OnHoverEquipSlotChangedCallback);
+            this.GetTalisman2Entry().Get().SetEquipSlotType(EEquipSlotType(3));
+            this.GetTalisman2Entry().Get().GetOnEnterClickCallback().Bind(this, FVM_MainMenuAvatar::GotoAvatarTalismanPageWithModelRef);
+            this.GetTalisman2Entry().Get().GetOnHoverEquipSlotChanged().Bind(this, FVM_MainMenuAvatar::OnHoverEquipSlotChangedCallback);
             this.GetModify_TalismanEquipments().Add(this.GetTalisman2Entry());
             this.SetTalisman3Entry(TEUIModelRef<FVM_MainMenuAvatarBuildTypeEntry>(::FVM_MainMenuAvatarBuildTypeEntry::Create(this.GetManager())));
-            local_7 = 4;
-            TEUIModelRef<FVM_MainMenuAvatarBuildTypeEntry> local_6_7 = this.GetTalisman3Entry();
-            local_7.SetEquipSlotType();
-            TEUIModelRef<FVM_MainMenuAvatarBuildTypeEntry> local_6_8 = this.GetTalisman3Entry();
-            GetOnEnterClickCallback().Bind(this, FVM_MainMenuAvatar::GotoAvatarTalismanPageWithModelRef);
-            TEUIModelRef<FVM_MainMenuAvatarBuildTypeEntry> local_6_9 = this.GetTalisman3Entry();
-            GetOnHoverEquipSlotChanged().Bind(this, FVM_MainMenuAvatar::OnHoverEquipSlotChangedCallback);
+            this.GetTalisman3Entry().Get().SetEquipSlotType(EEquipSlotType(4));
+            this.GetTalisman3Entry().Get().GetOnEnterClickCallback().Bind(this, FVM_MainMenuAvatar::GotoAvatarTalismanPageWithModelRef);
+            this.GetTalisman3Entry().Get().GetOnHoverEquipSlotChanged().Bind(this, FVM_MainMenuAvatar::OnHoverEquipSlotChangedCallback);
             this.GetModify_TalismanEquipments().Add(this.GetTalisman3Entry());
             this.SetTalisman4Entry(TEUIModelRef<FVM_MainMenuAvatarBuildTypeEntry>(::FVM_MainMenuAvatarBuildTypeEntry::Create(this.GetManager())));
-            local_7 = 5;
-            TEUIModelRef<FVM_MainMenuAvatarBuildTypeEntry> local_6_10 = this.GetTalisman4Entry();
-            local_7.SetEquipSlotType();
-            TEUIModelRef<FVM_MainMenuAvatarBuildTypeEntry> local_6_11 = this.GetTalisman4Entry();
-            GetOnEnterClickCallback().Bind(this, FVM_MainMenuAvatar::GotoAvatarTalismanPageWithModelRef);
-            TEUIModelRef<FVM_MainMenuAvatarBuildTypeEntry> local_6_12 = this.GetTalisman4Entry();
-            GetOnHoverEquipSlotChanged().Bind(this, FVM_MainMenuAvatar::OnHoverEquipSlotChangedCallback);
+            this.GetTalisman4Entry().Get().SetEquipSlotType(EEquipSlotType(5));
+            this.GetTalisman4Entry().Get().GetOnEnterClickCallback().Bind(this, FVM_MainMenuAvatar::GotoAvatarTalismanPageWithModelRef);
+            this.GetTalisman4Entry().Get().GetOnHoverEquipSlotChanged().Bind(this, FVM_MainMenuAvatar::OnHoverEquipSlotChangedCallback);
             this.GetModify_TalismanEquipments().Add(this.GetTalisman4Entry());
         }
         return;
@@ -1731,26 +1458,20 @@ struct FVM_MainMenuAvatar : FEUIViewModel
         }
         if (!(this.GetSelectedAvatar()))
         {
-            TEUIModelRef<FVM_AvatarShowcase> local_2 = this.GetShowcase();
-            TArray<FAvatarShowcaseEntry> local_10;
-            local_10.SetNextAvatarEntries();
+            this.GetShowcase().Get().SetNextAvatarEntries(TArray<FAvatarShowcaseEntry>());
             return;
         }
         TArray<FAvatarShowcaseEntry> local_14;
         FAvatarShowcaseEntry local_62;
-        TEUIModelRef<FVM_AvatarInfo> local_6 = this.GetSelectedAvatar();
-        local_62.AvatarConfig = GetAvatarConfig();
+        TDataObjectPtr<FAvatarPrefabConfig> local_86 = this.GetSelectedAvatar().Get().GetAvatarConfig();
+        local_62.AvatarConfig = local_86;
         if (this.GetSelectedAvatarEquipment())
         {
-            TEUIModelRef<FVM_AvatarEquipment> local_112 = this.GetSelectedAvatarEquipment();
-            TEUIModelRef<FVM_EquipmentInfo> local_116;
-            local_116.GetEquipment();
+            TEUIModelRef<FVM_EquipmentInfo> local_116 = this.GetSelectedAvatarEquipment().Get().GetEquipment();
             TEUIModelRef<FVM_EquipmentInfo> local_114;
             if (local_114)
             {
-                TDataObjectPtr<FEquipmentConfig> local_140;
-                local_140.GetEquipmentConfig();
-                if (local_140)
+                if (local_114.Get().GetEquipmentConfig())
                 {
                     CastTo local_168;
                     TDataObjectPtr<FWeaponConfig> local_192 = local_168.opCall();
@@ -1762,12 +1483,11 @@ struct FVM_MainMenuAvatar : FEUIViewModel
             }
             else
             {
-                local_62.WeaponConfig = GetDefaultWeapon();
+                local_62.WeaponConfig = local_86.Get().GetDefaultWeapon();
             }
         }
         local_14.Add(local_62);
-        TEUIModelRef<FVM_AvatarShowcase> local_2_2 = this.GetShowcase();
-        local_14.SetNextAvatarEntries();
+        this.GetShowcase().Get().SetNextAvatarEntries(local_14);
         return;
     }
     int GetSelectedAvatarIndex() const property
@@ -2311,11 +2031,9 @@ FVM_MainMenuAvatarBuildTypeEntry& Create(const UObject ContextObject)
 {
     return FVM_MainMenuAvatarBuildTypeEntry::CreateByManager(EUIInternal::GetContextManager(ContextObject));
 }
-FVM_MainMenuAvatarBuildTypeEntry CreateByManager(const UEUIManagerSubsystem Manager)
+FVM_MainMenuAvatarBuildTypeEntry& CreateByManager(const UEUIManagerSubsystem Manager)
 {
-    FVM_MainMenuAvatarBuildTypeEntry __r;
-    TEUIModelRef<FVM_MainMenuAvatarBuildTypeEntry> local_6 = TEUIModelRef<FVM_MainMenuAvatarBuildTypeEntry>(EUIInternal::MakeModelWithManager(Manager, FVM_MainMenuAvatarBuildTypeEntry::ModelId));
-    return __r;
+    return TEUIModelRef<FVM_MainMenuAvatarBuildTypeEntry>(EUIInternal::MakeModelWithManager(Manager, FVM_MainMenuAvatarBuildTypeEntry::ModelId)).Get();
 }
 void GetModelInfo(FEUIViewModelMetaInfo &inout Result)
 {
@@ -2551,8 +2269,7 @@ namespace __GeneratedProperties_FVM_MainMenuAvatarBuildTypeEntry
 {
 UScriptStruct StaticStruct()
 {
-    UScriptStruct local_2;
-    return local_2;
+    return __GeneratedProperties_FVM_MainMenuAvatarBuildTypeEntry.Get();
 }
 }
 namespace FVM_MainMenuAvatarReturnBtnState
@@ -2561,11 +2278,9 @@ FVM_MainMenuAvatarReturnBtnState& Create(const UObject ContextObject)
 {
     return FVM_MainMenuAvatarReturnBtnState::CreateByManager(EUIInternal::GetContextManager(ContextObject));
 }
-FVM_MainMenuAvatarReturnBtnState CreateByManager(const UEUIManagerSubsystem Manager)
+FVM_MainMenuAvatarReturnBtnState& CreateByManager(const UEUIManagerSubsystem Manager)
 {
-    FVM_MainMenuAvatarReturnBtnState __r;
-    TEUIModelRef<FVM_MainMenuAvatarReturnBtnState> local_6 = TEUIModelRef<FVM_MainMenuAvatarReturnBtnState>(EUIInternal::MakeModelWithManager(Manager, FVM_MainMenuAvatarReturnBtnState::ModelId));
-    return __r;
+    return TEUIModelRef<FVM_MainMenuAvatarReturnBtnState>(EUIInternal::MakeModelWithManager(Manager, FVM_MainMenuAvatarReturnBtnState::ModelId)).Get();
 }
 void GetModelInfo(FEUIViewModelMetaInfo &inout Result)
 {
@@ -2617,8 +2332,7 @@ namespace __GeneratedProperties_FVM_MainMenuAvatarReturnBtnState
 {
 UScriptStruct StaticStruct()
 {
-    UScriptStruct local_2;
-    return local_2;
+    return __GeneratedProperties_FVM_MainMenuAvatarReturnBtnState.Get();
 }
 }
 namespace FVM_MainMenuAvatar
@@ -2627,11 +2341,9 @@ FVM_MainMenuAvatar& Create(const UObject ContextObject)
 {
     return FVM_MainMenuAvatar::CreateByManager(EUIInternal::GetContextManager(ContextObject));
 }
-FVM_MainMenuAvatar CreateByManager(const UEUIManagerSubsystem Manager)
+FVM_MainMenuAvatar& CreateByManager(const UEUIManagerSubsystem Manager)
 {
-    FVM_MainMenuAvatar __r;
-    TEUIModelRef<FVM_MainMenuAvatar> local_6 = TEUIModelRef<FVM_MainMenuAvatar>(EUIInternal::MakeModelWithManager(Manager, FVM_MainMenuAvatar::ModelId));
-    return __r;
+    return TEUIModelRef<FVM_MainMenuAvatar>(EUIInternal::MakeModelWithManager(Manager, FVM_MainMenuAvatar::ModelId)).Get();
 }
 void GetModelInfo(FEUIViewModelMetaInfo &inout Result)
 {
@@ -3133,7 +2845,6 @@ namespace __GeneratedProperties_FVM_MainMenuAvatar
 {
 UScriptStruct StaticStruct()
 {
-    UScriptStruct local_2;
-    return local_2;
+    return __GeneratedProperties_FVM_MainMenuAvatar.Get();
 }
 }

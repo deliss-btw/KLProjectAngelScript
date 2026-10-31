@@ -120,22 +120,22 @@ class UWidget_VirtualJoystick : UEUIUserWidget
     UFUNCTION()
     FVector2D MoveJoystick_ThumbOffset() const
     {
-        FVM_MoveJoystick& local_2;
+        FVM_MoveJoystick& local_2 = this.MoveJoystick.Get();
         FVector2D local_12 = local_2 ? local_2.GetThumbOffset() : FVector2D();
         return local_12;
     }
     UFUNCTION()
     FVector2D MoveJoystick_BasePosition() const
     {
-        FVM_MoveJoystick& local_2;
+        FVM_MoveJoystick& local_2 = this.MoveJoystick.Get();
         FVector2D local_12 = local_2 ? local_2.GetBasePosition() : FVector2D();
         return local_12;
     }
     UFUNCTION()
     bool MoveJoystick_bIsActive() const
     {
-        FVM_MoveJoystick& local_2;
         bool local_5;
+        FVM_MoveJoystick& local_2 = this.MoveJoystick.Get();
         if (local_2)
         {
             local_5 = local_2.GetbIsActive();
@@ -149,7 +149,7 @@ class UWidget_VirtualJoystick : UEUIUserWidget
     UFUNCTION()
     FVector2D MoveJoystick_MoveAxis() const
     {
-        FVM_MoveJoystick& local_2;
+        FVM_MoveJoystick& local_2 = this.MoveJoystick.Get();
         FVector2D local_12 = local_2 ? local_2.GetMoveAxis() : FVector2D();
         return local_12;
     }
@@ -193,7 +193,7 @@ class UWidget_VirtualJoystick : UEUIUserWidget
     UFUNCTION()
     FVector2D TouchLook_LookDelta() const
     {
-        FVM_TouchLook& local_2;
+        FVM_TouchLook& local_2 = this.TouchLook.Get();
         FVector2D local_12 = local_2 ? local_2.GetLookDelta() : FVector2D();
         return local_12;
     }

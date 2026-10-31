@@ -658,9 +658,10 @@ struct FGTCSourceData
         int local_149 = 0;
         for (; local_149 < this.SamplerConfigs.Num(); ++local_149)
         {
-            if (!((FInstancedStruct::GetMutablePtr(this.SamplerConfigs[local_149]).opCall() == nullptr)))
+            TRawPtr<FGTCAction> local_156 = FInstancedStruct::GetMutablePtr(this.SamplerConfigs[local_149]).opCall();
+            if (!((local_156 == nullptr)))
             {
-                FFPTime local_114 = FFPTime(this.CaseDuration);
+                local_156.Get().EndTime = FFPTime(this.CaseDuration);
             }
         }
         return;
@@ -876,9 +877,10 @@ struct FGTCSourceData
         int local_15 = 0;
         for (; local_15 < this.SamplerConfigs.Num(); ++local_15)
         {
-            if ((!((FInstancedStruct::GetMutablePtr(this.SamplerConfigs[local_15]).opCall() == nullptr))))
+            TRawPtr<FGTCAction> local_24 = FInstancedStruct::GetMutablePtr(this.SamplerConfigs[local_15]).opCall();
+            if ((!((local_24 == nullptr))))
             {
-                FFPTime local_28 = FFPTime(this.CaseDuration);
+                local_24.Get().EndTime = FFPTime(this.CaseDuration);
             }
         }
         return;
@@ -1148,9 +1150,11 @@ struct FGTCSourceData
         int local_2 = 0;
         while (local_3)
         {
-            if ((!((FInstancedStruct::GetMutablePtr(this.SamplerConfigs[local_2]).opCall() == nullptr))))
+            TRawPtr<FGTCAction> local_88 = FInstancedStruct::GetMutablePtr(this.SamplerConfigs[local_2]).opCall();
+            if ((!((local_88 == nullptr))))
             {
-                int local_67 = local_2 + 1;
+                local_88.Get().TargetUniqueName = this.EntityConfigs[local_2].UniqueName;
+                local_88.Get().ActionID = (local_2 + 1);
             }
             ++local_2;
             if (local_2 >= this.SamplerConfigs.Num())

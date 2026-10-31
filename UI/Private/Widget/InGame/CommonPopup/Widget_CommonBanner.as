@@ -26,8 +26,8 @@ class UWidget_CommonBanner : UEUIUserWidget
         int local_4 = 0;
         if (this.Banner.IsValid())
         {
-            local_4.SetTimeForAnimOut((GetTimeForAnimOut() - InDeltaTime));
-            if (!(this.bHasEnd) && (GetTimeForAnimOut() < 0.0f))
+            local_4.SetTimeForAnimOut((this.Banner.Get().GetTimeForAnimOut() - InDeltaTime));
+            if (!(this.bHasEnd) && (this.Banner.Get().GetTimeForAnimOut() < 0.0f))
             {
                 this.bHasEnd = true;
                 this.PlayAnimation(this.Anim_Out, 0.0f, 1, EUMGSequencePlayMode(0), 1.0f, false);

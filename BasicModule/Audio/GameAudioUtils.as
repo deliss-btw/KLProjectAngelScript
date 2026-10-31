@@ -40,9 +40,7 @@ FString GetInstrumentTargetPrefabClassName(const FECSEntity &inout Entity)
         FString local_32;
         if (local_16.PrefabClass.IsValid())
         {
-            TSubclassOf<AECSPrefab> local_18 = local_16.PrefabClass.Get();
-            UClass local_20;
-            local_32 = local_20.GetName();
+            local_32 = local_16.PrefabClass.Get().Get().GetName();
         }
         else
         {
@@ -195,8 +193,7 @@ FInstrumentAudioConfig MakeLegacyPianoInstrumentAudioConfig()
 UFUNCTION()
 UDataTable GetInstrumentAudioTable()
 {
-    UDataTable local_2;
-    return local_2;
+    return UGameplayConfigsManager::GetInstrumentAudioTable().Get();
 }
 UFUNCTION()
 bool TryGetInstrumentAudioConfig(const FECSEntity &inout Entity, const UDataTable InstrumentAudioTable, FInstrumentAudioConfig &out OutConfig)
@@ -361,8 +358,7 @@ UAkAudioEvent GetEvent(const TSoftObjectPtr<UAkAudioEvent> &inout Event)
     }
     if (Event.IsValid())
     {
-        UAkAudioEvent local_4;
-        return local_4;
+        return Event.Get();
     }
     return Cast<UAkAudioEvent>(Event.ToSoftObjectPath().TryLoad());
 }
@@ -448,7 +444,6 @@ UFUNCTION()
 void PlayAudioWhenWeatherEnter(const FECSEntity &inout Entity, const FName &inout WeatherName, const UDataTable WeatherAudioTable)
 {
     FSimpleAudioSet local_64;
-    float32 local_121 = 0.0f;
     if (WeatherAudioTable == nullptr)
     {
         XWarningIf(FAsGameAudioUtils::CVar_EnvSound_EnableDebug.GetBool(), ELog(0), "Cannot found WeatherAudioConfig datatable!");
@@ -476,7 +471,7 @@ void PlayAudioWhenWeatherEnter(const FECSEntity &inout Entity, const FName &inou
     }
     for (auto& local_120 : local_64.RtpcMap)
     {
-        local_100.AddRtpc(local_120.GetKey(), local_121);
+        local_100.AddRtpc(local_120.GetKey(), local_120.GetValue());
     }
     if (local_100.IsValidData())
     {
@@ -499,13 +494,13 @@ void PlayAudioWhenWeatherEnter(const FECSEntity &inout Entity, const FName &inou
             if (local_64.RtpcMap.Num() > 0)
             {
                 FString local_142;
-                for (auto& local_120 : local_64.RtpcMap)
+                for (auto& local_120_2 : local_64.RtpcMap)
                 {
                     if (local_142.Len() > 0)
                     {
                         local_142 += ", ";
                     }
-                    local_142 += FString().Append(local_120.GetKey().GetAssetName()).Append(": ").Append();
+                    local_142 += FString().Append(local_120_2.GetKey().GetAssetName()).Append(": ").Append(local_120_2.GetValue());
                 }
                 local_134 += FString().Append(", RTPC: [").Append(local_142).Append("]");
             }
@@ -523,7 +518,6 @@ UFUNCTION()
 void PlayAudioWhenWeatherExit(const FECSEntity &inout Entity, const FName &inout WeatherName, const UDataTable WeatherAudioTable)
 {
     FSimpleAudioSet local_64;
-    float32 local_121 = 0.0f;
     if (WeatherAudioTable == nullptr)
     {
         XWarningIf(FAsGameAudioUtils::CVar_EnvSound_EnableDebug.GetBool(), ELog(0), "Cannot found WeatherAudioConfig datatable!");
@@ -551,7 +545,7 @@ void PlayAudioWhenWeatherExit(const FECSEntity &inout Entity, const FName &inout
     }
     for (auto& local_120 : local_64.RtpcMap)
     {
-        local_100.AddRtpc(local_120.GetKey(), local_121);
+        local_100.AddRtpc(local_120.GetKey(), local_120.GetValue());
     }
     if (local_100.IsValidData())
     {
@@ -574,13 +568,13 @@ void PlayAudioWhenWeatherExit(const FECSEntity &inout Entity, const FName &inout
             if (local_64.RtpcMap.Num() > 0)
             {
                 FString local_142;
-                for (auto& local_120 : local_64.RtpcMap)
+                for (auto& local_120_2 : local_64.RtpcMap)
                 {
                     if (local_142.Len() > 0)
                     {
                         local_142 += ", ";
                     }
-                    local_142 += FString().Append(local_120.GetKey().GetAssetName()).Append(": ").Append();
+                    local_142 += FString().Append(local_120_2.GetKey().GetAssetName()).Append(": ").Append(local_120_2.GetValue());
                 }
                 local_134 += FString().Append(", RTPC: [").Append(local_142).Append("]");
             }

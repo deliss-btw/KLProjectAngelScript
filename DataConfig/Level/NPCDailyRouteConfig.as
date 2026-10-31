@@ -88,6 +88,8 @@ struct FNPCDailyRouteConfig : FDataObject
     UPROPERTY()
     int LoopStartIndex;
 
+    default m_ScriptOverrideMeta = Cast<UASStruct>(FNPCDailyRouteConfig.Get());
+
     FNPCDailyRouteConfig()
     {
         this.RouteSourceId = NAME_None;

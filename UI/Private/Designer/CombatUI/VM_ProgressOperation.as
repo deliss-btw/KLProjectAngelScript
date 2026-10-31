@@ -520,11 +520,9 @@ FVMS_ProgressOperation& Get(const UObject ContextObject)
 {
     return FVMS_ProgressOperation::GetByManager(EUIInternal::GetContextManager(ContextObject));
 }
-FVMS_ProgressOperation GetByManager(const UEUIManagerSubsystem Manager)
+FVMS_ProgressOperation& GetByManager(const UEUIManagerSubsystem Manager)
 {
-    FVMS_ProgressOperation __r;
-    TEUIModelRef<FVMS_ProgressOperation> local_6 = TEUIModelRef<FVMS_ProgressOperation>(EUIInternal::MakeModelWithManager(Manager, FVMS_ProgressOperation::ModelId));
-    return __r;
+    return TEUIModelRef<FVMS_ProgressOperation>(EUIInternal::MakeModelWithManager(Manager, FVMS_ProgressOperation::ModelId)).Get();
 }
 void GetModelInfo(FEUIViewModelMetaInfo &inout Result)
 {
@@ -679,7 +677,6 @@ namespace __GeneratedProperties_FVMS_ProgressOperation
 {
 UScriptStruct StaticStruct()
 {
-    UScriptStruct local_2;
-    return local_2;
+    return __GeneratedProperties_FVMS_ProgressOperation.Get();
 }
 }

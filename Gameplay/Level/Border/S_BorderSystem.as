@@ -31,8 +31,7 @@ class US_BorderSystemAS : UECSScriptSystem
                 {
                     continue;
                 }
-                AKLBorder local_30;
-                local_34 = Cast<AKLBorderActor>(local_30);
+                local_34 = Cast<AKLBorderActor>(local_28.Border.Get());
                 if (local_34 != nullptr)
                 {
                     FFPTime& local_36 = local_6.ActivateTimes.FindOrAdd(local_22);
@@ -176,7 +175,6 @@ class US_BorderSystemAS : UECSScriptSystem
     {
         int local_22 = 0;
         Get local_40;
-        AKLBorder local_44;
         AKLBorderActor local_48;
         FECSEntity local_8 = ::FASCommonUtils::GetUniquePlayerEntity(Entity);
         if (!(local_8.IsValid()))
@@ -197,7 +195,7 @@ class US_BorderSystemAS : UECSScriptSystem
                 {
                     continue;
                 }
-                local_48 = Cast<AKLBorderActor>(local_44);
+                local_48 = Cast<AKLBorderActor>(local_42.Border.Get());
                 if (local_48 != nullptr)
                 {
                     FVector local_54 = Transform.GetPosition();
@@ -237,12 +235,13 @@ class US_BorderSystemAS : UECSScriptSystem
                     {
                         continue;
                     }
-                    local_48 = Cast<AKLBorderActor>(local_44);
+                    local_48 = Cast<AKLBorderActor>(local_42_2.Border.Get());
                     if (local_48 != nullptr)
                     {
                         local_48.ClearDynamicMesh(local_8.GetEntityName());
                         if (!(local_48.HasDynamicMesh(local_8.GetEntityName())))
                         {
+                            local_22.InterpData.Remove(local_36);
                         }
                     }
                 }
@@ -280,8 +279,7 @@ class US_BorderSystemAS : UECSScriptSystem
                 {
                     continue;
                 }
-                AKLBorder local_42;
-                local_46 = Cast<AKLBorderActor>(local_42);
+                local_46 = Cast<AKLBorderActor>(local_40.Border.Get());
                 if (local_46 != nullptr)
                 {
                     Get local_50;
@@ -363,8 +361,7 @@ class US_BorderSystemAS : UECSScriptSystem
                     {
                         continue;
                     }
-                    AKLBorder local_68;
-                    local_72 = Cast<AKLBorderActor>(local_68);
+                    local_72 = Cast<AKLBorderActor>(local_66.Border.Get());
                     if (local_72 != nullptr)
                     {
                         local_72.ClearDynamicMesh(local_20.GetEntityName());
@@ -386,8 +383,7 @@ class US_BorderSystemAS : UECSScriptSystem
             {
                 return;
             }
-            AKLBorder local_10;
-            local_14 = (Cast<AKLBorderActor>(local_10));
+            local_14 = (Cast<AKLBorderActor>(local_6.Border.Get()));
             if (local_14 != nullptr)
             {
                 ::FAudioVoUtils::SendAudioVoEventOnlyPresentation(local_14.SoundVO.GetDataName(), Event.Sender, FFPTime(-1));
@@ -407,8 +403,7 @@ class US_BorderSystemAS : UECSScriptSystem
             {
                 return;
             }
-            AKLBorder local_10;
-            local_14 = (Cast<AKLBorderActor>(local_10));
+            local_14 = (Cast<AKLBorderActor>(local_6.Border.Get()));
             if (local_14 != nullptr)
             {
                 if (local_14.MessageHint)
@@ -432,8 +427,7 @@ class US_BorderSystemAS : UECSScriptSystem
             {
                 return;
             }
-            AKLBorder local_10;
-            local_14 = (Cast<AKLBorderActor>(local_10));
+            local_14 = (Cast<AKLBorderActor>(local_6.Border.Get()));
             if (local_14 != nullptr)
             {
                 FFXConfig local_130 = local_14.WarningFX;
@@ -472,8 +466,7 @@ class US_BorderSystemAS : UECSScriptSystem
             {
                 return;
             }
-            AKLBorder local_10;
-            local_14 = (Cast<AKLBorderActor>(local_10));
+            local_14 = (Cast<AKLBorderActor>(local_6.Border.Get()));
             if (local_14 != nullptr)
             {
                 if (int(local_14.WarningType) != 1)
@@ -517,8 +510,7 @@ class US_BorderSystemAS : UECSScriptSystem
                 {
                     continue;
                 }
-                AKLBorder local_24;
-                local_28 = Cast<AKLBorderActor>(local_24);
+                local_28 = Cast<AKLBorderActor>(local_22.Border.Get());
                 if (local_28 != nullptr)
                 {
                     TArray<FSingleMaterialParamRequestData> local_32;
@@ -545,8 +537,7 @@ class US_BorderSystemAS : UECSScriptSystem
             {
                 return;
             }
-            AKLBorder local_14;
-            local_18 = (Cast<AKLBorderActor>(local_14));
+            local_18 = (Cast<AKLBorderActor>(local_12.Border.Get()));
             if (local_18 != nullptr)
             {
                 if (!(local_18.FadingInMaterial.IsEmpty()))
@@ -574,8 +565,7 @@ class US_BorderSystemAS : UECSScriptSystem
             {
                 return;
             }
-            AKLBorder local_14;
-            local_18 = (Cast<AKLBorderActor>(local_14));
+            local_18 = (Cast<AKLBorderActor>(local_12.Border.Get()));
             if (local_18 != nullptr)
             {
                 if (!(local_18.FadingOutMaterial.IsEmpty()))
@@ -602,8 +592,7 @@ class US_BorderSystemAS : UECSScriptSystem
             {
                 return;
             }
-            AKLBorder local_14;
-            local_18 = (Cast<AKLBorderActor>(local_14));
+            local_18 = (Cast<AKLBorderActor>(local_12.Border.Get()));
             if (local_18 != nullptr)
             {
                 local_18.DeferredDestroyIfNeed();
@@ -629,8 +618,7 @@ class US_BorderSystemAS : UECSScriptSystem
             {
                 return;
             }
-            AKLBorder local_22;
-            local_26 = (Cast<AKLBorderActor>(local_22));
+            local_26 = (Cast<AKLBorderActor>(local_20.Border.Get()));
             if (local_26 != nullptr)
             {
                 local_26.DeferredDestroyIfNeed();
@@ -697,12 +685,11 @@ class US_BorderSystemAS : UECSScriptSystem
                 {
                     if (local_72.Border.IsValid())
                     {
-                        AKLBorder local_74;
-                        local_66 = (Cast<AKLBorderActor>(local_74));
+                        local_66 = (Cast<AKLBorderActor>(local_72.Border.Get()));
                     }
                 }
             }
-            local_77 = EKLBorderAcrossTeleportMode(0);
+            local_77 = EKLBorderAcrossTeleportMode::NearestTeleporter;
             if (local_66 != nullptr)
             {
                 local_77 = local_66.AcrossTeleportMode;
@@ -839,8 +826,7 @@ class US_BorderSystemAS : UECSScriptSystem
                 {
                     return false;
                 }
-                AKLBorder local_16;
-                local_20 = (Cast<AKLBorderActor>(local_16));
+                local_20 = (Cast<AKLBorderActor>(local_14.Border.Get()));
                 if (local_20 != nullptr)
                 {
                     return (local_8.GetPosition().Dist2D(local_20.GetClosestLocationOnSpline(local_8.GetPosition())) <= local_20.WarningDistance);

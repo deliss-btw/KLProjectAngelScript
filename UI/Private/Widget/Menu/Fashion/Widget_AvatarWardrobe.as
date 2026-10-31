@@ -46,7 +46,7 @@ class UWidget_AvatarMainWardrobe : UEUIActivatableWidget
         {
             TEUIModelRef<FVM_AvatarShowcase> local_4;
             local_4;
-            local_4.SetCurrentShowcase();
+            this.Wardrobe.Get().SetCurrentShowcase(local_4);
         }
         this.RefreshActionBinding();
         this.SyncedMainTabIndex = INDEX_NONE;
@@ -59,7 +59,7 @@ class UWidget_AvatarMainWardrobe : UEUIActivatableWidget
     {
         this.RefreshActionBinding();
         int local_1 = 1;
-        if (this.Wardrobe.IsValid() && (GetPendingNavigationType() == 1) && (int(GetPendingMainTab()) != int(GetCurrentMainTab())))
+        if (this.Wardrobe.IsValid() && (this.Wardrobe.Get().GetPendingNavigationType() == 1) && (int(this.Wardrobe.Get().GetPendingMainTab()) != int(this.Wardrobe.Get().GetCurrentMainTab())))
         {
             this.SyncedMainTabIndex = INDEX_NONE;
         }
@@ -77,7 +77,7 @@ class UWidget_AvatarMainWardrobe : UEUIActivatableWidget
     UFUNCTION()
     void OnWardrobeReturnAction()
     {
-        if (!(this.Wardrobe.IsValid()) || HandleReturnAction())
+        if (!(this.Wardrobe.IsValid()) || this.Wardrobe.Get().HandleReturnAction())
         {
             this.ClosePage(false);
             return;
@@ -90,7 +90,7 @@ class UWidget_AvatarMainWardrobe : UEUIActivatableWidget
     {
         if (this.Wardrobe.IsValid())
         {
-            OnSaveOutfitAction();
+            this.Wardrobe.Get().OnSaveOutfitAction();
         }
         this.RefreshActionBinding();
         return;
@@ -117,8 +117,8 @@ class UWidget_AvatarMainWardrobe : UEUIActivatableWidget
             this.MainTabNextActionBinding.SetCollapsed(true);
             return;
         }
-        this.SaveOutfitActionBinding.SetCollapsed(!(CanShowSaveOutfitAction()));
-        bool local_1 = (GetMainTabItems().Num() > 1);
+        this.SaveOutfitActionBinding.SetCollapsed(!(this.Wardrobe.Get().CanShowSaveOutfitAction()));
+        bool local_1 = (this.Wardrobe.Get().GetMainTabItems().Num() > 1);
         this.MainTabPrevActionBinding.SetCollapsed(!(local_1));
         this.MainTabNextActionBinding.SetCollapsed(!(local_1));
         return;
@@ -127,7 +127,7 @@ class UWidget_AvatarMainWardrobe : UEUIActivatableWidget
     {
         if (this.Wardrobe.IsValid())
         {
-            Offset.RequestMainTabByOffset();
+            this.Wardrobe.Get().RequestMainTabByOffset(Offset);
         }
         return;
     }
@@ -138,12 +138,12 @@ class UWidget_AvatarMainWardrobe : UEUIActivatableWidget
             this.SyncedMainTabIndex = INDEX_NONE;
             return;
         }
-        int local_6 = GetCurrentMainTabListIndex();
+        int local_6 = this.Wardrobe.Get().GetCurrentMainTabListIndex();
         if (local_6 == this.SyncedMainTabIndex)
         {
             return;
         }
-        if (GetMainTabItems().IsValidIndex(local_6))
+        if (this.Wardrobe.Get().GetMainTabItems().IsValidIndex(local_6))
         {
             this.SyncedMainTabIndex = local_6;
             this.EUI_List.SetSelectedIndex(local_6);
@@ -232,8 +232,8 @@ class UWidget_AvatarMainWardrobe : UEUIActivatableWidget
     }
     void HandleObservedModelChanges(FEUIReactiveSubscriberIterator &inout It)
     {
-        FVM_AvatarMainWardrobe& local_6;
         TEUIModelRef<FVM_AvatarMainWardrobe> local_2 = this.Wardrobe.AsRef();
+        FVM_AvatarMainWardrobe& local_6 = local_2.Get();
         for (; It; )
         {
             FEUIReactiveSubscriberTrackScope local_56 = FEUIReactiveSubscriberTrackScope(It);

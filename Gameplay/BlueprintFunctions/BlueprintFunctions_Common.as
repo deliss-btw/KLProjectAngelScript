@@ -53,7 +53,6 @@ void DecreaseConsumableAttributeValue(const FECSEntityAdapter &inout Entity, con
 UFUNCTION()
 bool TryConsumeAttributeValue(const FECSEntityAdapter &inout Entity, const FGameAttributeSelector &inout Attribute, const float32 Value)
 {
-    float32 local_1 = 0.0f;
     if (Value <= 0.0f)
     {
         XWarning(ELog(8), "TryConsumeAttributeValue value must > 0");
@@ -71,6 +70,7 @@ bool TryConsumeAttributeValue(const FECSEntityAdapter &inout Entity, const FGame
         FGameAttributeRef local_36 = FGameAttributeRef(Attribute.AttributeClass);
         if (local_18.HasAttribute(local_36))
         {
+            float32 local_1 = local_18.GetAttributeMeta(local_36).MinValue.GetValue(local_18, local_22);
             float32 local_37 = local_18.GetAttributeValue(local_36, local_22);
             if (local_37 > local_1)
             {
@@ -942,10 +942,10 @@ UFUNCTION()
 void ProjectileTimelineTurnState(const FECSEntity &inout ProjectileEntity, const FName &inout TargetState)
 {
     Get local_4;
-    if (local_4.opCall())
+    const FC_ProjectileTimelineData& local_6 = local_4.opCall();
+    if (local_6)
     {
-        UProjectileTimelineAsset local_12;
-        FProjectileTimelineUtils::TurnToState(ProjectileEntity, local_12.TimelineConfigData, TargetState, BlueprintFunctions_Common::GetWorldTime(ProjectileEntity));
+        FProjectileTimelineUtils::TurnToState(ProjectileEntity, local_6.GetTimelineAsset().Get().TimelineConfigData, TargetState, BlueprintFunctions_Common::GetWorldTime(ProjectileEntity));
     }
     return;
 }
@@ -953,10 +953,10 @@ UFUNCTION()
 void TriggerProjectileEvent(const FECSEntity &inout ProjectileEntity, const FName &inout EventName)
 {
     Get local_4;
-    if (local_4.opCall())
+    const FC_ProjectileTimelineData& local_6 = local_4.opCall();
+    if (local_6)
     {
-        UProjectileTimelineAsset local_14;
-        FProjectileTimelineUtils::ActivateEventTimeline(ProjectileEntity, local_14.TimelineConfigData, EventName, FVector::ZeroVector, FQuat4f::Identity, ENTITY_NULL, BlueprintFunctions_Common::GetWorldTime(ProjectileEntity));
+        FProjectileTimelineUtils::ActivateEventTimeline(ProjectileEntity, local_6.GetTimelineAsset().Get().TimelineConfigData, EventName, FVector::ZeroVector, FQuat4f::Identity, ENTITY_NULL, BlueprintFunctions_Common::GetWorldTime(ProjectileEntity));
     }
     return;
 }
@@ -1550,6 +1550,7 @@ void DispatchAISpecialToken(const FECSEntityAdapter &inout Entity, const TDataOb
 {
     if (SpecialToken)
     {
+        const FAISpecialCombatTokenConfig& local_4 = SpecialToken.Get();
         TArray<FAISmart_AnyValue> local_8;
         TArray<FECSEntityId> local_12;
         if (int(DispatchMode) == 1)
@@ -1764,32 +1765,32 @@ void DamageTarget(const FECSEntityAdapter &inout Entity, const FECSEntity &inout
     if (local_54)
     {
         int local_187;
-        const FAttackData& local_98;
         FFPTime local_86 = BlueprintFunctions_Common::GetWorldTime(Entity.opImplConv());
         GetDefaulted local_96;
         FVector local_92 = local_96.opCall().GetPosition();
+        const FAttackData& local_98 = AttackDataConfig.Get();
         GetDefaulted local_128;
         FTransform local_152 = local_128.opCall().ToFTransform();
         FVector local_170 = (local_92 - local_152.GetLocation());
         FVector local_176(FVector::ZeroVector);
-        switch (int(Direction))
+        switch (Direction)
         {
-        case 0:
+        case EDamageToTargetDirection::SourceToTarget:
         {
             local_176 = local_170;
             break;
         }
-        case 1:
+        case EDamageToTargetDirection::TangentLeftToRight:
         {
             local_176 = local_170.RotateAngleAxis(90.0, local_170.RotateAngleAxis(-90.0, local_170.CrossProduct(FVector::UpVector).GetSafeNormal(9.99999993922529e-9, FVector::ZeroVector)).GetSafeNormal(9.99999993922529e-9, FVector::ZeroVector));
             break;
         }
-        case 2:
+        case EDamageToTargetDirection::TangentRightToLeft:
         {
             local_176 = local_170.RotateAngleAxis(-90.0, local_170.RotateAngleAxis(-90.0, local_170.CrossProduct(FVector::UpVector).GetSafeNormal(9.99999993922529e-9, FVector::ZeroVector)).GetSafeNormal(9.99999993922529e-9, FVector::ZeroVector));
             break;
         }
-        case 3:
+        case EDamageToTargetDirection::TopToDown:
         {
             local_176 = FVector::DownVector;
             break;
@@ -1820,23 +1821,19 @@ void DamageTarget(const FECSEntityAdapter &inout Entity, const FECSEntity &inout
         {
             local_279 = UEASAbility::GetContextAbility().GetContextCapabilityInstanceId();
         }
-        FECSEntity local_84 = Entity.opImplConv();
-        FECSEntity local_84_2 = Entity.opImplConv();
-        FAttackRecoverEnergyValue local_294;
-        FAttackBaseDamageValue local_301;
-        FDamageUtils::AddHitDamage(Entity.opImplConv(), Entity.opImplConv(), Entity.opImplConv(), Target, local_278, NAME_None, local_301, local_294, 1.0f, NAME_None, false, false, local_92, local_92, local_176, local_187, local_86, false);
+        FDamageUtils::AddHitDamage(Entity.opImplConv(), Entity.opImplConv(), Entity.opImplConv(), Target, local_278, NAME_None, FDamageUtils::CalcAttackBaseDamageValue(Entity.opImplConv(), local_54.Get(), local_86, local_2, local_279), FDamageUtils::CalcAttackRecoverEnergyValue(Entity.opImplConv(), local_54.Get(), local_86, local_279), 1.0f, NAME_None, false, false, local_92, local_92, local_176, local_187, local_86, false);
     }
     return;
 }
 UFUNCTION()
 float32 GetAttackDataHitImpulseX(const TDataObjectPtr<FAttackData> &inout DataObject)
 {
-    return GetHitImpulseX();
+    return DataObject.Get().GetHitImpulseX();
 }
 UFUNCTION()
 float32 GetAttackDataHitImpulseZ(const TDataObjectPtr<FAttackData> &inout DataObject)
 {
-    return GetHitImpulseZ();
+    return DataObject.Get().GetHitImpulseZ();
 }
 UFUNCTION()
 float32 GetHitImpulseX(const FAttackData &inout AttackData)
@@ -1855,11 +1852,10 @@ void DamageTargetDirect(const FECSEntityAdapter &inout Entity, const FECSEntity 
     {
         return;
     }
-    if (FCombatUtils::GetAttackDataPtrFromDataTable(AttackDataConfig.opImplConv(), Entity.opImplConv()))
+    TDataObjectPtr<FAttackData> local_54 = FCombatUtils::GetAttackDataPtrFromDataTable(AttackDataConfig.opImplConv(), Entity.opImplConv());
+    if (local_54)
     {
-        FFPTime local_84 = BlueprintFunctions_Common::GetWorldTime(Entity.opImplConv());
-        FECSEntity local_82 = Entity.opImplConv();
-        FECSEntity local_88 = Entity.opImplConv();
+        FDamageUtils::AddDirectDamageByAttackData(Entity.opImplConv(), Entity.opImplConv(), Target, local_54.Get(), BlueprintFunctions_Common::GetWorldTime(Entity.opImplConv()));
     }
     return;
 }
@@ -3365,31 +3361,30 @@ void SetMinimapIconVisibility(const FECSEntityAdapter &inout Target, const EEnti
         local_21 = 4;
         local_18 = local_21;
     }
-    switch (int(Visibility))
+    switch (Visibility)
     {
         int local_18;
-    case 1:
+    case EEntityMinimapIconVisibility::VisibleToAll:
     {
         EntityLevelSpotUtils::ChangeSpotDataViewers(Target.opImplConv(), ELevelSpotDataSource(local_18), FLevelSpotViewers::AllViewers);
         return;
     }
-    case 2:
+    case EEntityMinimapIconVisibility::VisibleToSpecifiedPlayers:
     {
         EntityLevelSpotUtils::ChangeSpotDataViewers(Target.opImplConv(), ELevelSpotDataSource(local_18), FLevelSpotViewers(SpecifiedVisiblePlayers));
         return;
     }
-    case 3:
+    case EEntityMinimapIconVisibility::SameWithEntityNetRelevance:
     {
         XError(ELog(0), "SameWithEntityNetRelevance is no longer supported");
         return;
     }
-    case 0:
+    case EEntityMinimapIconVisibility::Invisible:
     {
         EntityLevelSpotUtils::ChangeSpotDataViewers(Target.opImplConv(), ELevelSpotDataSource(local_18), FLevelSpotViewers::NoViewer);
         return;
     }
     }
-    return;
 }
 UFUNCTION()
 void AddMinimapIcon(const FECSEntityAdapter &inout Target, const FEntityMinimapIconSettingsRowRef &inout IconSettings, const EEntityMinimapIconVisibility Visibility, const TArray<FECSEntity> &inout SpecifiedVisiblePlayers)
@@ -3398,30 +3393,29 @@ void AddMinimapIcon(const FECSEntityAdapter &inout Target, const FEntityMinimapI
     {
         return;
     }
-    switch (int(Visibility))
+    switch (Visibility)
     {
-    case 1:
+    case EEntityMinimapIconVisibility::VisibleToAll:
     {
         EntityLevelSpotUtils::AddSpotData(Target.opImplConv(), ELevelSpotDataSource(4), FLevelSpotData::CreateMinimapIconOverride(TDataObjectPtr<FMinimapIconConfig>(IconSettings)));
         return;
     }
-    case 2:
+    case EEntityMinimapIconVisibility::VisibleToSpecifiedPlayers:
     {
         EntityLevelSpotUtils::AddSpotDataForViewers(Target.opImplConv(), ELevelSpotDataSource(4), FLevelSpotData::CreateMinimapIconOverride(TDataObjectPtr<FMinimapIconConfig>(IconSettings)), FLevelSpotViewers(SpecifiedVisiblePlayers));
         return;
     }
-    case 3:
+    case EEntityMinimapIconVisibility::SameWithEntityNetRelevance:
     {
         XError(ELog(0), "SameWithEntityNetRelevance is no longer supported");
         return;
     }
-    case 0:
+    case EEntityMinimapIconVisibility::Invisible:
     {
         EntityLevelSpotUtils::AddSpotDataForViewers(Target.opImplConv(), ELevelSpotDataSource(4), FLevelSpotData::CreateMinimapIconOverride(TDataObjectPtr<FMinimapIconConfig>(IconSettings)), FLevelSpotViewers::NoViewer);
         return;
     }
     }
-    return;
 }
 UFUNCTION()
 void RemoveMinimapIcon(const FECSEntityAdapter &inout Target)
@@ -3727,6 +3721,7 @@ void ShowHideItemBtn(const FECSEntityAdapter &inout Entity, const EItemBtnUIType
     }
     if (bShow)
     {
+        local_4.GetModify_HiddenBtnTypes().Remove(BtnType);
         return;
     }
     if (!(local_4.GetHiddenBtnTypes().Contains(BtnType)))
@@ -3745,6 +3740,7 @@ void ShowHideSkillBtn(const FECSEntityAdapter &inout Entity, const ENormalSSkill
     }
     if (bShow)
     {
+        local_4.GetModify_HiddenBtnTypes().Remove(BtnType);
         return;
     }
     if (!(local_4.GetHiddenBtnTypes().Contains(BtnType)))
@@ -4048,9 +4044,10 @@ void RestoreLevelReviveRule()
     FCS_NearDeathRule& local_10 = local_8.opCall();
     if (local_10)
     {
-        if (FLevelUtils::GetCurrentLevelInfoConfig(nullptr))
+        TDataObjectPtr<FLevelInfoConfig> local_34 = FLevelUtils::GetCurrentLevelInfoConfig(nullptr);
+        if (local_34)
         {
-            local_10.SetReviveData(GetReviveRule());
+            local_10.SetReviveData(local_34.Get().GetReviveRule());
         }
         else
         {

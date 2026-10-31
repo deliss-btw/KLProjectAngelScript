@@ -73,25 +73,22 @@ class UTextArgParser_Buff : UBlueprintTextArgParser
     }
     bool ParseAttrArgValue(const FDataObjectPtr &inout Config, const FTextArgument &inout Arg, FText &inout OutResult) const
     {
-        int local_36 = 0;
-        float32 local_46 = 0.0f;
         TDataObjectPtr<FTextArgConfig_Buff> local_24 = TDataObjectPtr<FTextArgConfig_Buff>(Config);
         TConstRawPtr<FBuffModifierAttributeDescriptionInfos> local_32 = FInstancedStruct::GetPtr(Arg.GetStructValue()).opCall();
-        int local_37 = local_36;
-        if (local_37 == 0)
+        if (int(local_32.Get().ValueShowType) == 0)
         {
             FText local_52;
-            local_46 = local_46 * 100.0f;
-            FText::AsNumber(local_52, local_46);
+            FText::AsNumber(local_52, (local_32.Get().Value * 100.0f));
             OutResult = FText::Format(FText::FromString("{0}%"), local_52);
-            if (0.0f > 0.0f)
+            if (local_32.Get().Value > 0.0f)
             {
                 OutResult = FText::Format(FText::FromString("+{0}"), OutResult);
             }
         }
         else
         {
-            OutResult = FText::AsNumber(local_46, FNumberFormattingOptions());
+            float32 local_46_2 = local_32.Get().Value;
+            OutResult = FText::AsNumber(local_46_2, FNumberFormattingOptions());
         }
         return true;
     }

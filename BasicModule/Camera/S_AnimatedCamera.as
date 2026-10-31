@@ -161,6 +161,7 @@ class US_AnimatedCameraSystem : UECSScriptSystem
         {
             return;
         }
+        const FAnimCameraData& local_68 = local_42.Get();
         FECSEntity local_76 = LocalPlayer.GetCameraViewTargetEntity();
         bool local_77 = false;
         if (!(local_18.bRuntimeOriginInited))
@@ -205,10 +206,7 @@ class US_AnimatedCameraSystem : UECSScriptSystem
         {
             local_18.BlendParam = this.CalculateBlendParam(local_76, local_18.OriginPosition, ECameraAnimBlendParamType(local_16.BlendParamType));
         }
-        float32 local_97 = float32(((FFPTime(ECS::GetRuntimeInfo().Time) - local_18.StartTime).ToSeconds()));
-        FAnimCameraData local_68;
-        local_97 = local_97 / local_68.Duration;
-        float32 local_114 = FMath::Lerp(local_16.NormalizedStartTime, local_16.NormalizedEndTime, FMath::Clamp(local_97, 0.0f, 1.0f)) * local_68.Duration;
+        float32 local_114 = FMath::Lerp(local_16.NormalizedStartTime, local_16.NormalizedEndTime, FMath::Clamp((float32(((FFPTime(ECS::GetRuntimeInfo().Time) - local_18.StartTime).ToSeconds())) / local_68.Duration), 0.0f, 1.0f)) * local_68.Duration;
         FTransform local_172 = FTransform(FQuat(local_18.OriginRotation), local_18.OriginPosition, FVector::OneVector);
         FAnimCameraPose local_192 = local_68.EvaluateCameraPose(local_18.BlendParam, local_114, local_18.FocusPointPositionOffset);
         FAnimCameraPose local_182 = FAnimCameraPose::ByTransform(local_192, local_172);

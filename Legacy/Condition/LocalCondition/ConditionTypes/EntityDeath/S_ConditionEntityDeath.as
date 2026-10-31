@@ -11,7 +11,6 @@ class US_ConditionEntityDeath : UECSScriptSystem
         bool local_65;
         bool local_66;
         TDataObjectPtr<FBasePrefabConfig> local_24 = ::GetPrefabConfigPtr(Event.Sender);
-        CastTo local_94;
         if (local_24)
         {
             if (C_EntityDeathConditionManager.MonitoredPrefabs.Contains(local_24))
@@ -22,10 +21,11 @@ class US_ConditionEntityDeath : UECSScriptSystem
                     local_49 = true;
                     local_66 = local_49;
                     TDataObjectPtr<FConditionConfigBase> local_90 = local_64.GetConditionConfig();
-                    if (local_94.opCall())
+                    CastTo local_94;
+                    TDataObjectPtr<FLocalConditionConfig> local_118 = local_94.opCall();
+                    if (local_118)
                     {
-                        FInstancedStruct::GetPtr local_146;
-                        TConstRawPtr<FConditionEntityDeathConfig> local_148 = local_146.opCall();
+                        TConstRawPtr<FConditionEntityDeathConfig> local_148 = FInstancedStruct::GetPtr(local_118.Get().ConditionTypeDefineConfig).opCall();
                         if (local_148)
                         {
                             if (int(local_148.opArrow().PlayerFilter) != 0)
@@ -44,7 +44,7 @@ class US_ConditionEntityDeath : UECSScriptSystem
                             }
                             if (local_65)
                             {
-                                TSoftClassPtr<AKLLevelScriptBaseActor> local_174;
+                                TSoftClassPtr<AKLLevelScriptBaseActor> local_174 = TSoftClassPtr<AKLLevelScriptBaseActor>(local_148.Get().DataLayerLevelClass);
                                 if (!(local_174.IsNull()))
                                 {
                                     FName local_176(NAME_None);

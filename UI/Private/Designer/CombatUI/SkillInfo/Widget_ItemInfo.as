@@ -57,35 +57,35 @@ class UWidget_ItemInfo : UEUIUserWidget
     UFUNCTION()
     FEUIModelRef ItemInfo_VM_HealItemButton() const
     {
-        FVMS_ItemInfo& local_2;
+        FVMS_ItemInfo& local_2 = this.ItemInfo.Get();
         FEUIModelRef local_8 = local_2 ? local_2.GetVM_HealItemButton() : FEUIModelRef();
         return local_8;
     }
     UFUNCTION()
     FEUIModelRef ItemInfo_VM_CombatItemButton_1() const
     {
-        FVMS_ItemInfo& local_2;
+        FVMS_ItemInfo& local_2 = this.ItemInfo.Get();
         FEUIModelRef local_8 = local_2 ? local_2.GetVM_CombatItemButton_1() : FEUIModelRef();
         return local_8;
     }
     UFUNCTION()
     FEUIModelRef ItemInfo_VM_CombatItemButton_2() const
     {
-        FVMS_ItemInfo& local_2;
+        FVMS_ItemInfo& local_2 = this.ItemInfo.Get();
         FEUIModelRef local_8 = local_2 ? local_2.GetVM_CombatItemButton_2() : FEUIModelRef();
         return local_8;
     }
     UFUNCTION()
     FEUIModelRef ItemInfo_VM_CombatItemButton_Temp() const
     {
-        FVMS_ItemInfo& local_2;
+        FVMS_ItemInfo& local_2 = this.ItemInfo.Get();
         FEUIModelRef local_8 = local_2 ? local_2.GetVM_CombatItemButton_Temp() : FEUIModelRef();
         return local_8;
     }
     UFUNCTION()
     FEUIModelRef ItemInfo_VM_LinkSkillButton() const
     {
-        FVMS_ItemInfo& local_2;
+        FVMS_ItemInfo& local_2 = this.ItemInfo.Get();
         FEUIModelRef local_8 = local_2 ? local_2.GetVM_LinkSkillButton() : FEUIModelRef();
         return local_8;
     }

@@ -37,7 +37,7 @@ class UPage_PairMotionPage : UEUIActivatableWidget
     UFUNCTION()
     TArray<FEUIModelWeakRef> PairMotionPage_DisplayMotionRefs() const
     {
-        FVMS_PairMotionPage& local_2;
+        FVMS_PairMotionPage& local_2 = this.PairMotionPage.Get();
         TArray<FEUIModelWeakRef> local_16;
         if (local_2)
         {
@@ -52,7 +52,7 @@ class UPage_PairMotionPage : UEUIActivatableWidget
     UFUNCTION()
     FEUIModelRef PairMotionPage_MotionTabs_0() const
     {
-        FVMS_PairMotionPage& local_2;
+        FVMS_PairMotionPage& local_2 = this.PairMotionPage.Get();
         FEUIModelRef local_10;
         if (local_2 && local_2.GetMotionTabs().IsValidIndex(0))
         {

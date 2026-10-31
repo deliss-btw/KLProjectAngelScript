@@ -3,7 +3,6 @@ namespace __FDefaultInventoryItemConfigFunctions
 UFUNCTION()
 TArray<FInventoryInitItem> __FDefaultInventoryItemConfig_GetInitItems(const TDataObjectPtr<FDefaultInventoryItemConfig> &inout DataObject)
 {
-    TArray<FInventoryInitItem> __r;
     if ((DataObject == nullptr))
     {
         if (!(EUIGlobals::GIsDuringPropertyConversion))
@@ -13,7 +12,7 @@ TArray<FInventoryInitItem> __FDefaultInventoryItemConfig_GetInitItems(const TDat
         FDefaultInventoryItemConfig local_20;
         return local_20.InitItems;
     }
-    return __r;
+    return DataObject.Get().InitItems;
 }
 UFUNCTION()
 FDefaultInventoryItemConfig CastToFDefaultInventoryItemConfig(const TDataObjectPtr<FDefaultInventoryItemConfig> &inout DataObject)

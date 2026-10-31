@@ -154,16 +154,11 @@ struct FVMS_SocialViewPage : FEUIViewModelSingleton
     }
     FSoftBrush GetTargetPlayerIcon() const
     {
-        FSoftBrush __return;
         if (!(!(this.GetTargetPlayerModel().IsValid())) && this.GetTargetPlayerModel().opArrow().GetCurrentAvatar())
         {
-            TDataObjectPtr<FAvatarPrefabConfig> local_28 = this.GetTargetPlayerModel().opArrow().GetCurrentAvatar();
+            return this.GetTargetPlayerModel().opArrow().GetCurrentAvatar().Get().AvatarIcon;
         }
-        else
-        {
-            __return = FSoftBrush();
-        }
-        return __return;
+        return FSoftBrush();
     }
     int GetTargetPlayerLevel() const
     {
@@ -821,11 +816,9 @@ FVMS_SocialViewPage& Get(const UObject ContextObject)
 {
     return FVMS_SocialViewPage::GetByManager(EUIInternal::GetContextManager(ContextObject));
 }
-FVMS_SocialViewPage GetByManager(const UEUIManagerSubsystem Manager)
+FVMS_SocialViewPage& GetByManager(const UEUIManagerSubsystem Manager)
 {
-    FVMS_SocialViewPage __r;
-    TEUIModelRef<FVMS_SocialViewPage> local_6 = TEUIModelRef<FVMS_SocialViewPage>(EUIInternal::MakeModelWithManager(Manager, FVMS_SocialViewPage::ModelId));
-    return __r;
+    return TEUIModelRef<FVMS_SocialViewPage>(EUIInternal::MakeModelWithManager(Manager, FVMS_SocialViewPage::ModelId)).Get();
 }
 void GetModelInfo(FEUIViewModelMetaInfo &inout Result)
 {
@@ -1042,7 +1035,6 @@ namespace __GeneratedProperties_FVMS_SocialViewPage
 {
 UScriptStruct StaticStruct()
 {
-    UScriptStruct local_2;
-    return local_2;
+    return __GeneratedProperties_FVMS_SocialViewPage.Get();
 }
 }

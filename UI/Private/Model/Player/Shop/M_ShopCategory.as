@@ -100,11 +100,9 @@ FM_ShopCategory& Create(const UObject ContextObject)
 {
     return FM_ShopCategory::CreateByManager(EUIInternal::GetContextManager(ContextObject));
 }
-FM_ShopCategory CreateByManager(const UEUIManagerSubsystem Manager)
+FM_ShopCategory& CreateByManager(const UEUIManagerSubsystem Manager)
 {
-    FM_ShopCategory __r;
-    TEUIModelRef<FM_ShopCategory> local_6 = TEUIModelRef<FM_ShopCategory>(EUIInternal::MakeModelWithManager(Manager, FM_ShopCategory::ModelId));
-    return __r;
+    return TEUIModelRef<FM_ShopCategory>(EUIInternal::MakeModelWithManager(Manager, FM_ShopCategory::ModelId)).Get();
 }
 void GetModelInfo(FEUIModelOnlyMetaInfo &inout Result)
 {

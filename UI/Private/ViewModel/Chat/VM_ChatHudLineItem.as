@@ -56,8 +56,8 @@ struct FVM_ChatHudLineItem : FEUIViewModel
     void SetupHudLine(const TEUIModelRef<FM_ChatMessage> &inout MessageRef, const float ExpireAtSeconds, const uint LocalPlayerUid)
     {
         this.SetLinkedSourceMessage(MessageRef);
+        FM_ChatMessage& local_2 = MessageRef.Get();
         this.SetExpireAtWorldSeconds(ExpireAtSeconds);
-        FM_ChatMessage local_2;
         this.SetChannelPrefix(::ChatSystemUtil::GetChatHudChannelPrefixFromPbChannelType(local_2.GetChannelType()));
         FString local_18;
         int local_3 = local_2.GetSenderBrief().GetUid();
@@ -287,11 +287,9 @@ FVM_ChatHudLineItem& Create(const UObject ContextObject)
 {
     return FVM_ChatHudLineItem::CreateByManager(EUIInternal::GetContextManager(ContextObject));
 }
-FVM_ChatHudLineItem CreateByManager(const UEUIManagerSubsystem Manager)
+FVM_ChatHudLineItem& CreateByManager(const UEUIManagerSubsystem Manager)
 {
-    FVM_ChatHudLineItem __r;
-    TEUIModelRef<FVM_ChatHudLineItem> local_6 = TEUIModelRef<FVM_ChatHudLineItem>(EUIInternal::MakeModelWithManager(Manager, FVM_ChatHudLineItem::ModelId));
-    return __r;
+    return TEUIModelRef<FVM_ChatHudLineItem>(EUIInternal::MakeModelWithManager(Manager, FVM_ChatHudLineItem::ModelId)).Get();
 }
 void GetModelInfo(FEUIViewModelMetaInfo &inout Result)
 {
@@ -357,7 +355,6 @@ namespace __GeneratedProperties_FVM_ChatHudLineItem
 {
 UScriptStruct StaticStruct()
 {
-    UScriptStruct local_2;
-    return local_2;
+    return __GeneratedProperties_FVM_ChatHudLineItem.Get();
 }
 }

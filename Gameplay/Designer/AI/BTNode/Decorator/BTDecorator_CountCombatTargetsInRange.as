@@ -24,39 +24,39 @@ class UBTDecorator_CountCombatTargetsInRange : UBTDecorator_ECSScriptBase
     {
         FString local_12 = (FString("Range: ") + this.SearchDistance2D);
         FString local_8 = (local_12 + " cm");
-        switch (int(this.CompareType))
+        switch (this.CompareType)
         {
-        case 0:
+        case ECountCompareType::GreaterThan:
         {
             FString local_4 = (FString(", Count > ") + this.CompareValue);
             local_8 += local_4;
             break;
         }
-        case 1:
+        case ECountCompareType::GreaterThanOrEqual:
         {
             FString local_4_2 = (FString(", Count >= ") + this.CompareValue);
             local_8 += local_4_2;
             break;
         }
-        case 2:
+        case ECountCompareType::LessThan:
         {
             FString local_4_3 = (FString(", Count < ") + this.CompareValue);
             local_8 += local_4_3;
             break;
         }
-        case 3:
+        case ECountCompareType::LessThanOrEqual:
         {
             FString local_4_4 = (FString(", Count <= ") + this.CompareValue);
             local_8 += local_4_4;
             break;
         }
-        case 4:
+        case ECountCompareType::Equal:
         {
             FString local_4_5 = (FString(", Count == ") + this.CompareValue);
             local_8 += local_4_5;
             break;
         }
-        case 5:
+        case ECountCompareType::Always:
         {
             local_8 += ", Always True";
             break;

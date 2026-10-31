@@ -99,6 +99,7 @@ struct FVM_CraftableItem : FEUIViewModel
         UEUIManagerSubsystem local_24 = this.GetManager();
         TEUIModelRef<FVM_RedDot> local_28 = TEUIModelRef<FVM_RedDot>(local_26);
         TEUIModelRef<FVM_ComposableItem> local_16_2 = this.GetComposableItem();
+        ::ComposableItemUtility::SetItemRedDotVM(local_16_2.Get(), local_28);
         this.SetSelectableItem(TEUIModelRef<FVM_SelectableItem>(::FVM_SelectableItem::Create(this.GetContext().Manager)));
         CastTo local_58;
         TDataObjectPtr<FEquipmentConfig> local_82 = local_58.opCall();
@@ -128,16 +129,15 @@ struct FVM_CraftableItem : FEUIViewModel
     }
     void RefreshItemMask()
     {
-        TEUIModelRef<FVM_ComposableItem> local_4 = this.GetComposableItem();
-        ::ComposableItemUtility::SetItemMaskEnable((this.GetbLocked() || this.GetbDisableCraft()));
+        ::ComposableItemUtility::SetItemMaskEnable(this.GetComposableItem().Get(), this.GetbLocked() || this.GetbDisableCraft());
         if (this.GetbLocked())
         {
-            TEUIModelRef<FVM_ComposableItem> local_4_2 = this.GetComposableItem();
+            ::ComposableItemUtility::SetItemMaskType(this.GetComposableItem().Get(), 1);
             return;
         }
         if (this.GetbDisableCraft())
         {
-            TEUIModelRef<FVM_ComposableItem> local_4_3 = this.GetComposableItem();
+            ::ComposableItemUtility::SetItemMaskType(this.GetComposableItem().Get(), 0);
         }
         return;
     }
@@ -309,8 +309,8 @@ struct FCraftableItemVMSorter
     }
     bool opCall(const TEUIModelRef<FVM_CraftableItem> &inout A, const TEUIModelRef<FVM_CraftableItem> &inout B) const
     {
-        FVM_CraftableItem& local_2;
-        FVM_CraftableItem& local_4;
+        FVM_CraftableItem& local_2 = A.Get();
+        FVM_CraftableItem& local_4 = B.Get();
         if (!(local_2.GetbLocked()) != !(local_4.GetbLocked()))
         {
             return local_4.GetbLocked();
@@ -479,7 +479,6 @@ struct FVM_ItemCraft : FEUIViewModel
     }
     void FlushViewedRedDot()
     {
-        FVM_RedDot& local_22;
         if (this.GetViewedRedDots().Num() > 0)
         {
             FMS_RedDotSystem& local_6 = ::FMS_RedDotSystem::Get(this.GetContext().Manager);
@@ -487,7 +486,7 @@ struct FVM_ItemCraft : FEUIViewModel
             {
                 for (auto& local_20 : this.GetViewedRedDots())
                 {
-                    local_20;
+                    FVM_RedDot& local_22 = local_20.Get();
                     if (local_22)
                     {
                         local_6.ConsumeRedDot(local_22.GetNodeData().NodeTag, local_22.GetNodeData().ExtraDataId);
@@ -577,6 +576,8 @@ struct FVM_ItemCraft : FEUIViewModel
         {
             local_20.opArrow().SetbLocked(!(local_4.GetUnlockedCraftConfigs().Contains(local_20.opArrow().GetConfig().opArrow().DataId)));
         }
+        FCraftableItemVMSorter local_22;
+        this.GetModify_AllCraftableItems().Sort(local_22);
         return;
     }
     void OnPlayerInventoryChanged(const FMsg_PlayerInventoryChanged &inout Msg)
@@ -666,15 +667,14 @@ struct FVM_ItemCraft : FEUIViewModel
     }
     void RefreshCurrentCraft()
     {
-        FVM_CraftableItem& local_10;
         this.SetbCurrentCraftUnlocked(false);
         this.GetCraftQuality().opArrow().SetCurrentNumValue(1);
-        TEUIModelRef<FVM_CraftableItem> local_8 = this.GetCurrentCraft();
+        FVM_CraftableItem& local_10 = this.GetCurrentCraft().Get();
         if (local_10)
         {
-            const FCraftConfig& local_18;
             this.SetbCurrentCraftUnlocked(!(local_10.GetbLocked()));
             this.SetCurrentCommonItem(TEUIModelRef<FVM_CommonItem>(::FVM_CommonItem::Create(this.GetContext().Manager, local_10.GetItem().opArrow().GetItemDataModel())));
+            const FCraftConfig& local_18 = local_10.GetConfig().Get();
             this.SetCurrentCraftItemConfig(local_18.Product.Item);
             TArray<FRewardItemEntry> local_22;
             this.GetModify_SortedCraftConsumeConfig().Reset(0);
@@ -683,6 +683,8 @@ struct FVM_ItemCraft : FEUIViewModel
             {
                 this.GetModify_SortedCraftConsumeConfig().Add(local_28.Proceed());
             }
+            FCraftableCostSorter local_38;
+            this.GetModify_SortedCraftConsumeConfig().Sort(local_38);
             int local_5 = this.GetSortedCraftConsumeConfig().Num();
             if (this.GetCraftConsumeRewards().Num() != local_5)
             {
@@ -718,7 +720,9 @@ struct FVM_ItemCraft : FEUIViewModel
             this.GetModify_CurrentUnlockConditions().Reset(0);
             if (local_18.GetUnlockCond())
             {
-                this.GetModify_CurrentUnlockConditions().Add(FEUIModelContainer(::FVM_CommonActionEntry::Create(this.GetContext().Manager)));
+                FVM_CommonActionEntry& local_154 = ::FVM_CommonActionEntry::Create(this.GetContext().Manager);
+                local_154.Setup(local_18.GetUnlockCond().Get().ConditionTips);
+                this.GetModify_CurrentUnlockConditions().Add(FEUIModelContainer(local_154));
             }
         }
         else
@@ -1218,11 +1222,9 @@ FVM_CraftableItem& Create(const UObject ContextObject, const TDataObjectPtr<FCra
 {
     return FVM_CraftableItem::CreateByManager(EUIInternal::GetContextManager(ContextObject), Config);
 }
-FVM_CraftableItem CreateByManager(const UEUIManagerSubsystem Manager, const TDataObjectPtr<FCraftConfig> &inout Config)
+FVM_CraftableItem& CreateByManager(const UEUIManagerSubsystem Manager, const TDataObjectPtr<FCraftConfig> &inout Config)
 {
-    FVM_CraftableItem __r;
-    TEUIModelRef<FVM_CraftableItem> local_6 = TEUIModelRef<FVM_CraftableItem>(EUIInternal::MakeModelWithManager_Generic(Manager, FVM_CraftableItem::ModelId, 0, Config));
-    return __r;
+    return TEUIModelRef<FVM_CraftableItem>(EUIInternal::MakeModelWithManager_Generic(Manager, FVM_CraftableItem::ModelId, 0, Config)).Get();
 }
 void GetModelInfo(FEUIViewModelMetaInfo &inout Result)
 {
@@ -1373,8 +1375,7 @@ namespace __GeneratedProperties_FVM_CraftableItem
 {
 UScriptStruct StaticStruct()
 {
-    UScriptStruct local_2;
-    return local_2;
+    return __GeneratedProperties_FVM_CraftableItem.Get();
 }
 }
 namespace FVM_ItemCraft
@@ -1383,11 +1384,9 @@ FVM_ItemCraft& Create(const UObject ContextObject)
 {
     return FVM_ItemCraft::CreateByManager(EUIInternal::GetContextManager(ContextObject));
 }
-FVM_ItemCraft CreateByManager(const UEUIManagerSubsystem Manager)
+FVM_ItemCraft& CreateByManager(const UEUIManagerSubsystem Manager)
 {
-    FVM_ItemCraft __r;
-    TEUIModelRef<FVM_ItemCraft> local_6 = TEUIModelRef<FVM_ItemCraft>(EUIInternal::MakeModelWithManager(Manager, FVM_ItemCraft::ModelId));
-    return __r;
+    return TEUIModelRef<FVM_ItemCraft>(EUIInternal::MakeModelWithManager(Manager, FVM_ItemCraft::ModelId)).Get();
 }
 void GetModelInfo(FEUIViewModelMetaInfo &inout Result)
 {
@@ -1722,7 +1721,6 @@ namespace __GeneratedProperties_FVM_ItemCraft
 {
 UScriptStruct StaticStruct()
 {
-    UScriptStruct local_2;
-    return local_2;
+    return __GeneratedProperties_FVM_ItemCraft.Get();
 }
 }

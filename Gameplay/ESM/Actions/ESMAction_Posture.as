@@ -31,12 +31,11 @@ class UESMAction_WindupPosture : UESMBPBaseSpanAction
     void Exit_Implementation(const FESMContext &inout Context, const FESMActionTime &inout Time) const
     {
         int local_6 = 0;
-        const FESMAction_WindupPostureInstanceData& local_10;
         if (!(local_6))
         {
             return;
         }
-        if (local_6.GetAttributeValue(Attribute::Posture, Time.WorldTime) > local_10.PreviousPostureValue)
+        if (local_6.GetAttributeValue(Attribute::Posture, Time.WorldTime) > this.GetInstanceData(Context).PreviousPostureValue)
         {
             FGameAttributeUtils::Consume(Context.GetEntity(), Attribute::Posture, Time.WorldTime, this.AddPostureValue);
         }

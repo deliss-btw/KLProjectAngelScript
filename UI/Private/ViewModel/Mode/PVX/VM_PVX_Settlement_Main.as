@@ -276,34 +276,26 @@ struct FVM_PVX_Settlement_Main : FEUIViewModel
         {
             if (int(this.GetLocalPlayerFaction()) == 6)
             {
-                TEUIModelRef<FVM_CommissionFinish> local_8 = this.GetCommissionFinish();
-                0.SetTitleTextIndex();
-                FText local_12 = NSLOCTEXT("PVX", "Settlement_HuntEnd", "狩猎结束");
-                TEUIModelRef<FVM_CommissionFinish> local_8_2 = this.GetCommissionFinish();
-                local_12.SetTitleNormalText();
+                this.GetCommissionFinish().Get().SetTitleTextIndex(0);
+                this.GetCommissionFinish().Get().SetTitleNormalText(NSLOCTEXT("PVX", "Settlement_HuntEnd", "狩猎结束"));
             }
             else
             {
                 if (this.GetbIsSuccess())
                 {
-                    TEUIModelRef<FVM_CommissionFinish> local_8_3 = this.GetCommissionFinish();
-                    1.SetTitleTextIndex();
+                    this.GetCommissionFinish().Get().SetTitleTextIndex(1);
                 }
                 else
                 {
-                    TEUIModelRef<FVM_CommissionFinish> local_8_4 = this.GetCommissionFinish();
-                    2.SetTitleTextIndex();
+                    this.GetCommissionFinish().Get().SetTitleTextIndex(2);
                 }
             }
             return;
         }
         if (int(this.GetCurrentPhaseType()) == 1)
         {
-            TEUIModelRef<FVM_CommissionFinish> local_8_5 = this.GetCommissionFinish();
-            0.SetTitleTextIndex();
-            FText local_12_2 = NSLOCTEXT("PVX", "Settlement_Performance", "团队表现");
-            TEUIModelRef<FVM_CommissionFinish> local_8_6 = this.GetCommissionFinish();
-            local_12_2.SetTitleNormalText();
+            this.GetCommissionFinish().Get().SetTitleTextIndex(0);
+            this.GetCommissionFinish().Get().SetTitleNormalText(NSLOCTEXT("PVX", "Settlement_Performance", "团队表现"));
         }
         return;
     }
@@ -593,11 +585,9 @@ FVM_PVX_Settlement_Main& Create(const UObject ContextObject)
 {
     return FVM_PVX_Settlement_Main::CreateByManager(EUIInternal::GetContextManager(ContextObject));
 }
-FVM_PVX_Settlement_Main CreateByManager(const UEUIManagerSubsystem Manager)
+FVM_PVX_Settlement_Main& CreateByManager(const UEUIManagerSubsystem Manager)
 {
-    FVM_PVX_Settlement_Main __r;
-    TEUIModelRef<FVM_PVX_Settlement_Main> local_6 = TEUIModelRef<FVM_PVX_Settlement_Main>(EUIInternal::MakeModelWithManager(Manager, FVM_PVX_Settlement_Main::ModelId));
-    return __r;
+    return TEUIModelRef<FVM_PVX_Settlement_Main>(EUIInternal::MakeModelWithManager(Manager, FVM_PVX_Settlement_Main::ModelId)).Get();
 }
 void GetModelInfo(FEUIViewModelMetaInfo &inout Result)
 {
@@ -720,7 +710,6 @@ namespace __GeneratedProperties_FVM_PVX_Settlement_Main
 {
 UScriptStruct StaticStruct()
 {
-    UScriptStruct local_2;
-    return local_2;
+    return __GeneratedProperties_FVM_PVX_Settlement_Main.Get();
 }
 }

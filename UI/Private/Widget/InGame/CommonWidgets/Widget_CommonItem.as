@@ -66,8 +66,8 @@ class UWidget_CommonItem : UEUIUserListItemWidget
     }
     void HandleObservedModelChanges(FEUIReactiveSubscriberIterator &inout It)
     {
-        FVM_CommonItem& local_6;
         TEUIModelRef<FVM_CommonItem> local_2 = this.CommonItem.AsRef();
+        FVM_CommonItem& local_6 = local_2.Get();
         for (; It; )
         {
             FEUIReactiveSubscriberTrackScope local_56 = FEUIReactiveSubscriberTrackScope(It);
@@ -140,7 +140,7 @@ class UWidget_CommonItem_Rectangle : UWidget_CommonItem
     {
         if (this.CommonItem.IsValid())
         {
-            2.RefreshDisplay();
+            this.CommonItem.Get().RefreshDisplay(EItemDisplayType(2));
         }
         return;
     }

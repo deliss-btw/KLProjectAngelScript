@@ -18,7 +18,7 @@ class UWidget_TaskGroupEntry : UEUIUserWidget
     UFUNCTION()
     TArray<FEUIModelWeakRef> TaskGroup_TaskList() const
     {
-        FVM_TaskGroup& local_2;
+        FVM_TaskGroup& local_2 = this.TaskGroup.Get();
         TArray<FEUIModelWeakRef> local_16;
         if (local_2)
         {

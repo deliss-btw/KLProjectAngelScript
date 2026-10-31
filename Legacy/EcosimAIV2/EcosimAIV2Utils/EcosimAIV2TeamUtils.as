@@ -483,7 +483,7 @@ bool GetOtherTeamMemberEntity(const FECSEntity &inout Entity, TArray<FTargetEnti
         if (local_18)
         {
             OtherMemberEntityList = local_18.EntityMemberList;
-            FTargetEntity local_20 = FTargetEntity(Entity);
+            OtherMemberEntityList.Remove(FTargetEntity(Entity));
             return true;
         }
     }

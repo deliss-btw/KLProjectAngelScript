@@ -219,19 +219,19 @@ struct FVMS_ItemInfo : FEUIViewModelSingleton
     void SetupConsumableItemSkillButton(const TEUIModelRef<FVM_SkillButton> &inout VM_SkillButton, const TDataObjectPtr<FCombatItemConfig> &inout Config, const int ItemNumber)
     {
         this.SetbItemSet(true);
-        Config.opArrow().ItemSkillConfig.SetSkillConfig();
-        3.SetSkillButtonType();
-        Config.SetConsumableItem();
-        ItemNumber.SetUsableTime();
+        VM_SkillButton.Get().SetSkillConfig(Config.opArrow().ItemSkillConfig);
+        VM_SkillButton.Get().SetSkillButtonType(ESkillButtonType(3));
+        VM_SkillButton.Get().SetConsumableItem(Config);
+        VM_SkillButton.Get().SetUsableTime(ItemNumber);
         return;
     }
     void SetConsumableItemSkillButtonToEmpty(const TEUIModelRef<FVM_SkillButton> &inout VM_SkillButton)
     {
-        nullptr.SetSkillConfig();
-        3.SetSkillButtonType();
+        VM_SkillButton.Get().SetSkillConfig(nullptr);
+        VM_SkillButton.Get().SetSkillButtonType(ESkillButtonType(3));
         TDataObjectPtr<FCombatItemConfig> local_26;
-        local_26.SetConsumableItem();
-        0.SetUsableTime();
+        VM_SkillButton.Get().SetConsumableItem(local_26);
+        VM_SkillButton.Get().SetUsableTime(0);
         return;
     }
     void SetTemporasryItemButtonVisibility(const bool Visible)
@@ -476,11 +476,9 @@ FVMS_ItemInfo& Get(const UObject ContextObject)
 {
     return FVMS_ItemInfo::GetByManager(EUIInternal::GetContextManager(ContextObject));
 }
-FVMS_ItemInfo GetByManager(const UEUIManagerSubsystem Manager)
+FVMS_ItemInfo& GetByManager(const UEUIManagerSubsystem Manager)
 {
-    FVMS_ItemInfo __r;
-    TEUIModelRef<FVMS_ItemInfo> local_6 = TEUIModelRef<FVMS_ItemInfo>(EUIInternal::MakeModelWithManager(Manager, FVMS_ItemInfo::ModelId));
-    return __r;
+    return TEUIModelRef<FVMS_ItemInfo>(EUIInternal::MakeModelWithManager(Manager, FVMS_ItemInfo::ModelId)).Get();
 }
 void GetModelInfo(FEUIViewModelMetaInfo &inout Result)
 {
@@ -650,7 +648,6 @@ namespace __GeneratedProperties_FVMS_ItemInfo
 {
 UScriptStruct StaticStruct()
 {
-    UScriptStruct local_2;
-    return local_2;
+    return __GeneratedProperties_FVMS_ItemInfo.Get();
 }
 }

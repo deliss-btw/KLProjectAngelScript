@@ -178,32 +178,11 @@ struct FVM_TeamPanel : FEUIViewModel
     {
         if (int(InTeamType) == 1)
         {
-            bool local_3 = this.GetSocialTeam().IsValid();
-            if (!(local_3))
-            {
-                local_3 = false;
-            }
-            else
-            {
-                TEUIModelRef<FM_SocialTeam> local_6 = this.GetSocialTeam();
-                local_3 = (GetMembers().Num() > 1);
-            }
-            return local_3;
+            return this.GetSocialTeam().IsValid() && (this.GetSocialTeam().Get().GetMembers().Num() > 1);
         }
         if (int(InTeamType) == 2)
         {
-            bool local_7;
-            local_7 = this.GetCombatTeam().IsValid();
-            if (!(local_7))
-            {
-                local_7 = false;
-            }
-            else
-            {
-                TEUIModelRef<FM_CombatTeam> local_10 = this.GetCombatTeam();
-                local_7 = (GetMembers().Num() > 1);
-            }
-            return local_7;
+            return this.GetCombatTeam().IsValid() && (this.GetCombatTeam().Get().GetMembers().Num() > 1);
         }
         return false;
     }
@@ -278,17 +257,7 @@ struct FVM_TeamPanel : FEUIViewModel
         {
             return false;
         }
-        bool local_1 = this.GetSocialTeam().IsValid();
-        if (!(local_1))
-        {
-            local_1 = false;
-        }
-        else
-        {
-            TEUIModelRef<FM_SocialTeam> local_8 = this.GetSocialTeam();
-            local_1 = (GetMembers().Num() <= 1);
-        }
-        if (local_1)
+        if (this.GetSocialTeam().IsValid() && (this.GetSocialTeam().Get().GetMembers().Num() <= 1))
         {
             return false;
         }
@@ -513,8 +482,7 @@ struct FVM_TeamPanel : FEUIViewModel
     {
         if (::FMS_PlayerSocialTeamData::Get(this.GetContext().Manager).IsLocalPlayerInTeam())
         {
-            TEUIModelRef<FM_SocialTeam> local_4 = this.GetSocialTeam();
-            return (GetMembers().Num() > 1);
+            return (this.GetSocialTeam().Get().GetMembers().Num() > 1);
         }
         return false;
     }
@@ -528,13 +496,13 @@ struct FVM_TeamPanel : FEUIViewModel
         }
         if (local_2)
         {
-            return ETeamType(1);
+            return ETeamType::Social;
         }
         if (local_1)
         {
-            return ETeamType(2);
+            return ETeamType::Combat;
         }
-        return ETeamType(0);
+        return ETeamType::None;
     }
     void SetTeamType(const ETeamType InTeamType) property
     {
@@ -711,10 +679,9 @@ struct FVM_TeamPanel : FEUIViewModel
     {
         for (auto& local_16 : this.GetTeamOperatorBtns())
         {
-            local_16;
-            if ((int(GetButtonType())) == 1 || (int(GetButtonType()) == 2))
+            if ((int(local_16.Get().GetButtonType())) == 1 || (int(local_16.Get().GetButtonType()) == 2))
             {
-                NotifyVoiceStateChanged();
+                local_16.Get().NotifyVoiceStateChanged();
             }
         }
         return;
@@ -735,15 +702,13 @@ struct FVM_TeamPanel : FEUIViewModel
         bool local_9 = false;
         if (this.IsSocialTeam())
         {
-            TEUIModelRef<FM_SocialTeam> local_12 = this.GetSocialTeam();
-            local_9 = (GetMembers().Num() > 1);
+            local_9 = (this.GetSocialTeam().Get().GetMembers().Num() > 1);
         }
         else
         {
             if (this.IsCombatTeam())
             {
-                TEUIModelRef<FM_CombatTeam> local_16 = this.GetCombatTeam();
-                local_9 = (GetMembers().Num() > 1);
+                local_9 = (this.GetCombatTeam().Get().GetMembers().Num() > 1);
             }
         }
         if (local_9)
@@ -760,9 +725,7 @@ struct FVM_TeamPanel : FEUIViewModel
         }
         if (this.GetTeamOperatorBtns().Num() > 0)
         {
-            bool local_2 = true;
-            int local_1 = this.GetTeamOperatorBtns().Num() - 1;
-            local_2.SetbLast();
+            this.GetModify_TeamOperatorBtns()[(this.GetTeamOperatorBtns().Num() - 1)].Get().SetbLast(true);
         }
         return;
     }
@@ -1025,11 +988,9 @@ FVM_TeamPanel& Create(const UObject ContextObject)
 {
     return FVM_TeamPanel::CreateByManager(EUIInternal::GetContextManager(ContextObject));
 }
-FVM_TeamPanel CreateByManager(const UEUIManagerSubsystem Manager)
+FVM_TeamPanel& CreateByManager(const UEUIManagerSubsystem Manager)
 {
-    FVM_TeamPanel __r;
-    TEUIModelRef<FVM_TeamPanel> local_6 = TEUIModelRef<FVM_TeamPanel>(EUIInternal::MakeModelWithManager(Manager, FVM_TeamPanel::ModelId));
-    return __r;
+    return TEUIModelRef<FVM_TeamPanel>(EUIInternal::MakeModelWithManager(Manager, FVM_TeamPanel::ModelId)).Get();
 }
 void GetModelInfo(FEUIViewModelMetaInfo &inout Result)
 {
@@ -1369,7 +1330,6 @@ namespace __GeneratedProperties_FVM_TeamPanel
 {
 UScriptStruct StaticStruct()
 {
-    UScriptStruct local_2;
-    return local_2;
+    return __GeneratedProperties_FVM_TeamPanel.Get();
 }
 }

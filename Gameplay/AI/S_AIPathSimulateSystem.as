@@ -479,7 +479,7 @@ class US_AIPathSimulateSystem : UECSScriptSystem
     }
     void StuckJump(const FECSEntity &inout Entity, FC_AIPathSimulate &inout C_Simulate, FC_Transform &inout Transform) const
     {
-        bool local_14 = false;
+        bool local_3;
         float32 local_38;
         int local_68 = 0;
         FNameHandle_EntityBBVar local_78;
@@ -513,7 +513,16 @@ class US_AIPathSimulateSystem : UECSScriptSystem
                 FECSDebugDraw::DrawDebugSphere(DebugDrawKey_AIPathSimulate, (local_10 + FVector(0.0, 0.0, 5.0)), 50.0f, 8, FColor::Blue, FColor::Blue, 20.0f, uint8(0), 0.0f);
             }
             Get local_56;
-            if (local_56.opCall().GetMoveAbilityConfig() && local_14)
+            if (!(local_56.opCall().GetMoveAbilityConfig()))
+            {
+                local_3 = false;
+            }
+            else
+            {
+                Get local_60;
+                local_3 = local_60.opCall().GetMoveAbilityConfig().Get().bUseNewJumpTrigger;
+            }
+            if (local_3)
             {
                 int local_61;
                 local_61 = 1;
@@ -530,8 +539,7 @@ class US_AIPathSimulateSystem : UECSScriptSystem
                 if (Entity.HasEntityBB(local_78))
                 {
                     Has local_86;
-                    local_14 = local_86.opCall();
-                    if (local_14)
+                    if (local_86.opCall())
                     {
                         Get local_90;
                         local_38 = local_90.opCall().GetScaledHalfHeight();
@@ -610,8 +618,7 @@ class US_AIPathSimulateSystem : UECSScriptSystem
             local_77 = 35.0f;
             if (UGameplayConfigsManager::GetAIMoveSettings().IsValid())
             {
-                UAIMoveSettings local_80;
-                local_77 = local_80.ChainedStartEntryPrefixTolerance;
+                local_77 = UGameplayConfigsManager::GetAIMoveSettings().Get().ChainedStartEntryPrefixTolerance;
             }
             local_46 = FMath::Clamp(local_77, 10.0f, local_46);
         }
@@ -746,7 +753,7 @@ class US_AIPathSimulateSystem : UECSScriptSystem
     {
         bool local_2 = false;
         Get local_88;
-        float32 local_89 = 0.0f;
+        float32 local_89;
         float32 local_90;
         FNameHandle_EntityBBVar local_120;
         FNameHandle_EntityBBVarVector local_124;
@@ -756,24 +763,34 @@ class US_AIPathSimulateSystem : UECSScriptSystem
         {
             return;
         }
-        bool local_1 = !(SegmentData.GetbHasTrigger());
         FGameplayTag local_154;
-        if (local_1)
+        if (!(SegmentData.GetbHasTrigger()))
         {
+            bool local_11;
+            Get local_10;
             Get local_6;
-            local_1 = false;
-            local_2 = local_1;
-            if (local_6.opCall().GetMoveAbilityConfig() && local_1)
+            local_2 = false;
+            local_11 = local_6.opCall().GetMoveAbilityConfig();
+            if (!(local_11))
+            {
+                local_11 = false;
+            }
+            else
+            {
+                local_11 = local_10.opCall().GetMoveAbilityConfig().Get().bUseNewJumpTrigger;
+            }
+            if (local_11)
             {
                 Has local_84;
                 int local_62;
                 int local_61;
                 TDataObjectPtr<FAIMoveConfig> local_36 = local_6.opCall().GetMoveAbilityConfig();
-                local_2 = true;
+                local_11 = true;
+                local_2 = local_11;
                 local_62 = 0;
                 local_61 = local_62;
                 FVector local_80 = (FVector(SegmentData.GetTargetPoint()) - Transform.GetPosition());
-                local_1 = local_84.opCall();
+                bool local_1 = local_84.opCall();
                 if (local_1)
                 {
                     local_90 = local_88.opCall().GetScaledHalfHeight();
@@ -783,13 +800,20 @@ class US_AIPathSimulateSystem : UECSScriptSystem
                     local_90 = 0.0f;
                 }
                 FVector local_102 = (local_80 + FVector(0.0, 0.0, local_90));
-                bool local_11 = local_102.Z < 100.0 && local_1;
+                if (local_102.Z >= 100.0)
+                {
+                    local_11 = false;
+                }
+                else
+                {
+                    local_11 = local_36.Get().bHasLeapOff;
+                }
                 if (local_11)
                 {
                     FVector local_68 = ((FVector(SegmentData.GetTargetPoint()) - Transform.GetPosition()) * FVector(1.0, 1.0, 0.0));
                     FVector local_108(Transform.GetPosition());
-                    local_1 = local_84.opCall();
-                    if (local_1)
+                    bool local_1_2 = local_84.opCall();
+                    if (local_1_2)
                     {
                         local_90 = local_88.opCall().GetScaledHalfHeight();
                     }
@@ -798,8 +822,7 @@ class US_AIPathSimulateSystem : UECSScriptSystem
                         local_90 = 0.0f;
                     }
                     FVector local_80_2 = (local_108 + FVector(0.0, 0.0, local_90));
-                    local_89 = CVar_AI_LeapOffIntervalRatio.GetFloat();
-                    FVector local_74_2 = (local_68 * local_89);
+                    FVector local_74_2 = (local_68 * CVar_AI_LeapOffIntervalRatio.GetFloat());
                     FVector local_108_2 = (local_80_2 + local_74_2);
                     local_120;
                     if (Entity.HasEntityBB(local_120))
@@ -811,19 +834,21 @@ class US_AIPathSimulateSystem : UECSScriptSystem
                 }
                 else
                 {
-                    local_11 = local_102.Z > local_90 || (local_102.Size2D() > local_89);
-                    if (local_11)
+                    local_90 = local_36.Get().Upstairs_HighThreshold;
+                    if (local_102.Z > local_90 || ((local_102.Size2D() > local_36.Get().Upstairs_LengthThreshold)))
                     {
-                        if (local_1)
+                        bool local_1_3 = local_36.Get().bHasMantle;
+                        if (local_1_3)
                         {
                             local_62 = 2;
                             local_61 = local_62;
+                            local_90 = local_36.Get().Mantle_HighThreshold;
                             if (local_90 != 0.0f)
                             {
+                                local_89 = local_36.Get().Mantle_HighThreshold;
                                 float local_94 = local_102.Z / local_89;
                                 local_120;
-                                local_11 = Entity.HasEntityBB(local_120);
-                                if (local_11)
+                                if (Entity.HasEntityBB(local_120))
                                 {
                                     local_90 = float32(local_94);
                                     local_130;
@@ -833,13 +858,14 @@ class US_AIPathSimulateSystem : UECSScriptSystem
                         }
                     }
                 }
-                local_11 = local_11 && (local_61 == 0);
-                if (local_11)
+                if (local_36.Get().bHasUpstairs && (local_61 == 0))
                 {
                     local_62 = 1;
                     local_61 = local_62;
+                    local_89 = local_36.Get().Upstairs_HighThreshold;
                     if (local_89 != 0.0f)
                     {
+                        local_90 = local_36.Get().Upstairs_HighThreshold;
                         float local_96_3 = local_102.Z / local_90;
                         local_120;
                         if (Entity.HasEntityBB(local_120))
@@ -863,8 +889,8 @@ class US_AIPathSimulateSystem : UECSScriptSystem
                 if (Entity.HasEntityBB(local_120))
                 {
                     FVector local_74_3 = FVector(SegmentData.GetTargetPoint());
-                    bool local_11_2 = local_84.opCall();
-                    if (local_11_2)
+                    local_11 = local_84.opCall();
+                    if (local_11)
                     {
                         local_89 = local_88.opCall().GetScaledHalfHeight();
                     }
@@ -930,8 +956,7 @@ class US_AIPathSimulateSystem : UECSScriptSystem
                     local_158.opCall().WaitingTriggers.Add(SegmentData.GetESMTriggerListenerID(), local_182);
                     FESMTriggerUtils::ActivateTrigger(Entity, local_138.Storage, ::FAINavigationUtils::GetAIJumpTriggerV2(), ECS::GetContextTime(), ECS::GetContextDeltaTime(), 0);
                     local_120;
-                    local_1 = Entity.HasEntityBB(local_120);
-                    if (local_1)
+                    if (Entity.HasEntityBB(local_120))
                     {
                         local_124;
                     }
@@ -940,8 +965,19 @@ class US_AIPathSimulateSystem : UECSScriptSystem
         }
         else
         {
+            bool local_11;
             Get local_10;
-            if (local_10.opCall().GetMoveAbilityConfig() && local_1)
+            Get local_6;
+            local_11 = local_10.opCall().GetMoveAbilityConfig();
+            if (!(local_11))
+            {
+                local_11 = false;
+            }
+            else
+            {
+                local_11 = local_6.opCall().GetMoveAbilityConfig().Get().bUseNewJumpTrigger;
+            }
+            if (local_11)
             {
                 if (!(Entity.MatchGameplayTag(FGameplayTag::RequestGameplayTag(n"ESM.MotionFlag.Jump", true))) && !(Entity.MatchGameplayTag(FGameplayTag::RequestGameplayTag(n"ESM.MotionFlag.FallCycle", true))))
                 {

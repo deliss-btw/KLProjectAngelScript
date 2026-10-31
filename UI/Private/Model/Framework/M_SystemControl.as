@@ -105,6 +105,8 @@ struct FMS_SystemControl : FEUIModelSingleton
             {
                 if (local_46.IsSet())
                 {
+                    local_4.AddUnique(local_46.Get().WidgetTag);
+                    local_12.Add(local_8.Add(local_46.Get().WidgetTag));
                 }
             }
             local_28.Next();
@@ -140,25 +142,26 @@ struct FMS_SystemControl : FEUIModelSingleton
     void ApplyLevelSystemControls()
     {
         int local_113;
-        int local_114 = 0;
         this.GetModify_LevelLockSystemDataIdSet().Reset();
         this.GetModify_LevelForbiddenLockSystemTips().Reset();
-        if (::FLevelUtils::GetCurrentLevelInfoConfig(nullptr).IsSet())
+        TDataObjectPtr<FLevelInfoConfig> local_48 = ::FLevelUtils::GetCurrentLevelInfoConfig(nullptr);
+        if (local_48.IsSet())
         {
-            if (GetGameRuleConfig().IsSet())
+            TDataObjectPtr<FGameRuleConfig> local_74 = local_48.Get().GetGameRuleConfig();
+            if (local_74.IsSet())
             {
-                for (auto& local_112 : GetDisabledSystemControls())
+                for (auto& local_112 : local_74.Get().GetDisabledSystemControls())
                 {
-                    bool local_49 = !(local_112.IsSet());
-                    if (local_49)
+                    if (!(local_112.IsSet()))
                     {
                         continue;
                     }
+                    int local_114 = local_112.Get().DataId;
                     local_113 = local_114;
                     this.GetModify_LevelLockSystemDataIdSet().Add(local_113);
-                    local_49 = !local_49;
-                    if (local_49)
+                    if (!(local_112.Get().ForbiddenTips.IsEmpty()))
                     {
+                        this.GetModify_LevelForbiddenLockSystemTips().FindOrAdd(local_113) = local_112.Get().ForbiddenTips;
                     }
                     XLog(ELog(73), FString().Append("[FMS_SystemControl]ApplyLevelSystemControls. LevelLockSystemDataId:[").Append(local_113).Append("]"));
                 }
@@ -223,14 +226,16 @@ struct FMS_SystemControl : FEUIModelSingleton
     void AddLockedWidgetTagsForSystem(const uint SystemDataId)
     {
         GetDataObjectByGSDataId<FSystemControlConfig> local_48;
-        if (!(local_48.opImplConv().IsSet()))
+        TDataObjectPtr<FSystemControlConfig> local_24 = local_48.opImplConv();
+        if (!(local_24.IsSet()))
         {
             return;
         }
-        for (auto& local_112 : GetLockWidgetConfigList())
+        for (auto& local_112 : local_24.Get().GetLockWidgetConfigList())
         {
             if (local_112.IsSet())
             {
+                this.GetContext().Manager.AddLockWidgetTag(local_112.Get().WidgetTag);
             }
         }
         return;
@@ -256,10 +261,9 @@ struct FMS_SystemControl : FEUIModelSingleton
     }
     bool IsSystemUnlock(const TDataObjectPtr<FSystemControlConfig> &inout InSystemControlConfig, const bool bShowTips = true) const
     {
-        int local_2 = 0;
         if (InSystemControlConfig.IsSet())
         {
-            return this.IsSystemUnlock(ESystemModule(local_2), bShowTips);
+            return this.IsSystemUnlock(InSystemControlConfig.Get().SystemModule, bShowTips);
         }
         return true;
     }
@@ -274,10 +278,9 @@ struct FMS_SystemControl : FEUIModelSingleton
     }
     bool IsSystemBlocked(const TDataObjectPtr<FSystemControlConfig> &inout InSystemControlConfig) const
     {
-        int local_2 = 0;
         if (InSystemControlConfig.IsSet())
         {
-            return this.IsSystemBlocked(ESystemModule(local_2));
+            return this.IsSystemBlocked(InSystemControlConfig.Get().SystemModule);
         }
         return false;
     }
@@ -292,10 +295,9 @@ struct FMS_SystemControl : FEUIModelSingleton
     }
     bool IsSystemLockedByLockSources(const TDataObjectPtr<FSystemControlConfig> &inout InSystemControlConfig) const
     {
-        int local_2 = 0;
         if (InSystemControlConfig.IsSet())
         {
-            return this.IsSystemLockedByLockSources(ESystemModule(local_2));
+            return this.IsSystemLockedByLockSources(InSystemControlConfig.Get().SystemModule);
         }
         return false;
     }
@@ -345,8 +347,10 @@ struct FMS_SystemControl : FEUIModelSingleton
         {
             local_15 = local_10[local_11];
             this.GetModify_GSLockSystemDataIdSet().Add(local_15);
-            if (local_64.opImplConv().IsSet())
+            TDataObjectPtr<FSystemControlConfig> local_40 = local_64.opImplConv();
+            if (local_40.IsSet())
             {
+                this.GetModify_GSForbiddenLockSystemTips().Add(local_15, local_40.Get().ForbiddenTips);
             }
             XLog(ELog(73), FString().Append("[FMS_SystemControl]GS_OnSystemControlAllNotify. LimitSystemDataId:[").Append(local_15).Append("]"));
             ++local_11;
@@ -361,6 +365,7 @@ struct FMS_SystemControl : FEUIModelSingleton
             TDataObjectPtr<FSystemControlConfig> local_40_2 = local_64.opImplConv();
             if (local_40_2.IsSet())
             {
+                this.GetModify_GSBlockSystemTips().Add(local_15, local_40_2.Get().ForbiddenTips);
             }
             XLog(ELog(73), FString().Append("[FMS_SystemControl]GS_OnSystemControlAllNotify. BlockSystemDataId:[").Append(local_15).Append("]"));
             ++local_11_2;
@@ -372,7 +377,97 @@ struct FMS_SystemControl : FEUIModelSingleton
     }
     void GS_OnSystemControlOpenNotify(const FPbSystemControlOpenNotify &inout Notify)
     {
-        // body not fully recovered — stub [unresolved-operand]
+        int local_15;
+        GetDataObjectByGSDataId<FSystemControlConfig> local_64;
+        XLog(ELog(73), FString().Append("[FMS_SystemControl]GS_OnSystemControlOpenNotify."));
+        TArray<uint> local_10;
+        Notify.GetNewLimitSystems(local_10);
+        int local_11 = 0;
+        for (; local_11 < local_10.Num(); )
+        {
+            local_15 = local_10[local_11];
+            this.GetModify_GSLockSystemDataIdSet().Add(local_15);
+            TDataObjectPtr<FSystemControlConfig> local_40 = local_64.opImplConv();
+            if (local_40.IsSet())
+            {
+                this.GetModify_GSForbiddenLockSystemTips().Add(local_15, local_40.Get().ForbiddenTips);
+            }
+            XLog(ELog(73), FString().Append("[FMS_SystemControl]GS_OnSystemControlOpenNotify. NewLimitSystemDataId:[").Append(local_15).Append("]"));
+            ++local_11;
+        }
+        TArray<uint> local_116;
+        Notify.GetNewOpenSystems(local_116);
+        int local_11_2 = 0;
+        for (; local_11_2 < local_116.Num(); ++local_11_2)
+        {
+            local_15 = local_116[local_11_2];
+            if (this.GetModify_GSLockSystemDataIdSet().Remove(local_15))
+            {
+                this.GetModify_GSForbiddenLockSystemTips().Remove(local_15);
+                TDataObjectPtr<FSystemControlConfig> local_40_2 = local_64.opImplConv();
+                if (local_40_2.IsSet())
+                {
+                    FEUIModelRef local_122 = FEUIModelRef(this);
+                    FEUIMessageBus::Publish(EUIMessageBus);
+                    FMsg_SystemUnlockFromGS local_124;
+                    local_124.SystemModule = local_40_2.Get().SystemModule;
+                    if (local_40_2.Get().bShowUnlockMessageHint)
+                    {
+                        TArray<FTextArgument> local_130;
+                        Make local_136;
+                        local_130.Add(local_136.opImplConv());
+                        ::MessageHintUtils::ShowMessageHint(this.GetContext().GetLocalPlayer(), ::UCombatGlobalSettings::Get().SystemUnlockHint, local_130);
+                    }
+                    if (local_40_2.Get().GetRedPointCfg().IsSet())
+                    {
+                        TArray<uint64> local_152;
+                        for (auto local_166 : local_40_2.Get().ExtraArgs)
+                        {
+                            local_152.AddUnique(local_166);
+                        }
+                        ::FMS_RedDotSystem::Get(this.GetContext().Manager).GenerateRedDot(local_40_2.Get().GetRedPointCfg().Get().EventType, local_152);
+                    }
+                }
+                XLog(ELog(73), FString().Append("[FMS_SystemControl]GS_OnSystemControlOpenNotify. NewOpenSystemDataId:[").Append(local_15).Append("]"));
+            }
+        }
+        bool local_170 = false;
+        TArray<uint> local_174;
+        Notify.GetNewBlockSystems(local_174);
+        int local_11_3 = 0;
+        for (; local_11_3 < local_174.Num(); )
+        {
+            local_15 = local_174[local_11_3];
+            this.GetModify_GSBlockSystemDataIdSet().Add(local_15);
+            local_170 = true;
+            TDataObjectPtr<FSystemControlConfig> local_40_3 = local_64.opImplConv();
+            if (local_40_3.IsSet())
+            {
+                this.GetModify_GSBlockSystemTips().Add(local_15, local_40_3.Get().ForbiddenTips);
+            }
+            XLog(ELog(73), FString().Append("[FMS_SystemControl]GS_OnSystemControlOpenNotify. NewBlockSystemDataId:[").Append(local_15).Append("]"));
+            ++local_11_3;
+        }
+        TArray<uint> local_178;
+        Notify.GetNewUnblockSystems(local_178);
+        int local_11_4 = 0;
+        for (; local_11_4 < local_178.Num(); ++local_11_4)
+        {
+            local_15 = local_178[local_11_4];
+            if (this.GetModify_GSBlockSystemDataIdSet().Remove(local_15))
+            {
+                this.GetModify_GSBlockSystemTips().Remove(local_15);
+                local_170 = true;
+                XLog(ELog(73), FString().Append("[FMS_SystemControl]GS_OnSystemControlOpenNotify. NewUnblockSystemDataId:[").Append(local_15).Append("]"));
+            }
+        }
+        this.RebuildLockedWidgetTags();
+        if (local_170)
+        {
+            FEUIModelRef local_122_2 = FEUIModelRef(this);
+            FEUIMessageBus::Publish(EUIMessageBus).opCall(local_122_2);
+        }
+        return;
     }
     void GS_OnSystemControlLimitNotify(const FPbSystemControlLimitNotify &inout Notify)
     {
@@ -391,14 +486,14 @@ struct FMS_SystemControl : FEUIModelSingleton
     }
     void NotifySystemControlChanged(const uint SystemDataId)
     {
-        int local_107 = 0;
         GetDataObjectByGSDataId<FSystemControlConfig> local_48;
-        if (local_48.opImplConv().IsSet())
+        TDataObjectPtr<FSystemControlConfig> local_24 = local_48.opImplConv();
+        if (local_24.IsSet())
         {
             FEUIModelRef local_104 = FEUIModelRef(this);
             FEUIMessageBus::Publish(EUIMessageBus);
             FMsg_SystemUnlockFromGS local_106;
-            local_106.SystemModule = ESystemModule(local_107);
+            local_106.SystemModule = local_24.Get().SystemModule;
         }
         return;
     }
@@ -417,7 +512,15 @@ struct FMS_SystemControl : FEUIModelSingleton
     }
     void OnLBPEnableSystemControl(const FCE_LBPEnableSystemControl &inout Event)
     {
-        // body not fully recovered — stub [unresolved-operand]
+        int local_1 = int(Event.SystemDataId);
+        if (this.GetModify_LocalLockSystemDataIdSet().Remove(local_1))
+        {
+            this.GetModify_LocalForbiddenLockSystemTips().Remove(local_1);
+            this.RebuildLockedWidgetTags();
+            this.NotifySystemControlChanged(local_1);
+        }
+        XLog(ELog(73), FString().Append("[FMS_SystemControl]OnLBPEnableSystemControl. SystemDataId:[").Append(local_1).Append("]"));
+        return;
     }
     void HandleOnCreateWidgetLocked(const FMsg_OnCreateWidgetLocked &inout Result)
     {
@@ -690,11 +793,9 @@ FMS_SystemControl& Get(const UObject ContextObject)
 {
     return FMS_SystemControl::GetByManager(EUIInternal::GetContextManager(ContextObject));
 }
-FMS_SystemControl GetByManager(const UEUIManagerSubsystem Manager)
+FMS_SystemControl& GetByManager(const UEUIManagerSubsystem Manager)
 {
-    FMS_SystemControl __r;
-    TEUIModelRef<FMS_SystemControl> local_6 = TEUIModelRef<FMS_SystemControl>(EUIInternal::MakeModelWithManager(Manager, FMS_SystemControl::ModelId));
-    return __r;
+    return TEUIModelRef<FMS_SystemControl>(EUIInternal::MakeModelWithManager(Manager, FMS_SystemControl::ModelId)).Get();
 }
 void GetModelInfo(FEUIModelOnlyMetaInfo &inout Result)
 {

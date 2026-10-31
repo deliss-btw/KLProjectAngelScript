@@ -161,8 +161,7 @@ struct FVM_TeleporterUtils : FEUIViewModelSingleton
     {
         this.SetDelegateHelper(TEUIModelRef<FVM_TeleporterUtilsDelegateHelper>(::FVM_TeleporterUtilsDelegateHelper::Create(this.GetContext().Manager, TeleporterConfig)));
         FDialogModelCallback local_28;
-        TEUIModelRef<FVM_TeleporterUtilsDelegateHelper> local_2 = this.GetDelegateHelper();
-        local_28.Bind(FVM_TeleporterUtilsDelegateHelper::OnDialogCallback);
+        local_28.Bind(this.GetDelegateHelper().Get(), FVM_TeleporterUtilsDelegateHelper::OnDialogCallback);
         FText local_70 = FText();
         FText local_74 = FText();
         FDialogCallback local_60 = FDialogCallback(local_28);
@@ -235,11 +234,9 @@ FVM_TeleporterUtilsDelegateHelper& Create(const UObject ContextObject, const TDa
 {
     return FVM_TeleporterUtilsDelegateHelper::CreateByManager(EUIInternal::GetContextManager(ContextObject), TeleporterConfig);
 }
-FVM_TeleporterUtilsDelegateHelper CreateByManager(const UEUIManagerSubsystem Manager, const TDataObjectPtr<FTeleporterConfig> &inout TeleporterConfig)
+FVM_TeleporterUtilsDelegateHelper& CreateByManager(const UEUIManagerSubsystem Manager, const TDataObjectPtr<FTeleporterConfig> &inout TeleporterConfig)
 {
-    FVM_TeleporterUtilsDelegateHelper __r;
-    TEUIModelRef<FVM_TeleporterUtilsDelegateHelper> local_6 = TEUIModelRef<FVM_TeleporterUtilsDelegateHelper>(EUIInternal::MakeModelWithManager_Generic(Manager, FVM_TeleporterUtilsDelegateHelper::ModelId, 0, TeleporterConfig));
-    return __r;
+    return TEUIModelRef<FVM_TeleporterUtilsDelegateHelper>(EUIInternal::MakeModelWithManager_Generic(Manager, FVM_TeleporterUtilsDelegateHelper::ModelId, 0, TeleporterConfig)).Get();
 }
 void GetModelInfo(FEUIViewModelMetaInfo &inout Result)
 {
@@ -272,8 +269,7 @@ namespace __GeneratedProperties_FVM_TeleporterUtilsDelegateHelper
 {
 UScriptStruct StaticStruct()
 {
-    UScriptStruct local_2;
-    return local_2;
+    return __GeneratedProperties_FVM_TeleporterUtilsDelegateHelper.Get();
 }
 }
 namespace FVM_TeleporterUtils
@@ -282,11 +278,9 @@ FVM_TeleporterUtils& Get(const UObject ContextObject)
 {
     return FVM_TeleporterUtils::GetByManager(EUIInternal::GetContextManager(ContextObject));
 }
-FVM_TeleporterUtils GetByManager(const UEUIManagerSubsystem Manager)
+FVM_TeleporterUtils& GetByManager(const UEUIManagerSubsystem Manager)
 {
-    FVM_TeleporterUtils __r;
-    TEUIModelRef<FVM_TeleporterUtils> local_6 = TEUIModelRef<FVM_TeleporterUtils>(EUIInternal::MakeModelWithManager(Manager, FVM_TeleporterUtils::ModelId));
-    return __r;
+    return TEUIModelRef<FVM_TeleporterUtils>(EUIInternal::MakeModelWithManager(Manager, FVM_TeleporterUtils::ModelId)).Get();
 }
 void GetModelInfo(FEUIViewModelMetaInfo &inout Result)
 {
@@ -324,7 +318,6 @@ namespace __GeneratedProperties_FVM_TeleporterUtils
 {
 UScriptStruct StaticStruct()
 {
-    UScriptStruct local_2;
-    return local_2;
+    return __GeneratedProperties_FVM_TeleporterUtils.Get();
 }
 }

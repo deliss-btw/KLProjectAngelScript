@@ -130,11 +130,9 @@ FM_VegenfulSpiritManager& Get(const UObject ContextObject)
 {
     return FM_VegenfulSpiritManager::GetByManager(EUIInternal::GetContextManager(ContextObject));
 }
-FM_VegenfulSpiritManager GetByManager(const UEUIManagerSubsystem Manager)
+FM_VegenfulSpiritManager& GetByManager(const UEUIManagerSubsystem Manager)
 {
-    FM_VegenfulSpiritManager __r;
-    TEUIModelRef<FM_VegenfulSpiritManager> local_6 = TEUIModelRef<FM_VegenfulSpiritManager>(EUIInternal::MakeModelWithManager(Manager, FM_VegenfulSpiritManager::ModelId));
-    return __r;
+    return TEUIModelRef<FM_VegenfulSpiritManager>(EUIInternal::MakeModelWithManager(Manager, FM_VegenfulSpiritManager::ModelId)).Get();
 }
 void GetModelInfo(FEUIModelOnlyMetaInfo &inout Result)
 {

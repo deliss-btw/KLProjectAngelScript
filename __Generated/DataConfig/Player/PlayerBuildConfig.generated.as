@@ -12,7 +12,7 @@ TDataObjectPtr<FAvatarMappingConfig> __FAvatarBuildOverrideConfig_GetAvatarMappi
         FAvatarBuildOverrideConfig local_168;
         return local_168.GetAvatarMappingConfig();
     }
-    return GetAvatarMappingConfig();
+    return DataObject.Get().GetAvatarMappingConfig();
 }
 UFUNCTION()
 TDataObjectPtr<FGameAttributeInitConfig_Avatar> __FAvatarBuildOverrideConfig_GetAttributeInitConfig(const TDataObjectPtr<FAvatarBuildOverrideConfig> &inout DataObject)
@@ -26,7 +26,7 @@ TDataObjectPtr<FGameAttributeInitConfig_Avatar> __FAvatarBuildOverrideConfig_Get
         FAvatarBuildOverrideConfig local_168;
         return local_168.GetAttributeInitConfig();
     }
-    return GetAttributeInitConfig();
+    return DataObject.Get().GetAttributeInitConfig();
 }
 UFUNCTION()
 int __FAvatarBuildOverrideConfig_GetLevel(const TDataObjectPtr<FAvatarBuildOverrideConfig> &inout DataObject)
@@ -55,12 +55,11 @@ TDataObjectPtr<FWeaponConfig> __FAvatarBuildOverrideConfig_GetWeaponConfig(const
         FAvatarBuildOverrideConfig local_168;
         return local_168.GetWeaponConfig();
     }
-    return GetWeaponConfig();
+    return DataObject.Get().GetWeaponConfig();
 }
 UFUNCTION()
 bool __FAvatarBuildOverrideConfig_GetbOverrideTalisman(const TDataObjectPtr<FAvatarBuildOverrideConfig> &inout DataObject)
 {
-    bool local_1 = false;
     if ((DataObject == nullptr))
     {
         if (!(EUIGlobals::GIsDuringPropertyConversion))
@@ -70,7 +69,7 @@ bool __FAvatarBuildOverrideConfig_GetbOverrideTalisman(const TDataObjectPtr<FAva
         FAvatarBuildOverrideConfig local_168;
         return local_168.bOverrideTalisman;
     }
-    return local_1;
+    return DataObject.Get().bOverrideTalisman;
 }
 UFUNCTION()
 TArray<TDataObjectPtr<FTalismanConfig>> __FAvatarBuildOverrideConfig_GetTalismans(const TDataObjectPtr<FAvatarBuildOverrideConfig> &inout DataObject)
@@ -84,7 +83,7 @@ TArray<TDataObjectPtr<FTalismanConfig>> __FAvatarBuildOverrideConfig_GetTalisman
         FAvatarBuildOverrideConfig local_168;
         return local_168.GetTalismans();
     }
-    return GetTalismans();
+    return DataObject.Get().GetTalismans();
 }
 UFUNCTION()
 TArray<TDataObjectPtr<FTalentConfig>> __FAvatarBuildOverrideConfig_GetUnlockTalents(const TDataObjectPtr<FAvatarBuildOverrideConfig> &inout DataObject)
@@ -98,7 +97,7 @@ TArray<TDataObjectPtr<FTalentConfig>> __FAvatarBuildOverrideConfig_GetUnlockTale
         FAvatarBuildOverrideConfig local_168;
         return local_168.GetUnlockTalents();
     }
-    return GetUnlockTalents();
+    return DataObject.Get().GetUnlockTalents();
 }
 UFUNCTION()
 TDataObjectPtr<FTalentConfig> __FAvatarBuildOverrideConfig_GetFoundationTalent(const TDataObjectPtr<FAvatarBuildOverrideConfig> &inout DataObject)
@@ -112,7 +111,7 @@ TDataObjectPtr<FTalentConfig> __FAvatarBuildOverrideConfig_GetFoundationTalent(c
         FAvatarBuildOverrideConfig local_168;
         return local_168.GetFoundationTalent();
     }
-    return GetFoundationTalent();
+    return DataObject.Get().GetFoundationTalent();
 }
 UFUNCTION()
 TMap<ESkillSlot, TDataObjectPtr<FTalentConfig>> __FAvatarBuildOverrideConfig_GetReplaceSkillSlotTalents(const TDataObjectPtr<FAvatarBuildOverrideConfig> &inout DataObject)
@@ -126,7 +125,7 @@ TMap<ESkillSlot, TDataObjectPtr<FTalentConfig>> __FAvatarBuildOverrideConfig_Get
         FAvatarBuildOverrideConfig local_168;
         return local_168.GetReplaceSkillSlotTalents();
     }
-    return GetReplaceSkillSlotTalents();
+    return DataObject.Get().GetReplaceSkillSlotTalents();
 }
 UFUNCTION()
 TDataObjectPtr<FDivineSkillConfig> __FAvatarBuildOverrideConfig_GetDivineSkill(const TDataObjectPtr<FAvatarBuildOverrideConfig> &inout DataObject)
@@ -140,7 +139,7 @@ TDataObjectPtr<FDivineSkillConfig> __FAvatarBuildOverrideConfig_GetDivineSkill(c
         FAvatarBuildOverrideConfig local_168;
         return local_168.GetDivineSkill();
     }
-    return GetDivineSkill();
+    return DataObject.Get().GetDivineSkill();
 }
 UFUNCTION()
 FAvatarBuildOverrideConfig CastToFAvatarBuildOverrideConfig(const TDataObjectPtr<FAvatarBuildOverrideConfig> &inout DataObject)

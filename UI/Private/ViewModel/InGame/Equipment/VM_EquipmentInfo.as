@@ -66,8 +66,7 @@ struct FVM_EquipmentInfo : FEUIViewModel
     }
     void PostConstruct()
     {
-        TEUIModelRef<FM_Equipment> local_2 = this.GetEquipment();
-        for (auto& local_18 : GetEquipmentTraits())
+        for (auto& local_18 : this.GetEquipment().Get().GetEquipmentTraits())
         {
             this.GetModify_EquipmentTraits().Add(TEUIModelRef<FVM_TraitInfo>(::FVM_TraitInfo::Create(this.GetContext().Manager, local_18)));
             this.GetModify_EquipmentTraitInfoHoverList().Add(TEUIModelRef<FVM_TraitInfoHover>(::FVM_TraitInfoHover::Create(this.GetContext().Manager, local_18, false)));
@@ -77,8 +76,7 @@ struct FVM_EquipmentInfo : FEUIViewModel
     }
     TDataObjectPtr<FEquipmentConfig> GetEquipmentConfig() const
     {
-        TEUIModelRef<FM_Equipment> local_2 = this.GetEquipment();
-        return GetEquipmentConfig();
+        return this.GetEquipment().Get().GetEquipmentConfig();
     }
     FText GetEquipmentName() const
     {
@@ -118,8 +116,7 @@ struct FVM_EquipmentInfo : FEUIViewModel
     }
     FSoftBrush GetEquipedByAvatarIcon() const
     {
-        TEUIModelRef<FM_Equipment> local_2 = this.GetEquipment();
-        TDataObjectPtr<FAvatarPrefabConfig> local_26 = GetEquiptingAvatar();
+        TDataObjectPtr<FAvatarPrefabConfig> local_26 = this.GetEquipment().Get().GetEquiptingAvatar();
         if (local_26)
         {
             return local_26.opArrow().AvatarIcon;
@@ -258,18 +255,14 @@ struct FVM_EquipmentInfo : FEUIViewModel
     }
     TArray<FEUIModelRef> MakeAttributeViewModels() const
     {
-        TArrayConstIterator<FEquipmentAttributeData> local_62;
         TArray<FEUIModelRef> local_4;
-        int local_144 = 0;
-        TEUIModelRef<FM_Equipment> local_6 = this.GetEquipment();
-        TDataObjectPtr<FEquipmentConfig> local_30 = GetEquipmentConfig();
+        TDataObjectPtr<FEquipmentConfig> local_30 = this.GetEquipment().Get().GetEquipmentConfig();
         if (!(local_30))
         {
             return local_4;
         }
-        for (; local_62.CanProceed;)
+        for (auto& local_70 : local_30.Get().AttributeDatas)
         {
-            const FEquipmentAttributeData& local_70 = local_62.Proceed();
             TDataObjectPtr<FAttributeConfig> local_94 = TDataObjectPtr<FAttributeConfig>(nullptr);
             if (!(local_70.AttributeConfig.IsSet()))
             {
@@ -281,7 +274,7 @@ struct FVM_EquipmentInfo : FEUIViewModel
             }
             if ((!((local_94 == nullptr))))
             {
-                FM_Attribute& local_146 = ::FM_Attribute::Create(this.GetContext().Manager, local_70.AttributeClass, EAttributeDisplayType(local_144), local_70.Value);
+                FM_Attribute& local_146 = ::FM_Attribute::Create(this.GetContext().Manager, local_70.AttributeClass, local_94.Get().DisplayType, local_70.Value);
                 local_146.SetAttributeConfig(local_94);
                 local_4.Add(FEUIModelRef(::FVM_AttributeDisplay::Create(this.GetContext().Manager, TEUIModelRef<FM_Attribute>(local_146))));
             }
@@ -453,11 +446,9 @@ FVM_EquipmentInfo& Create(const UObject ContextObject, const TEUIModelRef<FM_Equ
 {
     return FVM_EquipmentInfo::CreateByManager(EUIInternal::GetContextManager(ContextObject), Equipment);
 }
-FVM_EquipmentInfo CreateByManager(const UEUIManagerSubsystem Manager, const TEUIModelRef<FM_Equipment> &inout Equipment)
+FVM_EquipmentInfo& CreateByManager(const UEUIManagerSubsystem Manager, const TEUIModelRef<FM_Equipment> &inout Equipment)
 {
-    FVM_EquipmentInfo __r;
-    TEUIModelRef<FVM_EquipmentInfo> local_6 = TEUIModelRef<FVM_EquipmentInfo>(EUIInternal::MakeModelWithManager_Generic(Manager, FVM_EquipmentInfo::ModelId, 0, Equipment));
-    return __r;
+    return TEUIModelRef<FVM_EquipmentInfo>(EUIInternal::MakeModelWithManager_Generic(Manager, FVM_EquipmentInfo::ModelId, 0, Equipment)).Get();
 }
 void GetModelInfo(FEUIViewModelMetaInfo &inout Result)
 {
@@ -700,7 +691,6 @@ namespace __GeneratedProperties_FVM_EquipmentInfo
 {
 UScriptStruct StaticStruct()
 {
-    UScriptStruct local_2;
-    return local_2;
+    return __GeneratedProperties_FVM_EquipmentInfo.Get();
 }
 }

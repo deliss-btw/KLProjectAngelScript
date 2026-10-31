@@ -80,11 +80,9 @@ FMS_Unstuck& Get(const UObject ContextObject)
 {
     return FMS_Unstuck::GetByManager(EUIInternal::GetContextManager(ContextObject));
 }
-FMS_Unstuck GetByManager(const UEUIManagerSubsystem Manager)
+FMS_Unstuck& GetByManager(const UEUIManagerSubsystem Manager)
 {
-    FMS_Unstuck __r;
-    TEUIModelRef<FMS_Unstuck> local_6 = TEUIModelRef<FMS_Unstuck>(EUIInternal::MakeModelWithManager(Manager, FMS_Unstuck::ModelId));
-    return __r;
+    return TEUIModelRef<FMS_Unstuck>(EUIInternal::MakeModelWithManager(Manager, FMS_Unstuck::ModelId)).Get();
 }
 void GetModelInfo(FEUIModelOnlyMetaInfo &inout Result)
 {

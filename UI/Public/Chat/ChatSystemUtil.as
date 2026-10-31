@@ -2,26 +2,11 @@ namespace ChatSystemUtil
 {
 FText ResolveKLTextData(const TDataObjectPtr<FKLTextData> &inout TextData)
 {
-    bool local_1;
-    bool local_2 = false;
-    FText __return;
-    if (!(TextData.IsSet()))
+    if (TextData.IsSet() && !(TextData.Get().Text.IsEmpty()))
     {
-        local_1 = false;
+        return TextData.Get().Text;
     }
-    else
-    {
-        local_2 = !local_2;
-        local_1 = local_2;
-    }
-    if (local_1)
-    {
-    }
-    else
-    {
-        __return = FText();
-    }
-    return __return;
+    return FText();
 }
 FChatSystemSerializedArg ChatSerializedArgFromPb(const FPbChatArgument &inout Arg)
 {
@@ -454,7 +439,6 @@ FText MakeSystemChatItemWithRarityHyperlinkText(const TDataObjectPtr<FItemConfig
 {
     const UChatSettings local_2;
     GetGameplaySettings<UChatSettings> local_4;
-    int local_34 = 0;
     local_2 = local_4;
     if ((!((local_2 != nullptr))))
     {
@@ -464,15 +448,13 @@ FText MakeSystemChatItemWithRarityHyperlinkText(const TDataObjectPtr<FItemConfig
     {
         return FText();
     }
-    EItemRarity local_14;
-    EItemRarity local_13 = local_14;
+    EItemRarity local_13 = ItemPtr.Get().Rarity;
     FName local_18;
     if (local_2.SystemChatItemHyperlinkStyleByRarity.Contains(local_13))
     {
         local_18 = local_2.SystemChatItemHyperlinkStyleByRarity[local_13];
     }
-    FText local_32;
-    return ChatSystemUtil::BuildStyledActionHyperlinkText(local_32, local_18, ChatSystemUtil::GetChatSystemHyperlinkActionString(EChatSystemHyperlinkKind(2)), FString().Append(local_34));
+    return ChatSystemUtil::BuildStyledActionHyperlinkText(FText(ItemPtr.Get().ItemName), local_18, ChatSystemUtil::GetChatSystemHyperlinkActionString(EChatSystemHyperlinkKind(2)), FString().Append(ItemPtr.Get().DataId));
 }
 int GetChatWeightedCharLength(const FString &inout S, const int NonAsciiCharCountNum)
 {
@@ -620,7 +602,6 @@ bool ValidateChatTextCount(const FString &inout TrimmedText, FText &inout OutErr
 void ApplyFromDSPlayerEntity(FPlayerBriefInfo &inout Out, const FECSEntity &inout PlayerEntity, const uint PlayerUid)
 {
     int local_8 = 0;
-    int local_22 = 0;
     if (!(PlayerEntity.IsValid()))
     {
         return;
@@ -642,9 +623,10 @@ void ApplyFromDSPlayerEntity(FPlayerBriefInfo &inout Out, const FECSEntity &inou
     {
         if (local_24.GetPlayerPawnEntity().IsValid())
         {
-            if (TDataObjectPtr<FAvatarPrefabConfig>(GetPrefabConfigPtr(local_24.GetPlayerPawnEntity()).opImplConv()).IsSet())
+            TDataObjectPtr<FAvatarPrefabConfig> local_76 = TDataObjectPtr<FAvatarPrefabConfig>(GetPrefabConfigPtr(local_24.GetPlayerPawnEntity()).opImplConv());
+            if (local_76.IsSet())
             {
-                local_21 = local_22;
+                local_21 = local_76.Get().DataId;
             }
         }
     }

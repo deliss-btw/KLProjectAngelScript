@@ -18,7 +18,6 @@ int __FGuidePageConfig_GetPageId(const TDataObjectPtr<FGuidePageConfig> &inout D
 UFUNCTION()
 EGuidePageAssetType __FGuidePageConfig_GetAssetType(const TDataObjectPtr<FGuidePageConfig> &inout DataObject)
 {
-    int local_73 = 0;
     if ((DataObject == nullptr))
     {
         if (!(EUIGlobals::GIsDuringPropertyConversion))
@@ -26,15 +25,13 @@ EGuidePageAssetType __FGuidePageConfig_GetAssetType(const TDataObjectPtr<FGuideP
             FBlueprintDebugFunctions::ThrowScriptException("Get 'AssetType' from a null 'FGuidePageConfig' DataObject!");
         }
         FGuidePageConfig local_72;
-        local_73 = int(local_72.AssetType);
-        return EGuidePageAssetType(local_73);
+        return local_72.AssetType;
     }
-    return EGuidePageAssetType(local_73);
+    return DataObject.Get().AssetType;
 }
 UFUNCTION()
 FSoftBrush __FGuidePageConfig_GetAssetImage(const TDataObjectPtr<FGuidePageConfig> &inout DataObject)
 {
-    FSoftBrush __r;
     if ((DataObject == nullptr))
     {
         if (!(EUIGlobals::GIsDuringPropertyConversion))
@@ -44,7 +41,7 @@ FSoftBrush __FGuidePageConfig_GetAssetImage(const TDataObjectPtr<FGuidePageConfi
         FGuidePageConfig local_72;
         return local_72.AssetImage;
     }
-    return __r;
+    return DataObject.Get().AssetImage;
 }
 UFUNCTION()
 UMediaSource __FGuidePageConfig_GetAssetVideo(const TDataObjectPtr<FGuidePageConfig> &inout DataObject)
@@ -64,7 +61,6 @@ UMediaSource __FGuidePageConfig_GetAssetVideo(const TDataObjectPtr<FGuidePageCon
 UFUNCTION()
 FText __FGuidePageConfig_GetDesc(const TDataObjectPtr<FGuidePageConfig> &inout DataObject)
 {
-    FText __r;
     if ((DataObject == nullptr))
     {
         if (!(EUIGlobals::GIsDuringPropertyConversion))
@@ -74,7 +70,7 @@ FText __FGuidePageConfig_GetDesc(const TDataObjectPtr<FGuidePageConfig> &inout D
         FGuidePageConfig local_72;
         return local_72.Desc;
     }
-    return __r;
+    return DataObject.Get().Desc;
 }
 UFUNCTION()
 FGuidePageConfig CastToFGuidePageConfig(const TDataObjectPtr<FGuidePageConfig> &inout DataObject)
@@ -112,12 +108,11 @@ TArray<TDataObjectPtr<FServerConditionConfigBase>> __FGuideGroupConfig_GetActive
         FGuideGroupConfig local_36;
         return local_36.GetActiveConds();
     }
-    return GetActiveConds();
+    return DataObject.Get().GetActiveConds();
 }
 UFUNCTION()
 TArray<FClientConditionGroup> __FGuideGroupConfig_GetClientConditions(const TDataObjectPtr<FGuideGroupConfig> &inout DataObject)
 {
-    TArray<FClientConditionGroup> __r;
     if ((DataObject == nullptr))
     {
         if (!(EUIGlobals::GIsDuringPropertyConversion))
@@ -127,12 +122,11 @@ TArray<FClientConditionGroup> __FGuideGroupConfig_GetClientConditions(const TDat
         FGuideGroupConfig local_36;
         return local_36.ClientConditions;
     }
-    return __r;
+    return DataObject.Get().ClientConditions;
 }
 UFUNCTION()
 EGuideManualType __FGuideGroupConfig_GetIsInManual(const TDataObjectPtr<FGuideGroupConfig> &inout DataObject)
 {
-    int local_37 = 0;
     if ((DataObject == nullptr))
     {
         if (!(EUIGlobals::GIsDuringPropertyConversion))
@@ -140,15 +134,13 @@ EGuideManualType __FGuideGroupConfig_GetIsInManual(const TDataObjectPtr<FGuideGr
             FBlueprintDebugFunctions::ThrowScriptException("Get 'IsInManual' from a null 'FGuideGroupConfig' DataObject!");
         }
         FGuideGroupConfig local_36;
-        local_37 = int(local_36.IsInManual);
-        return EGuideManualType(local_37);
+        return local_36.IsInManual;
     }
-    return EGuideManualType(local_37);
+    return DataObject.Get().IsInManual;
 }
 UFUNCTION()
 FText __FGuideGroupConfig_GetName(const TDataObjectPtr<FGuideGroupConfig> &inout DataObject)
 {
-    FText __r;
     if ((DataObject == nullptr))
     {
         if (!(EUIGlobals::GIsDuringPropertyConversion))
@@ -158,12 +150,11 @@ FText __FGuideGroupConfig_GetName(const TDataObjectPtr<FGuideGroupConfig> &inout
         FGuideGroupConfig local_36;
         return local_36.Name;
     }
-    return __r;
+    return DataObject.Get().Name;
 }
 UFUNCTION()
 EGuideManualTab __FGuideGroupConfig_GetManualTab(const TDataObjectPtr<FGuideGroupConfig> &inout DataObject)
 {
-    int local_37 = 0;
     if ((DataObject == nullptr))
     {
         if (!(EUIGlobals::GIsDuringPropertyConversion))
@@ -171,10 +162,9 @@ EGuideManualTab __FGuideGroupConfig_GetManualTab(const TDataObjectPtr<FGuideGrou
             FBlueprintDebugFunctions::ThrowScriptException("Get 'ManualTab' from a null 'FGuideGroupConfig' DataObject!");
         }
         FGuideGroupConfig local_36;
-        local_37 = int(local_36.ManualTab);
-        return EGuideManualTab(local_37);
+        return local_36.ManualTab;
     }
-    return EGuideManualTab(local_37);
+    return DataObject.Get().ManualTab;
 }
 UFUNCTION()
 int __FGuideGroupConfig_GetSortOrder(const TDataObjectPtr<FGuideGroupConfig> &inout DataObject)
@@ -203,7 +193,7 @@ TArray<TDataObjectPtr<FGuidePageConfig>> __FGuideGroupConfig_GetGuidePageList(co
         FGuideGroupConfig local_36;
         return local_36.GetGuidePageList();
     }
-    return GetGuidePageList();
+    return DataObject.Get().GetGuidePageList();
 }
 UFUNCTION()
 FGuideGroupConfig CastToFGuideGroupConfig(const TDataObjectPtr<FGuideGroupConfig> &inout DataObject)
@@ -217,7 +207,6 @@ namespace __FTutorialInfoConfigFunctions
 UFUNCTION()
 TArray<FTutorialStepInfo> __FTutorialInfoConfig_GetSteps(const TDataObjectPtr<FTutorialInfoConfig> &inout DataObject)
 {
-    TArray<FTutorialStepInfo> __r;
     if ((DataObject == nullptr))
     {
         if (!(EUIGlobals::GIsDuringPropertyConversion))
@@ -227,12 +216,11 @@ TArray<FTutorialStepInfo> __FTutorialInfoConfig_GetSteps(const TDataObjectPtr<FT
         FTutorialInfoConfig local_22;
         return local_22.Steps;
     }
-    return __r;
+    return DataObject.Get().Steps;
 }
 UFUNCTION()
 FText __FTutorialInfoConfig_GetExtraDescKey(const TDataObjectPtr<FTutorialInfoConfig> &inout DataObject)
 {
-    FText __r;
     if ((DataObject == nullptr))
     {
         if (!(EUIGlobals::GIsDuringPropertyConversion))
@@ -242,7 +230,7 @@ FText __FTutorialInfoConfig_GetExtraDescKey(const TDataObjectPtr<FTutorialInfoCo
         FTutorialInfoConfig local_22;
         return local_22.ExtraDescKey;
     }
-    return __r;
+    return DataObject.Get().ExtraDescKey;
 }
 UFUNCTION()
 FTutorialInfoConfig CastToFTutorialInfoConfig(const TDataObjectPtr<FTutorialInfoConfig> &inout DataObject)

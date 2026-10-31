@@ -107,11 +107,9 @@ FVM_ItemRarity& Create(const UObject ContextObject, const EItemRarity Rarity)
 {
     return FVM_ItemRarity::CreateByManager(EUIInternal::GetContextManager(ContextObject), EItemRarity(Rarity));
 }
-FVM_ItemRarity CreateByManager(const UEUIManagerSubsystem Manager, const EItemRarity Rarity)
+FVM_ItemRarity& CreateByManager(const UEUIManagerSubsystem Manager, const EItemRarity Rarity)
 {
-    FVM_ItemRarity __r;
-    TEUIModelRef<FVM_ItemRarity> local_6 = TEUIModelRef<FVM_ItemRarity>(EUIInternal::MakeModelWithManager_Generic(Manager, FVM_ItemRarity::ModelId, 0, Rarity));
-    return __r;
+    return TEUIModelRef<FVM_ItemRarity>(EUIInternal::MakeModelWithManager_Generic(Manager, FVM_ItemRarity::ModelId, 0, Rarity)).Get();
 }
 void GetModelInfo(FEUIViewModelMetaInfo &inout Result)
 {
@@ -167,7 +165,6 @@ namespace __GeneratedProperties_FVM_ItemRarity
 {
 UScriptStruct StaticStruct()
 {
-    UScriptStruct local_2;
-    return local_2;
+    return __GeneratedProperties_FVM_ItemRarity.Get();
 }
 }

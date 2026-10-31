@@ -211,11 +211,9 @@ FVM_PlayerRename& Create(const UObject ContextObject)
 {
     return FVM_PlayerRename::CreateByManager(EUIInternal::GetContextManager(ContextObject));
 }
-FVM_PlayerRename CreateByManager(const UEUIManagerSubsystem Manager)
+FVM_PlayerRename& CreateByManager(const UEUIManagerSubsystem Manager)
 {
-    FVM_PlayerRename __r;
-    TEUIModelRef<FVM_PlayerRename> local_6 = TEUIModelRef<FVM_PlayerRename>(EUIInternal::MakeModelWithManager(Manager, FVM_PlayerRename::ModelId));
-    return __r;
+    return TEUIModelRef<FVM_PlayerRename>(EUIInternal::MakeModelWithManager(Manager, FVM_PlayerRename::ModelId)).Get();
 }
 void GetModelInfo(FEUIViewModelMetaInfo &inout Result)
 {
@@ -304,7 +302,6 @@ namespace __GeneratedProperties_FVM_PlayerRename
 {
 UScriptStruct StaticStruct()
 {
-    UScriptStruct local_2;
-    return local_2;
+    return __GeneratedProperties_FVM_PlayerRename.Get();
 }
 }

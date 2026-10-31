@@ -76,14 +76,13 @@ struct FVM_Mode_Main : FEUIViewModel
     void PostLoad()
     {
         this.SetCurHoveredModeBG(this.GetDefaultBG());
-        if (this.GetDisplayingModes().IsValidIndex(0))
+        int local_1 = 0;
+        if (this.GetDisplayingModes().IsValidIndex(local_1))
         {
-            TEUIModelWeakRef<FVM_Mode_EntranceItem> local_6;
-            this.SetCurHoveredMode(local_6);
+            this.SetCurHoveredMode(TEUIModelWeakRef<FVM_Mode_EntranceItem>(this.GetDisplayingModes()[local_1].Get()));
             if (this.GetCurHoveredMode().IsValid())
             {
-                local_6 = this.GetCurHoveredMode();
-                SetHovered();
+                this.GetCurHoveredMode().Get().SetHovered();
             }
         }
         return;
@@ -93,29 +92,13 @@ struct FVM_Mode_Main : FEUIViewModel
         int local_10 = 0;
         int local_26 = 0;
         int local_34 = 0;
-        bool local_3 = this.GetCurHoveredMode().IsValid();
-        if (!(local_3))
+        if (this.GetCurHoveredMode().IsValid() && this.GetCurHoveredMode().Get().GetMode().IsValid())
         {
-            local_3 = false;
-        }
-        else
-        {
-            TEUIModelWeakRef<FVM_Mode_EntranceItem> local_2 = this.GetCurHoveredMode();
-            TEUIModelWeakRef<FM_ModeItem> local_6;
-            local_6.GetMode();
-            local_3 = local_6.IsValid();
-        }
-        if (local_3)
-        {
-            TEUIModelWeakRef<FM_ModeItem> local_6;
-            TEUIModelWeakRef<FVM_Mode_EntranceItem> local_2_2 = this.GetCurHoveredMode();
-            local_6.GetMode();
-            int64 local_14 = local_10.GetDataId();
-            TEUIModelWeakRef<FVM_Mode_EntranceItem> local_2_3 = this.GetCurHoveredMode();
-            ::FMS_RedDotSystem::Get(this.GetContext().Manager).ConsumeRedDot(GetRedDotEntranceTag(), local_14);
+            TEUIModelWeakRef<FM_ModeItem> local_6 = this.GetCurHoveredMode().Get().GetMode();
+            ::FMS_RedDotSystem::Get(this.GetContext().Manager).ConsumeRedDot(this.GetCurHoveredMode().Get().GetRedDotEntranceTag(), local_10.GetDataId());
             if (local_10.GetMatchConfig())
             {
-                const FMatchConfig& local_16;
+                const FMatchConfig& local_16 = local_10.GetMatchConfig().Get();
                 if (!(::FMS_SystemControl::Get(this.GetContext().Manager).IsSystemUnlock(local_16.GetSystemControlCfg(), true)))
                 {
                     return;
@@ -123,7 +106,7 @@ struct FVM_Mode_Main : FEUIViewModel
                 if (int(local_16.MatchMode) == 0)
                 {
                     FEUIModelWeakRef local_22 = FEUIModelWeakRef(FEUIModelRef(local_10));
-                    local_6 = TEUIModelWeakRef<FM_ModeItem>(local_22);
+                    TEUIModelWeakRef<FM_ModeItem> local_6_2 = TEUIModelWeakRef<FM_ModeItem>(local_22);
                     FEUIWidget::AddWidget(this.GetContext().UELocalPlayer, local_16.WidgetTag, FEUIModelRef(local_26));
                     return;
                 }
@@ -140,14 +123,12 @@ struct FVM_Mode_Main : FEUIViewModel
     {
         if (this.GetCurHoveredMode().IsValid())
         {
-            TEUIModelWeakRef<FVM_Mode_EntranceItem> local_2 = this.GetCurHoveredMode();
-            SetUnHovered();
+            this.GetCurHoveredMode().Get().SetUnHovered();
         }
         if (Msg.HoveredModeItem.IsValid())
         {
             this.SetCurHoveredMode(Msg.HoveredModeItem);
-            TEUIModelWeakRef<FVM_Mode_EntranceItem> local_2_2 = this.GetCurHoveredMode();
-            SetHovered();
+            this.GetCurHoveredMode().Get().SetHovered();
         }
         return;
     }
@@ -174,21 +155,9 @@ struct FVM_Mode_Main : FEUIViewModel
     {
         if (this.GetCurHoveredMode().IsValid())
         {
-            TEUIModelWeakRef<FVM_Mode_EntranceItem> local_2 = this.GetCurHoveredMode();
-            this.SetCurHoveredModeName(GetModeName());
-            TEUIModelWeakRef<FVM_Mode_EntranceItem> local_2_2 = this.GetCurHoveredMode();
-            this.SetCurHoveredModeDesc(GetModeDesc());
-            FSoftBrush local_48;
-            TEUIModelWeakRef<FVM_Mode_EntranceItem> local_2_3 = this.GetCurHoveredMode();
-            if (GetModeBG().IsSet())
-            {
-                TEUIModelWeakRef<FVM_Mode_EntranceItem> local_2_4 = this.GetCurHoveredMode();
-                local_48 = GetModeBG();
-            }
-            else
-            {
-                local_48 = this.GetDefaultBG();
-            }
+            this.SetCurHoveredModeName(this.GetCurHoveredMode().Get().GetModeName());
+            this.SetCurHoveredModeDesc(this.GetCurHoveredMode().Get().GetModeDesc());
+            FSoftBrush local_48 = this.GetCurHoveredMode().Get().GetModeBG().IsSet() ? this.GetCurHoveredMode().Get().GetModeBG() : this.GetDefaultBG();
             this.SetCurHoveredModeBG(local_48);
         }
         return;
@@ -367,11 +336,9 @@ FVM_Mode_Main& Create(const UObject ContextObject)
 {
     return FVM_Mode_Main::CreateByManager(EUIInternal::GetContextManager(ContextObject));
 }
-FVM_Mode_Main CreateByManager(const UEUIManagerSubsystem Manager)
+FVM_Mode_Main& CreateByManager(const UEUIManagerSubsystem Manager)
 {
-    FVM_Mode_Main __r;
-    TEUIModelRef<FVM_Mode_Main> local_6 = TEUIModelRef<FVM_Mode_Main>(EUIInternal::MakeModelWithManager(Manager, FVM_Mode_Main::ModelId));
-    return __r;
+    return TEUIModelRef<FVM_Mode_Main>(EUIInternal::MakeModelWithManager(Manager, FVM_Mode_Main::ModelId)).Get();
 }
 void GetModelInfo(FEUIViewModelMetaInfo &inout Result)
 {
@@ -494,7 +461,6 @@ namespace __GeneratedProperties_FVM_Mode_Main
 {
 UScriptStruct StaticStruct()
 {
-    UScriptStruct local_2;
-    return local_2;
+    return __GeneratedProperties_FVM_Mode_Main.Get();
 }
 }

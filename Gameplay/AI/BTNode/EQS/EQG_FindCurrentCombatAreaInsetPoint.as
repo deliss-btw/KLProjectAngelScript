@@ -62,8 +62,7 @@ class UEQG_FindCurrentCombatAreaInsetPoint : UEnvQueryGenerator_ECS_BlueprintBas
             {
                 continue;
             }
-            AActor local_78;
-            local_76 = Cast<AECSRegionVolume>(local_78);
+            local_76 = Cast<AECSRegionVolume>(local_74.RegionVolume.Get());
             if ((!((local_76 != nullptr))))
             {
                 continue;

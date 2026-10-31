@@ -187,11 +187,9 @@ FVM_CreatePlayerFashionOption& Create(const UObject ContextObject)
 {
     return FVM_CreatePlayerFashionOption::CreateByManager(EUIInternal::GetContextManager(ContextObject));
 }
-FVM_CreatePlayerFashionOption CreateByManager(const UEUIManagerSubsystem Manager)
+FVM_CreatePlayerFashionOption& CreateByManager(const UEUIManagerSubsystem Manager)
 {
-    FVM_CreatePlayerFashionOption __r;
-    TEUIModelRef<FVM_CreatePlayerFashionOption> local_6 = TEUIModelRef<FVM_CreatePlayerFashionOption>(EUIInternal::MakeModelWithManager(Manager, FVM_CreatePlayerFashionOption::ModelId));
-    return __r;
+    return TEUIModelRef<FVM_CreatePlayerFashionOption>(EUIInternal::MakeModelWithManager(Manager, FVM_CreatePlayerFashionOption::ModelId)).Get();
 }
 void GetModelInfo(FEUIViewModelMetaInfo &inout Result)
 {
@@ -258,7 +256,6 @@ namespace __GeneratedProperties_FVM_CreatePlayerFashionOption
 {
 UScriptStruct StaticStruct()
 {
-    UScriptStruct local_2;
-    return local_2;
+    return __GeneratedProperties_FVM_CreatePlayerFashionOption.Get();
 }
 }

@@ -38,9 +38,10 @@ class UConditionCombatItemUse : ULocalConditionTypeDefineBase
         {
             return TConstRawPtr<FConditionCombatItemUseConfig>(nullptr);
         }
-        if (FInstancedStruct::GetPtr(ConditionConfig.opArrow().ConditionTypeDefineConfig).opCall())
+        TConstRawPtr<FConditionCombatItemUseConfig> local_6 = FInstancedStruct::GetPtr(ConditionConfig.opArrow().ConditionTypeDefineConfig).opCall();
+        if (local_6)
         {
-            return TConstRawPtr<FConditionCombatItemUseConfig>();
+            return TConstRawPtr<FConditionCombatItemUseConfig>(local_6.Get());
         }
         return TConstRawPtr<FConditionCombatItemUseConfig>(nullptr);
     }

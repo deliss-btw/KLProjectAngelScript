@@ -23,7 +23,6 @@ class US_PVXPhaseSystem : UECSScriptSystem
     void SyncSingleObjectiveProgress(const FCE_ObjectiveProgressUpdated &inout Event, const FCS_PVXPhaseState &inout PhaseState) const
     {
         int local_12 = 0;
-        int local_14 = 0;
         int local_1 = PhaseState.GetActiveObjectiveInstanceId();
         if (local_1 == 0)
         {
@@ -38,8 +37,7 @@ class US_PVXPhaseSystem : UECSScriptSystem
         {
             return;
         }
-        int local_15 = local_14;
-        if (local_15 == 0)
+        if (int(local_12.CommissionTargetObjective.Get().ObjectiveType) == 0)
         {
             if (PhaseState.GetActiveObjectiveInstanceId() == int(Event.ObjectiveInstanceId))
             {
@@ -60,7 +58,6 @@ class US_PVXPhaseSystem : UECSScriptSystem
     void SyncDualFactionProgress(const FCE_ObjectiveProgressUpdated &inout Event, const FCS_PVXPhaseState &inout PhaseState) const
     {
         bool local_3;
-        int local_9 = 0;
         int local_166 = 0;
         int local_1 = PhaseState.GetPlayerObjectiveInstanceId();
         if (local_1 != 0)
@@ -83,8 +80,7 @@ class US_PVXPhaseSystem : UECSScriptSystem
         if (local_3)
         {
             FObjectiveInstance local_158;
-            int local_10 = local_9;
-            if (local_10 == 0)
+            if (int(PhaseState.GetPlayerObjective().Get().ObjectiveType) == 0)
             {
                 local_7 = (PhaseState.GetPlayerObjectiveInstanceId() == int(Event.ObjectiveInstanceId));
             }
@@ -96,8 +92,7 @@ class US_PVXPhaseSystem : UECSScriptSystem
         if (local_5)
         {
             FObjectiveInstance local_158;
-            int local_10_2 = local_9;
-            if (local_10_2 == 0)
+            if (int(PhaseState.GetBossObjective().Get().ObjectiveType) == 0)
             {
                 local_8 = (PhaseState.GetBossObjectiveInstanceId() == int(Event.ObjectiveInstanceId));
             }
@@ -117,8 +112,7 @@ class US_PVXPhaseSystem : UECSScriptSystem
         }
         if (local_7)
         {
-            int local_11 = local_9;
-            if (local_11 == 0)
+            if (int(local_166.GetPlayerObjective().Get().ObjectiveType) == 0)
             {
                 FCommissionTargetProgress local_168;
                 FCommissionTargetProgress local_170;
@@ -143,8 +137,7 @@ class US_PVXPhaseSystem : UECSScriptSystem
         }
         if (local_8)
         {
-            int local_10_3 = local_9;
-            if (local_10_3 == 0)
+            if (int(local_166.GetBossObjective().Get().ObjectiveType) == 0)
             {
                 FCommissionTargetProgress local_168;
                 FCommissionTargetProgress local_170;
@@ -168,26 +161,24 @@ class US_PVXPhaseSystem : UECSScriptSystem
     }
     void SyncGroupChildProgress(const FCE_ObjectiveProgressUpdated &inout Event, const uint ParentInstanceId, TMap<uint, FCommissionTargetProgress> &inout ChildProgressMap) const
     {
-        FObjectiveInstance local_146;
-        int local_167 = 0;
         FObjectiveInstance local_314;
+        FObjectiveInstance local_146;
         if (!(::ObjectiveUtils::TryFindActivetedObjectiveInstance(ParentInstanceId, local_146)))
         {
             return;
         }
-        int local_148 = int(Event.ObjectiveInstanceId);
-        if (!(::ObjectiveUtils::GroupContainsChildInstance(local_146, local_148)))
+        if (!(::ObjectiveUtils::GroupContainsChildInstance(local_146, int(Event.ObjectiveInstanceId))))
         {
             return;
         }
         for (auto& local_166 : local_146.ChildObjectiveMap)
         {
-            local_166;
+            int local_148 = local_166.GetValue();
             if (local_148 == 0)
             {
                 continue;
             }
-            if (::ObjectiveUtils::TryFindActivetedObjectiveInstance(local_167, local_314))
+            if (::ObjectiveUtils::TryFindActivetedObjectiveInstance(local_166.GetValue(), local_314))
             {
                 FCommissionTargetProgress local_316;
                 local_316.SetSuccessProgressValue(local_314.GetFinishProgressValue());

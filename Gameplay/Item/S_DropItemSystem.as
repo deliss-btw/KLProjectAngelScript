@@ -18,7 +18,7 @@ class US_DropItemSystem : UECSScriptSystem
             local_12.DropItems.Reset(0);
             for (auto& local_28 : DropItemConfigInitOverride.DropItems)
             {
-                local_12.AddDropItem(local_28.TriggerType, TDataObjectPtr<FDropItemConfigBase>());
+                local_12.AddDropItem(local_28.TriggerType, TDataObjectPtr<FDropItemConfigBase>(local_28.Item.Get()));
             }
         }
         Remove local_58;
@@ -51,7 +51,7 @@ class US_DropItemSystem : UECSScriptSystem
         if ((!((local_198.DestroyDropItem == nullptr))))
         {
             TArray<TDataObjectPtr<FDropItemConfigBase>> local_252;
-            local_252.Add(TDataObjectPtr<FDropItemConfigBase>());
+            local_252.Add(TDataObjectPtr<FDropItemConfigBase>(local_198.DestroyDropItem.Get()));
             ::DropItemsUtils::DropBodyPartDestroyDropItems(local_198, local_252, local_198.DropMovement, Event.Sender, Event.DestroyedByEntity);
         }
         return;

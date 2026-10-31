@@ -20,7 +20,7 @@ class UWidget_AvatarSpecialtyList : UEUIUserWidget
     UFUNCTION()
     TArray<FEUIModelContainer> MainMenuAvatar_AvatarList() const
     {
-        FVM_MainMenuAvatar& local_2;
+        FVM_MainMenuAvatar& local_2 = this.MainMenuAvatar.Get();
         TArray<FEUIModelContainer> local_12;
         if (local_2)
         {

@@ -21,8 +21,7 @@ class UDraftConfirmSource : UTeamMemberConfirmSourceBase
         {
             return local_4;
         }
-        TEUIModelRef<FM_Player> local_12 = ::FMS_PlayerData::Get(Context.Manager).GetLocalPlayerData();
-        int local_13 = GetPlayerUid();
+        int local_13 = ::FMS_PlayerData::Get(Context.Manager).GetLocalPlayerData().Get().GetPlayerUid();
         for (auto& local_28 : local_6.opArrow().GetDraftPlayers())
         {
             if (!(local_28.opArrow().GetPlayer().IsValid()))
@@ -37,18 +36,14 @@ class UDraftConfirmSource : UTeamMemberConfirmSourceBase
             }
             else
             {
-                TEUIModelRef<FM_Player> local_12_2 = local_28.opArrow().GetPlayer();
-                local_40.SetPlayer(local_12_2);
+                TEUIModelRef<FM_Player> local_12 = local_28.opArrow().GetPlayer();
+                local_40.SetPlayer(local_12);
                 local_30 = TEUIModelRef<FVM_TeammateInfo>(::FVM_TeammateInfo::Create(Context.Manager, (TEUIModelRef<FM_TeamMember>(local_40))));
             }
             TEUIModelRef<FVM_TeamMemberPrepareItem> local_42 = TEUIModelRef<FVM_TeamMemberPrepareItem>(::FVM_TeamMemberPrepareItem::Create(Context.Manager, local_30));
-            TEUIModelRef<FM_Player> local_12_3 = local_28.opArrow().GetPlayer();
-            bool local_9 = (GetPlayerUid() == local_13);
-            local_9.SetbSelf();
-            local_9 = (local_28.opArrow().GetDraftInviteReply() == 1);
-            local_9.SetbReady();
-            local_9 = (local_28.opArrow().GetDraftInviteReply() == 2);
-            local_9.SetbReject();
+            local_42.Get().SetbSelf((local_28.opArrow().GetPlayer().Get().GetPlayerUid() == local_13));
+            local_42.Get().SetbReady((local_28.opArrow().GetDraftInviteReply() == 1));
+            local_42.Get().SetbReject((local_28.opArrow().GetDraftInviteReply() == 2));
             local_4.Add(local_42);
         }
         return local_4;
@@ -65,8 +60,8 @@ class UDraftConfirmSource : UTeamMemberConfirmSourceBase
         while (local_5)
         {
             const TEUIModelRef<FM_DraftPlayer>& local_12 = local_2.opArrow().GetDraftPlayers()[local_6];
-            (local_12.opArrow().GetDraftInviteReply() == 1).SetbReady();
-            (local_12.opArrow().GetDraftInviteReply() == 2).SetbReject();
+            Members[local_6].Get().SetbReady((local_12.opArrow().GetDraftInviteReply() == 1));
+            Members[local_6].Get().SetbReject((local_12.opArrow().GetDraftInviteReply() == 2));
             ++local_6;
             if (local_6 >= Members.Num())
             {

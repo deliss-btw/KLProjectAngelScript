@@ -38,7 +38,7 @@ class UWidget_EquipableSkillInfo : UEUIUserWidget
     UFUNCTION()
     void OnViewBind_Implementation()
     {
-        FVM_CommonHoverProvider& local_2;
+        FVM_CommonHoverProvider& local_2 = this.HoverProvider.Get();
         if (this.HoverBtn != nullptr && !(local_2.GetbIsForbidHover()))
         {
             local_2.SetHoverForWidget(this.HoverBtn);
@@ -57,12 +57,11 @@ class UWidget_EquipableSkillInfo : UEUIUserWidget
         {
             if (this.EquipableSkillInfo.IsValid())
             {
-                TEUIModelRef<FVM_EquipHoverTips> local_6;
-                local_6.GetHoverTips();
-                this.bCanHoverGoTo.SetbCanHoverGoTo();
-                this.DivineSkillWidgetConfig.SetOverrideClickWidgetConfig();
-                local_6.opImplConv().ResetHoverModel();
-                NotifyMouseEnter();
+                TEUIModelRef<FVM_EquipHoverTips> local_6 = this.EquipableSkillInfo.Get().GetHoverTips();
+                local_6.Get().SetbCanHoverGoTo((this.bCanHoverGoTo));
+                local_6.Get().SetOverrideClickWidgetConfig(this.DivineSkillWidgetConfig);
+                this.HoverProvider.Get().ResetHoverModel(local_6.opImplConv());
+                this.HoverProvider.Get().NotifyMouseEnter();
             }
         }
         return;
@@ -72,7 +71,7 @@ class UWidget_EquipableSkillInfo : UEUIUserWidget
     {
         if (this.HoverProvider.IsValid())
         {
-            FVM_CommonHoverProvider& local_4;
+            FVM_CommonHoverProvider& local_4 = this.HoverProvider.Get();
             if (!(local_4.GetbIsForbidHover()))
             {
                 local_4.NotifyMouseLeave();
@@ -85,7 +84,7 @@ class UWidget_EquipableSkillInfo : UEUIUserWidget
     {
         if (!(this.bForbidOpenDivineSkill) && this.DivineSkillWidgetConfig.IsSet())
         {
-            ULocalPlayer local_4 = this.GetOwningLocalPlayer();
+            FEUIWidget::AddWidget(this.GetOwningLocalPlayer(), this.DivineSkillWidgetConfig.Get().WidgetTag);
         }
         return;
     }

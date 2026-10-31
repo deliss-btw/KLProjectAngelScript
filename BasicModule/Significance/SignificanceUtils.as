@@ -182,8 +182,68 @@ EECSSignificanceType GetSignificanceType(const FECSEntity &inout Entity)
 }
 EECSSignificanceValue GetSignificanceDefaultValue(const FSignificanceConfig &inout Config, const EECSSignificanceType Type)
 {
-    // body not fully recovered — stub [opcode-uncovered]
-    EECSSignificanceValue __r; return __r;
+    int local_3 = 0;
+    switch (int(Type))
+    {
+    case 0:
+    {
+        return Config.Default;
+    }
+    case 2:
+    {
+        return Config.NamedNPC;
+    }
+    case 3:
+    {
+        return Config.CommonNPC;
+    }
+    case 1:
+    {
+        return Config.Avatar;
+    }
+    case 4:
+    {
+        return Config.Boss;
+    }
+    case 5:
+    {
+        return Config.EliteMonster;
+    }
+    case 6:
+    {
+        return Config.NormalMonster;
+    }
+    case 7:
+    {
+        return Config.Mount;
+    }
+    case 8:
+    {
+        return Config.Projectile;
+    }
+    case 9:
+    {
+        return Config.StaticObject;
+    }
+    case 10:
+    {
+        return Config.DynamicObject;
+    }
+    case 11:
+    {
+        return Config.CommonInteractive;
+    }
+    case 12:
+    {
+        return Config.SpecialInteractive;
+    }
+    case 13:
+    {
+        local_3 = int(Config.Pickup);
+        return EECSSignificanceValue(local_3);
+    }
+    }
+    return EECSSignificanceValue(local_3);
 }
 EECSSignificanceValue GetSignificanceValue(const FSignificanceConfig &inout Config, const EECSSignificanceType Type, const int Offset)
 {

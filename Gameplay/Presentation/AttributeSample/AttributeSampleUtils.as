@@ -22,6 +22,7 @@ void RemoveAttributeSample(const FECSEntity &inout SampledEntity, const EAttribu
             local_10.opArrow().RemoveSample(EAttributeSampleRequester(Requester), Sampler);
             if (local_10.opArrow().IsEmpty())
             {
+                local_6.AttributeSamples.Remove(SampledAttribute);
                 if (local_6.AttributeSamples.IsEmpty())
                 {
                     Remove local_16;
@@ -40,8 +41,7 @@ void RemoveAllAttributeSamples(const FECSEntity &inout SampledEntity, const EAtt
     {
         for (auto& local_26 : local_6.AttributeSamples)
         {
-            local_26;
-            Requester.RemoveSample(ENTITY_NULL);
+            local_26.GetValue().RemoveSample(EAttributeSampleRequester(Requester), ENTITY_NULL);
             if (local_6.AttributeSamples.IsEmpty())
             {
                 Remove local_30;

@@ -42,8 +42,7 @@ struct FVM_AttributeDisplay : FEUIViewModel
     }
     void UpdateHoverTips()
     {
-        FM_Attribute& local_4;
-        TEUIModelRef<FM_Attribute> local_2 = this.GetAttribute();
+        FM_Attribute& local_4 = this.GetAttribute().Get();
         if (local_4)
         {
             this.SetHoverTips(FEUIModelRef(::FVM_TitleAndDesc::Create(this.GetManager(), local_4.GetAttributeDisplayName(), local_4.GetAttributeDescription())));
@@ -52,8 +51,7 @@ struct FVM_AttributeDisplay : FEUIViewModel
     }
     FText GetAttributeName() const
     {
-        FM_Attribute& local_4;
-        TEUIModelRef<FM_Attribute> local_2 = this.GetAttribute();
+        FM_Attribute& local_4 = this.GetAttribute().Get();
         if (local_4)
         {
             return local_4.GetAttributeDisplayName();
@@ -62,8 +60,7 @@ struct FVM_AttributeDisplay : FEUIViewModel
     }
     FText GetAttributeDescription() const
     {
-        FM_Attribute& local_4;
-        TEUIModelRef<FM_Attribute> local_2 = this.GetAttribute();
+        FM_Attribute& local_4 = this.GetAttribute().Get();
         if (local_4)
         {
             return local_4.GetAttributeDescription();
@@ -72,8 +69,7 @@ struct FVM_AttributeDisplay : FEUIViewModel
     }
     FText GetAttributeValue() const
     {
-        FM_Attribute& local_4;
-        TEUIModelRef<FM_Attribute> local_2 = this.GetAttribute();
+        FM_Attribute& local_4 = this.GetAttribute().Get();
         if (local_4)
         {
             return local_4.GetAttributeValueText();
@@ -82,8 +78,7 @@ struct FVM_AttributeDisplay : FEUIViewModel
     }
     FSoftBrush GetAttributeIcon() const
     {
-        FM_Attribute& local_4;
-        TEUIModelRef<FM_Attribute> local_2 = this.GetAttribute();
+        FM_Attribute& local_4 = this.GetAttribute().Get();
         if (local_4)
         {
             return local_4.GetAttributeIcon();
@@ -157,11 +152,9 @@ FVM_AttributeDisplay& Create(const UObject ContextObject, const TEUIModelRef<FM_
 {
     return FVM_AttributeDisplay::CreateByManager(EUIInternal::GetContextManager(ContextObject), Attribute);
 }
-FVM_AttributeDisplay CreateByManager(const UEUIManagerSubsystem Manager, const TEUIModelRef<FM_Attribute> &inout Attribute)
+FVM_AttributeDisplay& CreateByManager(const UEUIManagerSubsystem Manager, const TEUIModelRef<FM_Attribute> &inout Attribute)
 {
-    FVM_AttributeDisplay __r;
-    TEUIModelRef<FVM_AttributeDisplay> local_6 = TEUIModelRef<FVM_AttributeDisplay>(EUIInternal::MakeModelWithManager_Generic(Manager, FVM_AttributeDisplay::ModelId, 0, Attribute));
-    return __r;
+    return TEUIModelRef<FVM_AttributeDisplay>(EUIInternal::MakeModelWithManager_Generic(Manager, FVM_AttributeDisplay::ModelId, 0, Attribute)).Get();
 }
 void GetModelInfo(FEUIViewModelMetaInfo &inout Result)
 {
@@ -262,7 +255,6 @@ namespace __GeneratedProperties_FVM_AttributeDisplay
 {
 UScriptStruct StaticStruct()
 {
-    UScriptStruct local_2;
-    return local_2;
+    return __GeneratedProperties_FVM_AttributeDisplay.Get();
 }
 }

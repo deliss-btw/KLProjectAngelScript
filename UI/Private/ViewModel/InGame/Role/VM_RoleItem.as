@@ -52,24 +52,19 @@ struct FVM_RoleItem : FEUIViewModel
     }
     FText GetAvatarName() const
     {
-        FText __return;
         if (this.GetAvatarConfig())
         {
+            return this.GetAvatarConfig().Get().DisplayName;
         }
-        else
-        {
-            __return = FText();
-        }
-        return __return;
+        return FText();
     }
     FSlateBrush GetAvatarIcon() const
     {
-        FSlateBrush local_48;
         if (this.GetAvatarConfig())
         {
-            return local_48;
+            return this.GetAvatarConfig().Get().AvatarIcon.LoadBrush();
         }
-        return local_48;
+        return FSlateBrush();
     }
     FSlateBrush GetPlayerPowerIcon() const
     {
@@ -77,6 +72,7 @@ struct FVM_RoleItem : FEUIViewModel
         if (this.GetAvatarConfig())
         {
             FSlateBrush local_48;
+            local_92 = this.GetAvatarConfig().Get().PlayerPowerIcon.LoadBrush();
             local_48.ResourceObject = local_92.ResourceObject;
             return local_48;
         }
@@ -84,31 +80,25 @@ struct FVM_RoleItem : FEUIViewModel
     }
     FSlateBrush GetPlayerTachie() const
     {
-        FSlateBrush local_48;
         if (this.GetAvatarConfig())
         {
-            return local_48;
+            return this.GetAvatarConfig().Get().PlayerTachie.LoadBrush();
         }
-        return local_48;
+        return FSlateBrush();
     }
     FText GetPlayerIllustrate1() const
     {
-        FText __return;
         if (this.GetAvatarConfig())
         {
+            return this.GetAvatarConfig().Get().PlayerIllustrate1;
         }
-        else
-        {
-            __return = FText();
-        }
-        return __return;
+        return FText();
     }
     FText GetPlayerIllustrate2() const
     {
-        int local_2 = 0;
         if (this.GetAvatarConfig())
         {
-            return ::FASCommonUtils::GetWeaponTypeDisplayName(EWeaponType(local_2));
+            return ::FASCommonUtils::GetWeaponTypeDisplayName(this.GetAvatarConfig().Get().WeaponType);
         }
         return FText();
     }
@@ -245,11 +235,9 @@ FVM_RoleItem& Create(const UObject ContextObject)
 {
     return FVM_RoleItem::CreateByManager(EUIInternal::GetContextManager(ContextObject));
 }
-FVM_RoleItem CreateByManager(const UEUIManagerSubsystem Manager)
+FVM_RoleItem& CreateByManager(const UEUIManagerSubsystem Manager)
 {
-    FVM_RoleItem __r;
-    TEUIModelRef<FVM_RoleItem> local_6 = TEUIModelRef<FVM_RoleItem>(EUIInternal::MakeModelWithManager(Manager, FVM_RoleItem::ModelId));
-    return __r;
+    return TEUIModelRef<FVM_RoleItem>(EUIInternal::MakeModelWithManager(Manager, FVM_RoleItem::ModelId)).Get();
 }
 void GetModelInfo(FEUIViewModelMetaInfo &inout Result)
 {
@@ -366,7 +354,6 @@ namespace __GeneratedProperties_FVM_RoleItem
 {
 UScriptStruct StaticStruct()
 {
-    UScriptStruct local_2;
-    return local_2;
+    return __GeneratedProperties_FVM_RoleItem.Get();
 }
 }

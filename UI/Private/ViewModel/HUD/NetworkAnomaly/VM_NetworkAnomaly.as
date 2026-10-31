@@ -465,11 +465,9 @@ FVM_NetworkAnomaly& Create(const UObject ContextObject)
 {
     return FVM_NetworkAnomaly::CreateByManager(EUIInternal::GetContextManager(ContextObject));
 }
-FVM_NetworkAnomaly CreateByManager(const UEUIManagerSubsystem Manager)
+FVM_NetworkAnomaly& CreateByManager(const UEUIManagerSubsystem Manager)
 {
-    FVM_NetworkAnomaly __r;
-    TEUIModelRef<FVM_NetworkAnomaly> local_6 = TEUIModelRef<FVM_NetworkAnomaly>(EUIInternal::MakeModelWithManager(Manager, FVM_NetworkAnomaly::ModelId));
-    return __r;
+    return TEUIModelRef<FVM_NetworkAnomaly>(EUIInternal::MakeModelWithManager(Manager, FVM_NetworkAnomaly::ModelId)).Get();
 }
 void GetModelInfo(FEUIViewModelMetaInfo &inout Result)
 {
@@ -570,7 +568,6 @@ namespace __GeneratedProperties_FVM_NetworkAnomaly
 {
 UScriptStruct StaticStruct()
 {
-    UScriptStruct local_2;
-    return local_2;
+    return __GeneratedProperties_FVM_NetworkAnomaly.Get();
 }
 }

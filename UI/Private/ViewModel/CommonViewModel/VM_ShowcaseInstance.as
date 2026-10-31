@@ -210,12 +210,14 @@ struct FVM_AvatarShowcase : FEUIViewModel
     }
     TArray<uint> GetShowcaseAvatarDataIds() const
     {
+        TArray<uint> local_4;
         if (this.GetAvatarEntries().Num() > 0)
         {
             for (auto& local_22 : this.GetAvatarEntries())
             {
                 if (local_22.AvatarConfig)
                 {
+                    local_4.Add(local_22.AvatarConfig.Get().DataId);
                 }
             }
         }
@@ -225,10 +227,11 @@ struct FVM_AvatarShowcase : FEUIViewModel
             {
                 if (local_36)
                 {
+                    local_4.Add(local_36.Get().DataId);
                 }
             }
         }
-        return TArray<uint>();
+        return local_4;
     }
     void RefreshCurrentActorsWithParams(const TArray<FUIShowcaseActorSpawnParams> &inout Params)
     {
@@ -425,15 +428,15 @@ struct FVM_AvatarShowcase : FEUIViewModel
     TArray<FUIShowcaseActorSpawnParams> BuildSpawnParams() const
     {
         TArray<FUIShowcaseActorSpawnParams> local_4;
-        float32 local_8 = 0.0f;
         bool local_6 = false;
         int local_5 = local_6;
         float32 local_7 = 1.0f;
         TDataObjectPtr<FUIShowcaseConfig> local_34 = this.GetShowcaseConfigByIndex(this.GetShowcaseConfigIndex());
         if (local_34)
         {
-            local_7 = local_8;
-            local_5 = local_6;
+            local_7 = local_34.Get().DynamicRainControl;
+            bool local_6_2 = local_34.Get().bUseFaceAnim;
+            local_5 = local_6_2;
         }
         if (this.GetMountConfig())
         {
@@ -442,17 +445,17 @@ struct FVM_AvatarShowcase : FEUIViewModel
         }
         if (this.GetAvatarEntries().Num() > 0)
         {
-            const FAvatarPrefabConfig& local_196;
             for (auto& local_74 : this.GetAvatarEntries())
             {
                 if (local_74.AvatarConfig)
                 {
                     FUIShowcaseActorSpawnParams local_134;
+                    const FAvatarPrefabConfig& local_196 = local_74.AvatarConfig.Get();
                     local_134.ActorClass = local_196.ShowcaseActor;
                     if (local_74.WeaponConfig)
                     {
                         UClass local_212;
-                        const FWeaponConfig& local_200;
+                        const FWeaponConfig& local_200 = local_74.WeaponConfig.Get();
                         local_212 = Cast<UClass>(local_200.WeaponPrefab.ToSoftObjectPath().TryLoad());
                         TSubclassOf<AECSPrefab> local_214 = TSubclassOf<AECSPrefab>(local_212);
                         if (local_214.IsValid())
@@ -472,18 +475,18 @@ struct FVM_AvatarShowcase : FEUIViewModel
         }
         else
         {
-            const FAvatarPrefabConfig& local_196;
             for (auto& local_234 : this.GetAvatars())
             {
                 if (local_234)
                 {
+                    const FAvatarPrefabConfig& local_196_2 = local_234.Get();
                     FUIShowcaseActorSpawnParams local_194;
-                    local_194.ActorClass = local_196.ShowcaseActor;
-                    local_194.LightActorClass = local_196.ShowcaseLightActor;
-                    local_194.Offset = local_196.ShowcaseOffset;
-                    local_194.SetAvatarType(this.GenderTypeToShowcaseType(local_196.GenderType));
+                    local_194.ActorClass = local_196_2.ShowcaseActor;
+                    local_194.LightActorClass = local_196_2.ShowcaseLightActor;
+                    local_194.Offset = local_196_2.ShowcaseOffset;
+                    local_194.SetAvatarType(this.GenderTypeToShowcaseType(local_196_2.GenderType));
                     local_194.bUseFaceAnim = (local_5 != 0);
-                    this.ApplyFashionFromModel(local_194, local_196);
+                    this.ApplyFashionFromModel(local_194, local_196_2);
                     local_4.Add(local_194);
                 }
             }
@@ -496,24 +499,23 @@ struct FVM_AvatarShowcase : FEUIViewModel
         {
             return;
         }
-        TSoftClassPtr<AActor> local_12;
+        TSoftClassPtr<AActor> local_12 = TSoftClassPtr<AActor>(InMountConfig.Get().ShowcaseActor);
         if (local_12.IsNull())
         {
-            if (unresolved.MountPrefab.IsNull())
+            if (InMountConfig.Get().MountPrefab.IsNull())
             {
                 return;
             }
-            FSoftObjectPath local_20;
-            TSubclassOf<ACharacterPrefab> local_26 = TSubclassOf<ACharacterPrefab>((Cast<UClass>(local_20.TryLoad())));
+            TSubclassOf<ACharacterPrefab> local_26 = TSubclassOf<ACharacterPrefab>((Cast<UClass>(InMountConfig.Get().MountPrefab.ToSoftObjectPath().TryLoad())));
             if (!(local_26.IsValid()))
             {
-                FString local_32 = FString();
+                XLog(ELog(79), FString().Append("[FVM_AvatarShowcase] Failed to load mount prefab for FashionId=").Append(InMountConfig.Get().DataId));
                 return;
             }
             ACharacterPrefab local_38 = local_26.GetDefaultObject();
             if (local_38 == nullptr || local_38.Actor.IsNull())
             {
-                FString local_32_2 = FString();
+                XLog(ELog(79), FString().Append("[FVM_AvatarShowcase] Mount prefab has no showcase actor FashionId=").Append(InMountConfig.Get().DataId));
                 return;
             }
             local_12 = local_38.Actor;
@@ -523,48 +525,34 @@ struct FVM_AvatarShowcase : FEUIViewModel
         local_100.LightActorClass = this.ResolveMountShowcaseLightActor(CurrentShowcaseConfig);
         local_100.DynamicRainControl = RainDynamicControl;
         local_100.bUseFaceAnim = false;
+        InMountConfig.Get().AnimBlueprints.Find(EBodyType(0), local_100.MountAnimBlueprint);
         Actors.Add(local_100);
         return;
     }
     TSoftClassPtr<AActor> ResolveMountShowcaseLightActor(const TDataObjectPtr<FUIShowcaseConfig> &inout CurrentShowcaseConfig) const
     {
-        bool local_4 = false;
-        TSoftClassPtr<AActor> __return;
-        bool local_5 = CurrentShowcaseConfig && (0 != 0);
-        if (!(local_5))
+        if (CurrentShowcaseConfig && (int(CurrentShowcaseConfig.Get().Usage) != 0) && !(CurrentShowcaseConfig.Get().ShowcaseLightActor.IsNull()))
         {
-            local_5 = false;
+            return CurrentShowcaseConfig.Get().ShowcaseLightActor;
         }
-        else
+        if (this.GetAvatarEntries().Num() > 0)
         {
-            local_4 = !local_4;
-            local_5 = local_4;
-        }
-        if (local_5)
-        {
-        }
-        else
-        {
-            if (this.GetAvatarEntries().Num() > 0)
+            for (auto& local_20 : this.GetAvatarEntries())
             {
-                for (auto& local_20 : this.GetAvatarEntries())
+                if (local_20.AvatarConfig)
                 {
-                    if (local_20.AvatarConfig)
-                    {
-                        return __return;
-                    }
+                    return local_20.AvatarConfig.Get().ShowcaseLightActor;
                 }
             }
-            for (auto& local_34 : this.GetAvatars())
-            {
-                if (local_34)
-                {
-                    return __return;
-                }
-            }
-            __return = TSoftClassPtr<AActor>();
         }
-        return __return;
+        for (auto& local_34 : this.GetAvatars())
+        {
+            if (local_34)
+            {
+                return local_34.Get().ShowcaseLightActor;
+            }
+        }
+        return TSoftClassPtr<AActor>();
     }
     void ApplyFashionFromModel(FUIShowcaseActorSpawnParams &inout Actor, const FAvatarPrefabConfig &inout AvatarConfig) const
     {
@@ -827,18 +815,14 @@ FAvatarShowcaseEntry FromAvatarInfo(const TEUIModelRef<FVM_AvatarInfo> &inout Av
     }
     else
     {
-        local_48.AvatarConfig = GetAvatarConfig();
+        local_48.AvatarConfig = AvatarInfo.Get().GetAvatarConfig();
         if (AvatarInfo.opArrow().GetAvatarEquipment())
         {
-            TEUIModelRef<FVM_AvatarEquipment> local_76 = AvatarInfo.opArrow().GetAvatarEquipment();
-            TEUIModelRef<FVM_EquipmentInfo> local_80;
-            local_80.GetEquipment();
+            TEUIModelRef<FVM_EquipmentInfo> local_80 = AvatarInfo.opArrow().GetAvatarEquipment().Get().GetEquipment();
             TEUIModelRef<FVM_EquipmentInfo> local_78;
             if (local_78)
             {
-                TDataObjectPtr<FEquipmentConfig> local_104;
-                local_104.GetEquipmentConfig();
-                if (local_104)
+                if (local_78.Get().GetEquipmentConfig())
                 {
                     CastTo local_132;
                     TDataObjectPtr<FWeaponConfig> local_156 = local_132.opCall();
@@ -852,7 +836,7 @@ FAvatarShowcaseEntry FromAvatarInfo(const TEUIModelRef<FVM_AvatarInfo> &inout Av
             {
                 if (local_48.AvatarConfig)
                 {
-                    local_48.WeaponConfig = GetDefaultWeapon();
+                    local_48.WeaponConfig = local_48.AvatarConfig.Get().GetDefaultWeapon();
                 }
             }
         }
@@ -860,7 +844,7 @@ FAvatarShowcaseEntry FromAvatarInfo(const TEUIModelRef<FVM_AvatarInfo> &inout Av
         {
             if (local_48.AvatarConfig)
             {
-                local_48.WeaponConfig = GetDefaultWeapon();
+                local_48.WeaponConfig = local_48.AvatarConfig.Get().GetDefaultWeapon();
             }
         }
     }
@@ -893,7 +877,8 @@ bool TryGetViewAppearanceForAvatar(const FEUIModelContext &inout InContext, cons
             {
                 continue;
             }
-            if (!(GetAvatarConfig(local_26)) || (0 != AvatarDataId))
+            TDataObjectPtr<FAvatarPrefabConfig> local_50 = GetAvatarConfig(local_26);
+            if (!(local_50) || (local_50.Get().DataId != AvatarDataId))
             {
                 continue;
             }
@@ -947,11 +932,9 @@ FVM_KeepShowcaseVisible& Create(const UObject ContextObject)
 {
     return FVM_KeepShowcaseVisible::CreateByManager(EUIInternal::GetContextManager(ContextObject));
 }
-FVM_KeepShowcaseVisible CreateByManager(const UEUIManagerSubsystem Manager)
+FVM_KeepShowcaseVisible& CreateByManager(const UEUIManagerSubsystem Manager)
 {
-    FVM_KeepShowcaseVisible __r;
-    TEUIModelRef<FVM_KeepShowcaseVisible> local_6 = TEUIModelRef<FVM_KeepShowcaseVisible>(EUIInternal::MakeModelWithManager(Manager, FVM_KeepShowcaseVisible::ModelId));
-    return __r;
+    return TEUIModelRef<FVM_KeepShowcaseVisible>(EUIInternal::MakeModelWithManager(Manager, FVM_KeepShowcaseVisible::ModelId)).Get();
 }
 void GetModelInfo(FEUIViewModelMetaInfo &inout Result)
 {
@@ -986,8 +969,7 @@ namespace __GeneratedProperties_FVM_KeepShowcaseVisible
 {
 UScriptStruct StaticStruct()
 {
-    UScriptStruct local_2;
-    return local_2;
+    return __GeneratedProperties_FVM_KeepShowcaseVisible.Get();
 }
 }
 namespace FVM_AvatarShowcase
@@ -996,11 +978,9 @@ FVM_AvatarShowcase& Create(const UObject ContextObject)
 {
     return FVM_AvatarShowcase::CreateByManager(EUIInternal::GetContextManager(ContextObject));
 }
-FVM_AvatarShowcase CreateByManager(const UEUIManagerSubsystem Manager)
+FVM_AvatarShowcase& CreateByManager(const UEUIManagerSubsystem Manager)
 {
-    FVM_AvatarShowcase __r;
-    TEUIModelRef<FVM_AvatarShowcase> local_6 = TEUIModelRef<FVM_AvatarShowcase>(EUIInternal::MakeModelWithManager(Manager, FVM_AvatarShowcase::ModelId));
-    return __r;
+    return TEUIModelRef<FVM_AvatarShowcase>(EUIInternal::MakeModelWithManager(Manager, FVM_AvatarShowcase::ModelId)).Get();
 }
 void GetModelInfo(FEUIViewModelMetaInfo &inout Result)
 {
@@ -1102,7 +1082,6 @@ namespace __GeneratedProperties_FVM_AvatarShowcase
 {
 UScriptStruct StaticStruct()
 {
-    UScriptStruct local_2;
-    return local_2;
+    return __GeneratedProperties_FVM_AvatarShowcase.Get();
 }
 }

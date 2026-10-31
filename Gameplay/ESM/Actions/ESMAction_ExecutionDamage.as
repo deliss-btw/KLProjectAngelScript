@@ -13,8 +13,6 @@ class UESMAction_ExecutionDamage : UESMBPBaseInstantAction
     UFUNCTION()
     void Do_Implementation(const FESMContext &inout Context, const FESMActionTime &inout Time) const
     {
-        int local_36 = 0;
-        bool local_77 = false;
         if (Context.GetECSRuntime().IsServer)
         {
             FDataObjectPtr local_26 = FDataObjectPtr(UCombatGlobalSettingsBase::Get().DefaultExecutionAttackDataRow);
@@ -26,8 +24,8 @@ class UESMAction_ExecutionDamage : UESMBPBaseInstantAction
                 {
                     Get local_44;
                     FECSEntity local_40 = FECSEntity(local_34.GetExecuteEntityArray()[0]);
-                    float32 local_69 = this.DamageRatio;
-                    ::FDamageUtils::AddExecutionDamage(local_40, local_40, Context.GetEntity(), local_69, local_44.opCall().GetPosition(), Time.WorldTime);
+                    TDataObjectPtr<FAttackData> local_68;
+                    ::FDamageUtils::AddExecutionDamage(local_40, local_40, Context.GetEntity(), local_68.Get(), this.DamageRatio, local_44.opCall().GetPosition(), Time.WorldTime);
                     bool local_1_2 = this.FinalExecutionDamage;
                     if (local_1_2)
                     {
@@ -43,31 +41,32 @@ class UESMAction_ExecutionDamage : UESMBPBaseInstantAction
                         }
                         else
                         {
-                            local_77 = local_76.ExecutionConfigData;
-                            local_1_2 = local_77;
+                            local_1_2 = local_76.ExecutionConfigData;
                         }
                         if (local_1_2)
                         {
                             float32 local_237;
-                            local_77 = !local_77;
-                            if (local_77)
+                            TDataObjectPtr<FExecutionConfigDataObject> local_86 = local_76.ExecutionConfigData;
+                            if (!(local_86.Get().ChaosKnotBreakFX.IsNull()))
                             {
-                                local_1_2 = true;
-                                FECSEntityAdapter local_84 = FECSEntityAdapter(Context.GetEntity());
+                                FFXSurfaceTraceParam local_126;
+                                ::BlueprintFunctions_Common::Level_PlayFX_Instant(FECSEntityAdapter(Context.GetEntity()), local_86.Get().ChaosKnotBreakFX, TArray<FFXOverrideParam>(), true, local_86.Get().ChaosKnotSocket, EFXBaseTransformResolveModeWithAttachmentOption(0), local_86.Get().ChaosKnotOffset, EFXOffsetSpaceWithAttachmentOption(3), local_86.Get().ChaosKnotRotationOffset, EFXOffsetSpaceWithAttachmentOption(3), local_126);
                             }
                             FBuffConfigRef local_154 = local_76.GetExecuteBuff();
                             TDataObjectPtr<FMessageHintConfig> local_202 = local_76.GetMessageHintConfig();
-                            FFPTime local_236 = (FFPTime(Time.WorldTime) + FFPTime(local_69));
+                            FFPTime local_230 = FFPTime(Time.WorldTime);
+                            float32 local_69 = local_86.Get().ExecuteBuffDelayAddTime;
+                            FFPTime local_236 = (local_230 + FFPTime(local_69));
                             local_237 = 0.0f;
                             if (local_154.IsValid())
                             {
                                 TDataObjectPtr<FBuffConfig> local_262;
-                                local_69 = local_262.opArrow().BuffDuration;
-                                local_237 = local_69;
+                                local_237 = local_262.opArrow().BuffDuration;
                             }
                             FVector local_268;
                             ::BlueprintFunctions_Level::GetEntityLocation(FECSEntityAdapter(Context.GetEntity()), local_268);
-                            local_69 = local_69 * 0.0f;
+                            local_69 = local_86.Get().ExecuteBuffDistanceXY;
+                            local_69 = local_69 * local_86.Get().ExecuteBuffDistanceXY;
                             TArray<FECSEntity> local_274;
                             if (local_34.GetExecuteTeamEntity().IsValid())
                             {
@@ -113,17 +112,16 @@ class UESMAction_ExecutionDamage : UESMBPBaseInstantAction
                                 ::MessageHintUtils::ShowMessageHint(local_338, local_202, TArray<FTextArgument>());
                                 if (local_154.IsValid())
                                 {
-                                    local_1_2 = false;
-                                    FBuffUtils::AddBuff(local_338, local_154, local_236, local_338, false, local_237, 1, local_1_2);
+                                    FBuffUtils::AddBuff(local_338, local_154, local_236, local_338, false, local_237, 1, false);
                                 }
-                                if (ECS::GetRuntimeInfo().IsServer && local_1_2)
+                                if (ECS::GetRuntimeInfo().IsServer && local_86.Get().BuffBallPrefab.IsValid())
                                 {
-                                    ::BlueprintFunctions_Common::SpawnEnergyBall(FECSEntityAdapter(local_338), TSoftClassPtr<AEnergyBallPrefab>(), local_268, local_36, EEnergyBallSpawnDirection(0));
+                                    ::BlueprintFunctions_Common::SpawnEnergyBall(FECSEntityAdapter(local_338), TSoftClassPtr<AEnergyBallPrefab>(local_86.Get().BuffBallPrefab.Get()), local_268, local_86.Get().BuffBallNum, EEnergyBallSpawnDirection(0));
                                 }
                             }
-                            if (unresolved.ExecuteMonsterDebuff.IsValid())
+                            if (local_86.Get().ExecuteMonsterDebuff.IsValid())
                             {
-                                local_77 = false;
+                                FBuffUtils::AddBuff(Context.GetEntity(), local_86.Get().ExecuteMonsterDebuff, Time.WorldTime, Context.GetEntity(), false, -1.0f, 1, false);
                             }
                         }
                     }

@@ -137,11 +137,9 @@ FVMS_GameEntry_PVX& Get(const UObject ContextObject)
 {
     return FVMS_GameEntry_PVX::GetByManager(EUIInternal::GetContextManager(ContextObject));
 }
-FVMS_GameEntry_PVX GetByManager(const UEUIManagerSubsystem Manager)
+FVMS_GameEntry_PVX& GetByManager(const UEUIManagerSubsystem Manager)
 {
-    FVMS_GameEntry_PVX __r;
-    TEUIModelRef<FVMS_GameEntry_PVX> local_6 = TEUIModelRef<FVMS_GameEntry_PVX>(EUIInternal::MakeModelWithManager(Manager, FVMS_GameEntry_PVX::ModelId));
-    return __r;
+    return TEUIModelRef<FVMS_GameEntry_PVX>(EUIInternal::MakeModelWithManager(Manager, FVMS_GameEntry_PVX::ModelId)).Get();
 }
 void GetModelInfo(FEUIViewModelMetaInfo &inout Result)
 {
@@ -206,7 +204,6 @@ namespace __GeneratedProperties_FVMS_GameEntry_PVX
 {
 UScriptStruct StaticStruct()
 {
-    UScriptStruct local_2;
-    return local_2;
+    return __GeneratedProperties_FVMS_GameEntry_PVX.Get();
 }
 }

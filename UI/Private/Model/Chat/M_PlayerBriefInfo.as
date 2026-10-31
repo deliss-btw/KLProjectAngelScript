@@ -66,11 +66,10 @@ struct FMS_PlayerBriefInfo : FEUIModelSingleton
             return local_18;
         }
         FECSEntity local_24;
-        if (::FMS_PlayerData::Get(this.GetContext().Manager).GetCachedPlayerData(PlayerUid).IsValid())
+        TEUIModelRef<FM_Player> local_26 = ::FMS_PlayerData::Get(this.GetContext().Manager).GetCachedPlayerData(PlayerUid);
+        if (local_26.IsValid())
         {
-            FECSEntity local_32;
-            local_32.GetPlayerEntity();
-            local_24 = local_32;
+            local_24 = local_26.Get().GetPlayerEntity();
         }
         if (local_24.IsValid())
         {
@@ -99,9 +98,7 @@ struct FMS_PlayerBriefInfo : FEUIModelSingleton
         {
             return false;
         }
-        FPlayerBriefInfo local_24;
-        local_24.GetBriefInfo();
-        Out = local_24;
+        Out = local_4.Get().GetBriefInfo();
         return true;
     }
     FPlayerBriefInfo GetPlayerBriefInfo(const uint PlayerId)
@@ -110,10 +107,7 @@ struct FMS_PlayerBriefInfo : FEUIModelSingleton
         int local_9 = ::FASCommonUtils::GetPlayerUidFromPlayerEntity(this.GetContext().GetLocalPlayer());
         if ((local_9 != 0 && (local_9 == PlayerId)))
         {
-            FPlayerBriefInfo local_32;
-            local_2.GetLocalPlayerData();
-            local_32.GetBriefInfo();
-            return local_32;
+            return local_2.GetLocalPlayerData().Get().GetBriefInfo();
         }
         FPlayerBriefInfo local_50;
         if (this.TryGetCachedBrief(PlayerId, local_50))
@@ -151,22 +145,37 @@ void ApplyFromDSPlayerEntity(FPlayerBriefInfo &inout Out, const FECSEntity &inou
 }
 void ApplyFromPlayer(FPlayerBriefInfo &inout Out, const FM_Player &inout Player)
 {
-    bool local_9 = false;
-    int local_1 = Player.GetPlayerUid();
-    Out.SetUid(local_1);
+    bool local_8;
+    Out.SetUid(Player.GetPlayerUid());
     Out.SetNickname(Player.GetNickName());
     Out.SetLevel(Player.GetLevel());
-    if (Player.GetCurrentAvatarAttr().HasValue() && local_9)
+    if (!(Player.GetCurrentAvatarAttr().HasValue()))
     {
-        Out.SetCurAvatarId(local_1);
+        local_8 = false;
     }
-    if (Player.GetDivineSkillAttr().HasValue() && local_9)
+    else
     {
-        Out.SetDivineSkillId(local_1);
+        local_8 = Player.GetCurrentAvatarAttr().Get();
+    }
+    if (local_8)
+    {
+        Out.SetCurAvatarId(Player.GetCurrentAvatarAttr().Get().Get().DataId);
+    }
+    if (!(Player.GetDivineSkillAttr().HasValue()))
+    {
+        local_8 = false;
+    }
+    else
+    {
+        local_8 = Player.GetDivineSkillAttr().Get();
+    }
+    if (local_8)
+    {
+        Out.SetDivineSkillId(Player.GetDivineSkillAttr().Get().Get().DataId);
     }
     if (Player.GetIsOnlineAttr().HasValue())
     {
-        Out.SetbIsOnline(local_9);
+        Out.SetbIsOnline(Player.GetIsOnlineAttr().Get());
     }
     return;
 }
@@ -177,11 +186,9 @@ FMS_PlayerBriefInfo& Get(const UObject ContextObject)
 {
     return FMS_PlayerBriefInfo::GetByManager(EUIInternal::GetContextManager(ContextObject));
 }
-FMS_PlayerBriefInfo GetByManager(const UEUIManagerSubsystem Manager)
+FMS_PlayerBriefInfo& GetByManager(const UEUIManagerSubsystem Manager)
 {
-    FMS_PlayerBriefInfo __r;
-    TEUIModelRef<FMS_PlayerBriefInfo> local_6 = TEUIModelRef<FMS_PlayerBriefInfo>(EUIInternal::MakeModelWithManager(Manager, FMS_PlayerBriefInfo::ModelId));
-    return __r;
+    return TEUIModelRef<FMS_PlayerBriefInfo>(EUIInternal::MakeModelWithManager(Manager, FMS_PlayerBriefInfo::ModelId)).Get();
 }
 void GetModelInfo(FEUIModelOnlyMetaInfo &inout Result)
 {

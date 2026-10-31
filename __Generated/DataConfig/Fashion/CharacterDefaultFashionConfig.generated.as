@@ -12,12 +12,11 @@ TDataObjectPtr<FAvatarPrefabConfig> __FCharacterDefaultFashionConfig_GetAvatar(c
         FCharacterDefaultFashionConfig local_186;
         return local_186.GetAvatar();
     }
-    return GetAvatar();
+    return DataObject.Get().GetAvatar();
 }
 UFUNCTION()
 EBodyType __FCharacterDefaultFashionConfig_GetBodyType(const TDataObjectPtr<FCharacterDefaultFashionConfig> &inout DataObject)
 {
-    int local_187 = 0;
     if ((DataObject == nullptr))
     {
         if (!(EUIGlobals::GIsDuringPropertyConversion))
@@ -25,10 +24,9 @@ EBodyType __FCharacterDefaultFashionConfig_GetBodyType(const TDataObjectPtr<FCha
             FBlueprintDebugFunctions::ThrowScriptException("Get 'BodyType' from a null 'FCharacterDefaultFashionConfig' DataObject!");
         }
         FCharacterDefaultFashionConfig local_186;
-        local_187 = int(local_186.BodyType);
-        return EBodyType(local_187);
+        return local_186.BodyType;
     }
-    return EBodyType(local_187);
+    return DataObject.Get().BodyType;
 }
 UFUNCTION()
 TDataObjectPtr<FFashionConfig> __FCharacterDefaultFashionConfig_GetInitHair(const TDataObjectPtr<FCharacterDefaultFashionConfig> &inout DataObject)
@@ -42,7 +40,7 @@ TDataObjectPtr<FFashionConfig> __FCharacterDefaultFashionConfig_GetInitHair(cons
         FCharacterDefaultFashionConfig local_186;
         return local_186.GetInitHair();
     }
-    return GetInitHair();
+    return DataObject.Get().GetInitHair();
 }
 UFUNCTION()
 TDataObjectPtr<FFashionConfig> __FCharacterDefaultFashionConfig_GetInitTop(const TDataObjectPtr<FCharacterDefaultFashionConfig> &inout DataObject)
@@ -56,7 +54,7 @@ TDataObjectPtr<FFashionConfig> __FCharacterDefaultFashionConfig_GetInitTop(const
         FCharacterDefaultFashionConfig local_186;
         return local_186.GetInitTop();
     }
-    return GetInitTop();
+    return DataObject.Get().GetInitTop();
 }
 UFUNCTION()
 TDataObjectPtr<FFashionConfig> __FCharacterDefaultFashionConfig_GetInitBottom(const TDataObjectPtr<FCharacterDefaultFashionConfig> &inout DataObject)
@@ -70,7 +68,7 @@ TDataObjectPtr<FFashionConfig> __FCharacterDefaultFashionConfig_GetInitBottom(co
         FCharacterDefaultFashionConfig local_186;
         return local_186.GetInitBottom();
     }
-    return GetInitBottom();
+    return DataObject.Get().GetInitBottom();
 }
 UFUNCTION()
 TDataObjectPtr<FFashionConfig> __FCharacterDefaultFashionConfig_GetInitSuit(const TDataObjectPtr<FCharacterDefaultFashionConfig> &inout DataObject)
@@ -84,7 +82,7 @@ TDataObjectPtr<FFashionConfig> __FCharacterDefaultFashionConfig_GetInitSuit(cons
         FCharacterDefaultFashionConfig local_186;
         return local_186.GetInitSuit();
     }
-    return GetInitSuit();
+    return DataObject.Get().GetInitSuit();
 }
 UFUNCTION()
 TDataObjectPtr<FFashionConfig> __FCharacterDefaultFashionConfig_GetInitBathrobeTop(const TDataObjectPtr<FCharacterDefaultFashionConfig> &inout DataObject)
@@ -98,7 +96,7 @@ TDataObjectPtr<FFashionConfig> __FCharacterDefaultFashionConfig_GetInitBathrobeT
         FCharacterDefaultFashionConfig local_186;
         return local_186.GetInitBathrobeTop();
     }
-    return GetInitBathrobeTop();
+    return DataObject.Get().GetInitBathrobeTop();
 }
 UFUNCTION()
 TDataObjectPtr<FFashionConfig> __FCharacterDefaultFashionConfig_GetInitBathrobeBottom(const TDataObjectPtr<FCharacterDefaultFashionConfig> &inout DataObject)
@@ -112,7 +110,7 @@ TDataObjectPtr<FFashionConfig> __FCharacterDefaultFashionConfig_GetInitBathrobeB
         FCharacterDefaultFashionConfig local_186;
         return local_186.GetInitBathrobeBottom();
     }
-    return GetInitBathrobeBottom();
+    return DataObject.Get().GetInitBathrobeBottom();
 }
 UFUNCTION()
 FCharacterDefaultFashionConfig CastToFCharacterDefaultFashionConfig(const TDataObjectPtr<FCharacterDefaultFashionConfig> &inout DataObject)

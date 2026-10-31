@@ -178,11 +178,9 @@ FVM_SideHintItem& Create(const UObject ContextObject)
 {
     return FVM_SideHintItem::CreateByManager(EUIInternal::GetContextManager(ContextObject));
 }
-FVM_SideHintItem CreateByManager(const UEUIManagerSubsystem Manager)
+FVM_SideHintItem& CreateByManager(const UEUIManagerSubsystem Manager)
 {
-    FVM_SideHintItem __r;
-    TEUIModelRef<FVM_SideHintItem> local_6 = TEUIModelRef<FVM_SideHintItem>(EUIInternal::MakeModelWithManager(Manager, FVM_SideHintItem::ModelId));
-    return __r;
+    return TEUIModelRef<FVM_SideHintItem>(EUIInternal::MakeModelWithManager(Manager, FVM_SideHintItem::ModelId)).Get();
 }
 void GetModelInfo(FEUIViewModelMetaInfo &inout Result)
 {
@@ -282,7 +280,6 @@ namespace __GeneratedProperties_FVM_SideHintItem
 {
 UScriptStruct StaticStruct()
 {
-    UScriptStruct local_2;
-    return local_2;
+    return __GeneratedProperties_FVM_SideHintItem.Get();
 }
 }

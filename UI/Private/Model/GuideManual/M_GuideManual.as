@@ -164,7 +164,7 @@ struct FMS_GuideManual : FEUIModelSingleton
         {
             TDataObjectPtr<FGuideGroupConfig> local_88 = local_22.GetDataPtr();
             TSet<uint> local_108;
-            for (auto& local_122 : GetActiveConds())
+            for (auto& local_122 : local_88.Get().GetActiveConds())
             {
                 local_6.CollectLeafConditionDataIds(local_122, local_108);
             }
@@ -191,12 +191,12 @@ struct FMS_GuideManual : FEUIModelSingleton
         for (; local_18; )
         {
             TDataObjectPtr<FGuideGroupConfig> local_84 = local_18.GetDataPtr();
-            if (this.GetFinishedGuideDataIds().Contains(unresolved.DataId))
+            if (this.GetFinishedGuideDataIds().Contains(local_84.Get().DataId))
             {
             }
             else
             {
-                if (GetActiveConds().Num() == 0 && (0 == 0))
+                if (local_84.Get().GetActiveConds().Num() == 0 && (local_84.Get().ClientConditions.Num() == 0))
                 {
                 }
                 else
@@ -211,10 +211,8 @@ struct FMS_GuideManual : FEUIModelSingleton
     }
     void IndexClientConditions(const TDataObjectPtr<FGuideGroupConfig> &inout Config)
     {
-        TArrayConstIterator<FClientConditionGroup> local_6;
-        for (; local_6.CanProceed;)
+        for (auto& local_16 : Config.Get().ClientConditions)
         {
-            const FClientConditionGroup& local_16 = local_6.Proceed();
             for (auto& local_30 : local_16.Conditions)
             {
                 if (FInstancedStruct::GetPtr(local_30).opCall())
@@ -311,15 +309,13 @@ struct FMS_GuideManual : FEUIModelSingleton
     }
     void OpenHandbookDetailForGuide(const uint DataId)
     {
-        int local_98 = 0;
         GetDataObjectByGSDataId<FGuideGroupConfig> local_48;
-        TDataObjectPtr<FGuideGroupConfig> local_72 = local_48.opImplConv();
-        if (!(local_72))
+        TDataObjectPtr<FGuideGroupConfig> local_24 = local_48.opImplConv();
+        if (!(local_24))
         {
             return;
         }
-        int local_99 = local_98;
-        FVM_TutorialHandbookDetail& local_104 = ::FVM_TutorialHandbookDetail::Create(this.GetManager(), local_99);
+        FVM_TutorialHandbookDetail& local_104 = ::FVM_TutorialHandbookDetail::Create(this.GetManager(), int(local_24.Get().ManualTab));
         local_104.SelectByGuideDataId(DataId);
         FEUIWidget::AddWidget(this.GetContext().UELocalPlayer, GameplayTags::UI_Type_Tutorial_HandbookDetail, FEUIModelRef(local_104));
         return;
@@ -343,11 +339,11 @@ struct FMS_GuideManual : FEUIModelSingleton
         {
             for (auto& local_54 : local_26)
             {
-                int local_40 = int(local_54.CondDataId);
-                if (local_40 != local_39)
+                if (int(local_54.CondDataId) != local_39)
                 {
                     continue;
                 }
+                int local_40 = local_54.GuideConfig.Get().DataId;
                 local_55 = local_40;
                 if (local_22.Contains(local_55))
                 {
@@ -369,7 +365,6 @@ struct FMS_GuideManual : FEUIModelSingleton
     }
     void OnClientConditionChanged(const FMsg_ClientConditionChanged &inout Msg)
     {
-        int local_44 = 0;
         if (!(this.GetbDataReady()))
         {
             return;
@@ -381,6 +376,7 @@ struct FMS_GuideManual : FEUIModelSingleton
             TArray<TDataObjectPtr<FGuideGroupConfig>> local_28 = this.GetClientTagIndex()[Msg.ChangedWidgetTag].Guides;
             for (auto& local_42 : local_28)
             {
+                int local_44 = local_42.Get().DataId;
                 local_43 = local_44;
                 if (!(local_22.Contains(local_43)))
                 {
@@ -395,7 +391,8 @@ struct FMS_GuideManual : FEUIModelSingleton
             TArray<TDataObjectPtr<FGuideGroupConfig>> local_28 = this.GetClientCommissionGuides();
             for (auto& local_42 : local_28)
             {
-                local_43 = local_44;
+                int local_44_2 = local_42.Get().DataId;
+                local_43 = local_44_2;
                 if (!(local_22.Contains(local_43)))
                 {
                     local_22.Add(local_43);
@@ -405,7 +402,8 @@ struct FMS_GuideManual : FEUIModelSingleton
             TArray<TDataObjectPtr<FGuideGroupConfig>> local_48 = this.GetClientLevelTypeGuides();
             for (auto& local_42 : local_48)
             {
-                local_43 = local_44;
+                int local_44_3 = local_42.Get().DataId;
+                local_43 = local_44_3;
                 if (!(local_22.Contains(local_43)))
                 {
                     local_22.Add(local_43);
@@ -419,7 +417,8 @@ struct FMS_GuideManual : FEUIModelSingleton
             TArray<TDataObjectPtr<FGuideGroupConfig>> local_28 = this.GetClientInputTypeGuides();
             for (auto& local_42 : local_28)
             {
-                local_43 = local_44;
+                int local_44_4 = local_42.Get().DataId;
+                local_43 = local_44_4;
                 if (!(local_22.Contains(local_43)))
                 {
                     local_22.Add(local_43);
@@ -436,7 +435,8 @@ struct FMS_GuideManual : FEUIModelSingleton
             TArray<TDataObjectPtr<FGuideGroupConfig>> local_48 = this.GetClientInTeamGuides();
             for (auto& local_42 : local_48)
             {
-                local_43 = local_44;
+                int local_44_5 = local_42.Get().DataId;
+                local_43 = local_44_5;
                 if (!(local_22.Contains(local_43)))
                 {
                     local_22.Add(local_43);
@@ -461,10 +461,10 @@ struct FMS_GuideManual : FEUIModelSingleton
     void RemoveUnsatisfiedFromQueue()
     {
         int local_6;
-        int local_7 = 0;
         int local_4 = this.GetTutorialQueue().Num() - 1;
         for (; local_4 >= 0; --local_4)
         {
+            int local_7 = this.GetTutorialQueue()[local_4].Get().DataId;
             local_6 = local_7;
             if (!(this.CanShowQueuedGuide(this.GetTutorialQueue()[local_4], false)))
             {
@@ -475,7 +475,8 @@ struct FMS_GuideManual : FEUIModelSingleton
         int local_3 = this.GetTutorialHintQueue().Num() - 1;
         for (; local_3 >= 0; --local_3)
         {
-            local_6 = local_7;
+            int local_7_2 = this.GetTutorialHintQueue()[local_3].Get().DataId;
+            local_6 = local_7_2;
             if (!(this.CanShowQueuedGuide(this.GetTutorialHintQueue()[local_3], true)))
             {
                 this.ClearGuideForceShow(local_6, true);
@@ -544,12 +545,11 @@ struct FMS_GuideManual : FEUIModelSingleton
     }
     void EnqueueGuideByDisplayType(const TDataObjectPtr<FGuideGroupConfig> &inout Config, const bool bForceShow, const bool bCheckClientConditions)
     {
-        int local_2 = 0;
         if (!(Config))
         {
             return;
         }
-        if (this.ShouldHint(EGuideManualType(local_2)))
+        if (this.ShouldHint(Config.Get().IsInManual))
         {
             this.EnqueueTutorialHint(Config, bForceShow, bCheckClientConditions);
             return;
@@ -559,18 +559,7 @@ struct FMS_GuideManual : FEUIModelSingleton
     }
     void TryTriggerGuideImmediately(const EClientConditionTriggerReason Reason)
     {
-        int local_2 = 0;
-        bool local_1 = !(this.GetbDataReady());
-        if (local_1)
-        {
-            local_1 = true;
-        }
-        else
-        {
-            local_2 = int(Reason);
-            local_1 = (local_2 == 0);
-        }
-        if (local_1)
+        if (!(this.GetbDataReady()) || (int(Reason) == 0))
         {
             return;
         }
@@ -589,7 +578,7 @@ struct FMS_GuideManual : FEUIModelSingleton
             {
                 continue;
             }
-            if (!(local_32) || (local_2 > 0))
+            if (!(local_32) || (local_46.Get().GroupId > local_32.Get().GroupId))
             {
                 local_32 = local_46;
             }
@@ -602,20 +591,18 @@ struct FMS_GuideManual : FEUIModelSingleton
     }
     bool CanShowGuideImmediately(const TDataObjectPtr<FGuideGroupConfig> &inout Config) const
     {
-        int local_3 = 0;
         if (!(Config) || CVar_GuideManual_Suppress.GetBool())
         {
             return false;
         }
-        return !(this.IsGuideDisplayShowing(this.ShouldHint(EGuideManualType(local_3))));
+        return !(this.IsGuideDisplayShowing(this.ShouldHint(Config.Get().IsInManual)));
     }
     void ShowGuideImmediately(const TDataObjectPtr<FGuideGroupConfig> &inout Config)
     {
-        int local_2 = 0;
-        int local_3 = 0;
+        int local_2 = Config.Get().DataId;
         int local_1 = local_2;
         this.RemoveFromQueuedGuides(local_1);
-        if (this.ShouldHint(EGuideManualType(local_3)))
+        if (this.ShouldHint(Config.Get().IsInManual))
         {
             this.ShowTutorialHintImmediately(Config);
             return;
@@ -625,11 +612,11 @@ struct FMS_GuideManual : FEUIModelSingleton
     }
     void ShowTutorialImmediately(const TDataObjectPtr<FGuideGroupConfig> &inout Config)
     {
-        int local_3 = 0;
         if (this.GetbTutorialShowing())
         {
             return;
         }
+        int local_3 = Config.Get().DataId;
         int local_2 = local_3;
         this.SetbTutorialShowing(true);
         this.SetShowingTutorialDataId(local_2);
@@ -638,11 +625,11 @@ struct FMS_GuideManual : FEUIModelSingleton
     }
     void ShowTutorialHintImmediately(const TDataObjectPtr<FGuideGroupConfig> &inout Config)
     {
-        int local_3 = 0;
         if (this.GetbTutorialHintShowing())
         {
             return;
         }
+        int local_3 = Config.Get().DataId;
         int local_2 = local_3;
         this.SetbTutorialHintShowing(true);
         this.SetShowingTutorialHintDataId(local_2);
@@ -653,12 +640,11 @@ struct FMS_GuideManual : FEUIModelSingleton
     }
     void EnqueueTutorial(const TDataObjectPtr<FGuideGroupConfig> &inout Config, const bool bForceShow = false, const bool bCheckClientConditions = true)
     {
-        int local_4 = 0;
-        int local_20 = 0;
         if (!(this.CanEnqueueTutorial(Config, false, bForceShow, bCheckClientConditions)))
         {
             return;
         }
+        int local_4 = Config.Get().DataId;
         int local_3 = local_4;
         if (bForceShow)
         {
@@ -666,18 +652,18 @@ struct FMS_GuideManual : FEUIModelSingleton
         }
         for (auto& local_18 : this.GetTutorialQueue())
         {
-            local_18;
-            if (local_4 == local_3)
+            if (local_18.Get().DataId == local_3)
             {
                 return;
             }
         }
+        int local_20 = Config.Get().GroupId;
         int local_19 = local_20;
         int local_21 = 0;
         int local_22 = 0;
         for (; local_22 < this.GetTutorialQueue().Num(); ++local_22)
         {
-            if (0 >= local_19)
+            if (this.GetTutorialQueue()[local_22].Get().GroupId >= local_19)
             {
                 local_21 = local_22 + 1;
                 continue;
@@ -691,7 +677,6 @@ struct FMS_GuideManual : FEUIModelSingleton
     void TryShowNextTutorial()
     {
         int local_8;
-        int local_9 = 0;
         if (::FMS_ClientCondition::Get(this.GetManager()).IsLoading())
         {
             return;
@@ -702,6 +687,7 @@ struct FMS_GuideManual : FEUIModelSingleton
             {
                 return;
             }
+            int local_9 = this.GetTutorialQueue()[0].Get().DataId;
             local_8 = local_9;
             while (!(this.CanShowQueuedGuide(this.GetTutorialQueue()[0], false)))
             {
@@ -719,7 +705,9 @@ struct FMS_GuideManual : FEUIModelSingleton
         TDataObjectPtr<FGuideGroupConfig> local_34 = this.GetTutorialQueue()[0];
         this.GetModify_TutorialQueue().RemoveAt(0);
         this.SetbTutorialShowing(true);
-        local_8 = local_9;
+        int local_9_2 = local_34.Get().DataId;
+        local_8 = local_9_2;
+        this.GetModify_DebugTutorialForceShowDataIds().Remove(local_8);
         this.SetShowingTutorialDataId(local_8);
         this.SetTutorialPageWidget(FEUIWidget::AddWidget(this.GetContext().UELocalPlayer, GameplayTags::UI_Type_Tutorial_Main, FEUIModelRef(::FVM_TutorialMain::Create(this.GetManager(), local_8))));
         return;
@@ -733,10 +721,7 @@ struct FMS_GuideManual : FEUIModelSingleton
     }
     void EnqueueTutorialHint(const TDataObjectPtr<FGuideGroupConfig> &inout Config, const bool bForceShow = false, const bool bCheckClientConditions = true)
     {
-        int local_2 = 0;
-        int local_5 = 0;
-        int local_22 = 0;
-        if (!(Config) || !(this.ShouldHint(EGuideManualType(local_2))))
+        if (!(Config) || !(this.ShouldHint(EGuideManualType(Config.Get().IsInManual))))
         {
             return;
         }
@@ -744,6 +729,7 @@ struct FMS_GuideManual : FEUIModelSingleton
         {
             return;
         }
+        int local_5 = Config.Get().DataId;
         int local_4 = local_5;
         if (bForceShow)
         {
@@ -751,18 +737,18 @@ struct FMS_GuideManual : FEUIModelSingleton
         }
         for (auto& local_20 : this.GetTutorialHintQueue())
         {
-            local_20;
-            if (local_5 == local_4)
+            if (local_20.Get().DataId == local_4)
             {
                 return;
             }
         }
+        int local_22 = Config.Get().GroupId;
         int local_21 = local_22;
         int local_23 = 0;
         int local_24 = 0;
         for (; local_24 < this.GetTutorialHintQueue().Num(); ++local_24)
         {
-            if (0 >= local_21)
+            if (this.GetTutorialHintQueue()[local_24].Get().GroupId >= local_21)
             {
                 local_23 = local_24 + 1;
                 continue;
@@ -792,7 +778,6 @@ struct FMS_GuideManual : FEUIModelSingleton
     void TryShowNextTutorialHint()
     {
         int local_8;
-        int local_9 = 0;
         if (::FMS_ClientCondition::Get(this.GetManager()).IsLoading())
         {
             return;
@@ -803,6 +788,7 @@ struct FMS_GuideManual : FEUIModelSingleton
             {
                 return;
             }
+            int local_9 = this.GetTutorialHintQueue()[0].Get().DataId;
             local_8 = local_9;
             while (!(this.CanShowQueuedGuide(this.GetTutorialHintQueue()[0], true)))
             {
@@ -820,7 +806,9 @@ struct FMS_GuideManual : FEUIModelSingleton
         TDataObjectPtr<FGuideGroupConfig> local_34 = this.GetTutorialHintQueue()[0];
         this.GetModify_TutorialHintQueue().RemoveAt(0);
         this.SetbTutorialHintShowing(true);
-        local_8 = local_9;
+        int local_9_2 = local_34.Get().DataId;
+        local_8 = local_9_2;
+        this.GetModify_DebugTutorialHintForceShowDataIds().Remove(local_8);
         this.SetShowingTutorialHintDataId(local_8);
         FVM_TutorialHint& local_60 = ::FVM_TutorialHint::Create(this.GetManager(), local_8);
         this.SetTutorialHintWidget(FEUIWidget::AddWidget(this.GetContext().UELocalPlayer, GameplayTags::UI_Type_Tutorial_Hint, FEUIModelRef(local_60)));
@@ -930,17 +918,16 @@ struct FMS_GuideManual : FEUIModelSingleton
     }
     bool IsGuideTriggerable(const TDataObjectPtr<FGuideGroupConfig> &inout Config) const
     {
-        int local_3 = 0;
-        int local_4 = 0;
         if (!(Config))
         {
             return false;
         }
+        int local_3 = Config.Get().DataId;
         if (this.GetFinishedGuideDataIds().Contains(local_3))
         {
             return false;
         }
-        if (!(this.ShouldTrigger(EGuideManualType(local_4))))
+        if (!(this.ShouldTrigger(Config.Get().IsInManual)))
         {
             return false;
         }
@@ -948,50 +935,44 @@ struct FMS_GuideManual : FEUIModelSingleton
         {
             return false;
         }
-        return ::FMS_Condition::Get(this.GetManager()).AreAllServerConditionsMet(GetActiveConds());
+        return ::FMS_Condition::Get(this.GetManager()).AreAllServerConditionsMet(Config.Get().GetActiveConds());
     }
     bool IsGuideTriggerableForReason(const TDataObjectPtr<FGuideGroupConfig> &inout Config, const EClientConditionTriggerReason Reason) const
     {
-        int local_3 = 0;
-        int local_4 = 0;
         if (!(Config))
         {
             return false;
         }
+        int local_3 = Config.Get().DataId;
         if (this.GetFinishedGuideDataIds().Contains(local_3))
         {
             return false;
         }
-        bool local_1 = !(this.ShouldTrigger(EGuideManualType(local_4)));
-        if (local_1)
+        if (!(this.ShouldTrigger(Config.Get().IsInManual)))
         {
             return false;
         }
-        FMS_ClientCondition& local_8 = ::FMS_ClientCondition::Get(this.GetManager());
-        local_1 = !local_1;
-        if (local_1)
+        if (!(::FMS_ClientCondition::Get(this.GetManager()).AreClientConditionsMetForTriggerReason(Config.Get().ClientConditions, EClientConditionTriggerReason(Reason))))
         {
             return false;
         }
-        return ::FMS_Condition::Get(this.GetManager()).AreAllServerConditionsMet(GetActiveConds());
+        return ::FMS_Condition::Get(this.GetManager()).AreAllServerConditionsMet(Config.Get().GetActiveConds());
     }
     bool AreGuideClientConditionsMet(const TDataObjectPtr<FGuideGroupConfig> &inout Config) const
     {
-        bool local_1 = !(Config);
-        if (local_1)
-        {
-            return false;
-        }
-        FMS_ClientCondition& local_6 = ::FMS_ClientCondition::Get(this.GetManager());
-        return local_1;
-    }
-    bool IsGuideShowing(const TDataObjectPtr<FGuideGroupConfig> &inout Config, const bool bHint) const
-    {
-        int local_3 = 0;
         if (!(Config))
         {
             return false;
         }
+        return ::FMS_ClientCondition::Get(this.GetManager()).AreClientConditionsMet(Config.Get().ClientConditions);
+    }
+    bool IsGuideShowing(const TDataObjectPtr<FGuideGroupConfig> &inout Config, const bool bHint) const
+    {
+        if (!(Config))
+        {
+            return false;
+        }
+        int local_3 = Config.Get().DataId;
         int local_2 = local_3;
         if (bHint)
         {
@@ -1009,11 +990,11 @@ struct FMS_GuideManual : FEUIModelSingleton
     }
     bool CanShowQueuedGuide(const TDataObjectPtr<FGuideGroupConfig> &inout Config, const bool bHint) const
     {
-        int local_3 = 0;
         if (!(Config))
         {
             return false;
         }
+        int local_3 = Config.Get().DataId;
         int local_2 = local_3;
         if (this.IsGuideForceShown(local_2, bHint))
         {
@@ -1033,8 +1014,10 @@ struct FMS_GuideManual : FEUIModelSingleton
     {
         if (bHint)
         {
+            this.GetModify_DebugTutorialHintForceShowDataIds().Remove(DataId);
             return;
         }
+        this.GetModify_DebugTutorialForceShowDataIds().Remove(DataId);
         return;
     }
     bool ShouldPopup(const EGuideManualType Type) const
@@ -1055,7 +1038,7 @@ struct FMS_GuideManual : FEUIModelSingleton
     }
     bool IsVisibleInManual(const TDataObjectPtr<FGuideGroupConfig> &inout Config) const
     {
-        const FGuideGroupConfig& local_2;
+        const FGuideGroupConfig& local_2 = Config.Get();
         FMS_ClientCondition& local_6 = ::FMS_ClientCondition::Get(this.GetManager());
         if (!(local_6.AreInputTypeConditionsMet(local_2.ClientConditions)))
         {
@@ -1073,11 +1056,10 @@ struct FMS_GuideManual : FEUIModelSingleton
     }
     void RemoveFromQueuedGuides(const uint DataId)
     {
-        int local_6 = 0;
         int local_4 = this.GetTutorialQueue().Num() - 1;
         for (; local_4 >= 0; --local_4)
         {
-            if (local_6 == DataId)
+            if (this.GetTutorialQueue()[local_4].Get().DataId == DataId)
             {
                 this.GetModify_TutorialQueue().RemoveAt(local_4);
             }
@@ -1085,11 +1067,13 @@ struct FMS_GuideManual : FEUIModelSingleton
         int local_3 = this.GetTutorialHintQueue().Num() - 1;
         for (; local_3 >= 0; --local_3)
         {
-            if (local_6 == DataId)
+            if (this.GetTutorialHintQueue()[local_3].Get().DataId == DataId)
             {
                 this.GetModify_TutorialHintQueue().RemoveAt(local_3);
             }
         }
+        this.GetModify_DebugTutorialForceShowDataIds().Remove(DataId);
+        this.GetModify_DebugTutorialHintForceShowDataIds().Remove(DataId);
         return;
     }
     void RemoveFromPending(const uint DataId)
@@ -1097,7 +1081,7 @@ struct FMS_GuideManual : FEUIModelSingleton
         int local_4 = this.GetPendingGuideConfigs().Num() - 1;
         for (; local_4 >= 0; --local_4)
         {
-            if (0 == DataId)
+            if (this.GetPendingGuideConfigs()[local_4].Get().DataId == DataId)
             {
                 this.GetModify_PendingGuideConfigs().RemoveAt(local_4);
                 break;
@@ -1110,7 +1094,7 @@ struct FMS_GuideManual : FEUIModelSingleton
         int local_4 = this.GetReverseIndex().Num() - 1;
         for (; local_4 >= 0; --local_4)
         {
-            if (0 == DataId)
+            if (this.GetReverseIndex()[local_4].GuideConfig.Get().DataId == DataId)
             {
                 this.GetModify_ReverseIndex().RemoveAt(local_4);
             }
@@ -1120,14 +1104,13 @@ struct FMS_GuideManual : FEUIModelSingleton
     void RemoveFromClientIndex(const uint DataId)
     {
         TArray<TDataObjectPtr<FGuideGroupConfig>> local_22;
-        int local_27 = 0;
         for (auto& local_20 : this.GetClientTagIndex())
         {
             local_20;
             int local_26 = local_22.Num() - 1;
             for (; local_26 >= 0; --local_26)
             {
-                if (local_27 == DataId)
+                if (local_22[local_26].Get().DataId == DataId)
                 {
                     local_22.RemoveAt(local_26);
                 }
@@ -1136,7 +1119,7 @@ struct FMS_GuideManual : FEUIModelSingleton
         int local_25 = this.GetClientCommissionGuides().Num() - 1;
         for (; local_25 >= 0; --local_25)
         {
-            if (local_27 == DataId)
+            if (this.GetClientCommissionGuides()[local_25].Get().DataId == DataId)
             {
                 this.GetModify_ClientCommissionGuides().RemoveAt(local_25);
             }
@@ -1144,7 +1127,7 @@ struct FMS_GuideManual : FEUIModelSingleton
         int local_24 = this.GetClientLevelTypeGuides().Num() - 1;
         for (; local_24 >= 0; --local_24)
         {
-            if (local_27 == DataId)
+            if (this.GetClientLevelTypeGuides()[local_24].Get().DataId == DataId)
             {
                 this.GetModify_ClientLevelTypeGuides().RemoveAt(local_24);
             }
@@ -1152,7 +1135,7 @@ struct FMS_GuideManual : FEUIModelSingleton
         int local_23 = this.GetClientInputTypeGuides().Num() - 1;
         for (; local_23 >= 0; --local_23)
         {
-            if (local_27 == DataId)
+            if (this.GetClientInputTypeGuides()[local_23].Get().DataId == DataId)
             {
                 this.GetModify_ClientInputTypeGuides().RemoveAt(local_23);
             }
@@ -1160,7 +1143,7 @@ struct FMS_GuideManual : FEUIModelSingleton
         int local_26_2 = this.GetClientInTeamGuides().Num() - 1;
         for (; local_26_2 >= 0; --local_26_2)
         {
-            if (local_27 == DataId)
+            if (this.GetClientInTeamGuides()[local_26_2].Get().DataId == DataId)
             {
                 this.GetModify_ClientInTeamGuides().RemoveAt(local_26_2);
             }
@@ -1169,18 +1152,17 @@ struct FMS_GuideManual : FEUIModelSingleton
     }
     void DebugFinishAllGuides()
     {
-        TArray<uint> local_4;
-        int local_5 = 0;
         bool local_7;
         bool local_8;
         int local_25;
+        TArray<uint> local_4;
         if (!(this.GetbTutorialShowing()))
         {
             local_8 = false;
         }
         else
         {
-            local_5 = this.GetShowingTutorialDataId();
+            int local_5 = this.GetShowingTutorialDataId();
             local_8 = (local_5 != 0);
         }
         if (local_8)
@@ -1198,16 +1180,15 @@ struct FMS_GuideManual : FEUIModelSingleton
         }
         if (local_7)
         {
-            local_5 = this.GetShowingTutorialHintDataId();
-            if (!(local_4.Contains(local_5)))
+            if (!(local_4.Contains(this.GetShowingTutorialHintDataId())))
             {
                 local_4.Add(this.GetShowingTutorialHintDataId());
             }
         }
         for (auto& local_24 : this.GetTutorialQueue())
         {
-            local_24;
-            local_25 = local_5;
+            int local_5_2 = local_24.Get().DataId;
+            local_25 = local_5_2;
             if (!(local_4.Contains(local_25)))
             {
                 local_4.Add(local_25);
@@ -1215,8 +1196,8 @@ struct FMS_GuideManual : FEUIModelSingleton
         }
         for (auto& local_24 : this.GetTutorialHintQueue())
         {
-            local_24;
-            local_25 = local_5;
+            int local_5_3 = local_24.Get().DataId;
+            local_25 = local_5_3;
             if (!(local_4.Contains(local_25)))
             {
                 local_4.Add(local_25);
@@ -1313,8 +1294,8 @@ struct FMS_GuideManual : FEUIModelSingleton
         }
         else
         {
-            const FTutorialInfoConfig& local_128;
             local_122.SetCountdown(0.0f);
+            const FTutorialInfoConfig& local_128 = local_90.Get();
             int local_129 = 0;
             for (; local_129 < local_128.Steps.Num(); )
             {
@@ -1347,7 +1328,7 @@ struct FMS_GuideManual : FEUIModelSingleton
         int local_42 = 0;
         for (; local_42 < local_6.GetItems().Num(); ++local_42)
         {
-            if (!(GetbIsProgress()))
+            if (!(local_6.GetItems()[local_42].Get().GetbIsProgress()))
             {
                 continue;
             }
@@ -1884,11 +1865,9 @@ FMS_GuideManual& Get(const UObject ContextObject)
 {
     return FMS_GuideManual::GetByManager(EUIInternal::GetContextManager(ContextObject));
 }
-FMS_GuideManual GetByManager(const UEUIManagerSubsystem Manager)
+FMS_GuideManual& GetByManager(const UEUIManagerSubsystem Manager)
 {
-    FMS_GuideManual __r;
-    TEUIModelRef<FMS_GuideManual> local_6 = TEUIModelRef<FMS_GuideManual>(EUIInternal::MakeModelWithManager(Manager, FMS_GuideManual::ModelId));
-    return __r;
+    return TEUIModelRef<FMS_GuideManual>(EUIInternal::MakeModelWithManager(Manager, FMS_GuideManual::ModelId)).Get();
 }
 void GetModelInfo(FEUIModelOnlyMetaInfo &inout Result)
 {

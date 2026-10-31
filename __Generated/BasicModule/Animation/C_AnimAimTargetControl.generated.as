@@ -33,6 +33,7 @@ struct FC_AnimAimTargetControlHistory : FECSComponent
     }
     void Clear()
     {
+        this.History.Clear();
         return;
     }
     bool GetInterpoValue(const FFPTime &inout WorldTime, FC_AnimAimTargetControl &inout OutValue) const

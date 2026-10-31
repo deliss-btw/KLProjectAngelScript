@@ -342,9 +342,9 @@ void SyncCheatPlayerContent(const ECheatContentType CheatType, const FECSEntity 
     {
         return;
     }
-    switch (int(CheatType))
+    switch (CheatType)
     {
-    case 0:
+    case ECheatContentType::Undamageble:
     {
         local_9 = Value != 0.0f && true;
         local_19 = true;
@@ -371,7 +371,7 @@ void SyncCheatPlayerContent(const ECheatContentType CheatType, const FECSEntity 
         }
         return;
     }
-    case 1:
+    case ECheatContentType::StateEndure:
     {
         local_17 = Value != 0.0f && true;
         local_9 = true;
@@ -398,7 +398,7 @@ void SyncCheatPlayerContent(const ECheatContentType CheatType, const FECSEntity 
         }
         return;
     }
-    case 2:
+    case ECheatContentType::MaxCombatEnergy:
     {
         local_19 = (Value != 0.0f);
         local_17 = true;
@@ -429,7 +429,7 @@ void SyncCheatPlayerContent(const ECheatContentType CheatType, const FECSEntity 
         }
         return;
     }
-    case 3:
+    case ECheatContentType::SkillNoCD:
     {
         local_9 = (Value != 0.0f);
         local_19 = true;
@@ -467,7 +467,7 @@ void SyncCheatPlayerContent(const ECheatContentType CheatType, const FECSEntity 
         }
         return;
     }
-    case 9:
+    case ECheatContentType::StaminaNoCost:
     {
         local_36 = (Value != 0.0f);
         local_9 = true;
@@ -497,7 +497,7 @@ void SyncCheatPlayerContent(const ECheatContentType CheatType, const FECSEntity 
         }
         return;
     }
-    case 4:
+    case ECheatContentType::FinalDamageRatio:
     {
         local_9 = true;
         if (ECS::GetRuntimeInfo().IsClient && local_3)
@@ -520,7 +520,7 @@ void SyncCheatPlayerContent(const ECheatContentType CheatType, const FECSEntity 
         }
         return;
     }
-    case 5:
+    case ECheatContentType::PostureAttackRatio:
     {
         local_36 = true;
         if (ECS::GetRuntimeInfo().IsClient && local_3)
@@ -543,7 +543,7 @@ void SyncCheatPlayerContent(const ECheatContentType CheatType, const FECSEntity 
         }
         return;
     }
-    case 6:
+    case ECheatContentType::BodyPartDamageRatio:
     {
         local_9 = true;
         local_19 = ECS::GetRuntimeInfo().IsClient;
@@ -568,7 +568,7 @@ void SyncCheatPlayerContent(const ECheatContentType CheatType, const FECSEntity 
         }
         return;
     }
-    case 7:
+    case ECheatContentType::AbnormalStateRatio:
     {
         local_36 = true;
         local_19 = ECS::GetRuntimeInfo().IsClient;
@@ -592,7 +592,7 @@ void SyncCheatPlayerContent(const ECheatContentType CheatType, const FECSEntity 
         }
         return;
     }
-    case 8:
+    case ECheatContentType::NotCostItem:
     {
         local_2 = (Value != 0.0f);
         local_36 = true;
@@ -619,7 +619,6 @@ void SyncCheatPlayerContent(const ECheatContentType CheatType, const FECSEntity 
         return;
     }
     }
-    return;
 }
 }
 void CMD_Player_Undamageble(const TArray<FString> &inout Arguments)

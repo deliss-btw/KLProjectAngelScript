@@ -8,6 +8,8 @@ struct FAICommand_AttachBuff : FAICommandScript
     UPROPERTY()
     bool bRemoveBuffOnExit;
 
+    default m_ScriptOverrideMeta = Cast<UASStruct>(FAICommand_AttachBuff.Get());
+
     FAICommand_AttachBuff()
     {
         this.bAddBuffOnEnter = true;
@@ -37,6 +39,8 @@ class UBTService_AttachBuff : UBTService_AICommandScript
 {
     UPROPERTY()
     FAICommand_AttachBuff AICommand;
+
+    default SetNodeName("期间附带Buff");
 
     UBTService_AttachBuff()
     {

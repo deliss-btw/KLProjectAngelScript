@@ -125,7 +125,7 @@ class UWidget_TitleAndDesc : UEUIUserWidget
     {
         if (this.TitleAndDesc.IsValid())
         {
-            OnClickGoTo();
+            this.TitleAndDesc.Get().OnClickGoTo();
         }
         return;
     }
@@ -172,7 +172,7 @@ class UWidget_TitleAndDescWithBtn : UEUIActivatableWidget
     {
         if (this.TitleAndDesc.IsValid())
         {
-            OnClickGoTo();
+            this.TitleAndDesc.Get().OnClickGoTo();
         }
         return;
     }
@@ -279,8 +279,8 @@ class UWidget_TitleAndDescAndStatus : UEUIUserWidget
     {
         if (this.TitleAndDescAndStatus.IsValid())
         {
-            this.TitleName = GetTitle();
-            this.Desc = GetDesc();
+            this.TitleName = this.TitleAndDescAndStatus.Get().GetTitle();
+            this.Desc = this.TitleAndDescAndStatus.Get().GetDesc();
         }
         return;
     }

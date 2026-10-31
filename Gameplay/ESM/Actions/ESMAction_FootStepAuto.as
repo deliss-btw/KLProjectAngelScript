@@ -483,6 +483,8 @@ class UESMAction_FootStepAuto : UESMBPBaseSpanTickAction
                 }
             }
         }
+        __Lambda_Gameplay_ESM_Actions_ESMAction_FootStepAuto_858 local_104;
+        OutFootStepTimeConfig.Sort(local_104);
         return;
     }
     void SendFootLandedEvent(const FECSWorldPtr &inout ECSWorld, const FECSEntity &inout Entity, const FESMActionTime &inout Time, const FFootLineTraceConfig &inout Config, const bool bIsPreview, const bool bIsBlendSpace) const

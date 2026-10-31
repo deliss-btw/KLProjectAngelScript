@@ -40,22 +40,9 @@ class UWidget_Recharge : UEUIActivatableWidget
         {
             this.GovReviewCharge.SetRef(TEUIModelRef<FVM_GovReviewCharge>(::FVM_GovReviewCharge::Create(this)));
         }
-        bool local_1 = !(this.ShopPanel) && this.GovReviewCharge.IsValid();
-        if (!(local_1))
+        if (!(this.ShopPanel) && this.GovReviewCharge.IsValid() && this.GovReviewCharge.Get().GetShopPanel().IsValid())
         {
-            local_1 = false;
-        }
-        else
-        {
-            TEUIModelRef<FVM_ShopPanel> local_8;
-            local_8.GetShopPanel();
-            local_1 = local_8.IsValid();
-        }
-        if (local_1)
-        {
-            TEUIModelRef<FVM_ShopPanel> local_8;
-            local_8.GetShopPanel();
-            this.ShopPanel.SetRef(local_8);
+            this.ShopPanel.SetRef(this.GovReviewCharge.Get().GetShopPanel());
         }
         return;
     }
@@ -80,7 +67,7 @@ class UWidget_Recharge : UEUIActivatableWidget
     UFUNCTION()
     TEUIModelRef<FVM_ShopPanel> GovReviewCharge_ShopPanel() const
     {
-        FVM_GovReviewCharge& local_2;
+        FVM_GovReviewCharge& local_2 = this.GovReviewCharge.Get();
         TEUIModelRef<FVM_ShopPanel> local_10;
         if (local_2)
         {

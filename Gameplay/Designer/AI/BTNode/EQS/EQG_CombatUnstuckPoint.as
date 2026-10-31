@@ -111,8 +111,7 @@ class UEQG_CombatUnstuckPoint : UEnvQueryGenerator_ECS_BlueprintBase
             {
                 if (local_118)
                 {
-                    AActor local_122;
-                    local_120 = Cast<AECSRegionVolume>(local_122);
+                    local_120 = Cast<AECSRegionVolume>(local_118.RegionVolume.Get());
                     if (local_120 != nullptr)
                     {
                         FBox local_166 = local_120.GetBounds().GetBox();

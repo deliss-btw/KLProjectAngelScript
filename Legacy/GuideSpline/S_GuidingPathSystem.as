@@ -376,8 +376,6 @@ class US_GuidingPathSystem : UECSScriptSystem
     bool FindHighestReachableTargetBelow(const FECSEntity &inout Pawn, const FVector &inout PawnLocation, const FVector &inout RawTargetLocation, const int HierarchicalSteps, FVector &inout OutTargetLocation, TArray<FVector> &inout OutPathPoints, float32 &inout OutPathLength, bool &inout bOutUsedRoadGraph) const
     {
         bool local_186;
-        UPrimitiveComponent local_188;
-        UPrimitiveComponent local_190;
         bOutUsedRoadGraph = false;
         if (!(this.bEnableDownwardTargetFallback) || !(Pawn.IsValid()) || ((this.DownwardTargetProbeDepth <= 0.0f)) || (this.DownwardTargetMaxLayers <= 0) || (this.DownwardTargetMaxTraceAttempts <= 0))
         {
@@ -423,9 +421,9 @@ class US_GuidingPathSystem : UECSScriptSystem
                 if (local_104.GetbStartPenetrating() || ((local_4_2 - float32(local_104.Location.Z)) < 1.0f))
                 {
                     local_186 = false;
-                    if (local_188 != nullptr && !(local_26.Contains(local_190)))
+                    if (local_104.GetComponent() != nullptr && !(local_26.Contains(local_104.GetComponent())))
                     {
-                        local_26.Add(local_190);
+                        local_26.Add(local_104.GetComponent());
                         local_186 = true;
                     }
                     if (CVar_GuidingPath_DiagLog.GetBool())
@@ -586,7 +584,6 @@ class US_GuidingPathSystem : UECSScriptSystem
         bool local_148;
         bool local_149;
         bool local_198;
-        UPrimitiveComponent local_342;
         float local_345;
         int local_376 = 0;
         if (!(PlayerControllerComp.GetPlayerPawnEntity().IsValid()))
@@ -645,6 +642,7 @@ class US_GuidingPathSystem : UECSScriptSystem
             local_70 = local_68.opCall();
             if (local_70)
             {
+                local_70.GuidingPlayers.Remove(Entity);
                 if (local_70.GuidingPlayers.IsEmpty())
                 {
                     Remove local_76;
@@ -920,10 +918,9 @@ class US_GuidingPathSystem : UECSScriptSystem
                 {
                     local_332 = local_266.GetActor().GetName();
                 }
-                if (local_138 && (local_342 != nullptr))
+                if (local_138 && (local_266.GetComponent() != nullptr))
                 {
-                    UPrimitiveComponent local_344;
-                    local_336 = local_344.GetName();
+                    local_336 = local_266.GetComponent().GetName();
                 }
                 int local_156_3 = int(local_42_4.Z);
                 int local_151_2 = int(local_310.Z);
@@ -1288,6 +1285,7 @@ class US_GuidingPathSystem : UECSScriptSystem
                 FC_GuidingPathTarget& local_12 = local_10.opCall();
                 if (local_12)
                 {
+                    local_12.GuidingPlayers.Remove(Entity);
                     if (local_12.GuidingPlayers.IsEmpty())
                     {
                         FC_PendingRemoveGuidingPathTargetTag local_20;
@@ -1510,8 +1508,7 @@ class US_GuidingPathSystem : UECSScriptSystem
             }
             if (local_6.GuidingSplineActor.IsValid())
             {
-                AGuidingSplineActor local_58;
-                local_58.SetActorHiddenInGame(true);
+                local_6.GuidingSplineActor.Get().SetActorHiddenInGame(true);
             }
         }
         if (local_17)
@@ -1539,8 +1536,7 @@ class US_GuidingPathSystem : UECSScriptSystem
             local_14.opCall();
             if (local_20.GuidingSplineActor.IsValid())
             {
-                AGuidingSplineActor local_22;
-                local_22.SetActorHiddenInGame(true);
+                local_20.GuidingSplineActor.Get().SetActorHiddenInGame(true);
             }
         }
         return;
@@ -1550,8 +1546,7 @@ class US_GuidingPathSystem : UECSScriptSystem
     {
         if (C_GuidingSplineActor.GuidingSplineActor.IsValid())
         {
-            AGuidingSplineActor local_4;
-            local_4.SetActorHiddenInGame(true);
+            C_GuidingSplineActor.GuidingSplineActor.Get().SetActorHiddenInGame(true);
         }
         return;
     }
@@ -1621,8 +1616,7 @@ class US_GuidingPathSystem : UECSScriptSystem
         }
         if (!(bForceUpdate) && C_GuidingSplineActor.GuidingSplineActor.IsValid() && C_GuidingSplineActor.NiagaraComponent.IsValid())
         {
-            AGuidingSplineActor local_12;
-            FVector local_18 = local_12.GetActorLocation();
+            FVector local_18 = C_GuidingSplineActor.GuidingSplineActor.Get().GetActorLocation();
             GetDefaulted local_28;
             FVector local_24 = local_28.opCall().GetPosition();
             if (local_18.Equals(local_24, 0.1))
@@ -1658,21 +1652,18 @@ class US_GuidingPathSystem : UECSScriptSystem
     }
     void FinalizeGuidingSplineNiagara(FC_GuidingSplineActor &inout C_GuidingSplineActor) const
     {
-        AGuidingSplineActor local_4;
-        UNiagaraComponent local_8;
         if (C_GuidingSplineActor.GuidingSplineActor.IsValid())
         {
-            local_4.VFX_GuideSpline();
+            C_GuidingSplineActor.GuidingSplineActor.Get().VFX_GuideSpline();
             if (C_GuidingSplineActor.SplineComponent.IsValid())
             {
-                USplineComponent local_6;
-                local_4.ApplyContinuousSplineUVData(local_6);
+                C_GuidingSplineActor.GuidingSplineActor.Get().ApplyContinuousSplineUVData(C_GuidingSplineActor.SplineComponent.Get());
             }
         }
         if (C_GuidingSplineActor.NiagaraComponent.IsValid())
         {
-            local_8.ReinitializeSystem();
-            local_8.SetActive(true, true);
+            C_GuidingSplineActor.NiagaraComponent.Get().ReinitializeSystem();
+            C_GuidingSplineActor.NiagaraComponent.Get().SetActive(true, true);
         }
         return;
     }
@@ -1993,7 +1984,6 @@ class US_GuidingPathSystem : UECSScriptSystem
     void ClientJob_TickGuidingPathDrape(const FECSEntity &inout Entity, FC_GuidingPathDrapeState &inout S, FC_GuidingSplineActor &inout C_GuidingSplineActor, const FC_PlayerController &inout PlayerControllerComp) const
     {
         bool local_7;
-        USplineComponent local_26;
         int local_62 = 0;
         bool local_267;
         bool local_268;
@@ -2037,6 +2027,7 @@ class US_GuidingPathSystem : UECSScriptSystem
             }
             if (C_GuidingSplineActor.SplineComponent.IsValid())
             {
+                USplineComponent local_26 = C_GuidingSplineActor.SplineComponent.Get();
                 local_21 = local_26.GetSplineLength();
                 if (local_21 > 1.0f)
                 {
@@ -2091,8 +2082,7 @@ class US_GuidingPathSystem : UECSScriptSystem
                 }
                 if (C_GuidingSplineActor.SplineComponent.IsValid())
                 {
-                    USplineComponent local_24;
-                    local_9 = uint(local_24.GetSplineLength());
+                    local_9 = uint(C_GuidingSplineActor.SplineComponent.Get().GetSplineLength());
                 }
                 else
                 {
@@ -2333,24 +2323,22 @@ class US_GuidingPathSystem : UECSScriptSystem
     UFUNCTION()
     void Job_UpdateGuidingTargetEffect(const bool bIsFirstDisplay, const FECSEntity &inout PlayerControllerEntity, FC_GuidingPathTargetActor &inout C_GuidingPathTargetActor, const FC_GuidingPathPoints &inout C_GuidingPathPoints, const FCS_LocalTime &inout LocalTime) const
     {
-        AActor local_8;
         AFXActor local_26;
         C_GuidingPathTargetActor.LastActivateTime = LocalTime.Time;
         C_GuidingPathTargetActor.bIsFirstDisplay = bIsFirstDisplay;
         C_GuidingPathTargetActor.bIsHiddenByDistance = false;
         if (!(C_GuidingPathTargetActor.TargetActor.IsValid()))
         {
-            local_8 = SpawnActor(TSubclassOf<AActor>(System::LoadClassAsset_Blocking(this.GuidingTargetActorClass)), C_GuidingPathPoints.GetTargetLocation(), FRotator::ZeroRotator, NAME_None, false, nullptr, nullptr);
-            C_GuidingPathTargetActor.TargetActor = local_8;
+            C_GuidingPathTargetActor.TargetActor = SpawnActor(TSubclassOf<AActor>(System::LoadClassAsset_Blocking(this.GuidingTargetActorClass)), C_GuidingPathPoints.GetTargetLocation(), FRotator::ZeroRotator, NAME_None, false, nullptr, nullptr);
             if (C_GuidingPathTargetActor.TargetActor.IsValid())
             {
-                C_GuidingPathTargetActor.NiagaraComponent = Cast<UNiagaraComponent>(local_8.GetComponentByClass(UNiagaraComponent));
-                local_8.SetActorEnableCollision(false);
+                C_GuidingPathTargetActor.NiagaraComponent = Cast<UNiagaraComponent>(C_GuidingPathTargetActor.TargetActor.Get().GetComponentByClass(UNiagaraComponent));
+                C_GuidingPathTargetActor.TargetActor.Get().SetActorEnableCollision(false);
             }
         }
         else
         {
-            local_8.SetActorLocation(C_GuidingPathPoints.GetTargetLocation());
+            C_GuidingPathTargetActor.TargetActor.Get().SetActorLocation(C_GuidingPathPoints.GetTargetLocation());
         }
         Get local_14;
         if (local_14.opCall())
@@ -2359,7 +2347,7 @@ class US_GuidingPathSystem : UECSScriptSystem
             const FC_Transform& local_22 = local_20.opCall();
             if (local_22)
             {
-                local_26 = (Cast<AFXActor>(local_8));
+                local_26 = (Cast<AFXActor>(C_GuidingPathTargetActor.TargetActor.Get()));
                 if (local_26 != nullptr)
                 {
                     for (auto local_40 : local_26.NiagaraSystemList)
@@ -2377,7 +2365,6 @@ class US_GuidingPathSystem : UECSScriptSystem
     void ClientJob_TickGuidingTargetEffect(const FECSEntity &inout Entity, FC_GuidingPathTargetActor &inout C_GuidingPathTargetActor, const FC_GuidingPathPoints &inout C_GuidingPathPoints, const FCS_LocalTime &inout LocalTime, const FCS_LocalPlayer &inout LocalPlayer) const
     {
         float32 local_3 = 0.0f;
-        AActor local_16;
         if (C_GuidingPathTargetActor.bIsFirstDisplay)
         {
         }
@@ -2386,6 +2373,7 @@ class US_GuidingPathSystem : UECSScriptSystem
         }
         FFPTime local_8 = (FFPTime(LocalTime.Time) - C_GuidingPathTargetActor.LastActivateTime);
         bool local_2 = (local_8.opCmp(local_3) < 0);
+        AActor local_16 = C_GuidingPathTargetActor.TargetActor.Get();
         if (local_16 != nullptr)
         {
             FVector local_32 = local_16.GetActorLocation();
@@ -2405,8 +2393,7 @@ class US_GuidingPathSystem : UECSScriptSystem
         {
             if (local_6.TargetActor.IsValid())
             {
-                AActor local_10;
-                local_10.DestroyActor();
+                local_6.TargetActor.Get().DestroyActor();
             }
             Remove local_14;
             local_14.opCall();
@@ -2704,7 +2691,6 @@ class US_GuidingPathSystem : UECSScriptSystem
     void UpdateGuidingSplineActor(const FECSEntity &inout Entity, const FVector &inout StartLocation, const TArray<FVector> &inout PolyPoints) const
     {
         int local_8 = 0;
-        USplineComponent local_30;
         int local_99;
         float32 local_113;
         if (this.GuidingPathActorClass.IsNull())
@@ -2722,14 +2708,12 @@ class US_GuidingPathSystem : UECSScriptSystem
             if (local_28 != nullptr)
             {
                 local_8.GuidingSplineActor = local_28;
-                local_30 = Cast<USplineComponent>(local_28.GetComponentByClass(USplineComponent));
-                local_8.SplineComponent = local_30;
+                local_8.SplineComponent = Cast<USplineComponent>(local_28.GetComponentByClass(USplineComponent));
                 local_8.NiagaraComponent = Cast<UNiagaraComponent>(local_28.GetComponentByClass(UNiagaraComponent));
             }
         }
-        AGuidingSplineActor local_26;
-        local_26.SetActorHiddenInGame(false);
-        local_26.SetActorLocation(StartLocation);
+        local_8.GuidingSplineActor.Get().SetActorHiddenInGame(false);
+        local_8.GuidingSplineActor.Get().SetActorLocation(StartLocation);
         if (local_8.SplineComponent.IsValid())
         {
             bool local_107;
@@ -2742,8 +2726,8 @@ class US_GuidingPathSystem : UECSScriptSystem
             local_35 = 0.0f;
             if (local_8.GuidingSplineActor.IsValid())
             {
-                local_33 = local_26.SegmentTileLength;
-                local_35 = local_26.HeightOffset;
+                local_33 = local_8.GuidingSplineActor.Get().SegmentTileLength;
+                local_35 = local_8.GuidingSplineActor.Get().HeightOffset;
             }
             local_36 = local_35;
             TArray<FVector> local_40;
@@ -2863,13 +2847,13 @@ class US_GuidingPathSystem : UECSScriptSystem
                 this.LogSteepSegments("样条点", local_106, local_99);
             }
             int local_102_3 = local_106.Num();
-            local_30.ClearSplinePoints(false);
+            local_8.SplineComponent.Get().ClearSplinePoints(false);
             local_99 = 0;
             for (; local_99 < local_102_3; )
             {
                 FSplinePoint local_156;
                 float32 local_109 = local_99;
-                local_156.Position = local_30.GetWorldTransform().InverseTransformPosition(local_106[local_99]);
+                local_156.Position = local_8.SplineComponent.Get().GetWorldTransform().InverseTransformPosition(local_106[local_99]);
                 if (local_99 == 0 && (local_102_3 > 1))
                 {
                     FVector local_62_3 = (FVector(local_106[1]) - local_106[0]);
@@ -2921,10 +2905,10 @@ class US_GuidingPathSystem : UECSScriptSystem
                     }
                 }
                 local_156.LeaveTangent = local_156.ArriveTangent;
-                local_30.AddPoint(local_156, false);
+                local_8.SplineComponent.Get().AddPoint(local_156, false);
                 ++local_99;
             }
-            local_30.UpdateSpline();
+            local_8.SplineComponent.Get().UpdateSpline();
         }
         return;
     }

@@ -63,13 +63,13 @@ class US_LookRequestSystemAS : UECSScriptSystem
     }
     void ResolveEntryToSnapshot(const FLookRequestEntry &inout E, FLookSnapshot &inout Out) const
     {
-        AActor local_8;
         Out.SetSource(E.Source);
         Out.SetPriority(int(E.Priority));
         Out.SetAnimSnapshotTypeMask(E.SnapshotTypeMask);
         Out.SetRotator(E.TargetRotationCS);
         if (::FAnimSnapshot::HasType(E.SnapshotTypeMask, EAnimSnapshotType(0)))
         {
+            AActor local_8 = E.TargetActor.Get();
             FVector local_22;
             if (local_8 != nullptr)
             {

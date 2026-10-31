@@ -2,12 +2,11 @@ namespace FPIECommissionRandomPolicy
 {
 TDataObjectPtr<FRandomPolicyConfig> GetRandomPolicyByRandomSeedConfig(const TDataObjectPtr<FRandomSeedConfig> &inout RandomSeedConfig)
 {
-    int local_66 = 0;
     if (!(RandomSeedConfig.IsSet()))
     {
         return TDataObjectPtr<FRandomPolicyConfig>(nullptr);
     }
-    TArray<TDataObjectPtr<FRandomPolicyConfig>> local_54 = GetRandomPolicyConfig();
+    TArray<TDataObjectPtr<FRandomPolicyConfig>> local_54 = RandomSeedConfig.Get().GetRandomPolicyConfig();
     TArray<TDataObjectPtr<FRandomPolicyConfig>> local_58;
     TArray<uint> local_62;
     int local_63 = -1;
@@ -18,12 +17,14 @@ TDataObjectPtr<FRandomPolicyConfig> GetRandomPolicyByRandomSeedConfig(const TDat
         {
             continue;
         }
+        int local_66 = local_80.Get().Weight;
         if (local_66 == 0)
         {
             continue;
         }
         local_58.Add(local_80);
-        local_65 = local_65 + 0;
+        local_62.Add(local_80.Get().Weight);
+        local_65 = local_65 + local_80.Get().Weight;
     }
     if (local_58.Num() == 0 || (local_65 == 0))
     {
@@ -53,7 +54,7 @@ TDataObjectPtr<FWorldAreaConfig> GetRandomSpwanAreaBySpawnAreaPoolConfig(const T
     {
         return TDataObjectPtr<FWorldAreaConfig>(nullptr);
     }
-    TArray<FSpawnAreaRandomFactor> local_54;
+    TArray<FSpawnAreaRandomFactor> local_54 = SpawnAreaPoolConfig.Get().TargetRandomPool;
     TArray<TDataObjectPtr<FWorldAreaConfig>> local_58;
     TArray<uint> local_62;
     int local_63 = -1;
@@ -99,7 +100,7 @@ TDataObjectPtr<FWeatherConfig> GetRandomWeatherByWeatherPoolConfig(const TDataOb
     {
         return TDataObjectPtr<FWeatherConfig>(nullptr);
     }
-    TArray<FWeatherRandomFactor> local_54;
+    TArray<FWeatherRandomFactor> local_54 = WeatherPoolConfig.Get().WeatherRandomPool;
     TArray<TDataObjectPtr<FWeatherConfig>> local_58;
     TArray<uint> local_62;
     int local_63 = -1;
@@ -145,7 +146,7 @@ TDataObjectPtr<FCommissionTimeConfig> GetRandomCommissionTimeByCommissionTimePoo
     {
         return TDataObjectPtr<FCommissionTimeConfig>(nullptr);
     }
-    TArray<FCommissionTimeRandomFactor> local_54;
+    TArray<FCommissionTimeRandomFactor> local_54 = CommissionTimePoolConfig.Get().TargetRandomPool;
     TArray<TDataObjectPtr<FCommissionTimeConfig>> local_58;
     TArray<uint> local_62;
     int local_63 = -1;
@@ -191,7 +192,7 @@ TDataObjectPtr<FObjectiveConfig> GetRandomSubTargetBySubTargetPoolConfig(const T
     {
         return TDataObjectPtr<FObjectiveConfig>(nullptr);
     }
-    TArray<FCommissionSubTargetRandomFactor> local_54;
+    TArray<FCommissionSubTargetRandomFactor> local_54 = SubTargetPoolConfig.Get().TargetRandomPool;
     TArray<TDataObjectPtr<FObjectiveConfig>> local_58;
     TArray<uint> local_62;
     int local_63 = -1;
@@ -237,7 +238,7 @@ TDataObjectPtr<FIntrusionPolicyConfig> GetRandomIntrusionPolicyByIntrusionPolicy
     {
         return TDataObjectPtr<FIntrusionPolicyConfig>(nullptr);
     }
-    TArray<FIntrusionPolicyRandomFactor> local_54;
+    TArray<FIntrusionPolicyRandomFactor> local_54 = IntrusionPolicyPoolConfig.Get().TargetRandomPool;
     TArray<TDataObjectPtr<FIntrusionPolicyConfig>> local_58;
     TArray<uint> local_62;
     int local_63 = -1;
@@ -279,7 +280,7 @@ TDataObjectPtr<FWeatherGenerateTemplate> GetRandomWeatherTemplateByWeatherAreaTe
     {
         return TDataObjectPtr<FWeatherGenerateTemplate>(nullptr);
     }
-    TArray<FWeatherTemplateRandomFactor> local_54;
+    TArray<FWeatherTemplateRandomFactor> local_54 = WeatherAreaTemplateFactorConfig.Get().WeatherTemplateTargetRandomPool;
     TArray<TDataObjectPtr<FWeatherGenerateTemplate>> local_58;
     TArray<uint> local_62;
     int local_63 = -1;
@@ -321,7 +322,6 @@ TDataObjectPtr<FWeatherGenerateTemplate> GetRandomWeatherTemplateByWeatherAreaTe
 }
 bool TryRandomWeatherAndTemplateByWeatherPoolConfig(const TDataObjectPtr<FCommissionWeatherPoolConfig> &inout WeatherPoolConfig, const TDataObjectPtr<FWorldAreaConfig> &inout SpawnAreaConfig, TDataObjectPtr<FWeatherConfig> &inout OutWeatherConfig, TMap<TDataObjectPtr<FWorldAreaConfig>, TDataObjectPtr<FWeatherGenerateTemplate>> &inout OutWeatherTemplateMap)
 {
-    TArrayConstIterator<FWeatherRandomFactor> local_108;
     if (!(WeatherPoolConfig.IsSet()))
     {
         return false;
@@ -331,17 +331,17 @@ bool TryRandomWeatherAndTemplateByWeatherPoolConfig(const TDataObjectPtr<FCommis
         return false;
     }
     TDataObjectPtr<FWeatherAreaTemplateFactorConfig> local_26 = TDataObjectPtr<FWeatherAreaTemplateFactorConfig>(nullptr);
-    for (auto& local_88 : GetWeatherAreaTemplateFactors())
+    for (auto& local_88 : WeatherPoolConfig.Get().GetWeatherAreaTemplateFactors())
     {
         if (!(local_88.IsSet()))
         {
             continue;
         }
-        if (!(GetAreaConfig().IsSet()))
+        if (!(local_88.Get().GetAreaConfig().IsSet()))
         {
             continue;
         }
-        if ((GetAreaConfig().GetDataName() == SpawnAreaConfig.GetDataName()))
+        if ((local_88.Get().GetAreaConfig().GetDataName() == SpawnAreaConfig.GetDataName()))
         {
             local_26 = local_88;
             break;
@@ -350,9 +350,8 @@ bool TryRandomWeatherAndTemplateByWeatherPoolConfig(const TDataObjectPtr<FCommis
     TArray<TDataObjectPtr<FWeatherConfig>> local_96;
     TArray<uint> local_100;
     int local_101 = 0;
-    for (; local_108.CanProceed;)
+    for (auto& local_116 : WeatherPoolConfig.Get().WeatherRandomPool)
     {
-        const FWeatherRandomFactor& local_116 = local_108.Proceed();
         if (!(local_116.Config.IsSet()))
         {
             continue;
@@ -363,12 +362,10 @@ bool TryRandomWeatherAndTemplateByWeatherPoolConfig(const TDataObjectPtr<FCommis
         }
         if (local_26.IsSet())
         {
-            TArrayConstIterator<FWeatherTemplateRandomFactor> local_124;
             bool local_118;
             local_118 = false;
-            for (; local_124.CanProceed;)
+            for (auto& local_132 : local_26.Get().WeatherTemplateTargetRandomPool)
             {
-                const FWeatherTemplateRandomFactor& local_132 = local_124.Proceed();
                 if (!(local_132.Config.IsSet()))
                 {
                     continue;
@@ -377,7 +374,7 @@ bool TryRandomWeatherAndTemplateByWeatherPoolConfig(const TDataObjectPtr<FCommis
                 {
                     continue;
                 }
-                if (local_116.Config.GetWeatherChanceConfigIndex() >= 0)
+                if (local_132.Config.Get().GetWeatherChanceConfigIndex(local_116.Config) >= 0)
                 {
                     local_118 = true;
                     break;
@@ -414,13 +411,13 @@ bool TryRandomWeatherAndTemplateByWeatherPoolConfig(const TDataObjectPtr<FCommis
         return false;
     }
     OutWeatherConfig = local_96[local_152];
-    for (auto& local_88 : GetWeatherAreaTemplateFactors())
+    for (auto& local_88 : WeatherPoolConfig.Get().GetWeatherAreaTemplateFactors())
     {
         if (!(local_88.IsSet()))
         {
             continue;
         }
-        TDataObjectPtr<FWorldAreaConfig> local_202 = GetAreaConfig();
+        TDataObjectPtr<FWorldAreaConfig> local_202 = local_88.Get().GetAreaConfig();
         if (!(local_202.IsSet()))
         {
             continue;
@@ -428,25 +425,23 @@ bool TryRandomWeatherAndTemplateByWeatherPoolConfig(const TDataObjectPtr<FCommis
         TDataObjectPtr<FWeatherGenerateTemplate> local_250;
         if ((local_202.GetDataName() == SpawnAreaConfig.GetDataName()))
         {
-            TArrayConstIterator<FWeatherTemplateRandomFactor> local_130;
             TArray<TDataObjectPtr<FWeatherGenerateTemplate>> local_254;
             TArray<uint> local_258;
             int local_259 = 0;
-            for (; local_130.CanProceed;)
+            for (auto& local_132 : local_88.Get().WeatherTemplateTargetRandomPool)
             {
-                const FWeatherTemplateRandomFactor& local_132_2 = local_130.Proceed();
-                if (!(local_132_2.Config.IsSet()))
+                if (!(local_132.Config.IsSet()))
                 {
                     continue;
                 }
-                if (int(local_132_2.Weight) == 0)
+                if (int(local_132.Weight) == 0)
                 {
                     continue;
                 }
-                if (OutWeatherConfig.GetWeatherChanceConfigIndex() >= 0)
+                if (local_132.Config.Get().GetWeatherChanceConfigIndex(OutWeatherConfig) >= 0)
                 {
-                    local_258.Add(local_254.Add(local_132_2.Config));
-                    local_259 = local_259 + int(local_132_2.Weight);
+                    local_258.Add(local_254.Add(local_132.Config));
+                    local_259 = local_259 + int(local_132.Weight);
                 }
             }
             if (local_254.Num() == 0 || (local_259 == 0))

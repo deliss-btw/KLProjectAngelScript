@@ -61,8 +61,10 @@ class US_FXSystemAS : UECSScriptSystem
             if (FFPTime(FixedTime.Time).opCmp((FFPTime(local_8.GetStartTime()) + local_8.GetDuration())) >= 0)
             {
                 Modify local_18;
-                if (local_18.opCall())
+                FC_FXAnimCurveInterpoState& local_20 = local_18.opCall();
+                if (local_20)
                 {
+                    local_20.State.Remove(FxAnimCurve.GetModify_Curves()[local_4].GetConfig());
                 }
                 FxAnimCurve.GetModify_Curves().RemoveAt(local_4);
             }
@@ -77,12 +79,12 @@ class US_FXSystemAS : UECSScriptSystem
     UFUNCTION()
     void Job_UpdateAnimCurve(const FECSEntity &inout Entity, const FC_FXAnimCurve &inout FxAnimCurve, const FC_InterpoTime &inout InterpoTime, const FC_Owner &inout OwnerComp) const
     {
-        UFXAnimCurveConfig local_40;
         float32 local_9 = float32(((FFPTime(InterpoTime.Time) - InterpoTime.LastTime).ToSeconds()));
         for (auto& local_32 : FxAnimCurve.GetCurves())
         {
             if ((FFPTime(InterpoTime.Time).opCmp(local_32.GetStartTime()) >= 0 && (FFPTime(InterpoTime.Time).opCmp((FFPTime(local_32.GetStartTime()) + local_32.GetDuration())) < 0)))
             {
+                UFXAnimCurveConfig local_40 = local_32.GetConfig().Get();
                 if (local_40 != nullptr)
                 {
                     FFPTime local_36 = (FFPTime(InterpoTime.Time) - local_32.GetStartTime());

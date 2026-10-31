@@ -48,8 +48,7 @@ class ASplinePointPrefab : AKLLevelPrefabBase
         {
             Get local_22;
             local_14.SplinePrefab = local_22.opCall().Prefab;
-            AECSPrefab local_26;
-            local_24 = (Cast<ASplinePointPrefab>(local_26));
+            local_24 = (Cast<ASplinePointPrefab>(local_14.SplinePrefab.Get()));
             if (local_24 != nullptr)
             {
                 local_14.Tag = local_24.SplineTag;

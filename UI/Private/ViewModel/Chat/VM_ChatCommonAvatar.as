@@ -44,6 +44,7 @@ struct FVM_ChatCommonAvatar : FEUIViewModel
     {
         if (this.GetAvatarConfig().IsSet())
         {
+            this.SetAvatarIcon(this.GetAvatarConfig().Get().AvatarIcon);
         }
         return;
     }
@@ -112,11 +113,9 @@ FVM_ChatCommonAvatar& Create(const UObject ContextObject, const TDataObjectPtr<F
 {
     return FVM_ChatCommonAvatar::CreateByManager(EUIInternal::GetContextManager(ContextObject), AvatarConfig);
 }
-FVM_ChatCommonAvatar CreateByManager(const UEUIManagerSubsystem Manager, const TDataObjectPtr<FAvatarPrefabConfig> &inout AvatarConfig)
+FVM_ChatCommonAvatar& CreateByManager(const UEUIManagerSubsystem Manager, const TDataObjectPtr<FAvatarPrefabConfig> &inout AvatarConfig)
 {
-    FVM_ChatCommonAvatar __r;
-    TEUIModelRef<FVM_ChatCommonAvatar> local_6 = TEUIModelRef<FVM_ChatCommonAvatar>(EUIInternal::MakeModelWithManager_Generic(Manager, FVM_ChatCommonAvatar::ModelId, 0, AvatarConfig));
-    return __r;
+    return TEUIModelRef<FVM_ChatCommonAvatar>(EUIInternal::MakeModelWithManager_Generic(Manager, FVM_ChatCommonAvatar::ModelId, 0, AvatarConfig)).Get();
 }
 void GetModelInfo(FEUIViewModelMetaInfo &inout Result)
 {
@@ -163,7 +162,6 @@ namespace __GeneratedProperties_FVM_ChatCommonAvatar
 {
 UScriptStruct StaticStruct()
 {
-    UScriptStruct local_2;
-    return local_2;
+    return __GeneratedProperties_FVM_ChatCommonAvatar.Get();
 }
 }

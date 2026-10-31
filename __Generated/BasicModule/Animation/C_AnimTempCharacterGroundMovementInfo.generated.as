@@ -33,6 +33,7 @@ struct FC_CharacterGroundMovementInfoHistory : FECSComponent
     }
     void Clear()
     {
+        this.History.Clear();
         return;
     }
     bool GetInterpoValue(const FFPTime &inout WorldTime, FC_CharacterGroundMovementInfo &inout OutValue) const

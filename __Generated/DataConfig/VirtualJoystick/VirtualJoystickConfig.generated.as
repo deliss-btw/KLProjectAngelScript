@@ -33,7 +33,6 @@ float32 __FVirtualJoystickConfig_GetDeadZone(const TDataObjectPtr<FVirtualJoysti
 UFUNCTION()
 FKey __FVirtualJoystickConfig_GetXAxis(const TDataObjectPtr<FVirtualJoystickConfig> &inout DataObject)
 {
-    FKey __r;
     if ((DataObject == nullptr))
     {
         if (!(EUIGlobals::GIsDuringPropertyConversion))
@@ -43,12 +42,11 @@ FKey __FVirtualJoystickConfig_GetXAxis(const TDataObjectPtr<FVirtualJoystickConf
         FVirtualJoystickConfig local_30;
         return local_30.XAxis;
     }
-    return __r;
+    return DataObject.Get().XAxis;
 }
 UFUNCTION()
 FKey __FVirtualJoystickConfig_GetYAxis(const TDataObjectPtr<FVirtualJoystickConfig> &inout DataObject)
 {
-    FKey __r;
     if ((DataObject == nullptr))
     {
         if (!(EUIGlobals::GIsDuringPropertyConversion))
@@ -58,7 +56,7 @@ FKey __FVirtualJoystickConfig_GetYAxis(const TDataObjectPtr<FVirtualJoystickConf
         FVirtualJoystickConfig local_30;
         return local_30.YAxis;
     }
-    return __r;
+    return DataObject.Get().YAxis;
 }
 UFUNCTION()
 FVirtualJoystickConfig CastToFVirtualJoystickConfig(const TDataObjectPtr<FVirtualJoystickConfig> &inout DataObject)

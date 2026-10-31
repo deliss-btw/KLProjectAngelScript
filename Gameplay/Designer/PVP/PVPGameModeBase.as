@@ -54,8 +54,7 @@ class UPVPGameModeFlowBase : UGameModeFlow
         bool local_9 = false;
         for (auto& local_28 : local_8.GetPlayerExtras())
         {
-            local_28;
-            if (GetbWantsBackToRoom())
+            if (local_28.GetValue().GetbWantsBackToRoom())
             {
                 local_9 = true;
                 break;
@@ -432,19 +431,19 @@ class UPVPGameModeFlowBase : UGameModeFlow
         TArray<uint> local_30;
         for (auto& local_48 : local_20.GetPlayerExtras())
         {
-            if (GetbIsBot())
+            if (local_48.GetValue().GetbIsBot())
             {
                 continue;
             }
-            if (!(GetbWantsBackToRoom()))
+            if (!(local_48.GetValue().GetbWantsBackToRoom()))
             {
                 local_30.Add(local_48.GetKey());
             }
         }
-        auto local_54 = local_30.Iterator();
-        for (; local_54.CanProceed;)
+        for (auto local_61 : local_30)
         {
-            int local_62 = local_54.Proceed();
+            local_26.GetModify_PlayerMatchDatas().Remove(local_61);
+            local_20.GetModify_PlayerExtras().Remove(local_61);
         }
         if (local_30.Num() > 0)
         {
@@ -456,7 +455,7 @@ class UPVPGameModeFlowBase : UGameModeFlow
             TArray<uint> local_68;
             for (auto& local_48_2 : local_20.GetPlayerExtras())
             {
-                if (!(GetbIsBot()))
+                if (!(local_48_2.GetValue().GetbIsBot()))
                 {
                     local_68.Add(local_48_2.GetKey());
                 }
@@ -468,7 +467,7 @@ class UPVPGameModeFlowBase : UGameModeFlow
         }
         for (auto& local_48_3 : local_20.GetPlayerExtras())
         {
-            if (!(GetbIsBot()))
+            if (!(local_48_3.GetValue().GetbIsBot()))
             {
                 local_20.GetModify_PlayerExtras()[local_48_3.GetKey()].SetbWantsBackToRoom(false);
             }
@@ -550,10 +549,9 @@ class UPVPGameModeFlowBase : UGameModeFlow
     {
         for (auto& local_20 : Session.GetBotPlayerEntities())
         {
-            local_20;
-            if (IsValid())
+            if (local_20.GetValue().IsValid())
             {
-                ::FASCommonUtils::DestroyEntity();
+                ::FASCommonUtils::DestroyEntity(local_20.GetValue());
             }
         }
         Session.GetModify_BotPlayerEntities().Empty(0);
@@ -561,11 +559,9 @@ class UPVPGameModeFlowBase : UGameModeFlow
     }
     uint FindBotUIDByPawn(const FCS_PVP_SessionData &inout Session, const FECSEntity &inout Pawn) const
     {
-        FECSEntityId local_21;
         for (auto& local_20 : Session.GetBotPlayerEntities())
         {
-            local_21.GetId();
-            if ((local_21 == Pawn.GetId()))
+            if ((local_20.GetValue().GetId() == Pawn.GetId()))
             {
                 return local_20.GetKey();
             }
@@ -601,10 +597,9 @@ class UPVPGameModeFlowBase : UGameModeFlow
         FECSWorldPtr local_2 = ECS::GetECSWorld();
         for (auto& local_28 : local_8.GetBotPlayerEntities())
         {
-            local_28;
-            if (IsValid())
+            if (local_28.GetValue().IsValid())
             {
-                Super::ReviveSinglePawn();
+                Super::ReviveSinglePawn(local_28.GetValue());
             }
         }
         return;
@@ -612,11 +607,10 @@ class UPVPGameModeFlowBase : UGameModeFlow
     bool TryGetTeamSpawnLocation(const FECSEntity &inout PlayerProxy, const uint8 Team, const FCS_PlayerSpawnerIndex &inout SpawnerIndex, FVector &inout Position, FQuat &inout Rotation) const
     {
         TDataObjectPtr<FLevelInfoConfig> local_48 = ::FLevelUtils::GetCurrentLevelInfoConfig(nullptr);
-        ESpawnPointSelectionRule local_50 = ESpawnPointSelectionRule(0);
-        int local_49 = local_50;
+        int local_49 = ESpawnPointSelectionRule::TeamMatchedRandom;
         if (local_48.IsSet())
         {
-            local_49 = local_50;
+            local_49 = local_48.Get().SpawnPointRule;
         }
         return ::FGameModeUtils::GetSpawnLocationForPlayerBySpawnPointRule(PlayerProxy, uint8(Team), SpawnerIndex, ESpawnPointSelectionRule(local_49), Position, Rotation);
     }
@@ -673,7 +667,7 @@ class UPVPGameModeFlowBase : UGameModeFlow
         }
         for (auto& local_182 : local_20.GetBotPlayerEntities())
         {
-            FECSEntity local_186;
+            FECSEntity local_186 = local_182.GetValue();
             if (!(local_186.IsValid()))
             {
                 continue;
@@ -771,7 +765,7 @@ class UPVPGameModeFlowBase : UGameModeFlow
                 }
             }
         }
-        return EFaction(1);
+        return EFaction::Player;
     }
     void BroadcastKillHint(const FECSEntity &inout KillerPlayerEntity, const FECSEntity &inout DeadPlayerEntity) const
     {
@@ -930,7 +924,6 @@ class UPVPGameModeFlowBase : UGameModeFlow
     {
         int local_14 = 0;
         int local_30 = 0;
-        UClass local_44;
         AAS_ECSPlayerController local_4 = ::FASCommonUtils::GetASECSProxyPlayerController();
         if (local_4 == nullptr)
         {
@@ -968,7 +961,7 @@ class UPVPGameModeFlowBase : UGameModeFlow
             return;
         }
         TSubclassOf<UUserWidget> local_42 = TSubclassOf<UUserWidget>(::GameModeSettings::GetGameModeSettings(local_4).EntryUIClass);
-        if (local_42.IsValid() && local_44.IsChildOf(UEUIUserWidget))
+        if (local_42.IsValid() && local_42.Get().IsChildOf(UEUIUserWidget))
         {
             FEUIWidget::AddWidgetByClass(local_4.GetLocalPlayer(), TSoftClassPtr<UEUIUserWidget>(local_42));
         }

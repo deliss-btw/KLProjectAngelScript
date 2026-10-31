@@ -267,11 +267,9 @@ FVM_SocialViewPageBigBtn& Create(const UObject ContextObject, const TDataObjectP
 {
     return FVM_SocialViewPageBigBtn::CreateByManager(EUIInternal::GetContextManager(ContextObject), ButtonConfig);
 }
-FVM_SocialViewPageBigBtn CreateByManager(const UEUIManagerSubsystem Manager, const TDataObjectPtr<FSocialViewPageButtonConfig> &inout ButtonConfig)
+FVM_SocialViewPageBigBtn& CreateByManager(const UEUIManagerSubsystem Manager, const TDataObjectPtr<FSocialViewPageButtonConfig> &inout ButtonConfig)
 {
-    FVM_SocialViewPageBigBtn __r;
-    TEUIModelRef<FVM_SocialViewPageBigBtn> local_6 = TEUIModelRef<FVM_SocialViewPageBigBtn>(EUIInternal::MakeModelWithManager_Generic(Manager, FVM_SocialViewPageBigBtn::ModelId, 0, ButtonConfig));
-    return __r;
+    return TEUIModelRef<FVM_SocialViewPageBigBtn>(EUIInternal::MakeModelWithManager_Generic(Manager, FVM_SocialViewPageBigBtn::ModelId, 0, ButtonConfig)).Get();
 }
 void GetModelInfo(FEUIViewModelMetaInfo &inout Result)
 {
@@ -340,8 +338,7 @@ namespace __GeneratedProperties_FVM_SocialViewPageBigBtn
 {
 UScriptStruct StaticStruct()
 {
-    UScriptStruct local_2;
-    return local_2;
+    return __GeneratedProperties_FVM_SocialViewPageBigBtn.Get();
 }
 }
 namespace FVM_SocialViewPageSmallBtn
@@ -350,11 +347,9 @@ FVM_SocialViewPageSmallBtn& Create(const UObject ContextObject, const TDataObjec
 {
     return FVM_SocialViewPageSmallBtn::CreateByManager(EUIInternal::GetContextManager(ContextObject), ButtonConfig);
 }
-FVM_SocialViewPageSmallBtn CreateByManager(const UEUIManagerSubsystem Manager, const TDataObjectPtr<FSocialViewPageButtonConfig> &inout ButtonConfig)
+FVM_SocialViewPageSmallBtn& CreateByManager(const UEUIManagerSubsystem Manager, const TDataObjectPtr<FSocialViewPageButtonConfig> &inout ButtonConfig)
 {
-    FVM_SocialViewPageSmallBtn __r;
-    TEUIModelRef<FVM_SocialViewPageSmallBtn> local_6 = TEUIModelRef<FVM_SocialViewPageSmallBtn>(EUIInternal::MakeModelWithManager_Generic(Manager, FVM_SocialViewPageSmallBtn::ModelId, 0, ButtonConfig));
-    return __r;
+    return TEUIModelRef<FVM_SocialViewPageSmallBtn>(EUIInternal::MakeModelWithManager_Generic(Manager, FVM_SocialViewPageSmallBtn::ModelId, 0, ButtonConfig)).Get();
 }
 void GetModelInfo(FEUIViewModelMetaInfo &inout Result)
 {
@@ -423,7 +418,6 @@ namespace __GeneratedProperties_FVM_SocialViewPageSmallBtn
 {
 UScriptStruct StaticStruct()
 {
-    UScriptStruct local_2;
-    return local_2;
+    return __GeneratedProperties_FVM_SocialViewPageSmallBtn.Get();
 }
 }

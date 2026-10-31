@@ -137,11 +137,9 @@ FVM_BuffHoverStackCount& Create(const UObject ContextObject, const int WidgetSta
 {
     return FVM_BuffHoverStackCount::CreateByManager(EUIInternal::GetContextManager(ContextObject), WidgetStack, MaxStack, BuffStack);
 }
-FVM_BuffHoverStackCount CreateByManager(const UEUIManagerSubsystem Manager, const int WidgetStack, const int MaxStack, const int BuffStack)
+FVM_BuffHoverStackCount& CreateByManager(const UEUIManagerSubsystem Manager, const int WidgetStack, const int MaxStack, const int BuffStack)
 {
-    FVM_BuffHoverStackCount __r;
-    TEUIModelRef<FVM_BuffHoverStackCount> local_6 = TEUIModelRef<FVM_BuffHoverStackCount>(EUIInternal::MakeModelWithManager_Generic(Manager, FVM_BuffHoverStackCount::ModelId, 0, WidgetStack, MaxStack, BuffStack));
-    return __r;
+    return TEUIModelRef<FVM_BuffHoverStackCount>(EUIInternal::MakeModelWithManager_Generic(Manager, FVM_BuffHoverStackCount::ModelId, 0, WidgetStack, MaxStack, BuffStack)).Get();
 }
 void GetModelInfo(FEUIViewModelMetaInfo &inout Result)
 {
@@ -200,7 +198,6 @@ namespace __GeneratedProperties_FVM_BuffHoverStackCount
 {
 UScriptStruct StaticStruct()
 {
-    UScriptStruct local_2;
-    return local_2;
+    return __GeneratedProperties_FVM_BuffHoverStackCount.Get();
 }
 }

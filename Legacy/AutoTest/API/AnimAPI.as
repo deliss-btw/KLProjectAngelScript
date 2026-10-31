@@ -11,6 +11,6 @@ float32 GetAnimStateNormalizedTime(const uint EntityId, const int StateIndex)
     local_20.GetInterpoValue(local_26.Time, local_266);
     local_266.SampleTo(local_26.Time);
     ThrowIf((StateIndex >= local_266.GetLayerNum()), FString().Append("EntityID: ").Append(EntityId).Append(" StateIndex: ").Append(StateIndex).Append(" is out of range."));
-    return GetNormalizedPlayTime();
+    return local_266.Get(StateIndex).GetNormalizedPlayTime();
 }
 }

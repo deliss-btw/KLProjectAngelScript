@@ -33,6 +33,7 @@ struct FC_PelvisAngleControlHistory : FECSComponent
     }
     void Clear()
     {
+        this.History.Clear();
         return;
     }
     bool GetInterpoValue(const FFPTime &inout WorldTime, FC_PelvisAngleControl &inout OutValue) const

@@ -25,6 +25,7 @@ class US_EcologyConfigSystem : UECSScriptSystem
         if (local_4.EntityConfigMap.Contains(PrefabUID.UID))
         {
             (FECSEntityId(local_4.EntityConfigMap[PrefabUID.UID]) == Entity.GetId());
+            local_4.EntityConfigMap.Remove(PrefabUID.UID);
         }
         return;
     }
@@ -43,6 +44,7 @@ class US_EcologyConfigSystem : UECSScriptSystem
         if (local_4.EntityConfigMap.Contains(PrefabUID.UID))
         {
             (FECSEntityId(local_4.EntityConfigMap[PrefabUID.UID]) == Entity.GetId());
+            local_4.EntityConfigMap.Remove(PrefabUID.UID);
         }
         return;
     }
@@ -66,11 +68,10 @@ class US_EcologyConfigSystem : UECSScriptSystem
         local_60.SetupByConfigOuter(Entity);
         for (auto& local_74 : Config.ConfigList)
         {
-            if (FInstancedStruct::GetPtr(local_74.GetConfigData()).opCall())
+            TConstRawPtr<FEcologyConfig> local_80 = FInstancedStruct::GetPtr(local_74.GetConfigData()).opCall();
+            if (local_80)
             {
-                FECSEntity local_16;
-                local_16.GenerateRuntimeEntity(local_60);
-                local_28.TargetEntityId.Add(local_16.GetId());
+                local_28.TargetEntityId.Add(local_80.Get().GenerateRuntimeEntity(local_60).GetId());
             }
         }
         return;
@@ -90,10 +91,10 @@ class US_EcologyConfigSystem : UECSScriptSystem
         }
         FEcologyConfigGenerateContext local_36;
         local_36.SetupByConfigOuter(Entity);
-        if (FInstancedStruct::GetPtr(Config.ResourceConfig.GetConfigData()).opCall())
+        TConstRawPtr<FEcologyConfig> local_42 = FInstancedStruct::GetPtr(Config.ResourceConfig.GetConfigData()).opCall();
+        if (local_42)
         {
-            FECSEntity local_48;
-            local_48.GenerateRuntimeEntity(local_36);
+            FECSEntity local_48 = local_42.Get().GenerateRuntimeEntity(local_36);
             ::FEcologyLifeCycleUtils::RegisterEcologyRuntimeEntity(Entity, local_48, true);
         }
         return;
@@ -113,10 +114,10 @@ class US_EcologyConfigSystem : UECSScriptSystem
         }
         FEcologyConfigGenerateContext local_36;
         local_36.SetupByConfigOuter(Entity);
-        if (FInstancedStruct::GetPtr(Config.SpawnerConfig.GetConfigData()).opCall())
+        TConstRawPtr<FEcologyConfig> local_42 = FInstancedStruct::GetPtr(Config.SpawnerConfig.GetConfigData()).opCall();
+        if (local_42)
         {
-            FECSEntity local_48;
-            local_48.GenerateRuntimeEntity(local_36);
+            FECSEntity local_48 = local_42.Get().GenerateRuntimeEntity(local_36);
             ::FEcologyLifeCycleUtils::RegisterEcologyRuntimeEntity(Entity, local_48, true);
         }
         return;
@@ -130,7 +131,6 @@ class US_EcologyConfigSystem : UECSScriptSystem
     UFUNCTION()
     void Monitor_ActivityModifierConfig(const FECSEntity &inout Entity, const FC_EcologyResourceModifierConfig &inout Config) const
     {
-        AECSRegionVolume local_6;
         int local_24 = 0;
         if (!(this.UseLegacyConfig()))
         {
@@ -140,6 +140,7 @@ class US_EcologyConfigSystem : UECSScriptSystem
         {
             return;
         }
+        AECSRegionVolume local_6 = Config.Scope.Get();
         if (!(local_6.GetRegionEntity().IsValid()))
         {
             XError(ELog(30), FString().Append("Region Entity Has not Init"));
@@ -153,7 +154,6 @@ class US_EcologyConfigSystem : UECSScriptSystem
     UFUNCTION()
     void Monitor_InactiveModifierConfig(const FECSEntity &inout Entity, const FC_EcologyResourceModifierConfig &inout Config) const
     {
-        AECSRegionVolume local_6;
         int local_18 = 0;
         int local_22 = 0;
         if (!(this.UseLegacyConfig()))
@@ -164,6 +164,7 @@ class US_EcologyConfigSystem : UECSScriptSystem
         {
             return;
         }
+        AECSRegionVolume local_6 = Config.Scope.Get();
         if (!(local_6.GetRegionEntity().IsValid()))
         {
             XError(ELog(30), FString().Append("Region Entity Has not Init"));
@@ -172,7 +173,7 @@ class US_EcologyConfigSystem : UECSScriptSystem
         {
             FECSEntityId local_19 = Entity.GetId();
             ::FEcologyModifierUtils::UpdateModifiersForRegion(local_6, local_22, Config, false);
-            FECSEntityId local_19_2 = Entity.GetId();
+            local_18.Modifiers.Remove(Entity.GetId());
         }
         return;
     }
@@ -185,10 +186,10 @@ class US_EcologyConfigSystem : UECSScriptSystem
         }
         FEcologyConfigGenerateContext local_36;
         local_36.SetupByConfigOuter(Entity);
-        if (FInstancedStruct::GetPtr(Config.Config.GetConfigData()).opCall())
+        TConstRawPtr<FEcologyConfig> local_42 = FInstancedStruct::GetPtr(Config.Config.GetConfigData()).opCall();
+        if (local_42)
         {
-            FECSEntity local_48;
-            local_48.GenerateRuntimeEntity(local_36);
+            FECSEntity local_48 = local_42.Get().GenerateRuntimeEntity(local_36);
             if (local_48)
             {
                 ::FEcologyLifeCycleUtils::RegisterEcologyRuntimeEntity(Entity, local_48, true);

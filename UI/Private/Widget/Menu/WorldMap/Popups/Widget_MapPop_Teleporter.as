@@ -40,8 +40,8 @@ class UWidget_MapPop_Teleporter : UEUIUserWidget
     }
     void HandleObservedModelChanges(FEUIReactiveSubscriberIterator &inout It)
     {
-        FVM_Teleporter& local_6;
         TEUIModelRef<FVM_Teleporter> local_2 = this.Teleporter.AsRef();
+        FVM_Teleporter& local_6 = local_2.Get();
         for (; It; )
         {
             FEUIReactiveSubscriberTrackScope local_56 = FEUIReactiveSubscriberTrackScope(It);

@@ -15,7 +15,6 @@ class US_LocalConditionPlayerStats : UECSScriptSystem
         }
         int local_8 = Event.PlayerStatsType;
         TMap<ECommissionPlayerStatsType, FPlayerStatsMonitorConditions> local_12 = PlayerStatsConditionManager.MonitoredStats;
-        CastTo local_56;
         if (local_12.Contains(ECommissionPlayerStatsType(local_8)))
         {
             TArray<FConditionInstanceHandle> local_14;
@@ -26,10 +25,11 @@ class US_LocalConditionPlayerStats : UECSScriptSystem
                     continue;
                 }
                 TDataObjectPtr<FConditionConfigBase> local_52 = local_28.GetConditionConfig();
-                if (local_56.opCall())
+                CastTo local_56;
+                TDataObjectPtr<FLocalConditionConfig> local_80 = local_56.opCall();
+                if (local_80)
                 {
-                    FInstancedStruct::GetPtr local_108;
-                    TConstRawPtr<FConditionPlayerStatsConfig> local_110 = local_108.opCall();
+                    TConstRawPtr<FConditionPlayerStatsConfig> local_110 = FInstancedStruct::GetPtr(local_80.Get().ConditionTypeDefineConfig).opCall();
                     if (local_110)
                     {
                         int local_114;

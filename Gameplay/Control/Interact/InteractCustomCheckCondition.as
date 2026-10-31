@@ -54,7 +54,6 @@ class UInteractCustomCheckCondition_CheckInventoryItemSpaceForCollect : UInterac
     }
     bool CheckCondition(const FECSEntity &inout InteractSource, const FECSEntity &inout InteractTarget, const FInteractionPoint &inout InteractionPoint, const bool bIsCheckingDuringInteracting) const
     {
-        TArrayConstIterator<FDropItemData> local_84;
         Get local_4;
         const FC_DropItemConfig& local_6 = local_4.opCall();
         if (local_6)
@@ -64,7 +63,7 @@ class UInteractCustomCheckCondition_CheckInventoryItemSpaceForCollect : UInterac
             {
                 if (int(local_26.TriggerType) == 1)
                 {
-                    local_12.Add(TDataObjectPtr<FDropItemConfigBase>());
+                    local_12.Add(TDataObjectPtr<FDropItemConfigBase>(local_26.Item.Get()));
                 }
             }
             TArray<TDataObjectPtr<FDropItemConfig>> local_58;
@@ -80,9 +79,8 @@ class UInteractCustomCheckCondition_CheckInventoryItemSpaceForCollect : UInterac
                     XError(ELog(46), FString().Append("Interact target ").Append(InteractTarget).Append(" contains null drop item config."));
                     continue;
                 }
-                for (; local_84.CanProceed;)
+                for (auto& local_92 : local_72.Get().Drops)
                 {
-                    const FDropItemData& local_92 = local_84.Proceed();
                     TArray<FDropItemPackage> local_96;
                     ::DropItemsUtils::FillDropItemPackages(local_92, local_96);
                     for (auto& local_110 : local_96)
@@ -131,7 +129,7 @@ class UInteractCustomCheckCondition_CheckEcoCollectableReadyForCollect : UIntera
         bool local_18;
         bool local_23;
         FECSEntity local_10 = FECSEntity(::EcoCollectableUtils::GetCurrespondingDynamicEntityIdOfStatic(InteractTarget.GetId()));
-        EEcoCollectableNonSyncedVisibilityStatus local_11 = EEcoCollectableNonSyncedVisibilityStatus(0);
+        EEcoCollectableNonSyncedVisibilityStatus local_11 = EEcoCollectableNonSyncedVisibilityStatus::DitherInAndShow;
         if (!(ECS::GetRuntimeInfo().IsServer))
         {
             local_18 = false;
@@ -361,15 +359,13 @@ class UInteractCustomCheckCondition_CheckMainPlayer : UInteractCustomCheckCondit
         if (local_6.IsValid())
         {
             bool local_11;
-            bool local_1 = false;
-            local_11 = local_1;
-            if (::GetAvatarConfig(local_6))
+            local_11 = false;
+            TDataObjectPtr<FAvatarPrefabConfig> local_36 = ::GetAvatarConfig(local_6);
+            if (local_36)
             {
-                local_11 = local_1;
+                local_11 = local_36.Get().bIsMainPlayer;
             }
-            local_1 = !(this.bWantMainPlayer);
-            local_1 = (local_1 == !(local_11));
-            return local_1;
+            return (!(this.bWantMainPlayer) == !(local_11));
         }
         return false;
     }
@@ -684,11 +680,10 @@ class UInteractCustomCheckCondition_CheckReviveTargetTeamRuleMet : UInteractCust
     bool CheckCondition(const FECSEntity &inout InteractSource, const FECSEntity &inout InteractTarget, const FInteractionPoint &inout InteractionPoint, const bool bIsCheckingDuringInteracting) const
     {
         int local_8 = 0;
-        int local_11 = 0;
         FECSWorldPtr local_2 = ECS::GetECSWorld();
         if (local_8 && local_8.GetReviveData().IsSet())
         {
-            if ((local_11) == 1)
+            if ((int(local_8.GetReviveData().Get().RescueType)) == 1)
             {
                 if ((int(::FASCommonUtils::GetEntityFactionRelation(InteractSource, InteractTarget))) != 4)
                 {
@@ -766,14 +761,13 @@ class UInteractCustomCheckCondition_CheckAccountExclusiveTeleporterActive : UInt
     }
     bool CheckCondition(const FECSEntity &inout InteractSource, const FECSEntity &inout InteractTarget, const FInteractionPoint &inout InteractionPoint, const bool bIsCheckingDuringInteracting) const
     {
-        int local_8 = 0;
         Get local_4;
         const FC_AccountExclusiveTeleporterConfig& local_6 = local_4.opCall();
         if (local_6)
         {
             if (local_6.TeleporterConfig.IsSet())
             {
-                return ::TeleporterUtils::IsTeleporterActive(InteractSource, local_8, InteractTarget);
+                return ::TeleporterUtils::IsTeleporterActive(InteractSource, local_6.TeleporterConfig.Get().DataId, InteractTarget);
             }
         }
         return false;
@@ -789,14 +783,13 @@ class UInteractCustomCheckCondition_CheckAccountExclusiveTeleporterUnlocked : UI
     }
     bool CheckCondition(const FECSEntity &inout InteractSource, const FECSEntity &inout InteractTarget, const FInteractionPoint &inout InteractionPoint, const bool bIsCheckingDuringInteracting) const
     {
-        int local_8 = 0;
         Get local_4;
         const FC_AccountExclusiveTeleporterConfig& local_6 = local_4.opCall();
         if (local_6)
         {
             if (local_6.TeleporterConfig.IsSet())
             {
-                return ::TeleporterUtils::IsTeleporterUnlocked(InteractSource, local_8, InteractTarget);
+                return ::TeleporterUtils::IsTeleporterUnlocked(InteractSource, local_6.TeleporterConfig.Get().DataId, InteractTarget);
             }
         }
         return false;
@@ -812,14 +805,13 @@ class UInteractCustomCheckCondition_CheckAccountExclusiveTreasureBoxCoolingDown 
     }
     bool CheckCondition(const FECSEntity &inout InteractSource, const FECSEntity &inout InteractTarget, const FInteractionPoint &inout InteractionPoint, const bool bIsCheckingDuringInteracting) const
     {
-        int local_8 = 0;
         Get local_4;
         const FC_LevelObjectStatConfig& local_6 = local_4.opCall();
         if (local_6)
         {
             if (local_6.LevelObjectStatConfig.IsSet())
             {
-                return ::TreasureBoxUtils::CanOpenTreasureBox(InteractSource, local_8);
+                return ::TreasureBoxUtils::CanOpenTreasureBox(InteractSource, local_6.LevelObjectStatConfig.Get().DataId);
             }
         }
         return true;
@@ -841,7 +833,7 @@ class UInteractCustomCheckCondition_CheckAccountExclusiveItemRecorded : UInterac
         {
             if (local_6.LevelObjectStatConfig.IsSet())
             {
-                return !(::FLevelObjectStatUtils::IsLevelObjectRecorded(InteractSource, TDataObjectPtr<FLevelObjectStatConfig>()));
+                return !(::FLevelObjectStatUtils::IsLevelObjectRecorded(InteractSource, TDataObjectPtr<FLevelObjectStatConfig>(local_6.LevelObjectStatConfig.Get())));
             }
         }
         return true;

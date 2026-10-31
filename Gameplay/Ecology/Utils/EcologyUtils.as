@@ -280,12 +280,12 @@ void TeleportEcologyCreatureToTransform(const FECSEntity &inout Entity, const FV
             local_158 = FPhysicsUtils::LineTraceSingle(Entity, false, EPhysicsTraceTag(26), local_88, TargetLocation, (TargetLocation - FVector(0.0, 0.0, local_21)), FPhysicsUtils::ConvertToCollisionChannel(ETraceTypeQuery(5)), local_126, local_156);
             local_19 = !(local_158);
         }
-        bool local_128 = false;
-        local_158 = local_128;
+        local_158 = false;
         Get local_162;
-        if (local_162.opCall())
+        const FC_CreatureEcologyState& local_164 = local_162.opCall();
+        if (local_164)
         {
-            local_158 = local_128;
+            local_158 = local_164.Creature.Get().bCanFly;
         }
         if (local_19 && local_158)
         {
@@ -379,7 +379,7 @@ bool CheckNeedChangeToSpecialFeatureActivity(const FECSEntity &inout Entity, con
         {
             for (auto& local_120 : local_106)
             {
-                if (local_120.ActivityGameplayTag.MatchesTag(unresolved.GameplayTagForResourceSlot))
+                if (local_120.ActivityGameplayTag.MatchesTag(local_76.Get().GameplayTagForResourceSlot))
                 {
                     return true;
                 }

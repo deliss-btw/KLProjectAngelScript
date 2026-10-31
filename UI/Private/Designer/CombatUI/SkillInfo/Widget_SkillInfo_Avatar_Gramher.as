@@ -67,35 +67,35 @@ class UWidget_SkillInfo_Avatar_Gramher : UEUIUserWidget
     UFUNCTION()
     FEUIModelRef SkillInfo_VM_SpecialAttackButton() const
     {
-        FVMS_SkillInfo_Avatar_Common& local_2;
+        FVMS_SkillInfo_Avatar_Common& local_2 = this.SkillInfo.Get();
         FEUIModelRef local_8 = local_2 ? local_2.GetVM_SpecialAttackButton() : FEUIModelRef();
         return local_8;
     }
     UFUNCTION()
     FEUIModelRef SkillInfo_VM_SimpleSkillButton() const
     {
-        FVMS_SkillInfo_Avatar_Common& local_2;
+        FVMS_SkillInfo_Avatar_Common& local_2 = this.SkillInfo.Get();
         FEUIModelRef local_8 = local_2 ? local_2.GetVM_SimpleSkillButton() : FEUIModelRef();
         return local_8;
     }
     UFUNCTION()
     FEUIModelRef SkillInfo_VM_UltraSkillButton() const
     {
-        FVMS_SkillInfo_Avatar_Common& local_2;
+        FVMS_SkillInfo_Avatar_Common& local_2 = this.SkillInfo.Get();
         FEUIModelRef local_8 = local_2 ? local_2.GetVM_UltraSkillButton() : FEUIModelRef();
         return local_8;
     }
     UFUNCTION()
     float32 SkillInfo_CustomSkillEnergyRatio() const
     {
-        FVMS_SkillInfo_Avatar_Common& local_2;
+        FVMS_SkillInfo_Avatar_Common& local_2 = this.SkillInfo.Get();
         return local_2 ? local_2.GetCustomSkillEnergyRatio() : 0.0f;
     }
     UFUNCTION()
     bool SkillInfo_UltraOn() const
     {
-        FVMS_SkillInfo_Avatar_Common& local_2;
         bool local_5;
+        FVMS_SkillInfo_Avatar_Common& local_2 = this.SkillInfo.Get();
         if (local_2)
         {
             local_5 = local_2.GetUltraOn();
@@ -109,7 +109,7 @@ class UWidget_SkillInfo_Avatar_Gramher : UEUIUserWidget
     UFUNCTION()
     FEUIModelRef LinkSkillInfo_VM_LinkSkillButton() const
     {
-        FVMS_LinkSkillInfo& local_2;
+        FVMS_LinkSkillInfo& local_2 = this.LinkSkillInfo.Get();
         FEUIModelRef local_8 = local_2 ? local_2.GetVM_LinkSkillButton() : FEUIModelRef();
         return local_8;
     }

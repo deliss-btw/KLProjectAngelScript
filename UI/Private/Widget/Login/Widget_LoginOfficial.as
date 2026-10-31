@@ -52,6 +52,11 @@ class UWidget_LoginOfficial : UEUIActivatableWidget
     {
         UKLDownloadService local_8;
         this.EndLoginPhase();
+        this.RecievedRegionListDelegate.Clear();
+        this.RecievedGateAddressDelegate.Clear();
+        this.OnConnectToGateSuccessDelegate.Clear();
+        this.GetPlayerTokenRspDelegate.Clear();
+        this.PlayerLoginRspDelegate.Clear();
         if (this.bDownloadDelegatesRegistered)
         {
             USDKServiceSubSystem local_4 = USDKServiceSubSystem::Get();
@@ -60,28 +65,31 @@ class UWidget_LoginOfficial : UEUIActivatableWidget
                 local_8 = (Cast<UKLDownloadService>(local_4.GetSdkServiceByType(ESDKServiceType(1))));
                 if (IsValid(local_8))
                 {
+                    local_8.GetDownloadProgressDelegate().Clear();
+                    local_8.GetDownloadCompletedDelegate().Clear();
+                    local_8.GetDownloadManifestCompletedDelegate().Clear();
                 }
             }
         }
         this.bDownloadDelegatesRegistered = false;
-        ResetDownloadSpeedSampling();
+        this.LoginVM.Get().ResetDownloadSpeedSampling();
         this.StopLoginBGM();
         return;
     }
     UFUNCTION()
     void OnViewBind_Implementation()
     {
-        ResetLoginState();
-        this.RecievedRegionListDelegate.RequestRegionList();
+        this.LoginVM.Get().ResetLoginState();
+        this.LoginVM.Get().RequestRegionList(this.RecievedRegionListDelegate);
         this.PlayLoginBGM();
         return;
     }
     UFUNCTION()
     void Tick_Implementation(const FGeometry &inout MyGeometry, const float32 InDeltaTime)
     {
-        if ((int(GetLoginState())) == 4)
+        if ((int(this.LoginVM.Get().GetLoginState())) == 4)
         {
-            InDeltaTime.UpdatePSOProgress();
+            this.LoginVM.Get().UpdatePSOProgress(InDeltaTime);
         }
         if (this.bLoginStepTimeoutActive)
         {
@@ -104,7 +112,7 @@ class UWidget_LoginOfficial : UEUIActivatableWidget
         }
         if (int(LoginState) == 4)
         {
-            StartPSOPrecompile();
+            this.LoginVM.Get().StartPSOPrecompile();
             return;
         }
         if (int(LoginState) == 5)
@@ -135,24 +143,25 @@ class UWidget_LoginOfficial : UEUIActivatableWidget
         {
             return;
         }
-        if (!(GetbIsSDKLoginSucc()))
+        if (!(this.LoginVM.Get().GetbIsSDKLoginSucc()))
         {
             this.HandleLoginFailed(0, this.GetSDKNotLoginTip());
             XError(ELog(78), "OnContinueGame: SDK login not successful, cannot proceed");
             return;
         }
-        local_8 = GetSelectRegionIndex();
-        if (!(GetRegionInfos().IsValidIndex(local_8)))
+        local_8 = this.LoginVM.Get().GetSelectRegionIndex();
+        if (!(this.LoginVM.Get().GetRegionInfos().IsValidIndex(local_8)))
         {
             XError(ELog(78), "OnContinueGame: region index invalid");
             return;
         }
-        if (!(TEUIModelRef<FVM_RegionInfo>(GetRegionInfos()[local_8]).IsValid()))
+        TEUIModelRef<FVM_RegionInfo> local_10 = TEUIModelRef<FVM_RegionInfo>(this.LoginVM.Get().GetRegionInfos()[local_8]);
+        if (!(local_10.IsValid()))
         {
             XError(ELog(78), "OnContinueGame: RegionInfo invalid");
             return;
         }
-        FString local_20 = GetName().Replace("-", "_", ESearchCase(1));
+        FString local_20 = local_10.Get().GetName().Replace("-", "_", ESearchCase(1));
         XLog(ELog(78), FString().Append("OnContinueGame: CheckDeviceLimit serverID=").Append(local_20));
         FSDKCheckDeviceLimitDelegate local_24;
         local_24.BindUFunction(this, n"OnCheckDeviceLimitResult");
@@ -203,10 +212,10 @@ class UWidget_LoginOfficial : UEUIActivatableWidget
             XError(ELog(78), FString().Append("Failed to parse region list! ReqURL: ").Append(ReqURL));
             return;
         }
-        local_12.OnRecievedRegionList();
-        if (GetRegionInfos().Num() > 0)
+        this.LoginVM.Get().OnRecievedRegionList(local_12);
+        if (this.LoginVM.Get().GetRegionInfos().Num() > 0)
         {
-            this.RecievedGateAddressDelegate.RequestGateAddress();
+            this.LoginVM.Get().RequestGateAddress(this.RecievedGateAddressDelegate);
         }
         return;
     }
@@ -227,14 +236,14 @@ class UWidget_LoginOfficial : UEUIActivatableWidget
         {
             XWarning(ELog(78), FString().Append("Failed to receive gate address! ReqURL: ").Append(ReqURL));
         }
-        local_5.OnRecievedGateAddress(local_4, ReqURL);
+        this.LoginVM.Get().OnRecievedGateAddress(local_5, ReqURL, local_4);
         return;
     }
     UFUNCTION()
     void OnConnectToGateSuccess()
     {
         XLog(ELog(78), "OnConnectToGateSuccess");
-        OnConnectToGateSuccess();
+        this.LoginVM.Get().OnConnectToGateSuccess();
         this.StartLoginStepTimeout();
         return;
     }
@@ -303,7 +312,7 @@ class UWidget_LoginOfficial : UEUIActivatableWidget
         this.EndLoginPhase();
         UMiHoYoSDKHelper::LogToScreenAndConsole("GS Login Success", 5.0f);
         this.ReportBaseInfo();
-        local_10.OnPlayerLoginRsp();
+        this.LoginVM.Get().OnPlayerLoginRsp(local_10);
         ::FMS_Login::Get(this.GetOwningLocalPlayer()).SetCanCreatePlayer(false);
         if (local_10.GetPlayerPhase() == 1)
         {
@@ -331,7 +340,7 @@ class UWidget_LoginOfficial : UEUIActivatableWidget
         const UErrorCodeSettings local_14;
         this.EndLoginPhase();
         this.ResetCachedLoginInfo();
-        OnSDKEnterGameFailed();
+        this.LoginVM.Get().OnSDKEnterGameFailed();
         FText local_4 = FallbackTip;
         if (local_4.IsEmpty())
         {
@@ -366,6 +375,7 @@ class UWidget_LoginOfficial : UEUIActivatableWidget
     void BeginLoginPhase()
     {
         this.bIsLoggingIn = true;
+        this.LoginVM.Get().bIsLoggingIn = true;
         ::UGameClientConnectionSubsystem::Get().SetInLoginPhase(true);
         this.StartLoginStepTimeout();
         return;
@@ -373,6 +383,7 @@ class UWidget_LoginOfficial : UEUIActivatableWidget
     void EndLoginPhase()
     {
         this.bIsLoggingIn = false;
+        this.LoginVM.Get().bIsLoggingIn = false;
         ::UGameClientConnectionSubsystem::Get().SetInLoginPhase(false);
         this.StopLoginStepTimeout();
         return;
@@ -470,7 +481,7 @@ class UWidget_LoginOfficial : UEUIActivatableWidget
     void TryStartDownload()
     {
         FLoginDownloadInfo local_14;
-        if (!(local_14.TryGetDownloadInfo()))
+        if (!(this.LoginVM.Get().TryGetDownloadInfo(local_14)))
         {
             XError(ELog(78), FString().Append("Failed to get download info!"));
             return;
@@ -510,7 +521,7 @@ class UWidget_LoginOfficial : UEUIActivatableWidget
             }
         }
         XLog(ELog(78), FString().Append("TryDownLoadCLVersion: ClientVersion---").Append(local_38).Append(" DownloadExtraSize---").Append(local_47));
-        ResetDownloadSpeedSampling();
+        this.LoginVM.Get().ResetDownloadSpeedSampling();
         local_28.StartVersionUpdate(local_42, local_38, local_47);
         if (!(this.bDownloadDelegatesRegistered))
         {
@@ -523,7 +534,7 @@ class UWidget_LoginOfficial : UEUIActivatableWidget
     }
     void StartLoginSDK()
     {
-        ResetSDKLoginAuthState();
+        this.LoginVM.Get().ResetSDKLoginAuthState();
         this.bIsSDKStartLogin = true;
         this.InitSDK();
         return;
@@ -555,35 +566,36 @@ class UWidget_LoginOfficial : UEUIActivatableWidget
     void ConnectToGateServer()
     {
         int local_10;
-        if (!(GetbIsSDKLoginSucc()))
+        if (!(this.LoginVM.Get().GetbIsSDKLoginSucc()))
         {
             XError(ELog(78), "ConnectToGateServer: SDK login failed");
             this.HandleLoginFailed(0, this.GetLoginErrorTip(ELoginErrorTipType(1)));
             return;
         }
-        local_10 = GetSelectRegionIndex();
-        if (!(GetRegionInfos().IsValidIndex(local_10)))
+        local_10 = this.LoginVM.Get().GetSelectRegionIndex();
+        if (!(this.LoginVM.Get().GetRegionInfos().IsValidIndex(local_10)))
         {
             XError(ELog(78), "ConnectToGateServer: SelectRegionIndex is invalid");
             this.HandleLoginFailed(0, this.GetLoginErrorTip(ELoginErrorTipType(1)));
             return;
         }
-        if (!(TEUIModelRef<FVM_RegionInfo>(GetRegionInfos()[local_10]).IsValid()))
+        TEUIModelRef<FVM_RegionInfo> local_12 = TEUIModelRef<FVM_RegionInfo>(this.LoginVM.Get().GetRegionInfos()[local_10]);
+        if (!(local_12.IsValid()))
         {
             XError(ELog(78), "ConnectToGateServer: RegionInfo is invalid");
             this.HandleLoginFailed(0, this.GetLoginErrorTip(ELoginErrorTipType(1)));
             return;
         }
         FLoginGateInfo local_58;
-        local_58.RegionType = GetType();
-        local_58.RegionName = GetName();
-        local_58.RegionTitle = GetTitle();
-        local_58.RegionAddress = GetDispatchURL();
-        local_58.GateAddress = GetGateAddress();
-        local_58.DsaAddress = GetDSAAddress();
-        local_58.DsaPort = GetDSAPort();
-        local_58.Port = GetGatePort();
-        local_58.DSVersion = GetDSVersion();
+        local_58.RegionType = local_12.Get().GetType();
+        local_58.RegionName = local_12.Get().GetName();
+        local_58.RegionTitle = local_12.Get().GetTitle();
+        local_58.RegionAddress = local_12.Get().GetDispatchURL();
+        local_58.GateAddress = local_12.Get().GetGateAddress();
+        local_58.DsaAddress = local_12.Get().GetDSAAddress();
+        local_58.DsaPort = local_12.Get().GetDSAPort();
+        local_58.Port = local_12.Get().GetGatePort();
+        local_58.DSVersion = local_12.Get().GetDSVersion();
         if (local_58.GateAddress.IsEmpty() || (int(local_58.Port) <= 0))
         {
             XError(ELog(78), "ConnectToGateServer: Selected server gate is invalid");
@@ -598,7 +610,7 @@ class UWidget_LoginOfficial : UEUIActivatableWidget
     UFUNCTION()
     void OnDownloadProgress(const uint64 DownloadedSize, const uint64 TotalSize)
     {
-        DownloadedSize.HandleDownloadProgress(TotalSize);
+        this.LoginVM.Get().HandleDownloadProgress(DownloadedSize, TotalSize);
         return;
     }
     UFUNCTION()
@@ -615,11 +627,11 @@ class UWidget_LoginOfficial : UEUIActivatableWidget
         }
         if (!(bSuccess))
         {
-            bSuccess.HandleDownloadCompleted((Code != 0));
+            this.LoginVM.Get().HandleDownloadCompleted(bSuccess, Code);
             ::CommonPopup_Internal::OpenTips(NSLOCTEXT("Login", "DownloadFailedTips", "资源更新失败。"), local_38, ECommonTipsType(0), FEUIModelContainer(), local_8);
             return;
         }
-        if (!(local_54.TryGetDownloadInfo()))
+        if (!(this.LoginVM.Get().TryGetDownloadInfo(local_54)))
         {
             XError(ELog(78), FString().Append("OnDownloadCompleted Failed to get download info!"));
             return;
@@ -644,13 +656,13 @@ class UWidget_LoginOfficial : UEUIActivatableWidget
             return;
         }
         ::CommonPopup_Internal::OpenTips(NSLOCTEXT("Login", "DownloadCompletedTips", "资源更新完成。"), local_38, ECommonTipsType(0), FEUIModelContainer(), local_8);
-        bSuccess.HandleDownloadCompleted((Code != 0));
+        this.LoginVM.Get().HandleDownloadCompleted(bSuccess, Code);
         return;
     }
     UFUNCTION()
     void OnDownloadManifestCompleted(const bool bSuccess, const int Code)
     {
-        bSuccess.HandleDownloadManifestCompleted((Code != 0));
+        this.LoginVM.Get().HandleDownloadManifestCompleted(bSuccess, Code);
         return;
     }
     UFUNCTION()
@@ -666,7 +678,7 @@ class UWidget_LoginOfficial : UEUIActivatableWidget
     UFUNCTION()
     void OnSDKLoginResult(const FSDKLoginResult &in LoginResult)
     {
-        LoginResult.OnSDKLoginResult();
+        this.LoginVM.Get().OnSDKLoginResult(LoginResult);
         return;
     }
     void InitSDK()
@@ -741,8 +753,8 @@ class UWidget_LoginOfficial : UEUIActivatableWidget
     }
     void HandleObservedModelChanges(FEUIReactiveSubscriberIterator &inout It)
     {
-        FVMS_Login& local_6;
         TEUIModelRef<FVMS_Login> local_2 = this.LoginVM.AsRef();
+        FVMS_Login& local_6 = local_2.Get();
         for (; It; )
         {
             FEUIReactiveSubscriberTrackScope local_56 = FEUIReactiveSubscriberTrackScope(It);

@@ -18,14 +18,14 @@ class UWidget_CommissionEntry : UEUIUserListItemWidget
     UFUNCTION()
     FEUIModelRef CommissionInfo_CommissionRewardList() const
     {
-        FVM_CommissionInfo& local_2;
+        FVM_CommissionInfo& local_2 = this.CommissionInfo.Get();
         FEUIModelRef local_8 = local_2 ? local_2.GetCommissionRewardList() : FEUIModelRef();
         return local_8;
     }
     UFUNCTION()
     FEUIModelRef CommissionInfo_CommissionFirstTimeRewardList() const
     {
-        FVM_CommissionInfo& local_2;
+        FVM_CommissionInfo& local_2 = this.CommissionInfo.Get();
         FEUIModelRef local_8 = local_2 ? local_2.GetCommissionFirstTimeRewardList() : FEUIModelRef();
         return local_8;
     }

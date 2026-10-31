@@ -240,6 +240,7 @@ struct FLevelSpotViewers
     {
         if (this.GetbDefaultVisible())
         {
+            this.GetNagativeViewers().Remove(Viewer);
             return;
         }
         this.GetNagativeViewers().Add(Viewer);
@@ -275,6 +276,7 @@ struct FLevelSpotViewers
             this.GetNagativeViewers().Add(Viewer);
             return;
         }
+        this.GetNagativeViewers().Remove(Viewer);
         return;
     }
     bool TryGetFiniteViewers(TArray<FECSEntity> &inout OutViewers) const
@@ -721,6 +723,7 @@ struct FLevelSpotInfo
             }
         }
         this.GetOverrideInfos().Add(FLevelSpotOverrideInfo(ELevelSpotDataSource(Source)));
+        this.GetOverrideInfos().Sort((0 != 0));
         for (auto& local_16 : this.GetOverrideInfos())
         {
             if (int(local_16.GetSource()) == int(Source))
@@ -1186,11 +1189,9 @@ struct FLevelSpotViewerData
     }
     void RemoveSpot(const FLevelSpotId &inout SpotId)
     {
-        bool local_1 = !(false);
-        if (local_1)
+        if (!(this.GetModify_EntitySpots().Remove(SpotId)))
         {
-            local_1 = !local_1;
-            if (local_1)
+            if (!(this.GetModify_PositionSpots().Remove(SpotId)))
             {
                 return;
             }

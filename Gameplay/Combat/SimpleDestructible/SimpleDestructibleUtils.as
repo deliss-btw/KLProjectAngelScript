@@ -98,7 +98,6 @@ void ServerProcessSimpleDestructible_StaticMesh(const FSimpleDestructibleCacheKe
 bool ServerTryBreakFromHitResult(const FECSEntity &inout EventSenderEntity, const UPrimitiveComponent HitComponent, const int HitItemIndex, const EDestructibleClassLevel DamageLevel, const bool bUseAttackDamageLevel, const EImpactType ImpactType, const EImpactStrength ImpactStrength, const FVector &inout ForceDirection, FSimpleDestructibleBreakResult &inout OutResult)
 {
     UStaticMesh local_8;
-    UClass local_12;
     USimpleDestructibleStaticMeshAssetUserData local_20;
     int local_55 = 0;
     int local_98 = 0;
@@ -117,7 +116,7 @@ bool ServerTryBreakFromHitResult(const FECSEntity &inout EventSenderEntity, cons
         {
             return false;
         }
-        local_20 = (Cast<USimpleDestructibleStaticMeshAssetUserData>(local_8.GetAssetUserData(TSubclassOf<UAssetUserData>(local_12), false)));
+        local_20 = (Cast<USimpleDestructibleStaticMeshAssetUserData>(local_8.GetAssetUserData(TSubclassOf<UAssetUserData>(USimpleDestructibleStaticMeshAssetUserData.Get()), false)));
         if (local_20 == nullptr)
         {
             return false;
@@ -185,7 +184,7 @@ bool ServerTryBreakFromHitResult(const FECSEntity &inout EventSenderEntity, cons
         {
             return false;
         }
-        local_20 = (Cast<USimpleDestructibleStaticMeshAssetUserData>(local_112.GetAssetUserData(TSubclassOf<UAssetUserData>(local_12), false)));
+        local_20 = (Cast<USimpleDestructibleStaticMeshAssetUserData>(local_112.GetAssetUserData(TSubclassOf<UAssetUserData>(USimpleDestructibleStaticMeshAssetUserData.Get()), false)));
         if (local_20 == nullptr)
         {
             return false;
@@ -258,7 +257,7 @@ bool ServerTryBreakFromHitResult(const FECSEntity &inout EventSenderEntity, cons
         {
             return false;
         }
-        local_20 = (Cast<USimpleDestructibleStaticMeshAssetUserData>(local_8.GetAssetUserData(TSubclassOf<UAssetUserData>(local_12), false)));
+        local_20 = (Cast<USimpleDestructibleStaticMeshAssetUserData>(local_8.GetAssetUserData(TSubclassOf<UAssetUserData>(USimpleDestructibleStaticMeshAssetUserData.Get()), false)));
         if (local_20 == nullptr)
         {
             if (local_150 != nullptr)
@@ -480,7 +479,6 @@ void ClientRestoreAllStates(const FCS_SimpleDestructibleManager &inout Manager, 
 {
     UHierarchicalInstancedStaticMeshComponent local_36;
     UStaticMesh local_38;
-    UClass local_42;
     USimpleDestructibleStaticMeshAssetUserData local_50;
     int local_51;
     UInstancedSkinnedMeshComponent local_160;
@@ -488,9 +486,7 @@ void ClientRestoreAllStates(const FCS_SimpleDestructibleManager &inout Manager, 
     for (auto& local_20 : Manager.GetStateMap_FoliageISM())
     {
         const FSimpleDestructibleCacheKey_FoliageISM& local_22 = local_20.GetKey();
-        TSoftObjectPtr<UHierarchicalInstancedStaticMeshComponent> local_32 = local_22.GetISM();
-        UHierarchicalInstancedStaticMeshComponent local_34;
-        local_36 = local_34;
+        local_36 = local_22.GetISM().Get();
         if (local_36 == nullptr)
         {
             continue;
@@ -500,7 +496,7 @@ void ClientRestoreAllStates(const FCS_SimpleDestructibleManager &inout Manager, 
         {
             continue;
         }
-        local_50 = Cast<USimpleDestructibleStaticMeshAssetUserData>(local_38.GetAssetUserData(TSubclassOf<UAssetUserData>(local_42), false));
+        local_50 = Cast<USimpleDestructibleStaticMeshAssetUserData>(local_38.GetAssetUserData(TSubclassOf<UAssetUserData>(USimpleDestructibleStaticMeshAssetUserData.Get()), false));
         if (local_50 == nullptr)
         {
             continue;
@@ -517,6 +513,7 @@ void ClientRestoreAllStates(const FCS_SimpleDestructibleManager &inout Manager, 
             {
                 FSimpleDestructibleUtils::RemoveRemainInstance(local_36.GetOwner(), local_50.RemainStaticMeshObject, local_96.RemainInstanceId);
             }
+            ClientCache.AppliedStateMap_FoliageISM.Remove(local_22);
         }
         FTransform local_124;
         if (!(local_36.GetInstanceTransform(local_22.GetInstanceId(), local_124, true)))
@@ -528,9 +525,7 @@ void ClientRestoreAllStates(const FCS_SimpleDestructibleManager &inout Manager, 
     for (auto& local_144 : Manager.GetStateMap_FoliageISkM())
     {
         const FSimpleDestructibleCacheKey_FoliageISkM& local_146 = local_144.GetKey();
-        TSoftObjectPtr<UInstancedSkinnedMeshComponent> local_156 = local_146.GetISkM();
-        UInstancedSkinnedMeshComponent local_158;
-        local_160 = local_158;
+        local_160 = local_146.GetISkM().Get();
         if (local_160 == nullptr)
         {
             continue;
@@ -540,7 +535,7 @@ void ClientRestoreAllStates(const FCS_SimpleDestructibleManager &inout Manager, 
         {
             continue;
         }
-        local_50 = Cast<USimpleDestructibleStaticMeshAssetUserData>(local_164.GetAssetUserData(TSubclassOf<UAssetUserData>(local_42), false));
+        local_50 = Cast<USimpleDestructibleStaticMeshAssetUserData>(local_164.GetAssetUserData(TSubclassOf<UAssetUserData>(USimpleDestructibleStaticMeshAssetUserData.Get()), false));
         if (local_50 == nullptr)
         {
             continue;
@@ -557,6 +552,7 @@ void ClientRestoreAllStates(const FCS_SimpleDestructibleManager &inout Manager, 
             {
                 FSimpleDestructibleUtils::RemoveRemainInstance(local_160.GetOwner(), local_50.RemainStaticMeshObject, local_96.RemainInstanceId);
             }
+            ClientCache.AppliedStateMap_FoliageISkM.Remove(local_146);
         }
         FTransform local_124;
         if (!(FSimpleDestructibleUtils::GetInstanceSkinnedMeshTransform(local_160, local_146.GetInstanceId(), local_124, true)))
@@ -568,9 +564,7 @@ void ClientRestoreAllStates(const FCS_SimpleDestructibleManager &inout Manager, 
     for (auto& local_182 : Manager.GetStateMap_StaticMesh())
     {
         const FSimpleDestructibleCacheKey_StaticMesh& local_184 = local_182.GetKey();
-        TSoftObjectPtr<UStaticMeshComponent> local_194 = local_184.GetSM();
-        UStaticMeshComponent local_196;
-        local_198 = local_196;
+        local_198 = local_184.GetSM().Get();
         if (local_198 == nullptr)
         {
             continue;
@@ -580,7 +574,7 @@ void ClientRestoreAllStates(const FCS_SimpleDestructibleManager &inout Manager, 
         {
             continue;
         }
-        local_50 = Cast<USimpleDestructibleStaticMeshAssetUserData>(local_38.GetAssetUserData(TSubclassOf<UAssetUserData>(local_42), false));
+        local_50 = Cast<USimpleDestructibleStaticMeshAssetUserData>(local_38.GetAssetUserData(TSubclassOf<UAssetUserData>(USimpleDestructibleStaticMeshAssetUserData.Get()), false));
         if (local_50 == nullptr)
         {
             continue;
@@ -597,6 +591,7 @@ void ClientRestoreAllStates(const FCS_SimpleDestructibleManager &inout Manager, 
             {
                 FSimpleDestructibleUtils::RemoveRemainInstance(local_198.GetOwner(), local_50.RemainStaticMeshObject, local_96.RemainInstanceId);
             }
+            ClientCache.AppliedStateMap_StaticMesh.Remove(local_184);
         }
         SimpleDestructibleUtils::ClientApplySimpleDestructible_StaticMesh(local_184, local_51, ClientCache, local_50, local_198);
     }
@@ -606,7 +601,6 @@ void ClientSyncNewDestructibleStates(const FCS_SimpleDestructibleManager &inout 
 {
     UHierarchicalInstancedStaticMeshComponent local_36;
     UStaticMesh local_38;
-    UClass local_68;
     USimpleDestructibleStaticMeshAssetUserData local_76;
     FCE_SimpleDestructibleProcessView_FoliageISM local_88;
     UInstancedSkinnedMeshComponent local_124;
@@ -621,9 +615,7 @@ void ClientSyncNewDestructibleStates(const FCS_SimpleDestructibleManager &inout 
             continue;
         }
         ClientCache.ObservedAuthorityKeys_FoliageISM.Add(local_22);
-        TSoftObjectPtr<UHierarchicalInstancedStaticMeshComponent> local_32 = local_22.GetISM();
-        UHierarchicalInstancedStaticMeshComponent local_34;
-        local_36 = local_34;
+        local_36 = local_22.GetISM().Get();
         if (local_36 == nullptr)
         {
             continue;
@@ -638,12 +630,12 @@ void ClientSyncNewDestructibleStates(const FCS_SimpleDestructibleManager &inout 
         {
             continue;
         }
-        local_76 = Cast<USimpleDestructibleStaticMeshAssetUserData>(local_38.GetAssetUserData(TSubclassOf<UAssetUserData>(local_68), false));
+        local_76 = Cast<USimpleDestructibleStaticMeshAssetUserData>(local_38.GetAssetUserData(TSubclassOf<UAssetUserData>(USimpleDestructibleStaticMeshAssetUserData.Get()), false));
         if (local_76 == nullptr)
         {
             continue;
         }
-        SimpleDestructibleUtils::PlayDestructibleInstantFX(local_76, local_64, GetImpactType(), GetImpactStrength(), GetForceDirection());
+        SimpleDestructibleUtils::PlayDestructibleInstantFX(local_76, local_64, local_20.GetValue().GetImpactType(), local_20.GetValue().GetImpactStrength(), local_20.GetValue().GetForceDirection());
         ECS::GetContextTime();
         FECSWorldPtr local_80 = ECS::GetECSWorld();
         local_88.ReceiverComponent = local_22.GetISM();
@@ -659,9 +651,7 @@ void ClientSyncNewDestructibleStates(const FCS_SimpleDestructibleManager &inout 
             continue;
         }
         ClientCache.ObservedAuthorityKeys_FoliageISkM.Add(local_110);
-        TSoftObjectPtr<UInstancedSkinnedMeshComponent> local_120 = local_110.GetISkM();
-        UInstancedSkinnedMeshComponent local_122;
-        local_124 = local_122;
+        local_124 = local_110.GetISkM().Get();
         if (local_124 == nullptr)
         {
             continue;
@@ -676,12 +666,12 @@ void ClientSyncNewDestructibleStates(const FCS_SimpleDestructibleManager &inout 
         {
             continue;
         }
-        local_76 = Cast<USimpleDestructibleStaticMeshAssetUserData>(local_128.GetAssetUserData(TSubclassOf<UAssetUserData>(local_68), false));
+        local_76 = Cast<USimpleDestructibleStaticMeshAssetUserData>(local_128.GetAssetUserData(TSubclassOf<UAssetUserData>(USimpleDestructibleStaticMeshAssetUserData.Get()), false));
         if (local_76 == nullptr)
         {
             continue;
         }
-        SimpleDestructibleUtils::PlayDestructibleInstantFX(local_76, local_64, GetImpactType(), GetImpactStrength(), GetForceDirection());
+        SimpleDestructibleUtils::PlayDestructibleInstantFX(local_76, local_64, local_108.GetValue().GetImpactType(), local_108.GetValue().GetImpactStrength(), local_108.GetValue().GetForceDirection());
         ECS::GetContextTime();
         FECSWorldPtr local_80_2 = ECS::GetECSWorld();
         local_134.ReceiverComponent = local_110.GetISkM();
@@ -697,9 +687,7 @@ void ClientSyncNewDestructibleStates(const FCS_SimpleDestructibleManager &inout 
             continue;
         }
         ClientCache.ObservedAuthorityKeys_StaticMesh.Add(local_154);
-        TSoftObjectPtr<UStaticMeshComponent> local_164 = local_154.GetSM();
-        UStaticMeshComponent local_166;
-        local_168 = local_166;
+        local_168 = local_154.GetSM().Get();
         if (local_168 == nullptr)
         {
             continue;
@@ -710,12 +698,12 @@ void ClientSyncNewDestructibleStates(const FCS_SimpleDestructibleManager &inout 
             continue;
         }
         FTransform local_192 = local_168.GetWorldTransform();
-        local_76 = Cast<USimpleDestructibleStaticMeshAssetUserData>(local_38.GetAssetUserData(TSubclassOf<UAssetUserData>(local_68), false));
+        local_76 = Cast<USimpleDestructibleStaticMeshAssetUserData>(local_38.GetAssetUserData(TSubclassOf<UAssetUserData>(USimpleDestructibleStaticMeshAssetUserData.Get()), false));
         if (local_76 == nullptr)
         {
             continue;
         }
-        SimpleDestructibleUtils::PlayDestructibleInstantFX(local_76, local_192, GetImpactType(), GetImpactStrength(), GetForceDirection());
+        SimpleDestructibleUtils::PlayDestructibleInstantFX(local_76, local_192, local_152.GetValue().GetImpactType(), local_152.GetValue().GetImpactStrength(), local_152.GetValue().GetForceDirection());
         ECS::GetContextTime();
         FECSWorldPtr local_80_3 = ECS::GetECSWorld();
         local_198.ReceiverComponent = local_154.GetSM();
@@ -726,11 +714,11 @@ void ClientSyncNewDestructibleStates(const FCS_SimpleDestructibleManager &inout 
 }
 void RemoveRemainInstanceForAppliedState(const FSimpleDestructibleAppliedState &inout State)
 {
-    UStaticMesh local_6;
     if (!(State.bHasRemain))
     {
         return;
     }
+    UStaticMesh local_6 = State.RemainStaticMesh.Get();
     if (local_6 != nullptr)
     {
         FSimpleDestructibleUtils::RemoveRemainInstanceByWorld(ECS::GetUEWorld(), local_6, State.RemainInstanceId);
@@ -739,20 +727,15 @@ void RemoveRemainInstanceForAppliedState(const FSimpleDestructibleAppliedState &
 }
 void ClientCleanupUnloadedStates(FCS_SimpleDestructibleClientCache &inout ClientCache)
 {
-    FSimpleDestructibleCacheKey_FoliageISM local_26;
-    FSimpleDestructibleAppliedState& local_28;
     UHierarchicalInstancedStaticMeshComponent local_42;
-    FSimpleDestructibleCacheKey_FoliageISkM local_82;
     UInstancedSkinnedMeshComponent local_96;
-    FSimpleDestructibleCacheKey_StaticMesh local_132;
     UStaticMeshComponent local_146;
     TArray<FSimpleDestructibleCacheKey_FoliageISM> local_4;
     for (auto& local_24 : ClientCache.AppliedStateMap_FoliageISM)
     {
-        local_26 = local_24.GetKey();
-        TSoftObjectPtr<UHierarchicalInstancedStaticMeshComponent> local_38 = local_26.GetISM();
-        UHierarchicalInstancedStaticMeshComponent local_40;
-        local_42 = local_40;
+        FSimpleDestructibleCacheKey_FoliageISM local_26 = local_24.GetKey();
+        FSimpleDestructibleAppliedState& local_28 = local_24.GetValue();
+        local_42 = local_26.GetISM().Get();
         if (local_42 != nullptr && (local_42.GetUniqueID() == int(local_28.SourceUniqueId)))
         {
             continue;
@@ -763,52 +746,49 @@ void ClientCleanupUnloadedStates(FCS_SimpleDestructibleClientCache &inout Client
     auto local_52 = local_4.Iterator();
     for (; local_52.CanProceed;)
     {
-        local_26 = local_52.Proceed();
+        ClientCache.AppliedStateMap_FoliageISM.Remove(local_52.Proceed());
     }
     TArray<FSimpleDestructibleCacheKey_FoliageISkM> local_62;
     for (auto& local_80 : ClientCache.AppliedStateMap_FoliageISkM)
     {
-        local_82 = local_80.GetKey();
-        TSoftObjectPtr<UInstancedSkinnedMeshComponent> local_92 = local_82.GetISkM();
-        UInstancedSkinnedMeshComponent local_94;
-        local_96 = local_94;
-        if (local_96 != nullptr && (local_96.GetUniqueID() == int(local_28.SourceUniqueId)))
+        FSimpleDestructibleCacheKey_FoliageISkM local_82 = local_80.GetKey();
+        FSimpleDestructibleAppliedState& local_28_2 = local_80.GetValue();
+        local_96 = local_82.GetISkM().Get();
+        if (local_96 != nullptr && (local_96.GetUniqueID() == int(local_28_2.SourceUniqueId)))
         {
             continue;
         }
-        SimpleDestructibleUtils::RemoveRemainInstanceForAppliedState(local_28);
+        SimpleDestructibleUtils::RemoveRemainInstanceForAppliedState(local_28_2);
         local_62.Add(local_82);
     }
     auto local_102 = local_62.Iterator();
     for (; local_102.CanProceed;)
     {
-        local_82 = local_102.Proceed();
+        ClientCache.AppliedStateMap_FoliageISkM.Remove(local_102.Proceed());
     }
     TArray<FSimpleDestructibleCacheKey_StaticMesh> local_112;
     for (auto& local_130 : ClientCache.AppliedStateMap_StaticMesh)
     {
-        local_132 = local_130.GetKey();
-        TSoftObjectPtr<UStaticMeshComponent> local_142 = local_132.GetSM();
-        UStaticMeshComponent local_144;
-        local_146 = local_144;
-        if (local_146 != nullptr && (local_146.GetUniqueID() == int(local_28.SourceUniqueId)))
+        FSimpleDestructibleCacheKey_StaticMesh local_132 = local_130.GetKey();
+        FSimpleDestructibleAppliedState& local_28_3 = local_130.GetValue();
+        local_146 = local_132.GetSM().Get();
+        if (local_146 != nullptr && (local_146.GetUniqueID() == int(local_28_3.SourceUniqueId)))
         {
             continue;
         }
-        SimpleDestructibleUtils::RemoveRemainInstanceForAppliedState(local_28);
+        SimpleDestructibleUtils::RemoveRemainInstanceForAppliedState(local_28_3);
         local_112.Add(local_132);
     }
     auto local_152 = local_112.Iterator();
     for (; local_152.CanProceed;)
     {
-        local_132 = local_152.Proceed();
+        ClientCache.AppliedStateMap_StaticMesh.Remove(local_152.Proceed());
     }
     return;
 }
 void ClientRevertAllAppliedStates(const FCS_SimpleDestructibleClientCache &inout ClientCache)
 {
     int local_17;
-    const FSimpleDestructibleAppliedState& local_24;
     UHierarchicalInstancedStaticMeshComponent local_38;
     int local_43;
     UInstancedSkinnedMeshComponent local_78;
@@ -816,9 +796,8 @@ void ClientRevertAllAppliedStates(const FCS_SimpleDestructibleClientCache &inout
     for (auto& local_20 : ClientCache.AppliedStateMap_FoliageISM)
     {
         const FSimpleDestructibleCacheKey_FoliageISM& local_22 = local_20.GetKey();
-        TSoftObjectPtr<UHierarchicalInstancedStaticMeshComponent> local_34 = local_22.GetISM();
-        UHierarchicalInstancedStaticMeshComponent local_36;
-        local_38 = local_36;
+        const FSimpleDestructibleAppliedState& local_24 = local_20.GetValue();
+        local_38 = local_22.GetISM().Get();
         if (local_38 == nullptr)
         {
             local_17 = 0;
@@ -836,34 +815,33 @@ void ClientRevertAllAppliedStates(const FCS_SimpleDestructibleClientCache &inout
     for (auto& local_62 : ClientCache.AppliedStateMap_FoliageISkM)
     {
         const FSimpleDestructibleCacheKey_FoliageISkM& local_64 = local_62.GetKey();
-        TSoftObjectPtr<UInstancedSkinnedMeshComponent> local_74 = local_64.GetISkM();
-        UInstancedSkinnedMeshComponent local_76;
-        local_78 = local_76;
+        const FSimpleDestructibleAppliedState& local_24_2 = local_62.GetValue();
+        local_78 = local_64.GetISkM().Get();
         if (local_78 == nullptr)
         {
             local_43 = 0;
         }
         else
         {
-            local_43 = (local_78.GetUniqueID() == int(local_24.SourceUniqueId));
+            local_43 = (local_78.GetUniqueID() == int(local_24_2.SourceUniqueId));
         }
         if (local_43 != 0)
         {
-            FSimpleDestructibleUtils::UpdateInstanceSkinnedMeshTransform(local_78, local_64.GetInstanceId(), local_24.OriginalTransform, true, true, true);
+            FSimpleDestructibleUtils::UpdateInstanceSkinnedMeshTransform(local_78, local_64.GetInstanceId(), local_24_2.OriginalTransform, true, true, true);
         }
-        SimpleDestructibleUtils::RemoveRemainInstanceForAppliedState(local_24);
+        SimpleDestructibleUtils::RemoveRemainInstanceForAppliedState(local_24_2);
     }
     for (auto& local_96 : ClientCache.AppliedStateMap_StaticMesh)
     {
-        TSoftObjectPtr<UStaticMeshComponent> local_108 = local_96.GetKey().GetSM();
-        UStaticMeshComponent local_110;
-        local_112 = local_110;
-        if (local_112 != nullptr && (local_112.GetUniqueID() == int(local_24.SourceUniqueId)))
+        const FSimpleDestructibleCacheKey_StaticMesh& local_98 = local_96.GetKey();
+        const FSimpleDestructibleAppliedState& local_24_3 = local_96.GetValue();
+        local_112 = local_98.GetSM().Get();
+        if (local_112 != nullptr && (local_112.GetUniqueID() == int(local_24_3.SourceUniqueId)))
         {
-            local_112.SetCollisionEnabled(local_24.OriginalCollisionEnabled);
-            local_112.SetVisibility((int(local_24.bOriginalVisible) != 0), false);
+            local_112.SetCollisionEnabled(local_24_3.OriginalCollisionEnabled);
+            local_112.SetVisibility((int(local_24_3.bOriginalVisible) != 0), false);
         }
-        SimpleDestructibleUtils::RemoveRemainInstanceForAppliedState(local_24);
+        SimpleDestructibleUtils::RemoveRemainInstanceForAppliedState(local_24_3);
     }
     return;
 }

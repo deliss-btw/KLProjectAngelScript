@@ -75,13 +75,14 @@ struct FVM_TrainingItem : FEUIViewModel
     }
     void PostConstruct()
     {
-        int local_8 = 0;
         if (!(this.GetTrainingInfo().IsSet()))
         {
             return;
         }
         this.SetHoverState(0);
+        this.SetTrainingName(this.GetTrainingInfo().Get().TrainingName);
         FMS_TrainingModel& local_6 = ::FMS_TrainingModel::Get(this.GetManager());
+        int local_8 = this.GetTrainingInfo().Get().DataId;
         int local_7 = local_8;
         this.SetIsUnLock(local_6.IsTrainingUnlock(this.GetTrainingInfo()));
         this.SetbIsFinished(local_6.IsTrainingFinished(local_7));
@@ -91,7 +92,6 @@ struct FVM_TrainingItem : FEUIViewModel
     }
     void OnTrainingClick()
     {
-        int local_11 = 0;
         if (!(this.GetTrainingInfo().IsSet()))
         {
             return;
@@ -99,7 +99,7 @@ struct FVM_TrainingItem : FEUIViewModel
         FEUIModelRef local_8 = FEUIModelRef(this);
         FEUIMessageBus::Publish(EUIMessageBus);
         FMsg_TrainingItemClicked local_10;
-        local_10.TrainingId = local_11;
+        local_10.TrainingId = this.GetTrainingInfo().Get().DataId;
         return;
     }
     void OnTrainingHover()
@@ -237,11 +237,9 @@ FVM_TrainingItem& Create(const UObject ContextObject, const TDataObjectPtr<FTrai
 {
     return FVM_TrainingItem::CreateByManager(EUIInternal::GetContextManager(ContextObject), TrainingInfo);
 }
-FVM_TrainingItem CreateByManager(const UEUIManagerSubsystem Manager, const TDataObjectPtr<FTrainingInfoConfig> &inout TrainingInfo)
+FVM_TrainingItem& CreateByManager(const UEUIManagerSubsystem Manager, const TDataObjectPtr<FTrainingInfoConfig> &inout TrainingInfo)
 {
-    FVM_TrainingItem __r;
-    TEUIModelRef<FVM_TrainingItem> local_6 = TEUIModelRef<FVM_TrainingItem>(EUIInternal::MakeModelWithManager_Generic(Manager, FVM_TrainingItem::ModelId, 0, TrainingInfo));
-    return __r;
+    return TEUIModelRef<FVM_TrainingItem>(EUIInternal::MakeModelWithManager_Generic(Manager, FVM_TrainingItem::ModelId, 0, TrainingInfo)).Get();
 }
 void GetModelInfo(FEUIViewModelMetaInfo &inout Result)
 {
@@ -340,7 +338,6 @@ namespace __GeneratedProperties_FVM_TrainingItem
 {
 UScriptStruct StaticStruct()
 {
-    UScriptStruct local_2;
-    return local_2;
+    return __GeneratedProperties_FVM_TrainingItem.Get();
 }
 }

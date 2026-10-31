@@ -3,7 +3,8 @@ namespace BlueprintFunctions_AllyAssist
 UFUNCTION()
 bool AllyAssist_IsAllyAssistRule()
 {
-    return BlueprintFunctions_BossTracking::BossTracking_GetEntryRuleConfig().IsSet() && (0 == 5);
+    TDataObjectPtr<FCommissionEntryRuleConfig> local_24 = BlueprintFunctions_BossTracking::BossTracking_GetEntryRuleConfig();
+    return local_24.IsSet() && (int(local_24.Get().RuleType) == 5);
 }
 UFUNCTION()
 void AllyAssist_FindSpawnPointsInAnnulus(const FVector &inout Center, const float32 MinRadius, const float32 MaxRadius, TArray<AAllySpawnPoint> &out Result)

@@ -88,10 +88,7 @@ struct FVM_Execute_InputPushProgress : FEUIViewModel
             {
                 this.SetState(local_22.GetState());
                 this.SetCurProgress(local_22.GetProgressValue());
-                float32 local_24 = local_22.GetProgressValue();
-                float32 local_25 = local_22.GetProgressMaxValue();
-                local_24 = local_24 / local_25;
-                this.SetCurProgressRatio(local_25);
+                this.SetCurProgressRatio(local_22.GetConfig().Get().InputPushProgressDifficulty.GetFloatValue((local_22.GetProgressValue() / local_22.GetProgressMaxValue()), 0.0f));
                 this.SetCurTime(float32(local_22.GetCurTime().ToSeconds()));
                 this.SetMaxTime(float32(local_22.GetTotalTime().ToSeconds()));
             }
@@ -319,11 +316,9 @@ FVM_Execute_InputPushProgress& Create(const UObject ContextObject)
 {
     return FVM_Execute_InputPushProgress::CreateByManager(EUIInternal::GetContextManager(ContextObject));
 }
-FVM_Execute_InputPushProgress CreateByManager(const UEUIManagerSubsystem Manager)
+FVM_Execute_InputPushProgress& CreateByManager(const UEUIManagerSubsystem Manager)
 {
-    FVM_Execute_InputPushProgress __r;
-    TEUIModelRef<FVM_Execute_InputPushProgress> local_6 = TEUIModelRef<FVM_Execute_InputPushProgress>(EUIInternal::MakeModelWithManager(Manager, FVM_Execute_InputPushProgress::ModelId));
-    return __r;
+    return TEUIModelRef<FVM_Execute_InputPushProgress>(EUIInternal::MakeModelWithManager(Manager, FVM_Execute_InputPushProgress::ModelId)).Get();
 }
 void GetModelInfo(FEUIViewModelMetaInfo &inout Result)
 {
@@ -426,7 +421,6 @@ namespace __GeneratedProperties_FVM_Execute_InputPushProgress
 {
 UScriptStruct StaticStruct()
 {
-    UScriptStruct local_2;
-    return local_2;
+    return __GeneratedProperties_FVM_Execute_InputPushProgress.Get();
 }
 }

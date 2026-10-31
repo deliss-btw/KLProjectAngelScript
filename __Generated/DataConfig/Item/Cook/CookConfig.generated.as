@@ -48,7 +48,6 @@ int __FCookEnergyThresholdConfig_GetAbundanceTierLevel(const TDataObjectPtr<FCoo
 UFUNCTION()
 FText __FCookEnergyThresholdConfig_GetDescription(const TDataObjectPtr<FCookEnergyThresholdConfig> &inout DataObject)
 {
-    FText __r;
     if ((DataObject == nullptr))
     {
         if (!(EUIGlobals::GIsDuringPropertyConversion))
@@ -58,7 +57,7 @@ FText __FCookEnergyThresholdConfig_GetDescription(const TDataObjectPtr<FCookEner
         FCookEnergyThresholdConfig local_22;
         return local_22.Description;
     }
-    return __r;
+    return DataObject.Get().Description;
 }
 UFUNCTION()
 FCookEnergyThresholdConfig CastToFCookEnergyThresholdConfig(const TDataObjectPtr<FCookEnergyThresholdConfig> &inout DataObject)
@@ -72,7 +71,6 @@ namespace __FCookStatModifierLadderConfigFunctions
 UFUNCTION()
 ECookStatType __FCookStatModifierLadderConfig_GetStatType(const TDataObjectPtr<FCookStatModifierLadderConfig> &inout DataObject)
 {
-    int local_43 = 0;
     if ((DataObject == nullptr))
     {
         if (!(EUIGlobals::GIsDuringPropertyConversion))
@@ -80,10 +78,9 @@ ECookStatType __FCookStatModifierLadderConfig_GetStatType(const TDataObjectPtr<F
             FBlueprintDebugFunctions::ThrowScriptException("Get 'StatType' from a null 'FCookStatModifierLadderConfig' DataObject!");
         }
         FCookStatModifierLadderConfig local_42;
-        local_43 = int(local_42.StatType);
-        return ECookStatType(local_43);
+        return local_42.StatType;
     }
-    return ECookStatType(local_43);
+    return DataObject.Get().StatType;
 }
 UFUNCTION()
 int __FCookStatModifierLadderConfig_GetLookupValue(const TDataObjectPtr<FCookStatModifierLadderConfig> &inout DataObject)
@@ -112,7 +109,7 @@ TDataObjectPtr<FGameplayModifierConfig> __FCookStatModifierLadderConfig_GetModif
         FCookStatModifierLadderConfig local_42;
         return local_42.GetModifier();
     }
-    return GetModifier();
+    return DataObject.Get().GetModifier();
 }
 UFUNCTION()
 FCookStatModifierLadderConfig CastToFCookStatModifierLadderConfig(const TDataObjectPtr<FCookStatModifierLadderConfig> &inout DataObject)
@@ -126,7 +123,6 @@ namespace __FFoodProductConfigFunctions
 UFUNCTION()
 FSoftBrush __FFoodProductConfig_GetProductIcon(const TDataObjectPtr<FFoodProductConfig> &inout DataObject)
 {
-    FSoftBrush __r;
     if ((DataObject == nullptr))
     {
         if (!(EUIGlobals::GIsDuringPropertyConversion))
@@ -136,12 +132,11 @@ FSoftBrush __FFoodProductConfig_GetProductIcon(const TDataObjectPtr<FFoodProduct
         FFoodProductConfig local_100;
         return local_100.ProductIcon;
     }
-    return __r;
+    return DataObject.Get().ProductIcon;
 }
 UFUNCTION()
 FText __FFoodProductConfig_GetProductName(const TDataObjectPtr<FFoodProductConfig> &inout DataObject)
 {
-    FText __r;
     if ((DataObject == nullptr))
     {
         if (!(EUIGlobals::GIsDuringPropertyConversion))
@@ -151,12 +146,11 @@ FText __FFoodProductConfig_GetProductName(const TDataObjectPtr<FFoodProductConfi
         FFoodProductConfig local_100;
         return local_100.ProductName;
     }
-    return __r;
+    return DataObject.Get().ProductName;
 }
 UFUNCTION()
 EItemRarity __FFoodProductConfig_GetProductRarity(const TDataObjectPtr<FFoodProductConfig> &inout DataObject)
 {
-    int local_101 = 0;
     if ((DataObject == nullptr))
     {
         if (!(EUIGlobals::GIsDuringPropertyConversion))
@@ -164,10 +158,9 @@ EItemRarity __FFoodProductConfig_GetProductRarity(const TDataObjectPtr<FFoodProd
             FBlueprintDebugFunctions::ThrowScriptException("Get 'ProductRarity' from a null 'FFoodProductConfig' DataObject!");
         }
         FFoodProductConfig local_100;
-        local_101 = int(local_100.ProductRarity);
-        return EItemRarity(local_101);
+        return local_100.ProductRarity;
     }
-    return EItemRarity(local_101);
+    return DataObject.Get().ProductRarity;
 }
 UFUNCTION()
 int __FFoodProductConfig_GetOrderID(const TDataObjectPtr<FFoodProductConfig> &inout DataObject)
@@ -187,7 +180,6 @@ int __FFoodProductConfig_GetOrderID(const TDataObjectPtr<FFoodProductConfig> &in
 UFUNCTION()
 FText __FFoodProductConfig_GetProductDescription(const TDataObjectPtr<FFoodProductConfig> &inout DataObject)
 {
-    FText __r;
     if ((DataObject == nullptr))
     {
         if (!(EUIGlobals::GIsDuringPropertyConversion))
@@ -197,7 +189,7 @@ FText __FFoodProductConfig_GetProductDescription(const TDataObjectPtr<FFoodProdu
         FFoodProductConfig local_100;
         return local_100.ProductDescription;
     }
-    return __r;
+    return DataObject.Get().ProductDescription;
 }
 UFUNCTION()
 TDataObjectPtr<FMetaBuffConfig> __FFoodProductConfig_GetMetaBuffConfig(const TDataObjectPtr<FFoodProductConfig> &inout DataObject)
@@ -211,7 +203,7 @@ TDataObjectPtr<FMetaBuffConfig> __FFoodProductConfig_GetMetaBuffConfig(const TDa
         FFoodProductConfig local_100;
         return local_100.GetMetaBuffConfig();
     }
-    return GetMetaBuffConfig();
+    return DataObject.Get().GetMetaBuffConfig();
 }
 UFUNCTION()
 FFoodProductConfig CastToFFoodProductConfig(const TDataObjectPtr<FFoodProductConfig> &inout DataObject)
@@ -240,7 +232,6 @@ int __FFoodCraftConfig_GetPriority(const TDataObjectPtr<FFoodCraftConfig> &inout
 UFUNCTION()
 TMap<FGameplayTag, int> __FFoodCraftConfig_GetRequiredCookTagSums(const TDataObjectPtr<FFoodCraftConfig> &inout DataObject)
 {
-    TMap<FGameplayTag, int> __r;
     if ((DataObject == nullptr))
     {
         if (!(EUIGlobals::GIsDuringPropertyConversion))
@@ -250,7 +241,7 @@ TMap<FGameplayTag, int> __FFoodCraftConfig_GetRequiredCookTagSums(const TDataObj
         FFoodCraftConfig local_60;
         return local_60.RequiredCookTagSums;
     }
-    return __r;
+    return DataObject.Get().RequiredCookTagSums;
 }
 UFUNCTION()
 TDataObjectPtr<FFoodProductConfig> __FFoodCraftConfig_GetProductFood(const TDataObjectPtr<FFoodCraftConfig> &inout DataObject)
@@ -264,7 +255,7 @@ TDataObjectPtr<FFoodProductConfig> __FFoodCraftConfig_GetProductFood(const TData
         FFoodCraftConfig local_60;
         return local_60.GetProductFood();
     }
-    return GetProductFood();
+    return DataObject.Get().GetProductFood();
 }
 UFUNCTION()
 FFoodCraftConfig CastToFFoodCraftConfig(const TDataObjectPtr<FFoodCraftConfig> &inout DataObject)

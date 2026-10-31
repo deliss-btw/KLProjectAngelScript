@@ -6,8 +6,37 @@ class US_WeatherPresentationSystem : UECSScriptSystem
     }
     bool GetArtWeatherConfig(const FECSEntity &inout SourceEntity, const TDataObjectPtr<FWeatherConfig> &inout WeatherConfig, FArtWeatherConfig &inout ArtWeatherConfig, TDataObjectPtr<FWorldAreaConfig> &inout WorldAreaConfig) const
     {
-        // body not fully recovered — stub [argmismatch:argtype]
-        bool __r; return __r;
+        if (!(WeatherConfig.IsSet()))
+        {
+            return false;
+        }
+        FECSEntity local_6 = SourceEntity;
+        Get local_10;
+        const FC_DynamicWeatherTintConfig& local_12 = local_10.opCall();
+        if (local_12)
+        {
+            if (local_12.bUseRegionArtWeatherName)
+            {
+                Has local_16;
+                local_16.opCall();
+                Get local_24;
+                FECSEntity local_28 = ::FWeatherUtils::GetHighestPriorityWeatherRegionEntityAtLocation(local_24.opCall().GetPosition());
+                local_28.IsValid();
+                local_6 = local_28;
+            }
+            else
+            {
+                return true;
+            }
+        }
+        WorldAreaConfig = ::FWeatherUtils::GetWorldAreaConfigFromRegionEntity(local_6);
+        TDataObjectPtr<FArtWeatherRegionConfig> local_100 = WeatherConfig.Get().GetArtWeatherConfig();
+        if (!(local_100.IsSet()))
+        {
+            return false;
+        }
+        local_100.Get().GetArtWeatherConfig(WorldAreaConfig, ArtWeatherConfig);
+        return true;
     }
     UFUNCTION()
     void ClientJob_OutputWeather(const FECSEntity &inout PlayerEntity, const FCS_TimeOfDay &inout TimeOfDay, const FC_PlayerController &inout PlayerController, const FC_PlayerControllerWeatherEntity &inout CharacterWeatherComp) const
@@ -307,9 +336,10 @@ class US_WeatherPresentationSystem : UECSScriptSystem
     {
         S += "  InitPolicy: ";
         FString local_4 = "None";
-        if (::FLevelUtils::GetCurrentLevelInfoConfig(nullptr).IsSet())
+        TDataObjectPtr<FLevelInfoConfig> local_28 = ::FLevelUtils::GetCurrentLevelInfoConfig(nullptr);
+        if (local_28.IsSet())
         {
-            FString local_58 = FString();
+            local_4 = FString().Append(local_28.Get().InitWeatherPolicy);
         }
         S += local_4;
         return;
@@ -325,14 +355,12 @@ class US_WeatherPresentationSystem : UECSScriptSystem
             bool local_5 = local_10.opCall();
             if (local_5)
             {
-                FString local_22 = " Source: WeatherTint: ";
                 FName local_18 = local_16.WeatherName.GetDataName();
-                FString local_26 = (local_22 + local_18);
+                FString local_26 = ((FString(" Source: WeatherTint: ")) + local_18);
                 local_4 += local_26;
             }
             else
             {
-                FString local_22;
                 Get local_30;
                 local_32 = local_30.opCall();
                 if (local_32)
@@ -346,14 +374,14 @@ class US_WeatherPresentationSystem : UECSScriptSystem
                     }
                     else
                     {
-                        local_22 = FString(" Source: Global Region: ");
                         int local_39_2 = WeatherSourceEntity.GetIdValue();
-                        FString local_26_3 = (local_22 + local_39_2);
+                        FString local_26_3 = (FString(" Source: Global Region: ") + local_39_2);
                         local_4 += local_26_3;
                     }
-                    if (::FWeatherUtils::GetWorldAreaConfigFromRegionEntity(WeatherSourceEntity).IsSet())
+                    TDataObjectPtr<FWorldAreaConfig> local_64 = ::FWeatherUtils::GetWorldAreaConfigFromRegionEntity(WeatherSourceEntity);
+                    if (local_64.IsSet())
                     {
-                        FString local_92 = (FString(" WorldAreaConfig: ") + local_22);
+                        FString local_92 = (FString(" WorldAreaConfig: ") + local_64.Get().AreaName.ToString());
                         local_4 += local_92;
                     }
                     else
@@ -375,9 +403,9 @@ class US_WeatherPresentationSystem : UECSScriptSystem
         }
         if (local_32)
         {
-            FString local_22 = "   Template:";
+            FString local_22_2 = "   Template:";
             FName local_18_2 = local_32.GetWeatherTemplate().GetDataName();
-            FString local_92_3 = (local_22 + local_18_2);
+            FString local_92_3 = (local_22_2 + local_18_2);
             FString local_26_4 = (local_92_3 + "  OverrideTemplate: ");
             FName local_18_3 = local_32.GetRuntimeOverrideWeatherTemplate().GetDataName();
             FString local_92_4 = (local_26_4 + local_18_3);
@@ -386,7 +414,6 @@ class US_WeatherPresentationSystem : UECSScriptSystem
         System::PrintString(__GetWorldContext(), local_4, true, false, FLinearColor::Green, -1.0f, n"Debug_Weather1");
         if (local_32)
         {
-            FString local_22;
             TDataObjectPtr<FWeatherGenerateTemplate> local_122 = local_32.GetUsingWeatherTemplate();
             FName local_18_4 = local_122.GetDataName();
             local_4 = (FString(" Using Template: ") + local_18_4);
@@ -394,13 +421,14 @@ class US_WeatherPresentationSystem : UECSScriptSystem
             const FC_DebugOverrideRegionWeatherData& local_154 = local_152.opCall();
             if (local_154)
             {
-                FString local_92_5 = ((FString("  OverrideWeather: ") + local_154.GetWeatherConfig().GetDataName()) + " Duration:");
+                FString local_22_3 = (FString("  OverrideWeather: ") + local_154.GetWeatherConfig().GetDataName());
+                FString local_92_5 = (local_22_3 + " Duration:");
                 float32 local_97 = local_154.GetDuration();
-                local_22 = (local_92_5 + local_97);
-                FString local_26_5 = (local_22 + " BlendTime:");
+                FString local_22_4 = (local_92_5 + local_97);
+                FString local_26_5 = (local_22_4 + " BlendTime:");
                 float32 local_97_2 = local_154.GetArtWeatherBlendTime();
-                local_22 = (local_26_5 + local_97_2);
-                local_4 += local_22;
+                FString local_22_5 = (local_26_5 + local_97_2);
+                local_4 += local_22_5;
             }
             else
             {

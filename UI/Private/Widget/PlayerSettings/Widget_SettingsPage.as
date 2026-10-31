@@ -49,7 +49,7 @@ class UWidget_SettingsPage : UEUIActivatableWidget
     UFUNCTION()
     bool HandleRequireCloseAnswer(const FCommonDialogAnswer &inout Answer) const
     {
-        FVMS_PlayerKeyMappings& local_2;
+        FVMS_PlayerKeyMappings& local_2 = this.KeyMappings.Get();
         if (int(Answer.AnswerType) == 1)
         {
             local_2.SetbShouldSave(true);
@@ -86,7 +86,7 @@ class UWidget_SettingsPage : UEUIActivatableWidget
     UFUNCTION()
     TArray<FEUIModelWeakRef> KeyMappings_KeyboardMouseItems() const
     {
-        FVMS_PlayerKeyMappings& local_2;
+        FVMS_PlayerKeyMappings& local_2 = this.KeyMappings.Get();
         TArray<FEUIModelWeakRef> local_16;
         if (local_2)
         {
@@ -101,7 +101,7 @@ class UWidget_SettingsPage : UEUIActivatableWidget
     UFUNCTION()
     TArray<FEUIModelWeakRef> KeyMappings_GamepadItems() const
     {
-        FVMS_PlayerKeyMappings& local_2;
+        FVMS_PlayerKeyMappings& local_2 = this.KeyMappings.Get();
         TArray<FEUIModelWeakRef> local_16;
         if (local_2)
         {
@@ -216,7 +216,7 @@ class UWidget_SettingsPage_JustForHint : UEUIActivatableWidget
     UFUNCTION()
     bool HandleRequireCloseAnswer(const FCommonDialogAnswer &inout Answer) const
     {
-        FVMS_PlayerKeyMappings& local_2;
+        FVMS_PlayerKeyMappings& local_2 = this.KeyMappings.Get();
         if (int(Answer.AnswerType) == 1)
         {
             local_2.SetbShouldSave(true);
@@ -253,7 +253,7 @@ class UWidget_SettingsPage_JustForHint : UEUIActivatableWidget
     UFUNCTION()
     TArray<FEUIModelWeakRef> KeyMappings_KeyboardMouseItems() const
     {
-        FVMS_PlayerKeyMappings& local_2;
+        FVMS_PlayerKeyMappings& local_2 = this.KeyMappings.Get();
         TArray<FEUIModelWeakRef> local_16;
         if (local_2)
         {
@@ -268,7 +268,7 @@ class UWidget_SettingsPage_JustForHint : UEUIActivatableWidget
     UFUNCTION()
     TArray<FEUIModelWeakRef> KeyMappings_GamepadItems() const
     {
-        FVMS_PlayerKeyMappings& local_2;
+        FVMS_PlayerKeyMappings& local_2 = this.KeyMappings.Get();
         TArray<FEUIModelWeakRef> local_16;
         if (local_2)
         {

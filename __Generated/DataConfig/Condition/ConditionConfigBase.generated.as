@@ -3,7 +3,6 @@ namespace __FConditionConfigBaseFunctions
 UFUNCTION()
 EConditionConfigType __FConditionConfigBase_GetConfigType(const TDataObjectPtr<FConditionConfigBase> &inout DataObject)
 {
-    int local_17 = 0;
     if ((DataObject == nullptr))
     {
         if (!(EUIGlobals::GIsDuringPropertyConversion))
@@ -11,10 +10,9 @@ EConditionConfigType __FConditionConfigBase_GetConfigType(const TDataObjectPtr<F
             FBlueprintDebugFunctions::ThrowScriptException("Get 'ConfigType' from a null 'FConditionConfigBase' DataObject!");
         }
         FConditionConfigBase local_16;
-        local_17 = int(local_16.ConfigType);
-        return EConditionConfigType(local_17);
+        return local_16.ConfigType;
     }
-    return EConditionConfigType(local_17);
+    return DataObject.Get().ConfigType;
 }
 UFUNCTION()
 FConditionConfigBase CastToFConditionConfigBase(const TDataObjectPtr<FConditionConfigBase> &inout DataObject)
@@ -28,7 +26,6 @@ namespace __FServerConditionConfigBaseFunctions
 UFUNCTION()
 FText __FServerConditionConfigBase_GetConditionTips(const TDataObjectPtr<FServerConditionConfigBase> &inout DataObject)
 {
-    FText __r;
     if ((DataObject == nullptr))
     {
         if (!(EUIGlobals::GIsDuringPropertyConversion))
@@ -38,7 +35,7 @@ FText __FServerConditionConfigBase_GetConditionTips(const TDataObjectPtr<FServer
         FServerConditionConfigBase local_20;
         return local_20.ConditionTips;
     }
-    return __r;
+    return DataObject.Get().ConditionTips;
 }
 UFUNCTION()
 FServerConditionConfigBase CastToFServerConditionConfigBase(const TDataObjectPtr<FServerConditionConfigBase> &inout DataObject)

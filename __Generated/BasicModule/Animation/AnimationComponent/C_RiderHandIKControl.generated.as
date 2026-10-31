@@ -33,6 +33,7 @@ struct FC_RiderHandIKControlHistory : FECSComponent
     }
     void Clear()
     {
+        this.History.Clear();
         return;
     }
     bool GetInterpoValue(const FFPTime &inout WorldTime, FC_RiderHandIKControl &inout OutValue) const

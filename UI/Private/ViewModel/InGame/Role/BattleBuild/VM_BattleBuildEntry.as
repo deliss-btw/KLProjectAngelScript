@@ -62,10 +62,7 @@ struct FVM_BattleBuildEntry : FEUIViewModel
     }
     FSlateBrush GetItemIcon() const
     {
-        TEUIModelRef<FItemQuickSlotModel> local_2 = this.GetItemQuickSlotModel();
-        FSlateBrush local_48;
-        local_48.GetItemIcon();
-        return local_48;
+        return this.GetItemQuickSlotModel().Get().GetItemIcon();
     }
     FSlateBrush GetTypeIcon() const
     {
@@ -73,15 +70,11 @@ struct FVM_BattleBuildEntry : FEUIViewModel
     }
     TDataObjectPtr<FItemConfig> GetItemConfig() const
     {
-        TEUIModelRef<FItemQuickSlotModel> local_2 = this.GetItemQuickSlotModel();
-        TDataObjectPtr<FItemConfig> local_26;
-        local_26.GetItemConfig();
-        return local_26;
+        return this.GetItemQuickSlotModel().Get().GetItemConfig();
     }
     TDataObjectPtr<FItemQuickSlotConfig> GetQuickSlotConfig() const
     {
-        TEUIModelRef<FItemQuickSlotModel> local_2 = this.GetItemQuickSlotModel();
-        return GetQuickSlot();
+        return this.GetItemQuickSlotModel().Get().GetQuickSlot();
     }
     int GetSelectStyleIndex() const
     {
@@ -212,11 +205,9 @@ FVM_BattleBuildEntry& Create(const UObject ContextObject)
 {
     return FVM_BattleBuildEntry::CreateByManager(EUIInternal::GetContextManager(ContextObject));
 }
-FVM_BattleBuildEntry CreateByManager(const UEUIManagerSubsystem Manager)
+FVM_BattleBuildEntry& CreateByManager(const UEUIManagerSubsystem Manager)
 {
-    FVM_BattleBuildEntry __r;
-    TEUIModelRef<FVM_BattleBuildEntry> local_6 = TEUIModelRef<FVM_BattleBuildEntry>(EUIInternal::MakeModelWithManager(Manager, FVM_BattleBuildEntry::ModelId));
-    return __r;
+    return TEUIModelRef<FVM_BattleBuildEntry>(EUIInternal::MakeModelWithManager(Manager, FVM_BattleBuildEntry::ModelId)).Get();
 }
 void GetModelInfo(FEUIViewModelMetaInfo &inout Result)
 {
@@ -317,7 +308,6 @@ namespace __GeneratedProperties_FVM_BattleBuildEntry
 {
 UScriptStruct StaticStruct()
 {
-    UScriptStruct local_2;
-    return local_2;
+    return __GeneratedProperties_FVM_BattleBuildEntry.Get();
 }
 }

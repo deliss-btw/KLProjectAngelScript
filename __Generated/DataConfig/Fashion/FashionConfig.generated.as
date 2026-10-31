@@ -3,7 +3,6 @@ namespace __FFashionConfigFunctions
 UFUNCTION()
 bool __FFashionConfig_GetbDefaultUnlock(const TDataObjectPtr<FFashionConfig> &inout DataObject)
 {
-    bool local_1 = false;
     if ((DataObject == nullptr))
     {
         if (!(EUIGlobals::GIsDuringPropertyConversion))
@@ -13,7 +12,7 @@ bool __FFashionConfig_GetbDefaultUnlock(const TDataObjectPtr<FFashionConfig> &in
         FFashionConfig local_142;
         return local_142.bDefaultUnlock;
     }
-    return local_1;
+    return DataObject.Get().bDefaultUnlock;
 }
 UFUNCTION()
 TDataObjectPtr<FServerConditionConfigBase> __FFashionConfig_GetUnlockCondition(const TDataObjectPtr<FFashionConfig> &inout DataObject)
@@ -27,12 +26,11 @@ TDataObjectPtr<FServerConditionConfigBase> __FFashionConfig_GetUnlockCondition(c
         FFashionConfig local_142;
         return local_142.GetUnlockCondition();
     }
-    return GetUnlockCondition();
+    return DataObject.Get().GetUnlockCondition();
 }
 UFUNCTION()
 FText __FFashionConfig_GetUnlockDesOverride(const TDataObjectPtr<FFashionConfig> &inout DataObject)
 {
-    FText __r;
     if ((DataObject == nullptr))
     {
         if (!(EUIGlobals::GIsDuringPropertyConversion))
@@ -42,12 +40,11 @@ FText __FFashionConfig_GetUnlockDesOverride(const TDataObjectPtr<FFashionConfig>
         FFashionConfig local_142;
         return local_142.UnlockDesOverride;
     }
-    return __r;
+    return DataObject.Get().UnlockDesOverride;
 }
 UFUNCTION()
 EFashionSlotType __FFashionConfig_GetSlotType(const TDataObjectPtr<FFashionConfig> &inout DataObject)
 {
-    int local_143 = 0;
     if ((DataObject == nullptr))
     {
         if (!(EUIGlobals::GIsDuringPropertyConversion))
@@ -55,15 +52,13 @@ EFashionSlotType __FFashionConfig_GetSlotType(const TDataObjectPtr<FFashionConfi
             FBlueprintDebugFunctions::ThrowScriptException("Get 'SlotType' from a null 'FFashionConfig' DataObject!");
         }
         FFashionConfig local_142;
-        local_143 = int(local_142.SlotType);
-        return EFashionSlotType(local_143);
+        return local_142.SlotType;
     }
-    return EFashionSlotType(local_143);
+    return DataObject.Get().SlotType;
 }
 UFUNCTION()
 EBodyType __FFashionConfig_GetBodyType(const TDataObjectPtr<FFashionConfig> &inout DataObject)
 {
-    int local_143 = 0;
     if ((DataObject == nullptr))
     {
         if (!(EUIGlobals::GIsDuringPropertyConversion))
@@ -71,10 +66,9 @@ EBodyType __FFashionConfig_GetBodyType(const TDataObjectPtr<FFashionConfig> &ino
             FBlueprintDebugFunctions::ThrowScriptException("Get 'BodyType' from a null 'FFashionConfig' DataObject!");
         }
         FFashionConfig local_142;
-        local_143 = int(local_142.BodyType);
-        return EBodyType(local_143);
+        return local_142.BodyType;
     }
-    return EBodyType(local_143);
+    return DataObject.Get().BodyType;
 }
 UFUNCTION()
 TArray<TDataObjectPtr<FAvatarPrefabConfig>> __FFashionConfig_GetAvatarTypes(const TDataObjectPtr<FFashionConfig> &inout DataObject)
@@ -88,12 +82,11 @@ TArray<TDataObjectPtr<FAvatarPrefabConfig>> __FFashionConfig_GetAvatarTypes(cons
         FFashionConfig local_142;
         return local_142.GetAvatarTypes();
     }
-    return GetAvatarTypes();
+    return DataObject.Get().GetAvatarTypes();
 }
 UFUNCTION()
 FText __FFashionConfig_GetName(const TDataObjectPtr<FFashionConfig> &inout DataObject)
 {
-    FText __r;
     if ((DataObject == nullptr))
     {
         if (!(EUIGlobals::GIsDuringPropertyConversion))
@@ -103,12 +96,11 @@ FText __FFashionConfig_GetName(const TDataObjectPtr<FFashionConfig> &inout DataO
         FFashionConfig local_142;
         return local_142.Name;
     }
-    return __r;
+    return DataObject.Get().Name;
 }
 UFUNCTION()
 FText __FFashionConfig_GetDes(const TDataObjectPtr<FFashionConfig> &inout DataObject)
 {
-    FText __r;
     if ((DataObject == nullptr))
     {
         if (!(EUIGlobals::GIsDuringPropertyConversion))
@@ -118,12 +110,11 @@ FText __FFashionConfig_GetDes(const TDataObjectPtr<FFashionConfig> &inout DataOb
         FFashionConfig local_142;
         return local_142.Des;
     }
-    return __r;
+    return DataObject.Get().Des;
 }
 UFUNCTION()
 EFashionRarity __FFashionConfig_GetRarity(const TDataObjectPtr<FFashionConfig> &inout DataObject)
 {
-    int local_143 = 0;
     if ((DataObject == nullptr))
     {
         if (!(EUIGlobals::GIsDuringPropertyConversion))
@@ -131,10 +122,9 @@ EFashionRarity __FFashionConfig_GetRarity(const TDataObjectPtr<FFashionConfig> &
             FBlueprintDebugFunctions::ThrowScriptException("Get 'Rarity' from a null 'FFashionConfig' DataObject!");
         }
         FFashionConfig local_142;
-        local_143 = int(local_142.Rarity);
-        return EFashionRarity(local_143);
+        return local_142.Rarity;
     }
-    return EFashionRarity(local_143);
+    return DataObject.Get().Rarity;
 }
 UFUNCTION()
 int __FFashionConfig_GetPriority(const TDataObjectPtr<FFashionConfig> &inout DataObject)
@@ -154,7 +144,6 @@ int __FFashionConfig_GetPriority(const TDataObjectPtr<FFashionConfig> &inout Dat
 UFUNCTION()
 EFashionShowType __FFashionConfig_GetShowType(const TDataObjectPtr<FFashionConfig> &inout DataObject)
 {
-    int local_143 = 0;
     if ((DataObject == nullptr))
     {
         if (!(EUIGlobals::GIsDuringPropertyConversion))
@@ -162,15 +151,13 @@ EFashionShowType __FFashionConfig_GetShowType(const TDataObjectPtr<FFashionConfi
             FBlueprintDebugFunctions::ThrowScriptException("Get 'ShowType' from a null 'FFashionConfig' DataObject!");
         }
         FFashionConfig local_142;
-        local_143 = int(local_142.ShowType);
-        return EFashionShowType(local_143);
+        return local_142.ShowType;
     }
-    return EFashionShowType(local_143);
+    return DataObject.Get().ShowType;
 }
 UFUNCTION()
 TMap<EBodyType, TSoftObjectPtr<USkeletalMesh>> __FFashionConfig_GetMeshAssets(const TDataObjectPtr<FFashionConfig> &inout DataObject)
 {
-    TMap<EBodyType, TSoftObjectPtr<USkeletalMesh>> __r;
     if ((DataObject == nullptr))
     {
         if (!(EUIGlobals::GIsDuringPropertyConversion))
@@ -180,12 +167,11 @@ TMap<EBodyType, TSoftObjectPtr<USkeletalMesh>> __FFashionConfig_GetMeshAssets(co
         FFashionConfig local_142;
         return local_142.MeshAssets;
     }
-    return __r;
+    return DataObject.Get().MeshAssets;
 }
 UFUNCTION()
 TMap<EBodyType, TSoftClassPtr<UAnimInstance>> __FFashionConfig_GetAnimBlueprints(const TDataObjectPtr<FFashionConfig> &inout DataObject)
 {
-    TMap<EBodyType, TSoftClassPtr<UAnimInstance>> __r;
     if ((DataObject == nullptr))
     {
         if (!(EUIGlobals::GIsDuringPropertyConversion))
@@ -195,12 +181,11 @@ TMap<EBodyType, TSoftClassPtr<UAnimInstance>> __FFashionConfig_GetAnimBlueprints
         FFashionConfig local_142;
         return local_142.AnimBlueprints;
     }
-    return __r;
+    return DataObject.Get().AnimBlueprints;
 }
 UFUNCTION()
 TMap<EBodyType, FName> __FFashionConfig_GetDyeConfigs(const TDataObjectPtr<FFashionConfig> &inout DataObject)
 {
-    TMap<EBodyType, FName> __r;
     if ((DataObject == nullptr))
     {
         if (!(EUIGlobals::GIsDuringPropertyConversion))
@@ -210,12 +195,11 @@ TMap<EBodyType, FName> __FFashionConfig_GetDyeConfigs(const TDataObjectPtr<FFash
         FFashionConfig local_142;
         return local_142.DyeConfigs;
     }
-    return __r;
+    return DataObject.Get().DyeConfigs;
 }
 UFUNCTION()
 TMap<EDisplayItemIconType, FFashionDisplayIconByBody> __FFashionConfig_GetDisplayIcons(const TDataObjectPtr<FFashionConfig> &inout DataObject)
 {
-    TMap<EDisplayItemIconType, FFashionDisplayIconByBody> __r;
     if ((DataObject == nullptr))
     {
         if (!(EUIGlobals::GIsDuringPropertyConversion))
@@ -225,7 +209,7 @@ TMap<EDisplayItemIconType, FFashionDisplayIconByBody> __FFashionConfig_GetDispla
         FFashionConfig local_142;
         return local_142.DisplayIcons;
     }
-    return __r;
+    return DataObject.Get().DisplayIcons;
 }
 UFUNCTION()
 FFashionConfig CastToFFashionConfig(const TDataObjectPtr<FFashionConfig> &inout DataObject)
@@ -269,7 +253,6 @@ float32 __FClothFashionConfig_GetGroundOffset(const TDataObjectPtr<FClothFashion
 UFUNCTION()
 TSoftObjectPtr<UObject> __FClothFashionConfig_GetClothAssetOverride(const TDataObjectPtr<FClothFashionConfig> &inout DataObject)
 {
-    TSoftObjectPtr<UObject> __r;
     if ((DataObject == nullptr))
     {
         if (!(EUIGlobals::GIsDuringPropertyConversion))
@@ -279,12 +262,11 @@ TSoftObjectPtr<UObject> __FClothFashionConfig_GetClothAssetOverride(const TDataO
         FClothFashionConfig local_178;
         return local_178.ClothAssetOverride;
     }
-    return __r;
+    return DataObject.Get().ClothAssetOverride;
 }
 UFUNCTION()
 TSoftObjectPtr<UObject> __FClothFashionConfig_GetKawaiiAssetOverride(const TDataObjectPtr<FClothFashionConfig> &inout DataObject)
 {
-    TSoftObjectPtr<UObject> __r;
     if ((DataObject == nullptr))
     {
         if (!(EUIGlobals::GIsDuringPropertyConversion))
@@ -294,12 +276,11 @@ TSoftObjectPtr<UObject> __FClothFashionConfig_GetKawaiiAssetOverride(const TData
         FClothFashionConfig local_178;
         return local_178.KawaiiAssetOverride;
     }
-    return __r;
+    return DataObject.Get().KawaiiAssetOverride;
 }
 UFUNCTION()
 bool __FClothFashionConfig_GetbHideHair(const TDataObjectPtr<FClothFashionConfig> &inout DataObject)
 {
-    bool local_1 = false;
     if ((DataObject == nullptr))
     {
         if (!(EUIGlobals::GIsDuringPropertyConversion))
@@ -309,7 +290,7 @@ bool __FClothFashionConfig_GetbHideHair(const TDataObjectPtr<FClothFashionConfig
         FClothFashionConfig local_178;
         return local_178.bHideHair;
     }
-    return local_1;
+    return DataObject.Get().bHideHair;
 }
 UFUNCTION()
 float32 __FClothFashionConfig_GetLocomotionStrideScale(const TDataObjectPtr<FClothFashionConfig> &inout DataObject)
@@ -329,7 +310,6 @@ float32 __FClothFashionConfig_GetLocomotionStrideScale(const TDataObjectPtr<FClo
 UFUNCTION()
 TSoftObjectPtr<UObject> __FClothFashionConfig_GetFootstepSoundOverride(const TDataObjectPtr<FClothFashionConfig> &inout DataObject)
 {
-    TSoftObjectPtr<UObject> __r;
     if ((DataObject == nullptr))
     {
         if (!(EUIGlobals::GIsDuringPropertyConversion))
@@ -339,12 +319,11 @@ TSoftObjectPtr<UObject> __FClothFashionConfig_GetFootstepSoundOverride(const TDa
         FClothFashionConfig local_178;
         return local_178.FootstepSoundOverride;
     }
-    return __r;
+    return DataObject.Get().FootstepSoundOverride;
 }
 UFUNCTION()
 EFashionSurfaceType __FClothFashionConfig_GetSurfaceMaterialType(const TDataObjectPtr<FClothFashionConfig> &inout DataObject)
 {
-    int local_179 = 0;
     if ((DataObject == nullptr))
     {
         if (!(EUIGlobals::GIsDuringPropertyConversion))
@@ -352,10 +331,9 @@ EFashionSurfaceType __FClothFashionConfig_GetSurfaceMaterialType(const TDataObje
             FBlueprintDebugFunctions::ThrowScriptException("Get 'SurfaceMaterialType' from a null 'FClothFashionConfig' DataObject!");
         }
         FClothFashionConfig local_178;
-        local_179 = int(local_178.SurfaceMaterialType);
-        return EFashionSurfaceType(local_179);
+        return local_178.SurfaceMaterialType;
     }
-    return EFashionSurfaceType(local_179);
+    return DataObject.Get().SurfaceMaterialType;
 }
 UFUNCTION()
 FClothFashionConfig CastToFClothFashionConfig(const TDataObjectPtr<FClothFashionConfig> &inout DataObject)
@@ -378,12 +356,11 @@ TDataObjectPtr<FAttachPointConfig> __FDecoFashionConfig_GetAttachPoint(const TDa
         FDecoFashionConfig local_176;
         return local_176.GetAttachPoint();
     }
-    return GetAttachPoint();
+    return DataObject.Get().GetAttachPoint();
 }
 UFUNCTION()
 FFloat3 __FDecoFashionConfig_GetDefaultAttachOffset(const TDataObjectPtr<FDecoFashionConfig> &inout DataObject)
 {
-    FFloat3 __r;
     if ((DataObject == nullptr))
     {
         if (!(EUIGlobals::GIsDuringPropertyConversion))
@@ -393,12 +370,11 @@ FFloat3 __FDecoFashionConfig_GetDefaultAttachOffset(const TDataObjectPtr<FDecoFa
         FDecoFashionConfig local_176;
         return local_176.DefaultAttachOffset;
     }
-    return __r;
+    return DataObject.Get().DefaultAttachOffset;
 }
 UFUNCTION()
 FFloat3 __FDecoFashionConfig_GetDefaultAttachRotation(const TDataObjectPtr<FDecoFashionConfig> &inout DataObject)
 {
-    FFloat3 __r;
     if ((DataObject == nullptr))
     {
         if (!(EUIGlobals::GIsDuringPropertyConversion))
@@ -408,7 +384,7 @@ FFloat3 __FDecoFashionConfig_GetDefaultAttachRotation(const TDataObjectPtr<FDeco
         FDecoFashionConfig local_176;
         return local_176.DefaultAttachRotation;
     }
-    return __r;
+    return DataObject.Get().DefaultAttachRotation;
 }
 UFUNCTION()
 float32 __FDecoFashionConfig_GetDefaultAttachScale(const TDataObjectPtr<FDecoFashionConfig> &inout DataObject)
@@ -428,7 +404,6 @@ float32 __FDecoFashionConfig_GetDefaultAttachScale(const TDataObjectPtr<FDecoFas
 UFUNCTION()
 bool __FDecoFashionConfig_GetbAllowedWithBathrobe(const TDataObjectPtr<FDecoFashionConfig> &inout DataObject)
 {
-    bool local_1 = false;
     if ((DataObject == nullptr))
     {
         if (!(EUIGlobals::GIsDuringPropertyConversion))
@@ -438,7 +413,7 @@ bool __FDecoFashionConfig_GetbAllowedWithBathrobe(const TDataObjectPtr<FDecoFash
         FDecoFashionConfig local_176;
         return local_176.bAllowedWithBathrobe;
     }
-    return local_1;
+    return DataObject.Get().bAllowedWithBathrobe;
 }
 UFUNCTION()
 FDecoFashionConfig CastToFDecoFashionConfig(const TDataObjectPtr<FDecoFashionConfig> &inout DataObject)
@@ -452,7 +427,6 @@ namespace __FMountFashionConfigFunctions
 UFUNCTION()
 EMountSeatType __FMountFashionConfig_GetSeatType(const TDataObjectPtr<FMountFashionConfig> &inout DataObject)
 {
-    int local_165 = 0;
     if ((DataObject == nullptr))
     {
         if (!(EUIGlobals::GIsDuringPropertyConversion))
@@ -460,15 +434,13 @@ EMountSeatType __FMountFashionConfig_GetSeatType(const TDataObjectPtr<FMountFash
             FBlueprintDebugFunctions::ThrowScriptException("Get 'SeatType' from a null 'FMountFashionConfig' DataObject!");
         }
         FMountFashionConfig local_164;
-        local_165 = int(local_164.SeatType);
-        return EMountSeatType(local_165);
+        return local_164.SeatType;
     }
-    return EMountSeatType(local_165);
+    return DataObject.Get().SeatType;
 }
 UFUNCTION()
 TSoftClassPtr<ACharacterPrefab> __FMountFashionConfig_GetMountPrefab(const TDataObjectPtr<FMountFashionConfig> &inout DataObject)
 {
-    TSoftClassPtr<ACharacterPrefab> __r;
     if ((DataObject == nullptr))
     {
         if (!(EUIGlobals::GIsDuringPropertyConversion))
@@ -478,12 +450,11 @@ TSoftClassPtr<ACharacterPrefab> __FMountFashionConfig_GetMountPrefab(const TData
         FMountFashionConfig local_164;
         return local_164.MountPrefab;
     }
-    return __r;
+    return DataObject.Get().MountPrefab;
 }
 UFUNCTION()
 TSoftClassPtr<AActor> __FMountFashionConfig_GetShowcaseActor(const TDataObjectPtr<FMountFashionConfig> &inout DataObject)
 {
-    TSoftClassPtr<AActor> __r;
     if ((DataObject == nullptr))
     {
         if (!(EUIGlobals::GIsDuringPropertyConversion))
@@ -493,7 +464,7 @@ TSoftClassPtr<AActor> __FMountFashionConfig_GetShowcaseActor(const TDataObjectPt
         FMountFashionConfig local_164;
         return local_164.ShowcaseActor;
     }
-    return __r;
+    return DataObject.Get().ShowcaseActor;
 }
 UFUNCTION()
 FMountFashionConfig CastToFMountFashionConfig(const TDataObjectPtr<FMountFashionConfig> &inout DataObject)

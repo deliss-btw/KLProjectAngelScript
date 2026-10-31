@@ -27,7 +27,7 @@ class UBTTask_GetGroundMoveStance : UBTTask_ECSScriptBase
             return EBTNodeResult(1);
         }
         UBlackboardComponent local_14 = Context.GetBlackboardComponent();
-        ECreatureMoveStance local_17 = ECreatureMoveStance(0);
+        ECreatureMoveStance local_17 = ECreatureMoveStance::None;
         float32 local_19 = 2000.0f;
         FECSEntity local_30 = FECSEntity(FECSEntityId(local_10.FlockProxyEntity));
         bool local_11_2 = !(local_36);

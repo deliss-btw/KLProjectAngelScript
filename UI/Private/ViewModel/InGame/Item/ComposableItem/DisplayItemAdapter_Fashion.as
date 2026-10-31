@@ -34,18 +34,16 @@ bool TryResolveDisplayIconForBody(const FFashionDisplayIconByBody &inout IconByB
 }
 FSoftBrush ResolveDisplayIcon(const TDataObjectPtr<FFashionConfig> &inout FashionConfig, const EBodyType BodyType, const EDisplayItemIconType IconType)
 {
-    bool local_1 = !(FashionConfig);
-    if (local_1)
+    FFashionDisplayIconByBody local_68;
+    if (!(FashionConfig))
     {
         return FSoftBrush();
     }
-    local_1 = !local_1;
-    if (local_1)
+    if (!(FashionConfig.Get().DisplayIcons.Find(IconType, local_68)))
     {
         return FSoftBrush();
     }
     FSoftBrush local_112;
-    FFashionDisplayIconByBody local_68;
     DisplayItemAdapter_Fashion::TryResolveDisplayIconForBody(local_68, EBodyType(BodyType), local_112);
     return local_112;
 }
@@ -78,34 +76,36 @@ EItemRarity ConvertFashionRarity(const EFashionRarity FashionRarity)
 }
 TEUIModelRef<FM_DisplayItemData> MakeDisplayData(const UObject ContextObject, const TDataObjectPtr<FFashionConfig> &inout FashionConfig, const EBodyType BodyType = EBodyType::All)
 {
-    int local_5 = 0;
-    int local_53 = 0;
     FM_DisplayItemData& local_2 = FM_DisplayItemData::Create(ContextObject);
     local_2.SetSourceType(EDisplayItemSourceType(2));
     if (FashionConfig)
     {
-        local_2.SetSourceId(local_5);
+        local_2.SetSourceId(FashionConfig.Get().DataId);
+        local_2.SetDisplayName(FashionConfig.Get().Name);
+        local_2.SetDisplayDesc(FashionConfig.Get().Des);
         local_2.SetItemImage(DisplayItemAdapter_Fashion::ResolveDisplayIcon(FashionConfig, EBodyType(BodyType), EDisplayItemIconType(0)));
         local_2.SetItemImageHigh(DisplayItemAdapter_Fashion::ResolveDisplayIcon(FashionConfig, EBodyType(BodyType), EDisplayItemIconType(1)));
-        int local_54 = local_53;
-        local_2.SetRarityValue(local_54);
-        if (UGlobalItemSettings::Get().GetRarityConfig(EItemRarity(DisplayItemAdapter_Fashion::ConvertFashionRarity(EFashionRarity(local_53)))).IsSet())
+        local_2.SetRarityValue(int(FashionConfig.Get().Rarity));
+        TDataObjectPtr<FItemRarityConfig> local_106 = UGlobalItemSettings::Get().GetRarityConfig(EItemRarity(DisplayItemAdapter_Fashion::ConvertFashionRarity(EFashionRarity(int(FashionConfig.Get().Rarity)))));
+        if (local_106.IsSet())
         {
+            local_2.SetItemImageBG(local_106.Get().RarityImage);
+            local_2.SetRarityColor(local_106.Get().DefaultColor);
         }
+        int local_54 = FashionConfig.Get().Priority;
         local_2.SetSortPriority(local_54);
     }
     return TEUIModelRef<FM_DisplayItemData>(local_2);
 }
 bool IsUnlocked(const TDataObjectPtr<FFashionConfig> &inout FashionConfig, const FMS_FashionModel &inout FashionModel)
 {
-    int local_3 = 0;
-    bool local_4 = false;
     if (!(FashionConfig))
     {
         return false;
     }
-    local_4 = local_4 || FashionModel.GetUnlockedFashionIDList().Contains(local_3);
-    return local_4;
+    int local_3 = FashionConfig.Get().DataId;
+    int local_2 = local_3;
+    return FashionConfig.Get().bDefaultUnlock || FashionModel.GetUnlockedFashionIDList().Contains(local_2);
 }
 bool IsFashionDecoSlot(const EFashionSlotType SlotType)
 {
@@ -113,48 +113,41 @@ bool IsFashionDecoSlot(const EFashionSlotType SlotType)
 }
 bool IsEquippedByAvatarFashion(const TDataObjectPtr<FFashionConfig> &inout FashionConfig, const FAvatarFashion &inout AvatarFashion)
 {
-    int local_3 = 0;
-    int local_4 = 0;
     if (!(FashionConfig))
     {
         return false;
     }
+    int local_3 = FashionConfig.Get().DataId;
     int local_2 = local_3;
-    switch (local_4)
+    switch (int(FashionConfig.Get().SlotType))
     {
     case 1:
     {
-        local_3 = int(AvatarFashion.HairID);
-        return (local_3 == local_2);
+        return (int(AvatarFashion.HairID) == local_2);
     }
     case 2:
     {
-        local_3 = int(AvatarFashion.TopID);
-        return (local_3 == local_2);
+        return (int(AvatarFashion.TopID) == local_2);
     }
     case 3:
     {
-        local_3 = int(AvatarFashion.BottomID);
-        return (local_3 == local_2);
+        return (int(AvatarFashion.BottomID) == local_2);
     }
     case 4:
     {
-        local_3 = int(AvatarFashion.SuitID);
-        return (local_3 == local_2);
+        return (int(AvatarFashion.SuitID) == local_2);
     }
     case 5:
     {
-        local_3 = int(AvatarFashion.BathrobeTopID);
-        return (local_3 == local_2);
+        return (int(AvatarFashion.BathrobeTopID) == local_2);
     }
     case 6:
     {
-        local_3 = int(AvatarFashion.BathrobeBottomID);
-        return (local_3 == local_2);
+        return (int(AvatarFashion.BathrobeBottomID) == local_2);
     }
     default:
     {
-        if (!(DisplayItemAdapter_Fashion::IsFashionDecoSlot(EFashionSlotType(local_4))))
+        if (!(DisplayItemAdapter_Fashion::IsFashionDecoSlot(EFashionSlotType(FashionConfig.Get().SlotType))))
         {
             return false;
         }
@@ -184,14 +177,13 @@ bool IsEquippedOnAvatar(const TDataObjectPtr<FFashionConfig> &inout FashionConfi
 }
 bool IsEquippedOnPlayer(const TDataObjectPtr<FFashionConfig> &inout FashionConfig, const FMS_FashionModel &inout FashionModel)
 {
-    int local_3 = 0;
-    int local_4 = 0;
     if (!(FashionConfig))
     {
         return false;
     }
+    int local_3 = FashionConfig.Get().DataId;
     int local_2 = local_3;
-    int local_5 = local_4;
+    int local_5 = int(FashionConfig.Get().SlotType);
     if (local_5 <= -54)
     {
         if (local_5 != -55)
@@ -202,8 +194,7 @@ bool IsEquippedOnPlayer(const TDataObjectPtr<FFashionConfig> &inout FashionConfi
         }
         else
         {
-            local_3 = FashionModel.GetMountID();
-            return (local_3 == local_2);
+            return (FashionModel.GetMountID() == local_2);
         }
     }
     return false;
@@ -220,7 +211,6 @@ FDisplayItemFashionRuntimeState MakeRuntimeState(const TDataObjectPtr<FFashionCo
 }
 void ApplyRuntimeState(const FVM_DisplayItem &inout DisplayItemVM, const TDataObjectPtr<FFashionConfig> &inout FashionConfig, const FDisplayItemFashionRuntimeState &inout RuntimeState)
 {
-    int local_79 = 0;
     if (!(FashionConfig))
     {
         DisplayItemUtility::SetMask(DisplayItemVM, true, 1);
@@ -233,10 +223,11 @@ void ApplyRuntimeState(const FVM_DisplayItem &inout DisplayItemVM, const TDataOb
     DisplayItemUtility::SetMask(DisplayItemVM, RuntimeState.bEnableMask, int(RuntimeState.MaskType));
     DisplayItemUtility::SetEquipStateByFlags(DisplayItemVM, RuntimeState.bEquippedOnCurrentTarget, RuntimeState.bEquippedOnOtherTarget);
     DisplayItemUtility::SetCustomSelection(DisplayItemVM, RuntimeState.bSelected);
-    TDataObjectPtr<FItemRarityConfig> local_104 = UGlobalItemSettings::Get().GetRarityConfig(EItemRarity(DisplayItemAdapter_Fashion::ConvertFashionRarity(EFashionRarity(local_79))));
+    TDataObjectPtr<FItemRarityConfig> local_104 = UGlobalItemSettings::Get().GetRarityConfig(EItemRarity(DisplayItemAdapter_Fashion::ConvertFashionRarity(EFashionRarity(int(FashionConfig.Get().Rarity)))));
     FSoftBrush local_148;
     if (local_104.IsSet())
     {
+        local_148 = local_104.Get().RarityImage;
     }
     else
     {
@@ -255,8 +246,9 @@ void ApplyRuntimeState(const FVM_DisplayItem &inout DisplayItemVM, const TDataOb
 TEUIModelRef<FVM_DisplayItem> CreateDisplayItem(const UObject ContextObject, const TDataObjectPtr<FFashionConfig> &inout FashionConfig, const FDisplayItemFashionRuntimeState &inout RuntimeState, const EItemDisplayScenario Scenario = EItemDisplayScenario::AvatarWardrobe, const EBodyType BodyType = EBodyType::All)
 {
     TEUIModelRef<FM_DisplayItemData> local_2 = DisplayItemAdapter_Fashion::MakeDisplayData(ContextObject, FashionConfig, EBodyType(BodyType));
-    TEUIModelRef<FVM_DisplayItem> local_8 = TEUIModelRef<FVM_DisplayItem>(FVM_DisplayItem::Create(ContextObject, local_2, EItemDisplayScenario(Scenario)));
-    return local_8;
+    TEUIModelRef<FVM_DisplayItem> local_6 = TEUIModelRef<FVM_DisplayItem>(FVM_DisplayItem::Create(ContextObject, local_2, EItemDisplayScenario(Scenario)));
+    DisplayItemAdapter_Fashion::ApplyRuntimeState(local_6.Get(), FashionConfig, RuntimeState);
+    return local_6;
 }
 TEUIModelRef<FVM_DisplayItem> CreateDisplayItem(const UObject ContextObject, const TDataObjectPtr<FFashionConfig> &inout FashionConfig, const EItemDisplayScenario Scenario = EItemDisplayScenario::AvatarWardrobe, const EBodyType BodyType = EBodyType::All)
 {

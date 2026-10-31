@@ -61,8 +61,7 @@ struct FCS_Teleporters : FECSSingleton
         for (auto& local_20 : this.GetTeleporters())
         {
             TDataObjectPtr<FTeleporterConfig> local_44;
-            TDataObjectPtr<FTeleporterConfig> local_68;
-            local_44 = local_68;
+            local_44 = local_20.GetValue();
             if ((local_44 == TeleporterConfig.opImplConv()))
             {
                 return local_20.GetKey();

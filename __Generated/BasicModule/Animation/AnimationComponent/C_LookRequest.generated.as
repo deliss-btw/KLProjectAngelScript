@@ -33,6 +33,7 @@ struct FC_LookRequestHistory : FECSComponent
     }
     void Clear()
     {
+        this.History.Clear();
         return;
     }
     bool GetInterpoValue(const FFPTime &inout WorldTime, FC_LookRequest &inout OutValue) const

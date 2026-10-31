@@ -187,11 +187,10 @@ struct FM_Player : FEUIModel
         const FCS_PlayerEntitySummary& local_10 = local_8.opCall();
         if (local_10)
         {
-            if (local_10.GetPlayerEntities().Find(local_3))
+            TConstRawPtr<FECSEntity> local_12 = local_10.GetPlayerEntities().Find(local_3);
+            if (local_12)
             {
-            }
-            else
-            {
+                return local_12.Get();
             }
         }
         return ENTITY_NULL;
@@ -207,20 +206,18 @@ struct FM_Player : FEUIModel
     }
     FString GetNickName() const property
     {
-        FString __r;
-        return __r;
+        return this.GetNickNameAttr().Get();
     }
     EGenderType GetGender() const property
     {
         EGenderType local_2;
         if (this.GetGenderAttr().HasValue())
         {
-            EGenderType local_3;
-            local_2 = local_3;
+            local_2 = this.GetGenderAttr().Get();
         }
         else
         {
-            local_2 = EGenderType(0);
+            local_2 = EGenderType::Male;
         }
         return local_2;
     }
@@ -253,16 +250,15 @@ struct FM_Player : FEUIModel
     }
     TDataObjectPtr<FAvatarPrefabConfig> GetCurrentAvatar() const property
     {
-        bool local_2 = false;
-        if (this.GetCurrentAvatarAttr().HasValue() && local_2)
+        if (!(!(this.GetCurrentAvatarAttr().HasValue())) && this.GetCurrentAvatarAttr().Get())
         {
-            return TDataObjectPtr<FAvatarPrefabConfig>();
+            return this.GetCurrentAvatarAttr().Get();
         }
-        return (TDataObjectPtr<FAvatarPrefabConfig>(nullptr));
+        return TDataObjectPtr<FAvatarPrefabConfig>(nullptr);
     }
     TDataObjectPtr<FMapConfig> GetCurrentWorld() const property
     {
-        return TDataObjectPtr<FMapConfig>();
+        return this.GetCurrentWorldAttr().Get();
     }
     bool IsInSameMapWithLocalPlayer() const
     {
@@ -275,9 +271,10 @@ struct FM_Player : FEUIModel
             if (::FLevelUtils::GetCurrentLevelInfoConfig(nullptr))
             {
                 FDataObjectPtr local_126;
+                TDataObjectPtr<FMapConfig> local_78;
+                local_78 = this.GetCurrentWorldAttr().Get();
                 local_126;
-                TDataObjectPtr<FMapConfig> local_102;
-                return (local_102 == local_126);
+                return (local_78 == local_126);
             }
         }
         return false;
@@ -295,21 +292,20 @@ struct FM_Player : FEUIModel
         }
         if (this.GetDivineSkillAttr().HasValue())
         {
-            return TDataObjectPtr<FDivineSkillConfig>();
+            return this.GetDivineSkillAttr().Get();
         }
-        return (TDataObjectPtr<FDivineSkillConfig>(nullptr));
+        return TDataObjectPtr<FDivineSkillConfig>(nullptr);
     }
     bool GetIsOnline() const property
     {
         int local_1;
-        int local_2 = 0;
         if (!(this.GetIsOnlineAttr().HasValue()))
         {
             local_1 = 0;
         }
         else
         {
-            local_1 = local_2;
+            local_1 = this.GetIsOnlineAttr().Get();
         }
         return (local_1 != 0);
     }
@@ -320,12 +316,20 @@ struct FM_Player : FEUIModel
     }
     int GetLevel() const property
     {
-        int local_3 = 0;
+        int local_2;
         if (this.IsLocalPlayer())
         {
             return ::FM_LocalPlayerLevel::Get(this.GetContext().Manager).GetLevel();
         }
-        return this.GetLevelAttr().HasValue() ? local_3 : 0;
+        if (this.GetLevelAttr().HasValue())
+        {
+            local_2 = this.GetLevelAttr().Get();
+        }
+        else
+        {
+            local_2 = 0;
+        }
+        return local_2;
     }
     int GetCurrentExp() const property
     {
@@ -614,11 +618,9 @@ FM_Player& Create(const UObject ContextObject)
 {
     return FM_Player::CreateByManager(EUIInternal::GetContextManager(ContextObject));
 }
-FM_Player CreateByManager(const UEUIManagerSubsystem Manager)
+FM_Player& CreateByManager(const UEUIManagerSubsystem Manager)
 {
-    FM_Player __r;
-    TEUIModelRef<FM_Player> local_6 = TEUIModelRef<FM_Player>(EUIInternal::MakeModelWithManager(Manager, FM_Player::ModelId));
-    return __r;
+    return TEUIModelRef<FM_Player>(EUIInternal::MakeModelWithManager(Manager, FM_Player::ModelId)).Get();
 }
 void GetModelInfo(FEUIModelOnlyMetaInfo &inout Result)
 {

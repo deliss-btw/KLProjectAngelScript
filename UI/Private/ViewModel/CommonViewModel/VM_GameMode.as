@@ -90,11 +90,9 @@ FVMS_GameMode& Get(const UObject ContextObject)
 {
     return FVMS_GameMode::GetByManager(EUIInternal::GetContextManager(ContextObject));
 }
-FVMS_GameMode GetByManager(const UEUIManagerSubsystem Manager)
+FVMS_GameMode& GetByManager(const UEUIManagerSubsystem Manager)
 {
-    FVMS_GameMode __r;
-    TEUIModelRef<FVMS_GameMode> local_6 = TEUIModelRef<FVMS_GameMode>(EUIInternal::MakeModelWithManager(Manager, FVMS_GameMode::ModelId));
-    return __r;
+    return TEUIModelRef<FVMS_GameMode>(EUIInternal::MakeModelWithManager(Manager, FVMS_GameMode::ModelId)).Get();
 }
 void GetModelInfo(FEUIViewModelMetaInfo &inout Result)
 {
@@ -146,7 +144,6 @@ namespace __GeneratedProperties_FVMS_GameMode
 {
 UScriptStruct StaticStruct()
 {
-    UScriptStruct local_2;
-    return local_2;
+    return __GeneratedProperties_FVMS_GameMode.Get();
 }
 }

@@ -169,8 +169,21 @@ EVOXVoiceMode GetDefaultMicMode(const EVOXContextSlot Slot)
 }
 EVOXVoiceMode GetDefaultSpeakerMode(const EVOXContextSlot Slot)
 {
-    // body not fully recovered — stub [opcode-uncovered]
-    EVOXVoiceMode __r; return __r;
+    switch (Slot)
+    {
+    case EVOXContextSlot::City:
+    {
+        return EVOXVoiceMode(0);
+    }
+    case EVOXContextSlot::NonCityNoSocial:
+    {
+        return EVOXVoiceMode(1);
+    }
+    case EVOXContextSlot::NonCitySocial:
+    {
+        return EVOXVoiceMode(1);
+    }
+    }
 }
 bool IsPlayerMuted(const uint PlayerUid)
 {
@@ -216,6 +229,7 @@ void UnmutePlayer(const uint PlayerUid)
     {
         return;
     }
+    local_8.MutedPlayerUids.Remove(PlayerUid);
     FString local_14 = FString().Append(PlayerUid);
     if (!(local_8.LocalSocialRoomId.IsEmpty()))
     {

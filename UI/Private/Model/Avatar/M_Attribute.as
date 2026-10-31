@@ -59,46 +59,36 @@ struct FM_Attribute : FEUIModel
     FText GetAttributeDisplayName() const
     {
         const UAvatarBuildSettings local_4;
-        FText __return;
         if (this.GetAttributeConfig().IsSet())
         {
+            return this.GetAttributeConfig().Get().AttributeName;
         }
-        else
+        GetGameplaySettings<UAvatarBuildSettings> local_6;
+        local_4 = local_6;
+        FText local_12;
+        if (local_4.AttributeDisplayNames.Find(this.GetAttribute(), local_12))
         {
-            GetGameplaySettings<UAvatarBuildSettings> local_6;
-            local_4 = local_6;
-            FText local_12;
-            if (local_4.AttributeDisplayNames.Find(this.GetAttribute(), local_12))
-            {
-                return local_12;
-            }
-            __return = FText::FromString(this.GetAttribute().ToString());
+            return local_12;
         }
-        return __return;
+        return FText::FromString(this.GetAttribute().ToString());
     }
     FText GetAttributeDescription() const
     {
-        FText __return;
         if (this.GetAttributeConfig().IsSet())
         {
+            return this.GetAttributeConfig().Get().AttributeDescription;
         }
-        else
-        {
-            __return = FText();
-        }
-        return __return;
+        return FText();
     }
     FText GetAttributeValueText() const
     {
         FNumberFormattingOptions local_6;
-        float32 local_18 = 0.0f;
         FText __return;
         local_6.SetMaximumFractionalDigits(1).SetMinimumFractionalDigits(0);
-        EAttributeDisplayType local_16 = this.GetDisplayType();
-        EAttributeDisplayType local_15 = local_16;
+        EAttributeDisplayType local_15 = this.GetDisplayType();
         if (this.GetAttributeConfig().IsSet())
         {
-            local_15 = local_16;
+            local_15 = this.GetAttributeConfig().Get().DisplayType;
         }
         int local_13 = int(local_15);
         FText local_22;
@@ -112,9 +102,8 @@ struct FM_Attribute : FEUIModel
             }
             else
             {
-                __return = FText::AsNumber(local_18, local_6);
-                local_18 = local_18 * 100.0f;
-                local_22 = FText::AsNumber(local_18, local_6);
+                __return = FText::AsNumber(this.GetValue(), local_6);
+                local_22 = FText::AsNumber((this.GetValue() * 100.0f), local_6);
                 __return = FText::Format(FText::AsCultureInvariant("{0}%"), local_22);
             }
         }
@@ -122,15 +111,11 @@ struct FM_Attribute : FEUIModel
     }
     FSoftBrush GetAttributeIcon() const
     {
-        FSoftBrush __return;
         if (this.GetAttributeConfig().IsSet())
         {
+            return this.GetAttributeConfig().Get().AttributeIcon;
         }
-        else
-        {
-            __return = FSoftBrush();
-        }
-        return __return;
+        return FSoftBrush();
     }
     FGameAttributeRef GetAttribute() const property
     {
@@ -224,11 +209,9 @@ FM_Attribute& Create(const UObject ContextObject, const FGameAttributeRef &inout
 {
     return FM_Attribute::CreateByManager(EUIInternal::GetContextManager(ContextObject), Attribute, EAttributeDisplayType(DisplayType), Value);
 }
-FM_Attribute CreateByManager(const UEUIManagerSubsystem Manager, const FGameAttributeRef &inout Attribute, const EAttributeDisplayType DisplayType, const float32 Value)
+FM_Attribute& CreateByManager(const UEUIManagerSubsystem Manager, const FGameAttributeRef &inout Attribute, const EAttributeDisplayType DisplayType, const float32 Value)
 {
-    FM_Attribute __r;
-    TEUIModelRef<FM_Attribute> local_6 = TEUIModelRef<FM_Attribute>(EUIInternal::MakeModelWithManager_Generic(Manager, FM_Attribute::ModelId, 0, Attribute, DisplayType, Value));
-    return __r;
+    return TEUIModelRef<FM_Attribute>(EUIInternal::MakeModelWithManager_Generic(Manager, FM_Attribute::ModelId, 0, Attribute, DisplayType, Value)).Get();
 }
 void GetModelInfo(FEUIModelOnlyMetaInfo &inout Result)
 {

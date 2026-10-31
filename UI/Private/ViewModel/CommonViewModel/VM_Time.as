@@ -208,11 +208,9 @@ FVM_Lifetime& Create(const UObject ContextObject, const FFPTime &inout Lifetime)
 {
     return FVM_Lifetime::CreateByManager(EUIInternal::GetContextManager(ContextObject), Lifetime);
 }
-FVM_Lifetime CreateByManager(const UEUIManagerSubsystem Manager, const FFPTime &inout Lifetime)
+FVM_Lifetime& CreateByManager(const UEUIManagerSubsystem Manager, const FFPTime &inout Lifetime)
 {
-    FVM_Lifetime __r;
-    TEUIModelRef<FVM_Lifetime> local_6 = TEUIModelRef<FVM_Lifetime>(EUIInternal::MakeModelWithManager_Generic(Manager, FVM_Lifetime::ModelId, 0, Lifetime));
-    return __r;
+    return TEUIModelRef<FVM_Lifetime>(EUIInternal::MakeModelWithManager_Generic(Manager, FVM_Lifetime::ModelId, 0, Lifetime)).Get();
 }
 void GetModelInfo(FEUIViewModelMetaInfo &inout Result)
 {
@@ -277,8 +275,7 @@ namespace __GeneratedProperties_FVM_Lifetime
 {
 UScriptStruct StaticStruct()
 {
-    UScriptStruct local_2;
-    return local_2;
+    return __GeneratedProperties_FVM_Lifetime.Get();
 }
 }
 namespace FVM_FPTime
@@ -287,11 +284,9 @@ FVM_FPTime& Create(const UObject ContextObject, const FFPTime &inout FPTime)
 {
     return FVM_FPTime::CreateByManager(EUIInternal::GetContextManager(ContextObject), FPTime);
 }
-FVM_FPTime CreateByManager(const UEUIManagerSubsystem Manager, const FFPTime &inout FPTime)
+FVM_FPTime& CreateByManager(const UEUIManagerSubsystem Manager, const FFPTime &inout FPTime)
 {
-    FVM_FPTime __r;
-    TEUIModelRef<FVM_FPTime> local_6 = TEUIModelRef<FVM_FPTime>(EUIInternal::MakeModelWithManager_Generic(Manager, FVM_FPTime::ModelId, 0, FPTime));
-    return __r;
+    return TEUIModelRef<FVM_FPTime>(EUIInternal::MakeModelWithManager_Generic(Manager, FVM_FPTime::ModelId, 0, FPTime)).Get();
 }
 void GetModelInfo(FEUIViewModelMetaInfo &inout Result)
 {
@@ -333,7 +328,6 @@ namespace __GeneratedProperties_FVM_FPTime
 {
 UScriptStruct StaticStruct()
 {
-    UScriptStruct local_2;
-    return local_2;
+    return __GeneratedProperties_FVM_FPTime.Get();
 }
 }

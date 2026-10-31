@@ -114,8 +114,7 @@ class UESMAction_ThrowPredictBlendTime : UESMBPBaseSpanTickAction
             return;
         }
         FESMThrowPredictBlendTimeInstanceData local_8;
-        FESMThrowPredictBlendTimeInstanceData local_10;
-        local_8 = local_10;
+        local_8 = FESMThrowPredictBlendTimeInstanceData(this.GetInstanceData(Context));
         if ((local_8.bExitPhaseInitialized || ((int(local_8.TargetPlayerIndex) == -1))))
         {
             return;
@@ -167,14 +166,13 @@ class UESMAction_ThrowPredictBlendTime : UESMBPBaseSpanTickAction
     }
     void ServerExit(const FESMContext &inout Context, const FESMActionTime &inout Time) const
     {
-        int local_2 = 0;
+        int local_2 = this.GetInstanceData(Context).TargetPlayerIndex;
         int local_1 = local_2;
         if (local_1 == -1)
         {
             return;
         }
-        local_2 = -1;
-        this.ModifyInstanceData(Context).TargetPlayerIndex = local_2;
+        this.ModifyInstanceData(Context).TargetPlayerIndex = -1;
         Remove local_8;
         local_8.opCall();
         Remove local_12;

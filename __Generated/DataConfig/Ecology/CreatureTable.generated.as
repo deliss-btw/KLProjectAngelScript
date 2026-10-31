@@ -3,7 +3,6 @@ namespace __FCreatureDefinitionRowFunctions
 UFUNCTION()
 FName __FCreatureDefinitionRow_GetCreatureName(const TDataObjectPtr<FCreatureDefinitionRow> &inout DataObject)
 {
-    FName __r;
     if ((DataObject == nullptr))
     {
         if (!(EUIGlobals::GIsDuringPropertyConversion))
@@ -13,7 +12,7 @@ FName __FCreatureDefinitionRow_GetCreatureName(const TDataObjectPtr<FCreatureDef
         FCreatureDefinitionRow local_40;
         return local_40.CreatureName;
     }
-    return __r;
+    return DataObject.Get().CreatureName;
 }
 UFUNCTION()
 TDataObjectPtr<FCreatureDefinitionRow> __FCreatureDefinitionRow_GetBaseCreature(const TDataObjectPtr<FCreatureDefinitionRow> &inout DataObject)
@@ -27,7 +26,7 @@ TDataObjectPtr<FCreatureDefinitionRow> __FCreatureDefinitionRow_GetBaseCreature(
         FCreatureDefinitionRow local_40;
         return local_40.GetBaseCreature();
     }
-    return GetBaseCreature();
+    return DataObject.Get().GetBaseCreature();
 }
 UFUNCTION()
 FCreatureDefinitionRow CastToFCreatureDefinitionRow(const TDataObjectPtr<FCreatureDefinitionRow> &inout DataObject)

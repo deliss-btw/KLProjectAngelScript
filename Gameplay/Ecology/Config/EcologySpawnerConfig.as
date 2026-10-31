@@ -41,17 +41,19 @@ struct FCreatureConfigProxy
         }
         case 2:
         {
-            if (TDataObjectPtr<FNPCMainConfig>(this.Config))
+            TDataObjectPtr<FNPCMainConfig> local_76 = TDataObjectPtr<FNPCMainConfig>(this.Config);
+            if (local_76)
             {
-                return GetCreature();
+                return local_76.Get().GetCreature();
             }
             return local_28;
         }
         case 1:
         {
-            if (TDataObjectPtr<FMonsterMainConfig>(this.Config))
+            TDataObjectPtr<FMonsterMainConfig> local_126 = TDataObjectPtr<FMonsterMainConfig>(this.Config);
+            if (local_126)
             {
-                return GetCreature();
+                return local_126.Get().GetCreature();
             }
             return local_28;
         }
@@ -89,8 +91,44 @@ struct FCreatureConfigProxy
     }
     TSoftClassPtr<AECSPrefab> GetCreaturePrefab() const
     {
-        // body not fully recovered — stub [opcode-uncovered]
-        TSoftClassPtr<AECSPrefab> __r; return __r;
+        switch (this.Type)
+        {
+        case ECreatureConfigType::Legacy:
+        {
+            TDataObjectPtr<FEcologyCreatureDefinitionRow> local_28 = TDataObjectPtr<FEcologyCreatureDefinitionRow>(this.Config);
+            if (local_28)
+            {
+                return local_28.Get().CreaturePrefab;
+            }
+            break;
+        }
+        case ECreatureConfigType::NPC:
+        {
+            TDataObjectPtr<FNPCMainConfig> local_78 = TDataObjectPtr<FNPCMainConfig>(this.Config);
+            if (local_78)
+            {
+                const FNPCMainConfig& local_104 = local_78.Get();
+                TDataObjectPtr<FNPCSkinOverride> local_128;
+                local_128 = local_104.GetSkinOverride();
+                if (!((local_128 == nullptr)) && !(local_104.GetSkinOverride().Get().PrefabOverride.IsNull()))
+                {
+                    return TSoftClassPtr<AECSPrefab>(local_104.GetSkinOverride().Get().PrefabOverride.Get().Get());
+                }
+                return TSoftClassPtr<AECSPrefab>(local_104.GetCombatPrefab().Get());
+            }
+            break;
+        }
+        case ECreatureConfigType::Monster:
+        {
+            TDataObjectPtr<FMonsterMainConfig> local_192 = TDataObjectPtr<FMonsterMainConfig>(this.Config);
+            if (!(!(local_192)) && local_192.Get().GetCombatConfig())
+            {
+                return TSoftClassPtr<AECSPrefab>(local_192.Get().GetCombatPrefab().Get());
+            }
+            break;
+        }
+        }
+        return TSoftClassPtr<AECSPrefab>(nullptr);
     }
     TDataObjectPtr<FNPCMainConfig> GetNPCConfig() const
     {
@@ -110,15 +148,15 @@ struct FCreatureConfigProxy
     }
     EMonsterRank GetMonsterRank() const
     {
-        int local_101 = 0;
         if (int(this.Type) == 1)
         {
-            if (TDataObjectPtr<FMonsterMainConfig>(this.Config))
+            TDataObjectPtr<FMonsterMainConfig> local_28 = TDataObjectPtr<FMonsterMainConfig>(this.Config);
+            if (local_28)
             {
-                TDataObjectPtr<FCombatUnitBaseConfig> local_76 = GetCombatConfig();
+                TDataObjectPtr<FCombatUnitBaseConfig> local_76 = local_28.Get().GetCombatConfig();
                 if (local_76)
                 {
-                    return EMonsterRank(local_101);
+                    return EMonsterRank(local_76.Get().Rank);
                 }
             }
         }
@@ -141,7 +179,7 @@ struct FClassicEcologIsomorphicConfig
     {
         if (Config.GetCombatConfig())
         {
-            if (0 == 2)
+            if (int(Config.GetCombatConfig().Get().Rank) == 2)
             {
                 return false;
             }
@@ -153,7 +191,7 @@ struct FClassicEcologIsomorphicConfig
         FCreatureConfigProxy __r;
         if (this.MonsterConfig)
         {
-            if (GetCreature())
+            if (this.MonsterConfig.Get().GetCreature())
             {
                 FCreatureConfigProxy local_28 = FCreatureConfigProxy(this.MonsterConfig);
             }
@@ -169,7 +207,7 @@ struct FClassicEcologIsomorphicConfig
     {
         if (this.MonsterConfig)
         {
-            const FMonsterMainConfig& local_4;
+            const FMonsterMainConfig& local_4 = this.MonsterConfig.Get();
             if (local_4.GetCreature())
             {
                 return local_4.GetCreature();
@@ -223,6 +261,8 @@ struct FClassicSpawnerConfig : FSpawnerConfig
     UPROPERTY()
     TSoftObjectPtr<AECSRegionVolume> WeatherSource;
 
+    default _base_FSpawnerConfig = Cast<UASStruct>(FClassicSpawnerConfig.Get());
+
     FClassicSpawnerConfig()
     {
         this.__InitDefaults();
@@ -232,7 +272,6 @@ struct FClassicSpawnerConfig : FSpawnerConfig
     {
         int local_22 = 0;
         int local_32 = 0;
-        const FFClassicEcologyTeamConfigArray& local_56;
         if (FEcologyMisc::CVar_EcosimAI_LOD.GetInt() > 0)
         {
             return ENTITY_NULL;
@@ -243,7 +282,7 @@ struct FClassicSpawnerConfig : FSpawnerConfig
         local_22.ConfigType = FClassicSpawnerConfig;
         for (auto& local_54 : this.Teams)
         {
-            local_54;
+            const FFClassicEcologyTeamConfigArray& local_56 = local_54.GetValue();
             for (auto& local_70 : local_56.ConfigArray)
             {
                 FFlockSpawnerData local_182;
@@ -290,7 +329,7 @@ struct FBossSpawnInfoConfig
     {
         if (this.MonsterConfig)
         {
-            const FMonsterMainConfig& local_4;
+            const FMonsterMainConfig& local_4 = this.MonsterConfig.Get();
             if (local_4.GetCreature())
             {
                 return local_4.GetCreature();
@@ -303,8 +342,7 @@ struct FBossSpawnInfoConfig
         FCreatureConfigProxy __r;
         if (this.MonsterConfig)
         {
-            const FMonsterMainConfig& local_4;
-            if (local_4.GetCreature())
+            if (this.MonsterConfig.Get().GetCreature())
             {
                 FCreatureConfigProxy local_30 = FCreatureConfigProxy(this.MonsterConfig);
             }
@@ -318,11 +356,9 @@ struct FBossSpawnInfoConfig
     }
     bool CheckPositionInVolumes(const FVector &inout Position) const
     {
-        AECSRegionVolume local_18;
         for (auto& local_16 : this.ActivityVolumes)
         {
-            local_16;
-            if (local_18.QuickEncompassesPoint(Position))
+            if (local_16.Get().QuickEncompassesPoint(Position))
             {
                 return true;
             }
@@ -331,11 +367,9 @@ struct FBossSpawnInfoConfig
     }
     bool CheckAllVolumeIsValid() const
     {
-        AECSRegionVolume local_18;
         for (auto& local_16 : this.ActivityVolumes)
         {
-            local_16;
-            if ((!((local_18 != nullptr))))
+            if ((!((local_16.Get() != nullptr))))
             {
                 return false;
             }
@@ -370,6 +404,8 @@ struct FMixedRandomBossSpawnerConfig : FSpawnerConfig
     FSpawnerConfig _base_FSpawnerConfig;
     UPROPERTY()
     TArray<FRandomBossSpawnInfoPoolConfig> SpawnPool;
+
+    default _base_FSpawnerConfig = Cast<UASStruct>(FMixedRandomBossSpawnerConfig.Get());
 
     FMixedRandomBossSpawnerConfig()
     {
@@ -427,6 +463,8 @@ struct FBaseMonsterSpawnerConfig : FConstMonsterSpawner
     UPROPERTY()
     bool bCreateFlock;
 
+    default _base_FConstMonsterSpawner = Cast<UASStruct>(FBaseMonsterSpawnerConfig.Get());
+
     FBaseMonsterSpawnerConfig()
     {
         this.MonsterId = 0;
@@ -439,6 +477,7 @@ struct FBaseMonsterSpawnerConfig : FConstMonsterSpawner
         if (this.MonsterConfig)
         {
             const FTransform& local_4 = OuterContext.GetDefaultedTransform();
+            const FMonsterMainConfig& local_6 = this.MonsterConfig.Get();
             FEcologyCreatureSpawnerContext local_68;
             FCreatureConfigProxy local_94 = FCreatureConfigProxy(this.MonsterConfig);
             local_68.SpawnerConfigRef = OuterContext.OuterEntity.GetId();
@@ -457,6 +496,8 @@ struct FConstNPCSpawnerConfig : FSpawnerConfig
     TDataObjectPtr<FNPCMainConfig> NPCConfig;
     UPROPERTY()
     int NPCId;
+
+    default _base_FSpawnerConfig = Cast<UASStruct>(FConstNPCSpawnerConfig.Get());
 
     FConstNPCSpawnerConfig()
     {

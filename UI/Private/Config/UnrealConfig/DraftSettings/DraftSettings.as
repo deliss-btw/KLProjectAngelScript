@@ -74,10 +74,10 @@ class UDraftSettings : UGameplaySettingsBase
     }
     const UDraftTypeAdapterBase GetDraftTypeAdapter(const UScriptStruct TypedDraftDataModelType) const
     {
-        TConstRawPtr<FDraftSettingsCache> local_18 = FInstancedStruct::GetPtr(this.GetCacheData()).opCall();
-        if (false)
+        FDraftSettingsInfo local_12;
+        bool local_19 = FInstancedStruct::GetPtr(this.GetCacheData()).opCall().Get().TypedDraftDataModelTypeToAdapter.Find(TypedDraftDataModelType, local_12);
+        if (local_19)
         {
-            FDraftSettingsInfo local_12;
             return local_12.DraftTypeAdaptersData.GetDefaultObject();
         }
         UDraftTypeAdapterBase local_24;
@@ -85,20 +85,20 @@ class UDraftSettings : UGameplaySettingsBase
     }
     TSoftClassPtr<UEUIUserWidget> GetDraftTypeAdapterWidgetClass(const UScriptStruct TypedDraftDataModelType) const
     {
-        TConstRawPtr<FDraftSettingsCache> local_18 = FInstancedStruct::GetPtr(this.GetCacheData()).opCall();
-        if (false)
+        FDraftSettingsInfo local_12;
+        bool local_19 = FInstancedStruct::GetPtr(this.GetCacheData()).opCall().Get().TypedDraftDataModelTypeToAdapter.Find(TypedDraftDataModelType, local_12);
+        if (local_19)
         {
-            FDraftSettingsInfo local_12;
             return local_12.DraftTypeAdaptersWidget;
         }
         return TSoftClassPtr<UEUIUserWidget>(nullptr);
     }
     const UDraftTypeAdapterBase GetDraftTypeAdapterByServerDraftType(const uint ServerDraftType) const
     {
-        TConstRawPtr<FDraftSettingsCache> local_18 = FInstancedStruct::GetPtr(this.GetCacheData()).opCall();
-        if (false)
+        FDraftSettingsInfo local_12;
+        bool local_19 = FInstancedStruct::GetPtr(this.GetCacheData()).opCall().Get().ServerDraftTypeToAdapter.Find(ServerDraftType, local_12);
+        if (local_19)
         {
-            FDraftSettingsInfo local_12;
             return local_12.DraftTypeAdaptersData.GetDefaultObject();
         }
         UDraftTypeAdapterBase local_24;

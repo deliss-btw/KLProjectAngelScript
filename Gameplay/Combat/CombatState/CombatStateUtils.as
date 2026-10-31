@@ -137,6 +137,7 @@ void EnterBossCombatSession(const FECSEntity &inout PawnEntity, const FECSEntity
             return;
         }
         FECSEntityId local_15 = BossEntity.GetId();
+        int local_19 = local_6.SelfCombatSession.SessionID;
         FECSWorldPtr local_22 = PawnEntity.GetWorld();
         local_18.EnterCombatTime = local_28.Time;
         local_18.ExitCombatTime = 0;
@@ -148,7 +149,7 @@ void EnterBossCombatSession(const FECSEntity &inout PawnEntity, const FECSEntity
         {
             if (local_36.GetMonsterConfig())
             {
-                local_18.BossId = local_6.SelfCombatSession.SessionID;
+                local_18.BossId = local_36.GetMonsterConfig().Get().DataId;
             }
         }
         local_18.BossInstanceId = BossEntity.GetIdValue();
@@ -207,7 +208,7 @@ void ExitBossCombatSession(const FECSEntity &inout PawnEntity, const FECSEntity 
                 local_38.SetUncontrollableDuration((local_4.UncontrollableDuration * 1000.0f));
                 ServerDataTrackerHelper::InternalLogProtoMessage(local_22.GetPlayerEntity(), PawnEntity, 102504, local_38.ToWrapper(), FProtoWrapper());
             }
-            FECSEntityId local_2_2 = BossEntity.GetId();
+            CombatState.BossCombatSessions.Remove(BossEntity.GetId());
         }
     }
     return;
@@ -218,15 +219,13 @@ void GetDataTrackPbCombatCommonData(const FECSEntity &inout PawnEntity, FPbPlaye
     const FC_CombatState& local_6 = local_4.opCall();
     if (local_6)
     {
-        int local_8 = local_6.SelfCombatSession.SessionID;
-        CombatCommon.SetCombatSessionId(local_8);
+        CombatCommon.SetCombatSessionId(local_6.SelfCombatSession.SessionID);
         for (auto& local_26 : local_6.BossCombatSessions)
         {
-            local_26;
             FPbPlayerLogDsBossCombatSessionInfo local_36 = CombatCommon.AddBossCombats();
-            local_36.SetCombatSessionId(local_8);
-            local_36.SetBossId(local_8);
-            local_36.SetBossInstanceId(local_8);
+            local_36.SetCombatSessionId(int(local_26.GetValue()._base_FCombatSession));
+            local_36.SetBossId(local_26.GetValue().BossId);
+            local_36.SetBossInstanceId(local_26.GetValue().BossInstanceId);
         }
     }
     int local_47 = 0;
@@ -290,12 +289,11 @@ void GetDataTrackPbCombatCommonData(const FECSEntity &inout PawnEntity, FPbPlaye
 }
 void FillDataTrackAvatarEquipment(FPbPlayerLogDsAvatarEquipment &inout Equipment, const EEquipSlotType SlotType, const FEquipmentData &inout EquipmentData)
 {
-    int local_2 = 0;
     if (!(EquipmentData.GetEquipmentConfig()))
     {
         return;
     }
-    Equipment.SetEquipmentId(local_2);
+    Equipment.SetEquipmentId(EquipmentData.GetEquipmentConfig().Get().DataId);
     Equipment.SetEquipmentSlot(int(SlotType));
     for (auto& local_18 : EquipmentData.GetTraits())
     {
@@ -304,7 +302,7 @@ void FillDataTrackAvatarEquipment(FPbPlayerLogDsAvatarEquipment &inout Equipment
             continue;
         }
         FPbPlayerLogDsAvatarTrait local_28 = Equipment.AddTrait();
-        local_28.SetTraitId(local_2);
+        local_28.SetTraitId(local_18.GetTrait().Get().DataId);
         local_28.SetTraitLevel(local_18.GetLevel());
     }
     return;
@@ -312,9 +310,7 @@ void FillDataTrackAvatarEquipment(FPbPlayerLogDsAvatarEquipment &inout Equipment
 void LogDataTrackAvatarSnapshot(const FECSEntity &inout PlayerEntity, const FECSEntity &inout PawnEntity, const uint TriggerType)
 {
     int local_6 = 0;
-    int local_28 = 0;
     int local_203;
-    int local_253 = 0;
     float32 local_254;
     int local_446 = 0;
     int local_447;
@@ -333,8 +329,7 @@ void LogDataTrackAvatarSnapshot(const FECSEntity &inout PlayerEntity, const FECS
         const FC_CombatState& local_34 = local_32.opCall();
         if (local_34)
         {
-            local_28 = local_34.SelfCombatSession.SessionID;
-            local_27 = local_28;
+            local_27 = local_34.SelfCombatSession.SessionID;
         }
     }
     local_26.SetAssociationId(local_27);
@@ -345,17 +340,16 @@ void LogDataTrackAvatarSnapshot(const FECSEntity &inout PlayerEntity, const FECS
     {
         for (auto& local_58 : local_40.GetQuickSlots())
         {
-            local_58;
-            TDataObjectPtr<FItemConfig> local_106;
-            TDataObjectPtr<FItemConfig> local_82 = local_106;
+            TDataObjectPtr<FItemConfig> local_82 = local_58.GetValue();
             if (!(local_82) || !(local_110.opCall()))
             {
                 continue;
             }
             FPbPlayerLogDsAvatarItem local_146 = local_26.AddCombatItemList();
+            int local_28 = local_82.Get().DataId;
             local_146.SetItemId(local_28);
             local_146.SetCurrentNum(FMath::Max(0, InventoryUtils::GetInventoryItemNumber(PlayerEntity, local_82)));
-            local_146.SetMaxLimit(FMath::Max(0, GetInventoryMax()));
+            local_146.SetMaxLimit(FMath::Max(0, local_82.Get().GetInventoryMax()));
         }
     }
     if (PawnEntity.IsValid())
@@ -367,12 +361,12 @@ void LogDataTrackAvatarSnapshot(const FECSEntity &inout PlayerEntity, const FECS
             for (auto& local_180 : local_166.GetBuffData())
             {
                 FPbPlayerLogDsAvatarBuff local_190 = local_26.AddBuffList();
-                local_28 = local_180.ConfigRef.GetUniqueID();
-                local_190.SetBuffId(local_28);
+                local_190.SetBuffId(local_180.ConfigRef.GetUniqueID());
                 local_203 = 0;
-                if (TDataObjectPtr<FBuffConfig>(local_180.ConfigRef))
+                TDataObjectPtr<FBuffConfig> local_228 = TDataObjectPtr<FBuffConfig>(local_180.ConfigRef);
+                if (local_228)
                 {
-                    local_203 = local_253;
+                    local_203 = int(local_228.Get().ClientPresentationType);
                 }
                 local_190.SetBuffType(local_203);
                 local_190.SetBuffLayer(FMath::Max(0, int(local_180.StackCount)));
@@ -393,17 +387,19 @@ void LogDataTrackAvatarSnapshot(const FECSEntity &inout PlayerEntity, const FECS
     }
     local_203 = 0;
     int local_277 = 0;
-    if (GetAvatarConfig(local_6.GetPlayerPawnEntity()))
+    TDataObjectPtr<FAvatarPrefabConfig> local_302 = GetAvatarConfig(local_6.GetPlayerPawnEntity());
+    if (local_302)
     {
-        local_203 = local_28;
+        local_203 = local_302.Get().DataId;
     }
     for (auto& local_340 : local_6.GetAllPlayerPawnEntities())
     {
         if (!((local_340 == local_6.GetPlayerPawnEntity())))
         {
-            if (GetAvatarConfig(local_340))
+            TDataObjectPtr<FAvatarPrefabConfig> local_326 = GetAvatarConfig(local_340);
+            if (local_326)
             {
-                local_277 = local_28;
+                local_277 = local_326.Get().DataId;
                 break;
             }
         }
@@ -424,22 +420,21 @@ void LogDataTrackAvatarSnapshot(const FECSEntity &inout PlayerEntity, const FECS
             local_370.SetSchoolId(local_360.GetAvatarTalentEquipList().GetOnEquipFoundationId());
             FPbPlayerLogDsAvatarEquipmentList local_390 = local_26.AddEquipmentList();
             local_390.SetAvatarId(local_360.GetAvatarId());
-            local_28 = local_360.GetAvatarId();
-            local_390.SetIsFrontAvatar((local_28 == local_203));
+            local_390.SetIsFrontAvatar((local_360.GetAvatarId() == local_203));
             for (auto& local_418 : local_360.GetEquipmentInfos())
             {
-                if (!(GetEquipmentData().GetEquipmentConfig()))
+                if (!(local_418.GetValue().GetEquipmentData().GetEquipmentConfig()))
                 {
                     continue;
                 }
                 if (int(local_418.GetKey()) == 1)
                 {
                     FPbPlayerLogDsAvatarEquipment local_430 = local_390.GetWeapon();
-                    FCombatStateUtils::FillDataTrackAvatarEquipment(local_430, EEquipSlotType(local_418.GetKey()), GetEquipmentData());
+                    FCombatStateUtils::FillDataTrackAvatarEquipment(local_430, EEquipSlotType(local_418.GetKey()), local_418.GetValue().GetEquipmentData());
                     continue;
                 }
                 FPbPlayerLogDsAvatarEquipment local_440 = local_390.AddTalisman();
-                FCombatStateUtils::FillDataTrackAvatarEquipment(local_440, EEquipSlotType(local_418.GetKey()), GetEquipmentData());
+                FCombatStateUtils::FillDataTrackAvatarEquipment(local_440, EEquipSlotType(local_418.GetKey()), local_418.GetValue().GetEquipmentData());
             }
         }
     }
@@ -454,14 +449,14 @@ void LogDataTrackAvatarSnapshot(const FECSEntity &inout PlayerEntity, const FECS
             continue;
         }
         local_447 = 0;
-        if (GetAvatarConfig(local_340))
+        TDataObjectPtr<FAvatarPrefabConfig> local_302_2 = GetAvatarConfig(local_340);
+        if (local_302_2)
         {
-            local_447 = local_28;
+            local_447 = local_302_2.Get().DataId;
         }
         for (auto& local_466 : local_446.GetSkillIndexBySlot())
         {
-            local_466;
-            local_467 = GetInstanceIndex();
+            local_467 = local_466.GetValue().GetInstanceIndex();
             if (local_467 < 0 || (local_467 >= local_446.GetSkillRuntimeInfos().Num()))
             {
                 continue;
@@ -475,7 +470,7 @@ void LogDataTrackAvatarSnapshot(const FECSEntity &inout PlayerEntity, const FECS
             local_490.SetAvatarId(local_447);
             local_490.SetIsFrontAvatar((local_447 == local_203));
             local_490.SetSkillId(local_470.GetSkillConfig().ToSoftObjectPath().ToString());
-            local_490.SetSkillType((int(GetInputSlot()) == 11 ? 2 : 1));
+            local_490.SetSkillType((int(local_466.GetValue().GetInputSlot()) == 11 ? 2 : 1));
             local_490.SetSkillLevel(0);
         }
     }

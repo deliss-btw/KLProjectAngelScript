@@ -37,8 +37,6 @@ class UBTDecorator_CheckDirectionAngleToTarget : UBTDecorator_ECSScriptBase
     bool CalculateRawConditionValue_Implementation(const FAIBehaviorTreeContext &inout Context, const FBTNodeMemory &inout NodeMemory) const
     {
         Get local_92;
-        float32 local_140 = 0.0f;
-        float32 local_149 = 0.0f;
         float32 local_152;
         FECSEntity local_12 = FECSEntity(this.OriginEntity.GetValue(Context.opImplConv()));
         if (!(local_12.IsValid()) || !(FECSEntity(this.TargetEntity.GetValue(Context.opImplConv())).IsValid()))
@@ -96,27 +94,25 @@ class UBTDecorator_CheckDirectionAngleToTarget : UBTDecorator_ECSScriptBase
         {
             if (local_130.CrossProduct(local_98).Z < 0.0)
             {
-                local_140 = local_139;
-                local_140 = -local_140;
+                float32 local_140 = -local_139;
                 local_139 = local_140;
             }
         }
-        FAISmartValueContext local_6 = Context.opImplConv();
+        float32 local_140_2 = this.EndDegree.GetValue(Context.opImplConv());
         if (this.bDegreeSigned)
         {
-            FAISmartValueContext local_6_2 = Context.opImplConv();
-            local_152 = local_149;
+            local_152 = this.StartDegree.GetValue(Context.opImplConv());
         }
         else
         {
-            float32 local_151 = -local_140;
+            float32 local_151 = -local_140_2;
             local_152 = local_151;
         }
-        if (local_140 < local_152)
+        if (local_140_2 < local_152)
         {
             float32 local_153 = local_152;
-            local_152 = local_140;
-            local_140 = local_153;
+            local_152 = local_140_2;
+            local_140_2 = local_153;
         }
         int local_47 = int(this.CompareType);
         if (local_47 <= 1)
@@ -129,7 +125,7 @@ class UBTDecorator_CheckDirectionAngleToTarget : UBTDecorator_ECSScriptBase
             }
             else
             {
-                return local_139 >= local_152 && (local_139 <= local_140);
+                return local_139 >= local_152 && (local_139 <= local_140_2);
             }
         }
         XError(ELog(14), FString().Append("Unsupported compare type").Append(this.CompareType));

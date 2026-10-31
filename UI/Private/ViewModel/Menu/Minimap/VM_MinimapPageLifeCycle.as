@@ -64,11 +64,9 @@ FVM_MinimapPageLifeCycle& Create(const UObject ContextObject)
 {
     return FVM_MinimapPageLifeCycle::CreateByManager(EUIInternal::GetContextManager(ContextObject));
 }
-FVM_MinimapPageLifeCycle CreateByManager(const UEUIManagerSubsystem Manager)
+FVM_MinimapPageLifeCycle& CreateByManager(const UEUIManagerSubsystem Manager)
 {
-    FVM_MinimapPageLifeCycle __r;
-    TEUIModelRef<FVM_MinimapPageLifeCycle> local_6 = TEUIModelRef<FVM_MinimapPageLifeCycle>(EUIInternal::MakeModelWithManager(Manager, FVM_MinimapPageLifeCycle::ModelId));
-    return __r;
+    return TEUIModelRef<FVM_MinimapPageLifeCycle>(EUIInternal::MakeModelWithManager(Manager, FVM_MinimapPageLifeCycle::ModelId)).Get();
 }
 void GetModelInfo(FEUIViewModelMetaInfo &inout Result)
 {
@@ -101,7 +99,6 @@ namespace __GeneratedProperties_FVM_MinimapPageLifeCycle
 {
 UScriptStruct StaticStruct()
 {
-    UScriptStruct local_2;
-    return local_2;
+    return __GeneratedProperties_FVM_MinimapPageLifeCycle.Get();
 }
 }

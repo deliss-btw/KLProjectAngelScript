@@ -82,9 +82,7 @@ struct FVMS_ExitGame : FEUIViewModelSingleton
             {
                 FECSEntity local_10 = this.GetContext().GetLocalPlayer();
                 Get local_14;
-                TWeakObjectPtr<AECSPlayerController> local_16 = local_14.opCall().GetUEPlayerController();
-                AECSPlayerController local_18;
-                this.SetPlayerController(local_18);
+                this.SetPlayerController(local_14.opCall().GetUEPlayerController().Get());
             }
             ::FGameConnectionUtils::UICallQuitGame(this.GetPlayerController());
             this.SetPlayerController(nullptr);
@@ -156,11 +154,9 @@ FVMS_ExitGame& Get(const UObject ContextObject)
 {
     return FVMS_ExitGame::GetByManager(EUIInternal::GetContextManager(ContextObject));
 }
-FVMS_ExitGame GetByManager(const UEUIManagerSubsystem Manager)
+FVMS_ExitGame& GetByManager(const UEUIManagerSubsystem Manager)
 {
-    FVMS_ExitGame __r;
-    TEUIModelRef<FVMS_ExitGame> local_6 = TEUIModelRef<FVMS_ExitGame>(EUIInternal::MakeModelWithManager(Manager, FVMS_ExitGame::ModelId));
-    return __r;
+    return TEUIModelRef<FVMS_ExitGame>(EUIInternal::MakeModelWithManager(Manager, FVMS_ExitGame::ModelId)).Get();
 }
 void GetModelInfo(FEUIViewModelMetaInfo &inout Result)
 {
@@ -202,7 +198,6 @@ namespace __GeneratedProperties_FVMS_ExitGame
 {
 UScriptStruct StaticStruct()
 {
-    UScriptStruct local_2;
-    return local_2;
+    return __GeneratedProperties_FVMS_ExitGame.Get();
 }
 }

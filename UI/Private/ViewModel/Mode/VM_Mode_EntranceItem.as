@@ -81,42 +81,21 @@ struct FVM_Mode_EntranceItem : FEUIViewModel
     }
     void PostConstruct()
     {
-        bool local_3 = this.GetMode().IsValid();
-        if (!(local_3))
+        if (this.GetMode().IsValid() && this.GetMode().Get().GetMatchConfig().IsSet())
         {
-            local_3 = false;
-        }
-        else
-        {
-            TEUIModelWeakRef<FM_ModeItem> local_2 = this.GetMode();
-            local_3 = GetMatchConfig().IsSet();
-        }
-        if (local_3)
-        {
-            TEUIModelWeakRef<FM_ModeItem> local_2_2 = this.GetMode();
-            TEUIModelWeakRef<FM_ModeItem> local_2_3 = this.GetMode();
-            TEUIModelWeakRef<FM_ModeItem> local_2_4 = this.GetMode();
-            TEUIModelWeakRef<FM_ModeItem> local_2_5 = this.GetMode();
+            this.SetModeName(this.GetMode().Get().GetMatchConfig().Get().ModeName);
+            this.SetModeImage(this.GetMode().Get().GetMatchConfig().Get().ModeEntranceImage);
+            this.SetModeDesc(this.GetMode().Get().GetMatchConfig().Get().ModeDesc);
+            this.SetModeBG(this.GetMode().Get().GetMatchConfig().Get().ModeEntranceImageBG);
         }
         this.RefreshForbiddenState();
         return;
     }
     void RefreshForbiddenState()
     {
-        bool local_3 = this.GetMode().IsValid();
-        if (!(local_3))
+        if (this.GetMode().IsValid() && this.GetMode().Get().GetMatchConfig().IsSet())
         {
-            local_3 = false;
-        }
-        else
-        {
-            TEUIModelWeakRef<FM_ModeItem> local_2 = this.GetMode();
-            local_3 = GetMatchConfig().IsSet();
-        }
-        if (local_3)
-        {
-            TEUIModelWeakRef<FM_ModeItem> local_2_2 = this.GetMode();
-            this.SetbIsForbidden(::FMS_SystemControl::Get(this.GetContext().Manager).IsSystemBlocked(GetSystemControlCfg()));
+            this.SetbIsForbidden(::FMS_SystemControl::Get(this.GetContext().Manager).IsSystemBlocked(this.GetMode().Get().GetMatchConfig().Get().GetSystemControlCfg()));
         }
         return;
     }
@@ -132,20 +111,9 @@ struct FVM_Mode_EntranceItem : FEUIViewModel
     }
     void PostLoad()
     {
-        bool local_3 = this.GetMode().IsValid();
-        if (!(local_3))
+        if (this.GetMode().IsValid() && this.GetMode().Get().GetMatchConfig().IsSet())
         {
-            local_3 = false;
-        }
-        else
-        {
-            TEUIModelWeakRef<FM_ModeItem> local_2 = this.GetMode();
-            local_3 = GetMatchConfig().IsSet();
-        }
-        if (local_3)
-        {
-            TEUIModelWeakRef<FM_ModeItem> local_2_2 = this.GetMode();
-            this.SetRedDotVM(TEUIModelRef<FVM_RedDot>(::FVM_RedDot::Create(this.GetContext().Manager, FRedDotNodeData(this.GetRedDotEntranceTag(), GetDataId()))));
+            this.SetRedDotVM(TEUIModelRef<FVM_RedDot>(::FVM_RedDot::Create(this.GetContext().Manager, FRedDotNodeData(this.GetRedDotEntranceTag(), this.GetMode().Get().GetDataId()))));
         }
         return;
     }
@@ -379,11 +347,9 @@ FVM_Mode_EntranceItem& Create(const UObject ContextObject, const TEUIModelWeakRe
 {
     return FVM_Mode_EntranceItem::CreateByManager(EUIInternal::GetContextManager(ContextObject), Mode);
 }
-FVM_Mode_EntranceItem CreateByManager(const UEUIManagerSubsystem Manager, const TEUIModelWeakRef<FM_ModeItem> &inout Mode)
+FVM_Mode_EntranceItem& CreateByManager(const UEUIManagerSubsystem Manager, const TEUIModelWeakRef<FM_ModeItem> &inout Mode)
 {
-    FVM_Mode_EntranceItem __r;
-    TEUIModelRef<FVM_Mode_EntranceItem> local_6 = TEUIModelRef<FVM_Mode_EntranceItem>(EUIInternal::MakeModelWithManager_Generic(Manager, FVM_Mode_EntranceItem::ModelId, 0, Mode));
-    return __r;
+    return TEUIModelRef<FVM_Mode_EntranceItem>(EUIInternal::MakeModelWithManager_Generic(Manager, FVM_Mode_EntranceItem::ModelId, 0, Mode)).Get();
 }
 void GetModelInfo(FEUIViewModelMetaInfo &inout Result)
 {
@@ -514,7 +480,6 @@ namespace __GeneratedProperties_FVM_Mode_EntranceItem
 {
 UScriptStruct StaticStruct()
 {
-    UScriptStruct local_2;
-    return local_2;
+    return __GeneratedProperties_FVM_Mode_EntranceItem.Get();
 }
 }

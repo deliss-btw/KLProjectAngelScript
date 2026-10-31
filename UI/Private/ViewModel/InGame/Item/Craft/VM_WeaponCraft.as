@@ -231,12 +231,12 @@ struct FVM_WeaponCraft : FEUIViewModel
     }
     void Setup(const TEUIModelRef<FVM_ItemCraft> &inout InItemCraft)
     {
-        FVM_ItemCraft& local_10;
         int local_85;
         this.SetItemCraft(InItemCraft);
         this.SetCurrentTab(0);
         this.SetCraftDataModel(TEUIModelRef<FMS_Craft>(::FMS_Craft::Get(this.GetContext().Manager)));
         TArray<EWeaponType> local_8;
+        FVM_ItemCraft& local_10 = InItemCraft.Get();
         if (local_10)
         {
             for (auto& local_26 : local_10.GetAllCraftableItems())
@@ -250,6 +250,8 @@ struct FVM_WeaponCraft : FEUIViewModel
                 }
             }
         }
+        __Lambda_UI_Private_ViewModel_InGame_Item_Craft_VM_WeaponCraft_98 local_82;
+        local_8.Sort(local_82);
         this.GetModify_Categories().SetNum(local_8.Num());
         int local_83 = 0;
         for (; local_83 < local_8.Num(); )
@@ -266,12 +268,10 @@ struct FVM_WeaponCraft : FEUIViewModel
     {
         if (this.GetCategories().IsValidIndex(this.GetCurrentTab()))
         {
-            FVM_ItemCraft& local_8;
             EWeaponType local_3;
-            int local_1 = this.GetCurrentTab();
-            local_3 = GetWeaponType();
+            local_3 = this.GetCategories()[this.GetCurrentTab()].Get().GetWeaponType();
             this.GetModify_CraftableEquipments().Reset(0);
-            TEUIModelRef<FVM_ItemCraft> local_6 = this.GetItemCraft();
+            FVM_ItemCraft& local_8 = this.GetItemCraft().Get();
             if (local_8)
             {
                 for (auto& local_22 : local_8.GetAllCraftableItems())
@@ -306,10 +306,7 @@ struct FVM_WeaponCraft : FEUIViewModel
                 FVM_EquipmentInfo& local_12 = ::FVM_EquipmentInfo::Create(this.GetContext().Manager, local_8);
                 for (auto& local_26 : local_12.GetEquipmentTraits())
                 {
-                    local_26;
-                    TEUIModelRef<FM_Trait> local_28;
-                    local_28.GetTrait();
-                    GetbIsRandomTrait().SetbHighlight();
+                    local_26.Get().SetbHighlight(local_26.Get().GetTrait().Get().GetbIsRandomTrait());
                 }
                 FEUIWidget::AddWidgetByClass(this.GetContext().UELocalPlayer, this.GetPopupClass(), FEUIModelRef(local_12));
             }
@@ -472,11 +469,9 @@ FVM_WeaponCraftCategory& Create(const UObject ContextObject, const int Index, co
 {
     return FVM_WeaponCraftCategory::CreateByManager(EUIInternal::GetContextManager(ContextObject), Index, EWeaponType(WeaponType), DisplayName);
 }
-FVM_WeaponCraftCategory CreateByManager(const UEUIManagerSubsystem Manager, const int Index, const EWeaponType WeaponType, const FText &inout DisplayName)
+FVM_WeaponCraftCategory& CreateByManager(const UEUIManagerSubsystem Manager, const int Index, const EWeaponType WeaponType, const FText &inout DisplayName)
 {
-    FVM_WeaponCraftCategory __r;
-    TEUIModelRef<FVM_WeaponCraftCategory> local_6 = TEUIModelRef<FVM_WeaponCraftCategory>(EUIInternal::MakeModelWithManager_Generic(Manager, FVM_WeaponCraftCategory::ModelId, 0, Index, WeaponType, DisplayName));
-    return __r;
+    return TEUIModelRef<FVM_WeaponCraftCategory>(EUIInternal::MakeModelWithManager_Generic(Manager, FVM_WeaponCraftCategory::ModelId, 0, Index, WeaponType, DisplayName)).Get();
 }
 void GetModelInfo(FEUIViewModelMetaInfo &inout Result)
 {
@@ -539,8 +534,7 @@ namespace __GeneratedProperties_FVM_WeaponCraftCategory
 {
 UScriptStruct StaticStruct()
 {
-    UScriptStruct local_2;
-    return local_2;
+    return __GeneratedProperties_FVM_WeaponCraftCategory.Get();
 }
 }
 namespace FVM_WeaponCraft
@@ -549,11 +543,9 @@ FVM_WeaponCraft& Create(const UObject ContextObject)
 {
     return FVM_WeaponCraft::CreateByManager(EUIInternal::GetContextManager(ContextObject));
 }
-FVM_WeaponCraft CreateByManager(const UEUIManagerSubsystem Manager)
+FVM_WeaponCraft& CreateByManager(const UEUIManagerSubsystem Manager)
 {
-    FVM_WeaponCraft __r;
-    TEUIModelRef<FVM_WeaponCraft> local_6 = TEUIModelRef<FVM_WeaponCraft>(EUIInternal::MakeModelWithManager(Manager, FVM_WeaponCraft::ModelId));
-    return __r;
+    return TEUIModelRef<FVM_WeaponCraft>(EUIInternal::MakeModelWithManager(Manager, FVM_WeaponCraft::ModelId)).Get();
 }
 void GetModelInfo(FEUIViewModelMetaInfo &inout Result)
 {
@@ -672,7 +664,6 @@ namespace __GeneratedProperties_FVM_WeaponCraft
 {
 UScriptStruct StaticStruct()
 {
-    UScriptStruct local_2;
-    return local_2;
+    return __GeneratedProperties_FVM_WeaponCraft.Get();
 }
 }

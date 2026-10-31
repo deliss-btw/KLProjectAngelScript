@@ -36,7 +36,7 @@ class US_EcosimAIV2TeamSystem : UECSScriptSystem
         FC_EcosimAIV2Team& local_12 = local_10.opCall();
         if (local_12)
         {
-            FTargetEntity local_14 = FTargetEntity(Entity);
+            local_12.EntityMemberList.Remove(FTargetEntity(Entity));
             if ((local_12.LeaderEntity == Entity))
             {
                 local_12.LeaderEntity = ENTITY_NULL;

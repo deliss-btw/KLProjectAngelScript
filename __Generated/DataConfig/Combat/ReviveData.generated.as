@@ -18,7 +18,6 @@ int __FReviveData_GetReviveID(const TDataObjectPtr<FReviveData> &inout DataObjec
 UFUNCTION()
 FString __FReviveData_GetReviveDes(const TDataObjectPtr<FReviveData> &inout DataObject)
 {
-    FString __r;
     if ((DataObject == nullptr))
     {
         if (!(EUIGlobals::GIsDuringPropertyConversion))
@@ -28,28 +27,25 @@ FString __FReviveData_GetReviveDes(const TDataObjectPtr<FReviveData> &inout Data
         FReviveData local_68;
         return local_68.ReviveDes;
     }
-    return __r;
+    return DataObject.Get().ReviveDes;
 }
 UFUNCTION()
 bool __FReviveData_GetbCanHitOrLockTargetWhenNearDeath(const TDataObjectPtr<FReviveData> &inout DataObject)
 {
-    bool local_1 = false;
     if ((DataObject == nullptr))
     {
-        local_1 = !(EUIGlobals::GIsDuringPropertyConversion);
-        if (local_1)
+        if (!(EUIGlobals::GIsDuringPropertyConversion))
         {
             FBlueprintDebugFunctions::ThrowScriptException("Get 'bCanHitOrLockTargetWhenNearDeath' from a null 'FReviveData' DataObject!");
         }
         FReviveData local_68;
         return local_68.bCanHitOrLockTargetWhenNearDeath;
     }
-    return local_1;
+    return DataObject.Get().bCanHitOrLockTargetWhenNearDeath;
 }
 UFUNCTION()
 EKnockdownCond __FReviveData_GetKnockdownCond(const TDataObjectPtr<FReviveData> &inout DataObject)
 {
-    int local_69 = 0;
     if ((DataObject == nullptr))
     {
         if (!(EUIGlobals::GIsDuringPropertyConversion))
@@ -57,15 +53,13 @@ EKnockdownCond __FReviveData_GetKnockdownCond(const TDataObjectPtr<FReviveData> 
             FBlueprintDebugFunctions::ThrowScriptException("Get 'KnockdownCond' from a null 'FReviveData' DataObject!");
         }
         FReviveData local_68;
-        local_69 = int(local_68.KnockdownCond);
-        return EKnockdownCond(local_69);
+        return local_68.KnockdownCond;
     }
-    return EKnockdownCond(local_69);
+    return DataObject.Get().KnockdownCond;
 }
 UFUNCTION()
 EKnockdownHpType __FReviveData_GetKnockdownHpType(const TDataObjectPtr<FReviveData> &inout DataObject)
 {
-    int local_69 = 0;
     if ((DataObject == nullptr))
     {
         if (!(EUIGlobals::GIsDuringPropertyConversion))
@@ -73,10 +67,9 @@ EKnockdownHpType __FReviveData_GetKnockdownHpType(const TDataObjectPtr<FReviveDa
             FBlueprintDebugFunctions::ThrowScriptException("Get 'KnockdownHpType' from a null 'FReviveData' DataObject!");
         }
         FReviveData local_68;
-        local_69 = int(local_68.KnockdownHpType);
-        return EKnockdownHpType(local_69);
+        return local_68.KnockdownHpType;
     }
-    return EKnockdownHpType(local_69);
+    return DataObject.Get().KnockdownHpType;
 }
 UFUNCTION()
 int __FReviveData_GetKnockdownHp(const TDataObjectPtr<FReviveData> &inout DataObject)
@@ -111,7 +104,6 @@ int __FReviveData_GetKnockdownDecHp(const TDataObjectPtr<FReviveData> &inout Dat
 UFUNCTION()
 FBuffConfigRef __FReviveData_GetKnockdownBuff(const TDataObjectPtr<FReviveData> &inout DataObject)
 {
-    FBuffConfigRef __r;
     if ((DataObject == nullptr))
     {
         if (!(EUIGlobals::GIsDuringPropertyConversion))
@@ -121,7 +113,7 @@ FBuffConfigRef __FReviveData_GetKnockdownBuff(const TDataObjectPtr<FReviveData> 
         FReviveData local_68;
         return local_68.KnockdownBuff;
     }
-    return __r;
+    return DataObject.Get().KnockdownBuff;
 }
 UFUNCTION()
 int __FReviveData_GetKnockdownTimes(const TDataObjectPtr<FReviveData> &inout DataObject)
@@ -141,7 +133,6 @@ int __FReviveData_GetKnockdownTimes(const TDataObjectPtr<FReviveData> &inout Dat
 UFUNCTION()
 ERescueType __FReviveData_GetRescueType(const TDataObjectPtr<FReviveData> &inout DataObject)
 {
-    int local_69 = 0;
     if ((DataObject == nullptr))
     {
         if (!(EUIGlobals::GIsDuringPropertyConversion))
@@ -149,10 +140,9 @@ ERescueType __FReviveData_GetRescueType(const TDataObjectPtr<FReviveData> &inout
             FBlueprintDebugFunctions::ThrowScriptException("Get 'RescueType' from a null 'FReviveData' DataObject!");
         }
         FReviveData local_68;
-        local_69 = int(local_68.RescueType);
-        return ERescueType(local_69);
+        return local_68.RescueType;
     }
-    return ERescueType(local_69);
+    return DataObject.Get().RescueType;
 }
 UFUNCTION()
 int __FReviveData_GetRescueSkillID(const TDataObjectPtr<FReviveData> &inout DataObject)
@@ -247,7 +237,6 @@ int __FReviveData_GetRevivePunishTime(const TDataObjectPtr<FReviveData> &inout D
 UFUNCTION()
 TArray<EReviveType> __FReviveData_GetReviveType(const TDataObjectPtr<FReviveData> &inout DataObject)
 {
-    TArray<EReviveType> __r;
     if ((DataObject == nullptr))
     {
         if (!(EUIGlobals::GIsDuringPropertyConversion))
@@ -257,7 +246,7 @@ TArray<EReviveType> __FReviveData_GetReviveType(const TDataObjectPtr<FReviveData
         FReviveData local_68;
         return local_68.ReviveType;
     }
-    return __r;
+    return DataObject.Get().ReviveType;
 }
 UFUNCTION()
 int __FReviveData_GetReviveHp(const TDataObjectPtr<FReviveData> &inout DataObject)
@@ -277,18 +266,16 @@ int __FReviveData_GetReviveHp(const TDataObjectPtr<FReviveData> &inout DataObjec
 UFUNCTION()
 bool __FReviveData_GetbIsReplyPotion(const TDataObjectPtr<FReviveData> &inout DataObject)
 {
-    bool local_1 = false;
     if ((DataObject == nullptr))
     {
-        local_1 = !(EUIGlobals::GIsDuringPropertyConversion);
-        if (local_1)
+        if (!(EUIGlobals::GIsDuringPropertyConversion))
         {
             FBlueprintDebugFunctions::ThrowScriptException("Get 'bIsReplyPotion' from a null 'FReviveData' DataObject!");
         }
         FReviveData local_68;
         return local_68.bIsReplyPotion;
     }
-    return local_1;
+    return DataObject.Get().bIsReplyPotion;
 }
 UFUNCTION()
 int __FReviveData_GetReviveBuff(const TDataObjectPtr<FReviveData> &inout DataObject)
@@ -308,23 +295,20 @@ int __FReviveData_GetReviveBuff(const TDataObjectPtr<FReviveData> &inout DataObj
 UFUNCTION()
 bool __FReviveData_GetbUseOverrideRevivePrefabClass(const TDataObjectPtr<FReviveData> &inout DataObject)
 {
-    bool local_1 = false;
     if ((DataObject == nullptr))
     {
-        local_1 = !(EUIGlobals::GIsDuringPropertyConversion);
-        if (local_1)
+        if (!(EUIGlobals::GIsDuringPropertyConversion))
         {
             FBlueprintDebugFunctions::ThrowScriptException("Get 'bUseOverrideRevivePrefabClass' from a null 'FReviveData' DataObject!");
         }
         FReviveData local_68;
         return local_68.bUseOverrideRevivePrefabClass;
     }
-    return local_1;
+    return DataObject.Get().bUseOverrideRevivePrefabClass;
 }
 UFUNCTION()
 TArray<TSubclassOf<AECSPrefab>> __FReviveData_GetRestPointRevivePrefabClass(const TDataObjectPtr<FReviveData> &inout DataObject)
 {
-    TArray<TSubclassOf<AECSPrefab>> __r;
     if ((DataObject == nullptr))
     {
         if (!(EUIGlobals::GIsDuringPropertyConversion))
@@ -334,7 +318,7 @@ TArray<TSubclassOf<AECSPrefab>> __FReviveData_GetRestPointRevivePrefabClass(cons
         FReviveData local_68;
         return local_68.RestPointRevivePrefabClass;
     }
-    return __r;
+    return DataObject.Get().RestPointRevivePrefabClass;
 }
 UFUNCTION()
 FReviveData CastToFReviveData(const TDataObjectPtr<FReviveData> &inout DataObject)

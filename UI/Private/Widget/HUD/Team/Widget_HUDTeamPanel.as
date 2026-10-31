@@ -39,19 +39,19 @@ class UWidget_HUDTeamPanel : UEUIActivatableWidget
         }
         this.StopAnimation(this.Anim_LB_Pressed);
         this.PlayAnimation(this.Anim_LB_Released, 0.0f, 1, EUMGSequencePlayMode(0), 1.0f, false);
-        NotifyShoulderReleased();
+        this.TeamPanel.Get().NotifyShoulderReleased();
         return;
     }
     UFUNCTION()
     void OnTriggerLeftShoulderPress()
     {
-        1.SetbGamepadLeftShoulderPress();
+        this.TeamPanel.Get().SetbGamepadLeftShoulderPress(true);
         return;
     }
     UFUNCTION()
     void OnTriggerLeftShoulderRelease()
     {
-        0.SetbGamepadLeftShoulderPress();
+        this.TeamPanel.Get().SetbGamepadLeftShoulderPress(false);
         return;
     }
     UFUNCTION()
@@ -61,7 +61,7 @@ class UWidget_HUDTeamPanel : UEUIActivatableWidget
         {
             return false;
         }
-        return (GetTeamOperatorBtns().Num() > 0);
+        return (this.TeamPanel.Get().GetTeamOperatorBtns().Num() > 0);
     }
     UFUNCTION()
     bool HasAnyOtherTeammer() const
@@ -70,7 +70,7 @@ class UWidget_HUDTeamPanel : UEUIActivatableWidget
         {
             return false;
         }
-        return (GetDisplayingTeammates().Num() > 1);
+        return (this.TeamPanel.Get().GetDisplayingTeammates().Num() > 1);
     }
     UFUNCTION()
     void TeamPanel_InviteTeam() const
@@ -101,8 +101,8 @@ class UWidget_HUDTeamPanel : UEUIActivatableWidget
     }
     void HandleObservedModelChanges(FEUIReactiveSubscriberIterator &inout It)
     {
-        FVM_TeamPanel& local_6;
         TEUIModelRef<FVM_TeamPanel> local_2 = this.TeamPanel.AsRef();
+        FVM_TeamPanel& local_6 = local_2.Get();
         for (; It; )
         {
             FEUIReactiveSubscriberTrackScope local_56 = FEUIReactiveSubscriberTrackScope(It);

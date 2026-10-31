@@ -52,18 +52,16 @@ struct FVM_GuideGroupDetail : FEUIViewModel
     void PostConstruct()
     {
         this.SetPageIndicator(TEUIModelRef<FVM_PageIndicator>(::FVM_PageIndicator::Create(this.GetManager())));
-        TEUIModelRef<FVM_PageIndicator> local_4 = this.GetPageIndicator();
-        this.GetTotalPages().Init();
+        this.GetPageIndicator().Get().Init(this.GetTotalPages());
         return;
     }
     FText GetTitle() const
     {
-        FText __r;
         if (!(this.GetGuideConfig()))
         {
             return FText();
         }
-        return __r;
+        return this.GetGuideConfig().Get().Name;
     }
     int GetTotalPages() const
     {
@@ -72,7 +70,7 @@ struct FVM_GuideGroupDetail : FEUIViewModel
             return 0;
         }
         int local_3 = 0;
-        for (auto& local_18 : GetGuidePageList())
+        for (auto& local_18 : this.GetGuideConfig().Get().GetGuidePageList())
         {
             if (local_18)
             {
@@ -83,15 +81,17 @@ struct FVM_GuideGroupDetail : FEUIViewModel
     }
     int GetAssetTypeIndex() const
     {
-        if (!(this.GetCurrentPageConfig()))
+        TDataObjectPtr<FGuidePageConfig> local_24 = this.GetCurrentPageConfig();
+        if (!(local_24))
         {
             return 0;
         }
-        return (0 - 1);
+        return (int(local_24.Get().AssetType) - 1);
     }
     int GetAssetSwitcherIndex() const
     {
-        return this.GetCurrentPageConfig() && (0 == 3) ? 1 : 0;
+        TDataObjectPtr<FGuidePageConfig> local_24 = this.GetCurrentPageConfig();
+        return local_24 && (int(local_24.Get().AssetType) == 3) ? 1 : 0;
     }
     FSoftBrush GetCurrentImage() const
     {
@@ -99,6 +99,7 @@ struct FVM_GuideGroupDetail : FEUIViewModel
         FSoftBrush local_140;
         if (local_24)
         {
+            local_140 = local_24.Get().AssetImage;
         }
         else
         {
@@ -108,13 +109,15 @@ struct FVM_GuideGroupDetail : FEUIViewModel
     }
     UMediaSource GetCurrentVideo() const
     {
-        if (this.GetCurrentPageConfig())
+        UMediaSource local_52;
+        TDataObjectPtr<FGuidePageConfig> local_24 = this.GetCurrentPageConfig();
+        if (local_24)
         {
+            local_52 = local_24.Get().AssetVideo;
         }
         else
         {
         }
-        UMediaSource local_52;
         return local_52;
     }
     FText GetCurrentDesc() const
@@ -123,6 +126,7 @@ struct FVM_GuideGroupDetail : FEUIViewModel
         FText local_58;
         if (local_24)
         {
+            local_58 = local_24.Get().Desc;
         }
         else
         {
@@ -147,8 +151,7 @@ struct FVM_GuideGroupDetail : FEUIViewModel
         if (this.HasPrevPage())
         {
             this.SetCurrentPage((this.GetCurrentPage() - 1));
-            TEUIModelRef<FVM_PageIndicator> local_6 = this.GetPageIndicator();
-            this.GetCurrentPage().UpdateTo();
+            this.GetPageIndicator().Get().UpdateTo(this.GetCurrentPage());
         }
         return;
     }
@@ -157,8 +160,7 @@ struct FVM_GuideGroupDetail : FEUIViewModel
         if (this.HasNextPage())
         {
             this.SetCurrentPage((this.GetCurrentPage() + 1));
-            TEUIModelRef<FVM_PageIndicator> local_6 = this.GetPageIndicator();
-            this.GetCurrentPage().UpdateTo();
+            this.GetPageIndicator().Get().UpdateTo(this.GetCurrentPage());
         }
         return;
     }
@@ -169,7 +171,7 @@ struct FVM_GuideGroupDetail : FEUIViewModel
             return TDataObjectPtr<FGuidePageConfig>();
         }
         int local_53 = 0;
-        for (auto& local_68 : GetGuidePageList())
+        for (auto& local_68 : this.GetGuideConfig().Get().GetGuidePageList())
         {
             if (!(local_68))
             {
@@ -273,11 +275,9 @@ FVM_GuideGroupDetail& Create(const UObject ContextObject, const TDataObjectPtr<F
 {
     return FVM_GuideGroupDetail::CreateByManager(EUIInternal::GetContextManager(ContextObject), GuideConfig);
 }
-FVM_GuideGroupDetail CreateByManager(const UEUIManagerSubsystem Manager, const TDataObjectPtr<FGuideGroupConfig> &inout GuideConfig)
+FVM_GuideGroupDetail& CreateByManager(const UEUIManagerSubsystem Manager, const TDataObjectPtr<FGuideGroupConfig> &inout GuideConfig)
 {
-    FVM_GuideGroupDetail __r;
-    TEUIModelRef<FVM_GuideGroupDetail> local_6 = TEUIModelRef<FVM_GuideGroupDetail>(EUIInternal::MakeModelWithManager_Generic(Manager, FVM_GuideGroupDetail::ModelId, 0, GuideConfig));
-    return __r;
+    return TEUIModelRef<FVM_GuideGroupDetail>(EUIInternal::MakeModelWithManager_Generic(Manager, FVM_GuideGroupDetail::ModelId, 0, GuideConfig)).Get();
 }
 void GetModelInfo(FEUIViewModelMetaInfo &inout Result)
 {
@@ -427,7 +427,6 @@ namespace __GeneratedProperties_FVM_GuideGroupDetail
 {
 UScriptStruct StaticStruct()
 {
-    UScriptStruct local_2;
-    return local_2;
+    return __GeneratedProperties_FVM_GuideGroupDetail.Get();
 }
 }

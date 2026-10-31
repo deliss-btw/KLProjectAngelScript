@@ -543,11 +543,9 @@ bool CheckCanNearDeath(const FECSEntity &inout Entity)
         {
             bool local_13;
             EKnockdownCond local_11;
-            EKnockdownCond local_12;
-            local_11 = local_12;
+            local_11 = local_10.GetReviveData().Get().KnockdownCond;
             local_13 = false;
-            int local_14 = int(local_11);
-            if (local_14 == 0)
+            if (int(local_11) == 0)
             {
                 local_13 = false;
             }
@@ -559,8 +557,7 @@ bool CheckCanNearDeath(const FECSEntity &inout Entity)
                 }
                 else
                 {
-                    local_14 = int(local_11);
-                    if (local_14 == 2)
+                    if (int(local_11) == 2)
                     {
                         TArray<FECSEntity> local_20 = FTeamUtils::GetTeammates(Entity);
                         local_13 = (local_20.Num() > 1);
@@ -571,6 +568,7 @@ bool CheckCanNearDeath(const FECSEntity &inout Entity)
             {
                 return false;
             }
+            int local_14 = local_10.GetReviveData().Get().KnockdownTimes;
             return (local_32.GetNearDeathCount() < local_14);
         }
     }

@@ -3,17 +3,17 @@ namespace FSurfaceContactFXUtils
 UFUNCTION()
 TArray<int> GetSurfaceVfxCodeList(const FECSEntity &inout Caster, const FName &inout SurfaceName)
 {
-    UDataTable local_8;
     TArray<int> local_4;
-    if (local_8 == nullptr)
+    if (UGameplayConfigsManager::GetSurfaceVFXCodeTable().Get() == nullptr)
     {
         XWarning(ELog(49), "GetSurfaceVfxCodeList can not find datatable: SurfaceContactVFXConfig");
         return local_4;
     }
     UDataTable::FindDataObject local_38;
-    if (local_38.opCall(n"Default"))
+    TDataObjectPtr<FSurfaceVFXCode> local_64 = local_38.opCall(n"Default");
+    if (local_64)
     {
-        const FVFXCodeData& local_66 = SurfaceName.GetDataRawByName();
+        const FVFXCodeData& local_66 = local_64.Get().GetDataRawByName(SurfaceName);
         for (auto& local_80 : local_66.Code)
         {
             local_4.Add(local_80.Code);
@@ -64,7 +64,6 @@ AFXActor DoSurfaceTrace(const FKLSpawnFxActorHelper &inout SpawnFxActorHelper, c
 bool FXScenePhysicsTest(FName &inout SurfaceName, bool &inout bTraceResult, const FECSEntity &inout OwnerEntity, FVector &inout BlockLocation, FVector &inout HitNormal, FQuat4f &inout OutBlockRotation, const FSurfaceContactInfo &inout SurfaceContactInfo)
 {
     float32 local_31;
-    UPrimitiveComponent local_182;
     FVector local_24 = (FVector(SurfaceContactInfo.GetFxStartLocation()) + FVector(SurfaceContactInfo.GetTraceStartOffset()));
     FVector local_30(SurfaceContactInfo.GetTraceDir());
     local_31 = SurfaceContactInfo.GetTraceLength();
@@ -88,7 +87,7 @@ bool FXScenePhysicsTest(FName &inout SurfaceName, bool &inout bTraceResult, cons
             local_166 = local_180;
             break;
         }
-        if (local_166.GetbBlockingHit() && (local_182 != nullptr))
+        if (local_166.GetbBlockingHit() && (local_166.GetComponent() != nullptr))
         {
             SurfaceName = FSceneInteractUtils::GetPhysicalMaterialNameFromHitResult(local_166);
             BlockLocation = local_166.ImpactPoint;

@@ -3,7 +3,6 @@ namespace __FWorldAreaConfigFunctions
 UFUNCTION()
 FText __FWorldAreaConfig_GetAreaName(const TDataObjectPtr<FWorldAreaConfig> &inout DataObject)
 {
-    FText __r;
     if ((DataObject == nullptr))
     {
         if (!(EUIGlobals::GIsDuringPropertyConversion))
@@ -13,12 +12,11 @@ FText __FWorldAreaConfig_GetAreaName(const TDataObjectPtr<FWorldAreaConfig> &ino
         FWorldAreaConfig local_68;
         return local_68.AreaName;
     }
-    return __r;
+    return DataObject.Get().AreaName;
 }
 UFUNCTION()
 FText __FWorldAreaConfig_GetDescription(const TDataObjectPtr<FWorldAreaConfig> &inout DataObject)
 {
-    FText __r;
     if ((DataObject == nullptr))
     {
         if (!(EUIGlobals::GIsDuringPropertyConversion))
@@ -28,12 +26,11 @@ FText __FWorldAreaConfig_GetDescription(const TDataObjectPtr<FWorldAreaConfig> &
         FWorldAreaConfig local_68;
         return local_68.Description;
     }
-    return __r;
+    return DataObject.Get().Description;
 }
 UFUNCTION()
 TSet<TSoftClassPtr<AKLLevelScriptActor>> __FWorldAreaConfig_GetCommissionExtraLoadDatalayers(const TDataObjectPtr<FWorldAreaConfig> &inout DataObject)
 {
-    TSet<TSoftClassPtr<AKLLevelScriptActor>> __r;
     if ((DataObject == nullptr))
     {
         if (!(EUIGlobals::GIsDuringPropertyConversion))
@@ -43,12 +40,11 @@ TSet<TSoftClassPtr<AKLLevelScriptActor>> __FWorldAreaConfig_GetCommissionExtraLo
         FWorldAreaConfig local_68;
         return local_68.CommissionExtraLoadDatalayers;
     }
-    return __r;
+    return DataObject.Get().CommissionExtraLoadDatalayers;
 }
 UFUNCTION()
 TSet<EKLDataLayerFilterTags> __FWorldAreaConfig_GetCommissionExtraLoadFilterTags(const TDataObjectPtr<FWorldAreaConfig> &inout DataObject)
 {
-    TSet<EKLDataLayerFilterTags> __r;
     if ((DataObject == nullptr))
     {
         if (!(EUIGlobals::GIsDuringPropertyConversion))
@@ -58,7 +54,7 @@ TSet<EKLDataLayerFilterTags> __FWorldAreaConfig_GetCommissionExtraLoadFilterTags
         FWorldAreaConfig local_68;
         return local_68.CommissionExtraLoadFilterTags;
     }
-    return __r;
+    return DataObject.Get().CommissionExtraLoadFilterTags;
 }
 UFUNCTION()
 UDataTable __FWorldAreaConfig_GetDifficultyLevelConfig(const TDataObjectPtr<FWorldAreaConfig> &inout DataObject)

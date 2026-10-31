@@ -33,8 +33,8 @@ class UWidget_SelectServer : UEUIActivatableWidget
     }
     void HandleObservedModelChanges(FEUIReactiveSubscriberIterator &inout It)
     {
-        FVM_LoginServer& local_6;
         TEUIModelRef<FVM_LoginServer> local_2 = this.LoginServerVM.AsRef();
+        FVM_LoginServer& local_6 = local_2.Get();
         for (; It; )
         {
             FEUIReactiveSubscriberTrackScope local_56 = FEUIReactiveSubscriberTrackScope(It);

@@ -65,28 +65,28 @@ class UWidget_SkillInfo_Mon_Controlable : UEUIUserWidget
     UFUNCTION()
     FEUIModelRef SkillInfo_VM_SkillQButton() const
     {
-        FVMS_SkillInfo_Mon_Controlable& local_2;
+        FVMS_SkillInfo_Mon_Controlable& local_2 = this.SkillInfo.Get();
         FEUIModelRef local_8 = local_2 ? local_2.GetVM_SkillQButton() : FEUIModelRef();
         return local_8;
     }
     UFUNCTION()
     FEUIModelRef SkillInfo_VM_SkillEButton() const
     {
-        FVMS_SkillInfo_Mon_Controlable& local_2;
+        FVMS_SkillInfo_Mon_Controlable& local_2 = this.SkillInfo.Get();
         FEUIModelRef local_8 = local_2 ? local_2.GetVM_SkillEButton() : FEUIModelRef();
         return local_8;
     }
     UFUNCTION()
     FEUIModelRef SkillInfo_VM_UltraSkillButton() const
     {
-        FVMS_SkillInfo_Mon_Controlable& local_2;
+        FVMS_SkillInfo_Mon_Controlable& local_2 = this.SkillInfo.Get();
         FEUIModelRef local_8 = local_2 ? local_2.GetVM_UltraSkillButton() : FEUIModelRef();
         return local_8;
     }
     UFUNCTION()
     float32 SkillInfo_ControlEnergyRatio() const
     {
-        FVMS_SkillInfo_Mon_Controlable& local_2;
+        FVMS_SkillInfo_Mon_Controlable& local_2 = this.SkillInfo.Get();
         return local_2 ? local_2.GetControlEnergyRatio() : 0.0f;
     }
     UFUNCTION()

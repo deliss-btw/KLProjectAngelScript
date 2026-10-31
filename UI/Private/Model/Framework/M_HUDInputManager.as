@@ -316,11 +316,9 @@ FM_HUDSystemEntranceInput& Create(const UObject ContextObject, const FEUIWidgetT
 {
     return FM_HUDSystemEntranceInput::CreateByManager(EUIInternal::GetContextManager(ContextObject), EntranceWidget, InputAction);
 }
-FM_HUDSystemEntranceInput CreateByManager(const UEUIManagerSubsystem Manager, const FEUIWidgetTag &inout EntranceWidget, const FEUIInputAction &inout InputAction)
+FM_HUDSystemEntranceInput& CreateByManager(const UEUIManagerSubsystem Manager, const FEUIWidgetTag &inout EntranceWidget, const FEUIInputAction &inout InputAction)
 {
-    FM_HUDSystemEntranceInput __r;
-    TEUIModelRef<FM_HUDSystemEntranceInput> local_6 = TEUIModelRef<FM_HUDSystemEntranceInput>(EUIInternal::MakeModelWithManager_Generic(Manager, FM_HUDSystemEntranceInput::ModelId, 0, EntranceWidget, InputAction));
-    return __r;
+    return TEUIModelRef<FM_HUDSystemEntranceInput>(EUIInternal::MakeModelWithManager_Generic(Manager, FM_HUDSystemEntranceInput::ModelId, 0, EntranceWidget, InputAction)).Get();
 }
 void GetModelInfo(FEUIModelOnlyMetaInfo &inout Result)
 {
@@ -353,11 +351,9 @@ FMS_HUDInputManager& Get(const UObject ContextObject)
 {
     return FMS_HUDInputManager::GetByManager(EUIInternal::GetContextManager(ContextObject));
 }
-FMS_HUDInputManager GetByManager(const UEUIManagerSubsystem Manager)
+FMS_HUDInputManager& GetByManager(const UEUIManagerSubsystem Manager)
 {
-    FMS_HUDInputManager __r;
-    TEUIModelRef<FMS_HUDInputManager> local_6 = TEUIModelRef<FMS_HUDInputManager>(EUIInternal::MakeModelWithManager(Manager, FMS_HUDInputManager::ModelId));
-    return __r;
+    return TEUIModelRef<FMS_HUDInputManager>(EUIInternal::MakeModelWithManager(Manager, FMS_HUDInputManager::ModelId)).Get();
 }
 void GetModelInfo(FEUIModelOnlyMetaInfo &inout Result)
 {

@@ -52,7 +52,7 @@ class UWidget_LoadingCommissionInfo : UUserWidget
             this.SetVisibility(ESlateVisibility(1));
             return;
         }
-        TDataObjectPtr<FCommissionConfig> local_30 = GetCommissionConfig();
+        TDataObjectPtr<FCommissionConfig> local_30 = local_2.Get().GetCommissionConfig();
         this.TextBlock_CommissionName.SetText(local_30.opArrow().CommissionName);
         this.TextBlock_CommissionLevel.SetText(FText::AsNumber(local_30.opArrow().CommissionStars, FNumberFormattingOptions()));
         this.TextBlock_Position.SetText(local_2.opArrow().GetLocationName());

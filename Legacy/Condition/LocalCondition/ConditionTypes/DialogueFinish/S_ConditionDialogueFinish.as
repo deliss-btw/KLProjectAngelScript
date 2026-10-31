@@ -7,20 +7,17 @@ class US_ConditionDialogueFinish : UECSScriptSystem
     UFUNCTION()
     void ServerJob_UpdateDialogueFinishCondition(const FCE_DialogueRequestEnd &inout Event, const FCS_LocalConditionSubscriptionManager &inout SubscriptionManager) const
     {
-        bool local_1;
         bool local_81;
-        int local_216 = 0;
         if (Event.bInterrupted)
         {
             return;
         }
-        if (!(::DialogueUtils::GetDialogueConfig(Event.DialogueContextEntity).IsSet()))
+        TDataObjectPtr<FDialogueConfig> local_26 = ::DialogueUtils::GetDialogueConfig(Event.DialogueContextEntity);
+        if (!(local_26.IsSet()))
         {
             return;
         }
-        FName local_54;
-        local_54.GetDataName();
-        FName local_52 = local_54;
+        FName local_52(local_26.Get().GetDataName());
         TConstRawPtr<FDialogueHistory> local_56 = nullptr;
         Get local_62;
         const FC_DialogueStateCache& local_64 = local_62.opCall();
@@ -28,46 +25,36 @@ class US_ConditionDialogueFinish : UECSScriptSystem
         {
             local_56 = local_64.HistoryCache.Find(local_52);
         }
-        CastTo local_110;
         for (auto& local_80 : SubscriptionManager.GetHandleList(UConditionDialogueFinish, local_52).ConditionInstances)
         {
             if (::ConditionUtils::IsReached(local_80))
             {
                 continue;
             }
-            local_1 = false;
-            local_81 = local_1;
+            local_81 = false;
             TDataObjectPtr<FConditionConfigBase> local_106 = local_80.GetConditionConfig();
-            if (local_110.opCall())
+            CastTo local_110;
+            TDataObjectPtr<FLocalConditionConfig> local_134 = local_110.opCall();
+            if (local_134)
             {
-                FInstancedStruct::GetPtr local_162;
-                if (local_162.opCall())
+                TConstRawPtr<FConditionDialogueFinishConfig> local_164 = FInstancedStruct::GetPtr(local_134.Get().ConditionTypeDefineConfig).opCall();
+                if (local_164)
                 {
-                    TDataObjectPtr<FDialogueLineConfig> local_190;
+                    TDataObjectPtr<FDialogueLineConfig> local_190 = local_164.Get().CheckOption;
                     if (local_190.IsSet())
                     {
-                        if ((local_56 == nullptr))
-                        {
-                            local_1 = true;
-                        }
-                        else
-                        {
-                            local_54.GetDataName();
-                            local_1 = !(local_56.opArrow().GetOptionHistory().Contains(local_54));
-                        }
-                        if (local_1)
+                        if ((local_56 == nullptr) || !(local_56.opArrow().GetOptionHistory().Contains(local_190.Get().GetDataName())))
                         {
                             continue;
                         }
                     }
-                    if (local_216 == 2)
+                    if (int(local_26.Get().DialogueScope) == 2)
                     {
                         local_81 = true;
                     }
                     else
                     {
-                        int local_218 = local_216;
-                        if (local_218 == 0)
+                        if (int(local_26.Get().DialogueScope) == 0)
                         {
                             if ((Event.PlayerEntity == ::ConditionUtils_Internal::FindLocalConditionInstanceData(local_80.GetLocalConditionInstanceID()).GetContextEntity()))
                             {
@@ -76,7 +63,7 @@ class US_ConditionDialogueFinish : UECSScriptSystem
                         }
                         else
                         {
-                            FString local_228 = FString();
+                            XError(ELog(58), FString().Append("UpdateDialogueFinishCondition Failed, unsupported dialogue scope: ").Append(local_26.Get().DialogueScope));
                         }
                     }
                 }

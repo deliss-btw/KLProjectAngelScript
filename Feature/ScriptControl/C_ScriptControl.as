@@ -104,7 +104,7 @@ struct FC_ScriptControl : FECSComponent
             }
             else
             {
-                local_5 = EScriptControlBehaviorName(0);
+                local_5 = EScriptControlBehaviorName::None;
             }
             this.CurrentScriptControlStateBehavior = EScriptControlBehaviorName(local_5);
             if (local_4.bHasCurrentAction)
@@ -113,15 +113,13 @@ struct FC_ScriptControl : FECSComponent
             }
             else
             {
-                local_5 = EScriptControlBehaviorName(0);
+                local_5 = EScriptControlBehaviorName::None;
             }
             this.CurrentScriptControlActionBehavior = EScriptControlBehaviorName(local_5);
             return;
         }
-        EScriptControlBehaviorName local_6 = EScriptControlBehaviorName(0);
-        this.CurrentScriptControlStateBehavior = EScriptControlBehaviorName(local_6);
-        local_5 = EScriptControlBehaviorName(0);
-        this.CurrentScriptControlActionBehavior = EScriptControlBehaviorName(local_5);
+        this.CurrentScriptControlStateBehavior = EScriptControlBehaviorName(EScriptControlBehaviorName::None);
+        this.CurrentScriptControlActionBehavior = EScriptControlBehaviorName(EScriptControlBehaviorName::None);
         return;
     }
     void DisableAndClearAll()

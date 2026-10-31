@@ -37,8 +37,6 @@ TArray<TSubclassOf<AECSPrefab>> GetRestPointPrefabClasses()
 {
     int local_8 = 0;
     bool local_9;
-    bool local_11 = false;
-    TArray<TSubclassOf<AECSPrefab>> __return;
     FECSWorldPtr local_2 = ECS::GetECSWorld();
     if (!(local_8))
     {
@@ -48,13 +46,10 @@ TArray<TSubclassOf<AECSPrefab>> GetRestPointPrefabClasses()
     {
         local_9 = local_8.GetReviveData();
     }
-    if (local_9 && local_11)
+    if (!(!(local_9)) && local_8.GetReviveData().Get().bUseOverrideRevivePrefabClass)
     {
+        return local_8.GetReviveData().Get().RestPointRevivePrefabClass;
     }
-    else
-    {
-        __return = NearDeathSettings::Get().RestPointRevivePrefabClass;
-    }
-    return __return;
+    return NearDeathSettings::Get().RestPointRevivePrefabClass;
 }
 }

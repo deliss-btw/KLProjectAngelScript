@@ -74,25 +74,14 @@ struct FVM_ForgeWeaponItem : FEUIViewModel
     }
     void PostConstruct()
     {
-        bool local_3 = this.GetNode().IsValid();
-        if (!(local_3))
+        if (this.GetNode().IsValid() && this.GetNode().Get().GetConfig().GetCraft().IsSet())
         {
-            local_3 = false;
-        }
-        else
-        {
-            TEUIModelWeakRef<FM_ForgeNode> local_2 = this.GetNode();
-            local_3 = GetConfig().GetCraft().IsSet();
-        }
-        if (local_3)
-        {
-            TEUIModelRef<FM_ItemData> local_8 = TEUIModelRef<FM_ItemData>(::FM_ItemData::Create(this.GetContext().Manager));
-            TEUIModelWeakRef<FM_ForgeNode> local_2_2 = this.GetNode();
-            1.SetNum();
-            this.SetComposableItemVM(TEUIModelRef<FVM_ComposableItem>(::FVM_ComposableItem::Create(this.GetContext().Manager, local_8, EItemDisplayScenario(6))));
-            FEUIModelRef local_14 = FEUIModelRef(this);
-            TEUIModelRef<FVM_ComposableItem> local_12 = this.GetComposableItemVM();
-            ::ComposableItemUtility::BindItemClickCallback(FEUIModelContainer(), local_14, FVM_ForgeWeaponItem::OnItemClicked);
+            TEUIModelRef<FM_ItemData> local_6 = TEUIModelRef<FM_ItemData>(::FM_ItemData::Create(this.GetContext().Manager));
+            local_6.Get().SetConfig(this.GetNode().Get().GetConfig().GetCraft().Get().Product.Item);
+            local_6.Get().SetNum(1);
+            this.SetComposableItemVM(TEUIModelRef<FVM_ComposableItem>(::FVM_ComposableItem::Create(this.GetContext().Manager, local_6, EItemDisplayScenario(6))));
+            ::ComposableItemUtility::BindItemClickCallback(FEUIModelContainer(this.GetComposableItemVM().Get()), FEUIModelRef(this), FVM_ForgeWeaponItem::OnItemClicked);
+            this.SetItemImage(local_6.Get().GetConfig().Get().ItemIcon);
             this.OnNodeStateTypeChanged();
         }
         if (::UGlobalItemSettings::Get().ItemHideStateImage.Contains(EItemType(2)))
@@ -105,9 +94,7 @@ struct FVM_ForgeWeaponItem : FEUIViewModel
     {
         if (this.GetComposableItemVM().IsValid())
         {
-            FEUIModelRef local_6 = FEUIModelRef(this);
-            TEUIModelRef<FVM_ComposableItem> local_2 = this.GetComposableItemVM();
-            ::ComposableItemUtility::UnbindItemClickCallback(FEUIModelContainer(), local_6, FVM_ForgeWeaponItem::OnItemClicked);
+            ::ComposableItemUtility::UnbindItemClickCallback(FEUIModelContainer(this.GetComposableItemVM().Get()), FEUIModelRef(this), FVM_ForgeWeaponItem::OnItemClicked);
         }
         return;
     }
@@ -115,37 +102,28 @@ struct FVM_ForgeWeaponItem : FEUIViewModel
     {
         if (this.GetNode().IsValid() && this.GetComposableItemVM().IsValid())
         {
-            FEUIModelContainer local_22;
-            TEUIModelRef<FVM_ComposableItem> local_6 = this.GetComposableItemVM();
-            ::ComposableItemUtility::SetIsShowLevel(true);
-            TEUIModelRef<FVM_ComposableItem> local_6_2 = this.GetComposableItemVM();
+            ::ComposableItemUtility::SetIsShowLevel(this.GetComposableItemVM().Get(), true);
+            FEUIModelContainer local_22 = FEUIModelContainer(this.GetComposableItemVM().Get());
             ::ComposableItemUtility::SetSpecialDisplayItemImage(local_22, this.GetItemImage());
-            TEUIModelWeakRef<FM_ForgeNode> local_2 = this.GetNode();
-            bool local_7 = (int(GetStateType()) != 0);
-            TEUIModelRef<FVM_ComposableItem> local_6_3 = this.GetComposableItemVM();
-            ::ComposableItemUtility::SetItemMaskEnable(local_7);
-            TEUIModelWeakRef<FM_ForgeNode> local_2_2 = this.GetNode();
-            if (int(GetStateType()) == 3)
+            ::ComposableItemUtility::SetItemMaskEnable(this.GetComposableItemVM().Get(), (int(this.GetNode().Get().GetStateType()) != 0));
+            if (int(this.GetNode().Get().GetStateType()) == 3)
             {
-                TEUIModelRef<FVM_ComposableItem> local_6_4 = this.GetComposableItemVM();
-                TEUIModelRef<FVM_ComposableItem> local_6_5 = this.GetComposableItemVM();
-                ::ComposableItemUtility::SetIsShowLevel(false);
-                TEUIModelRef<FVM_ComposableItem> local_6_6 = this.GetComposableItemVM();
-                ::ComposableItemUtility::SetSpecialDisplayItemImage(local_22, this.GetHiddenItemImage());
+                ::ComposableItemUtility::SetItemMaskType(this.GetComposableItemVM().Get(), 4);
+                ::ComposableItemUtility::SetIsShowLevel(this.GetComposableItemVM().Get(), false);
+                FEUIModelContainer local_22_2 = FEUIModelContainer(this.GetComposableItemVM().Get());
+                ::ComposableItemUtility::SetSpecialDisplayItemImage(local_22_2, this.GetHiddenItemImage());
             }
             else
             {
-                TEUIModelWeakRef<FM_ForgeNode> local_2_3 = this.GetNode();
-                if (int(GetStateType()) == 2)
+                if (int(this.GetNode().Get().GetStateType()) == 2)
                 {
-                    TEUIModelRef<FVM_ComposableItem> local_6_7 = this.GetComposableItemVM();
+                    ::ComposableItemUtility::SetItemMaskType(this.GetComposableItemVM().Get(), 1);
                 }
                 else
                 {
-                    TEUIModelWeakRef<FM_ForgeNode> local_2_4 = this.GetNode();
-                    if (int(GetStateType()) == 1)
+                    if (int(this.GetNode().Get().GetStateType()) == 1)
                     {
-                        TEUIModelRef<FVM_ComposableItem> local_6_8 = this.GetComposableItemVM();
+                        ::ComposableItemUtility::SetItemMaskType(this.GetComposableItemVM().Get(), 2);
                     }
                 }
             }
@@ -308,11 +286,9 @@ FVM_ForgeWeaponItem& Create(const UObject ContextObject, const TEUIModelWeakRef<
 {
     return FVM_ForgeWeaponItem::CreateByManager(EUIInternal::GetContextManager(ContextObject), Node);
 }
-FVM_ForgeWeaponItem CreateByManager(const UEUIManagerSubsystem Manager, const TEUIModelWeakRef<FM_ForgeNode> &inout Node)
+FVM_ForgeWeaponItem& CreateByManager(const UEUIManagerSubsystem Manager, const TEUIModelWeakRef<FM_ForgeNode> &inout Node)
 {
-    FVM_ForgeWeaponItem __r;
-    TEUIModelRef<FVM_ForgeWeaponItem> local_6 = TEUIModelRef<FVM_ForgeWeaponItem>(EUIInternal::MakeModelWithManager_Generic(Manager, FVM_ForgeWeaponItem::ModelId, 0, Node));
-    return __r;
+    return TEUIModelRef<FVM_ForgeWeaponItem>(EUIInternal::MakeModelWithManager_Generic(Manager, FVM_ForgeWeaponItem::ModelId, 0, Node)).Get();
 }
 void GetModelInfo(FEUIViewModelMetaInfo &inout Result)
 {
@@ -399,7 +375,6 @@ namespace __GeneratedProperties_FVM_ForgeWeaponItem
 {
 UScriptStruct StaticStruct()
 {
-    UScriptStruct local_2;
-    return local_2;
+    return __GeneratedProperties_FVM_ForgeWeaponItem.Get();
 }
 }

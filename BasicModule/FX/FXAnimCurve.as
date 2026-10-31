@@ -80,13 +80,11 @@ struct FFXAnimCurve
     }
     void UpdateFX(const FECSEntity &inout Entity, const FECSEntity &inout OwnerEntity, const float Time, const FFPTime &inout WorldTime, const float32 DeltaSeconds, FFXAnimCurveInterpoState &inout InterpoState) const
     {
-        const FFXAnimCurveFloat& local_24;
         float32 local_31 = 0.0f;
-        const FFXAnimCurveVector& local_58;
-        const FFXAnimCurveColor& local_98;
         for (auto& local_20 : this.FloatCurves)
         {
             const FName& local_22 = local_20.GetKey();
+            const FFXAnimCurveFloat& local_24 = local_20.GetValue();
             float local_30 = this.GetSampleTime(local_24.Source, OwnerEntity, Time, local_24.BBVarName, local_24.Attribute.AttributeClass, WorldTime);
             if ((local_24.InterpoSpeed > 0.0f && (DeltaSeconds > 0.0f)))
             {
@@ -102,6 +100,7 @@ struct FFXAnimCurve
         for (auto& local_56 : this.VectorCurves)
         {
             const FName& local_22_2 = local_56.GetKey();
+            const FFXAnimCurveVector& local_58 = local_56.GetValue();
             float local_26 = this.GetSampleTime(local_58.Source, OwnerEntity, Time, local_58.BBVarName, local_58.Attribute.AttributeClass, WorldTime);
             FVector local_64;
             if ((local_58.InterpoSpeed > 0.0f && (DeltaSeconds > 0.0f)))
@@ -118,6 +117,7 @@ struct FFXAnimCurve
         for (auto& local_96 : this.ColorCurves)
         {
             const FName& local_22_3 = local_96.GetKey();
+            const FFXAnimCurveColor& local_98 = local_96.GetValue();
             float local_30_2 = this.GetSampleTime(local_98.Source, OwnerEntity, Time, local_98.BBVarName, local_98.Attribute.AttributeClass, WorldTime);
             FLinearColor local_102;
             if ((local_98.InterpoSpeed > 0.0f && (DeltaSeconds > 0.0f)))

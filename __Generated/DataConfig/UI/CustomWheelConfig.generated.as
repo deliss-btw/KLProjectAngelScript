@@ -3,7 +3,6 @@ namespace __FSignalConfigFunctions
 UFUNCTION()
 FText __FSignalConfig_GetSignalName(const TDataObjectPtr<FSignalConfig> &inout DataObject)
 {
-    FText __r;
     if ((DataObject == nullptr))
     {
         if (!(EUIGlobals::GIsDuringPropertyConversion))
@@ -13,12 +12,11 @@ FText __FSignalConfig_GetSignalName(const TDataObjectPtr<FSignalConfig> &inout D
         FSignalConfig local_80;
         return local_80.SignalName;
     }
-    return __r;
+    return DataObject.Get().SignalName;
 }
 UFUNCTION()
 FText __FSignalConfig_GetSignalContext(const TDataObjectPtr<FSignalConfig> &inout DataObject)
 {
-    FText __r;
     if ((DataObject == nullptr))
     {
         if (!(EUIGlobals::GIsDuringPropertyConversion))
@@ -28,12 +26,11 @@ FText __FSignalConfig_GetSignalContext(const TDataObjectPtr<FSignalConfig> &inou
         FSignalConfig local_80;
         return local_80.SignalContext;
     }
-    return __r;
+    return DataObject.Get().SignalContext;
 }
 UFUNCTION()
 FSoftBrush __FSignalConfig_GetSignalIconObject(const TDataObjectPtr<FSignalConfig> &inout DataObject)
 {
-    FSoftBrush __r;
     if ((DataObject == nullptr))
     {
         if (!(EUIGlobals::GIsDuringPropertyConversion))
@@ -43,12 +40,11 @@ FSoftBrush __FSignalConfig_GetSignalIconObject(const TDataObjectPtr<FSignalConfi
         FSignalConfig local_80;
         return local_80.SignalIconObject;
     }
-    return __r;
+    return DataObject.Get().SignalIconObject;
 }
 UFUNCTION()
 TSoftClassPtr<AFXActor> __FSignalConfig_GetFXActor(const TDataObjectPtr<FSignalConfig> &inout DataObject)
 {
-    TSoftClassPtr<AFXActor> __r;
     if ((DataObject == nullptr))
     {
         if (!(EUIGlobals::GIsDuringPropertyConversion))
@@ -58,7 +54,7 @@ TSoftClassPtr<AFXActor> __FSignalConfig_GetFXActor(const TDataObjectPtr<FSignalC
         FSignalConfig local_80;
         return local_80.FXActor;
     }
-    return __r;
+    return DataObject.Get().FXActor;
 }
 UFUNCTION()
 FSignalConfig CastToFSignalConfig(const TDataObjectPtr<FSignalConfig> &inout DataObject)
@@ -87,7 +83,6 @@ int __FCustomWheelOptionConfig_GetIndex(const TDataObjectPtr<FCustomWheelOptionC
 UFUNCTION()
 ECustomWheelOptionType __FCustomWheelOptionConfig_GetOptionType(const TDataObjectPtr<FCustomWheelOptionConfig> &inout DataObject)
 {
-    int local_91 = 0;
     if ((DataObject == nullptr))
     {
         if (!(EUIGlobals::GIsDuringPropertyConversion))
@@ -95,15 +90,13 @@ ECustomWheelOptionType __FCustomWheelOptionConfig_GetOptionType(const TDataObjec
             FBlueprintDebugFunctions::ThrowScriptException("Get 'OptionType' from a null 'FCustomWheelOptionConfig' DataObject!");
         }
         FCustomWheelOptionConfig local_90;
-        local_91 = int(local_90.OptionType);
-        return ECustomWheelOptionType(local_91);
+        return local_90.OptionType;
     }
-    return ECustomWheelOptionType(local_91);
+    return DataObject.Get().OptionType;
 }
 UFUNCTION()
 FName __FCustomWheelOptionConfig_GetOptionName(const TDataObjectPtr<FCustomWheelOptionConfig> &inout DataObject)
 {
-    FName __r;
     if ((DataObject == nullptr))
     {
         if (!(EUIGlobals::GIsDuringPropertyConversion))
@@ -113,7 +106,7 @@ FName __FCustomWheelOptionConfig_GetOptionName(const TDataObjectPtr<FCustomWheel
         FCustomWheelOptionConfig local_90;
         return local_90.OptionName;
     }
-    return __r;
+    return DataObject.Get().OptionName;
 }
 UFUNCTION()
 TDataObjectPtr<FEmojiData> __FCustomWheelOptionConfig_GetDefaultEmojiData(const TDataObjectPtr<FCustomWheelOptionConfig> &inout DataObject)
@@ -127,7 +120,7 @@ TDataObjectPtr<FEmojiData> __FCustomWheelOptionConfig_GetDefaultEmojiData(const 
         FCustomWheelOptionConfig local_90;
         return local_90.GetDefaultEmojiData();
     }
-    return GetDefaultEmojiData();
+    return DataObject.Get().GetDefaultEmojiData();
 }
 UFUNCTION()
 TDataObjectPtr<FSignalConfig> __FCustomWheelOptionConfig_GetDefaultSignalData(const TDataObjectPtr<FCustomWheelOptionConfig> &inout DataObject)
@@ -141,7 +134,7 @@ TDataObjectPtr<FSignalConfig> __FCustomWheelOptionConfig_GetDefaultSignalData(co
         FCustomWheelOptionConfig local_90;
         return local_90.GetDefaultSignalData();
     }
-    return GetDefaultSignalData();
+    return DataObject.Get().GetDefaultSignalData();
 }
 UFUNCTION()
 TDataObjectPtr<FMotionData> __FCustomWheelOptionConfig_GetDefaultMotionData(const TDataObjectPtr<FCustomWheelOptionConfig> &inout DataObject)
@@ -155,7 +148,7 @@ TDataObjectPtr<FMotionData> __FCustomWheelOptionConfig_GetDefaultMotionData(cons
         FCustomWheelOptionConfig local_90;
         return local_90.GetDefaultMotionData();
     }
-    return GetDefaultMotionData();
+    return DataObject.Get().GetDefaultMotionData();
 }
 UFUNCTION()
 FCustomWheelOptionConfig CastToFCustomWheelOptionConfig(const TDataObjectPtr<FCustomWheelOptionConfig> &inout DataObject)

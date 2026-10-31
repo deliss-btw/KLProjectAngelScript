@@ -135,11 +135,9 @@ FVM_Title& Create(const UObject ContextObject, const FText &inout TitleText)
 {
     return FVM_Title::CreateByManager(EUIInternal::GetContextManager(ContextObject), TitleText);
 }
-FVM_Title CreateByManager(const UEUIManagerSubsystem Manager, const FText &inout TitleText)
+FVM_Title& CreateByManager(const UEUIManagerSubsystem Manager, const FText &inout TitleText)
 {
-    FVM_Title __r;
-    TEUIModelRef<FVM_Title> local_6 = TEUIModelRef<FVM_Title>(EUIInternal::MakeModelWithManager_Generic(Manager, FVM_Title::ModelId, 0, TitleText));
-    return __r;
+    return TEUIModelRef<FVM_Title>(EUIInternal::MakeModelWithManager_Generic(Manager, FVM_Title::ModelId, 0, TitleText)).Get();
 }
 void GetModelInfo(FEUIViewModelMetaInfo &inout Result)
 {
@@ -189,7 +187,6 @@ namespace __GeneratedProperties_FVM_Title
 {
 UScriptStruct StaticStruct()
 {
-    UScriptStruct local_2;
-    return local_2;
+    return __GeneratedProperties_FVM_Title.Get();
 }
 }

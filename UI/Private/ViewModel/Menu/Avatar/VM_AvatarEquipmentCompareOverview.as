@@ -52,10 +52,6 @@ struct FVM_AvatarEquipmentCompareOverview : FEUIViewModel
     }
     void PostConstruct()
     {
-        int local_1 = 0;
-        int local_115 = 0;
-        TEUIModelRef<FM_Trait> local_154;
-        TEUIModelRef<FM_Trait> local_156;
         int local_215;
         int local_216;
         int local_220 = 0;
@@ -78,39 +74,25 @@ struct FVM_AvatarEquipmentCompareOverview : FEUIViewModel
         TArray<TEUIModelRef<FM_Trait>> local_54;
         for (auto& local_72 : local_22)
         {
-            local_72;
-            TEUIModelRef<FM_Equipment> local_76 = ::FMS_EquipmentDataCache::Get(this.GetContext().Manager).GetEquipment(GetGuid());
-            local_54.Append(GetEquipmentTraits());
+            local_54.Append(::FMS_EquipmentDataCache::Get(this.GetContext().Manager).GetEquipment(local_72.GetValue().GetGuid()).Get().GetEquipmentTraits());
         }
         TMap<TDataObjectPtr<FTraitConfig>, int> local_98;
         for (auto& local_112 : local_54)
         {
-            local_112;
-            int local_114 = local_98.FindOrAdd(GetTraitConfig());
-            local_1 = GetTraitLevel();
-            local_115 = int(local_114);
-            local_115 = local_115 + local_1;
-            local_114 = local_115;
+            int local_114 = local_98.FindOrAdd(local_112.Get().GetTraitConfig());
+            int local_1 = local_112.Get().GetTraitLevel();
+            local_114 = (int(local_114) + local_1);
         }
         TMap<TDataObjectPtr<FTraitConfig>, int> local_136;
-        TEUIModelRef<FVM_EquipmentInfo> local_138 = this.GetCurSlotEquipmentInfo();
-        for (auto& local_152 : GetEquipmentTraits())
+        for (auto& local_152 : this.GetCurSlotEquipmentInfo().Get().GetEquipmentTraits())
         {
-            local_152;
-            local_154.GetTrait();
-            local_1 = GetTraitLevel();
-            local_156.GetTrait();
-            local_136.Add(GetTraitConfig(), local_1);
+            int local_1_2 = local_152.Get().GetTrait().Get().GetTraitLevel();
+            local_136.Add(local_152.Get().GetTrait().Get().GetTraitConfig(), local_1_2);
         }
         TMap<TDataObjectPtr<FTraitConfig>, int> local_176;
-        TEUIModelRef<FVM_EquipmentInfo> local_138_2 = this.GetCompareEquipmentInfo();
-        for (auto& local_152 : GetEquipmentTraits())
+        for (auto& local_152 : this.GetCompareEquipmentInfo().Get().GetEquipmentTraits())
         {
-            local_152;
-            local_154.GetTrait();
-            local_115 = GetTraitLevel();
-            local_156.GetTrait();
-            local_176.Add(GetTraitConfig(), local_115);
+            local_176.Add(local_152.Get().GetTrait().Get().GetTraitConfig(), local_152.Get().GetTrait().Get().GetTraitLevel());
         }
         TMap<TDataObjectPtr<FTraitConfig>, int> local_196;
         for (auto& local_214 : local_176)
@@ -118,11 +100,12 @@ struct FVM_AvatarEquipmentCompareOverview : FEUIViewModel
             local_215 = 0;
             if (local_136.Find(local_214.GetKey(), local_216))
             {
-                local_215 = local_1 - local_216;
+                int local_1_3 = local_214.GetValue();
+                local_215 = local_1_3 - local_216;
             }
             else
             {
-                local_215 = local_1;
+                local_215 = local_214.GetValue();
             }
             local_196.Add(local_214.GetKey(), local_215);
         }
@@ -130,18 +113,16 @@ struct FVM_AvatarEquipmentCompareOverview : FEUIViewModel
         {
             if (!(local_176.Contains(local_214_2.GetKey())))
             {
-                local_1 = 0 - local_115;
-                local_196.Add(local_214_2.GetKey(), local_1);
+                int local_1_4 = 0 - local_214_2.GetValue();
+                local_196.Add(local_214_2.GetKey(), local_1_4);
             }
         }
         for (auto& local_214_3 : local_98)
         {
-            local_154 = TEUIModelRef<FM_Trait>(::FM_Trait::Create(this.GetContext().Manager, local_214_3.GetKey(), local_115));
+            TEUIModelRef<FM_Trait> local_154 = TEUIModelRef<FM_Trait>(::FM_Trait::Create(this.GetContext().Manager, local_214_3.GetKey(), local_214_3.GetValue()));
             if (local_196.Contains(local_214_3.GetKey()))
             {
-                local_1 = local_196[local_214_3.GetKey()];
-                local_115 = local_115 + local_1;
-                local_220.SetCompareTrait(local_115);
+                local_220.SetCompareTrait((local_214_3.GetValue() + local_196[local_214_3.GetKey()]));
             }
             this.GetModify_CompareItemList().Add(TEUIModelRef<FVM_AvatarEquipmentCompareItem>(local_220));
         }
@@ -149,8 +130,9 @@ struct FVM_AvatarEquipmentCompareOverview : FEUIViewModel
         {
             if (!(local_98.Contains(local_214_4.GetKey())))
             {
-                local_154 = TEUIModelRef<FM_Trait>(::FM_Trait::Create(this.GetContext().Manager, local_214_4.GetKey(), 0));
-                local_220.SetCompareTrait(local_1);
+                TEUIModelRef<FM_Trait> local_154_2 = TEUIModelRef<FM_Trait>(::FM_Trait::Create(this.GetContext().Manager, local_214_4.GetKey(), 0));
+                int local_1_6 = local_214_4.GetValue();
+                local_220.SetCompareTrait(local_1_6);
                 this.GetModify_CompareItemList().Add(TEUIModelRef<FVM_AvatarEquipmentCompareItem>(local_220));
             }
         }
@@ -255,11 +237,9 @@ FVM_AvatarEquipmentCompareOverview& Create(const UObject ContextObject, const TD
 {
     return FVM_AvatarEquipmentCompareOverview::CreateByManager(EUIInternal::GetContextManager(ContextObject), CurrentAvatarCfg, CurSlotEquipmentInfo, CompareEquipmentInfo);
 }
-FVM_AvatarEquipmentCompareOverview CreateByManager(const UEUIManagerSubsystem Manager, const TDataObjectPtr<FAvatarPrefabConfig> &inout CurrentAvatarCfg, const TEUIModelRef<FVM_EquipmentInfo> &inout CurSlotEquipmentInfo, const TEUIModelRef<FVM_EquipmentInfo> &inout CompareEquipmentInfo)
+FVM_AvatarEquipmentCompareOverview& CreateByManager(const UEUIManagerSubsystem Manager, const TDataObjectPtr<FAvatarPrefabConfig> &inout CurrentAvatarCfg, const TEUIModelRef<FVM_EquipmentInfo> &inout CurSlotEquipmentInfo, const TEUIModelRef<FVM_EquipmentInfo> &inout CompareEquipmentInfo)
 {
-    FVM_AvatarEquipmentCompareOverview __r;
-    TEUIModelRef<FVM_AvatarEquipmentCompareOverview> local_6 = TEUIModelRef<FVM_AvatarEquipmentCompareOverview>(EUIInternal::MakeModelWithManager_Generic(Manager, FVM_AvatarEquipmentCompareOverview::ModelId, 0, CurrentAvatarCfg, CurSlotEquipmentInfo, CompareEquipmentInfo));
-    return __r;
+    return TEUIModelRef<FVM_AvatarEquipmentCompareOverview>(EUIInternal::MakeModelWithManager_Generic(Manager, FVM_AvatarEquipmentCompareOverview::ModelId, 0, CurrentAvatarCfg, CurSlotEquipmentInfo, CompareEquipmentInfo)).Get();
 }
 void GetModelInfo(FEUIViewModelMetaInfo &inout Result)
 {
@@ -314,7 +294,6 @@ namespace __GeneratedProperties_FVM_AvatarEquipmentCompareOverview
 {
 UScriptStruct StaticStruct()
 {
-    UScriptStruct local_2;
-    return local_2;
+    return __GeneratedProperties_FVM_AvatarEquipmentCompareOverview.Get();
 }
 }

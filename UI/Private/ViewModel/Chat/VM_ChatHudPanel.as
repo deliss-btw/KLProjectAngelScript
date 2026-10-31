@@ -79,17 +79,7 @@ struct FVM_ChatHudPanel : FEUIViewModel
     ESlateVisibility GetFriendApplyRedDotVisibility() const
     {
         int local_5;
-        bool local_3 = this.GetFriendApplyRedDotVM().IsValid();
-        if (!(local_3))
-        {
-            local_3 = false;
-        }
-        else
-        {
-            TEUIModelRef<FVM_RedDot> local_2 = this.GetFriendApplyRedDotVM();
-            local_3 = HasRedDot();
-        }
-        if (local_3)
+        if (this.GetFriendApplyRedDotVM().IsValid() && this.GetFriendApplyRedDotVM().Get().HasRedDot())
         {
             local_5 = 0;
         }
@@ -130,7 +120,7 @@ struct FVM_ChatHudPanel : FEUIViewModel
         int local_12 = this.GetHudLines().Num() - 1;
         for (; local_12 >= 0; --local_12)
         {
-            if (local_10 > GetExpireAtWorldSeconds())
+            if (local_10 > this.GetHudLines()[local_12].Get().GetExpireAtWorldSeconds())
             {
                 this.GetModify_HudLines().RemoveAt(local_12);
             }
@@ -216,14 +206,14 @@ struct FVM_ChatHudPanel : FEUIViewModel
         {
             local_14 = ::FASCommonUtils::GetPlayerUidFromPlayerEntity(this.GetContext().GetLocalPlayer());
         }
-        TEUIModelRef<FVM_ChatHudLineItem> local_24 = TEUIModelRef<FVM_ChatHudLineItem>(::FVM_ChatHudLineItem::Create(this.GetContext().Manager));
-        MessageRef.SetupHudLine((this.GetContext().Time.ToSeconds() + local_9), local_14);
-        this.GetModify_HudLines().Add(local_24);
+        TEUIModelRef<FVM_ChatHudLineItem> local_22 = TEUIModelRef<FVM_ChatHudLineItem>(::FVM_ChatHudLineItem::Create(this.GetContext().Manager));
+        local_22.Get().SetupHudLine(MessageRef, (this.GetContext().Time.ToSeconds() + local_9), local_14);
+        this.GetModify_HudLines().Add(local_22);
         return;
     }
     void OnIncomingChatMessageForHud(const TEUIModelRef<FM_ChatMessage> &inout MessageRef)
     {
-        FM_ChatMessage& local_2;
+        FM_ChatMessage& local_2 = MessageRef.Get();
         if (local_2.GetBodyText().IsEmpty())
         {
             return;
@@ -381,11 +371,9 @@ FVM_ChatHudPanel& Create(const UObject ContextObject)
 {
     return FVM_ChatHudPanel::CreateByManager(EUIInternal::GetContextManager(ContextObject));
 }
-FVM_ChatHudPanel CreateByManager(const UEUIManagerSubsystem Manager)
+FVM_ChatHudPanel& CreateByManager(const UEUIManagerSubsystem Manager)
 {
-    FVM_ChatHudPanel __r;
-    TEUIModelRef<FVM_ChatHudPanel> local_6 = TEUIModelRef<FVM_ChatHudPanel>(EUIInternal::MakeModelWithManager(Manager, FVM_ChatHudPanel::ModelId));
-    return __r;
+    return TEUIModelRef<FVM_ChatHudPanel>(EUIInternal::MakeModelWithManager(Manager, FVM_ChatHudPanel::ModelId)).Get();
 }
 void GetModelInfo(FEUIViewModelMetaInfo &inout Result)
 {
@@ -507,7 +495,6 @@ namespace __GeneratedProperties_FVM_ChatHudPanel
 {
 UScriptStruct StaticStruct()
 {
-    UScriptStruct local_2;
-    return local_2;
+    return __GeneratedProperties_FVM_ChatHudPanel.Get();
 }
 }

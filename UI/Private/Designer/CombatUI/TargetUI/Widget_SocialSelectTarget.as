@@ -18,7 +18,7 @@ class UWidget_SocialSelectTarget : UEUIUserWidget
     void Tick_Implementation(const FGeometry &inout MyGeometry, const float32 InDeltaTime)
     {
         int local_12 = 0;
-        if ((FECSEntity(GetTargetPawn()) == ENTITY_NULL))
+        if ((FECSEntity(this.SelectTargetUI.Get().GetTargetPawn()) == ENTITY_NULL))
         {
             return;
         }

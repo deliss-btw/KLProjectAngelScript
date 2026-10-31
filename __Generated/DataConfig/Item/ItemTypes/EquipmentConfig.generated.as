@@ -3,7 +3,6 @@ namespace __FTraitConfigFunctions
 UFUNCTION()
 FText __FTraitConfig_GetTraitName(const TDataObjectPtr<FTraitConfig> &inout DataObject)
 {
-    FText __r;
     if ((DataObject == nullptr))
     {
         if (!(EUIGlobals::GIsDuringPropertyConversion))
@@ -13,12 +12,11 @@ FText __FTraitConfig_GetTraitName(const TDataObjectPtr<FTraitConfig> &inout Data
         FTraitConfig local_168;
         return local_168.TraitName;
     }
-    return __r;
+    return DataObject.Get().TraitName;
 }
 UFUNCTION()
 FSoftBrush __FTraitConfig_GetTraitIcon(const TDataObjectPtr<FTraitConfig> &inout DataObject)
 {
-    FSoftBrush __r;
     if ((DataObject == nullptr))
     {
         if (!(EUIGlobals::GIsDuringPropertyConversion))
@@ -28,12 +26,11 @@ FSoftBrush __FTraitConfig_GetTraitIcon(const TDataObjectPtr<FTraitConfig> &inout
         FTraitConfig local_168;
         return local_168.TraitIcon;
     }
-    return __r;
+    return DataObject.Get().TraitIcon;
 }
 UFUNCTION()
 FBuffConfigRef __FTraitConfig_GetBuff(const TDataObjectPtr<FTraitConfig> &inout DataObject)
 {
-    FBuffConfigRef __r;
     if ((DataObject == nullptr))
     {
         if (!(EUIGlobals::GIsDuringPropertyConversion))
@@ -43,12 +40,11 @@ FBuffConfigRef __FTraitConfig_GetBuff(const TDataObjectPtr<FTraitConfig> &inout 
         FTraitConfig local_168;
         return local_168.Buff;
     }
-    return __r;
+    return DataObject.Get().Buff;
 }
 UFUNCTION()
 TMap<int, FTraitModifiers> __FTraitConfig_GetModifiersByLevel(const TDataObjectPtr<FTraitConfig> &inout DataObject)
 {
-    TMap<int, FTraitModifiers> __r;
     if ((DataObject == nullptr))
     {
         if (!(EUIGlobals::GIsDuringPropertyConversion))
@@ -58,12 +54,11 @@ TMap<int, FTraitModifiers> __FTraitConfig_GetModifiersByLevel(const TDataObjectP
         FTraitConfig local_168;
         return local_168.ModifiersByLevel;
     }
-    return __r;
+    return DataObject.Get().ModifiersByLevel;
 }
 UFUNCTION()
 TMap<int, FTraitCapabilities> __FTraitConfig_GetCapabilitiesByLevel(const TDataObjectPtr<FTraitConfig> &inout DataObject)
 {
-    TMap<int, FTraitCapabilities> __r;
     if ((DataObject == nullptr))
     {
         if (!(EUIGlobals::GIsDuringPropertyConversion))
@@ -73,12 +68,11 @@ TMap<int, FTraitCapabilities> __FTraitConfig_GetCapabilitiesByLevel(const TDataO
         FTraitConfig local_168;
         return local_168.CapabilitiesByLevel;
     }
-    return __r;
+    return DataObject.Get().CapabilitiesByLevel;
 }
 UFUNCTION()
 EItemRarity __FTraitConfig_GetRarity(const TDataObjectPtr<FTraitConfig> &inout DataObject)
 {
-    int local_169 = 0;
     if ((DataObject == nullptr))
     {
         if (!(EUIGlobals::GIsDuringPropertyConversion))
@@ -86,10 +80,9 @@ EItemRarity __FTraitConfig_GetRarity(const TDataObjectPtr<FTraitConfig> &inout D
             FBlueprintDebugFunctions::ThrowScriptException("Get 'Rarity' from a null 'FTraitConfig' DataObject!");
         }
         FTraitConfig local_168;
-        local_169 = int(local_168.Rarity);
-        return EItemRarity(local_169);
+        return local_168.Rarity;
     }
-    return EItemRarity(local_169);
+    return DataObject.Get().Rarity;
 }
 UFUNCTION()
 TDataObjectPtr<FAvatarMappingConfig> __FTraitConfig_GetAdaptAvatar(const TDataObjectPtr<FTraitConfig> &inout DataObject)
@@ -103,12 +96,11 @@ TDataObjectPtr<FAvatarMappingConfig> __FTraitConfig_GetAdaptAvatar(const TDataOb
         FTraitConfig local_168;
         return local_168.GetAdaptAvatar();
     }
-    return GetAdaptAvatar();
+    return DataObject.Get().GetAdaptAvatar();
 }
 UFUNCTION()
 EBoonTraitAdaptRule __FTraitConfig_GetBoonRule(const TDataObjectPtr<FTraitConfig> &inout DataObject)
 {
-    int local_169 = 0;
     if ((DataObject == nullptr))
     {
         if (!(EUIGlobals::GIsDuringPropertyConversion))
@@ -116,10 +108,9 @@ EBoonTraitAdaptRule __FTraitConfig_GetBoonRule(const TDataObjectPtr<FTraitConfig
             FBlueprintDebugFunctions::ThrowScriptException("Get 'BoonRule' from a null 'FTraitConfig' DataObject!");
         }
         FTraitConfig local_168;
-        local_169 = int(local_168.BoonRule);
-        return EBoonTraitAdaptRule(local_169);
+        return local_168.BoonRule;
     }
-    return EBoonTraitAdaptRule(local_169);
+    return DataObject.Get().BoonRule;
 }
 UFUNCTION()
 TArray<TDataObjectPtr<FAvatarMappingConfig>> __FTraitConfig_GetBoonAvatarList(const TDataObjectPtr<FTraitConfig> &inout DataObject)
@@ -133,7 +124,7 @@ TArray<TDataObjectPtr<FAvatarMappingConfig>> __FTraitConfig_GetBoonAvatarList(co
         FTraitConfig local_168;
         return local_168.GetBoonAvatarList();
     }
-    return GetBoonAvatarList();
+    return DataObject.Get().GetBoonAvatarList();
 }
 UFUNCTION()
 int __FTraitConfig_GetBoonDropNumLimit(const TDataObjectPtr<FTraitConfig> &inout DataObject)
@@ -187,7 +178,6 @@ namespace __FTestThreeChooseOneTraitConfigFunctions
 UFUNCTION()
 TArray<FTraitParam> __FTestThreeChooseOneTraitConfig_GetTraitParams(const TDataObjectPtr<FTestThreeChooseOneTraitConfig> &inout DataObject)
 {
-    TArray<FTraitParam> __r;
     if ((DataObject == nullptr))
     {
         if (!(EUIGlobals::GIsDuringPropertyConversion))
@@ -197,7 +187,7 @@ TArray<FTraitParam> __FTestThreeChooseOneTraitConfig_GetTraitParams(const TDataO
         FTestThreeChooseOneTraitConfig local_18;
         return local_18.TraitParams;
     }
-    return __r;
+    return DataObject.Get().TraitParams;
 }
 UFUNCTION()
 FTestThreeChooseOneTraitConfig CastToFTestThreeChooseOneTraitConfig(const TDataObjectPtr<FTestThreeChooseOneTraitConfig> &inout DataObject)
@@ -211,7 +201,6 @@ namespace __FEquipmentConfigFunctions
 UFUNCTION()
 EEquipmentType __FEquipmentConfig_GetEquipmentType(const TDataObjectPtr<FEquipmentConfig> &inout DataObject)
 {
-    int local_249 = 0;
     if ((DataObject == nullptr))
     {
         if (!(EUIGlobals::GIsDuringPropertyConversion))
@@ -219,10 +208,9 @@ EEquipmentType __FEquipmentConfig_GetEquipmentType(const TDataObjectPtr<FEquipme
             FBlueprintDebugFunctions::ThrowScriptException("Get 'EquipmentType' from a null 'FEquipmentConfig' DataObject!");
         }
         FEquipmentConfig local_248;
-        local_249 = int(local_248.EquipmentType);
-        return EEquipmentType(local_249);
+        return local_248.EquipmentType;
     }
-    return EEquipmentType(local_249);
+    return DataObject.Get().EquipmentType;
 }
 UFUNCTION()
 int __FEquipmentConfig_GetLevel(const TDataObjectPtr<FEquipmentConfig> &inout DataObject)
@@ -242,7 +230,6 @@ int __FEquipmentConfig_GetLevel(const TDataObjectPtr<FEquipmentConfig> &inout Da
 UFUNCTION()
 TArray<FEquipmentAttributeData> __FEquipmentConfig_GetAttributeDatas(const TDataObjectPtr<FEquipmentConfig> &inout DataObject)
 {
-    TArray<FEquipmentAttributeData> __r;
     if ((DataObject == nullptr))
     {
         if (!(EUIGlobals::GIsDuringPropertyConversion))
@@ -252,12 +239,11 @@ TArray<FEquipmentAttributeData> __FEquipmentConfig_GetAttributeDatas(const TData
         FEquipmentConfig local_248;
         return local_248.AttributeDatas;
     }
-    return __r;
+    return DataObject.Get().AttributeDatas;
 }
 UFUNCTION()
 TArray<FTraitParam> __FEquipmentConfig_GetDefaultTrait(const TDataObjectPtr<FEquipmentConfig> &inout DataObject)
 {
-    TArray<FTraitParam> __r;
     if ((DataObject == nullptr))
     {
         if (!(EUIGlobals::GIsDuringPropertyConversion))
@@ -267,12 +253,11 @@ TArray<FTraitParam> __FEquipmentConfig_GetDefaultTrait(const TDataObjectPtr<FEqu
         FEquipmentConfig local_248;
         return local_248.DefaultTrait;
     }
-    return __r;
+    return DataObject.Get().DefaultTrait;
 }
 UFUNCTION()
 FSoftBrush __FEquipmentConfig_GetEquipmentDisplayImage(const TDataObjectPtr<FEquipmentConfig> &inout DataObject)
 {
-    FSoftBrush __r;
     if ((DataObject == nullptr))
     {
         if (!(EUIGlobals::GIsDuringPropertyConversion))
@@ -282,7 +267,7 @@ FSoftBrush __FEquipmentConfig_GetEquipmentDisplayImage(const TDataObjectPtr<FEqu
         FEquipmentConfig local_248;
         return local_248.EquipmentDisplayImage;
     }
-    return __r;
+    return DataObject.Get().EquipmentDisplayImage;
 }
 UFUNCTION()
 FEquipmentConfig CastToFEquipmentConfig(const TDataObjectPtr<FEquipmentConfig> &inout DataObject)
@@ -296,7 +281,6 @@ namespace __FWeaponConfigFunctions
 UFUNCTION()
 EWeaponType __FWeaponConfig_GetWeaponType(const TDataObjectPtr<FWeaponConfig> &inout DataObject)
 {
-    int local_265 = 0;
     if ((DataObject == nullptr))
     {
         if (!(EUIGlobals::GIsDuringPropertyConversion))
@@ -304,15 +288,13 @@ EWeaponType __FWeaponConfig_GetWeaponType(const TDataObjectPtr<FWeaponConfig> &i
             FBlueprintDebugFunctions::ThrowScriptException("Get 'WeaponType' from a null 'FWeaponConfig' DataObject!");
         }
         FWeaponConfig local_264;
-        local_265 = int(local_264.WeaponType);
-        return EWeaponType(local_265);
+        return local_264.WeaponType;
     }
-    return EWeaponType(local_265);
+    return DataObject.Get().WeaponType;
 }
 UFUNCTION()
 FName __FWeaponConfig_GetWeaponShowCaseSocketName(const TDataObjectPtr<FWeaponConfig> &inout DataObject)
 {
-    FName __r;
     if ((DataObject == nullptr))
     {
         if (!(EUIGlobals::GIsDuringPropertyConversion))
@@ -322,12 +304,11 @@ FName __FWeaponConfig_GetWeaponShowCaseSocketName(const TDataObjectPtr<FWeaponCo
         FWeaponConfig local_264;
         return local_264.WeaponShowCaseSocketName;
     }
-    return __r;
+    return DataObject.Get().WeaponShowCaseSocketName;
 }
 UFUNCTION()
 TSoftClassPtr<AECSPrefab> __FWeaponConfig_GetWeaponPrefab(const TDataObjectPtr<FWeaponConfig> &inout DataObject)
 {
-    TSoftClassPtr<AECSPrefab> __r;
     if ((DataObject == nullptr))
     {
         if (!(EUIGlobals::GIsDuringPropertyConversion))
@@ -337,7 +318,7 @@ TSoftClassPtr<AECSPrefab> __FWeaponConfig_GetWeaponPrefab(const TDataObjectPtr<F
         FWeaponConfig local_264;
         return local_264.WeaponPrefab;
     }
-    return __r;
+    return DataObject.Get().WeaponPrefab;
 }
 UFUNCTION()
 FWeaponConfig CastToFWeaponConfig(const TDataObjectPtr<FWeaponConfig> &inout DataObject)
@@ -351,7 +332,6 @@ namespace __FTalismanConfigFunctions
 UFUNCTION()
 ETalismanType __FTalismanConfig_GetTalismanType(const TDataObjectPtr<FTalismanConfig> &inout DataObject)
 {
-    int local_253 = 0;
     if ((DataObject == nullptr))
     {
         if (!(EUIGlobals::GIsDuringPropertyConversion))
@@ -359,10 +339,9 @@ ETalismanType __FTalismanConfig_GetTalismanType(const TDataObjectPtr<FTalismanCo
             FBlueprintDebugFunctions::ThrowScriptException("Get 'TalismanType' from a null 'FTalismanConfig' DataObject!");
         }
         FTalismanConfig local_252;
-        local_253 = int(local_252.TalismanType);
-        return ETalismanType(local_253);
+        return local_252.TalismanType;
     }
-    return ETalismanType(local_253);
+    return DataObject.Get().TalismanType;
 }
 UFUNCTION()
 FTalismanConfig CastToFTalismanConfig(const TDataObjectPtr<FTalismanConfig> &inout DataObject)

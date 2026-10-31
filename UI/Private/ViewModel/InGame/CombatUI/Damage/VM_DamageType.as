@@ -208,11 +208,9 @@ FVM_DamageType& Create(const UObject ContextObject, const EDamageType DamageType
 {
     return FVM_DamageType::CreateByManager(EUIInternal::GetContextManager(ContextObject), EDamageType(DamageType));
 }
-FVM_DamageType CreateByManager(const UEUIManagerSubsystem Manager, const EDamageType DamageType)
+FVM_DamageType& CreateByManager(const UEUIManagerSubsystem Manager, const EDamageType DamageType)
 {
-    FVM_DamageType __r;
-    TEUIModelRef<FVM_DamageType> local_6 = TEUIModelRef<FVM_DamageType>(EUIInternal::MakeModelWithManager_Generic(Manager, FVM_DamageType::ModelId, 0, DamageType));
-    return __r;
+    return TEUIModelRef<FVM_DamageType>(EUIInternal::MakeModelWithManager_Generic(Manager, FVM_DamageType::ModelId, 0, DamageType)).Get();
 }
 void GetModelInfo(FEUIViewModelMetaInfo &inout Result)
 {
@@ -307,7 +305,6 @@ namespace __GeneratedProperties_FVM_DamageType
 {
 UScriptStruct StaticStruct()
 {
-    UScriptStruct local_2;
-    return local_2;
+    return __GeneratedProperties_FVM_DamageType.Get();
 }
 }

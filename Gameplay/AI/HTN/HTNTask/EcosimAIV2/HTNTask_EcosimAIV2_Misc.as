@@ -58,8 +58,7 @@ class UHTNTask_EcosimAIV2_SimpleEntityPublicSpeak : UHTNTask_ECSScriptBase
     UFUNCTION()
     void Execute_Implementation(const FHTNContext &inout Context)
     {
-        FHTNTask_SimpleEntityPublicSpeakInstanceData local_2;
-        local_2.TimeCount = 0.0f;
+        this.GetInstanceData(Context).TimeCount = 0.0f;
         FECSEntity local_16 = FECSEntity(this.EntityID.GetValue(Context.opImplConv()));
         if (local_16.IsValid())
         {
@@ -80,7 +79,7 @@ class UHTNTask_EcosimAIV2_SimpleEntityPublicSpeak : UHTNTask_ECSScriptBase
     UFUNCTION()
     void Tick_Implementation(const FHTNContext &inout Context, const float32 DeltaSeconds)
     {
-        FHTNTask_SimpleEntityPublicSpeakInstanceData local_2;
+        FHTNTask_SimpleEntityPublicSpeakInstanceData& local_2 = this.GetInstanceData(Context);
         local_2.TimeCount += DeltaSeconds;
         if (local_2.TimeCount >= this.Duration)
         {
@@ -297,18 +296,15 @@ class UHTNTask_EcosimAIV2_DoInteractToTarget : UHTNTask_ECSScriptBase
         UInteractionBehaviorBase local_20;
         UInteractionBehaviorAction_EcosimAIV2Unchain local_40;
         UInteractionBehaviorBase local_100;
-        FHTNTask_EcosimAIV2DoInteractToTargetInstanceData local_2;
+        FHTNTask_EcosimAIV2DoInteractToTargetInstanceData& local_2 = this.GetInstanceData(Context);
         local_2.InteractSourceEntity = FECSEntity(this.InteractSourceEntityID.GetValue(Context.opImplConv()));
         local_2.InteractTargetEntity = FECSEntity(this.InteractTargetEntityID.GetValue(Context.opImplConv()));
         local_2.InteractPointIndex = -1;
-        int local_11 = -1;
-        local_2.InteractBehaviorIndex = local_11;
+        local_2.InteractBehaviorIndex = -1;
         if (this.bByIndex)
         {
-            FAISmartValueContext local_4 = Context.opImplConv();
-            local_2.InteractPointIndex = local_11;
-            FAISmartValueContext local_4_2 = Context.opImplConv();
-            local_2.InteractBehaviorIndex = local_11;
+            local_2.InteractPointIndex = this.InteractPointIndex.GetValue(Context.opImplConv());
+            local_2.InteractBehaviorIndex = this.InteractBehaviorIndex.GetValue(Context.opImplConv());
         }
         else
         {
@@ -378,10 +374,8 @@ class UHTNTask_EcosimAIV2_DoInteractToTarget : UHTNTask_ECSScriptBase
             }
         }
         local_2.bExecutingInteract = false;
-        float32 local_67 = 0.0f;
         local_2.TimeCount = 0.0f;
-        FAISmartValueContext local_4_3 = Context.opImplConv();
-        local_2.TimeOutTime = local_67;
+        local_2.TimeOutTime = this.TimeOutTime.GetValue(Context.opImplConv());
         Has local_72;
         if (!(local_2.InteractSourceEntity.IsValid()) || !(local_2.InteractTargetEntity.IsValid()) || !(local_72.opCall()) || (int(local_2.InteractPointIndex) < 0))
         {
@@ -428,7 +422,7 @@ class UHTNTask_EcosimAIV2_DoInteractToTarget : UHTNTask_ECSScriptBase
     UFUNCTION()
     void Tick_Implementation(const FHTNContext &inout Context, const float32 DeltaSeconds)
     {
-        FHTNTask_EcosimAIV2DoInteractToTargetInstanceData local_2;
+        FHTNTask_EcosimAIV2DoInteractToTargetInstanceData& local_2 = this.GetInstanceData(Context);
         local_2.TimeCount += DeltaSeconds;
         FECSEntity local_8 = FECSEntity(Context.PawnEntity);
         Has local_12;
@@ -517,8 +511,7 @@ class UHTNTask_EcosimAIV2_RideAsPassengerWait : UHTNTask_ECSScriptBase
     {
         bool local_8;
         FECSEntity local_4 = FECSEntity(Context.PawnEntity);
-        FHTNTask_RideAsPassengerWaitInstanceData local_6;
-        local_6.AbortTimeCount = 0.0f;
+        this.GetInstanceData(Context).AbortTimeCount = 0.0f;
         if (!(local_4.IsValid()))
         {
             local_8 = false;
@@ -545,7 +538,7 @@ class UHTNTask_EcosimAIV2_RideAsPassengerWait : UHTNTask_ECSScriptBase
         {
             return;
         }
-        FHTNTask_RideAsPassengerWaitInstanceData local_4;
+        FHTNTask_RideAsPassengerWaitInstanceData& local_4 = this.GetInstanceData(Context);
         local_4.AbortTimeCount += DeltaSeconds;
         Has local_14;
         if (!(FECSEntity(Context.PawnEntity).IsValid()) || !(local_14.opCall()) || (local_4.AbortTimeCount >= this.AbortTimeout))
@@ -603,11 +596,14 @@ class UHTNTask_EcosimAIV2_ClearTimeCountByTag : UHTNTask_ECSScriptBase
     UFUNCTION()
     void Execute_Implementation(const FHTNContext &inout Context)
     {
-        if (!(this.Tag.GetValue(Context.opImplConv()).IsValid()))
+        int local_18 = 0;
+        FGameplayTag local_6 = this.Tag.GetValue(Context.opImplConv());
+        if (!(local_6.IsValid()))
         {
             return;
         }
         FECSEntity local_12 = FECSEntity(Context.PawnEntity);
+        local_18.TimeCountByTagMap.Remove(local_6);
         this.FinishExecuteWithContext(Context, true);
         return;
     }
@@ -725,14 +721,11 @@ class UHTNTask_EcosimAIV2_NPCInteractToTarget : UHTNTask_ECSScriptBase
     UFUNCTION()
     void Execute_Implementation(const FHTNContext &inout Context)
     {
-        int local_11 = 0;
-        FHTNTask_EcosimAIV2DoInteractToTargetInstanceData local_2;
+        FHTNTask_EcosimAIV2DoInteractToTargetInstanceData& local_2 = this.GetInstanceData(Context);
         local_2._base_FHTNTask_EcosimAIV2DoInteractToTargetInstanceData = FECSEntity(this.InteractSourceEntityID.GetValue(Context.opImplConv()));
         local_2.InteractTargetEntity = FECSEntity(this.InteractTargetEntityID.GetValue(Context.opImplConv()));
-        FAISmartValueContext local_4 = Context.opImplConv();
-        local_2.InteractPointIndex = local_11;
-        FAISmartValueContext local_4_2 = Context.opImplConv();
-        local_2.InteractBehaviorIndex = local_11;
+        local_2.InteractPointIndex = this.InteractPointIndex.GetValue(Context.opImplConv());
+        local_2.InteractBehaviorIndex = this.InteractBehaviorIndex.GetValue(Context.opImplConv());
         Has local_18;
         if (!(local_2._base_FHTNTask_EcosimAIV2DoInteractToTargetInstanceData.IsValid()) || !(local_2.InteractTargetEntity.IsValid()) || !(local_18.opCall()) || (int(local_2.InteractPointIndex) < 0))
         {
@@ -740,10 +733,8 @@ class UHTNTask_EcosimAIV2_NPCInteractToTarget : UHTNTask_ECSScriptBase
             return;
         }
         local_2.bExecutingInteract = false;
-        float32 local_20 = 0.0f;
         local_2.TimeCount = 0.0f;
-        FAISmartValueContext local_4_3 = Context.opImplConv();
-        local_2.TimeOutTime = local_20;
+        local_2.TimeOutTime = this.TimeOutTime.GetValue(Context.opImplConv());
         Get local_24;
         const FC_EcologyKnowledge& local_26 = local_24.opCall();
         if (local_26)
@@ -763,7 +754,7 @@ class UHTNTask_EcosimAIV2_NPCInteractToTarget : UHTNTask_ECSScriptBase
     UFUNCTION()
     void Tick_Implementation(const FHTNContext &inout Context, const float32 DeltaSeconds)
     {
-        FHTNTask_EcosimAIV2DoInteractToTargetInstanceData local_2;
+        FHTNTask_EcosimAIV2DoInteractToTargetInstanceData& local_2 = this.GetInstanceData(Context);
         local_2.TimeCount += DeltaSeconds;
         FECSEntity local_8 = FECSEntity(Context.PawnEntity);
         Has local_12;

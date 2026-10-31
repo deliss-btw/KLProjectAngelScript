@@ -48,24 +48,15 @@ struct FVM_TaskTarget : FEUIViewModel
     }
     bool IsCompleted() const
     {
-        TEUIModelRef<FM_Task> local_2 = this.GetTask();
-        return this.GetTargetIndex().IsTaskTargetCompleted();
+        return this.GetTask().Get().IsTaskTargetCompleted(this.GetTargetIndex());
     }
     FText GetDesc() const
     {
-        int local_3 = this.GetTargetIndex();
-        TEUIModelRef<FM_Task> local_2 = this.GetTask();
-        FText local_8;
-        local_8.GetTaskTargetDesc(local_3);
-        return local_8;
+        return this.GetTask().Get().GetTaskTargetDesc(this.GetTargetIndex());
     }
     FText GetProgress() const
     {
-        int local_3 = this.GetTargetIndex();
-        TEUIModelRef<FM_Task> local_2 = this.GetTask();
-        FText local_8;
-        local_8.GetTaskTargetProgress(local_3);
-        return local_8;
+        return this.GetTask().Get().GetTaskTargetProgress(this.GetTargetIndex());
     }
     TEUIModelRef<FM_Task> GetTask() const property
     {
@@ -120,11 +111,9 @@ FVM_TaskTarget& Create(const UObject ContextObject, const TEUIModelRef<FM_Task> 
 {
     return FVM_TaskTarget::CreateByManager(EUIInternal::GetContextManager(ContextObject), Task, TargetIndex);
 }
-FVM_TaskTarget CreateByManager(const UEUIManagerSubsystem Manager, const TEUIModelRef<FM_Task> &inout Task, const int TargetIndex)
+FVM_TaskTarget& CreateByManager(const UEUIManagerSubsystem Manager, const TEUIModelRef<FM_Task> &inout Task, const int TargetIndex)
 {
-    FVM_TaskTarget __r;
-    TEUIModelRef<FVM_TaskTarget> local_6 = TEUIModelRef<FVM_TaskTarget>(EUIInternal::MakeModelWithManager_Generic(Manager, FVM_TaskTarget::ModelId, 0, Task, TargetIndex));
-    return __r;
+    return TEUIModelRef<FVM_TaskTarget>(EUIInternal::MakeModelWithManager_Generic(Manager, FVM_TaskTarget::ModelId, 0, Task, TargetIndex)).Get();
 }
 void GetModelInfo(FEUIViewModelMetaInfo &inout Result)
 {
@@ -188,7 +177,6 @@ namespace __GeneratedProperties_FVM_TaskTarget
 {
 UScriptStruct StaticStruct()
 {
-    UScriptStruct local_2;
-    return local_2;
+    return __GeneratedProperties_FVM_TaskTarget.Get();
 }
 }

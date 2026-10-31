@@ -27,6 +27,8 @@ class US_TestASSystem : UECSScriptSystem
     UFUNCTION()
     void Init_Implementation()
     {
+        FTestInternalStruct local_4;
+        this.TestLocalStorage.InitializeAs(local_4);
         return;
     }
     TRawPtr<FTestInternalStruct> GetTestStruct() const
@@ -75,13 +77,14 @@ class US_TestASSystem : UECSScriptSystem
     UFUNCTION()
     void Monitor_ActorActive(const FC_Actor &inout ActorComp) const
     {
+        AActor local_8;
         if (ActorComp)
         {
+            local_8 = ActorComp.Actor.Get();
         }
         else
         {
         }
-        AActor local_8;
         AActor local_2 = local_8;
         if (local_2 != nullptr)
         {
@@ -101,22 +104,9 @@ class US_TestASSystem : UECSScriptSystem
     UFUNCTION()
     void ServerJob_TestJobTimerInit(const FCS_FixedTime &inout FixedTime) const
     {
-        FFPTime local_2 = FFPTime(5.0);
-        bool local_5 = FixedTime.IsOnInterval(local_2);
-        if (!(local_5))
+        if (FixedTime.IsOnInterval(FFPTime(5.0)) && (FFPTime(this.GetTestStruct().Get().InternalTime).opCmp(0.0) <= 0))
         {
-            local_5 = false;
-        }
-        else
-        {
-            TRawPtr<FTestInternalStruct> local_8;
-            local_8 = this.GetTestStruct();
-            local_5 = (local_2.opCmp(0.0) <= 0);
-        }
-        if (local_5)
-        {
-            TRawPtr<FTestInternalStruct> local_8;
-            local_8 = this.GetTestStruct();
+            this.GetTestStruct().Get().InternalTime = FixedTime.Time;
             XError(ELog(0), FString().Append("TestJobTimerLog:: Assign ").Append(FixedTime.Time).Append(": ").Append((this.CreateTimerEntity((FFPTime(FixedTime.Time) + FFPTime(15)))).GetIdValue()).Append(" ").Append((this.CreateTimerEntity((FFPTime(FixedTime.Time) + FFPTime(15)))).GetIdValue()).Append(" ").Append((this.CreateTimerEntity((FFPTime(FixedTime.Time) + FFPTime(15)))).GetIdValue()).Append(" ").Append((this.CreateTimerEntity((FFPTime(FixedTime.Time) + FFPTime(20)))).GetIdValue()).Append(" "));
         }
         return;
@@ -128,7 +118,6 @@ class US_TestASSystem : UECSScriptSystem
         bool local_6 = (FFPTime(FixedTime.Time).opCmp(SimpleTimeTweak.GetAlignWorldTime()) >= 0);
         if (local_6)
         {
-            TRawPtr<FTestInternalStruct> local_28;
             bool local_13;
             FString local_10 = FString();
             XError(ELog(0), local_10.Append("TestJobTimerLog:: OnTimer ").Append(FixedTime.Time).Append(": ").Append(local_6).Append(". Entity = ").Append(Entity.GetIdValue()));
@@ -144,12 +133,11 @@ class US_TestASSystem : UECSScriptSystem
                 Remove local_26;
                 local_26.opCall();
             }
-            local_28 = this.GetTestStruct();
-            local_1 = !local_1;
+            local_1 = !(this.GetTestStruct().Get().bFirstEntity);
             if (local_1 == !(false))
             {
                 local_1 = true;
-                local_28 = this.GetTestStruct();
+                this.GetTestStruct().Get().bFirstEntity = local_1;
                 local_22.opCall().SetAlignWorldTime((FFPTime(FixedTime.Time) + FFPTime(1)));
                 local_22.opCall().SetAlignWorldTime(FixedTime.Time);
                 FString local_10_2 = FString();
@@ -186,13 +174,14 @@ class US_TestASSystem : UECSScriptSystem
     UFUNCTION()
     void Monitor_ActorActiveLate(const FC_Actor &inout ActorComp) const
     {
+        AActor local_8;
         if (ActorComp)
         {
+            local_8 = ActorComp.Actor.Get();
         }
         else
         {
         }
-        AActor local_8;
         AActor local_2 = local_8;
         if (local_2 != nullptr)
         {

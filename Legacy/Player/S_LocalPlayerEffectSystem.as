@@ -7,8 +7,7 @@ class US_LocalPlayerEffectSystem : UECSScriptSystem
     UFUNCTION()
     void Job_OnLocalPlayerForceFeedbackEffect(const FCE_LocalPlayerForceFeedbackEffect &inout Event) const
     {
-        UForceFeedbackEffect local_2;
-        ::LocalPlayerEffectUtils::LocalPlayForceFeedback(local_2, Event.Tag, Event.bLooping, Event.bIgnoreTimeDilation, Event.bPlayWhilePaused);
+        ::LocalPlayerEffectUtils::LocalPlayForceFeedback(Event.ForceFeedbackEffect.Get(), Event.Tag, Event.bLooping, Event.bIgnoreTimeDilation, Event.bPlayWhilePaused);
         return;
     }
     UFUNCTION()

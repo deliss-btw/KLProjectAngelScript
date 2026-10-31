@@ -13,7 +13,6 @@ class APatrolTargetPoint : ATargetPoint
     UFUNCTION()
     APatrolTargetPoint GetNextPatrolPoint() const
     {
-        APatrolTargetPoint local_6;
         if (this.NextPatrolPointList.Num() == 0)
         {
             return nullptr;
@@ -25,10 +24,10 @@ class APatrolTargetPoint : ATargetPoint
             local_9 = local_9 + local_24.Probability;
             if (local_8 <= local_9)
             {
-                return local_6;
+                return local_24.TargetPoint.Get();
             }
         }
-        return local_6;
+        return this.NextPatrolPointList.Last(0).TargetPoint.Get();
     }
 }
 

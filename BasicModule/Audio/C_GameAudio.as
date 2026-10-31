@@ -372,7 +372,7 @@ struct FC_PlayerBgmToPending : FECSComponent
     {
         FC_PlayerBgmToPending __r;
         this.SetState(Other.GetState());
-        this.SetEvent();
+        this.SetEvent(Other.GetEvent());
         return __r;
     }
     TSoftObjectPtr<UAkStateValue> GetState() const property

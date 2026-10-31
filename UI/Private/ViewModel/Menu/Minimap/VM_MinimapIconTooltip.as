@@ -106,8 +106,7 @@ struct FVM_MinimapIconTooltip : FEUIViewModel
     }
     bool CanGuideToTarget() const
     {
-        FVM_MinimapIconHoverProvider& local_4;
-        TEUIModelWeakRef<FVM_MinimapIconHoverProvider> local_2 = this.GetHoverProvider();
+        FVM_MinimapIconHoverProvider& local_4 = this.GetHoverProvider().Get();
         if (local_4)
         {
             return local_4.GetbAllowGuide();
@@ -116,8 +115,7 @@ struct FVM_MinimapIconTooltip : FEUIViewModel
     }
     bool CanTeleportToTarget() const
     {
-        FVM_MinimapIconHoverProvider& local_4;
-        TEUIModelWeakRef<FVM_MinimapIconHoverProvider> local_2 = this.GetHoverProvider();
+        FVM_MinimapIconHoverProvider& local_4 = this.GetHoverProvider().Get();
         if (local_4)
         {
             return local_4.GetbAllowTeleport();
@@ -126,9 +124,9 @@ struct FVM_MinimapIconTooltip : FEUIViewModel
     }
     bool CanMarkTarget() const
     {
-        FVM_MinimapIconHoverProvider& local_4;
         int local_5;
         TEUIModelWeakRef<FVM_MinimapIconHoverProvider> local_2 = this.GetHoverProvider();
+        FVM_MinimapIconHoverProvider& local_4 = local_2.Get();
         if (local_4)
         {
             if (!(local_4.GetbAllowMark()))
@@ -167,8 +165,7 @@ struct FVM_MinimapIconTooltip : FEUIViewModel
     }
     void GuideToTarget()
     {
-        FVM_MinimapIconHoverProvider& local_4;
-        TEUIModelWeakRef<FVM_MinimapIconHoverProvider> local_2 = this.GetHoverProvider();
+        FVM_MinimapIconHoverProvider& local_4 = this.GetHoverProvider().Get();
         if (local_4)
         {
             local_4.SetGuideTarget();
@@ -177,8 +174,7 @@ struct FVM_MinimapIconTooltip : FEUIViewModel
     }
     void TeleportToTarget()
     {
-        FVM_MinimapIconHoverProvider& local_4;
-        TEUIModelWeakRef<FVM_MinimapIconHoverProvider> local_2 = this.GetHoverProvider();
+        FVM_MinimapIconHoverProvider& local_4 = this.GetHoverProvider().Get();
         if (local_4)
         {
             local_4.TeleportToEntity();
@@ -187,8 +183,7 @@ struct FVM_MinimapIconTooltip : FEUIViewModel
     }
     void MarkTarget()
     {
-        FVM_MinimapIconHoverProvider& local_4;
-        TEUIModelWeakRef<FVM_MinimapIconHoverProvider> local_2 = this.GetHoverProvider();
+        FVM_MinimapIconHoverProvider& local_4 = this.GetHoverProvider().Get();
         if (local_4)
         {
             local_4.MarkEntity();
@@ -291,8 +286,7 @@ struct FVM_MinimapIconTooltip : FEUIViewModel
     }
     TEUIModelRef<FVM_MinimapIcon> GetMinimapIcon() const
     {
-        FVM_MinimapIconHoverProvider& local_4;
-        TEUIModelWeakRef<FVM_MinimapIconHoverProvider> local_2 = this.GetHoverProvider();
+        FVM_MinimapIconHoverProvider& local_4 = this.GetHoverProvider().Get();
         if (local_4)
         {
             return local_4.GetMinimapIcon();
@@ -394,11 +388,9 @@ FVM_MinimapIconTooltip& Create(const UObject ContextObject, const TEUIModelWeakR
 {
     return FVM_MinimapIconTooltip::CreateByManager(EUIInternal::GetContextManager(ContextObject), HoverProvider);
 }
-FVM_MinimapIconTooltip CreateByManager(const UEUIManagerSubsystem Manager, const TEUIModelWeakRef<FVM_MinimapIconHoverProvider> &inout HoverProvider)
+FVM_MinimapIconTooltip& CreateByManager(const UEUIManagerSubsystem Manager, const TEUIModelWeakRef<FVM_MinimapIconHoverProvider> &inout HoverProvider)
 {
-    FVM_MinimapIconTooltip __r;
-    TEUIModelRef<FVM_MinimapIconTooltip> local_6 = TEUIModelRef<FVM_MinimapIconTooltip>(EUIInternal::MakeModelWithManager_Generic(Manager, FVM_MinimapIconTooltip::ModelId, 0, HoverProvider));
-    return __r;
+    return TEUIModelRef<FVM_MinimapIconTooltip>(EUIInternal::MakeModelWithManager_Generic(Manager, FVM_MinimapIconTooltip::ModelId, 0, HoverProvider)).Get();
 }
 void GetModelInfo(FEUIViewModelMetaInfo &inout Result)
 {
@@ -553,7 +545,6 @@ namespace __GeneratedProperties_FVM_MinimapIconTooltip
 {
 UScriptStruct StaticStruct()
 {
-    UScriptStruct local_2;
-    return local_2;
+    return __GeneratedProperties_FVM_MinimapIconTooltip.Get();
 }
 }

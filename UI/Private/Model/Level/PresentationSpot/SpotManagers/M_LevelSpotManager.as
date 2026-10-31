@@ -145,13 +145,13 @@ struct FM_ActiveEntityLevelSpotUpdater : FEUIModel
             local_4.OnUpdaterRemove(TEUIModelRef<FM_ActiveEntityLevelSpotUpdater>(this));
             return;
         }
-        if (!(::LevelSpotViewerUtils::GetLevelSpotDataFromSpotInfo(this.GetContext().GetLocalPlayer(), C_LevelSpot.GetLevelSpotInfo())))
+        FLevelSpotData local_136 = ::LevelSpotViewerUtils::GetLevelSpotDataFromSpotInfo(this.GetContext().GetLocalPlayer(), C_LevelSpot.GetLevelSpotInfo());
+        if (!(local_136))
         {
             local_4.OnUpdaterRemove(TEUIModelRef<FM_ActiveEntityLevelSpotUpdater>(this));
             return;
         }
-        TEUIModelRef<FM_SpotRegistry> local_264 = ::FMS_LevelSpotManager::Get(this.GetContext().Manager).GetManagedSpotRegistry();
-        TEUIModelRef<FM_Spot> local_266 = this.GetSpot();
+        ::PresentationDataUtils::SetupSpotPresentationRuleConfigs(this.GetSpot().Get(), local_136, ::FMS_LevelSpotManager::Get(this.GetContext().Manager).GetManagedSpotRegistry());
         return;
     }
     bool IsValid() const
@@ -422,8 +422,7 @@ struct FM_LevelSpotClientCache : FEUIModel
     }
     void SyncViewerConfigToSpot()
     {
-        TEUIModelRef<FM_SpotRegistry> local_4 = ::FMS_LevelSpotManager::Get(this.GetManager()).GetManagedSpotRegistry();
-        TEUIModelRef<FM_Spot> local_8 = this.GetPresentationSpot();
+        ::PresentationDataUtils::SetupSpotPresentationRuleConfigs(this.GetPresentationSpot().Get(), this.GetLevelSpotDataFromViewer(), ::FMS_LevelSpotManager::Get(this.GetManager()).GetManagedSpotRegistry());
         return;
     }
     void EnsureUpdaterDeferredIfNeeded()
@@ -711,7 +710,6 @@ struct FMS_LevelSpotManager : FEUIModelSingleton
     }
     void ManualAsyncTick()
     {
-        int local_21 = 0;
         int local_32 = 0;
         int local_46 = 0;
         for (auto& local_20 : this.GetNoSourceSpots())
@@ -723,9 +721,10 @@ struct FMS_LevelSpotManager : FEUIModelSingleton
         ::FTeamUtils::GetTeamEntityForController(this.GetContext().GetLocalPlayer());
         for (auto& local_20 : this.GetPendingInitialSync())
         {
-            if (this.GetAllLevelSpotsIndex().Find(local_20))
+            TConstRawPtr<int> local_60 = this.GetAllLevelSpotsIndex().Find(local_20);
+            if (local_60)
             {
-                this.SyncCacheAtIndex(local_21, local_32, local_46);
+                this.SyncCacheAtIndex(local_60.Get(), local_32, local_46);
             }
         }
         this.GetModify_PendingInitialSync().Empty(0);
@@ -752,14 +751,13 @@ struct FMS_LevelSpotManager : FEUIModelSingleton
     }
     void OnUpdaterRemove(const TEUIModelRef<FM_ActiveEntityLevelSpotUpdater> &inout Updater)
     {
-        int local_11 = 0;
-        FECSEntityId local_1 = Updater.opArrow().GetEntity().GetId();
-        if (false)
+        if (this.GetModify_EntityUpdaters().Remove(Updater.opArrow().GetEntity().GetId()))
         {
             FLevelSpotId local_4 = Updater.opArrow().GetMainSpotId();
-            if (this.GetAllLevelSpotsIndex().Find(local_4))
+            TConstRawPtr<int> local_8 = this.GetAllLevelSpotsIndex().Find(local_4);
+            if (local_8)
             {
-                this.GetAllLevelSpots()[local_11].opArrow().RemoveUpdater();
+                this.GetAllLevelSpots()[local_8.Get()].opArrow().RemoveUpdater();
             }
             this.UnregisterSpotSource(local_4, this.GetModify_EntitySpots());
         }
@@ -771,7 +769,7 @@ struct FMS_LevelSpotManager : FEUIModelSingleton
         {
             if (this.RegisterSpotSource(local_20.GetKey(), CacheSpotSet))
             {
-                this.RequireCacheForEntity(local_20.GetKey(), GetOwnerEntityId());
+                this.RequireCacheForEntity(local_20.GetKey(), local_20.GetValue().GetOwnerEntityId());
             }
         }
         for (auto& local_38 : ViewerData.GetPositionSpots())
@@ -880,29 +878,28 @@ struct FMS_LevelSpotManager : FEUIModelSingleton
         int local_10 = 0;
         int local_14 = 0;
         FM_LevelSpotClientCache __r;
-        if (this.GetAllLevelSpotsIndex().Find(SpotId))
+        TConstRawPtr<int> local_2 = this.GetAllLevelSpotsIndex().Find(SpotId);
+        if (local_2)
         {
+            return this.GetAllLevelSpots()[local_2.Get()].Get();
         }
-        else
-        {
-            TEUIModelRef<FM_SpotRegistry> local_8 = this.GetSpotRegistry();
-            TEUIModelRef<FM_Spot> local_12 = TEUIModelRef<FM_Spot>(local_10);
-            local_14.SetSpotId(SpotId);
-            this.GetModify_AllLevelSpotsIndex().Add(SpotId, this.GetAllLevelSpots().Num());
-            this.GetModify_AllLevelSpots().Add(TEUIModelRef<FM_LevelSpotClientCache>(local_14));
-            this.GetModify_PendingInitialSync().Add(SpotId);
-        }
+        TEUIModelRef<FM_SpotRegistry> local_8 = this.GetSpotRegistry();
+        TEUIModelRef<FM_Spot> local_12 = TEUIModelRef<FM_Spot>(local_10);
+        local_14.SetSpotId(SpotId);
+        this.GetModify_AllLevelSpotsIndex().Add(SpotId, this.GetAllLevelSpots().Num());
+        this.GetModify_AllLevelSpots().Add(TEUIModelRef<FM_LevelSpotClientCache>(local_14));
+        this.GetModify_PendingInitialSync().Add(SpotId);
         return __r;
     }
     FM_LevelSpotClientCache& RequireCacheForEntity(const FLevelSpotId &inout SpotId, const FECSEntityId &inout EntityId)
     {
         bool local_5 = false;
-        int local_6 = 0;
         int local_22 = 0;
         int local_26 = 0;
-        if (this.GetAllLevelSpotsIndex().Find(SpotId))
+        TConstRawPtr<int> local_2 = this.GetAllLevelSpotsIndex().Find(SpotId);
+        if (local_2)
         {
-            const TEUIModelRef<FM_LevelSpotClientCache>& local_8 = this.GetAllLevelSpots()[local_6];
+            const TEUIModelRef<FM_LevelSpotClientCache>& local_8 = this.GetAllLevelSpots()[local_2.Get()];
             local_5 = !(local_8.opArrow().GetUpdater());
             if (local_5)
             {
@@ -913,50 +910,46 @@ struct FMS_LevelSpotManager : FEUIModelSingleton
                     this.RegisterSpotSource(SpotId, this.GetModify_EntitySpots());
                 }
             }
+            return local_8.Get();
         }
-        else
+        TEUIModelRef<FM_SpotRegistry> local_20 = this.GetSpotRegistry();
+        TEUIModelRef<FM_Spot> local_24 = TEUIModelRef<FM_Spot>(local_22);
+        local_26.SetSpotId(SpotId);
+        FECSEntity local_14_2 = FECSEntity(EntityId);
+        if (local_14_2)
         {
-            TEUIModelRef<FM_SpotRegistry> local_20 = this.GetSpotRegistry();
-            TEUIModelRef<FM_Spot> local_24 = TEUIModelRef<FM_Spot>(local_22);
-            local_26.SetSpotId(SpotId);
-            FECSEntity local_14_2 = FECSEntity(EntityId);
-            if (local_14_2)
-            {
-                local_26.SetUpdater(TEUIModelRef<FM_ActiveEntityLevelSpotUpdater>(this.RequireUpdaterForEntity(local_14_2)));
-                this.RegisterSpotSource(SpotId, this.GetModify_EntitySpots());
-            }
-            this.GetModify_AllLevelSpotsIndex().Add(SpotId, this.GetAllLevelSpots().Num());
-            this.GetModify_AllLevelSpots().Add(TEUIModelRef<FM_LevelSpotClientCache>(local_26));
-            this.GetModify_PendingInitialSync().Add(SpotId);
+            local_26.SetUpdater(TEUIModelRef<FM_ActiveEntityLevelSpotUpdater>(this.RequireUpdaterForEntity(local_14_2)));
+            this.RegisterSpotSource(SpotId, this.GetModify_EntitySpots());
         }
+        this.GetModify_AllLevelSpotsIndex().Add(SpotId, this.GetAllLevelSpots().Num());
+        this.GetModify_AllLevelSpots().Add(TEUIModelRef<FM_LevelSpotClientCache>(local_26));
+        this.GetModify_PendingInitialSync().Add(SpotId);
         return local_5;
     }
     FM_ActiveEntityLevelSpotUpdater RequireUpdaterForEntity(const FECSEntity &inout Entity)
     {
         int local_14 = 0;
         FM_ActiveEntityLevelSpotUpdater __r;
-        if (this.GetEntityUpdaters().Find(Entity.GetId()))
+        TConstRawPtr<TEUIModelRef<FM_ActiveEntityLevelSpotUpdater>> local_4 = this.GetEntityUpdaters().Find(Entity.GetId());
+        if (local_4)
         {
+            return local_4.Get().Get();
         }
-        else
-        {
-            TEUIModelRef<FM_Spot> local_12 = TEUIModelRef<FM_Spot>(::PresentationSpotUtils::RequireEntitySpot(this.GetContext().Manager, Entity.GetId(), this.GetSpotRegistry()));
-            this.GetModify_EntityUpdaters().Add(Entity.GetId(), TEUIModelRef<FM_ActiveEntityLevelSpotUpdater>(local_14));
-        }
+        TEUIModelRef<FM_Spot> local_12 = TEUIModelRef<FM_Spot>(::PresentationSpotUtils::RequireEntitySpot(this.GetContext().Manager, Entity.GetId(), this.GetSpotRegistry()));
+        this.GetModify_EntityUpdaters().Add(Entity.GetId(), TEUIModelRef<FM_ActiveEntityLevelSpotUpdater>(local_14));
         return __r;
     }
     void RemoveLevelSpotCache(const FLevelSpotId &inout SpotId)
     {
-        int local_7 = 0;
-        if (!(this.GetAllLevelSpotsIndex().Find(SpotId)))
+        TConstRawPtr<int> local_2 = this.GetAllLevelSpotsIndex().Find(SpotId);
+        if (!(local_2))
         {
             return;
         }
-        int local_6 = local_7;
+        int local_6 = local_2.Get();
         const TEUIModelRef<FM_LevelSpotClientCache>& local_10 = this.GetAllLevelSpots()[local_6];
         this.GetSpotRegistry().opArrow().RemoveSpot(local_10.opArrow().GetPresentationSpot());
-        local_7 = this.GetAllLevelSpots().Num();
-        local_7 = local_7 - 1;
+        int local_7 = this.GetAllLevelSpots().Num() - 1;
         if (local_6 != local_7)
         {
             FLevelSpotId local_18;
@@ -964,6 +957,7 @@ struct FMS_LevelSpotManager : FEUIModelSingleton
             this.GetModify_AllLevelSpotsIndex()[local_18] = local_6;
         }
         this.GetModify_AllLevelSpots().RemoveAt(local_7);
+        this.GetModify_AllLevelSpotsIndex().Remove(SpotId);
         if (this.GetPartialUpdateIndex() >= this.GetAllLevelSpots().Num())
         {
             this.SetPartialUpdateIndex(0);
@@ -977,11 +971,12 @@ struct FMS_LevelSpotManager : FEUIModelSingleton
             return false;
         }
         SourceSet.Add(SpotId);
+        this.GetModify_NoSourceSpots().Remove(SpotId);
         return true;
     }
     void UnregisterSpotSource(const FLevelSpotId &inout SpotId, TSet<FLevelSpotId> &inout SourceSet)
     {
-        if (!(false))
+        if (!(SourceSet.Remove(SpotId)))
         {
             return;
         }
@@ -1308,11 +1303,9 @@ FM_ActiveEntityLevelSpotUpdater& Create(const UObject ContextObject, const FECSE
 {
     return FM_ActiveEntityLevelSpotUpdater::CreateByManager(EUIInternal::GetContextManager(ContextObject), Entity, Spot);
 }
-FM_ActiveEntityLevelSpotUpdater CreateByManager(const UEUIManagerSubsystem Manager, const FECSEntity &inout Entity, const TEUIModelRef<FM_Spot> &inout Spot)
+FM_ActiveEntityLevelSpotUpdater& CreateByManager(const UEUIManagerSubsystem Manager, const FECSEntity &inout Entity, const TEUIModelRef<FM_Spot> &inout Spot)
 {
-    FM_ActiveEntityLevelSpotUpdater __r;
-    TEUIModelRef<FM_ActiveEntityLevelSpotUpdater> local_6 = TEUIModelRef<FM_ActiveEntityLevelSpotUpdater>(EUIInternal::MakeModelWithManager_Generic(Manager, FM_ActiveEntityLevelSpotUpdater::ModelId, 0, Entity, Spot));
-    return __r;
+    return TEUIModelRef<FM_ActiveEntityLevelSpotUpdater>(EUIInternal::MakeModelWithManager_Generic(Manager, FM_ActiveEntityLevelSpotUpdater::ModelId, 0, Entity, Spot)).Get();
 }
 void GetModelInfo(FEUIModelOnlyMetaInfo &inout Result)
 {
@@ -1357,11 +1350,9 @@ FM_LevelSpotClientCache& Create(const UObject ContextObject, const TEUIModelRef<
 {
     return FM_LevelSpotClientCache::CreateByManager(EUIInternal::GetContextManager(ContextObject), PresentationSpot);
 }
-FM_LevelSpotClientCache CreateByManager(const UEUIManagerSubsystem Manager, const TEUIModelRef<FM_Spot> &inout PresentationSpot)
+FM_LevelSpotClientCache& CreateByManager(const UEUIManagerSubsystem Manager, const TEUIModelRef<FM_Spot> &inout PresentationSpot)
 {
-    FM_LevelSpotClientCache __r;
-    TEUIModelRef<FM_LevelSpotClientCache> local_6 = TEUIModelRef<FM_LevelSpotClientCache>(EUIInternal::MakeModelWithManager_Generic(Manager, FM_LevelSpotClientCache::ModelId, 0, PresentationSpot));
-    return __r;
+    return TEUIModelRef<FM_LevelSpotClientCache>(EUIInternal::MakeModelWithManager_Generic(Manager, FM_LevelSpotClientCache::ModelId, 0, PresentationSpot)).Get();
 }
 void GetModelInfo(FEUIModelOnlyMetaInfo &inout Result)
 {
@@ -1408,11 +1399,9 @@ FMS_LevelSpotManager& Get(const UObject ContextObject)
 {
     return FMS_LevelSpotManager::GetByManager(EUIInternal::GetContextManager(ContextObject));
 }
-FMS_LevelSpotManager GetByManager(const UEUIManagerSubsystem Manager)
+FMS_LevelSpotManager& GetByManager(const UEUIManagerSubsystem Manager)
 {
-    FMS_LevelSpotManager __r;
-    TEUIModelRef<FMS_LevelSpotManager> local_6 = TEUIModelRef<FMS_LevelSpotManager>(EUIInternal::MakeModelWithManager(Manager, FMS_LevelSpotManager::ModelId));
-    return __r;
+    return TEUIModelRef<FMS_LevelSpotManager>(EUIInternal::MakeModelWithManager(Manager, FMS_LevelSpotManager::ModelId)).Get();
 }
 void GetModelInfo(FEUIModelOnlyMetaInfo &inout Result)
 {

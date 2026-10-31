@@ -60,6 +60,7 @@ class UBTTask_DebugGlimmeringWolfCombatFallback : UBTTask_ECSScriptBase
             local_6 = local_12.CurrentQueryOutput.Num();
             if (local_6 > 0)
             {
+                local_5 = local_12.CurrentQueryOutput[0].GetValue();
             }
         }
         FNameHandle_EntityBBVarBool local_18;

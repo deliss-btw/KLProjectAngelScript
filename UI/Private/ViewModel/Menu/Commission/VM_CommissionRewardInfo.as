@@ -76,7 +76,6 @@ struct FVM_CommissionRewardInfo : FEUIViewModel
     }
     void BuildAllRewardItems()
     {
-        int local_168 = 0;
         this.GetModify_AllRewardItems().Empty(0);
         FCommonRewardListBuilder local_6;
         if (this.HasFirstTimeReward())
@@ -113,7 +112,7 @@ struct FVM_CommissionRewardInfo : FEUIViewModel
             {
                 if (local_166.opArrow().GetConfig().IsSet())
                 {
-                    local_6.AddItemWithSortOverride(local_168, local_166.opArrow().GetNum(), 0.0f, 0, local_141, local_150, local_7);
+                    local_6.AddItemWithSortOverride(local_166.opArrow().GetConfig().Get().DataId, local_166.opArrow().GetNum(), 0.0f, 0, local_141, local_150, local_7);
                 }
             }
         }
@@ -133,21 +132,18 @@ struct FVM_CommissionRewardInfo : FEUIViewModel
     }
     void AddDropRewardItems(FCommonRewardListBuilder &inout Builder, const TDataObjectPtr<FDropItemConfigBase> &inout DropReward)
     {
-        FDropItemConfigParser local_20;
-        int local_37 = 0;
         int local_41;
-        int local_42 = 0;
-        int local_44 = 0;
+        FDropItemConfigParser local_20;
         local_20.ParseDropItemConfig(DropReward);
         for (auto& local_40 : local_20.ParsedDropItemDataMap)
         {
-            local_40;
+            int local_42 = local_40.GetKey().Get().DataId;
             local_41 = local_42;
-            if (0 > 0)
+            if (local_40.GetValue().MinNum > 0)
             {
-                local_37 = 0;
-                Builder.AddItem(local_41, local_44, FName(), FText(), (local_37 != 0));
+                Builder.AddItem(local_41, local_40.GetValue().MinNum, FName(), FText(), false);
             }
+            int local_37 = local_40.GetValue().bProbability;
             if (local_37 != 0)
             {
                 Builder.AddItem(local_41, 0, n"CommissionDrop", FText(), false);
@@ -199,20 +195,22 @@ struct FVM_CommissionRewardInfo : FEUIViewModel
             local_16.SetNumStyle(EItemViewModelNumStyle(1));
         }
         local_14.AddModel(FEUIModelRef(local_16), false);
-        TEUIModelRef<FVM_CommonRewardItem> local_26 = TEUIModelRef<FVM_CommonRewardItem>(::FVM_CommonRewardItem::Create(this.GetContext().Manager, local_14, false));
-        bClaimed.SetIsClaimed();
-        TEUIModelRef<FVM_ComposableItem> local_28;
-        local_28.GetComposableItemVM();
-        if (local_28.IsValid())
+        TEUIModelRef<FVM_CommonRewardItem> local_24 = TEUIModelRef<FVM_CommonRewardItem>(::FVM_CommonRewardItem::Create(this.GetContext().Manager, local_14, false));
+        local_24.Get().SetIsClaimed(bClaimed);
+        if (local_24.Get().GetComposableItemVM().IsValid())
         {
-            local_28.GetComposableItemVM();
-            ::ComposableItemUtility::SetIsShowTag(!(::RewardSortUtils::ResolveTagDisplayText(TagKey, TagText).IsEmpty()));
+            TEUIModelRef<FVM_ComposableItem> local_28 = local_24.Get().GetComposableItemVM();
+            FText local_38 = ::RewardSortUtils::ResolveTagDisplayText(TagKey, TagText);
+            TEUIModelRef<FVM_ComposableItem> local_30;
+            ::ComposableItemUtility::SetIsShowTag(local_30.Get(), !(local_38.IsEmpty()));
+            ::ComposableItemUtility::SetDisplayTagText(local_30.Get(), local_38);
             if ((TagKey == n"CommissionDrop"))
             {
+                ::ComposableItemUtility::SetItemCountText(local_30.Get(), FText());
             }
         }
         FEUIModelContainer local_52;
-        local_52.AddModel(local_26.opImplConv(), false);
+        local_52.AddModel(local_24.opImplConv(), false);
         return local_52;
     }
     TEUIModelRef<FM_Commission> GetCommissionModel() const property
@@ -276,11 +274,9 @@ FVM_CommissionRewardInfo& Create(const UObject ContextObject, const TEUIModelRef
 {
     return FVM_CommissionRewardInfo::CreateByManager(EUIInternal::GetContextManager(ContextObject), CommissionModel);
 }
-FVM_CommissionRewardInfo CreateByManager(const UEUIManagerSubsystem Manager, const TEUIModelRef<FM_Commission> &inout CommissionModel)
+FVM_CommissionRewardInfo& CreateByManager(const UEUIManagerSubsystem Manager, const TEUIModelRef<FM_Commission> &inout CommissionModel)
 {
-    FVM_CommissionRewardInfo __r;
-    TEUIModelRef<FVM_CommissionRewardInfo> local_6 = TEUIModelRef<FVM_CommissionRewardInfo>(EUIInternal::MakeModelWithManager_Generic(Manager, FVM_CommissionRewardInfo::ModelId, 0, CommissionModel));
-    return __r;
+    return TEUIModelRef<FVM_CommissionRewardInfo>(EUIInternal::MakeModelWithManager_Generic(Manager, FVM_CommissionRewardInfo::ModelId, 0, CommissionModel)).Get();
 }
 void GetModelInfo(FEUIViewModelMetaInfo &inout Result)
 {
@@ -354,7 +350,6 @@ namespace __GeneratedProperties_FVM_CommissionRewardInfo
 {
 UScriptStruct StaticStruct()
 {
-    UScriptStruct local_2;
-    return local_2;
+    return __GeneratedProperties_FVM_CommissionRewardInfo.Get();
 }
 }

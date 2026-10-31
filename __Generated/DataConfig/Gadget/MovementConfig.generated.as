@@ -3,7 +3,6 @@ namespace __FTrackMovementConfigDataFunctions
 UFUNCTION()
 uint8 __FTrackMovementConfigData_GetTrackMovementAxis(const TDataObjectPtr<FTrackMovementConfigData> &inout DataObject)
 {
-    int local_97 = 0;
     if ((DataObject == nullptr))
     {
         if (!(EUIGlobals::GIsDuringPropertyConversion))
@@ -13,12 +12,11 @@ uint8 __FTrackMovementConfigData_GetTrackMovementAxis(const TDataObjectPtr<FTrac
         FTrackMovementConfigData local_96;
         return int(local_96.TrackMovementAxis);
     }
-    return local_97;
+    return DataObject.Get().TrackMovementAxis;
 }
 UFUNCTION()
 ETrackSpeedMode __FTrackMovementConfigData_GetMoveSpeedMode(const TDataObjectPtr<FTrackMovementConfigData> &inout DataObject)
 {
-    int local_97 = 0;
     if ((DataObject == nullptr))
     {
         if (!(EUIGlobals::GIsDuringPropertyConversion))
@@ -26,10 +24,9 @@ ETrackSpeedMode __FTrackMovementConfigData_GetMoveSpeedMode(const TDataObjectPtr
             FBlueprintDebugFunctions::ThrowScriptException("Get 'MoveSpeedMode' from a null 'FTrackMovementConfigData' DataObject!");
         }
         FTrackMovementConfigData local_96;
-        local_97 = int(local_96.MoveSpeedMode);
-        return ETrackSpeedMode(local_97);
+        return local_96.MoveSpeedMode;
     }
-    return ETrackSpeedMode(local_97);
+    return DataObject.Get().MoveSpeedMode;
 }
 UFUNCTION()
 float32 __FTrackMovementConfigData_GetConstMoveSpeed(const TDataObjectPtr<FTrackMovementConfigData> &inout DataObject)
@@ -49,7 +46,6 @@ float32 __FTrackMovementConfigData_GetConstMoveSpeed(const TDataObjectPtr<FTrack
 UFUNCTION()
 FTrackTwoTurnPointCurve __FTrackMovementConfigData_GetTwoTurnPointMoveSpeedCurve(const TDataObjectPtr<FTrackMovementConfigData> &inout DataObject)
 {
-    FTrackTwoTurnPointCurve __r;
     if ((DataObject == nullptr))
     {
         if (!(EUIGlobals::GIsDuringPropertyConversion))
@@ -59,12 +55,11 @@ FTrackTwoTurnPointCurve __FTrackMovementConfigData_GetTwoTurnPointMoveSpeedCurve
         FTrackMovementConfigData local_96;
         return local_96.TwoTurnPointMoveSpeedCurve;
     }
-    return __r;
+    return DataObject.Get().TwoTurnPointMoveSpeedCurve;
 }
 UFUNCTION()
 FRuntimeFloatCurve __FTrackMovementConfigData_GetCustomMoveSpeedCurve(const TDataObjectPtr<FTrackMovementConfigData> &inout DataObject)
 {
-    FRuntimeFloatCurve __r;
     if ((DataObject == nullptr))
     {
         if (!(EUIGlobals::GIsDuringPropertyConversion))
@@ -74,12 +69,11 @@ FRuntimeFloatCurve __FTrackMovementConfigData_GetCustomMoveSpeedCurve(const TDat
         FTrackMovementConfigData local_96;
         return local_96.CustomMoveSpeedCurve;
     }
-    return __r;
+    return DataObject.Get().CustomMoveSpeedCurve;
 }
 UFUNCTION()
 ETrackSpeedMode __FTrackMovementConfigData_GetTurnSpeedMode(const TDataObjectPtr<FTrackMovementConfigData> &inout DataObject)
 {
-    int local_97 = 0;
     if ((DataObject == nullptr))
     {
         if (!(EUIGlobals::GIsDuringPropertyConversion))
@@ -87,10 +81,9 @@ ETrackSpeedMode __FTrackMovementConfigData_GetTurnSpeedMode(const TDataObjectPtr
             FBlueprintDebugFunctions::ThrowScriptException("Get 'TurnSpeedMode' from a null 'FTrackMovementConfigData' DataObject!");
         }
         FTrackMovementConfigData local_96;
-        local_97 = int(local_96.TurnSpeedMode);
-        return ETrackSpeedMode(local_97);
+        return local_96.TurnSpeedMode;
     }
-    return ETrackSpeedMode(local_97);
+    return DataObject.Get().TurnSpeedMode;
 }
 UFUNCTION()
 float32 __FTrackMovementConfigData_GetConstTurnSpeed(const TDataObjectPtr<FTrackMovementConfigData> &inout DataObject)
@@ -110,7 +103,6 @@ float32 __FTrackMovementConfigData_GetConstTurnSpeed(const TDataObjectPtr<FTrack
 UFUNCTION()
 FTrackTwoTurnPointCurve __FTrackMovementConfigData_GetTwoTurnPointTurnSpeedCurve(const TDataObjectPtr<FTrackMovementConfigData> &inout DataObject)
 {
-    FTrackTwoTurnPointCurve __r;
     if ((DataObject == nullptr))
     {
         if (!(EUIGlobals::GIsDuringPropertyConversion))
@@ -120,12 +112,11 @@ FTrackTwoTurnPointCurve __FTrackMovementConfigData_GetTwoTurnPointTurnSpeedCurve
         FTrackMovementConfigData local_96;
         return local_96.TwoTurnPointTurnSpeedCurve;
     }
-    return __r;
+    return DataObject.Get().TwoTurnPointTurnSpeedCurve;
 }
 UFUNCTION()
 FRuntimeFloatCurve __FTrackMovementConfigData_GetCustomTurnSpeedCurve(const TDataObjectPtr<FTrackMovementConfigData> &inout DataObject)
 {
-    FRuntimeFloatCurve __r;
     if ((DataObject == nullptr))
     {
         if (!(EUIGlobals::GIsDuringPropertyConversion))
@@ -135,7 +126,7 @@ FRuntimeFloatCurve __FTrackMovementConfigData_GetCustomTurnSpeedCurve(const TDat
         FTrackMovementConfigData local_96;
         return local_96.CustomTurnSpeedCurve;
     }
-    return __r;
+    return DataObject.Get().CustomTurnSpeedCurve;
 }
 UFUNCTION()
 float32 __FTrackMovementConfigData_GetCloseDistance(const TDataObjectPtr<FTrackMovementConfigData> &inout DataObject)
@@ -155,50 +146,44 @@ float32 __FTrackMovementConfigData_GetCloseDistance(const TDataObjectPtr<FTrackM
 UFUNCTION()
 bool __FTrackMovementConfigData_GetbStopMoveAfterApproch(const TDataObjectPtr<FTrackMovementConfigData> &inout DataObject)
 {
-    bool local_1 = false;
     if ((DataObject == nullptr))
     {
-        local_1 = !(EUIGlobals::GIsDuringPropertyConversion);
-        if (local_1)
+        if (!(EUIGlobals::GIsDuringPropertyConversion))
         {
             FBlueprintDebugFunctions::ThrowScriptException("Get 'bStopMoveAfterApproch' from a null 'FTrackMovementConfigData' DataObject!");
         }
         FTrackMovementConfigData local_96;
         return local_96.bStopMoveAfterApproch;
     }
-    return local_1;
+    return DataObject.Get().bStopMoveAfterApproch;
 }
 UFUNCTION()
 bool __FTrackMovementConfigData_GetbContinueTrackEvenSuccess(const TDataObjectPtr<FTrackMovementConfigData> &inout DataObject)
 {
-    bool local_1 = false;
     if ((DataObject == nullptr))
     {
-        local_1 = !(EUIGlobals::GIsDuringPropertyConversion);
-        if (local_1)
+        if (!(EUIGlobals::GIsDuringPropertyConversion))
         {
             FBlueprintDebugFunctions::ThrowScriptException("Get 'bContinueTrackEvenSuccess' from a null 'FTrackMovementConfigData' DataObject!");
         }
         FTrackMovementConfigData local_96;
         return local_96.bContinueTrackEvenSuccess;
     }
-    return local_1;
+    return DataObject.Get().bContinueTrackEvenSuccess;
 }
 UFUNCTION()
 bool __FTrackMovementConfigData_GetbKeepTransformRotation(const TDataObjectPtr<FTrackMovementConfigData> &inout DataObject)
 {
-    bool local_1 = false;
     if ((DataObject == nullptr))
     {
-        local_1 = !(EUIGlobals::GIsDuringPropertyConversion);
-        if (local_1)
+        if (!(EUIGlobals::GIsDuringPropertyConversion))
         {
             FBlueprintDebugFunctions::ThrowScriptException("Get 'bKeepTransformRotation' from a null 'FTrackMovementConfigData' DataObject!");
         }
         FTrackMovementConfigData local_96;
         return local_96.bKeepTransformRotation;
     }
-    return local_1;
+    return DataObject.Get().bKeepTransformRotation;
 }
 UFUNCTION()
 FTrackMovementConfigData CastToFTrackMovementConfigData(const TDataObjectPtr<FTrackMovementConfigData> &inout DataObject)

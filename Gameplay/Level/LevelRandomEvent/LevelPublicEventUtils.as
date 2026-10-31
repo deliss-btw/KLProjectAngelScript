@@ -204,8 +204,7 @@ int SelectAndActivatePublicEvents(const UWorld World, FRandomGenerator &inout Ra
 }
 void ActivateDatalayer(const UWorld World, const TSubclassOf<AKLLevelScriptPublicEvent> &inout LBPClass)
 {
-    UClass local_6;
-    XLog(ELog(22), FString().Append("public event ActivateDatalayer: ").Append(local_6.GetName()));
+    XLog(ELog(22), FString().Append("public event ActivateDatalayer: ").Append(LBPClass.Get().GetName()));
     KLDataLayer::SetDataLayerRuntimeStateByLBPClass(__GetWorldContext(), LBPClass, EDataLayerRuntimeState(2));
     return;
 }
@@ -213,8 +212,7 @@ void DeActivateDatalayer(const UWorld World, const TSubclassOf<AKLLevelScriptPub
 {
     FCS_LevelPublicEventData local_24;
     float32 local_45;
-    UClass local_6;
-    XLog(ELog(22), FString().Append("public event DeActivateDatalayer: ").Append(local_6.GetName()));
+    XLog(ELog(22), FString().Append("public event DeActivateDatalayer: ").Append(LBPClass.Get().GetName()));
     KLDataLayer::SetDataLayerRuntimeStateByLBPClass(__GetWorldContext(), LBPClass, EDataLayerRuntimeState(0));
     FECSWorldPtr local_18 = ECS::GetECSWorld();
     int local_25 = 0;
@@ -230,7 +228,7 @@ void DeActivateDatalayer(const UWorld World, const TSubclassOf<AKLLevelScriptPub
             continue;
         }
         TSoftClassPtr<AKLLevelScriptPublicEvent> local_42 = TSoftClassPtr<AKLLevelScriptPublicEvent>(local_30.LBPs[int(local_30.SelectedLBPIndex)]);
-        if (!((local_42.Get() == local_6)))
+        if (!((local_42.Get() == LBPClass.Get())))
         {
             continue;
         }
@@ -254,6 +252,7 @@ void DeActivateDatalayer(const UWorld World, const TSubclassOf<AKLLevelScriptPub
             local_48.opArrow().CoolDownEndTime = (ECS::GetContextTime() + FFPTime(local_45));
         }
         local_30.SelectedLBPIndex = -1;
+        local_24.SelectedEventPointIndexes.Remove(local_25);
         local_24.CurrentEventCount = FMath::Max(0, (int(local_24.CurrentEventCount) - 1));
         break;
     }

@@ -98,11 +98,9 @@ FVM_TaskEntryWrapper& Create(const UObject ContextObject, const FEUIModelRef &in
 {
     return FVM_TaskEntryWrapper::CreateByManager(EUIInternal::GetContextManager(ContextObject), TaskEntry, TaskEntryWidgetClass);
 }
-FVM_TaskEntryWrapper CreateByManager(const UEUIManagerSubsystem Manager, const FEUIModelRef &inout TaskEntry, const TSoftClassPtr<UUserWidget> &inout TaskEntryWidgetClass)
+FVM_TaskEntryWrapper& CreateByManager(const UEUIManagerSubsystem Manager, const FEUIModelRef &inout TaskEntry, const TSoftClassPtr<UUserWidget> &inout TaskEntryWidgetClass)
 {
-    FVM_TaskEntryWrapper __r;
-    TEUIModelRef<FVM_TaskEntryWrapper> local_6 = TEUIModelRef<FVM_TaskEntryWrapper>(EUIInternal::MakeModelWithManager_Generic(Manager, FVM_TaskEntryWrapper::ModelId, 0, TaskEntry, TaskEntryWidgetClass));
-    return __r;
+    return TEUIModelRef<FVM_TaskEntryWrapper>(EUIInternal::MakeModelWithManager_Generic(Manager, FVM_TaskEntryWrapper::ModelId, 0, TaskEntry, TaskEntryWidgetClass)).Get();
 }
 void GetModelInfo(FEUIViewModelMetaInfo &inout Result)
 {
@@ -157,7 +155,6 @@ namespace __GeneratedProperties_FVM_TaskEntryWrapper
 {
 UScriptStruct StaticStruct()
 {
-    UScriptStruct local_2;
-    return local_2;
+    return __GeneratedProperties_FVM_TaskEntryWrapper.Get();
 }
 }

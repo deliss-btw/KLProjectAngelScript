@@ -9,6 +9,8 @@ struct FVM_MenuPage : FEUIViewModel
     UPROPERTY()
     TDataObjectPtr<FMenuConfig> m_MenuConfig;
 
+    default m_ScriptOverrideMeta = Cast<UASStruct>(FVM_MenuPage.Get());
+
     FVM_MenuPage()
     {
         if (EUIInternal::GetModelConstructBodyEnableCounter() == 0)
@@ -87,11 +89,9 @@ FVM_MenuPage& Create(const UObject ContextObject)
 {
     return FVM_MenuPage::CreateByManager(EUIInternal::GetContextManager(ContextObject));
 }
-FVM_MenuPage CreateByManager(const UEUIManagerSubsystem Manager)
+FVM_MenuPage& CreateByManager(const UEUIManagerSubsystem Manager)
 {
-    FVM_MenuPage __r;
-    TEUIModelRef<FVM_MenuPage> local_6 = TEUIModelRef<FVM_MenuPage>(EUIInternal::MakeModelWithManager(Manager, FVM_MenuPage::ModelId));
-    return __r;
+    return TEUIModelRef<FVM_MenuPage>(EUIInternal::MakeModelWithManager(Manager, FVM_MenuPage::ModelId)).Get();
 }
 void GetModelInfo(FEUIViewModelMetaInfo &inout Result)
 {
@@ -124,7 +124,6 @@ namespace __GeneratedProperties_FVM_MenuPage
 {
 UScriptStruct StaticStruct()
 {
-    UScriptStruct local_2;
-    return local_2;
+    return __GeneratedProperties_FVM_MenuPage.Get();
 }
 }

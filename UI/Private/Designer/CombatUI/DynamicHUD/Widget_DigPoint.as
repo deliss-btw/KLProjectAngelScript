@@ -15,8 +15,8 @@ class UWidget_DigPoint : UEUIUserWidget
     UFUNCTION()
     ESlateVisibility DigPoint_SlateVisibilityPanelVisible() const
     {
-        FVMS_DigPoint& local_2;
         int local_5;
+        FVMS_DigPoint& local_2 = this.DigPoint.Get();
         if (local_2)
         {
             local_5 = int(local_2.PanelVisibleAsSlateVisibility());

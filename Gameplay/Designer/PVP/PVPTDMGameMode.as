@@ -255,7 +255,6 @@ class UPVPTDMGameModeFlow : UPVPGameModeFlowBase
         bool local_123;
         int local_132 = 0;
         int local_133;
-        FECSEntity local_142;
         Has local_146;
         Has local_150;
         Has local_158;
@@ -279,8 +278,7 @@ class UPVPTDMGameModeFlow : UPVPGameModeFlowBase
         {
             local_88.Proceed();
             local_133 = local_132.GetTeam();
-            local_142 = FECSEntity(local_132.GetPlayerPawnEntity());
-            if (!(local_142.IsValid()))
+            if (!(FECSEntity(local_132.GetPlayerPawnEntity()).IsValid()))
             {
                 continue;
             }
@@ -325,7 +323,7 @@ class UPVPTDMGameModeFlow : UPVPGameModeFlowBase
         FECSWorldPtr local_26_2 = ECS::GetECSWorld();
         for (auto& local_196 : local_172.GetBotPlayerEntities())
         {
-            if (!(local_142.IsValid()))
+            if (!(FECSEntity(local_196.GetValue()).IsValid()))
             {
                 local_123 = true;
             }
@@ -523,10 +521,9 @@ class UPVPTDMGameModeFlow : UPVPGameModeFlowBase
         FECSWorldPtr local_20 = ECS::GetECSWorld();
         for (auto& local_164 : local_146.GetBotPlayerEntities())
         {
-            local_164;
-            if (IsValid())
+            if (local_164.GetValue().IsValid())
             {
-                this.RecordSinglePawnDeathIfNeeded(Super::GetStatKeyForPawn());
+                this.RecordSinglePawnDeathIfNeeded(Super::GetStatKeyForPawn(local_164.GetValue()), local_164.GetValue());
             }
         }
         return;

@@ -78,7 +78,7 @@ EGenderType GetPlayerGender(const FECSEntity &inout Entity)
             return local_16.GetGender();
         }
     }
-    return EGenderType(0);
+    return EGenderType::Male;
 }
 UFUNCTION()
 FECSEntity GetUniquePlayerEntity(const FECSEntity &inout Entity)
@@ -288,12 +288,12 @@ bool IsInCombat(const FECSEntity &inout Entity)
 UFUNCTION()
 EDamageType GetAvatarDamageType(const FECSEntity &inout Entity)
 {
-    int local_51 = 0;
-    if ((GetAvatarConfig(Entity) == nullptr))
+    TDataObjectPtr<FAvatarPrefabConfig> local_48 = GetAvatarConfig(Entity);
+    if ((local_48 == nullptr))
     {
         XError(ELog(0), "Not Found!!");
     }
-    return EDamageType(local_51);
+    return local_48.Get().DamageType;
 }
 UFUNCTION()
 FMonsterPrefabConfig GetMonsterConfigData(const FECSEntity &inout Entity)
@@ -330,13 +330,15 @@ TDataObjectPtr<FCombatUnitBaseConfig> GetCombatUnitBaseConfig(const FECSEntity &
     const FC_CreatureMeta& local_6 = local_4.opCall();
     if (local_6)
     {
-        if (local_6.CreatureConfigProxy.GetMonsterConfig())
+        TDataObjectPtr<FMonsterMainConfig> local_32 = local_6.CreatureConfigProxy.GetMonsterConfig();
+        if (local_32)
         {
-            return GetCombatConfig();
+            return local_32.Get().GetCombatConfig();
         }
-        if (local_6.CreatureConfigProxy.GetNPCConfig())
+        TDataObjectPtr<FNPCMainConfig> local_104 = local_6.CreatureConfigProxy.GetNPCConfig();
+        if (local_104)
         {
-            return GetCombatConfig();
+            return local_104.Get().GetCombatConfig();
         }
     }
     return TDataObjectPtr<FCombatUnitBaseConfig>(nullptr);
@@ -354,21 +356,20 @@ bool IsMonsterPrefab(const FECSEntity &inout Entity)
 UFUNCTION()
 EMonsterRank GetMonsterRank(const FECSEntity &inout Entity)
 {
-    int local_9 = 0;
     if ((!((Entity == ENTITY_NULL))))
     {
         Get local_6;
         const FC_MonsterInfo& local_8 = local_6.opCall();
         if (local_8)
         {
-            local_9 = int(local_8.GetMonsterRank());
-            return EMonsterRank(local_9);
+            return local_8.GetMonsterRank();
         }
         if ((int(GetPrefabType(Entity))) == 2)
         {
-            if (GetMonsterConfig(Entity))
+            TDataObjectPtr<FMonsterPrefabConfig> local_36 = GetMonsterConfig(Entity);
+            if (local_36)
             {
-                return EMonsterRank(local_9);
+                return local_36.Get().MonsterRank;
             }
         }
     }
@@ -377,21 +378,20 @@ EMonsterRank GetMonsterRank(const FECSEntity &inout Entity)
 UFUNCTION()
 bool IsBossPrefab(const FECSEntity &inout Entity)
 {
-    EMonsterRank local_9 = EMonsterRank(0);
     if ((!((Entity == ENTITY_NULL))))
     {
         Get local_6;
         const FC_MonsterInfo& local_8 = local_6.opCall();
         if (local_8)
         {
-            local_9 = local_8.GetMonsterRank();
-            return (int(local_9) == 2);
+            return (int(local_8.GetMonsterRank()) == 2);
         }
         if ((int(GetPrefabType(Entity))) == 2)
         {
-            if (GetMonsterConfig(Entity))
+            TDataObjectPtr<FMonsterPrefabConfig> local_36 = GetMonsterConfig(Entity);
+            if (local_36)
             {
-                return (int(local_9) == 2);
+                return (int(local_36.Get().MonsterRank) == 2);
             }
         }
     }
@@ -428,7 +428,7 @@ EGenderType GetLocalPlayerGender()
     {
         return FASCommonUtils::GetPlayerGender(local_4);
     }
-    return EGenderType(0);
+    return EGenderType::Male;
 }
 FECSEntity GetAvatarEntity()
 {
@@ -682,8 +682,8 @@ EFactionRelation PickFactionRelationBetween(const EFactionRelation RelationA, co
 }
 EFactionRelation GetDefaultFactionRelation(const EFaction FactionA, const EFaction FactionB)
 {
-    UDataTable local_2;
     TArray<EFactionRelation> local_36;
+    UDataTable local_2 = UGameplayConfigsManager::GetDamageFactionTable().Get();
     if (local_2 != nullptr)
     {
         FDamageFactionRelationConfig local_30;

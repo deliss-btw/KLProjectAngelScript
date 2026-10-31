@@ -68,10 +68,7 @@ struct FVM_CommonPopCenterSpendItem : FEUIViewModel
     {
         if (!(this.GetItem().IsNull()))
         {
-            FLinearColor local_7;
-            TEUIModelRef<FVM_Item> local_2 = this.GetItem();
-            local_7.GetRarityColor();
-            return local_7;
+            return this.GetItem().Get().GetRarityColor();
         }
         return FLinearColor::White;
     }
@@ -334,11 +331,9 @@ FVM_CommonPopCenterSpendItem& Create(const UObject ContextObject, const FEUIMode
 {
     return FVM_CommonPopCenterSpendItem::CreateByManager(EUIInternal::GetContextManager(ContextObject), ItemModels);
 }
-FVM_CommonPopCenterSpendItem CreateByManager(const UEUIManagerSubsystem Manager, const FEUIModelContainer &inout ItemModels)
+FVM_CommonPopCenterSpendItem& CreateByManager(const UEUIManagerSubsystem Manager, const FEUIModelContainer &inout ItemModels)
 {
-    FVM_CommonPopCenterSpendItem __r;
-    TEUIModelRef<FVM_CommonPopCenterSpendItem> local_6 = TEUIModelRef<FVM_CommonPopCenterSpendItem>(EUIInternal::MakeModelWithManager_Generic(Manager, FVM_CommonPopCenterSpendItem::ModelId, 0, ItemModels));
-    return __r;
+    return TEUIModelRef<FVM_CommonPopCenterSpendItem>(EUIInternal::MakeModelWithManager_Generic(Manager, FVM_CommonPopCenterSpendItem::ModelId, 0, ItemModels)).Get();
 }
 void GetModelInfo(FEUIViewModelMetaInfo &inout Result)
 {
@@ -416,8 +411,7 @@ namespace __GeneratedProperties_FVM_CommonPopCenterSpendItem
 {
 UScriptStruct StaticStruct()
 {
-    UScriptStruct local_2;
-    return local_2;
+    return __GeneratedProperties_FVM_CommonPopCenterSpendItem.Get();
 }
 }
 namespace FVM_Common_Pop_Center_Spend
@@ -426,11 +420,9 @@ FVM_Common_Pop_Center_Spend& Create(const UObject ContextObject)
 {
     return FVM_Common_Pop_Center_Spend::CreateByManager(EUIInternal::GetContextManager(ContextObject));
 }
-FVM_Common_Pop_Center_Spend CreateByManager(const UEUIManagerSubsystem Manager)
+FVM_Common_Pop_Center_Spend& CreateByManager(const UEUIManagerSubsystem Manager)
 {
-    FVM_Common_Pop_Center_Spend __r;
-    TEUIModelRef<FVM_Common_Pop_Center_Spend> local_6 = TEUIModelRef<FVM_Common_Pop_Center_Spend>(EUIInternal::MakeModelWithManager(Manager, FVM_Common_Pop_Center_Spend::ModelId));
-    return __r;
+    return TEUIModelRef<FVM_Common_Pop_Center_Spend>(EUIInternal::MakeModelWithManager(Manager, FVM_Common_Pop_Center_Spend::ModelId)).Get();
 }
 void GetModelInfo(FEUIViewModelMetaInfo &inout Result)
 {
@@ -555,7 +547,6 @@ namespace __GeneratedProperties_FVM_Common_Pop_Center_Spend
 {
 UScriptStruct StaticStruct()
 {
-    UScriptStruct local_2;
-    return local_2;
+    return __GeneratedProperties_FVM_Common_Pop_Center_Spend.Get();
 }
 }

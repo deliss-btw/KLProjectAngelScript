@@ -47,7 +47,7 @@ struct FVM_LoginServer : FEUIViewModel
         int local_7 = 0;
         for (; local_7 < this.GetRegionVMList().Num(); ++local_7)
         {
-            if ((FString(GetName()) == local_6))
+            if ((FString(this.GetRegionVMList()[local_7].Get().GetName()) == local_6))
             {
                 this.SetbNeedClose(true);
                 this.SetSelectedRegionIndex(local_7);
@@ -128,11 +128,9 @@ FVM_LoginServer& Create(const UObject ContextObject)
 {
     return FVM_LoginServer::CreateByManager(EUIInternal::GetContextManager(ContextObject));
 }
-FVM_LoginServer CreateByManager(const UEUIManagerSubsystem Manager)
+FVM_LoginServer& CreateByManager(const UEUIManagerSubsystem Manager)
 {
-    FVM_LoginServer __r;
-    TEUIModelRef<FVM_LoginServer> local_6 = TEUIModelRef<FVM_LoginServer>(EUIInternal::MakeModelWithManager(Manager, FVM_LoginServer::ModelId));
-    return __r;
+    return TEUIModelRef<FVM_LoginServer>(EUIInternal::MakeModelWithManager(Manager, FVM_LoginServer::ModelId)).Get();
 }
 void GetModelInfo(FEUIViewModelMetaInfo &inout Result)
 {
@@ -192,7 +190,6 @@ namespace __GeneratedProperties_FVM_LoginServer
 {
 UScriptStruct StaticStruct()
 {
-    UScriptStruct local_2;
-    return local_2;
+    return __GeneratedProperties_FVM_LoginServer.Get();
 }
 }

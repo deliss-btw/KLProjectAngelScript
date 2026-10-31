@@ -7,7 +7,6 @@ class US_MetaBuffSystem : UECSScriptSystem
     UFUNCTION()
     void ServerJob_TickMetaBuffLifeTime(const FECSEntity &inout PlayerEntity, FC_PlayerMetaBuffList &inout C_PlayerMetaBuffList) const
     {
-        int local_7 = 0;
         int64 local_6 = FDateTime::UtcNow().ToUnixTimestamp();
         int local_10 = C_PlayerMetaBuffList.GetMetaBuffs().Num() - 1;
         for (; local_10 >= 0; --local_10)
@@ -15,9 +14,10 @@ class US_MetaBuffSystem : UECSScriptSystem
             const FPlayerMetaBuff& local_14 = C_PlayerMetaBuffList.GetMetaBuffs()[local_10];
             if (local_14.GetMetaBuffConfig())
             {
-                int64 local_16 = local_7;
+                int64 local_16 = local_14.GetMetaBuffConfig().Get().Duration;
                 if (local_6 >= (local_14.GetStartTime() + local_16))
                 {
+                    ::FMetaBuffUtils::RemoveMetaBuffFromPawn(PlayerEntity, local_14.GetMetaBuffConfig().Get().BuffConfig, local_14.GetRuntimeGamePlayModifierIDs(), local_14.GetRuntimeCapabilitiesIDs());
                     C_PlayerMetaBuffList.GetModify_MetaBuffs().RemoveAt(local_10);
                 }
             }

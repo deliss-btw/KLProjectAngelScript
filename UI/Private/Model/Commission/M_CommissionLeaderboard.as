@@ -80,8 +80,7 @@ struct FM_CommissionLeaderboardEntry : FEUIModel
         {
             return;
         }
-        FEUIModelRef local_8;
-        this.SetLeaderboard(FEUIModelWeakRef(local_8));
+        this.SetLeaderboard(FEUIModelWeakRef(FEUIModelRef(InLeaderboard.Get())));
         return;
     }
     FM_CommissionLeaderboardEntry& opAssign(const FM_CommissionLeaderboardEntry &inout Other)
@@ -272,8 +271,7 @@ struct FM_CommissionLeaderboard : FEUIModel
     {
         if (this.GetbMyRankLoaded() && this.GetMyEntry().IsValid())
         {
-            TEUIModelRef<FM_CommissionLeaderboardEntry> local_2 = this.GetMyEntry();
-            return GetRank();
+            return this.GetMyEntry().Get().GetRank();
         }
         return 0;
     }
@@ -469,10 +467,8 @@ struct FMS_CommissionLeaderboardManager : FEUIModelSingleton
     }
     void RequestLeaderboard(const TDataObjectPtr<FCommissionConfig> &inout CommissionConfig)
     {
-        FM_CommissionLeaderboard& local_6;
         int local_10 = 0;
-        int local_45 = 0;
-        this.GetOrCreateLeaderboard(CommissionConfig);
+        FM_CommissionLeaderboard& local_6 = this.GetOrCreateLeaderboard(CommissionConfig).Get();
         if (local_6.IsCacheValid() && !(local_6.GetbIsLoading()))
         {
             FEUIModelRef local_16 = FEUIModelRef(this);
@@ -486,7 +482,7 @@ struct FMS_CommissionLeaderboardManager : FEUIModelSingleton
         }
         local_6.SetbIsLoading(true);
         FPbGetCommissionLeaderboardReq local_44;
-        local_44.SetCommissionId(local_45);
+        local_44.SetCommissionId(CommissionConfig.Get().DataId);
         local_44.SetStartRank(1);
         local_44.SetCount(100);
         this.SendProto(local_44.ToWrapper());
@@ -494,11 +490,8 @@ struct FMS_CommissionLeaderboardManager : FEUIModelSingleton
     }
     void RequestMyRank(const TDataObjectPtr<FCommissionConfig> &inout CommissionConfig)
     {
-        FM_CommissionLeaderboard& local_6;
         int local_10 = 0;
-        int local_45 = 0;
-        this.GetOrCreateLeaderboard(CommissionConfig);
-        if (local_6.IsMyRankCacheValid())
+        if (this.GetOrCreateLeaderboard(CommissionConfig).Get().IsMyRankCacheValid())
         {
             FEUIModelRef local_16 = FEUIModelRef(this);
             FEUIMessageBus::Publish(EUIMessageBus);
@@ -506,7 +499,7 @@ struct FMS_CommissionLeaderboardManager : FEUIModelSingleton
             return;
         }
         FPbGetCommissionMyRankReq local_44;
-        local_44.SetCommissionId(local_45);
+        local_44.SetCommissionId(CommissionConfig.Get().DataId);
         this.SendProto(local_44.ToWrapper());
         return;
     }
@@ -523,7 +516,7 @@ struct FMS_CommissionLeaderboardManager : FEUIModelSingleton
             TDataObjectPtr<FCommissionConfig> local_34 = local_58.opImplConv();
             if (this.GetLeaderboardMap().Find(local_34, local_110))
             {
-                false.SetbIsLoading();
+                local_110.Get().SetbIsLoading(false);
             }
             return;
         }
@@ -534,8 +527,7 @@ struct FMS_CommissionLeaderboardManager : FEUIModelSingleton
             XError(ELog(27), FString().Append("GetCommissionLeaderboard failed, invalid commission config data id: ").Append(Rsp.GetCommissionId()));
             return;
         }
-        this.GetOrCreateLeaderboard(local_34_2);
-        FM_CommissionLeaderboard local_114;
+        FM_CommissionLeaderboard& local_114 = this.GetOrCreateLeaderboard(local_34_2).Get();
         local_114.SetbIsLoading(false);
         local_114.SetLastFetchTime(FDateTime::Now());
         local_114.bLeaderboardLoaded = true;
@@ -543,9 +535,10 @@ struct FMS_CommissionLeaderboardManager : FEUIModelSingleton
         local_114.SetTotalCount(::NumericUtils::AsInt32(Rsp.GetTotalCount()));
         local_114.GetModify_EntryList().Empty(Rsp.GetEntryList_Num());
         int local_117 = 0;
-        if (::FMS_PlayerData::Get(this.GetContext().Manager).GetLocalPlayerData().IsValid())
+        TEUIModelRef<FM_Player> local_120 = ::FMS_PlayerData::Get(this.GetContext().Manager).GetLocalPlayerData();
+        if (local_120.IsValid())
         {
-            local_117 = GetPlayerUid();
+            local_117 = local_120.Get().GetPlayerUid();
         }
         bool local_123 = false;
         int local_124 = 0;
@@ -594,8 +587,7 @@ struct FMS_CommissionLeaderboardManager : FEUIModelSingleton
             XError(ELog(27), FString().Append("GetCommissionMyRank failed, invalid commission config data id: ").Append(Rsp.GetCommissionId()));
             return;
         }
-        this.GetOrCreateLeaderboard(local_34);
-        FM_CommissionLeaderboard local_114;
+        FM_CommissionLeaderboard& local_114 = this.GetOrCreateLeaderboard(local_34).Get();
         TEUIModelRef<FM_CommissionLeaderboardEntry> local_116 = local_114.GetMyEntry();
         if (!(local_116.IsValid()))
         {
@@ -652,11 +644,9 @@ FM_CommissionLeaderboardEntry& Create(const UObject ContextObject, const TEUIMod
 {
     return FM_CommissionLeaderboardEntry::CreateByManager(EUIInternal::GetContextManager(ContextObject), Leaderboard);
 }
-FM_CommissionLeaderboardEntry CreateByManager(const UEUIManagerSubsystem Manager, const TEUIModelRef<FM_CommissionLeaderboard> &inout Leaderboard)
+FM_CommissionLeaderboardEntry& CreateByManager(const UEUIManagerSubsystem Manager, const TEUIModelRef<FM_CommissionLeaderboard> &inout Leaderboard)
 {
-    FM_CommissionLeaderboardEntry __r;
-    TEUIModelRef<FM_CommissionLeaderboardEntry> local_6 = TEUIModelRef<FM_CommissionLeaderboardEntry>(EUIInternal::MakeModelWithManager_Generic(Manager, FM_CommissionLeaderboardEntry::ModelId, 0, Leaderboard));
-    return __r;
+    return TEUIModelRef<FM_CommissionLeaderboardEntry>(EUIInternal::MakeModelWithManager_Generic(Manager, FM_CommissionLeaderboardEntry::ModelId, 0, Leaderboard)).Get();
 }
 void GetModelInfo(FEUIModelOnlyMetaInfo &inout Result)
 {
@@ -695,11 +685,9 @@ FM_CommissionLeaderboard& Create(const UObject ContextObject)
 {
     return FM_CommissionLeaderboard::CreateByManager(EUIInternal::GetContextManager(ContextObject));
 }
-FM_CommissionLeaderboard CreateByManager(const UEUIManagerSubsystem Manager)
+FM_CommissionLeaderboard& CreateByManager(const UEUIManagerSubsystem Manager)
 {
-    FM_CommissionLeaderboard __r;
-    TEUIModelRef<FM_CommissionLeaderboard> local_6 = TEUIModelRef<FM_CommissionLeaderboard>(EUIInternal::MakeModelWithManager(Manager, FM_CommissionLeaderboard::ModelId));
-    return __r;
+    return TEUIModelRef<FM_CommissionLeaderboard>(EUIInternal::MakeModelWithManager(Manager, FM_CommissionLeaderboard::ModelId)).Get();
 }
 void GetModelInfo(FEUIModelOnlyMetaInfo &inout Result)
 {
@@ -750,11 +738,9 @@ FMS_CommissionLeaderboardManager& Get(const UObject ContextObject)
 {
     return FMS_CommissionLeaderboardManager::GetByManager(EUIInternal::GetContextManager(ContextObject));
 }
-FMS_CommissionLeaderboardManager GetByManager(const UEUIManagerSubsystem Manager)
+FMS_CommissionLeaderboardManager& GetByManager(const UEUIManagerSubsystem Manager)
 {
-    FMS_CommissionLeaderboardManager __r;
-    TEUIModelRef<FMS_CommissionLeaderboardManager> local_6 = TEUIModelRef<FMS_CommissionLeaderboardManager>(EUIInternal::MakeModelWithManager(Manager, FMS_CommissionLeaderboardManager::ModelId));
-    return __r;
+    return TEUIModelRef<FMS_CommissionLeaderboardManager>(EUIInternal::MakeModelWithManager(Manager, FMS_CommissionLeaderboardManager::ModelId)).Get();
 }
 void GetModelInfo(FEUIModelOnlyMetaInfo &inout Result)
 {

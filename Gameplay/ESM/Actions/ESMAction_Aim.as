@@ -72,7 +72,154 @@ class UESMAction_AimControl : UESMBPBaseSpanTickAction
     UFUNCTION()
     void Tick_Implementation(const FESMContext &inout Context, const FESMActionTime &inout Time) const
     {
-        // body not fully recovered — stub [unresolved-operand]
+        bool local_7;
+        bool local_14;
+        int local_86 = 0;
+        int local_92 = 0;
+        int local_104 = 0;
+        bool local_107;
+        int local_144 = 0;
+        Has local_6;
+        if (!(local_6.opCall()))
+        {
+            local_7 = false;
+        }
+        else
+        {
+            Has local_12;
+            local_7 = local_12.opCall();
+        }
+        if (!(local_7))
+        {
+            return;
+        }
+        local_14 = false;
+        Get local_18;
+        const FC_CharacterAimControl& local_20 = local_18.opCall();
+        if (local_20)
+        {
+            if (!((local_20.GetCurrentDataSource() == NAME_None)) && !((local_20.GetCurrentDataSource() == this.GetDataPathName())) && (local_20.GetCurrentPriority() >= this.Priority))
+            {
+                return;
+            }
+            if (!((local_20.GetCurrentDataSource() == this.GetDataPathName())))
+            {
+                if (local_20.GetCurrentAimModifier().IsValid())
+                {
+                    FCameraUtils::StopModifier(Context.GetEntity(), Time.WorldLastTime, local_20.GetCurrentDataSource(), TDataObjectPtr<FTPCameraModifierConfig>(local_20.GetCurrentAimModifier()), -1.0f, true);
+                }
+            }
+        }
+        else
+        {
+            local_14 = true;
+        }
+        if (local_14)
+        {
+            local_20.SetCurrentPriority(this.Priority);
+            local_20.SetCurrentDataSource(this.GetDataPathName());
+            local_20.SetCurrentAimModifier(FDataObjectPtr());
+            if (this.bEnableViewTurnSpeedLimit)
+            {
+                local_86.SetMaxTurnSpeed(this.MaxViewTurnSpeed);
+                local_86.SetCounter((local_86.GetCounter() + 1));
+            }
+        }
+        FFPTime local_106 = FFPTime();
+        FFPTime local_106_2 = -1;
+        local_107 = local_92.GetbIsAiming();
+        bool local_108 = local_107;
+        if (this.ForceAim.GetValue(Context.GetEntityBB()))
+        {
+            local_108 = true;
+        }
+        else
+        {
+            if (Context.GetEntity().MatchGameplayTag(this.DisallowAimTag))
+            {
+                local_108 = false;
+            }
+            else
+            {
+                if (local_92.GetbCanAim())
+                {
+                    FActiveTriggerResult local_116 = FCharacterInputUtils::TestTrigger(this.AimInput, Context.GetEntity(), Time.WorldLastTime, Time.WorldTime, Context.GetBlackboard().GetTriggerStorage());
+                    if (local_116.bActive)
+                    {
+                        FFPTime local_134;
+                        if (FFPTime(local_116.TriggerTime).opCmp(Time.WorldLastTime) > 0)
+                        {
+                            local_134 = local_116.TriggerTime;
+                        }
+                        else
+                        {
+                            local_134 = (FFPTime(Time.WorldLastTime) + FFPTime(0.001));
+                        }
+                        local_106_2 = local_134;
+                    }
+                    local_108 = local_116.bActive;
+                }
+                else
+                {
+                    local_108 = false;
+                }
+            }
+        }
+        bool local_1 = !(local_108);
+        bool local_13 = !(local_107);
+        if (local_1 != local_13)
+        {
+            Modify local_138;
+            local_138.opCall().SetbIsAiming(local_108);
+        }
+        if (local_92.GetbIsAiming())
+        {
+            local_104.AddESMModifier(this.GetDataPathName(), this.AimMoveSpeedScale.GetValue(Context.GetEntityBB()));
+        }
+        if (local_14)
+        {
+            local_1 = true;
+        }
+        else
+        {
+            bool local_13_2 = !(local_108);
+            local_1 = !(local_107);
+            local_13_2 = (local_13_2 != local_1);
+            local_1 = local_13_2;
+        }
+        if (local_1)
+        {
+            if (local_108)
+            {
+                if (this.bShowCrosshair)
+                {
+                    local_144.SetbIsShow(true);
+                }
+                else
+                {
+                    local_144.SetbIsShow(false);
+                }
+            }
+            else
+            {
+                if (this.bShowCrosshair)
+                {
+                    local_144.SetbIsShow(false);
+                }
+            }
+        }
+        bool local_1_2 = this.bApplyAimModifierAnyway;
+        FFPTime local_134;
+        if (local_106_2.opCmp(0.0) >= 0)
+        {
+            local_134 = local_106_2;
+        }
+        else
+        {
+            local_134 = Time.WorldLastTime;
+        }
+        this.UpdateAimChange(Context, Time, local_134);
+        return;
     }
     UFUNCTION()
     void Exit_Implementation(const FESMContext &inout Context, const FESMActionTime &inout Time) const
@@ -266,7 +413,7 @@ class UESMAction_AimControl : UESMBPBaseSpanTickAction
     {
         int local_8 = 0;
         int local_28 = 0;
-        float32 local_42 = 0.0f;
+        float32 local_42;
         int local_140 = 0;
         bool local_1 = !(bAiming);
         bool local_2 = !(bLastAiming);
@@ -314,7 +461,7 @@ class UESMAction_AimControl : UESMBPBaseSpanTickAction
                     if (this.bOverrideMaxDistance)
                     {
                         local_90.bOverrideMaxLockDistance = true;
-                        local_90.MaxMaxLockDistance = local_42;
+                        local_90.MaxMaxLockDistance = this.OverrideMaxDistance.GetValue(Context.GetEntityBB());
                     }
                     FLockTargetResult local_122 = ::FLockTargetUtils::PickLockTargetResult(ELockTargetType(1), Context.GetEntity(), ActionTime.WorldTime, this.LockTargetConfig.Data, local_90);
                     if (!((local_122.LockTarget == ENTITY_NULL)))

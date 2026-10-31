@@ -61,7 +61,7 @@ class UWidget_CookCostItem : UEUIUserListItemWidget
     UFUNCTION()
     TDataObjectPtr<FItemConfig> ItemModels_ItemConfig() const
     {
-        FVM_Item& local_2;
+        FVM_Item& local_2 = this.ItemModels.Get();
         TDataObjectPtr<FItemConfig> local_52;
         if (local_2)
         {
@@ -76,8 +76,8 @@ class UWidget_CookCostItem : UEUIUserListItemWidget
     UFUNCTION()
     int ItemModels_Num() const
     {
-        FVM_Item& local_2;
         int local_5;
+        FVM_Item& local_2 = this.ItemModels.Get();
         if (local_2)
         {
             local_5 = local_2.GetNum();
@@ -91,20 +91,20 @@ class UWidget_CookCostItem : UEUIUserListItemWidget
     UFUNCTION()
     int ItemModels_OptionalNum() const
     {
-        FVM_Item& local_2;
+        FVM_Item& local_2 = this.ItemModels.Get();
         return local_2 ? local_2.GetOptionalNum() : 0;
     }
     UFUNCTION()
     FText ItemModels_ItemCategory() const
     {
-        FVM_Item& local_2;
+        FVM_Item& local_2 = this.ItemModels.Get();
         FText local_16 = local_2 ? local_2.GetItemCategory() : FText();
         return local_16;
     }
     UFUNCTION()
     FSlateBrush ItemModels_ItemIcon() const
     {
-        FVM_Item& local_2;
+        FVM_Item& local_2 = this.ItemModels.Get();
         FSlateBrush local_136;
         if (local_2)
         {
@@ -119,15 +119,15 @@ class UWidget_CookCostItem : UEUIUserListItemWidget
     UFUNCTION()
     FText ItemModels_ItemOwnLimit() const
     {
-        FVM_Item& local_2;
+        FVM_Item& local_2 = this.ItemModels.Get();
         FText local_16 = local_2 ? local_2.GetItemOwnLimit() : FText();
         return local_16;
     }
     UFUNCTION()
     bool ItemModels_ShouldShowNum() const
     {
-        FVM_Item& local_2;
         bool local_5;
+        FVM_Item& local_2 = this.ItemModels.Get();
         if (local_2)
         {
             local_5 = local_2.GetShouldShowNum();
@@ -141,8 +141,8 @@ class UWidget_CookCostItem : UEUIUserListItemWidget
     UFUNCTION()
     bool ItemModels_ShouldShowOptionalNum() const
     {
-        FVM_Item& local_2;
         bool local_5;
+        FVM_Item& local_2 = this.ItemModels.Get();
         if (local_2)
         {
             local_5 = local_2.GetShouldShowOptionalNum();
@@ -156,8 +156,8 @@ class UWidget_CookCostItem : UEUIUserListItemWidget
     UFUNCTION()
     bool ItemModels_ShouldShowOfMark() const
     {
-        FVM_Item& local_2;
         bool local_5;
+        FVM_Item& local_2 = this.ItemModels.Get();
         if (local_2)
         {
             local_5 = local_2.GetShouldShowOfMark();
@@ -171,8 +171,8 @@ class UWidget_CookCostItem : UEUIUserListItemWidget
     UFUNCTION()
     bool ItemModels_ShouldShowRangeMark() const
     {
-        FVM_Item& local_2;
         bool local_5;
+        FVM_Item& local_2 = this.ItemModels.Get();
         if (local_2)
         {
             local_5 = local_2.GetShouldShowRangeMark();
@@ -186,15 +186,15 @@ class UWidget_CookCostItem : UEUIUserListItemWidget
     UFUNCTION()
     FSlateColor ItemModels_NumTextColor() const
     {
-        FVM_Item& local_2;
+        FVM_Item& local_2 = this.ItemModels.Get();
         FSlateColor local_18 = local_2 ? local_2.GetNumTextColor() : FSlateColor();
         return local_18;
     }
     UFUNCTION()
     bool ItemModels_HasOwnLimit() const
     {
-        FVM_Item& local_2;
         bool local_5;
+        FVM_Item& local_2 = this.ItemModels.Get();
         if (local_2)
         {
             local_5 = local_2.HasOwnLimit();
@@ -216,8 +216,8 @@ class UWidget_CookCostItem : UEUIUserListItemWidget
     }
     void HandleObservedModelChanges(FEUIReactiveSubscriberIterator &inout It)
     {
-        FVM_CookCostItem& local_6;
         TEUIModelRef<FVM_CookCostItem> local_2 = this.CookCostItem.AsRef();
+        FVM_CookCostItem& local_6 = local_2.Get();
         for (; It; )
         {
             FEUIReactiveSubscriberTrackScope local_56 = FEUIReactiveSubscriberTrackScope(It);
@@ -295,7 +295,7 @@ class UWidget_WaitCookItem : UEUIUserListItemWidget
     UFUNCTION()
     TDataObjectPtr<FItemConfig> CookCostItem_ItemConfig() const
     {
-        FVM_Item& local_2;
+        FVM_Item& local_2 = this.CookCostItem.Get();
         TDataObjectPtr<FItemConfig> local_52;
         if (local_2)
         {
@@ -310,8 +310,8 @@ class UWidget_WaitCookItem : UEUIUserListItemWidget
     UFUNCTION()
     int CookCostItem_Num() const
     {
-        FVM_Item& local_2;
         int local_5;
+        FVM_Item& local_2 = this.CookCostItem.Get();
         if (local_2)
         {
             local_5 = local_2.GetNum();
@@ -325,20 +325,20 @@ class UWidget_WaitCookItem : UEUIUserListItemWidget
     UFUNCTION()
     int CookCostItem_OptionalNum() const
     {
-        FVM_Item& local_2;
+        FVM_Item& local_2 = this.CookCostItem.Get();
         return local_2 ? local_2.GetOptionalNum() : 0;
     }
     UFUNCTION()
     FText CookCostItem_ItemCategory() const
     {
-        FVM_Item& local_2;
+        FVM_Item& local_2 = this.CookCostItem.Get();
         FText local_16 = local_2 ? local_2.GetItemCategory() : FText();
         return local_16;
     }
     UFUNCTION()
     FSlateBrush CookCostItem_ItemIcon() const
     {
-        FVM_Item& local_2;
+        FVM_Item& local_2 = this.CookCostItem.Get();
         FSlateBrush local_136;
         if (local_2)
         {
@@ -353,15 +353,15 @@ class UWidget_WaitCookItem : UEUIUserListItemWidget
     UFUNCTION()
     FText CookCostItem_ItemOwnLimit() const
     {
-        FVM_Item& local_2;
+        FVM_Item& local_2 = this.CookCostItem.Get();
         FText local_16 = local_2 ? local_2.GetItemOwnLimit() : FText();
         return local_16;
     }
     UFUNCTION()
     bool CookCostItem_ShouldShowNum() const
     {
-        FVM_Item& local_2;
         bool local_5;
+        FVM_Item& local_2 = this.CookCostItem.Get();
         if (local_2)
         {
             local_5 = local_2.GetShouldShowNum();
@@ -375,8 +375,8 @@ class UWidget_WaitCookItem : UEUIUserListItemWidget
     UFUNCTION()
     bool CookCostItem_ShouldShowOptionalNum() const
     {
-        FVM_Item& local_2;
         bool local_5;
+        FVM_Item& local_2 = this.CookCostItem.Get();
         if (local_2)
         {
             local_5 = local_2.GetShouldShowOptionalNum();
@@ -390,8 +390,8 @@ class UWidget_WaitCookItem : UEUIUserListItemWidget
     UFUNCTION()
     bool CookCostItem_ShouldShowOfMark() const
     {
-        FVM_Item& local_2;
         bool local_5;
+        FVM_Item& local_2 = this.CookCostItem.Get();
         if (local_2)
         {
             local_5 = local_2.GetShouldShowOfMark();
@@ -405,8 +405,8 @@ class UWidget_WaitCookItem : UEUIUserListItemWidget
     UFUNCTION()
     bool CookCostItem_ShouldShowRangeMark() const
     {
-        FVM_Item& local_2;
         bool local_5;
+        FVM_Item& local_2 = this.CookCostItem.Get();
         if (local_2)
         {
             local_5 = local_2.GetShouldShowRangeMark();
@@ -420,15 +420,15 @@ class UWidget_WaitCookItem : UEUIUserListItemWidget
     UFUNCTION()
     FSlateColor CookCostItem_NumTextColor() const
     {
-        FVM_Item& local_2;
+        FVM_Item& local_2 = this.CookCostItem.Get();
         FSlateColor local_18 = local_2 ? local_2.GetNumTextColor() : FSlateColor();
         return local_18;
     }
     UFUNCTION()
     bool CookCostItem_HasOwnLimit() const
     {
-        FVM_Item& local_2;
         bool local_5;
+        FVM_Item& local_2 = this.CookCostItem.Get();
         if (local_2)
         {
             local_5 = local_2.HasOwnLimit();

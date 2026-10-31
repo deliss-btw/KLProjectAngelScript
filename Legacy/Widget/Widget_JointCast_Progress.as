@@ -28,7 +28,7 @@ class UWidget_JointCast_Progress : UEUIUserWidget
     UFUNCTION()
     void OnStateChanged(const EProgressOperationState State)
     {
-        FVMS_ProgressOperation& local_2;
+        FVMS_ProgressOperation& local_2 = this.VMS_ProgressOperation.Get();
         if (int(State) == 2)
         {
             if (local_2.GetbIsInitiator())
@@ -51,22 +51,21 @@ class UWidget_JointCast_Progress : UEUIUserWidget
     {
         if (bIsLeave)
         {
-            FVMS_ProgressOperation local_2;
-            FEUIWidget::RemoveWidget(local_2.GetPageHandle());
+            FEUIWidget::RemoveWidget(this.VMS_ProgressOperation.Get().GetPageHandle());
         }
         return;
     }
     UFUNCTION()
     float32 VMS_ProgressOperation_ValueProgress() const
     {
-        FVMS_ProgressOperation& local_2;
+        FVMS_ProgressOperation& local_2 = this.VMS_ProgressOperation.Get();
         return local_2 ? local_2.GetValueProgress() : 0.0f;
     }
     UFUNCTION()
     float32 VMS_ProgressOperation_TimeProgress() const
     {
-        FVMS_ProgressOperation& local_2;
         float32 local_4;
+        FVMS_ProgressOperation& local_2 = this.VMS_ProgressOperation.Get();
         if (local_2)
         {
             local_4 = local_2.GetTimeProgress();
@@ -80,14 +79,14 @@ class UWidget_JointCast_Progress : UEUIUserWidget
     UFUNCTION()
     FWidgetTransform VMS_ProgressOperation_PointerTrans() const
     {
-        FVMS_ProgressOperation& local_2;
+        FVMS_ProgressOperation& local_2 = this.VMS_ProgressOperation.Get();
         FWidgetTransform local_32 = local_2 ? local_2.GetPointerTrans() : FWidgetTransform();
         return local_32;
     }
     void HandleObservedModelChanges(FEUIReactiveSubscriberIterator &inout It)
     {
-        FVMS_ProgressOperation& local_6;
         TEUIModelRef<FVMS_ProgressOperation> local_2 = this.VMS_ProgressOperation.AsRef();
+        FVMS_ProgressOperation& local_6 = local_2.Get();
         for (; It; )
         {
             FEUIReactiveSubscriberTrackScope local_56 = FEUIReactiveSubscriberTrackScope(It);

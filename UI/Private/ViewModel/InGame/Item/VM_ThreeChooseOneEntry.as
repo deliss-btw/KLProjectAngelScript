@@ -92,8 +92,7 @@ struct FVM_ThreeChooseOneEntry : FEUIViewModel
         }
         if (this.GetVM_Page())
         {
-            TEUIModelRef<FVM_ThreeChooseOne> local_24 = this.GetVM_Page();
-            true.SetbShouldClose();
+            this.GetVM_Page().Get().SetbShouldClose(true);
         }
         return;
     }
@@ -301,11 +300,9 @@ FVM_ThreeChooseOneEntry& Create(const UObject ContextObject, const int Index)
 {
     return FVM_ThreeChooseOneEntry::CreateByManager(EUIInternal::GetContextManager(ContextObject), Index);
 }
-FVM_ThreeChooseOneEntry CreateByManager(const UEUIManagerSubsystem Manager, const int Index)
+FVM_ThreeChooseOneEntry& CreateByManager(const UEUIManagerSubsystem Manager, const int Index)
 {
-    FVM_ThreeChooseOneEntry __r;
-    TEUIModelRef<FVM_ThreeChooseOneEntry> local_6 = TEUIModelRef<FVM_ThreeChooseOneEntry>(EUIInternal::MakeModelWithManager_Generic(Manager, FVM_ThreeChooseOneEntry::ModelId, 0, Index));
-    return __r;
+    return TEUIModelRef<FVM_ThreeChooseOneEntry>(EUIInternal::MakeModelWithManager_Generic(Manager, FVM_ThreeChooseOneEntry::ModelId, 0, Index)).Get();
 }
 void GetModelInfo(FEUIViewModelMetaInfo &inout Result)
 {
@@ -425,7 +422,6 @@ namespace __GeneratedProperties_FVM_ThreeChooseOneEntry
 {
 UScriptStruct StaticStruct()
 {
-    UScriptStruct local_2;
-    return local_2;
+    return __GeneratedProperties_FVM_ThreeChooseOneEntry.Get();
 }
 }

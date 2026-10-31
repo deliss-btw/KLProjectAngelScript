@@ -88,19 +88,13 @@ struct FVM_ItemQuickSlotSelectListEntry : FEUIViewModel
     {
         FDisplayItemFashionRuntimeState local_6;
         local_6.bUnlocked = true;
-        local_6.bEquippedOnCurrentTarget = (::FMS_FashionModel::Get(this.GetContext().Manager).GetMountID() == 0);
+        local_6.bEquippedOnCurrentTarget = (::FMS_FashionModel::Get(this.GetContext().Manager).GetMountID() == this.GetMountFashionConfig().Get().DataId);
         CastTo local_14;
         this.SetDisplayItem(::DisplayItemAdapter_Fashion::CreateDisplayItem(this.GetContext().Manager, local_14.opCall(), local_6, EItemDisplayScenario(0), EBodyType(0)));
         if (this.GetDisplayItem().IsValid())
         {
-            TEUIModelRef<FM_DisplayItemData> local_46;
-            TEUIModelRef<FVM_CommonItem> local_44;
-            TEUIModelRef<FVM_DisplayItem> local_42 = this.GetDisplayItem();
-            local_44.GetCommonItemVM();
-            this.SetCommonItem(local_44);
-            TEUIModelRef<FVM_DisplayItem> local_42_2 = this.GetDisplayItem();
-            local_46.GetDisplayData();
-            this.RebuildMountTipHoverModels(local_46);
+            this.SetCommonItem(this.GetDisplayItem().Get().GetCommonItemVM());
+            this.RebuildMountTipHoverModels(this.GetDisplayItem().Get().GetDisplayData());
         }
         return;
     }
@@ -125,11 +119,10 @@ struct FVM_ItemQuickSlotSelectListEntry : FEUIViewModel
     void OnClick()
     {
         int local_6 = 0;
-        int local_12 = 0;
         if (this.GetMountFashionConfig())
         {
             FMS_FashionModel& local_10 = ::FMS_FashionModel::Get(this.GetContext().Manager);
-            local_10.RequestChangeMount(local_12, local_10.GetMountDecoID());
+            local_10.RequestChangeMount(this.GetMountFashionConfig().Get().DataId, local_10.GetMountDecoID());
             local_6.CloseSelectList();
             return;
         }
@@ -493,11 +486,9 @@ FVM_ItemQuickSlotSelectListEntry& Create(const UObject ContextObject, const FEUI
 {
     return FVM_ItemQuickSlotSelectListEntry::CreateByManager(EUIInternal::GetContextManager(ContextObject), List, ItemConfig, MountFashionConfig);
 }
-FVM_ItemQuickSlotSelectListEntry CreateByManager(const UEUIManagerSubsystem Manager, const FEUIModelRef &inout List, const TDataObjectPtr<FItemConfig> &inout ItemConfig, const TDataObjectPtr<FMountFashionConfig> &inout MountFashionConfig)
+FVM_ItemQuickSlotSelectListEntry& CreateByManager(const UEUIManagerSubsystem Manager, const FEUIModelRef &inout List, const TDataObjectPtr<FItemConfig> &inout ItemConfig, const TDataObjectPtr<FMountFashionConfig> &inout MountFashionConfig)
 {
-    FVM_ItemQuickSlotSelectListEntry __r;
-    TEUIModelRef<FVM_ItemQuickSlotSelectListEntry> local_6 = TEUIModelRef<FVM_ItemQuickSlotSelectListEntry>(EUIInternal::MakeModelWithManager_Generic(Manager, FVM_ItemQuickSlotSelectListEntry::ModelId, 0, List, ItemConfig, MountFashionConfig));
-    return __r;
+    return TEUIModelRef<FVM_ItemQuickSlotSelectListEntry>(EUIInternal::MakeModelWithManager_Generic(Manager, FVM_ItemQuickSlotSelectListEntry::ModelId, 0, List, ItemConfig, MountFashionConfig)).Get();
 }
 void GetModelInfo(FEUIViewModelMetaInfo &inout Result)
 {
@@ -600,8 +591,7 @@ namespace __GeneratedProperties_FVM_ItemQuickSlotSelectListEntry
 {
 UScriptStruct StaticStruct()
 {
-    UScriptStruct local_2;
-    return local_2;
+    return __GeneratedProperties_FVM_ItemQuickSlotSelectListEntry.Get();
 }
 }
 namespace FVM_ItemQuickSlotSelectList
@@ -610,11 +600,9 @@ FVM_ItemQuickSlotSelectList& Create(const UObject ContextObject, const TDataObje
 {
     return FVM_ItemQuickSlotSelectList::CreateByManager(EUIInternal::GetContextManager(ContextObject), CurrentQuickSlot);
 }
-FVM_ItemQuickSlotSelectList CreateByManager(const UEUIManagerSubsystem Manager, const TDataObjectPtr<FItemQuickSlotConfig> &inout CurrentQuickSlot)
+FVM_ItemQuickSlotSelectList& CreateByManager(const UEUIManagerSubsystem Manager, const TDataObjectPtr<FItemQuickSlotConfig> &inout CurrentQuickSlot)
 {
-    FVM_ItemQuickSlotSelectList __r;
-    TEUIModelRef<FVM_ItemQuickSlotSelectList> local_6 = TEUIModelRef<FVM_ItemQuickSlotSelectList>(EUIInternal::MakeModelWithManager_Generic(Manager, FVM_ItemQuickSlotSelectList::ModelId, 0, CurrentQuickSlot));
-    return __r;
+    return TEUIModelRef<FVM_ItemQuickSlotSelectList>(EUIInternal::MakeModelWithManager_Generic(Manager, FVM_ItemQuickSlotSelectList::ModelId, 0, CurrentQuickSlot)).Get();
 }
 void GetModelInfo(FEUIViewModelMetaInfo &inout Result)
 {
@@ -679,7 +667,6 @@ namespace __GeneratedProperties_FVM_ItemQuickSlotSelectList
 {
 UScriptStruct StaticStruct()
 {
-    UScriptStruct local_2;
-    return local_2;
+    return __GeneratedProperties_FVM_ItemQuickSlotSelectList.Get();
 }
 }

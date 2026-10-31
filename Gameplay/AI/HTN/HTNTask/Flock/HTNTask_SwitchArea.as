@@ -21,18 +21,17 @@ class UHTNTask_SwitchAreaResourceFilter : UHTNTask_ECSScriptBase
     void Execute_Implementation(const FHTNContext &inout Context)
     {
         int local_10 = 0;
-        bool local_22 = false;
         int local_30 = 0;
         int local_36 = 0;
         FName local_8 = this.ResourceListKey.GetValue(Context.opImplConv());
         FECSEntity local_4 = Context.GetControllerEntity();
-        if (!(FInstancedStruct::GetMutablePtr_Const(local_10).opCall()) || (0 == 0))
+        TRawPtr<FEntitySearchResultList> local_16 = FInstancedStruct::GetMutablePtr_Const(local_10).opCall();
+        if (!(local_16) || (local_16.Get().Results.Num() == 0))
         {
-            local_22 = true;
-            this.FinishExecuteWithContext(Context, local_22);
+            this.FinishExecuteWithContext(Context, true);
             return;
         }
-        FAISmartValueContext local_6 = Context.opImplConv();
+        bool local_22 = this.bContainerCurrent.GetValue(Context.opImplConv());
         FECSEntity local_4_2 = FECSEntity(local_30.LeaderEntity);
         if (!(local_4_2.IsValid()))
         {

@@ -87,7 +87,6 @@ struct FMS_MissionTargetSpotManager : FEUIModelSingleton
     void OnGuidingInfoListModify(const FC_GuidingInfoList &inout C_GuidingInfoList)
     {
         FMissionTargetSpotInfo local_70;
-        const FGuideContext& local_138;
         TArray<uint> local_4;
         for (auto& local_24 : this.GetMissionTargetSpots())
         {
@@ -108,6 +107,7 @@ struct FMS_MissionTargetSpotManager : FEUIModelSingleton
             TDataObjectPtr<FLevelInfoConfig> local_94 = ::FLevelUtils::GetCurrentLevelInfoConfig(nullptr);
             for (auto& local_136 : C_GuidingInfoList.GetGuideInfoMap())
             {
+                const FGuideContext& local_138 = local_136.GetValue();
                 bool local_21 = this.GetMissionTargetSpots().Find(local_136.GetKey(), local_70);
                 if (!(local_21))
                 {
@@ -200,14 +200,12 @@ struct FMS_MissionTargetSpotManager : FEUIModelSingleton
     {
         for (auto& local_20 : this.GetMissionTargetSpots())
         {
-            local_20;
-            this.RemvoeSpotsInSpotInfo();
+            this.RemvoeSpotsInSpotInfo(local_20.GetValue());
         }
         this.GetModify_MissionTargetSpots().Empty(0);
         for (auto& local_40 : this.GetCommissionTargetSpots())
         {
-            local_40;
-            this.RemoveMissionTargetSpot();
+            this.RemoveMissionTargetSpot(local_40.GetValue());
         }
         this.GetModify_CommissionTargetSpots().Empty(0);
         this.GetModify_EntityIdToGuideIdMap().Empty(0);
@@ -216,11 +214,11 @@ struct FMS_MissionTargetSpotManager : FEUIModelSingleton
     }
     TEUIModelRef<FM_Spot> CreateRegionMapSpot(const FGuideContext &inout GuideInfo)
     {
-        if (!(GuideInfo.GetLevelInfo()) || !(GetMapConfig()))
+        if (!(GuideInfo.GetLevelInfo()) || !(GuideInfo.GetLevelInfo().Get().GetMapConfig()))
         {
             return TEUIModelRef<FM_Spot>();
         }
-        FM_SpotRegistry& local_8 = ::PresentationSpotUtils::GetMapRegistry(this.GetManager(), GetMapConfig());
+        FM_SpotRegistry& local_8 = ::PresentationSpotUtils::GetMapRegistry(this.GetManager(), GuideInfo.GetLevelInfo().Get().GetMapConfig());
         TEUIModelRef<FM_Spot> local_10 = TEUIModelRef<FM_Spot>(local_8.CreateSpot());
         local_10.opArrow().GetModify_Transform().SetPosition(GuideInfo.GetPrimaryTargetPosition());
         FMissionPresentationData local_112;
@@ -233,8 +231,8 @@ struct FMS_MissionTargetSpotManager : FEUIModelSingleton
             ::SetPresentationConfig(local_10.opArrow(), local_136.opArrow().GetPresentationConfig(), TEUIModelRef<FM_SpotRegistry>(local_8));
             if (GuideInfo.GetDataSourceConfig().GetFromMission())
             {
-                TEUIModelRef<FM_SpotRegistry> local_254 = TEUIModelRef<FM_SpotRegistry>(local_8);
-                TEUIModelRef<FM_SpotRegistry> local_254_2 = TEUIModelRef<FM_SpotRegistry>(local_8);
+                ::SetSpotName(local_10.opArrow(), GuideInfo.GetDataSourceConfig().GetFromMission().Get().MissionTitle, TEUIModelRef<FM_SpotRegistry>(local_8));
+                ::SetSpotDescription(local_10.opArrow(), GuideInfo.GetDataSourceConfig().GetFromMission().Get().MissionDescription, TEUIModelRef<FM_SpotRegistry>(local_8));
             }
         }
         ::AddMissionData(local_10.opArrow(), local_112, TEUIModelRef<FM_SpotRegistry>(local_8));
@@ -247,7 +245,7 @@ struct FMS_MissionTargetSpotManager : FEUIModelSingleton
         TDataObjectPtr<FMapConfig> local_80;
         if (GuideInfo.GetLevelInfo())
         {
-            local_80 = GetMapConfig();
+            local_80 = GuideInfo.GetLevelInfo().Get().GetMapConfig();
         }
         else
         {
@@ -287,7 +285,6 @@ struct FMS_MissionTargetSpotManager : FEUIModelSingleton
     {
         const UGuideSettings local_2;
         bool local_71;
-        AActor local_382;
         GetGameplaySettings<UGuideSettings> local_4;
         local_2 = local_4;
         TEUIModelRef<FM_SpotRegistry> local_12 = TEUIModelRef<FM_SpotRegistry>(FEUIModelRef());
@@ -306,6 +303,7 @@ struct FMS_MissionTargetSpotManager : FEUIModelSingleton
         if (local_71)
         {
             ::SetPresentationConfig(local_8.opArrow(), local_46.opArrow().GetPresentationConfig(), local_12);
+            ::PresentationDataUtils::SetupSpotPresentationRuleConfigs(local_8.Get(), local_46.opArrow().GetPresentationRule(), local_12);
         }
         if (GuideInfo.GetRegionRadius() > local_2.MinRegionRadius)
         {
@@ -333,6 +331,7 @@ struct FMS_MissionTargetSpotManager : FEUIModelSingleton
         if (GuideInfo.GetbShowGuideFX() && !(local_2.GuideFXActorClass.IsNull()) && local_2.GuideFXActorClass.IsValid())
         {
             local_284.GuideFXActor = SpawnActor(local_2.GuideFXActorClass.Get(), Position, FRotator::ZeroRotator, NAME_None, false, nullptr, nullptr);
+            AActor local_382 = local_284.GuideFXActor.Get();
             if (local_382 != nullptr)
             {
                 UWorld local_386 = local_382.GetWorld();
@@ -344,6 +343,8 @@ struct FMS_MissionTargetSpotManager : FEUIModelSingleton
         }
         if (GuideInfo.GetDataSourceConfig().GetFromMission())
         {
+            ::SetSpotName(local_8.opArrow(), GuideInfo.GetDataSourceConfig().GetFromMission().Get().MissionTitle, local_12);
+            ::SetSpotDescription(local_8.opArrow(), GuideInfo.GetDataSourceConfig().GetFromMission().Get().MissionDescription, local_12);
         }
         ::AddMissionData(local_8.opArrow(), local_284, local_12);
         return local_8;
@@ -395,8 +396,10 @@ struct FMS_MissionTargetSpotManager : FEUIModelSingleton
             TEUIModelRef<FM_Spot> local_54 = SpotInfo.MiniMapSpots[local_46[local_52]];
             if (local_54.IsValid())
             {
-                if ((!((::GetOwnerEntityId(local_54.opArrow()) == ENTITY_ID_NULL))))
+                FECSEntityId local_50 = ::GetOwnerEntityId(local_54.opArrow());
+                if ((!((local_50 == ENTITY_ID_NULL))))
                 {
+                    this.GetModify_EntityIdToGuideIdMap().Remove(local_50);
                 }
                 this.RemoveMissionTargetSpot(local_54);
             }
@@ -442,7 +445,6 @@ struct FMS_MissionTargetSpotManager : FEUIModelSingleton
     }
     void RemoveMissionTargetSpot(const TEUIModelRef<FM_Spot> &inout Spot)
     {
-        AActor local_230;
         int local_239;
         if (this.GetGuideMinimapIconHandleLists().Contains(Spot))
         {
@@ -454,6 +456,7 @@ struct FMS_MissionTargetSpotManager : FEUIModelSingleton
                     ::MinimapUtils::UnregisterIcon(local_18);
                 }
             }
+            this.GetModify_GuideMinimapIconHandleLists().Remove(Spot);
         }
         if (::PresentationSpotUtils::IsEntitySpot(Spot))
         {
@@ -463,7 +466,8 @@ struct FMS_MissionTargetSpotManager : FEUIModelSingleton
         }
         int local_24 = 1065353216;
         FSpotViewAdapter local_132;
-        ::GetMissionData(Spot.opArrow(), local_132);
+        FMissionPresentationData local_228 = ::GetMissionData(Spot.opArrow(), local_132);
+        AActor local_230 = local_228.GuideFXActor.Get();
         if (local_230 != nullptr)
         {
             float32 local_233 = 0.0f;
@@ -498,6 +502,7 @@ struct FMS_MissionTargetSpotManager : FEUIModelSingleton
                 local_230.DestroyActor();
             }
         }
+        this.GetModify_GuideFXSpawnTimes().Remove(Spot);
         ::PresentationSpotUtils::RemoveSpot(Spot, TEUIModelRef<FM_SpotRegistry>());
         return;
     }
@@ -516,6 +521,7 @@ struct FMS_MissionTargetSpotManager : FEUIModelSingleton
             FECSEntityId local_23 = ::GetOwnerEntityId(local_22.opArrow());
             if ((!((local_23 == ENTITY_ID_NULL))))
             {
+                this.GetModify_EntityIdToGuideIdMap().Remove(local_23);
             }
             if ((local_23 == ENTITY_ID_NULL) || !(this.GetCommissionTargetSpots().Contains(local_23)))
             {
@@ -647,11 +653,9 @@ FMS_MissionTargetSpotManager& Get(const UObject ContextObject)
 {
     return FMS_MissionTargetSpotManager::GetByManager(EUIInternal::GetContextManager(ContextObject));
 }
-FMS_MissionTargetSpotManager GetByManager(const UEUIManagerSubsystem Manager)
+FMS_MissionTargetSpotManager& GetByManager(const UEUIManagerSubsystem Manager)
 {
-    FMS_MissionTargetSpotManager __r;
-    TEUIModelRef<FMS_MissionTargetSpotManager> local_6 = TEUIModelRef<FMS_MissionTargetSpotManager>(EUIInternal::MakeModelWithManager(Manager, FMS_MissionTargetSpotManager::ModelId));
-    return __r;
+    return TEUIModelRef<FMS_MissionTargetSpotManager>(EUIInternal::MakeModelWithManager(Manager, FMS_MissionTargetSpotManager::ModelId)).Get();
 }
 void GetModelInfo(FEUIModelOnlyMetaInfo &inout Result)
 {

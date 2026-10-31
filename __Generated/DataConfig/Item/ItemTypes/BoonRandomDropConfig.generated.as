@@ -3,7 +3,6 @@ namespace __FBoonRandomTraitPoolConfigFunctions
 UFUNCTION()
 TArray<FBoonRandomSingleTrait> __FBoonRandomTraitPoolConfig_GetTraitParams(const TDataObjectPtr<FBoonRandomTraitPoolConfig> &inout DataObject)
 {
-    TArray<FBoonRandomSingleTrait> __r;
     if ((DataObject == nullptr))
     {
         if (!(EUIGlobals::GIsDuringPropertyConversion))
@@ -13,7 +12,7 @@ TArray<FBoonRandomSingleTrait> __FBoonRandomTraitPoolConfig_GetTraitParams(const
         FBoonRandomTraitPoolConfig local_18;
         return local_18.TraitParams;
     }
-    return __r;
+    return DataObject.Get().TraitParams;
 }
 UFUNCTION()
 FBoonRandomTraitPoolConfig CastToFBoonRandomTraitPoolConfig(const TDataObjectPtr<FBoonRandomTraitPoolConfig> &inout DataObject)
@@ -27,7 +26,6 @@ namespace __FBoonRandomSlotsConfigFunctions
 UFUNCTION()
 TArray<FBoonRandomSingleSlot> __FBoonRandomSlotsConfig_GetSlots(const TDataObjectPtr<FBoonRandomSlotsConfig> &inout DataObject)
 {
-    TArray<FBoonRandomSingleSlot> __r;
     if ((DataObject == nullptr))
     {
         if (!(EUIGlobals::GIsDuringPropertyConversion))
@@ -37,7 +35,7 @@ TArray<FBoonRandomSingleSlot> __FBoonRandomSlotsConfig_GetSlots(const TDataObjec
         FBoonRandomSlotsConfig local_18;
         return local_18.Slots;
     }
-    return __r;
+    return DataObject.Get().Slots;
 }
 UFUNCTION()
 FBoonRandomSlotsConfig CastToFBoonRandomSlotsConfig(const TDataObjectPtr<FBoonRandomSlotsConfig> &inout DataObject)

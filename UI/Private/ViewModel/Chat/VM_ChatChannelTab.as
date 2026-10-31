@@ -251,11 +251,9 @@ FVM_ChatChannelTab& Create(const UObject ContextObject, const FChatFriendChannel
 {
     return FVM_ChatChannelTab::CreateByManager(EUIInternal::GetContextManager(ContextObject), TabInfo);
 }
-FVM_ChatChannelTab CreateByManager(const UEUIManagerSubsystem Manager, const FChatFriendChannelTab &inout TabInfo)
+FVM_ChatChannelTab& CreateByManager(const UEUIManagerSubsystem Manager, const FChatFriendChannelTab &inout TabInfo)
 {
-    FVM_ChatChannelTab __r;
-    TEUIModelRef<FVM_ChatChannelTab> local_6 = TEUIModelRef<FVM_ChatChannelTab>(EUIInternal::MakeModelWithManager_Generic(Manager, FVM_ChatChannelTab::ModelId, 0, TabInfo));
-    return __r;
+    return TEUIModelRef<FVM_ChatChannelTab>(EUIInternal::MakeModelWithManager_Generic(Manager, FVM_ChatChannelTab::ModelId, 0, TabInfo)).Get();
 }
 void GetModelInfo(FEUIViewModelMetaInfo &inout Result)
 {
@@ -341,7 +339,6 @@ namespace __GeneratedProperties_FVM_ChatChannelTab
 {
 UScriptStruct StaticStruct()
 {
-    UScriptStruct local_2;
-    return local_2;
+    return __GeneratedProperties_FVM_ChatChannelTab.Get();
 }
 }

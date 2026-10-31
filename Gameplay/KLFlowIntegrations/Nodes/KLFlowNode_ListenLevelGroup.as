@@ -35,6 +35,8 @@ struct FKLFlowNode_ListenLevelGroup : FKLFlowNode
     UPROPERTY()
     int SubscriptionHandleECSBeginPlay;
 
+    default m_ScriptOverrideMeta = Cast<UASStruct>(FKLFlowNode_ListenLevelGroup.Get());
+
     FKLFlowNode_ListenLevelGroup()
     {
         this.SubscriptionHandleReady = 0;
@@ -116,15 +118,16 @@ struct FKLFlowNode_ListenLevelGroup : FKLFlowNode
             return false;
         }
         FInstancedStruct::GetPtr local_10;
-        if (!(local_10.opCall()))
+        TConstRawPtr<FKLFlowEvent_LevelGroup> local_12 = local_10.opCall();
+        if (!(local_12))
         {
             return false;
         }
-        FName local_16;
-        if (!(this.LevelGroupName.IsNone()) && !((local_16 == this.LevelGroupName)))
+        if (!(this.LevelGroupName.IsNone()) && !((FName(local_12.Get().GroupName) == this.LevelGroupName)))
         {
             return false;
         }
+        OutEvent = local_12.Get();
         return true;
     }
     void OnQuit_Implementation()
@@ -163,15 +166,15 @@ struct FKLFlowNode_ListenLevelGroup : FKLFlowNode
     }
     void OnLoad_Implementation(const FKLFlowNodeSnapshot &inout InSnapshot)
     {
-        int local_10 = 0;
-        if (!(FInstancedStruct::GetPtr<FKLFlowNodeMemory_ListenLevelGroup>(InSnapshot.Memory).opCall()))
+        TConstRawPtr<FKLFlowNodeMemory_ListenLevelGroup> local_6 = FInstancedStruct::GetPtr<FKLFlowNodeMemory_ListenLevelGroup>(InSnapshot.Memory).opCall();
+        if (!(local_6))
         {
             return;
         }
-        this.SubscriptionHandleReady = local_10;
-        this.SubscriptionHandlePassReady = local_10;
-        this.SubscriptionHandleAnyPassReady = local_10;
-        this.SubscriptionHandleECSBeginPlay = local_10;
+        this.SubscriptionHandleReady = local_6.Get().HandleReady;
+        this.SubscriptionHandlePassReady = local_6.Get().HandlePassReady;
+        this.SubscriptionHandleAnyPassReady = local_6.Get().HandleAnyPassReady;
+        this.SubscriptionHandleECSBeginPlay = local_6.Get().HandleECSBeginPlay;
         return;
     }
 }

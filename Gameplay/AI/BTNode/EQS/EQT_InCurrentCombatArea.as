@@ -28,8 +28,7 @@ class UEQT_InCurrentCombatArea : UEnvQueryTest_ECS_BlueprintBase
         {
             return;
         }
-        AActor local_18;
-        AECSRegionVolume local_22 = (Cast<AECSRegionVolume>(local_18));
+        AECSRegionVolume local_22 = (Cast<AECSRegionVolume>(local_16.RegionVolume.Get()));
         if ((local_22 == nullptr || !(local_22.bAffectCombat)))
         {
             return;

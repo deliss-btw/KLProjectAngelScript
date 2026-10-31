@@ -270,11 +270,9 @@ FMS_BossTrackingAreaDisplay& Get(const UObject ContextObject)
 {
     return FMS_BossTrackingAreaDisplay::GetByManager(EUIInternal::GetContextManager(ContextObject));
 }
-FMS_BossTrackingAreaDisplay GetByManager(const UEUIManagerSubsystem Manager)
+FMS_BossTrackingAreaDisplay& GetByManager(const UEUIManagerSubsystem Manager)
 {
-    FMS_BossTrackingAreaDisplay __r;
-    TEUIModelRef<FMS_BossTrackingAreaDisplay> local_6 = TEUIModelRef<FMS_BossTrackingAreaDisplay>(EUIInternal::MakeModelWithManager(Manager, FMS_BossTrackingAreaDisplay::ModelId));
-    return __r;
+    return TEUIModelRef<FMS_BossTrackingAreaDisplay>(EUIInternal::MakeModelWithManager(Manager, FMS_BossTrackingAreaDisplay::ModelId)).Get();
 }
 void GetModelInfo(FEUIModelOnlyMetaInfo &inout Result)
 {

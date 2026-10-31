@@ -56,14 +56,16 @@ class US_EcosimAIV2SpeakSystem : UECSScriptSystem
     UFUNCTION()
     void Job_HandleEcosimAIV2ClearPublicSpeakDataKeyTimeRecord(const FCE_EcosimAIV2ClearPublicSpeakDataKeyTimeRecord &inout Event) const
     {
-        const FEcosimAIV2LLMPublicSpeakData& local_6;
         FECSEntity local_4 = FECSEntity(Event.Sender);
+        const FEcosimAIV2LLMPublicSpeakData& local_6 = Event.SpeakData.Get();
         if (local_6.SpeakKeyTag.IsValid())
         {
             FECSWorldPtr local_10 = ECS::GetECSWorld();
             Modify local_14;
-            if (local_14.opCall())
+            FCS_EcosimAIV2GlobalSpeakData& local_16 = local_14.opCall();
+            if (local_16)
             {
+                local_16.PublicSpeakTimeByTag.Remove(local_6.SpeakKeyTag);
             }
         }
         return;
@@ -71,9 +73,9 @@ class US_EcosimAIV2SpeakSystem : UECSScriptSystem
     UFUNCTION()
     void Job_HandleEcosimAIV2PublicSpeakByData(const FCE_EcosimAIV2PublicSpeakByData &inout Event) const
     {
-        const FEcosimAIV2LLMPublicSpeakData& local_6;
         int local_18 = 0;
         FECSEntity local_4 = FECSEntity(Event.Sender);
+        const FEcosimAIV2LLMPublicSpeakData& local_6 = Event.SpeakData.Get();
         if (local_6.SpeakKeyTag.IsValid() && (local_6.MinSpeakInterval > 0.0f))
         {
             FECSWorldPtr local_12 = ECS::GetECSWorld();
@@ -107,8 +109,11 @@ class US_EcosimAIV2SpeakSystem : UECSScriptSystem
     {
         FECSWorldPtr local_2 = this.GetECSWorld();
         Modify local_6;
-        if (local_6.opCall())
+        FCS_EntityDialogSpeakers& local_8 = local_6.opCall();
+        if (local_8)
         {
+            local_8.GetModify_Entities().Remove(Entity);
+            local_8.GetModify_InRangeEntities().Remove(Entity);
         }
         return;
     }

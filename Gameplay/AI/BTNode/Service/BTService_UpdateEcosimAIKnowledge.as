@@ -104,11 +104,10 @@ class UBTService_UpdateEcosimAIKnowledge : UBTService_ECSScriptBase
     }
     FName GetActivityName(const FC_CreatureEcologyState &inout State) const
     {
-        UEcologyBehaviorDefine local_6;
-        FCreatureActivityData local_2 = State.ActivityData;
-        if (local_6 != nullptr)
+        TObjectPtr<UEcologyBehaviorDefine> local_4 = State.ActivityData.BehaviorDefine;
+        if (local_4.Get() != nullptr)
         {
-            UEcologyBehaviorDefine local_10;
+            UEcologyBehaviorDefine local_10 = local_4.Get();
             return local_10.LegacyBehaviorName;
         }
         return NAME_None;

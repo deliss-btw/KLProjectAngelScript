@@ -31,10 +31,8 @@ class UESMAction_OverrideVelocity : UESMBPBaseInstantAction
     UFUNCTION()
     void Do_Implementation(const FESMContext &inout Context, const FESMActionTime &inout Time) const
     {
-        float32 local_19 = 0.0f;
         int local_22 = 0;
         int local_28 = 0;
-        float32 local_51 = 0.0f;
         float local_60;
         if (!((this.bOverrideX || this.bOverrideY) || this.bOverrideZ))
         {
@@ -57,15 +55,15 @@ class UESMAction_OverrideVelocity : UESMBPBaseInstantAction
                 local_18.SetbIsAbsoluteValueZ(this.bIsAbsoluteValueZ);
                 if (this.bOverrideX)
                 {
-                    local_18.GetModify_Velocity().X = local_19;
+                    local_18.GetModify_Velocity().X = this.XValue.GetValue(Context.GetEntityBB());
                 }
                 if (this.bOverrideY)
                 {
-                    local_18.GetModify_Velocity().Y = local_19;
+                    local_18.GetModify_Velocity().Y = this.YValue.GetValue(Context.GetEntityBB());
                 }
                 if (this.bOverrideZ)
                 {
-                    local_18.GetModify_Velocity().Z = local_19;
+                    local_18.GetModify_Velocity().Z = this.ZValue.GetValue(Context.GetEntityBB());
                 }
             }
             return;
@@ -92,11 +90,12 @@ class UESMAction_OverrideVelocity : UESMBPBaseInstantAction
             float local_58;
             if (this.bIsAbsoluteValueX)
             {
-                local_58 = local_19;
+                local_58 = this.XValue.GetValue(Context.GetEntityBB());
             }
             else
             {
-                local_58 = local_50.X * local_51;
+                float local_56 = this.XValue.GetValue(Context.GetEntityBB());
+                local_58 = local_50.X * local_56;
             }
             local_50.X = local_58;
         }
@@ -104,11 +103,11 @@ class UESMAction_OverrideVelocity : UESMBPBaseInstantAction
         {
             if (this.bIsAbsoluteValueY)
             {
-                local_60 = local_51;
+                local_60 = this.YValue.GetValue(Context.GetEntityBB());
             }
             else
             {
-                local_60 = local_50.Y * local_19;
+                local_60 = local_50.Y * this.YValue.GetValue(Context.GetEntityBB());
             }
             local_50.Y = local_60;
         }
@@ -117,11 +116,11 @@ class UESMAction_OverrideVelocity : UESMBPBaseInstantAction
             float local_58;
             if (this.bIsAbsoluteValueZ)
             {
-                local_58 = local_19;
+                local_58 = this.ZValue.GetValue(Context.GetEntityBB());
             }
             else
             {
-                local_58 = local_50.Z * local_51;
+                local_58 = local_50.Z * this.ZValue.GetValue(Context.GetEntityBB());
             }
             local_50.Z = local_58;
         }

@@ -3,7 +3,6 @@ namespace __FMessageHintConfigFunctions
 UFUNCTION()
 FGameplayTag __FMessageHintConfig_GetHintType(const TDataObjectPtr<FMessageHintConfig> &inout DataObject)
 {
-    FGameplayTag __r;
     if ((DataObject == nullptr))
     {
         if (!(EUIGlobals::GIsDuringPropertyConversion))
@@ -13,7 +12,7 @@ FGameplayTag __FMessageHintConfig_GetHintType(const TDataObjectPtr<FMessageHintC
         FMessageHintConfig local_18;
         return local_18.HintType;
     }
-    return __r;
+    return DataObject.Get().HintType;
 }
 UFUNCTION()
 int __FMessageHintConfig_GetPriority(const TDataObjectPtr<FMessageHintConfig> &inout DataObject)
@@ -42,7 +41,6 @@ namespace __FMessageHintConfig_SimpleTipsFunctions
 UFUNCTION()
 FArgText __FMessageHintConfig_SimpleTips_GetContent(const TDataObjectPtr<FMessageHintConfig_SimpleTips> &inout DataObject)
 {
-    FArgText __r;
     if ((DataObject == nullptr))
     {
         if (!(EUIGlobals::GIsDuringPropertyConversion))
@@ -52,12 +50,11 @@ FArgText __FMessageHintConfig_SimpleTips_GetContent(const TDataObjectPtr<FMessag
         FMessageHintConfig_SimpleTips local_30;
         return local_30.Content;
     }
-    return __r;
+    return DataObject.Get().Content;
 }
 UFUNCTION()
 FCommonTipsParam __FMessageHintConfig_SimpleTips_GetExtraParam(const TDataObjectPtr<FMessageHintConfig_SimpleTips> &inout DataObject)
 {
-    FCommonTipsParam __r;
     if ((DataObject == nullptr))
     {
         if (!(EUIGlobals::GIsDuringPropertyConversion))
@@ -67,7 +64,7 @@ FCommonTipsParam __FMessageHintConfig_SimpleTips_GetExtraParam(const TDataObject
         FMessageHintConfig_SimpleTips local_30;
         return local_30.ExtraParam;
     }
-    return __r;
+    return DataObject.Get().ExtraParam;
 }
 UFUNCTION()
 FMessageHintConfig_SimpleTips CastToFMessageHintConfig_SimpleTips(const TDataObjectPtr<FMessageHintConfig_SimpleTips> &inout DataObject)
@@ -81,7 +78,6 @@ namespace __FMessageHintConfig_DialogFunctions
 UFUNCTION()
 FText __FMessageHintConfig_Dialog_GetTitle(const TDataObjectPtr<FMessageHintConfig_Dialog> &inout DataObject)
 {
-    FText __r;
     if ((DataObject == nullptr))
     {
         if (!(EUIGlobals::GIsDuringPropertyConversion))
@@ -91,12 +87,11 @@ FText __FMessageHintConfig_Dialog_GetTitle(const TDataObjectPtr<FMessageHintConf
         FMessageHintConfig_Dialog local_34;
         return local_34.Title;
     }
-    return __r;
+    return DataObject.Get().Title;
 }
 UFUNCTION()
 FArgText __FMessageHintConfig_Dialog_GetContent(const TDataObjectPtr<FMessageHintConfig_Dialog> &inout DataObject)
 {
-    FArgText __r;
     if ((DataObject == nullptr))
     {
         if (!(EUIGlobals::GIsDuringPropertyConversion))
@@ -106,12 +101,11 @@ FArgText __FMessageHintConfig_Dialog_GetContent(const TDataObjectPtr<FMessageHin
         FMessageHintConfig_Dialog local_34;
         return local_34.Content;
     }
-    return __r;
+    return DataObject.Get().Content;
 }
 UFUNCTION()
 FText __FMessageHintConfig_Dialog_GetButtonText(const TDataObjectPtr<FMessageHintConfig_Dialog> &inout DataObject)
 {
-    FText __r;
     if ((DataObject == nullptr))
     {
         if (!(EUIGlobals::GIsDuringPropertyConversion))
@@ -121,7 +115,7 @@ FText __FMessageHintConfig_Dialog_GetButtonText(const TDataObjectPtr<FMessageHin
         FMessageHintConfig_Dialog local_34;
         return local_34.ButtonText;
     }
-    return __r;
+    return DataObject.Get().ButtonText;
 }
 UFUNCTION()
 FMessageHintConfig_Dialog CastToFMessageHintConfig_Dialog(const TDataObjectPtr<FMessageHintConfig_Dialog> &inout DataObject)
@@ -151,7 +145,6 @@ FMessageHintIcon __FMessageHintConfig_LargeHint_GetIcon(const TDataObjectPtr<FMe
 UFUNCTION()
 FArgText __FMessageHintConfig_LargeHint_GetTitle(const TDataObjectPtr<FMessageHintConfig_LargeHint> &inout DataObject)
 {
-    FArgText __r;
     if ((DataObject == nullptr))
     {
         if (!(EUIGlobals::GIsDuringPropertyConversion))
@@ -161,12 +154,11 @@ FArgText __FMessageHintConfig_LargeHint_GetTitle(const TDataObjectPtr<FMessageHi
         FMessageHintConfig_LargeHint local_92;
         return local_92.Title;
     }
-    return __r;
+    return DataObject.Get().Title;
 }
 UFUNCTION()
 FArgText __FMessageHintConfig_LargeHint_GetContent(const TDataObjectPtr<FMessageHintConfig_LargeHint> &inout DataObject)
 {
-    FArgText __r;
     if ((DataObject == nullptr))
     {
         if (!(EUIGlobals::GIsDuringPropertyConversion))
@@ -176,12 +168,11 @@ FArgText __FMessageHintConfig_LargeHint_GetContent(const TDataObjectPtr<FMessage
         FMessageHintConfig_LargeHint local_92;
         return local_92.Content;
     }
-    return __r;
+    return DataObject.Get().Content;
 }
 UFUNCTION()
 FCommonHintParam __FMessageHintConfig_LargeHint_GetExtraParam(const TDataObjectPtr<FMessageHintConfig_LargeHint> &inout DataObject)
 {
-    FCommonHintParam __r;
     if ((DataObject == nullptr))
     {
         if (!(EUIGlobals::GIsDuringPropertyConversion))
@@ -191,7 +182,7 @@ FCommonHintParam __FMessageHintConfig_LargeHint_GetExtraParam(const TDataObjectP
         FMessageHintConfig_LargeHint local_92;
         return local_92.ExtraParam;
     }
-    return __r;
+    return DataObject.Get().ExtraParam;
 }
 UFUNCTION()
 FMessageHintConfig_LargeHint CastToFMessageHintConfig_LargeHint(const TDataObjectPtr<FMessageHintConfig_LargeHint> &inout DataObject)
@@ -221,7 +212,6 @@ FMessageHintIcon __FMessageHintConfig_SmallHint_GetIcon(const TDataObjectPtr<FMe
 UFUNCTION()
 FArgText __FMessageHintConfig_SmallHint_GetContent(const TDataObjectPtr<FMessageHintConfig_SmallHint> &inout DataObject)
 {
-    FArgText __r;
     if ((DataObject == nullptr))
     {
         if (!(EUIGlobals::GIsDuringPropertyConversion))
@@ -231,12 +221,11 @@ FArgText __FMessageHintConfig_SmallHint_GetContent(const TDataObjectPtr<FMessage
         FMessageHintConfig_SmallHint local_84;
         return local_84.Content;
     }
-    return __r;
+    return DataObject.Get().Content;
 }
 UFUNCTION()
 FCommonHintParam __FMessageHintConfig_SmallHint_GetExtraParam(const TDataObjectPtr<FMessageHintConfig_SmallHint> &inout DataObject)
 {
-    FCommonHintParam __r;
     if ((DataObject == nullptr))
     {
         if (!(EUIGlobals::GIsDuringPropertyConversion))
@@ -246,7 +235,7 @@ FCommonHintParam __FMessageHintConfig_SmallHint_GetExtraParam(const TDataObjectP
         FMessageHintConfig_SmallHint local_84;
         return local_84.ExtraParam;
     }
-    return __r;
+    return DataObject.Get().ExtraParam;
 }
 UFUNCTION()
 FMessageHintConfig_SmallHint CastToFMessageHintConfig_SmallHint(const TDataObjectPtr<FMessageHintConfig_SmallHint> &inout DataObject)
@@ -260,7 +249,6 @@ namespace __FMessageHintConfig_BannerFunctions
 UFUNCTION()
 FArgText __FMessageHintConfig_Banner_GetTitle(const TDataObjectPtr<FMessageHintConfig_Banner> &inout DataObject)
 {
-    FArgText __r;
     if ((DataObject == nullptr))
     {
         if (!(EUIGlobals::GIsDuringPropertyConversion))
@@ -270,12 +258,11 @@ FArgText __FMessageHintConfig_Banner_GetTitle(const TDataObjectPtr<FMessageHintC
         FMessageHintConfig_Banner local_96;
         return local_96.Title;
     }
-    return __r;
+    return DataObject.Get().Title;
 }
 UFUNCTION()
 FArgText __FMessageHintConfig_Banner_GetContent(const TDataObjectPtr<FMessageHintConfig_Banner> &inout DataObject)
 {
-    FArgText __r;
     if ((DataObject == nullptr))
     {
         if (!(EUIGlobals::GIsDuringPropertyConversion))
@@ -285,12 +272,11 @@ FArgText __FMessageHintConfig_Banner_GetContent(const TDataObjectPtr<FMessageHin
         FMessageHintConfig_Banner local_96;
         return local_96.Content;
     }
-    return __r;
+    return DataObject.Get().Content;
 }
 UFUNCTION()
 EBannerBGType __FMessageHintConfig_Banner_GetBGType(const TDataObjectPtr<FMessageHintConfig_Banner> &inout DataObject)
 {
-    int local_97 = 0;
     if ((DataObject == nullptr))
     {
         if (!(EUIGlobals::GIsDuringPropertyConversion))
@@ -298,10 +284,9 @@ EBannerBGType __FMessageHintConfig_Banner_GetBGType(const TDataObjectPtr<FMessag
             FBlueprintDebugFunctions::ThrowScriptException("Get 'BGType' from a null 'FMessageHintConfig_Banner' DataObject!");
         }
         FMessageHintConfig_Banner local_96;
-        local_97 = int(local_96.BGType);
-        return EBannerBGType(local_97);
+        return local_96.BGType;
     }
-    return EBannerBGType(local_97);
+    return DataObject.Get().BGType;
 }
 UFUNCTION()
 FMessageHintIcon __FMessageHintConfig_Banner_GetIcon(const TDataObjectPtr<FMessageHintConfig_Banner> &inout DataObject)
@@ -322,7 +307,6 @@ FMessageHintIcon __FMessageHintConfig_Banner_GetIcon(const TDataObjectPtr<FMessa
 UFUNCTION()
 EBannerWidgetType __FMessageHintConfig_Banner_GetSpecialWidgetType(const TDataObjectPtr<FMessageHintConfig_Banner> &inout DataObject)
 {
-    int local_97 = 0;
     if ((DataObject == nullptr))
     {
         if (!(EUIGlobals::GIsDuringPropertyConversion))
@@ -330,15 +314,13 @@ EBannerWidgetType __FMessageHintConfig_Banner_GetSpecialWidgetType(const TDataOb
             FBlueprintDebugFunctions::ThrowScriptException("Get 'SpecialWidgetType' from a null 'FMessageHintConfig_Banner' DataObject!");
         }
         FMessageHintConfig_Banner local_96;
-        local_97 = int(local_96.SpecialWidgetType);
-        return EBannerWidgetType(local_97);
+        return local_96.SpecialWidgetType;
     }
-    return EBannerWidgetType(local_97);
+    return DataObject.Get().SpecialWidgetType;
 }
 UFUNCTION()
 FCommonHintParam __FMessageHintConfig_Banner_GetExtraParam(const TDataObjectPtr<FMessageHintConfig_Banner> &inout DataObject)
 {
-    FCommonHintParam __r;
     if ((DataObject == nullptr))
     {
         if (!(EUIGlobals::GIsDuringPropertyConversion))
@@ -348,7 +330,7 @@ FCommonHintParam __FMessageHintConfig_Banner_GetExtraParam(const TDataObjectPtr<
         FMessageHintConfig_Banner local_96;
         return local_96.ExtraParam;
     }
-    return __r;
+    return DataObject.Get().ExtraParam;
 }
 UFUNCTION()
 FMessageHintConfig_Banner CastToFMessageHintConfig_Banner(const TDataObjectPtr<FMessageHintConfig_Banner> &inout DataObject)
@@ -362,7 +344,6 @@ namespace __FMessageHintConfig_Banner_MissionChapterFunctions
 UFUNCTION()
 FArgText __FMessageHintConfig_Banner_MissionChapter_GetTitle(const TDataObjectPtr<FMessageHintConfig_Banner_MissionChapter> &inout DataObject)
 {
-    FArgText __r;
     if ((DataObject == nullptr))
     {
         if (!(EUIGlobals::GIsDuringPropertyConversion))
@@ -372,12 +353,11 @@ FArgText __FMessageHintConfig_Banner_MissionChapter_GetTitle(const TDataObjectPt
         FMessageHintConfig_Banner_MissionChapter local_38;
         return local_38.Title;
     }
-    return __r;
+    return DataObject.Get().Title;
 }
 UFUNCTION()
 FArgText __FMessageHintConfig_Banner_MissionChapter_GetSubTitle(const TDataObjectPtr<FMessageHintConfig_Banner_MissionChapter> &inout DataObject)
 {
-    FArgText __r;
     if ((DataObject == nullptr))
     {
         if (!(EUIGlobals::GIsDuringPropertyConversion))
@@ -387,28 +367,25 @@ FArgText __FMessageHintConfig_Banner_MissionChapter_GetSubTitle(const TDataObjec
         FMessageHintConfig_Banner_MissionChapter local_38;
         return local_38.SubTitle;
     }
-    return __r;
+    return DataObject.Get().SubTitle;
 }
 UFUNCTION()
 bool __FMessageHintConfig_Banner_MissionChapter_GetbEnd(const TDataObjectPtr<FMessageHintConfig_Banner_MissionChapter> &inout DataObject)
 {
-    bool local_1 = false;
     if ((DataObject == nullptr))
     {
-        local_1 = !(EUIGlobals::GIsDuringPropertyConversion);
-        if (local_1)
+        if (!(EUIGlobals::GIsDuringPropertyConversion))
         {
             FBlueprintDebugFunctions::ThrowScriptException("Get 'bEnd' from a null 'FMessageHintConfig_Banner_MissionChapter' DataObject!");
         }
         FMessageHintConfig_Banner_MissionChapter local_38;
         return local_38.bEnd;
     }
-    return local_1;
+    return DataObject.Get().bEnd;
 }
 UFUNCTION()
 FCommonHintParam __FMessageHintConfig_Banner_MissionChapter_GetExtraParam(const TDataObjectPtr<FMessageHintConfig_Banner_MissionChapter> &inout DataObject)
 {
-    FCommonHintParam __r;
     if ((DataObject == nullptr))
     {
         if (!(EUIGlobals::GIsDuringPropertyConversion))
@@ -418,7 +395,7 @@ FCommonHintParam __FMessageHintConfig_Banner_MissionChapter_GetExtraParam(const 
         FMessageHintConfig_Banner_MissionChapter local_38;
         return local_38.ExtraParam;
     }
-    return __r;
+    return DataObject.Get().ExtraParam;
 }
 UFUNCTION()
 FMessageHintConfig_Banner_MissionChapter CastToFMessageHintConfig_Banner_MissionChapter(const TDataObjectPtr<FMessageHintConfig_Banner_MissionChapter> &inout DataObject)
@@ -432,7 +409,6 @@ namespace __FMessageHintConfig_NewsTickerFunctions
 UFUNCTION()
 FArgText __FMessageHintConfig_NewsTicker_GetContent(const TDataObjectPtr<FMessageHintConfig_NewsTicker> &inout DataObject)
 {
-    FArgText __r;
     if ((DataObject == nullptr))
     {
         if (!(EUIGlobals::GIsDuringPropertyConversion))
@@ -442,7 +418,7 @@ FArgText __FMessageHintConfig_NewsTicker_GetContent(const TDataObjectPtr<FMessag
         FMessageHintConfig_NewsTicker local_30;
         return local_30.Content;
     }
-    return __r;
+    return DataObject.Get().Content;
 }
 UFUNCTION()
 int __FMessageHintConfig_NewsTicker_GetRepeatCount(const TDataObjectPtr<FMessageHintConfig_NewsTicker> &inout DataObject)
@@ -462,7 +438,6 @@ int __FMessageHintConfig_NewsTicker_GetRepeatCount(const TDataObjectPtr<FMessage
 UFUNCTION()
 FCommonHintParam __FMessageHintConfig_NewsTicker_GetExtraParam(const TDataObjectPtr<FMessageHintConfig_NewsTicker> &inout DataObject)
 {
-    FCommonHintParam __r;
     if ((DataObject == nullptr))
     {
         if (!(EUIGlobals::GIsDuringPropertyConversion))
@@ -472,7 +447,7 @@ FCommonHintParam __FMessageHintConfig_NewsTicker_GetExtraParam(const TDataObject
         FMessageHintConfig_NewsTicker local_30;
         return local_30.ExtraParam;
     }
-    return __r;
+    return DataObject.Get().ExtraParam;
 }
 UFUNCTION()
 FMessageHintConfig_NewsTicker CastToFMessageHintConfig_NewsTicker(const TDataObjectPtr<FMessageHintConfig_NewsTicker> &inout DataObject)
@@ -495,7 +470,6 @@ namespace __FMessageHintConfig_ImportantTipsFunctions
 UFUNCTION()
 EImportantTipsStyle __FMessageHintConfig_ImportantTips_GetStyle(const TDataObjectPtr<FMessageHintConfig_ImportantTips> &inout DataObject)
 {
-    int local_33 = 0;
     if ((DataObject == nullptr))
     {
         if (!(EUIGlobals::GIsDuringPropertyConversion))
@@ -503,10 +477,9 @@ EImportantTipsStyle __FMessageHintConfig_ImportantTips_GetStyle(const TDataObjec
             FBlueprintDebugFunctions::ThrowScriptException("Get 'Style' from a null 'FMessageHintConfig_ImportantTips' DataObject!");
         }
         FMessageHintConfig_ImportantTips local_32;
-        local_33 = int(local_32.Style);
-        return EImportantTipsStyle(local_33);
+        return local_32.Style;
     }
-    return EImportantTipsStyle(local_33);
+    return DataObject.Get().Style;
 }
 UFUNCTION()
 FMessageHintConfig_ImportantTips CastToFMessageHintConfig_ImportantTips(const TDataObjectPtr<FMessageHintConfig_ImportantTips> &inout DataObject)

@@ -70,11 +70,9 @@ FVM_DialogueOptionList& Create(const UObject ContextObject)
 {
     return FVM_DialogueOptionList::CreateByManager(EUIInternal::GetContextManager(ContextObject));
 }
-FVM_DialogueOptionList CreateByManager(const UEUIManagerSubsystem Manager)
+FVM_DialogueOptionList& CreateByManager(const UEUIManagerSubsystem Manager)
 {
-    FVM_DialogueOptionList __r;
-    TEUIModelRef<FVM_DialogueOptionList> local_6 = TEUIModelRef<FVM_DialogueOptionList>(EUIInternal::MakeModelWithManager(Manager, FVM_DialogueOptionList::ModelId));
-    return __r;
+    return TEUIModelRef<FVM_DialogueOptionList>(EUIInternal::MakeModelWithManager(Manager, FVM_DialogueOptionList::ModelId)).Get();
 }
 void GetModelInfo(FEUIViewModelMetaInfo &inout Result)
 {
@@ -125,7 +123,6 @@ namespace __GeneratedProperties_FVM_DialogueOptionList
 {
 UScriptStruct StaticStruct()
 {
-    UScriptStruct local_2;
-    return local_2;
+    return __GeneratedProperties_FVM_DialogueOptionList.Get();
 }
 }

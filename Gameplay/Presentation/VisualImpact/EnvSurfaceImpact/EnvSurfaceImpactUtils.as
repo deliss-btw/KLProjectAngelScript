@@ -142,8 +142,7 @@ bool CheckEnvSurfaceHit(FEnvHitPresentationData &inout Result, const FECSEntity 
                 Result.HitLocation = local_270.ImpactPoint;
                 Result.HitNormal = local_270.ImpactNormal;
                 Result.HitBoneName = local_270.BoneName;
-                UPrimitiveComponent local_428;
-                Result.HitPrimitiveComp = local_428;
+                Result.HitPrimitiveComp = local_270.GetComponent();
                 Result.HitFanPlaneNormal = local_170;
                 Result.PhysicsMaterial = local_270.GetPhysMaterial();
                 if (!(local_1))
@@ -183,7 +182,94 @@ bool CheckEnvSurfaceHit(FEnvHitPresentationData &inout Result, const FECSEntity 
 UFUNCTION()
 void ShowEnvSurfaceImpact_Effect(const FCE_EnvSurfaceImpactFXEvent &inout Event, const bool bDebug, const bool bPrintOnScreen)
 {
-    // body not fully recovered — stub [argmismatch:argint]
+    if (bDebug)
+    {
+        XLog(ELog(0), FString().Append("HandleEnvSurfaceImpact_Effect ").Append(Event.ImpactSurfaceTypeName));
+    }
+    if (UGameplayConfigsManager::GetEnvSurfaceHitVFXTable().Get() == nullptr)
+    {
+        XWarning(ELog(49), "HandleEnvSurfaceImpact_Effect, can not find datatable: SurfaceContactVFXConfig.");
+        return;
+    }
+    FECSEntity local_16 = FECSEntity(Event.Sender);
+    if (!(local_16.IsValid()))
+    {
+        XWarning(ELog(49), "HandleEnvSurfaceImpact_Effect, PawnEntity is not valid.");
+        return;
+    }
+    FName local_18(local_16.GetEntityName());
+    int local_21 = Event.CharacterBodySize;
+    int local_23 = Event.FXStyle_Sparks;
+    FName local_26 = Event.ImpactSurfaceTypeName;
+    UDataTable::FindDataObject local_54;
+    TDataObjectPtr<FEnvSurfaceHitConfigVFX> local_78 = local_54.opCall(FEnvSurfaceImpactUtils::EnvSufaceImpactTableRowName);
+    if (local_78)
+    {
+        const FArealStrikeEnvSurfaceVFXData& local_80 = local_78.Get().GetData(ECharacterBodySize(local_21));
+        const FImpactFXData& local_82 = local_78.Get().GetDataRawBySecondType(local_80, EArealStrikeEnvSurfaceFXStyle_Sparks(local_23));
+        if (local_82.FXActor.IsNull())
+        {
+            return;
+        }
+        FFXConfig local_198;
+        if (bDebug)
+        {
+            if (bPrintOnScreen)
+            {
+                Print(FString().Append("Env Surface Impact ").Append(local_18).Append(": ").Append(local_21).Append(" -> ").Append(local_23).Append(" -> FxActor: ").Append(local_82.FXActor), 5.0f, FLinearColor::LucBlue);
+            }
+        }
+        local_198.SetAsset(FSoftClassPath(local_82.FXActor.ToString()));
+        local_198.SetLocationOffset(Event.ImpactPosition);
+        local_198.SetRotationOffset(FRotator(Event.ImpactRotation));
+        float32 local_199 = local_82.RandomRotationAngle;
+        if (local_199 >= 0.0f && !(Event.ImpactOutDir.IsZero()))
+        {
+            float32 local_215 = FMath::DegreesToRadians(FMath::RandRange(0.0f, local_82.RandomRotationAngle));
+            local_199 = float32(FMath::Acos(local_198.GetRotationOffset().GetForwardVector().DotProduct(Event.ImpactOutDir)));
+            if (local_215 > local_199)
+            {
+                local_215 = local_199;
+            }
+            FVector local_242 = local_198.GetRotationOffset().GetForwardVector().CrossProduct(Event.ImpactOutDir);
+            local_198.SetRotationOffset((FQuat(local_242, local_215) * local_198.GetRotationOffset().Quaternion()).Rotator());
+        }
+        if (!((local_82.LocationOffset == FVector3f::ZeroVector)) || !((local_82.RotationOffset == FRotator3f::ZeroRotator)))
+        {
+            FTransform local_300 = FTransform(local_198.GetRotationOffset(), local_198.GetLocationOffset(), FVector::OneVector);
+            local_198.SetLocationOffset(local_300.TransformPosition(FVector(local_82.LocationOffset)));
+            local_198.SetRotationOffset(local_300.TransformRotation(FRotator(local_82.RotationOffset)));
+        }
+        local_198.SetScale(FVector(local_82.Scale));
+        local_198.SetbUseWorldOriginAsBaseTransformSource(true);
+        local_198.SetLocationOffsetSpace(EFXOffsetSpace(2));
+        local_198.SetRotationOffsetSpace(EFXOffsetSpace(2));
+        local_198.SetbDetach(true);
+        local_198.SetDeterminedSurfaceName(local_26);
+        if (FEnvSurfaceImpactUtils::CVar_EnvSurfaceImpact_DrawFxDirection.GetBool())
+        {
+            DebugDraw::DrawDebugLine(ECS::GetUEWorld(), local_198.GetLocationOffset(), (FVector(local_198.GetLocationOffset()) + (local_198.GetRotationOffset().GetForwardVector() * 100.0)), FColor::Yellow, false, 60.0f, uint8(0), 0.0f);
+        }
+        if (Event.bDurational)
+        {
+            ECSFX::PlayFXDurational(local_16, local_198, Event.Time, 1.0f, false);
+        }
+        else
+        {
+            ECSFX::PlayFXInstant(local_16, local_198, Event.Time, 1.0f, false, true);
+        }
+    }
+    else
+    {
+        if (bDebug)
+        {
+            if (bPrintOnScreen)
+            {
+                Print(FString().Append("Env Surface Impact ").Append(local_18).Append(": ").Append(local_26).Append(" -> ").Append(local_21).Append(" -> FxActor No Config!"), 5.0f, FLinearColor::LucBlue);
+            }
+        }
+    }
+    return;
 }
 UFUNCTION()
 bool GetWeaponHitEnvSurfaceHitInfo(FEnvHitPresentationData &inout Result, const FECSEntity &inout EventSender, const FStrikeEventData &inout StrikeEventData, const FSurfaceContactInfo &inout SurfaceContactInfo)
@@ -216,10 +302,10 @@ bool GetWeaponHitEnvSurfaceResult(FEnvHitPresentationData &inout Result, const F
     FHitResult local_240;
     bool local_241 = false;
     local_4 = FEnvSurfaceImpactUtils::DoTraceEnvSurfaceInfo(local_241, local_240, EventSender, SurfaceContactInfo);
+    UPrimitiveComponent local_174 = local_240.GetComponent();
     Result.HitFanPlaneNormal = local_170;
     Result.HitLocation = local_240.ImpactPoint;
     Result.HitNormal = local_240.ImpactNormal;
-    UPrimitiveComponent local_174;
     Result.HitPrimitiveComp = local_174;
     Result.SurfaceName = local_4;
     XLogIf(local_1, ELog(1), (FString("GetLineTraceSurfaceName, Name: ") + local_4));
@@ -237,8 +323,6 @@ FName DoTraceEnvSurfaceInfo(bool &inout bTraceResult, FHitResult &inout OutHitRe
     int local_98 = 0;
     float32 local_190;
     float32 local_195;
-    UPrimitiveComponent local_352;
-    UPrimitiveComponent local_358;
     bTraceResult = false;
     FName local_5 = FGamePhysicsUtils::GetDefaultPhysicalSurfaceName();
     FName local_7(SurfaceContactInfo.GetSocketName().Name);
@@ -371,7 +455,7 @@ FName DoTraceEnvSurfaceInfo(bool &inout bTraceResult, FHitResult &inout OutHitRe
             else
             {
             }
-            if (local_296.GetbBlockingHit() && (local_352 != nullptr))
+            if (local_296.GetbBlockingHit() && (local_296.GetComponent() != nullptr))
             {
                 local_5 = FSceneInteractUtils::GetPhysicalMaterialNameFromHitResult(local_296);
                 if (local_29)
@@ -418,7 +502,7 @@ FName DoTraceEnvSurfaceInfo(bool &inout bTraceResult, FHitResult &inout OutHitRe
                 else
                 {
                 }
-                if (local_296.GetbBlockingHit() && (local_358 != nullptr))
+                if (local_296.GetbBlockingHit() && (local_296.GetComponent() != nullptr))
                 {
                     local_5 = FSceneInteractUtils::GetPhysicalMaterialNameFromHitResult(local_296);
                     if (local_29)
@@ -441,7 +525,6 @@ bool LineTraceMulti_EnvironmentSurface(const FECSEntity &inout PawnEntity, FName
     const AActor local_10;
     TArray<AActor> local_4;
     int local_16 = 0;
-    UPrimitiveComponent local_148;
     local_8 = PawnEntity.GetActor();
     if (local_16)
     {
@@ -485,7 +568,7 @@ bool LineTraceMulti_EnvironmentSurface(const FECSEntity &inout PawnEntity, FName
         }
         FHitResult local_146;
         OutHitResult = local_146;
-        if (local_146.GetbBlockingHit() && (local_148 != nullptr))
+        if (local_146.GetbBlockingHit() && (local_146.GetComponent() != nullptr))
         {
             OutSurfaceName = FSceneInteractUtils::GetPhysicalMaterialNameFromHitResult(local_146);
             return true;

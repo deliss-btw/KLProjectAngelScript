@@ -218,6 +218,7 @@ class US_ThrowSystem : UECSScriptSystem
         }
         if (UpdateThrowPredictPath.GetPredictPathConfig())
         {
+            const FThrowPredictPathConfig& local_10 = UpdateThrowPredictPath.GetPredictPathConfig().Get();
             Modify local_14;
             FC_ThrowPredictPathView& local_16 = local_14.opCall();
             if (local_16)
@@ -233,7 +234,6 @@ class US_ThrowSystem : UECSScriptSystem
                 }
             }
             local_16.TargetInfo = UpdateThrowPredictPath.GetTargetInfo();
-            FThrowPredictPathConfig local_10;
             FFXConfig local_138 = local_10.PredictPathFXConfig;
             if (FECSEntity(UpdateThrowPredictPath.GetTargetInfo().GetPropEntityId()).IsValid())
             {
@@ -334,10 +334,10 @@ class US_ThrowSystem : UECSScriptSystem
             }
             ECSFX::GetFXViewEntity(PredictPathFX.FXEntity);
             Get local_24;
-            if (local_24.opCall())
+            const FC_FXObject& local_26 = local_24.opCall();
+            if (local_26)
             {
-                AFXActor local_28;
-                local_20 = (Cast<ASplineFXActor>(local_28));
+                local_20 = (Cast<ASplineFXActor>(local_26.Actor.Get()));
             }
             if ((!((local_20 != nullptr))))
             {
@@ -465,6 +465,7 @@ class US_ThrowSystem : UECSScriptSystem
         FThrowTargetInfo local_6;
         int local_22 = 0;
         int local_36 = 0;
+        AActor local_40;
         int local_48 = 0;
         Remove local_84;
         Has local_10;
@@ -479,11 +480,11 @@ class US_ThrowSystem : UECSScriptSystem
         FECSEntity local_30 = local_22.GetGameActorEntity();
         if (local_36)
         {
+            local_40 = local_36.Actor.Get();
         }
         else
         {
         }
-        AActor local_40;
         AActor local_42 = local_40;
         if (local_42 == nullptr || !(local_48))
         {
@@ -591,6 +592,9 @@ class US_ThrowSystem : UECSScriptSystem
                 FThrowTargetInfo local_34_2 = local_70.Proceed();
                 if (int(local_34_2.GetTargetType()) == 1 && (FECSEntityId(local_34_2.GetPropEntityId()) == local_6.GetId()))
                 {
+                    local_60.PathTraceResults.Remove(local_34_2);
+                    local_60.PreparedPredictPaths.Remove(local_34_2);
+                    local_60.PreparedLaunchVelocities.Remove(local_34_2);
                 }
             }
             local_64.Empty(0);
@@ -601,6 +605,7 @@ class US_ThrowSystem : UECSScriptSystem
                 FThrowTargetInfo local_34_3 = local_76.Proceed();
                 if (int(local_34_3.GetTargetType()) == 1 && (FECSEntityId(local_34_3.GetPropEntityId()) == local_6.GetId()))
                 {
+                    local_60.PreparedPredictPaths.Remove(local_34_3);
                 }
             }
             local_64.Empty(0);
@@ -611,6 +616,7 @@ class US_ThrowSystem : UECSScriptSystem
                 FThrowTargetInfo local_34_4 = local_70_2.Proceed();
                 if (int(local_34_4.GetTargetType()) == 1 && (FECSEntityId(local_34_4.GetPropEntityId()) == local_6.GetId()))
                 {
+                    local_60.PreparedLaunchVelocities.Remove(local_34_4);
                 }
             }
             local_64.Empty(0);
@@ -626,7 +632,7 @@ class US_ThrowSystem : UECSScriptSystem
             auto local_76_2 = local_64.Iterator();
             for (; local_76_2.CanProceed;)
             {
-                FThrowTargetInfo local_34_6 = local_76_2.Proceed();
+                local_60.UploadedProjectileKeys.Remove(local_76_2.Proceed());
             }
         }
         return;

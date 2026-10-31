@@ -66,7 +66,7 @@ class UWidget_SettingItem : UEUIActivatableWidget
         {
             return;
         }
-        OnComponentHovered();
+        this.Item.Get().OnComponentHovered();
         return;
     }
     UFUNCTION()
@@ -76,7 +76,7 @@ class UWidget_SettingItem : UEUIActivatableWidget
         {
             return;
         }
-        OnComponentUnhovered();
+        this.Item.Get().OnComponentUnhovered();
         return;
     }
     UFUNCTION()
@@ -118,32 +118,20 @@ class UWidget_SettingItem : UEUIActivatableWidget
     UFUNCTION()
     void ApplyDisplayAndGraphicOptions()
     {
-        int local_2 = 0;
-        if (!(GetbNeedApply()))
+        if (!(this.Item.Get().GetbNeedApply()))
         {
             return;
         }
-        bool local_5 = ::FVMS_SettingPage::Get(this).isInmediateApply;
-        if (local_5)
-        {
-            local_5 = true;
-        }
-        else
-        {
-            int local_3 = local_2;
-            local_5 = (local_3 == 0);
-        }
-        ::FVMS_SettingPage::Get(this).isInmediateApply = local_5;
+        ::FVMS_SettingPage::Get(this).isInmediateApply = ::FVMS_SettingPage::Get(this).isInmediateApply || (int(this.Item.Get().GetItemConfig().Get().ApplyType) == 0);
         System::ClearAndInvalidateTimerHandle(__GetWorldContext(), this.ApplyGraphicOptionsTimerHandle);
         this.ApplyGraphicOptionsTimerHandle = System::SetTimer(this, n"DeferredApplyGraphicOptions", 0.1f, true, false, 0.0f, 0.0f);
-        bool local_1 = false;
-        local_1.SetbNeedApply();
+        this.Item.Get().SetbNeedApply(false);
         return;
     }
     UFUNCTION()
     void RequireSaveItem()
     {
-        if (!(GetbHasResolutionOptionChanged()))
+        if (!(this.Item.Get().GetbHasResolutionOptionChanged()))
         {
             return;
         }
@@ -161,17 +149,15 @@ class UWidget_SettingItem : UEUIActivatableWidget
     {
         if (int(Answer.AnswerType) == 0)
         {
-            GetPreviousValue().InitializeApplyValue(0.0f);
+            this.Item.Get().InitializeApplyValue(this.Item.Get().GetPreviousValue(), false);
         }
         else
         {
             if (int(Answer.AnswerType) == 1)
             {
-                ApplyChangedValue();
-                TEUIModelWeakRef<FVMS_SettingPage> local_8;
-                local_8.GetOwnerPage();
-                UpdateResolutionDropDownOptions();
-                SyncPreviousValue();
+                this.Item.Get().ApplyChangedValue();
+                this.Item.Get().GetOwnerPage().Get().UpdateResolutionDropDownOptions();
+                this.Item.Get().SyncPreviousValue();
                 System::ClearAndInvalidateTimerHandle(__GetWorldContext(), this.ApplyAndSaveDisplayOptionsTimerHandle);
                 this.ApplyAndSaveDisplayOptionsTimerHandle = System::SetTimer(this, n"DeferredApplyAndSaveDisplayOptions", 0.001f, false, false, 0.0f, 0.0f);
             }
@@ -183,15 +169,15 @@ class UWidget_SettingItem : UEUIActivatableWidget
     {
         if (this.w_comp != nullptr)
         {
-            this.w_comp.SetDynamicWidgetData(GetComponentWidgetData());
+            this.w_comp.SetDynamicWidgetData(this.Item.Get().GetComponentWidgetData());
         }
         return;
     }
     UFUNCTION()
     bool Item_bIsEnabled() const
     {
-        FVM_SettingItem& local_2;
         bool local_5;
+        FVM_SettingItem& local_2 = this.Item.Get();
         if (local_2)
         {
             local_5 = local_2.GetbIsEnabled();
@@ -205,8 +191,8 @@ class UWidget_SettingItem : UEUIActivatableWidget
     UFUNCTION()
     bool Item_bNeedApply() const
     {
-        FVM_SettingItem& local_2;
         bool local_5;
+        FVM_SettingItem& local_2 = this.Item.Get();
         if (local_2)
         {
             local_5 = local_2.GetbNeedApply();
@@ -220,8 +206,8 @@ class UWidget_SettingItem : UEUIActivatableWidget
     UFUNCTION()
     bool Item_bIsDisplayOrGraphics() const
     {
-        FVM_SettingItem& local_2;
         bool local_5;
+        FVM_SettingItem& local_2 = this.Item.Get();
         if (local_2)
         {
             local_5 = local_2.GetbIsDisplayOrGraphics();
@@ -263,8 +249,8 @@ class UWidget_SettingItem : UEUIActivatableWidget
     }
     void HandleObservedModelChanges(FEUIReactiveSubscriberIterator &inout It)
     {
-        FVM_SettingItem& local_6;
         TEUIModelRef<FVM_SettingItem> local_2 = this.Item.AsRef();
+        FVM_SettingItem& local_6 = local_2.Get();
         for (; It; )
         {
             FEUIReactiveSubscriberTrackScope local_56 = FEUIReactiveSubscriberTrackScope(It);

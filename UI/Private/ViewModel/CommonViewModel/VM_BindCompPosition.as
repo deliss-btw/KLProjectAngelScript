@@ -133,9 +133,7 @@ struct FVM_BindCompPosition : FEUIViewModel
         }
         FECSEntity local_10 = this.GetContext().GetLocalPlayer();
         GetDefaulted local_14;
-        TWeakObjectPtr<AECSPlayerController> local_16 = local_14.opCall().GetUEPlayerController();
-        AECSPlayerController local_18;
-        APlayerController local_6 = local_18;
+        APlayerController local_6 = local_14.opCall().GetUEPlayerController().Get();
         if (local_6 == nullptr)
         {
             return;
@@ -347,11 +345,9 @@ FVM_BindCompPosition& Create(const UObject ContextObject)
 {
     return FVM_BindCompPosition::CreateByManager(EUIInternal::GetContextManager(ContextObject));
 }
-FVM_BindCompPosition CreateByManager(const UEUIManagerSubsystem Manager)
+FVM_BindCompPosition& CreateByManager(const UEUIManagerSubsystem Manager)
 {
-    FVM_BindCompPosition __r;
-    TEUIModelRef<FVM_BindCompPosition> local_6 = TEUIModelRef<FVM_BindCompPosition>(EUIInternal::MakeModelWithManager(Manager, FVM_BindCompPosition::ModelId));
-    return __r;
+    return TEUIModelRef<FVM_BindCompPosition>(EUIInternal::MakeModelWithManager(Manager, FVM_BindCompPosition::ModelId)).Get();
 }
 void GetModelInfo(FEUIViewModelMetaInfo &inout Result)
 {
@@ -442,7 +438,6 @@ namespace __GeneratedProperties_FVM_BindCompPosition
 {
 UScriptStruct StaticStruct()
 {
-    UScriptStruct local_2;
-    return local_2;
+    return __GeneratedProperties_FVM_BindCompPosition.Get();
 }
 }

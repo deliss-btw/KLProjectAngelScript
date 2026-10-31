@@ -8,8 +8,6 @@ class US_TimeOfDaySystem : UECSScriptSystem
     {
         int local_8 = 0;
         int local_17;
-        float32 local_27 = 0.0f;
-        bool local_41 = false;
         FECSWorldPtr local_2 = this.GetECSWorld();
         AAS_ECSWorldSettings local_16 = (Cast<AAS_ECSWorldSettings>(ECS::GetUEWorld().GetWorldSettings()));
         if (local_16 != nullptr)
@@ -29,8 +27,7 @@ class US_TimeOfDaySystem : UECSScriptSystem
                 }
                 if (local_26.TimeSpeedOverride >= 0.0f)
                 {
-                    local_27 = local_26.TimeSpeedOverride;
-                    local_18 = local_27;
+                    local_18 = local_26.TimeSpeedOverride;
                     XLog(ELog(22), FString().Append("CommissionDSGlobalInfo override Time Speed: ").Append(local_18));
                 }
             }
@@ -47,15 +44,16 @@ class US_TimeOfDaySystem : UECSScriptSystem
                     }
                     else
                     {
-                        local_41 = (local_27 > 0.0f);
+                        float32 local_27 = local_40.CommissionConfig.Get().CommissionDayTime;
+                        bool local_41 = (local_27 > 0.0f);
                         local_17 = local_41;
                     }
                     if (local_17 != 0)
                     {
-                        local_20 = local_27;
+                        local_20 = local_40.CommissionConfig.Get().CommissionDayTime;
                         XLog(ELog(22), FString().Append("CommissionDayTime override Day Time: ").Append(local_20));
                     }
-                    if (local_41)
+                    if (local_40.CommissionConfig.Get().bLockDayTime)
                     {
                         local_8.SetbPaused(true);
                     }

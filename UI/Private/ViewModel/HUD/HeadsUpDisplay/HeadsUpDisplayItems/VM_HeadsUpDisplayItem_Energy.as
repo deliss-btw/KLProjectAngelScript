@@ -61,11 +61,9 @@ struct FVM_HeadsUpDisplayItem_Energy : FEUIViewModel
     void Tick()
     {
         FECSEntity local_4 = FECSEntity(ENTITY_NULL);
-        TEUIModelRef<FM_Spot> local_6 = this.GetSpot();
-        if ((!((::GetOwnerEntityId() == ENTITY_ID_NULL))))
+        if ((!((::GetOwnerEntityId(this.GetSpot().Get()) == ENTITY_ID_NULL))))
         {
-            TEUIModelRef<FM_Spot> local_6_2 = this.GetSpot();
-            local_4 = FECSEntity(::GetOwnerEntityId());
+            local_4 = FECSEntity(::GetOwnerEntityId(this.GetSpot().Get()));
         }
         if (local_4.IsValid())
         {
@@ -88,38 +86,19 @@ struct FVM_HeadsUpDisplayItem_Energy : FEUIViewModel
     }
     void BindEnergySources()
     {
-        bool local_79 = false;
         if ((!((::FASCommonUtils::GetUniquePlayerEntity(::BlueprintFunctions_Common::GetEntityOwner(FECSEntityAdapter(this.GetValidEntity()))) == this.GetContext().GetLocalPlayer()))))
         {
             this.GetModify_EnergySource().Reset();
             return;
         }
-        TEUIModelRef<FM_Spot> local_22 = this.GetSpot();
-        TDataObjectPtr<FHeadsUpDisplayConfig> local_54;
-        bool local_19 = !(local_54);
-        if (local_19)
-        {
-            local_19 = true;
-        }
-        else
-        {
-            local_79 = !local_79;
-            local_19 = local_79;
-        }
-        if (local_19)
-        {
-            local_19 = true;
-        }
-        else
-        {
-            local_79 = !local_79;
-            local_19 = local_79;
-        }
-        if (local_19)
+        FSpotViewAdapter local_30;
+        TDataObjectPtr<FHeadsUpDisplayConfig> local_54 = ::GetHeadsUpDisplayConfig(this.GetSpot().Get(), local_30);
+        if (!(local_54) || !(local_54.Get().EnergyDisplayRuleAttribute.IsValid()) || !(local_54.Get().EnergyDisplayRuleAttributeMax.IsValid()))
         {
             this.GetModify_EnergySource().Reset();
             return;
         }
+        this.GetModify_EnergySource().SetAttribute(this.GetValidEntity(), local_54.Get().EnergyDisplayRuleAttribute, local_54.Get().EnergyDisplayRuleAttributeMax);
         return;
     }
     void RefreshEnergyDisplay()
@@ -254,11 +233,9 @@ FVM_HeadsUpDisplayItem_Energy& Create(const UObject ContextObject, const TEUIMod
 {
     return FVM_HeadsUpDisplayItem_Energy::CreateByManager(EUIInternal::GetContextManager(ContextObject), Spot);
 }
-FVM_HeadsUpDisplayItem_Energy CreateByManager(const UEUIManagerSubsystem Manager, const TEUIModelRef<FM_Spot> &inout Spot)
+FVM_HeadsUpDisplayItem_Energy& CreateByManager(const UEUIManagerSubsystem Manager, const TEUIModelRef<FM_Spot> &inout Spot)
 {
-    FVM_HeadsUpDisplayItem_Energy __r;
-    TEUIModelRef<FVM_HeadsUpDisplayItem_Energy> local_6 = TEUIModelRef<FVM_HeadsUpDisplayItem_Energy>(EUIInternal::MakeModelWithManager_Generic(Manager, FVM_HeadsUpDisplayItem_Energy::ModelId, 0, Spot));
-    return __r;
+    return TEUIModelRef<FVM_HeadsUpDisplayItem_Energy>(EUIInternal::MakeModelWithManager_Generic(Manager, FVM_HeadsUpDisplayItem_Energy::ModelId, 0, Spot)).Get();
 }
 void GetModelInfo(FEUIViewModelMetaInfo &inout Result)
 {
@@ -338,7 +315,6 @@ namespace __GeneratedProperties_FVM_HeadsUpDisplayItem_Energy
 {
 UScriptStruct StaticStruct()
 {
-    UScriptStruct local_2;
-    return local_2;
+    return __GeneratedProperties_FVM_HeadsUpDisplayItem_Energy.Get();
 }
 }

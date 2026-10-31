@@ -189,11 +189,9 @@ FVM_DynamicWidgetSelector& Create(const UObject ContextObject, const TArray<FEUI
 {
     return FVM_DynamicWidgetSelector::CreateByManager(EUIInternal::GetContextManager(ContextObject), ModelList);
 }
-FVM_DynamicWidgetSelector CreateByManager(const UEUIManagerSubsystem Manager, const TArray<FEUIDynamicWidgetData> &inout ModelList)
+FVM_DynamicWidgetSelector& CreateByManager(const UEUIManagerSubsystem Manager, const TArray<FEUIDynamicWidgetData> &inout ModelList)
 {
-    FVM_DynamicWidgetSelector __r;
-    TEUIModelRef<FVM_DynamicWidgetSelector> local_6 = TEUIModelRef<FVM_DynamicWidgetSelector>(EUIInternal::MakeModelWithManager_Generic(Manager, FVM_DynamicWidgetSelector::ModelId, 0, ModelList));
-    return __r;
+    return TEUIModelRef<FVM_DynamicWidgetSelector>(EUIInternal::MakeModelWithManager_Generic(Manager, FVM_DynamicWidgetSelector::ModelId, 0, ModelList)).Get();
 }
 void GetModelInfo(FEUIViewModelMetaInfo &inout Result)
 {
@@ -279,7 +277,6 @@ namespace __GeneratedProperties_FVM_DynamicWidgetSelector
 {
 UScriptStruct StaticStruct()
 {
-    UScriptStruct local_2;
-    return local_2;
+    return __GeneratedProperties_FVM_DynamicWidgetSelector.Get();
 }
 }

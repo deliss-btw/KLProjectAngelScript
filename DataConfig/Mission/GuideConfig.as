@@ -20,14 +20,13 @@ struct FGuidePresentationConfig : FDataObject
     {
         if (this.GetPresentationConfig().IsSet())
         {
-            FSoftBrush local_92;
-            local_92.GetDefaultIcon();
+            FSoftBrush local_92 = this.GetPresentationConfig().Get().GetDefaultIcon();
             if (local_92.IsSet())
             {
                 return local_92;
             }
         }
-        return local_92;
+        return FSoftBrush();
     }
     TDataObjectPtr<FPresentationConfig> GetPresentationConfig() const property
     {

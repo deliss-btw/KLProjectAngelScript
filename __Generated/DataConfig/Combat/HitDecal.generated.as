@@ -18,7 +18,6 @@ int __FHitDecalConfig_GetDecalTextureID(const TDataObjectPtr<FHitDecalConfig> &i
 UFUNCTION()
 FVector __FHitDecalConfig_GetSize(const TDataObjectPtr<FHitDecalConfig> &inout DataObject)
 {
-    FVector __r;
     if ((DataObject == nullptr))
     {
         if (!(EUIGlobals::GIsDuringPropertyConversion))
@@ -28,7 +27,7 @@ FVector __FHitDecalConfig_GetSize(const TDataObjectPtr<FHitDecalConfig> &inout D
         FHitDecalConfig local_28;
         return local_28.Size;
     }
-    return __r;
+    return DataObject.Get().Size;
 }
 UFUNCTION()
 float32 __FHitDecalConfig_GetDuration(const TDataObjectPtr<FHitDecalConfig> &inout DataObject)
@@ -63,18 +62,16 @@ float32 __FHitDecalConfig_GetInitOpacity(const TDataObjectPtr<FHitDecalConfig> &
 UFUNCTION()
 bool __FHitDecalConfig_GetbFadeOutByTime(const TDataObjectPtr<FHitDecalConfig> &inout DataObject)
 {
-    bool local_1 = false;
     if ((DataObject == nullptr))
     {
-        local_1 = !(EUIGlobals::GIsDuringPropertyConversion);
-        if (local_1)
+        if (!(EUIGlobals::GIsDuringPropertyConversion))
         {
             FBlueprintDebugFunctions::ThrowScriptException("Get 'bFadeOutByTime' from a null 'FHitDecalConfig' DataObject!");
         }
         FHitDecalConfig local_28;
         return local_28.bFadeOutByTime;
     }
-    return local_1;
+    return DataObject.Get().bFadeOutByTime;
 }
 UFUNCTION()
 float32 __FHitDecalConfig_GetFadeStartTime(const TDataObjectPtr<FHitDecalConfig> &inout DataObject)

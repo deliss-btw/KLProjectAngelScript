@@ -57,40 +57,37 @@ bool TryFindActivetedObjectiveInstance(const uint InstanceId, FObjectiveInstance
 }
 void RegisterAndUpdateConditionInfo(FObjectiveConditionInfo &inout ConditionInfo, const TDataObjectPtr<FConditionConfigBase> &inout ConditionConfig, const FObjectiveContext &inout Context)
 {
-    int local_26 = 0;
-    int local_86 = 0;
-    int local_167 = 0;
     ConditionInfo.ConditionConfig = ConditionConfig;
     ConditionInfo.ProgressValue = 0;
     ConditionInfo.TargetProgressValue = ConditionUtils::GetTargetValue(ConditionConfig);
-    if (local_26 == 2)
+    if (int(ConditionConfig.Get().ConfigType) == 2)
     {
         CastTo local_32;
         TDataObjectPtr<FLocalConditionConfigBase> local_56 = local_32.opCall();
         if (local_56)
         {
-            local_86 = int(Context.UniqueIdForUsage);
-            ConditionInfo.ConditionIdentifier = FConditionIdentifier(GetUniqueID(), local_86, Context.ConditionUsage);
+            ConditionInfo.ConditionIdentifier = FConditionIdentifier(ConditionConfig.Get().GetUniqueID(), int(Context.UniqueIdForUsage), Context.ConditionUsage);
             ObjectiveUtils::RegisterLocalCondition(local_56, Context.ContextEntity);
         }
         return;
     }
-    if (local_26 == 1)
+    if (int(ConditionConfig.Get().ConfigType) == 1)
     {
         CastTo local_142;
-        if (local_142.opCall())
+        TDataObjectPtr<FConditionConfig> local_166 = local_142.opCall();
+        if (local_166)
         {
-            ConditionInfo.GSCondDataId = local_86;
-            local_86 = int(Context.UniqueIdForUsage);
-            int64 local_88 = local_167;
-            ConditionInfo.ConditionIdentifier = FConditionIdentifier(local_88, local_86, Context.ConditionUsage);
+            ConditionInfo.GSCondDataId = local_166.Get().DataId;
+            int64 local_88 = local_166.Get().DataId;
+            ConditionInfo.ConditionIdentifier = FConditionIdentifier(local_88, int(Context.UniqueIdForUsage), Context.ConditionUsage);
             return;
         }
         CastTo local_196;
-        if (local_196.opCall())
+        TDataObjectPtr<FGsConditionGroupConfig> local_220 = local_196.opCall();
+        if (local_220)
         {
-            ConditionInfo.GSCondDataId = local_167;
-            int64 local_88_2 = local_86;
+            ConditionInfo.GSCondDataId = local_220.Get().DataId;
+            int64 local_88_2 = local_220.Get().DataId;
             ConditionInfo.ConditionIdentifier = FConditionIdentifier(local_88_2, int(Context.UniqueIdForUsage), Context.ConditionUsage);
         }
     }
@@ -98,64 +95,58 @@ void RegisterAndUpdateConditionInfo(FObjectiveConditionInfo &inout ConditionInfo
 }
 uint CreateObjectiveInstance(const TDataObjectPtr<FObjectiveConfig> &inout Objective, const FObjectiveContext &inout Context)
 {
-    int local_16 = 0;
     FECSWorldPtr local_2 = ECS::GetECSWorld();
     FCS_ObjectiveManager local_8;
-    int local_10 = int(local_8.NextInstanceId);
-    int local_9 = local_10;
+    int local_9 = int(local_8.NextInstanceId);
     ++local_8.NextInstanceId;
     bool local_11 = !(local_8.ActiveObjectives.Contains(local_9));
     FObjectiveInstance& local_14 = local_8.ActiveObjectives.FindOrAdd(local_9);
     local_14.InstanceId = local_9;
+    int local_10 = Objective.Get().DataId;
     local_14.ObjectiveId = local_10;
     local_14.Status = EObjectiveStatus(1);
-    int local_17 = local_16;
-    if (local_17 == 0)
+    if (int(Objective.Get().ObjectiveType) == 0)
     {
         CastTo local_46;
         TDataObjectPtr<FObjectiveSingleConfig> local_70 = local_46.opCall();
-        if (GetFinishCondition().IsSet())
+        if (local_70.Get().GetFinishCondition().IsSet())
         {
-            ObjectiveUtils::RegisterAndUpdateConditionInfo(local_14.FinishConditionInfo, GetFinishCondition(), Context);
+            ObjectiveUtils::RegisterAndUpdateConditionInfo(local_14.FinishConditionInfo, local_70.Get().GetFinishCondition(), Context);
         }
-        if (GetFailCondition().IsSet())
+        if (local_70.Get().GetFailCondition().IsSet())
         {
-            ObjectiveUtils::RegisterAndUpdateConditionInfo(local_14.FailConditionInfo, GetFailCondition(), Context);
+            ObjectiveUtils::RegisterAndUpdateConditionInfo(local_14.FailConditionInfo, local_70.Get().GetFailCondition(), Context);
         }
     }
     return local_9;
 }
 uint ActivateObjective(const TDataObjectPtr<FObjectiveConfig> &inout Objective, const FObjectiveContext &inout Context = FObjectiveContext())
 {
-    int local_1 = 0;
-    int local_6 = 0;
     int local_74 = 0;
-    int local_75 = 0;
     int local_91;
     CastTo local_96;
-    int local_2 = local_1;
-    if (local_2 == 0)
+    if (int(Objective.Get().ObjectiveType) == 0)
     {
-        local_6 = ObjectiveUtils::CreateObjectiveInstance(Objective, Context);
+        int local_6 = ObjectiveUtils::CreateObjectiveInstance(Objective, Context);
         XLog(ELog(65), FString().Append("Activate: ").Append(Objective.GetDataName()).Append("(").Append(local_6).Append(")"));
         return local_6;
     }
-    if (local_1 == 1)
+    if (int(Objective.Get().ObjectiveType) == 1)
     {
         CastTo local_42;
         TDataObjectPtr<FObjectiveGroupConfig> local_66 = local_42.opCall();
         int local_5 = ObjectiveUtils::CreateObjectiveInstance(Objective, Context);
         XLog(ELog(65), FString().Append("Activate Group: ").Append(Objective.GetDataName()).Append("(").Append(local_5).Append(")"));
         FECSWorldPtr local_68 = ECS::GetECSWorld();
-        local_74.ActiveObjectives[local_5].FinishType = EObjectiveFinishType(local_75);
-        if (local_75 == 2)
+        local_74.ActiveObjectives[local_5].FinishType = EObjectiveFinishType(local_66.Get().FinishType);
+        if (int(local_66.Get().FinishType) == 2)
         {
             bool local_76;
             local_76 = true;
-            for (auto& local_90 : GetChildObjectives())
+            for (auto& local_90 : local_66.Get().GetChildObjectives())
             {
-                local_90;
-                local_91 = local_6;
+                int local_6_2 = local_90.Get().DataId;
+                local_91 = local_6_2;
                 if (local_76)
                 {
                     local_74.ActiveObjectives[local_5].ChildObjectiveMap.Add(local_91, ObjectiveUtils::ActivateObjective(local_96.opCall(), Context));
@@ -167,21 +158,20 @@ uint ActivateObjective(const TDataObjectPtr<FObjectiveConfig> &inout Objective, 
         }
         else
         {
-            for (auto& local_90 : GetChildObjectives())
+            for (auto& local_90 : local_66.Get().GetChildObjectives())
             {
-                local_90;
-                int local_92 = ObjectiveUtils::ActivateObjective(local_96.opCall(), Context);
+                local_74.ActiveObjectives[local_5].ChildObjectiveMap.Add(local_90.Get().DataId, ObjectiveUtils::ActivateObjective(local_96.opCall(), Context));
             }
         }
         return local_5;
     }
-    local_6 = 0;
-    return local_6;
+    int local_6_3 = 0;
+    return local_6_3;
 }
 TArray<uint> DeactivateObjectives(const uint ObjectiveInstanceId)
 {
     TArray<uint> local_4;
-    int local_178 = 0;
+    int local_190 = 0;
     FObjectiveInstance local_150;
     if (!(ObjectiveUtils::TryFindActivetedObjectiveInstance(ObjectiveInstanceId, local_150)))
     {
@@ -190,10 +180,10 @@ TArray<uint> DeactivateObjectives(const uint ObjectiveInstanceId)
     }
     for (auto& local_176 : local_150.ChildObjectiveMap)
     {
-        local_176;
-        if (0 != 0)
+        int local_177 = local_176.GetValue();
+        if (local_177 != 0)
         {
-            local_4.Append(ObjectiveUtils::DeactivateObjectives(local_178));
+            local_4.Append(ObjectiveUtils::DeactivateObjectives(local_176.GetValue()));
         }
     }
     XLog(ELog(65), FString().Append("Deactivate: ").Append(local_150.ObjectiveId).Append("(").Append(ObjectiveInstanceId).Append(")"));
@@ -201,6 +191,7 @@ TArray<uint> DeactivateObjectives(const uint ObjectiveInstanceId)
     ObjectiveUtils::UnregisterLocalCondition(local_150.FinishConditionInfo.ConditionHandle);
     ObjectiveUtils::UnregisterLocalCondition(local_150.FailConditionInfo.ConditionHandle);
     FECSWorldPtr local_184 = ECS::GetECSWorld();
+    local_190.ActiveObjectives.Remove(ObjectiveInstanceId);
     local_4.Add(ObjectiveInstanceId);
     return local_4;
 }
@@ -208,7 +199,6 @@ TArray<uint> DeactivateObjectivesForPlayer(const FECSEntity &inout PlayerEntity)
 {
     TArray<uint> local_4;
     int local_14 = 0;
-    TMapIterator<uint, uint> local_44;
     if (!(PlayerEntity.IsValid()))
     {
         return local_4;
@@ -221,20 +211,19 @@ TArray<uint> DeactivateObjectivesForPlayer(const FECSEntity &inout PlayerEntity)
     TArray<uint> local_18;
     for (auto& local_36 : local_14.ActiveObjectives)
     {
-        for (; local_44.CanProceed;)
+        for (auto& local_54 : local_36.GetValue().ChildObjectiveMap)
         {
-            local_44.Proceed();
-            if (0 != 0)
+            int local_55 = local_54.GetValue();
+            if (local_55 != 0)
             {
-                local_18.AddUnique();
+                local_18.AddUnique(local_54.GetValue());
             }
         }
     }
     TArray<uint> local_60;
-    FECSEntity local_64;
     for (auto& local_36_2 : local_14.ActiveObjectives)
     {
-        if ((!((local_64 == PlayerEntity))))
+        if ((!((FECSEntity(local_36_2.GetValue().Context.ContextEntity) == PlayerEntity))))
         {
             continue;
         }
@@ -282,38 +271,36 @@ void SetObjectiveStatusManually(const uint ObjectiveInstanceId, const EObjective
 FText GetObjectiveTitle(const TDataObjectPtr<FObjectiveConfig> &inout ObjectiveConfig)
 {
     CastTo local_28;
-    FText __return;
-    if (local_28.opCall())
+    TDataObjectPtr<FObjectiveSingleConfig> local_52 = local_28.opCall();
+    if (local_52)
     {
+        return local_52.Get().ObjectiveTitle;
     }
-    else
-    {
-        XError(ELog(65), FString().Append("ObjectiveConfig is not a single objective"));
-        __return = FText();
-    }
-    return __return;
+    XError(ELog(65), FString().Append("ObjectiveConfig is not a single objective"));
+    return FText();
 }
 void GetObjectiveTargetValue(const TDataObjectPtr<FObjectiveConfig> &inout ObjectiveConfig, int &out TargetFinishValue, int &out TargetFailValue)
 {
-    CastTo local_30;
     int local_56;
     int local_57;
     TargetFinishValue = 0;
     TargetFailValue = 0;
-    if (local_30.opCall())
+    CastTo local_30;
+    TDataObjectPtr<FObjectiveSingleConfig> local_54 = local_30.opCall();
+    if (local_54)
     {
-        if (GetFinishCondition().IsSet())
+        if (local_54.Get().GetFinishCondition().IsSet())
         {
-            local_57 = ConditionUtils::GetTargetValue(GetFinishCondition());
+            local_57 = ConditionUtils::GetTargetValue(local_54.Get().GetFinishCondition());
         }
         else
         {
             local_57 = 1;
         }
         TargetFinishValue = local_57;
-        if (GetFailCondition().IsSet())
+        if (local_54.Get().GetFailCondition().IsSet())
         {
-            local_56 = ConditionUtils::GetTargetValue(GetFailCondition());
+            local_56 = ConditionUtils::GetTargetValue(local_54.Get().GetFailCondition());
         }
         else
         {
@@ -330,17 +317,17 @@ void GetObjectiveTargetValue(const TDataObjectPtr<FObjectiveConfig> &inout Objec
 }
 bool TryCalculateGuideDistance(const TDataObjectPtr<FObjectiveConfig> &inout ObjectiveConfig, const FECSEntity &inout PlayerEntity, float &out Distance)
 {
-    int local_3 = 0;
     Distance = 0.0;
     CastTo local_76;
-    if (local_3 == 1)
+    if (int(ObjectiveConfig.Get().ObjectiveType) == 1)
     {
         CastTo local_34;
-        if (!(local_34.opCall()))
+        TDataObjectPtr<FObjectiveGroupConfig> local_58 = local_34.opCall();
+        if (!(local_58))
         {
             return false;
         }
-        for (auto& local_72 : GetChildObjectives())
+        for (auto& local_72 : local_58.Get().GetChildObjectives())
         {
             local_72;
             if (ObjectiveUtils::TryCalculateGuideDistance(local_76.opCall(), PlayerEntity, Distance))
@@ -349,8 +336,7 @@ bool TryCalculateGuideDistance(const TDataObjectPtr<FObjectiveConfig> &inout Obj
             }
         }
     }
-    int local_4 = local_3;
-    if (local_4 == 0)
+    if (int(ObjectiveConfig.Get().ObjectiveType) == 0)
     {
         TArray<FInstancedStruct> local_178;
         CastTo local_128;
@@ -385,7 +371,6 @@ bool TryCalculateGuideDistance(const TDataObjectPtr<FObjectiveConfig> &inout Obj
 }
 EObjectiveGuideDisplayState GetObjectiveGuideDisplayInfo(const TDataObjectPtr<FObjectiveConfig> &inout ObjectiveConfig, const FECSEntity &inout PlayerEntity, float &out Distance, TDataObjectPtr<FLevelInfoConfig> &out TargetLevelInfo)
 {
-    int local_103 = 0;
     float local_200;
     Distance = 0.0;
     Distance = 0.0;
@@ -393,19 +378,20 @@ EObjectiveGuideDisplayState GetObjectiveGuideDisplayInfo(const TDataObjectPtr<FO
     TargetLevelInfo = local_76;
     if (!(ObjectiveConfig))
     {
-        return EObjectiveGuideDisplayState(0);
+        return EObjectiveGuideDisplayState::None;
     }
-    if (local_103 == 1)
+    if (int(ObjectiveConfig.Get().ObjectiveType) == 1)
     {
         EObjectiveGuideDisplayState local_159;
         CastTo local_134;
-        if (!(local_134.opCall()))
+        TDataObjectPtr<FObjectiveGroupConfig> local_158 = local_134.opCall();
+        if (!(local_158))
         {
-            return EObjectiveGuideDisplayState(0);
+            return EObjectiveGuideDisplayState::None;
         }
-        local_159 = EObjectiveGuideDisplayState(0);
+        local_159 = EObjectiveGuideDisplayState::None;
         TDataObjectPtr<FLevelInfoConfig> local_184;
-        for (auto& local_198 : GetChildObjectives())
+        for (auto& local_198 : local_158.Get().GetChildObjectives())
         {
             local_198;
             TDataObjectPtr<FLevelInfoConfig> local_224;
@@ -425,8 +411,7 @@ EObjectiveGuideDisplayState GetObjectiveGuideDisplayInfo(const TDataObjectPtr<FO
         TargetLevelInfo = local_184;
         return local_159;
     }
-    int local_105 = local_103;
-    if (local_105 == 0)
+    if (int(ObjectiveConfig.Get().ObjectiveType) == 0)
     {
         FGuideConfig local_308;
         CastTo local_282;
@@ -458,18 +443,20 @@ EObjectiveGuideDisplayState GetObjectiveGuideDisplayInfo(const TDataObjectPtr<FO
 bool IsCommissionObjective(const TDataObjectPtr<FObjectiveConfig> &inout ObjectiveConfig, TDataObjectPtr<FCommissionConfig> &out CommissionConfig)
 {
     CastTo local_76;
-    if (local_76.opCall())
+    TDataObjectPtr<FObjectiveSingleConfig> local_100 = local_76.opCall();
+    if (local_100)
     {
-        if (!(GetFinishCondition().IsSet()))
+        if (!(local_100.Get().GetFinishCondition().IsSet()))
         {
             return false;
         }
         CastTo local_178;
-        if (!(local_178.opCall()))
+        TDataObjectPtr<FConditionConfig> local_202 = local_178.opCall();
+        if (!(local_202))
         {
             return false;
         }
-        if (0 == 1 && (GetRefData().Num() > 0))
+        if (int(local_202.Get().CondType) == 1 && (local_202.Get().GetRefData().Num() > 0))
         {
             CastTo local_210;
             CommissionConfig = local_210.opCall();
@@ -502,10 +489,12 @@ FGuideContext CreateGuideContext(const FECSEntity &inout RequesterPlayer, const 
     local_216.SetbShowGuidingPath(bShowGuidingPath);
     if (GuideIndex >= 0 && (GuideIndex < local_218.Num()))
     {
-        if (FInstancedStruct::GetPtr(local_218[GuideIndex]).opCall())
+        TConstRawPtr<FGuideDataBase> local_228 = FInstancedStruct::GetPtr(local_218[GuideIndex]).opCall();
+        if (local_228)
         {
-            if (unresolved.OverridePresentation.IsSet())
+            if (local_228.Get().OverridePresentation.IsSet())
             {
+                local_216.SetGuidePresentationConfig(local_228.Get().OverridePresentation);
             }
         }
     }
@@ -514,7 +503,7 @@ FGuideContext CreateGuideContext(const FECSEntity &inout RequesterPlayer, const 
 bool CanStartObjectiveGuideInLevel(const TDataObjectPtr<FObjectiveConfig> &inout ObjectiveConfig, const TDataObjectPtr<FLevelInfoConfig> &inout LevelInfo = TDataObjectPtr<FLevelInfoConfig>())
 {
     FGuideConfig local_58;
-    if (0 == 1)
+    if (int(ObjectiveConfig.Get().ObjectiveType) == 1)
     {
         return false;
     }
@@ -541,12 +530,12 @@ bool CanStartObjectiveGuideInLevel(const TDataObjectPtr<FObjectiveConfig> &inout
     {
         return false;
     }
-    return (0 == 0);
+    return (local_106.Get().DataId == local_58.LevelInfo.Get().DataId);
 }
 TArray<uint> GetObjectiveStartedGuideUniqueIds(const FECSEntity &inout RequesterPlayer, const uint ObjectiveInstanceId, const TDataObjectPtr<FObjectiveConfig> &inout ObjectiveConfig)
 {
     TArray<uint> local_4;
-    if (!(ObjectiveConfig.IsSet()) || (0 == 1))
+    if (!(ObjectiveConfig.IsSet()) || (int(ObjectiveConfig.Get().ObjectiveType) == 1))
     {
         return local_4;
     }
@@ -573,7 +562,6 @@ bool StartObjectiveGuide(const uint ObjectiveInstanceId, const FECSEntity &inout
 {
     bool local_148;
     FObjectiveInstance local_146;
-    int local_168 = 0;
     if (!(ObjectiveUtils::TryFindActivetedObjectiveInstance(ObjectiveInstanceId, local_146)))
     {
         return false;
@@ -582,12 +570,12 @@ bool StartObjectiveGuide(const uint ObjectiveInstanceId, const FECSEntity &inout
     {
         for (auto& local_166 : local_146.ChildObjectiveMap)
         {
-            local_166;
-            if (0 == 0)
+            int local_167 = local_166.GetValue();
+            if (local_167 == 0)
             {
                 continue;
             }
-            if (ObjectiveUtils::StartObjectiveGuide(local_168, RequesterPlayer, GuidePresentationConfig, GuideDataSource, bClientAutoSelectIcon, bShowGuidingPath))
+            if (ObjectiveUtils::StartObjectiveGuide(local_166.GetValue(), RequesterPlayer, GuidePresentationConfig, GuideDataSource, bClientAutoSelectIcon, bShowGuidingPath))
             {
             }
         }
@@ -635,10 +623,8 @@ bool StartObjectiveGuide(const uint ObjectiveInstanceId, const FECSEntity &inout
 }
 void StopObjectiveGuide(const uint ObjectiveInstanceId, const FECSEntity &inout RequesterPlayer = ENTITY_NULL)
 {
-    FObjectiveInstance local_146;
-    int local_167 = 0;
-    int local_168 = 0;
     TArray<FInstancedStruct> local_274;
+    FObjectiveInstance local_146;
     if (!(ObjectiveUtils::TryFindActivetedObjectiveInstance(ObjectiveInstanceId, local_146)))
     {
         return;
@@ -647,22 +633,21 @@ void StopObjectiveGuide(const uint ObjectiveInstanceId, const FECSEntity &inout 
     {
         for (auto& local_166 : local_146.ChildObjectiveMap)
         {
-            local_166;
+            int local_167 = local_166.GetValue();
             if (local_167 != 0)
             {
-                ObjectiveUtils::StopObjectiveGuide(local_168, RequesterPlayer);
+                ObjectiveUtils::StopObjectiveGuide(local_166.GetValue(), RequesterPlayer);
             }
         }
         return;
     }
-    ObjectiveUtils::FindObjectiveConfig(int(local_146.ObjectiveId));
+    int local_217 = int(ObjectiveUtils::FindObjectiveConfig(int(local_146.ObjectiveId)).Get().ObjectiveType);
     CastTo local_248;
     TDataObjectPtr<FObjectiveSingleConfig> local_272 = local_248.opCall();
     int local_275 = 0;
     for (; local_275 < local_274.Num(); ++local_275)
     {
-        local_167 = ObjectiveInstanceId * 100;
-        if (!(GuideUtils::TryStopGuide(local_167 + local_275, local_274[local_275], RequesterPlayer)))
+        if (!(GuideUtils::TryStopGuide((ObjectiveInstanceId * 100) + local_275, local_274[local_275], RequesterPlayer)))
         {
             XError(ELog(65), FString().Append("Failed to stop guide ").Append(local_275).Append(" for objective ").Append(ObjectiveInstanceId));
         }
@@ -751,7 +736,6 @@ bool TryFindConditionValueIndex(const FPbDsPlayerConditionInfo &inout CondtionIn
 void HandleGSConditionProgressNotify(const FECSEntity &inout PlayerEntity, const TArray<FPbUint32Pair> &inout GsCondValues, const TArray<FPbConditionInfo> &inout GsEventValues)
 {
     int local_10 = 0;
-    int local_51 = 0;
     FFPTime local_6 = FFPTime(-1);
     for (auto& local_26 : GsCondValues)
     {
@@ -761,8 +745,7 @@ void HandleGSConditionProgressNotify(const FECSEntity &inout PlayerEntity, const
     for (auto& local_48 : GsEventValues)
     {
         int local_49 = int(ObjectiveUtils::ConvertToConditionUsage(local_48.GetCondModule()));
-        int local_7 = local_49;
-        if (local_7 == 0)
+        if (local_49 == 0)
         {
             XError(ELog(65), FString().Append("HandleGSConditionProgressNotify ").Append(PlayerEntity).Append(" ").Append(local_48.GetCondModule()).Append(" is invalid"));
             continue;
@@ -770,11 +753,11 @@ void HandleGSConditionProgressNotify(const FECSEntity &inout PlayerEntity, const
         FConditionIdentifier local_56 = FConditionIdentifier(local_48.GetConditionId(), local_48.GetModuleInnerId(), EConditionUsage(local_49));
         if (local_10.GSEventValueMap.Contains(local_56))
         {
-            XError(ELog(65), FString().Append("HandleGSConditionProgressNotify ").Append(PlayerEntity).Append(" ").Append(local_49).Append(" CondId=").Append(local_48.GetConditionId()).Append(" CondValue=").Append(local_51).Append(" already exists"));
+            XError(ELog(65), FString().Append("HandleGSConditionProgressNotify ").Append(PlayerEntity).Append(" ").Append(local_49).Append(" CondId=").Append(local_48.GetConditionId()).Append(" CondValue=").Append(local_48.GetValue()).Append(" already exists"));
             continue;
         }
-        local_10.GSEventValueMap.Add(local_56, local_7);
-        XLog(ELog(65), FString().Append("HandleGSConditionProgressNotify ").Append(PlayerEntity).Append(" ").Append(local_49).Append(" CondId=").Append(local_48.GetConditionId()).Append(" CondValue=").Append(local_51));
+        local_10.GSEventValueMap.Add(local_56, local_48.GetValue());
+        XLog(ELog(65), FString().Append("HandleGSConditionProgressNotify ").Append(PlayerEntity).Append(" ").Append(local_49).Append(" CondId=").Append(local_48.GetConditionId()).Append(" CondValue=").Append(local_48.GetValue()));
     }
     return;
 }
@@ -803,7 +786,6 @@ void SaveDsCondValue(FPbDsPlayerConditionInfo &inout CondtionInfo, const FObject
 void SaveObjectiveDSConditionValue(const FECSEntity &inout PlayerEntity, const EConditionUsage ConditionUsage, FPbDsPlayerInfo &inout PlayerInfo)
 {
     int local_25;
-    const FObjectiveInstance& local_76;
     if (!(PlayerInfo.IsValid()))
     {
         return;
@@ -827,7 +809,7 @@ void SaveObjectiveDSConditionValue(const FECSEntity &inout PlayerEntity, const E
     {
         for (auto& local_74 : local_56.ActiveObjectives)
         {
-            local_74;
+            const FObjectiveInstance& local_76 = local_74.GetValue();
             if ((!((local_76.Context.ContextEntity == PlayerEntity))))
             {
                 continue;
@@ -846,8 +828,7 @@ bool GroupContainsChildInstance(const FObjectiveInstance &inout GroupInstance, c
 {
     for (auto& local_20 : GroupInstance.ChildObjectiveMap)
     {
-        local_20;
-        if (0 == ChildInstanceId)
+        if (local_20.GetValue() == ChildInstanceId)
         {
             return true;
         }
@@ -871,10 +852,10 @@ uint TryActivateNextSequenceChild(const uint GroupInstanceId, const FObjectiveCo
     {
         return 0;
     }
-    int local_148 = int(local_146.ObjectiveId);
-    ObjectiveUtils::FindObjectiveConfig(local_148);
+    ObjectiveUtils::FindObjectiveConfig(int(local_146.ObjectiveId));
     CastTo local_204;
-    if (!(local_204.opCall().IsSet()))
+    TDataObjectPtr<FObjectiveGroupConfig> local_228 = local_204.opCall();
+    if (!(local_228.IsSet()))
     {
         return 0;
     }
@@ -883,7 +864,7 @@ uint TryActivateNextSequenceChild(const uint GroupInstanceId, const FObjectiveCo
     {
         return 0;
     }
-    const TArray<TDataObjectPtr<FObjectiveSingleConfig>>& local_238 = GetChildObjectives();
+    const TArray<TDataObjectPtr<FObjectiveSingleConfig>>& local_238 = local_228.Get().GetChildObjectives();
     FObjectiveInstance local_384;
     if (!(local_236.ActiveObjectives.Find(GroupInstanceId, local_384)))
     {
@@ -892,6 +873,7 @@ uint TryActivateNextSequenceChild(const uint GroupInstanceId, const FObjectiveCo
     int local_385 = 0;
     for (; local_385 < local_238.Num(); ++local_385)
     {
+        int local_148 = local_238[local_385].Get().DataId;
         local_386 = local_148;
         int local_387 = 0;
         if (!(local_384.ChildObjectiveMap.Find(local_386, local_387)))
@@ -905,7 +887,7 @@ uint TryActivateNextSequenceChild(const uint GroupInstanceId, const FObjectiveCo
         if (local_385 > 0)
         {
             int local_388;
-            int local_151 = local_385 - 1;
+            local_148 = local_238[(local_385 - 1)].Get().DataId;
             local_388 = local_148;
             int local_389 = 0;
             if (!(local_384.ChildObjectiveMap.Find(local_388, local_389)))
@@ -963,8 +945,8 @@ uint AddChildToObjectiveGroup(const uint GroupInstanceId, const TDataObjectPtr<F
         XError(ELog(65), FString().Append("AddChildToObjectiveGroup: group ").Append(GroupInstanceId).Append(" is not Activated"));
         return 0;
     }
-    int local_2 = int(local_148.ObjectiveId);
-    if (!(ObjectiveUtils::FindObjectiveConfig(local_2).IsSet()) || (0 != 1))
+    TDataObjectPtr<FObjectiveConfig> local_180 = ObjectiveUtils::FindObjectiveConfig(int(local_148.ObjectiveId));
+    if (!(local_180.IsSet()) || (int(local_180.Get().ObjectiveType) != 1))
     {
         XError(ELog(65), FString().Append("AddChildToObjectiveGroup: instance ").Append(GroupInstanceId).Append(" is not an ObjectiveGroup"));
         return 0;
@@ -974,6 +956,7 @@ uint AddChildToObjectiveGroup(const uint GroupInstanceId, const TDataObjectPtr<F
         XError(ELog(65), FString().Append("AddChildToObjectiveGroup: Sequence group not supported"));
         return 0;
     }
+    int local_2 = ChildConfig.Get().DataId;
     int local_208 = local_2;
     if (local_148.ChildObjectiveMap.Contains(local_208))
     {
@@ -1009,7 +992,6 @@ uint AddChildToObjectiveGroup(const uint GroupInstanceId, const TDataObjectPtr<F
 bool RecoverDsConditionValue(const FPbDsPlayerConditionInfo &inout CondtionInfo, FObjectiveConditionInfo &inout ObjectiveConditionInfo)
 {
     int local_2;
-    int local_23 = 0;
     if (!(ObjectiveConditionInfo.IsSet()))
     {
         return false;
@@ -1027,14 +1009,13 @@ bool RecoverDsConditionValue(const FPbDsPlayerConditionInfo &inout CondtionInfo,
     {
         return false;
     }
-    ObjectiveConditionInfo.ProgressValue = local_23;
+    ObjectiveConditionInfo.ProgressValue = local_12.GetValue();
     XLog(ELog(65), FString().Append("RecoverDsConditionValue ").Append(ObjectiveConditionInfo.ToString()));
     ConditionUtils::SetLocalConditionValueForInstance(ObjectiveConditionInfo.ConditionHandle, int(ObjectiveConditionInfo.ProgressValue));
     return true;
 }
 void RecoverObjectiveConditionValue(const FECSEntity &inout PlayerEntity, const EConditionUsage ConditionUsage, const FPbDsPlayerInfo &inout PlayerInfo)
 {
-    FObjectiveInstance& local_68;
     FPbDsPlayerConditionInfo local_10 = PlayerInfo.GetConditionInfo();
     if (local_10.GetGsCondValues_Num() > 0 || (local_10.GetGsEventValues_Num() > 0))
     {
@@ -1055,7 +1036,7 @@ void RecoverObjectiveConditionValue(const FECSEntity &inout PlayerEntity, const 
         {
             for (auto& local_66 : local_48.ActiveObjectives)
             {
-                local_66;
+                FObjectiveInstance& local_68 = local_66.GetValue();
                 if ((!((local_68.Context.ContextEntity == PlayerEntity))))
                 {
                     continue;

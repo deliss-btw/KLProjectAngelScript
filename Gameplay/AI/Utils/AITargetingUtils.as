@@ -4,9 +4,10 @@ namespace FAITargetingUtils
 {
 TDataObjectPtr<FAITargetingConfig> GetTargetingConfig(const FECSEntity &inout Entity)
 {
-    if (!((FASCommonUtils::GetCombatUnitBaseConfig(Entity) == nullptr)) && !((GetTargetingConfig() == nullptr)))
+    TDataObjectPtr<FCombatUnitBaseConfig> local_24 = FASCommonUtils::GetCombatUnitBaseConfig(Entity);
+    if (!((local_24 == nullptr)) && !((local_24.Get().GetTargetingConfig() == nullptr)))
     {
-        return GetTargetingConfig();
+        return local_24.Get().GetTargetingConfig();
     }
     return (TDataObjectPtr<FAITargetingConfig>(nullptr));
 }
@@ -30,7 +31,7 @@ void InitAITargetingV2(const FECSEntity &inout Entity, const TDataObjectPtr<FAIT
     {
         return;
     }
-    TDataObjectPtr<FAITargetingQueryConfig> local_80 = GetDefaultTargetingQueryConfig();
+    TDataObjectPtr<FAITargetingQueryConfig> local_80 = local_56.Get().GetDefaultTargetingQueryConfig();
     if ((local_80 == nullptr))
     {
         return;
@@ -261,22 +262,19 @@ void ClearSelectedMarksIfNeed(const FECSEntity &inout Entity, const FAISmartValu
 }
 void UpdateSelectedMarks(const FECSEntity &inout Entity)
 {
-    int local_24 = 0;
     if (!(Entity.IsValid()))
     {
         return;
     }
     Modify local_6;
     FC_AITargetingV2& local_8 = local_6.opCall();
-    FECSEntityId local_23;
     if (local_8)
     {
         for (auto& local_22 : local_8.CurrentQueryOutput)
         {
-            local_22;
-            if ((!((local_23 == ENTITY_ID_NULL))))
+            if ((!((FECSEntityId(local_22.GetValue()) == ENTITY_ID_NULL))))
             {
-                local_8.SelectedMarks.Add(local_24);
+                local_8.SelectedMarks.Add(local_22.GetValue());
             }
         }
     }
@@ -336,7 +334,7 @@ int64 PushQueryInstance(const FECSEntity &inout Entity, const EAITargetingQueryS
     local_6.QueryInstanceStack.Add(local_44);
     for (auto& local_82 : QueryOutputs)
     {
-        FAITargetingUtils::SetSmartEntityIdValueForEntity(Entity, local_82.GetTargetId());
+        FAITargetingUtils::SetSmartEntityIdValueForEntity(Entity, local_82.GetTargetId(), local_82.GetValue());
     }
     FAITargetingUtils::ApplySelectedResult(Entity, local_6, QueryResult);
     FAITargetingUtils::SyncCurrentQueryOutput(Entity, local_6);
@@ -453,7 +451,7 @@ void ApplyTopQuery(const FECSEntity &inout Entity, FC_AITargetingV2 &inout AITar
     TArray<FAISmartEntityValue> local_102 = FAITargetingUtils::BuildQueryOutputs(Entity, local_4.QueryConfig, local_4.TargetIDs, FAISmartValueContext(local_72), local_92);
     for (auto& local_116 : local_102)
     {
-        FAITargetingUtils::SetSmartEntityIdValueForEntity(Entity, local_116.GetTargetId());
+        FAITargetingUtils::SetSmartEntityIdValueForEntity(Entity, local_116.GetTargetId(), local_116.GetValue());
     }
     FAITargetingUtils::ApplySelectedResult(Entity, AITargetingV2, local_92);
     FAITargetingUtils::SyncCurrentQueryOutput(Entity, AITargetingV2);
@@ -469,8 +467,7 @@ FECSEntity GetCurrentAttackTarget(const FECSEntity &inout Entity)
         {
             return FECSEntity();
         }
-        FECSWorldPtr local_16 = Entity.GetWorld();
-        return FECSEntity();
+        return FECSEntity(Entity.GetWorld(), local_6.CurrentQueryOutput[0].GetValue());
     }
     return FECSEntity();
 }
@@ -486,11 +483,9 @@ bool HasValidTarget(const FECSEntity &inout Entity)
         return false;
     }
     bool local_10 = false;
-    FECSEntityId local_25;
     for (auto& local_24 : local_6.CurrentQueryOutput)
     {
-        local_24;
-        if (!((local_25 == ENTITY_ID_NULL)))
+        if (!((FECSEntityId(local_24.GetValue()) == ENTITY_ID_NULL)))
         {
             local_10 = true;
             break;
@@ -717,10 +712,7 @@ void AddHostilityByDamage(const FECSEntity &inout Entity, const FTargetEntity &i
 }
 void UpdateHostility(const FECSEntity &inout Entity, const float32 HostilityAccumulationTime)
 {
-    float32 local_65 = 0.0f;
-    FFPTime local_4 = ECS::GetContextTime();
-    FFPTime local_2 = FFPTime(HostilityAccumulationTime);
-    FFPTime local_10 = (local_4 - local_2);
+    FFPTime local_10 = (ECS::GetContextTime() - FFPTime(HostilityAccumulationTime));
     Modify local_14;
     FC_AITargetingV2& local_16 = local_14.opCall();
     if (local_16)
@@ -731,29 +723,34 @@ void UpdateHostility(const FECSEntity &inout Entity, const float32 HostilityAccu
         for (auto& local_58 : local_16.TargetsHostilityMap)
         {
             float32 local_60 = local_40.FindOrAdd(local_58.GetKey(), 0.0f);
-            int local_64 = 0 - 1;
+            int local_64 = local_58.GetValue().Records.Num() - 1;
             for (; local_64 >= 0; --local_64)
             {
-                if (local_2.opCmp(local_10) < 0)
+                if (FFPTime(local_58.GetValue().Records[local_64].Time).opCmp(local_10) < 0)
                 {
+                    local_58.GetValue().Records.RemoveAt(local_64);
                     continue;
                 }
+                float32 local_65 = local_58.GetValue().Records[local_64].HostilityDamage;
                 local_60 = (local_60 + local_65);
+                local_65 = local_58.GetValue().Records[local_64].HostilityDamage;
                 local_18 = local_18 + local_65;
             }
         }
         local_66 = 0.0f;
         for (auto& local_58_2 : local_16.TargetsHostilityMap)
         {
-            local_66 = local_40[local_58_2.GetKey()];
+            float32 local_65_2 = local_40[local_58_2.GetKey()];
+            local_66 = local_65_2;
             if (local_66 > 0.0f)
             {
-                local_65 = local_66 / local_18;
+                local_65_2 = local_66 / local_18;
             }
             else
             {
-                local_65 = 0.0f;
+                local_65_2 = 0.0f;
             }
+            local_58_2.GetValue().Hostility = local_65_2;
         }
     }
     return;
@@ -813,6 +810,7 @@ void SyncTargetingFromMaster(const FECSEntity &inout Slave, FC_AITargetingV2 &in
         FECSEntityId local_8 = FECSEntityId(ENTITY_ID_NULL);
         if (!(local_6.CurrentQueryOutput.IsEmpty()))
         {
+            local_8 = local_6.CurrentQueryOutput[0].GetValue();
         }
         FAITargetingQueryInstance& local_12 = SlaveTargeting.QueryInstanceStack.Last(0);
         for (auto& local_26 : local_12.TargetIDs)
@@ -822,6 +820,7 @@ void SyncTargetingFromMaster(const FECSEntity &inout Slave, FC_AITargetingV2 &in
             {
                 if ((FName(local_42.GetTargetId().GetKey()) == local_26.GetKey()) && (local_42.GetTargetId().GetCategory() == local_26.GetCategory()))
                 {
+                    local_27 = local_42.GetValue();
                     break;
                 }
             }
@@ -855,15 +854,14 @@ void ClearSelfTargeting(const FECSEntity &inout Entity)
     }
     Modify local_12;
     FC_AITargetingV2& local_14 = local_12.opCall();
-    FECSEntityId local_29;
     if (local_14)
     {
         for (auto& local_28 : local_14.CurrentQueryOutput)
         {
-            if (!((local_29 == ENTITY_ID_NULL)))
+            if (!((FECSEntityId(local_28.GetValue()) == ENTITY_ID_NULL)))
             {
-                FECSWorldPtr local_34 = Entity.GetWorld();
-                FTargetEntity local_40 = FTargetEntity(FECSEntity());
+                FECSEntity local_38 = FECSEntity(Entity.GetWorld(), local_28.GetValue());
+                FTargetEntity local_40 = FTargetEntity(local_38);
                 FAITargetingUtils::SetSmartEntityIdValueForEntity(Entity, local_28.GetTargetId(), ENTITY_ID_NULL);
                 FAITargetingUtils::SendAITargetChangedEventV2(Entity, local_40, FTargetEntity(), local_28.GetTargetId());
             }
@@ -892,7 +890,6 @@ void ClearOthersRelatedTargeting(const FECSEntity &inout Entity)
     }
     FTargetEntity local_12 = Entity;
     FAIAttackTargetInfo local_32;
-    FECSEntityId local_80;
     if (local_10.AttackerCountMap.Find(local_12, local_32))
     {
         Get local_92;
@@ -909,7 +906,7 @@ void ClearOthersRelatedTargeting(const FECSEntity &inout Entity)
             {
                 for (auto& local_74 : local_60.CurrentQueryOutput)
                 {
-                    if ((local_80 == local_12.GetEntity().GetId()))
+                    if ((FECSEntityId(local_74.GetValue()) == local_12.GetEntity().GetId()))
                     {
                         FTargetEntity local_82 = local_12;
                         FAITargetingUtils::SetSmartEntityIdValueForEntity(local_50.GetEntity(), local_74.GetTargetId(), ENTITY_ID_NULL);
@@ -918,9 +915,11 @@ void ClearOthersRelatedTargeting(const FECSEntity &inout Entity)
                 }
                 if (local_60.TargetsHostilityMap.Contains(local_12))
                 {
+                    local_60.TargetsHostilityMap.Remove(local_12);
                 }
                 if (local_60.AllTargets.Contains(local_12))
                 {
+                    local_60.AllTargets.Remove(local_12);
                 }
                 int local_88 = local_60.ExternalTargets.Num() - 1;
                 for (; local_88 >= 0; --local_88)
@@ -959,9 +958,11 @@ void ClearOthersRelatedTargeting(const FECSEntity &inout Entity)
             {
                 if (local_60_2.EntityAlertnessMap.Contains(local_12))
                 {
+                    local_60_2.EntityAlertnessMap.Remove(local_12);
                 }
                 if (local_60_2.AllTargets.Contains(local_12))
                 {
+                    local_60_2.AllTargets.Remove(local_12);
                 }
             }
             FECSEntity local_78_2 = local_50.GetEntity();
@@ -1154,6 +1155,9 @@ bool TryAddToAllTarget(FC_AITargetingV2 &inout AITargetingV2, const FECSEntity &
 void ClearTarget(FC_AITargetingV2 &inout AITargetingV2, const FECSEntity &inout TargetEntity)
 {
     FTargetEntity local_2 = FTargetEntity(TargetEntity);
+    AITargetingV2.AllTargets.Remove(local_2);
+    AITargetingV2.EntityAlertnessMap.Remove(local_2);
+    AITargetingV2.TargetsHostilityMap.Remove(local_2);
     return;
 }
 }

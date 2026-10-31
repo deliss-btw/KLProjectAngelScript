@@ -137,11 +137,9 @@ FVM_MobilePageEntrance& Create(const UObject ContextObject)
 {
     return FVM_MobilePageEntrance::CreateByManager(EUIInternal::GetContextManager(ContextObject));
 }
-FVM_MobilePageEntrance CreateByManager(const UEUIManagerSubsystem Manager)
+FVM_MobilePageEntrance& CreateByManager(const UEUIManagerSubsystem Manager)
 {
-    FVM_MobilePageEntrance __r;
-    TEUIModelRef<FVM_MobilePageEntrance> local_6 = TEUIModelRef<FVM_MobilePageEntrance>(EUIInternal::MakeModelWithManager(Manager, FVM_MobilePageEntrance::ModelId));
-    return __r;
+    return TEUIModelRef<FVM_MobilePageEntrance>(EUIInternal::MakeModelWithManager(Manager, FVM_MobilePageEntrance::ModelId)).Get();
 }
 void GetModelInfo(FEUIViewModelMetaInfo &inout Result)
 {
@@ -192,7 +190,6 @@ namespace __GeneratedProperties_FVM_MobilePageEntrance
 {
 UScriptStruct StaticStruct()
 {
-    UScriptStruct local_2;
-    return local_2;
+    return __GeneratedProperties_FVM_MobilePageEntrance.Get();
 }
 }

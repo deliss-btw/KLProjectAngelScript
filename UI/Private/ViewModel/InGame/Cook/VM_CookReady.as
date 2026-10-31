@@ -84,19 +84,16 @@ struct FVM_CookReadyHeadAvatar : FEUIViewModel
     }
     FSoftBrush GetOwnerIcon() const
     {
-        FSoftBrush __return;
         if (!(this.GetPlayerEntity().IsValid()))
         {
             return FSoftBrush();
         }
-        if (::GetAvatarConfig(this.GetPlayerEntity()))
+        TDataObjectPtr<FAvatarPrefabConfig> local_72 = ::GetAvatarConfig(this.GetPlayerEntity());
+        if (local_72)
         {
+            return local_72.Get().AvatarIcon;
         }
-        else
-        {
-            __return = FSoftBrush();
-        }
-        return __return;
+        return FSoftBrush();
     }
     FECSEntity GetPlayerEntity() const property
     {
@@ -374,11 +371,9 @@ FVM_CookReadyHeadAvatar& Create(const UObject ContextObject)
 {
     return FVM_CookReadyHeadAvatar::CreateByManager(EUIInternal::GetContextManager(ContextObject));
 }
-FVM_CookReadyHeadAvatar CreateByManager(const UEUIManagerSubsystem Manager)
+FVM_CookReadyHeadAvatar& CreateByManager(const UEUIManagerSubsystem Manager)
 {
-    FVM_CookReadyHeadAvatar __r;
-    TEUIModelRef<FVM_CookReadyHeadAvatar> local_6 = TEUIModelRef<FVM_CookReadyHeadAvatar>(EUIInternal::MakeModelWithManager(Manager, FVM_CookReadyHeadAvatar::ModelId));
-    return __r;
+    return TEUIModelRef<FVM_CookReadyHeadAvatar>(EUIInternal::MakeModelWithManager(Manager, FVM_CookReadyHeadAvatar::ModelId)).Get();
 }
 void GetModelInfo(FEUIViewModelMetaInfo &inout Result)
 {
@@ -460,8 +455,7 @@ namespace __GeneratedProperties_FVM_CookReadyHeadAvatar
 {
 UScriptStruct StaticStruct()
 {
-    UScriptStruct local_2;
-    return local_2;
+    return __GeneratedProperties_FVM_CookReadyHeadAvatar.Get();
 }
 }
 namespace FVM_CookReady
@@ -470,11 +464,9 @@ FVM_CookReady& Create(const UObject ContextObject)
 {
     return FVM_CookReady::CreateByManager(EUIInternal::GetContextManager(ContextObject));
 }
-FVM_CookReady CreateByManager(const UEUIManagerSubsystem Manager)
+FVM_CookReady& CreateByManager(const UEUIManagerSubsystem Manager)
 {
-    FVM_CookReady __r;
-    TEUIModelRef<FVM_CookReady> local_6 = TEUIModelRef<FVM_CookReady>(EUIInternal::MakeModelWithManager(Manager, FVM_CookReady::ModelId));
-    return __r;
+    return TEUIModelRef<FVM_CookReady>(EUIInternal::MakeModelWithManager(Manager, FVM_CookReady::ModelId)).Get();
 }
 void GetModelInfo(FEUIViewModelMetaInfo &inout Result)
 {
@@ -564,7 +556,6 @@ namespace __GeneratedProperties_FVM_CookReady
 {
 UScriptStruct StaticStruct()
 {
-    UScriptStruct local_2;
-    return local_2;
+    return __GeneratedProperties_FVM_CookReady.Get();
 }
 }

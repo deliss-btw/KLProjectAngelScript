@@ -251,6 +251,7 @@ class US_SpringArmCameraSystem : UECSScriptSystem
         FECSEntity::GetDefaulted<FC_TPCameraConfig> local_56;
         UCameraSettings local_58 = local_56.opCall().CameraSettings;
         const FCameraLookAtConfig& local_62 = FCameraUtils::GetLookAtConfig(local_60, local_58);
+        const FTPCameraStateConfig& local_64 = local_36.Params.CameraConfig.Get();
         Has local_68;
         if (!(local_68.opCall()))
         {
@@ -259,7 +260,6 @@ class US_SpringArmCameraSystem : UECSScriptSystem
             local_30.BaseDir = FRotator3f::ZeroRotator;
             return;
         }
-        FTPCameraStateConfig local_64;
         FCameraUtils::FillCameraStateParam(local_36.CameraRuntimeData.TPCameraParam.StateParams, local_36.CameraRuntimeData.TPCameraParam, local_64, local_60, (local_44 - local_36.CameraRuntimeData.StartTime), local_16, LocalPlayer.PlayerEntity, nullptr);
         if (!(local_78.LookAtParams.GetLookAtTargetConfigRef().IsValid()))
         {
@@ -366,8 +366,8 @@ class US_SpringArmCameraSystem : UECSScriptSystem
         {
             return;
         }
+        const FTPCameraStateConfig& local_26 = local_22.Params.CameraConfig.Get();
         FFPTime local_28 = FFPTime(ECS::GetRuntimeInfo().Time);
-        FTPCameraStateConfig local_26;
         FCameraUtils::FillCameraStateParam(local_22.CameraRuntimeData.TPCameraParam.StateParams, local_22.CameraRuntimeData.TPCameraParam, local_26, local_34, (local_28 - local_22.CameraRuntimeData.StartTime), local_10, LocalPlayer.PlayerEntity, nullptr);
         FCS_TPCameraParam local_24;
         this.CopyLogicSpringArmCameraData(local_24, FCameraUtils::GetCameraParam(local_10));

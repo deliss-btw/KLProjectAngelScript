@@ -49,37 +49,32 @@ struct FVM_CommissionBadgeItem : FEUIViewModel
     }
     FText GetName() const
     {
-        // body not fully recovered — stub [no-return]
-        FText __r; return __r;
+        return this.GetBadgeRewardResurlt().GetConfig().Get().BadgeName;
     }
     FSoftBrush GetIcon() const
     {
-        // body not fully recovered — stub [no-return]
-        FSoftBrush __r; return __r;
+        return this.GetBadgeRewardResurlt().GetConfig().Get().IconBrush;
     }
     FText GetBadgeDesc() const
     {
-        // body not fully recovered — stub [no-return]
-        FText __r; return __r;
+        return this.GetBadgeRewardResurlt().GetConfig().Get().BadgeDesc;
     }
     FText GetBadgeValueDesc() const
     {
         TMap<FString, FFormatArgumentValue> local_20;
         FFormatArgumentValue local_32 = FFormatArgumentValue(this.ValueToText(this.GetBadgeRewardResurlt()));
         local_20.Add("Value", local_32);
-        FText local_24 = this.TypeToText(this.GetBadgeRewardResurlt());
-        FFormatArgumentValue local_32_2 = FFormatArgumentValue(local_24);
+        FFormatArgumentValue local_32_2 = FFormatArgumentValue(this.TypeToText(this.GetBadgeRewardResurlt()));
         local_20.Add("Type", local_32_2);
-        return local_24;
+        return FText::Format(this.GetBadgeRewardResurlt().GetConfig().Get().BadgeValueDesc, local_20);
     }
     FText TypeToText(const FCommissionBadgeRewardResurlt &inout BadgeReward) const
     {
-        int local_1 = 0;
-        if (local_1 == 2)
+        if (int(BadgeReward.GetConfig().Get().CountType) == 2)
         {
             return NSLOCTEXT("CommissionBadge", "CommissionBadge_RankFirst", "第一");
         }
-        if (local_1 == 3)
+        if (int(BadgeReward.GetConfig().Get().CountType) == 3)
         {
             return NSLOCTEXT("CommissionBadge", "CommissionBadge_RankSecond", "第二");
         }
@@ -87,7 +82,6 @@ struct FVM_CommissionBadgeItem : FEUIViewModel
     }
     FText ValueToText(const FCommissionBadgeRewardResurlt &inout BadgeReward) const
     {
-        int local_2 = 0;
         if (BadgeReward.GetbPercent())
         {
             FText local_10;
@@ -97,7 +91,7 @@ struct FVM_CommissionBadgeItem : FEUIViewModel
         else
         {
             FText local_10;
-            FText::AsNumber(local_2, local_10);
+            FText::AsNumber(BadgeReward.GetValue(), local_10);
             return local_10;
         }
     }
@@ -151,11 +145,9 @@ FVM_CommissionBadgeItem& Create(const UObject ContextObject, const FCommissionBa
 {
     return FVM_CommissionBadgeItem::CreateByManager(EUIInternal::GetContextManager(ContextObject), BadgeRewardResurlt);
 }
-FVM_CommissionBadgeItem CreateByManager(const UEUIManagerSubsystem Manager, const FCommissionBadgeRewardResurlt &inout BadgeRewardResurlt)
+FVM_CommissionBadgeItem& CreateByManager(const UEUIManagerSubsystem Manager, const FCommissionBadgeRewardResurlt &inout BadgeRewardResurlt)
 {
-    FVM_CommissionBadgeItem __r;
-    TEUIModelRef<FVM_CommissionBadgeItem> local_6 = TEUIModelRef<FVM_CommissionBadgeItem>(EUIInternal::MakeModelWithManager_Generic(Manager, FVM_CommissionBadgeItem::ModelId, 0, BadgeRewardResurlt));
-    return __r;
+    return TEUIModelRef<FVM_CommissionBadgeItem>(EUIInternal::MakeModelWithManager_Generic(Manager, FVM_CommissionBadgeItem::ModelId, 0, BadgeRewardResurlt)).Get();
 }
 void GetModelInfo(FEUIViewModelMetaInfo &inout Result)
 {
@@ -224,7 +216,6 @@ namespace __GeneratedProperties_FVM_CommissionBadgeItem
 {
 UScriptStruct StaticStruct()
 {
-    UScriptStruct local_2;
-    return local_2;
+    return __GeneratedProperties_FVM_CommissionBadgeItem.Get();
 }
 }

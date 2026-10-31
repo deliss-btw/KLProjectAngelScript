@@ -3,7 +3,6 @@ namespace __FEcoCollectableSpawnerConfigDefinitionRowFunctions
 UFUNCTION()
 FGuid __FEcoCollectableSpawnerConfigDefinitionRow_GetSpawnerGUID(const TDataObjectPtr<FEcoCollectableSpawnerConfigDefinitionRow> &inout DataObject)
 {
-    FGuid __r;
     if ((DataObject == nullptr))
     {
         if (!(EUIGlobals::GIsDuringPropertyConversion))
@@ -13,12 +12,11 @@ FGuid __FEcoCollectableSpawnerConfigDefinitionRow_GetSpawnerGUID(const TDataObje
         FEcoCollectableSpawnerConfigDefinitionRow local_22;
         return local_22.SpawnerGUID;
     }
-    return __r;
+    return DataObject.Get().SpawnerGUID;
 }
 UFUNCTION()
 TArray<EcoCollectable::FEcoCollectableCreatureAndCountRangeDef> __FEcoCollectableSpawnerConfigDefinitionRow_GetEcoCollectableCreatureAndCountRanges(const TDataObjectPtr<FEcoCollectableSpawnerConfigDefinitionRow> &inout DataObject)
 {
-    TArray<EcoCollectable::FEcoCollectableCreatureAndCountRangeDef> __r;
     if ((DataObject == nullptr))
     {
         if (!(EUIGlobals::GIsDuringPropertyConversion))
@@ -28,7 +26,7 @@ TArray<EcoCollectable::FEcoCollectableCreatureAndCountRangeDef> __FEcoCollectabl
         FEcoCollectableSpawnerConfigDefinitionRow local_22;
         return local_22.EcoCollectableCreatureAndCountRanges;
     }
-    return __r;
+    return DataObject.Get().EcoCollectableCreatureAndCountRanges;
 }
 UFUNCTION()
 FEcoCollectableSpawnerConfigDefinitionRow CastToFEcoCollectableSpawnerConfigDefinitionRow(const TDataObjectPtr<FEcoCollectableSpawnerConfigDefinitionRow> &inout DataObject)

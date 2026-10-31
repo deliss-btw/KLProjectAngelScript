@@ -88,11 +88,9 @@ FVM_GuideMinimapIcon& Create(const UObject ContextObject, const TDataObjectPtr<F
 {
     return FVM_GuideMinimapIcon::CreateByManager(EUIInternal::GetContextManager(ContextObject), GuidePresentationConfig);
 }
-FVM_GuideMinimapIcon CreateByManager(const UEUIManagerSubsystem Manager, const TDataObjectPtr<FGuidePresentationConfig> &inout GuidePresentationConfig)
+FVM_GuideMinimapIcon& CreateByManager(const UEUIManagerSubsystem Manager, const TDataObjectPtr<FGuidePresentationConfig> &inout GuidePresentationConfig)
 {
-    FVM_GuideMinimapIcon __r;
-    TEUIModelRef<FVM_GuideMinimapIcon> local_6 = TEUIModelRef<FVM_GuideMinimapIcon>(EUIInternal::MakeModelWithManager_Generic(Manager, FVM_GuideMinimapIcon::ModelId, 0, GuidePresentationConfig));
-    return __r;
+    return TEUIModelRef<FVM_GuideMinimapIcon>(EUIInternal::MakeModelWithManager_Generic(Manager, FVM_GuideMinimapIcon::ModelId, 0, GuidePresentationConfig)).Get();
 }
 void GetModelInfo(FEUIViewModelMetaInfo &inout Result)
 {
@@ -134,7 +132,6 @@ namespace __GeneratedProperties_FVM_GuideMinimapIcon
 {
 UScriptStruct StaticStruct()
 {
-    UScriptStruct local_2;
-    return local_2;
+    return __GeneratedProperties_FVM_GuideMinimapIcon.Get();
 }
 }

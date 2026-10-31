@@ -120,11 +120,9 @@ FVM_MarkSpotIcon& Create(const UObject ContextObject, const TEUIModelRef<FM_Spot
 {
     return FVM_MarkSpotIcon::CreateByManager(EUIInternal::GetContextManager(ContextObject), Spot);
 }
-FVM_MarkSpotIcon CreateByManager(const UEUIManagerSubsystem Manager, const TEUIModelRef<FM_Spot> &inout Spot)
+FVM_MarkSpotIcon& CreateByManager(const UEUIManagerSubsystem Manager, const TEUIModelRef<FM_Spot> &inout Spot)
 {
-    FVM_MarkSpotIcon __r;
-    TEUIModelRef<FVM_MarkSpotIcon> local_6 = TEUIModelRef<FVM_MarkSpotIcon>(EUIInternal::MakeModelWithManager_Generic(Manager, FVM_MarkSpotIcon::ModelId, 0, Spot));
-    return __r;
+    return TEUIModelRef<FVM_MarkSpotIcon>(EUIInternal::MakeModelWithManager_Generic(Manager, FVM_MarkSpotIcon::ModelId, 0, Spot)).Get();
 }
 void GetModelInfo(FEUIViewModelMetaInfo &inout Result)
 {
@@ -184,7 +182,6 @@ namespace __GeneratedProperties_FVM_MarkSpotIcon
 {
 UScriptStruct StaticStruct()
 {
-    UScriptStruct local_2;
-    return local_2;
+    return __GeneratedProperties_FVM_MarkSpotIcon.Get();
 }
 }

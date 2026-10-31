@@ -132,10 +132,8 @@ class US_ProjectileSystemAS : UECSScriptSystem
         bool local_6;
         int local_136 = 0;
         int local_168 = 0;
-        UProjectileTimelineAsset local_226;
         const FC_ProjectileTimelineData& local_246;
         Get local_260;
-        UProjectileTimelineAsset local_270;
         FC_ProjectileBasicConfig local_296;
         int local_336 = 0;
         int local_454 = 0;
@@ -220,29 +218,27 @@ class US_ProjectileSystemAS : UECSScriptSystem
         }
         if (local_136.GetAttackInfo().AttackData)
         {
-            FAttackRecoverEnergyValue local_184;
             FCapabilityInstanceId local_169;
             TDataObjectPtr<FAttackData> local_166 = TDataObjectPtr<FAttackData>(local_136.GetAttackInfo().AttackData);
             local_136.SetDamage(::FDamageUtils::CalcAttackBaseDamageValue(Event.Sender, local_168, Event.Time, false, local_169));
             local_136.SetDamageToAvatar(::FDamageUtils::CalcAttackBaseDamageValue(Event.Sender, local_168, Event.Time, true, local_169));
-            local_184 = ::FDamageUtils::CalcAttackRecoverEnergyValue(Event.Sender, local_168, Event.Time, local_169);
-            local_136.SetAttackRecoverEnergyData(local_184);
+            local_136.SetAttackRecoverEnergyData(::FDamageUtils::CalcAttackRecoverEnergyValue(Event.Sender, local_168, Event.Time, local_169));
         }
         Get local_188;
         const FC_ProjectilePenetrationConfig& local_190 = local_188.opCall();
         if (local_190)
         {
-            FAttackRecoverEnergyValue local_184;
             FCapabilityInstanceId local_169;
+            TDataObjectPtr<FAttackData> local_166;
             if (local_190.bChangeAttackForPenetration)
             {
                 FDataObjectPtr local_214 = FDataObjectPtr(local_190.AttackDataAfterPenetration);
                 if (local_214.IsValid())
                 {
                     local_136.GetModify_AttackInfoAfterPenetration().AttackData = local_214;
-                    local_136.SetDamageAfterPenetration(::FDamageUtils::CalcAttackBaseDamageValue(Event.Sender, Event.Time, false, local_169));
-                    local_136.SetDamageToAvatarAfterPenetration(::FDamageUtils::CalcAttackBaseDamageValue(Event.Sender, Event.Time, true, local_169));
-                    local_136.SetAttackRecoverEnergyDataAfterPenetration(local_184);
+                    local_136.SetDamageAfterPenetration(::FDamageUtils::CalcAttackBaseDamageValue(Event.Sender, local_166.Get(), Event.Time, false, local_169));
+                    local_136.SetDamageToAvatarAfterPenetration(::FDamageUtils::CalcAttackBaseDamageValue(Event.Sender, local_166.Get(), Event.Time, true, local_169));
+                    local_136.SetAttackRecoverEnergyDataAfterPenetration(::FDamageUtils::CalcAttackRecoverEnergyValue(Event.Sender, local_166.Get(), Event.Time, local_169));
                 }
             }
         }
@@ -254,8 +250,7 @@ class US_ProjectileSystemAS : UECSScriptSystem
             const FC_ProjectileTimelineConfig& local_224 = local_222.opCall();
             if (local_224)
             {
-                local_226 = local_224.TimelineAssetRef.GetAsset();
-                if (local_226 != nullptr)
+                if (local_224.TimelineAssetRef.GetAsset() != nullptr)
                 {
                     local_246.SetTimelineAsset(TSoftObjectPtr<UProjectileTimelineAsset>(local_224.TimelineAssetRef.GetAsset()));
                     local_246.SetInitState(local_224.InitState);
@@ -271,12 +266,10 @@ class US_ProjectileSystemAS : UECSScriptSystem
                 const FC_ProjectileTimelineConfig& local_224_2 = local_222.opCall();
                 if (local_224_2)
                 {
-                    local_226 = local_224_2.TimelineAssetRef.GetAsset();
-                    if (local_226 != nullptr)
+                    if (local_224_2.TimelineAssetRef.GetAsset() != nullptr)
                     {
-                        local_226 = local_224_2.TimelineAssetRef.GetAsset();
                         Modify local_264;
-                        local_264.opCall().SetTimelineAsset(TSoftObjectPtr<UProjectileTimelineAsset>(local_226));
+                        local_264.opCall().SetTimelineAsset(TSoftObjectPtr<UProjectileTimelineAsset>(local_224_2.TimelineAssetRef.GetAsset()));
                     }
                 }
                 else
@@ -289,8 +282,9 @@ class US_ProjectileSystemAS : UECSScriptSystem
         local_246 = local_260.opCall();
         if (local_246)
         {
-            if ((!((local_246.GetTimelineAsset() == nullptr))) && !(local_226.TimelineConfigData.TimelineDatas.IsEmpty()))
+            if ((!((local_246.GetTimelineAsset() == nullptr))) && !(local_246.GetTimelineAsset().Get().TimelineConfigData.TimelineDatas.IsEmpty()))
             {
+                UProjectileTimelineAsset local_270 = local_246.GetTimelineAsset().Get();
                 FC_ProjectileUseTimelineTag local_276;
                 Assign local_274;
                 local_274.opCall(local_276);
@@ -704,7 +698,6 @@ class US_ProjectileSystemAS : UECSScriptSystem
     void Job_HandleProjectileHit(const FECSEntity &inout Entity, const FC_Owner &inout ProjectileOwner, FC_LifeTime &inout LifeTime, FC_ProjectileInfo &inout ProjectileInfo, const FC_ProjectileHitResult &inout HitResults, const FC_ProjectileHitConfig &inout HitConfig, const FC_Transform &inout Transform, const FCS_FixedTime &inout FixedTime) const
     {
         int local_10 = 0;
-        const FAttackData& local_76;
         bool local_78;
         FC_ProjectilePenetrationConfig local_84;
         int local_90 = 0;
@@ -726,7 +719,6 @@ class US_ProjectileSystemAS : UECSScriptSystem
         GetDefaulted local_578;
         Get local_584;
         Get local_590;
-        UProjectileTimelineAsset local_594;
         int local_718 = 0;
         bool local_3 = !((HitResults.GetHitResultNum() > 0));
         bool local_4 = !(false);
@@ -742,7 +734,7 @@ class US_ProjectileSystemAS : UECSScriptSystem
             XError(ELog(0), FString().Append("No AttackData for projectile ").Append(Entity.GetEntityName()));
             local_59 = false;
         }
-        int local_68 = EAttackType(0);
+        int local_68 = EAttackType::Default;
         FName local_71(NAME_None);
         int local_72 = int(HitConfig.HitableRelation);
         if (!(local_59))
@@ -755,6 +747,7 @@ class US_ProjectileSystemAS : UECSScriptSystem
         }
         if (local_3)
         {
+            const FAttackData& local_76 = local_34.Get();
             local_68 = local_76.AttackType;
             local_71 = local_76.AttackTag;
             local_72 = int(local_76.AffectFactionRelation);
@@ -846,12 +839,13 @@ class US_ProjectileSystemAS : UECSScriptSystem
                 if (local_34)
                 {
                     FCE_DestructibleHitEvent local_246;
+                    const FAttackData& local_76_2 = local_34.Get();
                     FECSEntity local_232 = ProjectileOwner.GetOwnerEntity();
                     local_246.Receiver = local_222.HitEntity;
-                    local_246.ImpactType = EImpactType(local_76.ImpactType);
-                    local_246.ImpactStrength = EImpactStrength(local_76.ImpactStrengthValue);
+                    local_246.ImpactType = EImpactType(local_76_2.ImpactType);
+                    local_246.ImpactStrength = EImpactStrength(local_76_2.ImpactStrengthValue);
                     local_246.ForceDirection = local_102;
-                    local_246.DestructibleDamageLevel = local_76.GetDestructibleClassLevelFromDamage(ProjectileOwner.GetOwnerEntity());
+                    local_246.DestructibleDamageLevel = local_76_2.GetDestructibleClassLevelFromDamage(ProjectileOwner.GetOwnerEntity());
                     GetDefaulted local_254;
                     if (int(local_246.DestructibleDamageLevel) >= int(EDestructibleClassLevel(local_254.opCall().DestructibleClass)))
                     {
@@ -889,6 +883,7 @@ class US_ProjectileSystemAS : UECSScriptSystem
                 }
                 if (local_175)
                 {
+                    const FAttackData& local_76_3 = local_34.Get();
                     local_269 = false;
                     local_164 = 1.0f;
                     local_175 = ::FDamageUtils::IsDamageToAvatar(local_222.HitEntity);
@@ -1227,9 +1222,10 @@ class US_ProjectileSystemAS : UECSScriptSystem
                     const FC_ProjectileTimelineEventTriggerConfig& local_586 = local_584.opCall();
                     if (local_586)
                     {
-                        if (local_590.opCall())
+                        const FC_ProjectileTimelineData& local_592 = local_590.opCall();
+                        if (local_592)
                         {
-                            ::FProjectileTimelineUtils::TriggerHitEventReaction(local_586.TriggerReactions, Entity, local_594.TimelineConfigData, local_236.Relation, local_222, Transform, local_222.HitTime);
+                            ::FProjectileTimelineUtils::TriggerHitEventReaction(local_586.TriggerReactions, Entity, local_592.GetTimelineAsset().Get().TimelineConfigData, local_236.Relation, local_222, Transform, local_222.HitTime);
                         }
                     }
                 }
@@ -1325,9 +1321,10 @@ class US_ProjectileSystemAS : UECSScriptSystem
                         const FC_ProjectileTimelineEventTriggerConfig& local_586_2 = local_584.opCall();
                         if (local_586_2)
                         {
-                            if (local_590.opCall())
+                            const FC_ProjectileTimelineData& local_592_2 = local_590.opCall();
+                            if (local_592_2)
                             {
-                                ::FProjectileTimelineUtils::TriggerHitSceneEventReaction(local_586_2.TriggerReactions, Entity, local_594.TimelineConfigData, local_222, Transform, local_222.HitTime);
+                                ::FProjectileTimelineUtils::TriggerHitSceneEventReaction(local_586_2.TriggerReactions, Entity, local_592_2.GetTimelineAsset().Get().TimelineConfigData, local_222, Transform, local_222.HitTime);
                             }
                         }
                         local_269 = ECS::GetRuntimeInfo().IsServer;
@@ -1342,10 +1339,8 @@ class US_ProjectileSystemAS : UECSScriptSystem
                         if (local_269)
                         {
                             FSimpleDestructibleBreakResult local_674;
-                            int local_248_2 = int(local_76.ImpactStrengthValue);
-                            int local_247_2 = int(local_76.ImpactType);
-                            UPrimitiveComponent local_676;
-                            ::SimpleDestructibleUtils::ServerTryBreakFromHitResult(ProjectileOwner.GetOwnerEntity(), local_676, int(local_222.HitItemIndex), local_76.GetDestructibleClassLevelFromDamage(ProjectileOwner.GetOwnerEntity()), true, EImpactType(local_247_2), EImpactStrength(local_248_2), local_102, local_674);
+                            const FAttackData& local_76_4 = local_34.Get();
+                            ::SimpleDestructibleUtils::ServerTryBreakFromHitResult(ProjectileOwner.GetOwnerEntity(), local_222.HitComponent.Get(), int(local_222.HitItemIndex), local_76_4.GetDestructibleClassLevelFromDamage(ProjectileOwner.GetOwnerEntity()), true, EImpactType(local_76_4.ImpactType), EImpactStrength(local_76_4.ImpactStrengthValue), local_102, local_674);
                             local_269 = local_674.bIsSimpleDestructible && !(local_674.bWasAlreadyDestroyed);
                             if (local_269 && local_240)
                             {
@@ -1378,9 +1373,10 @@ class US_ProjectileSystemAS : UECSScriptSystem
                                     local_269 = local_260.opCall().bNoReactToProjectile;
                                     if (!(local_269))
                                     {
-                                        if (local_590.opCall())
+                                        const FC_ProjectileTimelineData& local_592_3 = local_590.opCall();
+                                        if (local_592_3)
                                         {
-                                            ::FProjectileTimelineUtils::TriggerHitEventReaction(local_586_3.TriggerReactions, Entity, local_594.TimelineConfigData, local_236.Relation, local_222, Transform, local_222.HitTime);
+                                            ::FProjectileTimelineUtils::TriggerHitEventReaction(local_586_3.TriggerReactions, Entity, local_592_3.GetTimelineAsset().Get().TimelineConfigData, local_236.Relation, local_222, Transform, local_222.HitTime);
                                         }
                                     }
                                 }
@@ -1669,15 +1665,13 @@ class US_ProjectileSystemAS : UECSScriptSystem
             if (local_147)
             {
                 local_47 = local_22.GetFName();
-                UPrimitiveComponent local_152;
-                local_156 = (Cast<USkinnedMeshComponent>(local_152));
+                local_156 = (Cast<USkinnedMeshComponent>(local_130.GetComponent()));
                 if (local_156 != nullptr)
                 {
                     FTransform local_184 = local_156.GetBoneTransform(local_130.BoneName, ERelativeTransformSpace(0));
                     local_49 = local_130.BoneName;
                     local_56 = local_184.InverseTransformPosition(local_130.Location);
-                    AActor local_216;
-                    local_64 = local_184.InverseTransformRotation(local_216.GetActorRotation()).Quaternion();
+                    local_64 = local_184.InverseTransformRotation(local_44.Actor.Get().GetActorRotation()).Quaternion();
                 }
                 else
                 {
@@ -1990,8 +1984,7 @@ class US_ProjectileSystemAS : UECSScriptSystem
         AProjectileBaseActor local_8;
         if (Runtime.bSurfaceUpdate)
         {
-            AActor local_4;
-            local_8 = (Cast<AProjectileBaseActor>(local_4));
+            local_8 = (Cast<AProjectileBaseActor>(ActorComp.Actor.Get()));
             if (local_8 != nullptr)
             {
                 local_8.OnGroundSurfaceContactChangeEvent(Runtime.OldSurfaceName, Runtime.NewSurfaceName, int(Runtime.NewSurfaceIndex));

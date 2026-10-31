@@ -53,7 +53,6 @@ namespace __FMonsterPrefabConfigFunctions
 UFUNCTION()
 EMonsterRank __FMonsterPrefabConfig_GetMonsterRank(const TDataObjectPtr<FMonsterPrefabConfig> &inout DataObject)
 {
-    int local_153 = 0;
     if ((DataObject == nullptr))
     {
         if (!(EUIGlobals::GIsDuringPropertyConversion))
@@ -61,15 +60,13 @@ EMonsterRank __FMonsterPrefabConfig_GetMonsterRank(const TDataObjectPtr<FMonster
             FBlueprintDebugFunctions::ThrowScriptException("Get 'MonsterRank' from a null 'FMonsterPrefabConfig' DataObject!");
         }
         FMonsterPrefabConfig local_152;
-        local_153 = int(local_152.MonsterRank);
-        return EMonsterRank(local_153);
+        return local_152.MonsterRank;
     }
-    return EMonsterRank(local_153);
+    return DataObject.Get().MonsterRank;
 }
 UFUNCTION()
 uint8 __FMonsterPrefabConfig_GetWeakDamageType(const TDataObjectPtr<FMonsterPrefabConfig> &inout DataObject)
 {
-    int local_153 = 0;
     if ((DataObject == nullptr))
     {
         if (!(EUIGlobals::GIsDuringPropertyConversion))
@@ -79,7 +76,7 @@ uint8 __FMonsterPrefabConfig_GetWeakDamageType(const TDataObjectPtr<FMonsterPref
         FMonsterPrefabConfig local_152;
         return int(local_152.WeakDamageType);
     }
-    return local_153;
+    return DataObject.Get().WeakDamageType;
 }
 UFUNCTION()
 TDataObjectPtr<FSkillBtnConfig> __FMonsterPrefabConfig_GetSkillBtnConfig(const TDataObjectPtr<FMonsterPrefabConfig> &inout DataObject)
@@ -93,7 +90,7 @@ TDataObjectPtr<FSkillBtnConfig> __FMonsterPrefabConfig_GetSkillBtnConfig(const T
         FMonsterPrefabConfig local_152;
         return local_152.GetSkillBtnConfig();
     }
-    return GetSkillBtnConfig();
+    return DataObject.Get().GetSkillBtnConfig();
 }
 UFUNCTION()
 int __FMonsterPrefabConfig_GetHPBarSegment(const TDataObjectPtr<FMonsterPrefabConfig> &inout DataObject)
@@ -113,7 +110,6 @@ int __FMonsterPrefabConfig_GetHPBarSegment(const TDataObjectPtr<FMonsterPrefabCo
 UFUNCTION()
 FText __FMonsterPrefabConfig_GetDisplayPrefix(const TDataObjectPtr<FMonsterPrefabConfig> &inout DataObject)
 {
-    FText __r;
     if ((DataObject == nullptr))
     {
         if (!(EUIGlobals::GIsDuringPropertyConversion))
@@ -123,7 +119,7 @@ FText __FMonsterPrefabConfig_GetDisplayPrefix(const TDataObjectPtr<FMonsterPrefa
         FMonsterPrefabConfig local_152;
         return local_152.DisplayPrefix;
     }
-    return __r;
+    return DataObject.Get().DisplayPrefix;
 }
 UFUNCTION()
 TDataObjectPtr<FPVPOverrideMonsterConfig> __FMonsterPrefabConfig_GetPVPOverride(const TDataObjectPtr<FMonsterPrefabConfig> &inout DataObject)
@@ -137,7 +133,7 @@ TDataObjectPtr<FPVPOverrideMonsterConfig> __FMonsterPrefabConfig_GetPVPOverride(
         FMonsterPrefabConfig local_152;
         return local_152.GetPVPOverride();
     }
-    return GetPVPOverride();
+    return DataObject.Get().GetPVPOverride();
 }
 UFUNCTION()
 TMap<EGameModeType, TDataObjectPtr<FGameModeOverrideMonsterConfig>> __FMonsterPrefabConfig_GetGameModeOverride(const TDataObjectPtr<FMonsterPrefabConfig> &inout DataObject)
@@ -151,7 +147,7 @@ TMap<EGameModeType, TDataObjectPtr<FGameModeOverrideMonsterConfig>> __FMonsterPr
         FMonsterPrefabConfig local_152;
         return local_152.GetGameModeOverride();
     }
-    return GetGameModeOverride();
+    return DataObject.Get().GetGameModeOverride();
 }
 UFUNCTION()
 FMonsterPrefabConfig CastToFMonsterPrefabConfig(const TDataObjectPtr<FMonsterPrefabConfig> &inout DataObject)

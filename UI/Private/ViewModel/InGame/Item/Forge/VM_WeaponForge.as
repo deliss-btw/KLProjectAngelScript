@@ -20,7 +20,7 @@ struct FForgeTreeSorter
         {
             B.IsValid();
         }
-        return (GetConfig().Priority > GetConfig().Priority);
+        return (A.Get().GetConfig().Priority > B.Get().GetConfig().Priority);
     }
 }
 
@@ -206,22 +206,31 @@ struct FVM_WeaponForge : FEUIViewModel
     }
     TArray<EWeaponType> ResolveVisibleWeaponTypes()
     {
-        bool local_83 = false;
         TArray<EWeaponType> local_8 = ::ForgeCommonUtil::GetWeaponTypeForgePriorityList();
         TArray<EWeaponType> local_12;
         FMS_PlayerAvatarData& local_14 = ::FMS_PlayerAvatarData::Get(this.GetContext().Manager);
         for (auto& local_34 : local_14.GetOwnedAvatars())
         {
-            local_34;
-            if (!(IsValid()))
+            if (!(local_34.GetValue().IsValid()))
             {
                 continue;
             }
-            TDataObjectPtr<FAvatarPrefabConfig> local_58 = GetAvatarConfig();
-            if (!(local_58) || local_83 || !(local_14.IsAvatarUnlocked(local_58)))
+            TDataObjectPtr<FAvatarPrefabConfig> local_58 = local_34.GetValue().Get().GetAvatarConfig();
+            bool local_31 = !(local_58);
+            if (local_31)
+            {
+                local_31 = true;
+            }
+            else
+            {
+                local_31 = local_58.Get().bAlwaysHidden;
+            }
+            local_31 = local_31 || !(local_14.IsAvatarUnlocked(local_58));
+            if (local_31)
             {
                 continue;
             }
+            local_12.AddUnique(local_58.Get().WeaponType);
         }
         TArray<EWeaponType> local_88;
         for (auto local_101 : local_8)
@@ -240,9 +249,7 @@ struct FVM_WeaponForge : FEUIViewModel
     }
     int ResolveDefaultCategoryIndex()
     {
-        int local_9 = 0;
-        TEUIModelRef<FMS_Forge> local_4 = this.GetForgeModel();
-        int local_1 = GetLastSelectedCategoryIndex();
+        int local_1 = this.GetForgeModel().Get().GetLastSelectedCategoryIndex();
         if (this.GetWeaponTypes().IsValidIndex(local_1))
         {
             return local_1;
@@ -250,9 +257,10 @@ struct FVM_WeaponForge : FEUIViewModel
         FMS_PlayerAvatarData& local_8 = ::FMS_PlayerAvatarData::Get(this.GetContext().Manager);
         if (local_8.GetCurrentAvatars().Num() > 0 && local_8.GetCurrentAvatars()[0].IsValid())
         {
-            TDataObjectPtr<FAvatarPrefabConfig> local_34 = GetAvatarConfig();
+            TDataObjectPtr<FAvatarPrefabConfig> local_34 = local_8.GetCurrentAvatars()[0].Get().GetAvatarConfig();
             if (local_34)
             {
+                int local_9 = this.GetWeaponTypes().IndexOfByKey(local_34.Get().WeaponType);
                 if (local_9 != INDEX_NONE)
                 {
                     return local_9;
@@ -267,18 +275,17 @@ struct FVM_WeaponForge : FEUIViewModel
         this.GetModify_CurrentWeaponTitleList().Reset(0);
         this.GetModify_CurrentWeaponFormulaTreeList().Reset(0);
         this.GetModify_CurrentTreeMap().Reset();
-        EWeaponType local_9 = this.GetCurSelectedWeaponType();
-        TEUIModelRef<FMS_Forge> local_8 = this.GetForgeModel();
-        TArray<TEUIModelWeakRef<FM_ForgeTree>> local_14;
-        local_14.GetForgeTreeListByWeaponType(local_9);
+        TArray<TEUIModelWeakRef<FM_ForgeTree>> local_14 = this.GetForgeModel().Get().GetForgeTreeListByWeaponType(EWeaponType(this.GetCurSelectedWeaponType()));
+        FForgeTreeSorter local_16;
+        local_14.Sort(local_16);
         int local_17 = 0;
         for (; local_17 < local_14.Num(); ++local_17)
         {
             if (local_14[local_17].IsValid())
             {
-                const FForgeTreeConfig& local_22 = GetConfig();
+                const FForgeTreeConfig& local_22 = local_14[local_17].Get().GetConfig();
                 FText local_34;
-                if (CheckValid())
+                if (local_14[local_17].Get().CheckValid())
                 {
                     local_34 = local_22.ForgeTreeName;
                 }
@@ -287,7 +294,7 @@ struct FVM_WeaponForge : FEUIViewModel
                     local_34 = NSLOCTEXT("WeaponForge", "ForgeTreeInvalidTitleText", "???");
                 }
                 FSoftBrush local_124;
-                if (CheckValid())
+                if (local_14[local_17].Get().CheckValid())
                 {
                     local_124 = local_22.ForgeTreeImage;
                 }
@@ -295,10 +302,9 @@ struct FVM_WeaponForge : FEUIViewModel
                 {
                     local_124 = local_22.ForgeTreeHiddenImage;
                 }
-                float32 local_127 = ::ForgeCommonUtil::GetForgeTreeBranchWidth(GetBranchType());
-                this.GetModify_CurrentWeaponTitleList().Add(TEUIModelRef<FVM_ForgeWeaponTitle>(::FVM_ForgeWeaponTitle::Create(this.GetContext().Manager, (int(GetBranchType()) - 1), local_124, local_34, local_127)));
-                TEUIModelWeakRef<FM_ForgeTree> local_132;
-                TEUIModelRef<FVM_ForgeWeaponFormulaTree> local_136 = TEUIModelRef<FVM_ForgeWeaponFormulaTree>(::FVM_ForgeWeaponFormulaTree::Create(this.GetContext().Manager, (TEUIModelWeakRef<FVM_WeaponForge>(this)), local_132, local_17, local_127));
+                float32 local_127 = ::ForgeCommonUtil::GetForgeTreeBranchWidth(local_14[local_17].Get().GetBranchType());
+                this.GetModify_CurrentWeaponTitleList().Add(TEUIModelRef<FVM_ForgeWeaponTitle>(::FVM_ForgeWeaponTitle::Create(this.GetContext().Manager, (int(local_14[local_17].Get().GetBranchType()) - 1), local_124, local_34, local_127)));
+                TEUIModelRef<FVM_ForgeWeaponFormulaTree> local_136 = TEUIModelRef<FVM_ForgeWeaponFormulaTree>(::FVM_ForgeWeaponFormulaTree::Create(this.GetContext().Manager, (TEUIModelWeakRef<FVM_WeaponForge>(this)), TEUIModelWeakRef<FM_ForgeTree>(local_14[local_17].Get()), local_17, local_127));
                 this.GetModify_CurrentWeaponFormulaTreeList().Add(local_136);
             }
         }
@@ -308,8 +314,7 @@ struct FVM_WeaponForge : FEUIViewModel
     {
         if (this.GetCurrentSelectNode().IsValid())
         {
-            FM_ForgeNode& local_6;
-            TEUIModelWeakRef<FM_ForgeNode> local_2 = this.GetCurrentSelectNode();
+            FM_ForgeNode& local_6 = this.GetCurrentSelectNode().Get();
             if (local_6)
             {
                 if (local_6.CheckValid())
@@ -320,7 +325,7 @@ struct FVM_WeaponForge : FEUIViewModel
                     TEUIModelRef<FVM_AvatarEquipmentItemInfoDetail> local_20 = TEUIModelRef<FVM_AvatarEquipmentItemInfoDetail>(::FVM_AvatarEquipmentItemInfoDetail::Create(this.GetContext().Manager, local_6.GetCurEquipmentInfo()));
                     this.SetCurrentWeaponInfoDetail(local_20);
                     TEUIModelRef<FVM_AvatarEquipmentItemInfoDetail> local_20_2 = this.GetCurrentWeaponInfoDetail();
-                    EnableShowRandomTraitText();
+                    local_20_2.Get().EnableShowRandomTraitText();
                     TArray<FRewardItemEntry> local_24;
                     TArray<FItemParamConfig> local_28;
                     if (int(local_6.GetStateType()) == 1)
@@ -333,9 +338,12 @@ struct FVM_WeaponForge : FEUIViewModel
                         {
                             if (local_6.GetConfig().GetCraft())
                             {
+                                local_28 = local_6.GetConfig().GetCraft().Get().Cost;
                             }
                         }
                     }
+                    FForgeItemCostSorter local_30;
+                    local_28.Sort(local_30);
                     for (auto& local_44 : local_28)
                     {
                         local_24.Add(FRewardItemEntry(local_44.Item.opArrow().DataId, int(local_44.Count)));
@@ -384,6 +392,7 @@ struct FVM_WeaponForge : FEUIViewModel
                 {
                     return false;
                 }
+                local_10 = local_6.GetConfig().GetCraft().Get().Cost;
             }
             else
             {
@@ -400,7 +409,7 @@ struct FVM_WeaponForge : FEUIViewModel
             TEUIModelRef<FM_ItemData> local_34 = local_16.GetSumItem(local_30.Item);
             if (local_34.IsValid())
             {
-                local_13 = GetNum();
+                local_13 = local_34.Get().GetNum();
             }
             else
             {
@@ -420,28 +429,15 @@ struct FVM_WeaponForge : FEUIViewModel
     }
     FSoftBrush GetCurrentWeaponPreivewImage() const
     {
-        FSoftBrush local_48;
         if (this.GetCurrentWeaponInfo().IsValid())
         {
-            TEUIModelRef<FVM_ForgeWeaponInfo> local_2 = this.GetCurrentWeaponInfo();
-            local_48.GetWeaponPreivewImage();
-            return local_48;
+            return this.GetCurrentWeaponInfo().Get().GetWeaponPreivewImage();
         }
-        return local_48;
+        return FSoftBrush();
     }
     bool GetCurrentWeaponIsUnlock() const
     {
-        bool local_3 = this.GetCurrentWeaponInfo().IsValid();
-        if (!(local_3))
-        {
-            local_3 = false;
-        }
-        else
-        {
-            TEUIModelRef<FVM_ForgeWeaponInfo> local_2 = this.GetCurrentWeaponInfo();
-            local_3 = GetIsUnlock();
-        }
-        return local_3;
+        return this.GetCurrentWeaponInfo().IsValid() && this.GetCurrentWeaponInfo().Get().GetIsUnlock();
     }
     ESlateVisibility GetCurrentWeaponDetailMaskBgVisibility() const
     {
@@ -463,8 +459,7 @@ struct FVM_WeaponForge : FEUIViewModel
     }
     void OnSelectedCategoryIndexChanged()
     {
-        TEUIModelRef<FMS_Forge> local_2 = this.GetForgeModel();
-        this.GetSelectedCategoryIndex().SetLastSelectedCategoryIndex();
+        this.GetForgeModel().Get().SetLastSelectedCategoryIndex(this.GetSelectedCategoryIndex());
         this.SetbResetSelectItem(true);
         this.UpdateListDisplay();
         return;
@@ -476,12 +471,12 @@ struct FVM_WeaponForge : FEUIViewModel
             return;
         }
         TEUIModelWeakRef<FVM_ForgeWeaponFormulaTree> local_4;
-        if (this.GetCurrentTreeMap().Find(GetTreeId(), local_4) && local_4.IsValid())
+        if (this.GetCurrentTreeMap().Find(Node.Get().GetTreeId(), local_4) && local_4.IsValid())
         {
             TEUIModelWeakRef<FVM_ForgeWeaponItem> local_8;
-            if (GetItemNodeMap().Find(Node, local_8) && local_8.IsValid())
+            if (local_4.Get().GetItemNodeMap().Find(Node, local_8) && local_8.IsValid())
             {
-                bSel.SetbSelected();
+                local_8.Get().SetbSelected(bSel);
             }
         }
         return;
@@ -508,22 +503,9 @@ struct FVM_WeaponForge : FEUIViewModel
     }
     void OnForgeTreeUpdateFinish(const FMsg_ForgeTreeUpdateFinish &inout Msg)
     {
-        bool local_1;
-        if (!(Msg.FormulaTreeVM.IsValid()))
+        if (Msg.FormulaTreeVM.IsValid() && Msg.FormulaTreeVM.Get().GetTreeM().IsValid())
         {
-            local_1 = false;
-        }
-        else
-        {
-            TEUIModelWeakRef<FM_ForgeTree> local_4;
-            local_4.GetTreeM();
-            local_1 = local_4.IsValid();
-        }
-        if (local_1)
-        {
-            TEUIModelWeakRef<FM_ForgeTree> local_4;
-            local_4.GetTreeM();
-            this.GetModify_CurrentTreeMap().Add(GetTreeId(), Msg.FormulaTreeVM);
+            this.GetModify_CurrentTreeMap().Add(Msg.FormulaTreeVM.Get().GetTreeM().Get().GetTreeId(), Msg.FormulaTreeVM);
         }
         if (int(Msg.TreeIndex) == 0 && (!(this.GetCurrentSelectNode().IsValid()) || this.GetbResetSelectItem()))
         {
@@ -542,14 +524,9 @@ struct FVM_WeaponForge : FEUIViewModel
     }
     void OnFMsg_ForgeNodeDataUpdate(const FMsg_ForgeNodeDataUpdate &inout Msg)
     {
-        bool local_5 = false;
-        bool local_1 = Msg.NodeM.IsValid() && this.GetCurrentSelectNode().IsValid();
-        if (local_1)
+        if (Msg.NodeM.IsValid() && this.GetCurrentSelectNode().IsValid())
         {
-            local_1 = !local_1;
-            TEUIModelWeakRef<FM_ForgeNode> local_4 = this.GetCurrentSelectNode();
-            local_5 = !local_5;
-            if (local_1 == local_5)
+            if (!(Msg.NodeM.Get()) == !(this.GetCurrentSelectNode().Get()))
             {
                 this.UpdateInfoDisplay();
             }
@@ -571,16 +548,14 @@ struct FVM_WeaponForge : FEUIViewModel
     {
         if (this.GetCurrentSelectNode().IsValid())
         {
-            FM_ForgeNode& local_6;
-            TEUIModelWeakRef<FM_ForgeNode> local_2 = this.GetCurrentSelectNode();
+            FM_ForgeNode& local_6 = this.GetCurrentSelectNode().Get();
             if (local_6)
             {
                 if (local_6.CheckValid())
                 {
                     if ((int(local_6.GetStateType())) == 1)
                     {
-                        TEUIModelRef<FMS_Forge> local_12 = this.GetForgeModel();
-                        local_6.GetTreeId().GS_RequestForge(local_6.GetDataId());
+                        this.GetForgeModel().Get().GS_RequestForge(local_6.GetTreeId(), local_6.GetDataId());
                     }
                     else
                     {
@@ -588,9 +563,7 @@ struct FVM_WeaponForge : FEUIViewModel
                         {
                             if (local_6.GetConfig().GetCraft())
                             {
-                                FCraftConfig local_16;
-                                TEUIModelRef<FMS_Craft> local_18 = this.GetCraftModel();
-                                int(local_16.DataId).GS_RequestCraft(1);
+                                this.GetCraftModel().Get().GS_RequestCraft(int(local_6.GetConfig().GetCraft().Get().DataId), 1);
                             }
                         }
                         else
@@ -613,10 +586,7 @@ struct FVM_WeaponForge : FEUIViewModel
                 FVM_EquipmentInfo& local_12 = ::FVM_EquipmentInfo::Create(this.GetContext().Manager, local_8);
                 for (auto& local_26 : local_12.GetEquipmentTraits())
                 {
-                    local_26;
-                    TEUIModelRef<FM_Trait> local_28;
-                    local_28.GetTrait();
-                    GetbIsRandomTrait().SetbHighlight();
+                    local_26.Get().SetbHighlight(local_26.Get().GetTrait().Get().GetbIsRandomTrait());
                 }
                 local_30 = (Cast<UWidget_EquipmentCraftPopup>(FEUIWidget::AddWidgetByClass(this.GetContext().UELocalPlayer, this.GetPopupClass(), FEUIModelRef(local_12)).RequireWidget()));
                 if (local_30 != nullptr)
@@ -1058,11 +1028,9 @@ FVM_WeaponForge& Create(const UObject ContextObject)
 {
     return FVM_WeaponForge::CreateByManager(EUIInternal::GetContextManager(ContextObject));
 }
-FVM_WeaponForge CreateByManager(const UEUIManagerSubsystem Manager)
+FVM_WeaponForge& CreateByManager(const UEUIManagerSubsystem Manager)
 {
-    FVM_WeaponForge __r;
-    TEUIModelRef<FVM_WeaponForge> local_6 = TEUIModelRef<FVM_WeaponForge>(EUIInternal::MakeModelWithManager(Manager, FVM_WeaponForge::ModelId));
-    return __r;
+    return TEUIModelRef<FVM_WeaponForge>(EUIInternal::MakeModelWithManager(Manager, FVM_WeaponForge::ModelId)).Get();
 }
 void GetModelInfo(FEUIViewModelMetaInfo &inout Result)
 {
@@ -1379,7 +1347,6 @@ namespace __GeneratedProperties_FVM_WeaponForge
 {
 UScriptStruct StaticStruct()
 {
-    UScriptStruct local_2;
-    return local_2;
+    return __GeneratedProperties_FVM_WeaponForge.Get();
 }
 }

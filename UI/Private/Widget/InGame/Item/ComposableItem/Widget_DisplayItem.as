@@ -41,14 +41,14 @@ class UWidget_DisplayItem : UEUIUserListItemWidget
     {
         if (this.DisplayItem.IsValid())
         {
-            int(this.CurDisplayType).RebuildFeaturesWithDisplayType();
+            this.DisplayItem.Get().RebuildFeaturesWithDisplayType(this.CurDisplayType);
         }
         return;
     }
     void HandleObservedModelChanges(FEUIReactiveSubscriberIterator &inout It)
     {
-        FVM_DisplayItem& local_6;
         TEUIModelRef<FVM_DisplayItem> local_2 = this.DisplayItem.AsRef();
+        FVM_DisplayItem& local_6 = local_2.Get();
         for (; It; )
         {
             FEUIReactiveSubscriberTrackScope local_56 = FEUIReactiveSubscriberTrackScope(It);

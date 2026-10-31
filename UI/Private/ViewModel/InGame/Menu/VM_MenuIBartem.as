@@ -77,8 +77,7 @@ struct FVM_MenuBarItem : FEUIViewModel
             this.SetbDisplayHasRedDot(false);
             return;
         }
-        TEUIModelRef<FVM_RedDot> local_2 = this.GetRedDotVM();
-        this.SetbDisplayHasRedDot(GetbDisplayHasRedDot());
+        this.SetbDisplayHasRedDot(this.GetRedDotVM().Get().GetbDisplayHasRedDot());
         return;
     }
     const TDataObjectPtr<FMenuConfig> GetMenuConfig() const property
@@ -155,11 +154,9 @@ FVM_MenuBarItem& Create(const UObject ContextObject, const TDataObjectPtr<FMenuC
 {
     return FVM_MenuBarItem::CreateByManager(EUIInternal::GetContextManager(ContextObject), MenuConfig);
 }
-FVM_MenuBarItem CreateByManager(const UEUIManagerSubsystem Manager, const TDataObjectPtr<FMenuConfig> &inout MenuConfig)
+FVM_MenuBarItem& CreateByManager(const UEUIManagerSubsystem Manager, const TDataObjectPtr<FMenuConfig> &inout MenuConfig)
 {
-    FVM_MenuBarItem __r;
-    TEUIModelRef<FVM_MenuBarItem> local_6 = TEUIModelRef<FVM_MenuBarItem>(EUIInternal::MakeModelWithManager_Generic(Manager, FVM_MenuBarItem::ModelId, 0, MenuConfig));
-    return __r;
+    return TEUIModelRef<FVM_MenuBarItem>(EUIInternal::MakeModelWithManager_Generic(Manager, FVM_MenuBarItem::ModelId, 0, MenuConfig)).Get();
 }
 void GetModelInfo(FEUIViewModelMetaInfo &inout Result)
 {
@@ -231,7 +228,6 @@ namespace __GeneratedProperties_FVM_MenuBarItem
 {
 UScriptStruct StaticStruct()
 {
-    UScriptStruct local_2;
-    return local_2;
+    return __GeneratedProperties_FVM_MenuBarItem.Get();
 }
 }

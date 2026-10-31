@@ -140,6 +140,7 @@ struct FEntitySchedulerContainer
     }
     void Remove(const FECSEntityId &inout Entity)
     {
+        this.AllEntity.Remove(Entity);
         return;
     }
     int AllNum()
@@ -219,8 +220,7 @@ struct FCS_EcologyScheduler : FECSSingleton
         }
         if (int(OldLevel) != 4 && this.AllUnits.IsValidIndex(int(OldLevel)))
         {
-            FECSEntityId local_5 = Entity.GetId();
-            int local_1 = int(OldLevel);
+            this.AllUnits[int(OldLevel)].Remove(Entity.GetId());
         }
         if (int(NewLevel) != 4 && this.AllUnits.IsValidIndex(int(NewLevel)))
         {

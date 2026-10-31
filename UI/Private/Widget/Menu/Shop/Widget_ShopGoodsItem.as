@@ -46,7 +46,7 @@ class UWidget_ShopGoodsItem : UEUIUserWidget
     UFUNCTION()
     TDataObjectPtr<FItemConfig> Item_ItemConfig() const
     {
-        FVM_Item& local_2;
+        FVM_Item& local_2 = this.Item.Get();
         TDataObjectPtr<FItemConfig> local_52;
         if (local_2)
         {
@@ -61,8 +61,8 @@ class UWidget_ShopGoodsItem : UEUIUserWidget
     UFUNCTION()
     int Item_Num() const
     {
-        FVM_Item& local_2;
         int local_5;
+        FVM_Item& local_2 = this.Item.Get();
         if (local_2)
         {
             local_5 = local_2.GetNum();
@@ -76,20 +76,20 @@ class UWidget_ShopGoodsItem : UEUIUserWidget
     UFUNCTION()
     int Item_OptionalNum() const
     {
-        FVM_Item& local_2;
+        FVM_Item& local_2 = this.Item.Get();
         return local_2 ? local_2.GetOptionalNum() : 0;
     }
     UFUNCTION()
     FText Item_ItemCategory() const
     {
-        FVM_Item& local_2;
+        FVM_Item& local_2 = this.Item.Get();
         FText local_16 = local_2 ? local_2.GetItemCategory() : FText();
         return local_16;
     }
     UFUNCTION()
     FSlateBrush Item_ItemIcon() const
     {
-        FVM_Item& local_2;
+        FVM_Item& local_2 = this.Item.Get();
         FSlateBrush local_136;
         if (local_2)
         {
@@ -104,15 +104,15 @@ class UWidget_ShopGoodsItem : UEUIUserWidget
     UFUNCTION()
     FText Item_ItemOwnLimit() const
     {
-        FVM_Item& local_2;
+        FVM_Item& local_2 = this.Item.Get();
         FText local_16 = local_2 ? local_2.GetItemOwnLimit() : FText();
         return local_16;
     }
     UFUNCTION()
     bool Item_ShouldShowNum() const
     {
-        FVM_Item& local_2;
         bool local_5;
+        FVM_Item& local_2 = this.Item.Get();
         if (local_2)
         {
             local_5 = local_2.GetShouldShowNum();
@@ -126,8 +126,8 @@ class UWidget_ShopGoodsItem : UEUIUserWidget
     UFUNCTION()
     bool Item_ShouldShowOptionalNum() const
     {
-        FVM_Item& local_2;
         bool local_5;
+        FVM_Item& local_2 = this.Item.Get();
         if (local_2)
         {
             local_5 = local_2.GetShouldShowOptionalNum();
@@ -141,8 +141,8 @@ class UWidget_ShopGoodsItem : UEUIUserWidget
     UFUNCTION()
     bool Item_ShouldShowOfMark() const
     {
-        FVM_Item& local_2;
         bool local_5;
+        FVM_Item& local_2 = this.Item.Get();
         if (local_2)
         {
             local_5 = local_2.GetShouldShowOfMark();
@@ -156,8 +156,8 @@ class UWidget_ShopGoodsItem : UEUIUserWidget
     UFUNCTION()
     bool Item_ShouldShowRangeMark() const
     {
-        FVM_Item& local_2;
         bool local_5;
+        FVM_Item& local_2 = this.Item.Get();
         if (local_2)
         {
             local_5 = local_2.GetShouldShowRangeMark();
@@ -171,15 +171,15 @@ class UWidget_ShopGoodsItem : UEUIUserWidget
     UFUNCTION()
     FSlateColor Item_NumTextColor() const
     {
-        FVM_Item& local_2;
+        FVM_Item& local_2 = this.Item.Get();
         FSlateColor local_18 = local_2 ? local_2.GetNumTextColor() : FSlateColor();
         return local_18;
     }
     UFUNCTION()
     bool Item_HasOwnLimit() const
     {
-        FVM_Item& local_2;
         bool local_5;
+        FVM_Item& local_2 = this.Item.Get();
         if (local_2)
         {
             local_5 = local_2.HasOwnLimit();
@@ -210,8 +210,8 @@ class UWidget_ShopGoodsItem : UEUIUserWidget
     }
     void HandleObservedModelChanges(FEUIReactiveSubscriberIterator &inout It)
     {
-        FVM_ShopGoodsItem& local_6;
         TEUIModelRef<FVM_ShopGoodsItem> local_2 = this.ShopGoodsItem.AsRef();
+        FVM_ShopGoodsItem& local_6 = local_2.Get();
         for (; It; )
         {
             FEUIReactiveSubscriberTrackScope local_56 = FEUIReactiveSubscriberTrackScope(It);

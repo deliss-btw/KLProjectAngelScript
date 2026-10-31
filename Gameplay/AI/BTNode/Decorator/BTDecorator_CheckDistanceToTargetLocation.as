@@ -138,12 +138,10 @@ class UBTDecorator_CheckDistanceToTargetLocation : UBTDecorator_ECSScriptBase
         }
         GetDefaulted local_36;
         FVector local_50(local_36.opCall().GetPosition());
-        bool local_17 = this.bLocationUseTargetCollisionBottom;
-        if (local_17)
+        if (this.bLocationUseTargetCollisionBottom)
         {
             local_50 -= FVector(0.0, 0.0, (local_16.GetCollisionHeight() * 0.5f));
-            local_17 = this.bCompareWithEntity;
-            if (local_17)
+            if (this.bCompareWithEntity)
             {
                 local_57 = local_22.GetCollisionHeight();
                 local_57 = local_57 * 0.5f;
@@ -151,8 +149,7 @@ class UBTDecorator_CheckDistanceToTargetLocation : UBTDecorator_ECSScriptBase
             }
         }
         float32 local_65 = 0.0f;
-        FAISmartValueContext local_10 = Context.opImplConv();
-        if (local_17)
+        if (this.CompareBy2D.GetValue(Context.opImplConv()))
         {
             local_65 = float32(local_50.Dist2D(local_32));
         }

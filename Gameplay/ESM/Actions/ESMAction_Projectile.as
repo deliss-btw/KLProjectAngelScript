@@ -232,8 +232,7 @@ class UESMAction_FireProjectile : UESMBPBaseSpanTickAction
     {
         if (int(this.FireModeConfig.FireMode) == 1)
         {
-            FFireProjectileActionInstanceData local_6;
-            local_6 = this.ModifyInstanceData(Context);
+            FFireProjectileActionInstanceData local_6 = this.ModifyInstanceData(Context);
             float local_8 = Time.ActionDeltaTime.ToSeconds();
             local_6.FireModeTickCurrentTime += local_8;
             if (local_6.FireModeTickCurrentTime >= this.FireModeConfig.FireInterval)
@@ -256,8 +255,7 @@ class UESMAction_FireProjectile : UESMBPBaseSpanTickAction
         }
         if (this.bControlProjectileLifeTime)
         {
-            FFireProjectileActionInstanceData local_6;
-            FECSEntity local_22 = FECSEntity(local_6.ProjectileEntity);
+            FECSEntity local_22 = FECSEntity(this.GetInstanceData(Context).ProjectileEntity);
             if (local_22.IsValid() && ECS::IsAuthorityOrPrediction(local_22))
             {
                 ModifyOrAdd local_30;
@@ -272,8 +270,7 @@ class UESMAction_FireProjectile : UESMBPBaseSpanTickAction
         }
         if (this.bUseStateTimeAsCurveSampleTime)
         {
-            FFireProjectileActionInstanceData local_6;
-            FECSEntity local_18 = FECSEntity(local_6.ProjectileEntity);
+            FECSEntity local_18 = FECSEntity(this.GetInstanceData(Context).ProjectileEntity);
             if (local_18.IsValid() && ECS::IsAuthorityOrPrediction(local_18))
             {
                 if (this.bHasCurveMove)
@@ -309,8 +306,7 @@ class UESMAction_FireProjectile : UESMBPBaseSpanTickAction
         {
             return;
         }
-        FECSEntity local_10;
-        if (!(local_10.IsValid()))
+        if (!(FECSEntity(this.GetInstanceData(Context).ProjectileEntity).IsValid()))
         {
             local_1 = false;
         }

@@ -4,34 +4,31 @@ namespace FLevelDataLayerUtils
 {
 bool BuildMapUrlFromLevelKey(const int LevelKey, FString &inout OutUrl)
 {
-    FString local_4 = FString();
-    XLog(ELog(22), local_4.Append("[").Append(LevelKey).Append("] BuildMapUrlFromLevelKey"));
-    if (!(FLevelInfoConfig::GetByDataId(LevelKey)))
+    XLog(ELog(22), FString().Append("[").Append(LevelKey).Append("] BuildMapUrlFromLevelKey"));
+    TDataObjectPtr<FLevelInfoConfig> local_30 = FLevelInfoConfig::GetByDataId(LevelKey);
+    if (!(local_30))
     {
         XError(ELog(22), FString().Append("Cannot get LevelInfoConfig for LevelKey: ").Append(LevelKey).Append("!"));
         return false;
     }
-    if (!(GetMapConfig()))
+    if (!(local_30.Get().GetMapConfig()))
     {
-        local_4 = FString();
-        XError(ELog(22), local_4.Append("Cannot get MapConfig for LevelKey: ").Append(LevelKey).Append("!"));
+        XError(ELog(22), FString().Append("Cannot get MapConfig for LevelKey: ").Append(LevelKey).Append("!"));
         return false;
     }
+    FString local_4 = local_30.Get().GetMapConfig().Get().MapReference.ToString();
     int local_62 = INDEX_NONE;
     int local_61 = local_62;
     if (local_4.FindLastChar(int16(46), local_61))
     {
         local_4 = local_4.Left(local_61);
     }
-    FString local_60;
     if (local_4.Len() == 0)
     {
-        FName local_66;
-        local_66.GetDataName();
-        local_60 = FString();
-        XError(ELog(22), local_60.Append("MapReference is null for MapConfig: ").Append(local_66).Append("!"));
+        XError(ELog(22), FString().Append("MapReference is null for MapConfig: ").Append(local_30.Get().GetMapConfig().Get().GetDataName()).Append("!"));
         return false;
     }
+    FString local_60 = local_30.Get().GameSettings.ToString();
     int local_62_2 = local_4.Len();
     int local_64 = local_60.Len();
     OutUrl = FString().Append(local_4).Append("?GameSettings=").Append(local_60).Append("?level_key=").Append(LevelKey);
@@ -60,9 +57,7 @@ FString GetDebugTagString(const TSet<EKLDataLayerFilterTags> &inout Tags)
 }
 void OverrideInitialDataLayers(const UWorld InWorld, const TArray<UKLDataLayerInstance> &inout DataLayerInstances)
 {
-    int local_2 = 0;
-    int local_1 = CVar_Level_UseTagQueryDataLayerInit.GetInt();
-    if (local_1 > 0)
+    if (CVar_Level_UseTagQueryDataLayerInit.GetInt() > 0)
     {
         FLevelDataLayerUtils::OverrideInitialDataLayersByTagQuery(InWorld, DataLayerInstances);
         return;
@@ -78,6 +73,8 @@ void OverrideInitialDataLayers(const UWorld InWorld, const TArray<UKLDataLayerIn
     TSet<TSoftClassPtr<AKLLevelScriptActor>> local_62;
     if (local_14.LevelInfoConfig)
     {
+        local_42 = local_14.LevelInfoConfig.Get().LoadFilterTags;
+        local_62 = local_14.LevelInfoConfig.Get().ExtraLoadDatalayerClasses;
         XLog(ELog(22), FString().Append("[").Append(int(InWorld.GetNetMode())).Append("] Init DataLayer LevelInfoConfig Tags: ").Append(FLevelDataLayerUtils::GetDebugTagString(local_42)));
     }
     ECS::GetECSWorldOfObject(InWorld).IsValid();
@@ -87,16 +84,20 @@ void OverrideInitialDataLayers(const UWorld InWorld, const TArray<UKLDataLayerIn
     {
         if (local_80.IntrusionPolicyConfig.IsSet())
         {
-            XLog(ELog(22), FString().Append("[").Append(int(InWorld.GetNetMode())).Append("] Init DataLayer Add IntrusionPolicy Extra LoadDatalayerClasses: ").Append(local_1));
+            local_62.Append(local_80.IntrusionPolicyConfig.Get().ExtraLoadDatalayerClasses);
+            XLog(ELog(22), FString().Append("[").Append(int(InWorld.GetNetMode())).Append("] Init DataLayer Add IntrusionPolicy Extra LoadDatalayerClasses: ").Append(local_80.IntrusionPolicyConfig.Get().ExtraLoadDatalayerClasses.Num()));
         }
         if (local_80.SpawnAreaConfig.IsSet())
         {
-            XLog(ELog(22), FString().Append("[").Append(int(InWorld.GetNetMode())).Append("] Init DataLayer Add SpawnArea Extra LoadDatalayerClasses: ").Append(local_1));
-            XLog(ELog(22), FString().Append("[").Append(int(InWorld.GetNetMode())).Append("] Init DataLayer Add SpawnArea Extra LoadDatalayerTags: ").Append(local_2));
+            local_62.Append(local_80.SpawnAreaConfig.Get().CommissionExtraLoadDatalayers);
+            XLog(ELog(22), FString().Append("[").Append(int(InWorld.GetNetMode())).Append("] Init DataLayer Add SpawnArea Extra LoadDatalayerClasses: ").Append(local_80.SpawnAreaConfig.Get().CommissionExtraLoadDatalayers.Num()));
+            local_42.Append(local_80.SpawnAreaConfig.Get().CommissionExtraLoadFilterTags);
+            XLog(ELog(22), FString().Append("[").Append(int(InWorld.GetNetMode())).Append("] Init DataLayer Add SpawnArea Extra LoadDatalayerTags: ").Append(local_80.SpawnAreaConfig.Get().CommissionExtraLoadFilterTags.Num()));
         }
         if (local_80.EntryRuleConfig.IsSet())
         {
-            XLog(ELog(22), FString().Append("[").Append(int(InWorld.GetNetMode())).Append("] Init DataLayer Add EntryRule Extra LoadDatalayerClasses: ").Append(local_2));
+            local_62.Append(local_80.EntryRuleConfig.Get().ExtraLoadDatalayerClasses);
+            XLog(ELog(22), FString().Append("[").Append(int(InWorld.GetNetMode())).Append("] Init DataLayer Add EntryRule Extra LoadDatalayerClasses: ").Append(local_80.EntryRuleConfig.Get().ExtraLoadDatalayerClasses.Num()));
         }
     }
     for (auto local_94 : DataLayerInstances)
@@ -133,6 +134,7 @@ void OverrideInitialDataLayersByTagQuery(const UWorld InWorld, const TArray<UKLD
     FKLGameplayTagQuery local_30;
     if (local_2.LevelInfoConfig)
     {
+        local_30 = local_2.LevelInfoConfig.Get().LoadTagQuery;
         XLog(ELog(22), FString().Append("[").Append(int(InWorld.GetNetMode())).Append("] Init DataLayer by TagQuery, IsEmpty: ").Append(local_30.IsEmpty()).Append(", Desc: ").Append(local_30.GetDescription()));
     }
     for (auto local_50 : DataLayerInstances)

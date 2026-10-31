@@ -14,47 +14,33 @@ class UBTTask_NPCDailyRoutePrepareNext : UBTTask_ECSScriptBase
     UFUNCTION()
     EBTNodeResult ExecuteTask_Implementation(const FAIBehaviorTreeContext &inout Context, const FBTNodeMemory &inout NodeMemory) const
     {
-        bool local_31 = false;
         int local_34 = 0;
-        int local_53;
         FECSEntity local_4 = FECSEntity(Context.PawnEntity);
         if (!(local_4.IsValid()))
         {
             return EBTNodeResult(1);
         }
         TDataObjectPtr<FNPCDailyRouteConfig> local_30;
-        if (!(::FNPCDailyRouteUtils::TryGetRouteConfig(local_4, local_30)) || !(HasRouteNodes()) || local_31 || !(IsLoopStartIndexValid()))
+        if (!(::FNPCDailyRouteUtils::TryGetRouteConfig(local_4, local_30)) || !(local_30.Get().HasRouteNodes()) || local_30.Get().RouteSourceId.IsNone() || !(local_30.Get().IsLoopStartIndexValid()))
         {
             ::FNPCDailyRouteUtils::ClearPreparedTarget(local_4);
             return EBTNodeResult(1);
         }
-        bool local_5 = !(local_34.RouteConfig.IsSet()) || !((local_34.RouteConfig.GetDataName() == local_30.GetDataName()));
-        if (local_5)
+        if (!(local_34.RouteConfig.IsSet()) || !((local_34.RouteConfig.GetDataName() == local_30.GetDataName())))
         {
             ::FNPCDailyRouteUtils::InitializeRouteState(local_4, local_30, -1);
         }
         FC_NPCDailyRouteRuntime local_46;
         ::FNPCDailyRouteUtils::ClearPreparedRuntime(local_46);
-        if (int(local_46.CurrentNodeIndex) < 0)
-        {
-            local_53 = 0;
-        }
-        else
-        {
-            local_53 = int(local_46.CurrentNodeIndex).GetNextNodeIndex();
-        }
-        local_5 = !local_5;
-        if (local_5)
+        int local_53 = int(local_46.CurrentNodeIndex) < 0 ? 0 : local_30.Get().GetNextNodeIndex(int(local_46.CurrentNodeIndex));
+        if (!(local_30.Get().Nodes.IsValidIndex(local_53)))
         {
             return EBTNodeResult(1);
         }
         FNPCDailyRouteNodeConfig local_60;
-        FNPCDailyRouteNodeConfig local_66;
-        local_60 = local_66;
+        local_60 = local_30.Get().Nodes[local_53];
         FNPCDailyRouteRuntimePointInfo local_76;
-        UECSBehaviorTreeComponent local_78 = Context.GetOwnerComponent();
-        local_5 = !local_5;
-        if (local_5)
+        if (!(::NPCDailyRouteRuntimeLibrary::GetRoutePointInfo(Context.GetOwnerComponent(), local_30.Get().RouteSourceId, local_60.PointId, local_76)))
         {
             return EBTNodeResult(1);
         }
@@ -64,20 +50,17 @@ class UBTTask_NPCDailyRoutePrepareNext : UBTTask_ECSScriptBase
         local_46.SelectedStayTime = ::FNPCDailyRouteUtils::SelectStayTime(local_60.StayTime);
         local_46.ActivePathPoints.Empty(0);
         local_46.ActivePathPointIndex = 0;
-        local_31 = true;
-        local_46.bHasPreparedTarget = local_31;
-        if (unresolved.Nodes.IsValidIndex(int(local_46.CurrentNodeIndex)))
+        local_46.bHasPreparedTarget = true;
+        if (local_30.Get().Nodes.IsValidIndex(int(local_46.CurrentNodeIndex)))
         {
-            FName local_81;
+            FName local_81(local_30.Get().Nodes[int(local_46.CurrentNodeIndex)].PointId);
             if ((local_81 == local_60.PointId))
             {
                 ::FNPCDailyRouteUtils::ClearPreparedRuntime(local_46);
                 return EBTNodeResult(1);
             }
             FNPCDailyRouteRuntimeConnectionInfo local_88;
-            UECSBehaviorTreeComponent local_78_2 = Context.GetOwnerComponent();
-            local_31 = !local_31;
-            if (local_31)
+            if (!(::NPCDailyRouteRuntimeLibrary::GetRouteConnectionInfo(Context.GetOwnerComponent(), local_30.Get().RouteSourceId, local_81, local_60.PointId, local_88)))
             {
                 ::FNPCDailyRouteUtils::ClearPreparedRuntime(local_46);
                 return EBTNodeResult(1);

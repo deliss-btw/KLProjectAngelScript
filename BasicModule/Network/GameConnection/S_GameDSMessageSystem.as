@@ -221,23 +221,25 @@ class US_GameDSMessageSystem : UECSScriptSystem
     UFUNCTION()
     void ServerJob_HandlePlayerRequestBackToCityLevel(const FCE_PlayerRequestBackToCityLevel &inout Event) const
     {
-        int local_145 = 0;
         XLog(ELog(27), FString().Append("HandlePlayerRequestLeaveCurrentLevel Sender=").Append(Event.Sender));
         Get local_10;
         if (local_10.opCall())
         {
-            if (::FLevelUtils::GetCurrentLevelInfoConfig(nullptr))
+            TDataObjectPtr<FLevelInfoConfig> local_38 = ::FLevelUtils::GetCurrentLevelInfoConfig(nullptr);
+            if (local_38)
             {
+                int local_87 = local_38.Get().CityLevelId;
                 TDataObjectPtr<FLevelInfoConfig> local_62;
-                if ((local_62 && (0 == 1)))
+                TDataObjectPtr<FLevelInfoConfig> local_86 = local_62;
+                if (local_86 && (int(local_86.Get().LevelType) == 1))
                 {
-                    FString local_4 = FString();
-                    ::UGameDSConnectionSubsystem::Get().PlayerRequestEnterDS(Event.Sender, local_145, false, 0);
+                    XLog(ELog(27), FString().Append("HandlePlayerRequestBackToCityLevel Sender=").Append(Event.Sender).Append(" CityLevelKey=").Append(local_38.Get().CityLevelId));
+                    ::UGameDSConnectionSubsystem::Get().PlayerRequestEnterDS(Event.Sender, local_38.Get().CityLevelId, false, 0);
                     return;
                 }
                 else
                 {
-                    FString local_4_2 = FString();
+                    XLog(ELog(27), FString().Append("HandlePlayerRequestBackToCityLevel CityLevelInfoConfig is not valid, ").Append(local_38.Get().CityLevelId).Append(" is not city level"));
                     return;
                 }
             }
@@ -278,9 +280,7 @@ class US_GameDSMessageSystem : UECSScriptSystem
     UFUNCTION()
     void Monitor_OnRemovePlayerController(const FECSEntity &inout PlayerEntity, const FC_PlayerController &inout C_PlayerController) const
     {
-        TWeakObjectPtr<AECSPlayerController> local_2 = C_PlayerController.GetUEPlayerController();
-        AECSPlayerController local_4;
-        APXECSPlayerController local_8 = (Cast<APXECSPlayerController>(local_4));
+        APXECSPlayerController local_8 = (Cast<APXECSPlayerController>(C_PlayerController.GetUEPlayerController().Get()));
         if (local_8 != nullptr)
         {
             if (local_8 != nullptr)

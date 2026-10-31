@@ -16,10 +16,9 @@ class UBTTask_DispatchSpecialToken : UBTTask_ECSScriptBase
     UFUNCTION()
     EBTNodeResult ExecuteTask_Implementation(const FAIBehaviorTreeContext &inout Context, const FBTNodeMemory &inout NodeMemory) const
     {
-        const UScriptStruct local_38;
         if (this.SpecialToken)
         {
-            const FAISpecialCombatTokenConfig& local_4;
+            const FAISpecialCombatTokenConfig& local_4 = this.SpecialToken.Get();
             TArray<FAISmart_AnyValue> local_8;
             local_8.SetNum(local_4.Params.Num());
             for (auto& local_24 : this.Params)
@@ -30,8 +29,7 @@ class UBTTask_DispatchSpecialToken : UBTTask_ECSScriptBase
                     XError(ELog(14), FString().Append("Failed to find ").Append(local_24.Name).Append(" in Config ").Append(local_4.GetDataName()));
                     continue;
                 }
-                const FAISmartValuePackItem& local_36 = local_4.Params[local_9];
-                if (local_38 != local_24.Value.GetValueType())
+                if (local_4.Params[local_9].ValueType.Get() != local_24.Value.GetValueType())
                 {
                     XError(ELog(14), FString().Append("Failed to set ").Append(local_24.Name).Append(" in Config ").Append(local_4.GetDataName()).Append(", type not matched."));
                     continue;

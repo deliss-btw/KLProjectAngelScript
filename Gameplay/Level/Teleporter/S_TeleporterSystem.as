@@ -16,8 +16,10 @@ class US_TeleporterSystem : UECSScriptSystem
         }
         FECSWorldPtr local_4_2 = this.GetECSWorld();
         Modify local_12;
-        if (local_12.opCall())
+        FCS_Teleporters& local_14 = local_12.opCall();
+        if (local_14)
         {
+            local_14.GetModify_Teleporters().Remove(Entity);
         }
         return;
     }
@@ -26,8 +28,10 @@ class US_TeleporterSystem : UECSScriptSystem
     {
         FECSWorldPtr local_2 = this.GetECSWorld();
         Modify local_6;
-        if (local_6.opCall())
+        FCS_Teleporters& local_8 = local_6.opCall();
+        if (local_8)
         {
+            local_8.GetModify_Teleporters().Remove(Entity);
         }
         return;
     }
@@ -42,7 +46,6 @@ class US_TeleporterSystem : UECSScriptSystem
     UFUNCTION()
     void ClientJob_InitAccountExclusiveTeleporterState(const FECSEntity &inout Entity, const FC_AccountExclusiveTeleporterConfig &inout TeleporterConfig) const
     {
-        int local_26 = 0;
         ModifyOrAdd local_32;
         Remove local_4;
         local_4.opCall();
@@ -61,8 +64,8 @@ class US_TeleporterSystem : UECSScriptSystem
         {
             if (FECSEntity(local_20.LocalEntityId).IsValid())
             {
-                bool local_5 = ::TeleporterUtils::IsTeleporterUnlocked(local_14, local_26, Entity);
-                bool local_25 = ::TeleporterUtils::IsTeleporterActive(local_14, local_26, Entity);
+                bool local_5 = ::TeleporterUtils::IsTeleporterUnlocked(local_14, TeleporterConfig.TeleporterConfig.Get().DataId, Entity);
+                bool local_25 = ::TeleporterUtils::IsTeleporterActive(local_14, TeleporterConfig.TeleporterConfig.Get().DataId, Entity);
                 if (local_5)
                 {
                     FC_ESMExternalTransitOnLocalReg& local_34 = local_32.opCall();

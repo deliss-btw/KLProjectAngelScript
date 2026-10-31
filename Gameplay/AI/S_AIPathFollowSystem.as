@@ -69,9 +69,7 @@ class US_AIPathFollowSystem : UECSScriptSystem
         {
             if (UGameplayConfigsManager::GetAIMoveSettings().IsValid())
             {
-                UAIMoveSettings local_106;
-                UAIMoveSettings local_108;
-                local_20 = FAIPathSessionUtils::RequestMoveTo(ECS::GetUEWorld(), Entity.GetId(), PathFollow.StartLocation, PathFollow.TargetLocation, TDataObjectPtr<FAIMoveConfig>(local_108.DefaultMoveAbilityConfig), TDataObjectPtr<FAIMoveProclivityConfig>(local_106.DefaultMoveProclivityConfig));
+                local_20 = FAIPathSessionUtils::RequestMoveTo(ECS::GetUEWorld(), Entity.GetId(), PathFollow.StartLocation, PathFollow.TargetLocation, TDataObjectPtr<FAIMoveConfig>(UGameplayConfigsManager::GetAIMoveSettings().Get().DefaultMoveAbilityConfig), TDataObjectPtr<FAIMoveProclivityConfig>(UGameplayConfigsManager::GetAIMoveSettings().Get().DefaultMoveProclivityConfig));
             }
         }
         FAIPathSession& local_134 = FAIPathSessionUtils::GetSession(ECS::GetUEWorld(), local_20);
@@ -197,7 +195,6 @@ class US_AIPathFollowSystem : UECSScriptSystem
     float32 GetChainedStartEntryLookAheadDistance(const FECSEntity &inout Entity, const FVector &inout StartDir, const FVector &inout PathDir) const
     {
         int local_34 = 0;
-        UAIMoveSettings local_70;
         float32 local_1 = 0.0f;
         Has local_6;
         bool local_7 = local_6.opCall();
@@ -227,10 +224,10 @@ class US_AIPathFollowSystem : UECSScriptSystem
         float32 local_67 = 6500.0f;
         if (UGameplayConfigsManager::GetAIMoveSettings().IsValid())
         {
-            local_63 = local_70.ChainedStartEntryChainLengthDistanceScale;
-            local_65 = local_70.ChainedStartEntryLookAheadAngleScale;
-            local_66 = local_70.ChainedStartEntryLookAheadMin;
-            local_67 = local_70.ChainedStartEntryLookAheadMax;
+            local_63 = UGameplayConfigsManager::GetAIMoveSettings().Get().ChainedStartEntryChainLengthDistanceScale;
+            local_65 = UGameplayConfigsManager::GetAIMoveSettings().Get().ChainedStartEntryLookAheadAngleScale;
+            local_66 = UGameplayConfigsManager::GetAIMoveSettings().Get().ChainedStartEntryLookAheadMin;
+            local_67 = UGameplayConfigsManager::GetAIMoveSettings().Get().ChainedStartEntryLookAheadMax;
         }
         local_67 = FMath::Max(local_66, local_67);
         float32 local_59 = FMath::Max((local_2 * local_62), local_1 * local_63);
@@ -295,7 +292,6 @@ class US_AIPathFollowSystem : UECSScriptSystem
     }
     bool BuildChainedStartHermiteSamples(const FVector &inout StartPos, const FVector &inout StartDir, const FVector &inout JoinPos, const FVector &inout JoinDir, TArray<FVector> &inout OutSamples) const
     {
-        UAIMoveSettings local_52;
         float32 local_55;
         OutSamples.Empty(0);
         FVector local_28 = FVector(StartDir.X, StartDir.Y, 0.0).GetSafeNormal(9.99999993922529e-9, FVector::ZeroVector);
@@ -310,9 +306,9 @@ class US_AIPathFollowSystem : UECSScriptSystem
         int local_46 = 12;
         if (UGameplayConfigsManager::GetAIMoveSettings().IsValid())
         {
-            local_38 = local_52.ChainedStartEntryLateralOffsetScale;
-            local_40 = local_52.ChainedStartEntryTangentBaseScale;
-            local_44 = local_52.ChainedStartEntrySampleDistance;
+            local_38 = UGameplayConfigsManager::GetAIMoveSettings().Get().ChainedStartEntryLateralOffsetScale;
+            local_40 = UGameplayConfigsManager::GetAIMoveSettings().Get().ChainedStartEntryTangentBaseScale;
+            local_44 = UGameplayConfigsManager::GetAIMoveSettings().Get().ChainedStartEntrySampleDistance;
         }
         if (local_28.IsNearlyZero(9.999999747378752e-5) || local_8.IsNearlyZero(9.999999747378752e-5) || (local_36 < 200.0f))
         {
@@ -534,8 +530,7 @@ class US_AIPathFollowSystem : UECSScriptSystem
         float32 local_43 = 15.0f;
         if (UGameplayConfigsManager::GetAIMoveSettings().IsValid())
         {
-            UAIMoveSettings local_46;
-            local_43 = local_46.ChainedStartEntryStartAngleThreshold;
+            local_43 = UGameplayConfigsManager::GetAIMoveSettings().Get().ChainedStartEntryStartAngleThreshold;
         }
         if (local_32.IsNearlyZero(9.999999747378752e-5) || local_18.IsNearlyZero(9.999999747378752e-5) || !(this.ShouldStandTurn(local_32, local_18, local_43)))
         {
@@ -570,7 +565,6 @@ class US_AIPathFollowSystem : UECSScriptSystem
     }
     bool ShouldAllowChainedStartEntryPrefixForRepath(const FECSEntity &inout Entity, const FC_AIPathFollowV2 &inout PathFollow, const FAIMovePurpose &inout FollowPurpose) const
     {
-        UAIMoveSettings local_38;
         Has local_6;
         if (!(this.HasChainedChildEntity(Entity)) || !(local_6.opCall()))
         {
@@ -582,8 +576,8 @@ class US_AIPathFollowSystem : UECSScriptSystem
         float32 local_35 = 35.0f;
         if (UGameplayConfigsManager::GetAIMoveSettings().IsValid())
         {
-            local_32 = local_38.ChainedStartEntryRepathTargetMoveDistance;
-            local_35 = local_38.ChainedStartEntryRepathAngleThreshold;
+            local_32 = UGameplayConfigsManager::GetAIMoveSettings().Get().ChainedStartEntryRepathTargetMoveDistance;
+            local_35 = UGameplayConfigsManager::GetAIMoveSettings().Get().ChainedStartEntryRepathAngleThreshold;
         }
         if (local_31 > local_32)
         {

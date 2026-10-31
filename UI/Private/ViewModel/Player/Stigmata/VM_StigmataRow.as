@@ -325,11 +325,9 @@ FVM_StigmataRow& Create(const UObject ContextObject, const int StigmataLevel)
 {
     return FVM_StigmataRow::CreateByManager(EUIInternal::GetContextManager(ContextObject), StigmataLevel);
 }
-FVM_StigmataRow CreateByManager(const UEUIManagerSubsystem Manager, const int StigmataLevel)
+FVM_StigmataRow& CreateByManager(const UEUIManagerSubsystem Manager, const int StigmataLevel)
 {
-    FVM_StigmataRow __r;
-    TEUIModelRef<FVM_StigmataRow> local_6 = TEUIModelRef<FVM_StigmataRow>(EUIInternal::MakeModelWithManager_Generic(Manager, FVM_StigmataRow::ModelId, 0, StigmataLevel));
-    return __r;
+    return TEUIModelRef<FVM_StigmataRow>(EUIInternal::MakeModelWithManager_Generic(Manager, FVM_StigmataRow::ModelId, 0, StigmataLevel)).Get();
 }
 void GetModelInfo(FEUIViewModelMetaInfo &inout Result)
 {
@@ -478,7 +476,6 @@ namespace __GeneratedProperties_FVM_StigmataRow
 {
 UScriptStruct StaticStruct()
 {
-    UScriptStruct local_2;
-    return local_2;
+    return __GeneratedProperties_FVM_StigmataRow.Get();
 }
 }

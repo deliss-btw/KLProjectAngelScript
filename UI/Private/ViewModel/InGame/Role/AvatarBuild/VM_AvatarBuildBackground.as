@@ -33,8 +33,7 @@ struct FVM_AvatarBuildBackground : FEUIViewModel
     }
     FSoftBrush GetBackgroundImage() const
     {
-        TEUIModelRef<FMS_EditingAvatar> local_2 = this.GetEditingAvatar();
-        TDataObjectPtr<FAvatarPrefabConfig> local_26 = GetAvatarConfig();
+        TDataObjectPtr<FAvatarPrefabConfig> local_26 = this.GetEditingAvatar().Get().GetAvatarConfig();
         if (local_26)
         {
             return local_26.opArrow().PlayerTachie;
@@ -79,11 +78,9 @@ FVM_AvatarBuildBackground& Create(const UObject ContextObject)
 {
     return FVM_AvatarBuildBackground::CreateByManager(EUIInternal::GetContextManager(ContextObject));
 }
-FVM_AvatarBuildBackground CreateByManager(const UEUIManagerSubsystem Manager)
+FVM_AvatarBuildBackground& CreateByManager(const UEUIManagerSubsystem Manager)
 {
-    FVM_AvatarBuildBackground __r;
-    TEUIModelRef<FVM_AvatarBuildBackground> local_6 = TEUIModelRef<FVM_AvatarBuildBackground>(EUIInternal::MakeModelWithManager(Manager, FVM_AvatarBuildBackground::ModelId));
-    return __r;
+    return TEUIModelRef<FVM_AvatarBuildBackground>(EUIInternal::MakeModelWithManager(Manager, FVM_AvatarBuildBackground::ModelId)).Get();
 }
 void GetModelInfo(FEUIViewModelMetaInfo &inout Result)
 {
@@ -126,7 +123,6 @@ namespace __GeneratedProperties_FVM_AvatarBuildBackground
 {
 UScriptStruct StaticStruct()
 {
-    UScriptStruct local_2;
-    return local_2;
+    return __GeneratedProperties_FVM_AvatarBuildBackground.Get();
 }
 }

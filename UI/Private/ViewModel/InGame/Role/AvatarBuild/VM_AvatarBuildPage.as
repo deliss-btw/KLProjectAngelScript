@@ -45,8 +45,7 @@ struct FVM_AvatarBuildPage : FEUIViewModel
     void PostConstruct()
     {
         this.SetEditingAvatar(TEUIModelRef<FMS_EditingAvatar>(::FMS_EditingAvatar::Get(this.GetContext().Manager)));
-        TEUIModelRef<FMS_EditingAvatar> local_2 = this.GetEditingAvatar();
-        bool local_3 = !(!(GetAvatarConfig()));
+        bool local_3 = !(!(this.GetEditingAvatar().Get().GetAvatarConfig()));
         ::FVM_AvatarSelectBar::RequireAvatarSelectBar(FEUIModelRef(this));
         return;
     }
@@ -57,8 +56,7 @@ struct FVM_AvatarBuildPage : FEUIViewModel
     }
     TDataObjectPtr<FAvatarPrefabConfig> GetAvatarConfig() const
     {
-        TEUIModelRef<FMS_EditingAvatar> local_2 = this.GetEditingAvatar();
-        return GetAvatarConfig();
+        return this.GetEditingAvatar().Get().GetAvatarConfig();
     }
     void OnAvatarConfigChanged()
     {
@@ -86,7 +84,7 @@ struct FVM_AvatarBuildPage : FEUIViewModel
         if (local_36 != 0)
         {
             TEUIModelRef<FM_Equipment> local_40 = ::FMS_EquipmentDataCache::Get(this.GetContext().Manager).GetEquipment(local_36);
-            for (auto& local_56 : GetEquipmentTraits())
+            for (auto& local_56 : local_40.Get().GetEquipmentTraits())
             {
                 this.GetModify_AvatarTraitList().Add(TEUIModelRef<FVM_TraitInfo>(::FVM_TraitInfo::Create(this.GetContext().Manager, local_56)));
             }
@@ -227,11 +225,9 @@ FVM_AvatarBuildPage& Create(const UObject ContextObject)
 {
     return FVM_AvatarBuildPage::CreateByManager(EUIInternal::GetContextManager(ContextObject));
 }
-FVM_AvatarBuildPage CreateByManager(const UEUIManagerSubsystem Manager)
+FVM_AvatarBuildPage& CreateByManager(const UEUIManagerSubsystem Manager)
 {
-    FVM_AvatarBuildPage __r;
-    TEUIModelRef<FVM_AvatarBuildPage> local_6 = TEUIModelRef<FVM_AvatarBuildPage>(EUIInternal::MakeModelWithManager(Manager, FVM_AvatarBuildPage::ModelId));
-    return __r;
+    return TEUIModelRef<FVM_AvatarBuildPage>(EUIInternal::MakeModelWithManager(Manager, FVM_AvatarBuildPage::ModelId)).Get();
 }
 void GetModelInfo(FEUIViewModelMetaInfo &inout Result)
 {
@@ -361,7 +357,6 @@ namespace __GeneratedProperties_FVM_AvatarBuildPage
 {
 UScriptStruct StaticStruct()
 {
-    UScriptStruct local_2;
-    return local_2;
+    return __GeneratedProperties_FVM_AvatarBuildPage.Get();
 }
 }

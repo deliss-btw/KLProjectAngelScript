@@ -226,79 +226,49 @@ struct FVMS_ItemBtns : FEUIViewModelSingleton
         local_30.bShowInputActionOnKeyBoard = true;
         local_30.bShowInputActionOnGamepad = false;
         local_30.bShowInputActionOnTouch = false;
-        TEUIModelRef<FVM_NormalSkillBtn> local_2 = this.GetMountBtnVM();
-        true.SetbOverrideProgressType();
-        int local_33 = 1;
-        TEUIModelRef<FVM_NormalSkillBtn> local_2_2 = this.GetMountBtnVM();
-        local_33.SetProgressType();
-        TEUIModelRef<FVM_NormalSkillBtn> local_2_3 = this.GetMountBtnVM();
-        local_30.SetSkillBtnConfig();
-        bool local_32_2 = false;
-        TEUIModelRef<FVM_NormalSkillBtn> local_2_4 = this.GetMountBtnVM();
-        local_32_2.SetbShowItemUsableCount();
-        bool local_32_3 = true;
-        TEUIModelRef<FVM_NormalSkillBtn> local_2_5 = this.GetMountBtnVM();
-        local_32_3.SetbOverrideIcon();
+        this.GetMountBtnVM().Get().SetbOverrideProgressType(true);
+        this.GetMountBtnVM().Get().SetProgressType(ESkillBtnProgressType(1));
+        this.GetMountBtnVM().Get().SetSkillBtnConfig(local_30);
+        this.GetMountBtnVM().Get().SetbShowItemUsableCount(false);
+        this.GetMountBtnVM().Get().SetbOverrideIcon(true);
         GetGameplaySettings<UUtilitySettings> local_38;
         local_36 = local_38;
-        TEUIModelRef<FVM_NormalSkillBtn> local_2_6 = this.GetMountBtnVM();
-        local_36.MountIconImg.SetOverrideIcon();
+        this.GetMountBtnVM().Get().SetOverrideIcon(local_36.MountIconImg);
         this.RefreshMountButtonIcon();
         this.RefreshMountUnlockState();
-        bool local_32_4 = this.GetIsMountBtnUnlock();
-        TEUIModelRef<FVM_NormalSkillBtn> local_2_7 = this.GetMountBtnVM();
-        local_32_4.SetCachedVisibility();
+        this.GetMountBtnVM().Get().SetCachedVisibility(this.GetIsMountBtnUnlock());
         this.SetHealBtnVM(TEUIModelRef<FVM_NormalSkillBtn>(::FVM_NormalSkillBtn::Create(this.GetContext().Manager)));
         FNormalSkillBtnConfig local_68;
         local_68.bShowInputActionOnKeyBoard = true;
         local_68.bShowInputActionOnGamepad = false;
         local_68.bShowInputActionOnTouch = false;
-        bool local_32_5 = true;
-        TEUIModelRef<FVM_NormalSkillBtn> local_2_8 = this.GetHealBtnVM();
-        local_32_5.SetbOverrideProgressType();
-        int local_33_2 = 3;
-        TEUIModelRef<FVM_NormalSkillBtn> local_2_9 = this.GetHealBtnVM();
-        local_33_2.SetProgressType();
-        TEUIModelRef<FVM_NormalSkillBtn> local_2_10 = this.GetHealBtnVM();
-        local_68.SetSkillBtnConfig();
+        this.GetHealBtnVM().Get().SetbOverrideProgressType(true);
+        this.GetHealBtnVM().Get().SetProgressType(ESkillBtnProgressType(3));
+        this.GetHealBtnVM().Get().SetSkillBtnConfig(local_68);
         this.SetCombatBtnVM1(TEUIModelRef<FVM_NormalSkillBtn>(::FVM_NormalSkillBtn::Create(this.GetContext().Manager)));
         FNormalSkillBtnConfig local_96;
         local_96.bShowInputActionOnKeyBoard = true;
         local_96.bShowInputActionOnGamepad = false;
         local_96.bShowInputActionOnTouch = false;
-        bool local_32_6 = true;
-        TEUIModelRef<FVM_NormalSkillBtn> local_2_11 = this.GetCombatBtnVM1();
-        local_32_6.SetbOverrideProgressType();
-        int local_33_3 = 3;
-        TEUIModelRef<FVM_NormalSkillBtn> local_2_12 = this.GetCombatBtnVM1();
-        local_33_3.SetProgressType();
-        TEUIModelRef<FVM_NormalSkillBtn> local_2_13 = this.GetCombatBtnVM1();
-        local_96.SetSkillBtnConfig();
+        this.GetCombatBtnVM1().Get().SetbOverrideProgressType(true);
+        this.GetCombatBtnVM1().Get().SetProgressType(ESkillBtnProgressType(3));
+        this.GetCombatBtnVM1().Get().SetSkillBtnConfig(local_96);
         this.SetCombatBtnVM2(TEUIModelRef<FVM_NormalSkillBtn>(::FVM_NormalSkillBtn::Create(this.GetContext().Manager)));
         FNormalSkillBtnConfig local_124;
         local_124.bShowInputActionOnKeyBoard = true;
         local_124.bShowInputActionOnGamepad = false;
         local_124.bShowInputActionOnTouch = false;
-        bool local_32_7 = true;
-        TEUIModelRef<FVM_NormalSkillBtn> local_2_14 = this.GetCombatBtnVM2();
-        local_32_7.SetbOverrideProgressType();
-        int local_33_4 = 3;
-        TEUIModelRef<FVM_NormalSkillBtn> local_2_15 = this.GetCombatBtnVM2();
-        local_33_4.SetProgressType();
+        this.GetCombatBtnVM2().Get().SetbOverrideProgressType(true);
+        this.GetCombatBtnVM2().Get().SetProgressType(ESkillBtnProgressType(3));
         this.SetCombatTmpVM(TEUIModelRef<FVM_NormalSkillBtn>(::FVM_NormalSkillBtn::Create(this.GetContext().Manager)));
         FNormalSkillBtnConfig local_152;
         local_152.bShowInputActionOnKeyBoard = true;
         local_152.bShowInputActionOnGamepad = false;
         local_152.bShowInputActionOnTouch = false;
         local_152.SkillSlot = ESkillSlot(9);
-        bool local_32_8 = false;
-        TEUIModelRef<FVM_NormalSkillBtn> local_2_16 = this.GetCombatTmpVM();
-        local_32_8.SetbOverrideProgressType();
-        int local_33_5 = 3;
-        TEUIModelRef<FVM_NormalSkillBtn> local_2_17 = this.GetCombatTmpVM();
-        local_33_5.SetProgressType();
-        TEUIModelRef<FVM_NormalSkillBtn> local_2_18 = this.GetCombatTmpVM();
-        local_152.SetSkillBtnConfig();
+        this.GetCombatTmpVM().Get().SetbOverrideProgressType(false);
+        this.GetCombatTmpVM().Get().SetProgressType(ESkillBtnProgressType(3));
+        this.GetCombatTmpVM().Get().SetSkillBtnConfig(local_152);
         return;
     }
     void RefreshPawnItemButtonState()
@@ -392,9 +362,7 @@ struct FVMS_ItemBtns : FEUIViewModelSingleton
         }
         if ((int(::UICommonUtil::GetCurrentInputType(nullptr))) == 1)
         {
-            bool local_3 = true;
-            TEUIModelRef<FVM_NormalSkillBtn> local_2 = this.GetCombatTmpVM();
-            local_3.SetbOverrideInputActionVisibility();
+            this.GetCombatTmpVM().Get().SetbOverrideInputActionVisibility(true);
             if (this.GetbGamepadLeftShoulderPress())
             {
                 local_8 = 0;
@@ -405,13 +373,10 @@ struct FVMS_ItemBtns : FEUIViewModelSingleton
                 local_8 = 1;
                 local_7 = local_8;
             }
-            TEUIModelRef<FVM_NormalSkillBtn> local_2_2 = this.GetCombatTmpVM();
-            local_7.SetOverrideInputActionVisibility();
+            this.GetCombatTmpVM().Get().SetOverrideInputActionVisibility(ESlateVisibility(local_7));
             return;
         }
-        bool local_3_2 = false;
-        TEUIModelRef<FVM_NormalSkillBtn> local_2_3 = this.GetCombatTmpVM();
-        local_3_2.SetbOverrideInputActionVisibility();
+        this.GetCombatTmpVM().Get().SetbOverrideInputActionVisibility(false);
         return;
     }
     void RefreshHoverButtonTips()
@@ -462,8 +427,7 @@ struct FVMS_ItemBtns : FEUIViewModelSingleton
         this.UpdateRemnantItemInfo();
         if (this.GetCombatTmpVM().IsValid())
         {
-            TEUIModelRef<FVM_NormalSkillBtn> local_2 = this.GetCombatTmpVM();
-            local_4.SetRemnantSlotChangedCounter((GetRemnantSlotChangedCounter() + 1));
+            local_4.SetRemnantSlotChangedCounter((this.GetCombatTmpVM().Get().GetRemnantSlotChangedCounter() + 1));
         }
         return;
     }
@@ -475,7 +439,6 @@ struct FVMS_ItemBtns : FEUIViewModelSingleton
     void UpdateItemInfo()
     {
         bool local_13;
-        int local_177 = 0;
         FECSEntity local_12 = ::FASCommonUtils::GetUniqueAvatarPawnEntity(this.GetContext().GetLocalPlayerPawn());
         if (!(local_12.IsValid()))
         {
@@ -499,9 +462,7 @@ struct FVMS_ItemBtns : FEUIViewModelSingleton
                 int local_125 = ::InventoryUtils::GetInventoryItemNumber(local_12, local_100.opCall());
                 this.SetupConsumableItemSkillButton(this.GetHealBtnVM(), local_70, local_125);
                 this.SetHealItemNum(local_125);
-                ::InventoryUtils::GetQuickSlotConfigByName(n"ConsumableItem_Heal");
-                TEUIModelRef<FVM_NormalSkillBtn> local_128 = this.GetHealBtnVM();
-                (FEUIInputAction(FCharacterInputUtils::GetInputActionByInputSlot(local_12, EESMTriggerInputSlot(local_177)))).SetInputAction();
+                this.GetHealBtnVM().Get().SetInputAction(FEUIInputAction(FCharacterInputUtils::GetInputActionByInputSlot(local_12, ::InventoryUtils::GetQuickSlotConfigByName(n"ConsumableItem_Heal").Get().InputSlot)));
             }
             else
             {
@@ -536,10 +497,7 @@ struct FVMS_ItemBtns : FEUIViewModelSingleton
                 int local_17 = ::InventoryUtils::GetInventoryItemNumber(local_12, local_100.opCall());
                 this.SetupConsumableItemSkillButton(this.GetCombatBtnVM1(), local_94, local_17);
                 this.SetCombatItemNum(local_17);
-                ::InventoryUtils::GetQuickSlotConfigByName(n"ConsumableItem_Attack_1");
-                FEUIInputAction local_186_2 = FEUIInputAction(FCharacterInputUtils::GetInputActionByInputSlot(local_12, EESMTriggerInputSlot(local_177)));
-                TEUIModelRef<FVM_NormalSkillBtn> local_128_2 = this.GetCombatBtnVM1();
-                local_186_2.SetInputAction();
+                this.GetCombatBtnVM1().Get().SetInputAction(FEUIInputAction(FCharacterInputUtils::GetInputActionByInputSlot(local_12, ::InventoryUtils::GetQuickSlotConfigByName(n"ConsumableItem_Attack_1").Get().InputSlot)));
             }
             else
             {
@@ -552,10 +510,7 @@ struct FVMS_ItemBtns : FEUIViewModelSingleton
                 int local_95 = ::InventoryUtils::GetInventoryItemNumber(local_12, local_100.opCall());
                 this.SetupConsumableItemSkillButton(this.GetCombatBtnVM2(), local_70, local_95);
                 this.SetCombatItemNum(local_95);
-                ::InventoryUtils::GetQuickSlotConfigByName(n"ConsumableItem_Attack_2");
-                FEUIInputAction local_186_3 = FEUIInputAction(FCharacterInputUtils::GetInputActionByInputSlot(local_12, EESMTriggerInputSlot(local_177)));
-                TEUIModelRef<FVM_NormalSkillBtn> local_128_3 = this.GetCombatBtnVM2();
-                local_186_3.SetInputAction();
+                this.GetCombatBtnVM2().Get().SetInputAction(FEUIInputAction(FCharacterInputUtils::GetInputActionByInputSlot(local_12, ::InventoryUtils::GetQuickSlotConfigByName(n"ConsumableItem_Attack_2").Get().InputSlot)));
             }
             else
             {
@@ -571,22 +526,13 @@ struct FVMS_ItemBtns : FEUIViewModelSingleton
             return;
         }
         this.RefreshMountUnlockState();
-        bool local_3 = this.GetIsMountBtnUnlock();
-        TEUIModelRef<FVM_NormalSkillBtn> local_2 = this.GetMountBtnVM();
-        local_3.SetCachedVisibility();
-        TEUIModelRef<FVM_NormalSkillBtn> local_2_2 = this.GetMountBtnVM();
-        if (!(GetCachedVisibility()) || !(LocalPlayerPawnEntity.IsValid()))
+        this.GetMountBtnVM().Get().SetCachedVisibility(this.GetIsMountBtnUnlock());
+        if (!(this.GetMountBtnVM().Get().GetCachedVisibility()) || !(LocalPlayerPawnEntity.IsValid()))
         {
             return;
         }
-        bool local_3_2 = true;
-        TEUIModelRef<FVM_NormalSkillBtn> local_2_3 = this.GetMountBtnVM();
-        local_3_2.SetbOverrideInputAction();
-        UCharacterGlobalSetting local_6 = ::UCharacterGlobalSetting::Get();
-        UESMInputTriggerAsset local_8;
-        FEUIInputAction local_16 = FEUIInputAction(FCharacterInputUtils::GetInputActionByMainInputName(LocalPlayerPawnEntity, local_8.CoreTriggerItem.MainInputName.Name));
-        TEUIModelRef<FVM_NormalSkillBtn> local_2_4 = this.GetMountBtnVM();
-        local_16.SetInputAction();
+        this.GetMountBtnVM().Get().SetbOverrideInputAction(true);
+        this.GetMountBtnVM().Get().SetInputAction(FEUIInputAction(FCharacterInputUtils::GetInputActionByMainInputName(LocalPlayerPawnEntity, ::UCharacterGlobalSetting::Get().MountInputTrigger.Get().CoreTriggerItem.MainInputName.Name)));
         return;
     }
     void RefreshMountUnlockState()
@@ -609,11 +555,8 @@ struct FVMS_ItemBtns : FEUIViewModelSingleton
             CastTo local_108;
             local_56 = ::DisplayItemAdapter_Fashion::ResolveDisplayIcon(local_108.opCall(), EBodyType(0), EDisplayItemIconType(0));
         }
-        bool local_3 = true;
-        TEUIModelRef<FVM_NormalSkillBtn> local_2 = this.GetMountBtnVM();
-        local_3.SetbOverrideIcon();
-        TEUIModelRef<FVM_NormalSkillBtn> local_2_2 = this.GetMountBtnVM();
-        local_56.SetOverrideIcon();
+        this.GetMountBtnVM().Get().SetbOverrideIcon(true);
+        this.GetMountBtnVM().Get().SetOverrideIcon(local_56);
         return;
     }
     void RefreshInventoryQuickSlotUnlockState()
@@ -623,7 +566,6 @@ struct FVMS_ItemBtns : FEUIViewModelSingleton
     }
     void UpdateRemnantItemInfo()
     {
-        int local_79 = 0;
         FECSEntity local_12 = ::FASCommonUtils::GetUniqueAvatarPawnEntity(this.GetContext().GetLocalPlayerPawn());
         if (!(local_12.IsValid()))
         {
@@ -652,9 +594,7 @@ struct FVMS_ItemBtns : FEUIViewModelSingleton
         {
             this.SetCombatTmpVisibility(ESlateVisibility(0));
             this.SetupRemnantItemSkillButton(this.GetCombatTmpVM(), local_26);
-            ::InventoryUtils::GetQuickSlotConfigByName(n"ConsumableItem_TemporaryAbility");
-            TEUIModelRef<FVM_NormalSkillBtn> local_28 = this.GetCombatTmpVM();
-            (FEUIInputAction(FCharacterInputUtils::GetInputActionByInputSlot(local_12, EESMTriggerInputSlot(local_79)))).SetInputAction();
+            this.GetCombatTmpVM().Get().SetInputAction(FEUIInputAction(FCharacterInputUtils::GetInputActionByInputSlot(local_12, ::InventoryUtils::GetQuickSlotConfigByName(n"ConsumableItem_TemporaryAbility").Get().InputSlot)));
         }
         else
         {
@@ -671,102 +611,57 @@ struct FVMS_ItemBtns : FEUIViewModelSingleton
         {
         }
         USkillConfig local_4;
-        local_4.SetSkillConfig();
+        VM_SkillButton.Get().SetSkillConfig(local_4);
         FNormalSkillBtnConfig local_32;
         local_32.SkillButtonType = ESkillButtonType(1);
-        local_32.SetSkillBtnConfig();
-        TDataObjectPtr<FCombatItemConfig>().SetConsumableItem();
-        -1.SetItemUsableCount();
+        VM_SkillButton.Get().SetSkillBtnConfig(local_32);
+        VM_SkillButton.Get().SetConsumableItem(TDataObjectPtr<FCombatItemConfig>());
+        VM_SkillButton.Get().SetItemUsableCount(-1);
         return;
     }
     void SetupConsumableItemSkillButton(const TEUIModelRef<FVM_NormalSkillBtn> &inout VM_SkillButton, const TDataObjectPtr<FCombatItemConfig> &inout Config, const int ItemNumber)
     {
-        Config.opArrow().ItemSkillConfig.SetSkillConfig();
+        VM_SkillButton.Get().SetSkillConfig(Config.opArrow().ItemSkillConfig);
         FNormalSkillBtnConfig local_28;
         local_28.SkillButtonType = ESkillButtonType(3);
-        local_28.SetSkillBtnConfig();
-        Config.SetConsumableItem();
-        ItemNumber.SetItemUsableCount();
+        VM_SkillButton.Get().SetSkillBtnConfig(local_28);
+        VM_SkillButton.Get().SetConsumableItem(Config);
+        VM_SkillButton.Get().SetItemUsableCount(ItemNumber);
         return;
     }
     void SetConsumableItemSkillButtonToEmpty(const TEUIModelRef<FVM_NormalSkillBtn> &inout VM_SkillButton)
     {
-        nullptr.SetSkillConfig();
+        VM_SkillButton.Get().SetSkillConfig(nullptr);
         FNormalSkillBtnConfig local_28;
         local_28.SkillButtonType = ESkillButtonType(3);
-        local_28.SetSkillBtnConfig();
-        TDataObjectPtr<FCombatItemConfig>().SetConsumableItem();
-        -1.SetItemUsableCount();
+        VM_SkillButton.Get().SetSkillBtnConfig(local_28);
+        VM_SkillButton.Get().SetConsumableItem(TDataObjectPtr<FCombatItemConfig>());
+        VM_SkillButton.Get().SetItemUsableCount(-1);
         return;
     }
     void RefreshHoverBtnIndex()
     {
+        TEUIModelRef<FVM_EquipHoverTips> local_16;
         TEUIModelRef<FVM_NormalSkillBtn> local_2 = TEUIModelRef<FVM_NormalSkillBtn>(nullptr);
-        bool local_5 = this.GetHealBtnVM().IsValid();
-        if (!(local_5))
-        {
-            local_5 = false;
-        }
-        else
-        {
-            TEUIModelRef<FVM_BattleBuildEntry> local_8;
-            TEUIModelRef<FVM_NormalSkillBtn> local_4 = this.GetHealBtnVM();
-            local_8.GetConfigEntry();
-            local_5 = local_8.IsValid();
-        }
-        if (local_5)
+        if (this.GetHealBtnVM().IsValid() && this.GetHealBtnVM().Get().GetConfigEntry().IsValid())
         {
             local_2 = this.GetHealBtnVM();
         }
         else
         {
-            TEUIModelRef<FVM_BattleBuildEntry> local_8;
-            bool local_5_2 = this.GetCombatBtnVM1().IsValid();
-            if (!(local_5_2))
-            {
-                local_5_2 = false;
-            }
-            else
-            {
-                TEUIModelRef<FVM_NormalSkillBtn> local_4_2 = this.GetCombatBtnVM1();
-                local_8.GetConfigEntry();
-                local_5_2 = local_8.IsValid();
-            }
-            if (local_5_2)
+            if (this.GetCombatBtnVM1().IsValid() && this.GetCombatBtnVM1().Get().GetConfigEntry().IsValid())
             {
                 local_2 = this.GetCombatBtnVM1();
             }
             else
             {
-                bool local_5_3 = this.GetCombatBtnVM2().IsValid();
-                if (!(local_5_3))
-                {
-                    local_5_3 = false;
-                }
-                else
-                {
-                    TEUIModelRef<FVM_NormalSkillBtn> local_4_3 = this.GetCombatBtnVM2();
-                    local_8.GetConfigEntry();
-                    local_5_3 = local_8.IsValid();
-                }
-                if (local_5_3)
+                if (this.GetCombatBtnVM2().IsValid() && this.GetCombatBtnVM2().Get().GetConfigEntry().IsValid())
                 {
                     local_2 = this.GetCombatBtnVM2();
                 }
                 else
                 {
-                    bool local_5_4 = this.GetMountBtnVM().IsValid();
-                    if (!(local_5_4))
-                    {
-                        local_5_4 = false;
-                    }
-                    else
-                    {
-                        TEUIModelRef<FVM_NormalSkillBtn> local_4_4 = this.GetMountBtnVM();
-                        local_8.GetConfigEntry();
-                        local_5_4 = local_8.IsValid();
-                    }
-                    if (local_5_4)
+                    if (this.GetMountBtnVM().IsValid() && this.GetMountBtnVM().Get().GetConfigEntry().IsValid())
                     {
                         local_2 = this.GetMountBtnVM();
                     }
@@ -774,19 +669,19 @@ struct FVMS_ItemBtns : FEUIViewModelSingleton
             }
         }
         TEUIModelWeakRef<FVM_NormalSkillBtn> local_12 = this.GetToolTipsBtn();
-        FEUIModelRef local_14 = local_2.opImplConv();
-        if ((!((local_12 == local_14))))
+        if ((!((local_12 == local_2.opImplConv()))))
         {
             if (local_2.IsValid())
             {
+                local_12 = TEUIModelWeakRef<FVM_NormalSkillBtn>(local_2.Get());
                 this.SetToolTipsBtn(local_12);
-                local_14.GetHoverTips();
-                this.SetHoverTipsVM(TEUIModelRef<FVM_EquipHoverTips>());
+                local_16 = TEUIModelRef<FVM_EquipHoverTips>(local_2.Get().GetHoverTips());
+                this.SetHoverTipsVM(local_16);
             }
             else
             {
                 this.SetToolTipsBtn(local_12);
-                this.SetHoverTipsVM(TEUIModelRef<FVM_EquipHoverTips>());
+                this.SetHoverTipsVM(local_16);
             }
         }
         return;
@@ -1182,11 +1077,9 @@ FVMS_ItemBtns& Get(const UObject ContextObject)
 {
     return FVMS_ItemBtns::GetByManager(EUIInternal::GetContextManager(ContextObject));
 }
-FVMS_ItemBtns GetByManager(const UEUIManagerSubsystem Manager)
+FVMS_ItemBtns& GetByManager(const UEUIManagerSubsystem Manager)
 {
-    FVMS_ItemBtns __r;
-    TEUIModelRef<FVMS_ItemBtns> local_6 = TEUIModelRef<FVMS_ItemBtns>(EUIInternal::MakeModelWithManager(Manager, FVMS_ItemBtns::ModelId));
-    return __r;
+    return TEUIModelRef<FVMS_ItemBtns>(EUIInternal::MakeModelWithManager(Manager, FVMS_ItemBtns::ModelId)).Get();
 }
 void GetModelInfo(FEUIViewModelMetaInfo &inout Result)
 {
@@ -1591,7 +1484,6 @@ namespace __GeneratedProperties_FVMS_ItemBtns
 {
 UScriptStruct StaticStruct()
 {
-    UScriptStruct local_2;
-    return local_2;
+    return __GeneratedProperties_FVMS_ItemBtns.Get();
 }
 }

@@ -84,8 +84,7 @@ struct FC_ItemQuickSlot : FECSComponent
                 for (auto& local_70 : this.GetQuickSlots())
                 {
                     TDataObjectPtr<FItemConfig> local_94;
-                    TDataObjectPtr<FItemConfig> local_118;
-                    local_94 = local_118;
+                    local_94 = local_70.GetValue();
                     if ((!((local_94 == nullptr))))
                     {
                         CastTo local_122;
@@ -96,7 +95,7 @@ struct FC_ItemQuickSlot : FECSComponent
                         FPbQuickSlotInfo local_166 = local_52.AddQuickSlotList();
                         int local_167 = local_70.GetKey().opArrow().DataId;
                         local_166.SetSlotKey(local_167);
-                        local_167 = opArrow().DataId;
+                        local_167 = local_70.GetValue().opArrow().DataId;
                         local_166.SetItemKey(local_167);
                         XLog(ELog(0), FString().Append("Save QuickSlot: ").Append(local_166.GetSlotKey()).Append(" ").Append(local_166.GetItemKey()));
                     }
@@ -167,6 +166,7 @@ struct FC_ItemQuickSlotChangeHistory : FECSComponent
         local_76;
         if ((local_28 == local_76))
         {
+            this.ChangeHistory.Remove(QuickSlot);
         }
         return;
     }

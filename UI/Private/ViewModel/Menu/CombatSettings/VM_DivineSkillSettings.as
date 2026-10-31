@@ -353,6 +353,8 @@ struct FVM_DivineSkillSettings : FEUIViewModel
             }
             local_76.Next();
         }
+        __Lambda_UI_Private_ViewModel_Menu_CombatSettings_VM_DivineSkillSettings_323 local_172;
+        local_60.Sort(local_172);
         for (auto& local_186 : local_60)
         {
             this.GetModify_EquipableSkills().Add(TEUIModelRef<FVM_DivineSkillInfo>(::FVM_DivineSkillInfo::Create(this.GetContext().Manager, local_186)));
@@ -677,11 +679,9 @@ FVM_DivineSkillSettings& Create(const UObject ContextObject)
 {
     return FVM_DivineSkillSettings::CreateByManager(EUIInternal::GetContextManager(ContextObject));
 }
-FVM_DivineSkillSettings CreateByManager(const UEUIManagerSubsystem Manager)
+FVM_DivineSkillSettings& CreateByManager(const UEUIManagerSubsystem Manager)
 {
-    FVM_DivineSkillSettings __r;
-    TEUIModelRef<FVM_DivineSkillSettings> local_6 = TEUIModelRef<FVM_DivineSkillSettings>(EUIInternal::MakeModelWithManager(Manager, FVM_DivineSkillSettings::ModelId));
-    return __r;
+    return TEUIModelRef<FVM_DivineSkillSettings>(EUIInternal::MakeModelWithManager(Manager, FVM_DivineSkillSettings::ModelId)).Get();
 }
 void GetModelInfo(FEUIViewModelMetaInfo &inout Result)
 {
@@ -844,7 +844,6 @@ namespace __GeneratedProperties_FVM_DivineSkillSettings
 {
 UScriptStruct StaticStruct()
 {
-    UScriptStruct local_2;
-    return local_2;
+    return __GeneratedProperties_FVM_DivineSkillSettings.Get();
 }
 }

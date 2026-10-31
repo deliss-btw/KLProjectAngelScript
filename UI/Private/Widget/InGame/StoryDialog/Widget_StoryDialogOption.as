@@ -17,7 +17,7 @@ class UWidget_StoryDialogOption : UEUIUserWidget
     UFUNCTION()
     FText Option_OptionContent() const
     {
-        FVM_StoryDialogOption& local_2;
+        FVM_StoryDialogOption& local_2 = this.Option.Get();
         FText local_12 = local_2 ? local_2.GetOptionContent() : FText();
         return local_12;
     }

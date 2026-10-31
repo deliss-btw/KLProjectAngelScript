@@ -4,7 +4,7 @@ bool FindItemActionConfig(const TDataObjectPtr<FItemConfig> &inout ItemConfig, c
 {
     TSubclassOf<UItemActionConfigBase> local_2;
     ItemActionConfig = local_2;
-    if (unresolved.ItemActions.Find(ActionType, ItemActionConfig))
+    if (ItemConfig.Get().ItemActions.Find(ActionType, ItemActionConfig))
     {
         return true;
     }

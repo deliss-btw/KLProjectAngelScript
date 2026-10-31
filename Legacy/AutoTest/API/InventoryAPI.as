@@ -40,8 +40,8 @@ int GetInventoryItemAmountByName(const FName &inout ItemName)
 }
 void PerformSortItemsInInventory(const int SorterIndex)
 {
-    AutoTest::API::InventoryAPI::GetInventoryViewModel();
-    OnSorterSelected();
+    TEUIModelRef<FVM_InventoryMain> local_4 = AutoTest::API::InventoryAPI::GetInventoryViewModel();
+    local_4.Get().OnSorterSelected();
     return;
 }
 TArray<uint> GetInventoryCurrentStorage()
@@ -60,13 +60,29 @@ TArray<uint> GetInventoryCurrentStorage()
 }
 void PerformChangeFilter(const int FilterIndex)
 {
-    AutoTest::API::InventoryAPI::GetInventoryViewModel();
-    OnFilterSelected();
+    TEUIModelRef<FVM_InventoryMain> local_4 = AutoTest::API::InventoryAPI::GetInventoryViewModel();
+    local_4.Get().OnFilterSelected();
     return;
 }
 TEUIModelRef<FVM_InventoryMain> GetInventoryViewModel()
 {
-    // body not fully recovered — stub [unresolved-operand]
-    TEUIModelRef<FVM_InventoryMain> __r; return __r;
+    UWidget_InventoryMain local_28;
+    TEUIModelRef<FVM_InventoryMain> local_2;
+    TArray<UWidget> local_6;
+    KLAutomation::GetAllWidgetsOfClass(local_6, UWidget_InventoryMain, false);
+    ThrowIf(local_6.IsEmpty(), "Can't get InventoryViewModel, check if the inventory Widget is open.");
+    for (auto local_24 : local_6)
+    {
+        local_28 = Cast<UWidget_InventoryMain>(local_24);
+        ThrowIf(local_28, !((local_28 != nullptr)));
+        if (local_28.InventoryMain.Get())
+        {
+            TEUIModelRef<FVM_InventoryMain> local_30;
+            local_30;
+            local_2 = local_30;
+            break;
+        }
+    }
+    return local_2;
 }
 }

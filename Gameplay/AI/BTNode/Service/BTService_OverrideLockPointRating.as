@@ -13,6 +13,8 @@ struct FAICommand_OverrideLockPointRating : FAICommandScript
 {
     FAICommandScript _base_FAICommandScript;
 
+    default m_ScriptOverrideMeta = Cast<UASStruct>(FAICommand_OverrideLockPointRating.Get());
+
     FAICommand_OverrideLockPointRating()
     {
         this.__InitDefaults();
@@ -30,8 +32,7 @@ struct FAICommand_OverrideLockPointRating : FAICommandScript
     }
     void Execute_Implementation(const FAICommandParams &inout Params, const FFPTime &inout WorldTime) const
     {
-        FAICommand_OverrideLockPointRatingData local_2;
-        ::FLockTargetUtils::PushLockPointRatingOverride(Params.GetPawnProxy(), local_2.RatingConfig);
+        ::FLockTargetUtils::PushLockPointRatingOverride(Params.GetPawnProxy(), this.GetInstanceData(Params).RatingConfig);
         return;
     }
     void Finish_Implementation(const FAICommandParams &inout Params, const FFPTime &inout WorldTime) const
@@ -47,6 +48,8 @@ class UBTService_OverrideLockPointRating : UBTService_AICommandScript
     TDataObjectPtr<FAILockPointRatingConfig> LockPointRatingConfig;
     UPROPERTY()
     FAICommand_OverrideLockPointRating AICommand;
+
+    default SetNodeName("覆盖锁定点评分配置");
 
     UBTService_OverrideLockPointRating()
     {

@@ -3,7 +3,6 @@ namespace __FAttackIgnoreTargetConditionFunctions
 UFUNCTION()
 TArray<FBuffConfigRef> __FAttackIgnoreTargetCondition_GetIgnoreByBuff(const TDataObjectPtr<FAttackIgnoreTargetCondition> &inout DataObject)
 {
-    TArray<FBuffConfigRef> __r;
     if ((DataObject == nullptr))
     {
         if (!(EUIGlobals::GIsDuringPropertyConversion))
@@ -13,7 +12,7 @@ TArray<FBuffConfigRef> __FAttackIgnoreTargetCondition_GetIgnoreByBuff(const TDat
         FAttackIgnoreTargetCondition local_18;
         return local_18.IgnoreByBuff;
     }
-    return __r;
+    return DataObject.Get().IgnoreByBuff;
 }
 UFUNCTION()
 FAttackIgnoreTargetCondition CastToFAttackIgnoreTargetCondition(const TDataObjectPtr<FAttackIgnoreTargetCondition> &inout DataObject)

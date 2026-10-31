@@ -142,7 +142,9 @@ class UESMAction_CharacterBeHitGroundBehaviour : UESMAction_CharacterBeHitBehavi
     }
     void DisposeExit(const FESMContext &inout Context, const FESMActionTime &inout Time) const
     {
-        0.ClearDeltaMove();
+        int local_8 = 0;
+        const FESMCharacterBeHitGroundBehaviourInstanceData& local_2 = this.GetInstanceData(Context);
+        local_8.ClearDeltaMove();
         Modify local_12;
         FC_CharacterPassiveMovement& local_14 = local_12.opCall();
         if (local_14)
@@ -226,7 +228,7 @@ class UESMAction_CharacterBeHitAirBehaviour : UESMAction_CharacterBeHitBehaviour
         {
             return 1.0f;
         }
-        FESMCharacterBeHitAirBehaviourInstanceData local_4;
+        const FESMCharacterBeHitAirBehaviourInstanceData& local_4 = this.GetInstanceData(Context);
         if (local_4.MaxCurveHeight <= 0.0f)
         {
             return 1.0f;
@@ -357,7 +359,9 @@ class UESMAction_CharacterBeHitAirBehaviour : UESMAction_CharacterBeHitBehaviour
     }
     void DisposeExit(const FESMContext &inout Context, const FESMActionTime &inout Time) const
     {
-        0.ClearDeltaMove();
+        int local_8 = 0;
+        const FESMCharacterBeHitAirBehaviourInstanceData& local_2 = this.GetInstanceData(Context);
+        local_8.ClearDeltaMove();
         Modify local_18;
         FC_CharacterPassiveMovement& local_20 = local_18.opCall();
         if (local_20)

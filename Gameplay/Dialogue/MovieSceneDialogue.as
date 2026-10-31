@@ -10,15 +10,11 @@ class UMovieSceneDialogueSection : UMovieSceneDialogueSectionBase
     UFUNCTION()
     FText GetSubtitle_Implementation() const
     {
-        FText __return;
         if (this.DialogueLine)
         {
+            return this.DialogueLine.Get().LineText;
         }
-        else
-        {
-            __return = FText::FromName(NAME_None);
-        }
-        return __return;
+        return FText::FromName(NAME_None);
     }
     UFUNCTION()
     float32 GetDuration_Implementation() const
@@ -27,10 +23,10 @@ class UMovieSceneDialogueSection : UMovieSceneDialogueSectionBase
         float32 local_1 = 0.0f;
         if (this.DialogueLine)
         {
-            TDataObjectPtr<FDialogueVoiceConfig> local_28 = GetVoiceConfig();
+            TDataObjectPtr<FDialogueVoiceConfig> local_28 = this.DialogueLine.Get().GetVoiceConfig();
             if (local_28)
             {
-                local_1 = GetDurationForLevelSequence();
+                local_1 = local_28.Get().GetDurationForLevelSequence();
             }
         }
         if (local_1 > 0.0f)
@@ -74,8 +70,10 @@ class UMovieSceneDialogueSection : UMovieSceneDialogueSectionBase
             const FCS_CutSceneViewData& local_18 = local_16.opCall();
             if (local_18)
             {
-                if (local_18.ActorToEntity.Find(TWeakObjectPtr<AActor>(Actor)))
+                TConstRawPtr<FECSEntity> local_22 = local_18.ActorToEntity.Find(TWeakObjectPtr<AActor>(Actor));
+                if (local_22)
                 {
+                    local_6 = local_22.Get();
                 }
             }
         }
@@ -85,14 +83,12 @@ class UMovieSceneDialogueSection : UMovieSceneDialogueSectionBase
     {
         if (this.DialogueLine)
         {
-            TDataObjectPtr<FDialogueVoiceConfig> local_26 = GetVoiceConfig();
+            TDataObjectPtr<FDialogueVoiceConfig> local_26 = this.DialogueLine.Get().GetVoiceConfig();
             if (local_26)
             {
-                if (0 > 0)
+                if (local_26.Get().VOSources.Num() > 0)
                 {
-                }
-                else
-                {
+                    return local_26.Get().VOSources[0].VOFile;
                 }
             }
         }

@@ -37,11 +37,9 @@ FMS_ShippingCulture& Get(const UObject ContextObject)
 {
     return FMS_ShippingCulture::GetByManager(EUIInternal::GetContextManager(ContextObject));
 }
-FMS_ShippingCulture GetByManager(const UEUIManagerSubsystem Manager)
+FMS_ShippingCulture& GetByManager(const UEUIManagerSubsystem Manager)
 {
-    FMS_ShippingCulture __r;
-    TEUIModelRef<FMS_ShippingCulture> local_6 = TEUIModelRef<FMS_ShippingCulture>(EUIInternal::MakeModelWithManager(Manager, FMS_ShippingCulture::ModelId));
-    return __r;
+    return TEUIModelRef<FMS_ShippingCulture>(EUIInternal::MakeModelWithManager(Manager, FMS_ShippingCulture::ModelId)).Get();
 }
 void GetModelInfo(FEUIModelOnlyMetaInfo &inout Result)
 {

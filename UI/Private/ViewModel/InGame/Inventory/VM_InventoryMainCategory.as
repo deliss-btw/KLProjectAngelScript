@@ -75,8 +75,7 @@ struct FVM_InventoryMainRootCategory : FEUIViewModel
     }
     void Select()
     {
-        FVM_InventoryMain& local_2;
-        TEUIModelWeakRef<FVM_InventoryMain> local_4 = this.GetInventoryRef();
+        FVM_InventoryMain& local_2 = this.GetInventoryRef().Get();
         if (local_2)
         {
             local_2.SelectRootCategory(this.GetIndex());
@@ -246,8 +245,7 @@ struct FVM_InventoryMainCategory : FEUIViewModel
     }
     void Select()
     {
-        FVM_InventoryMain& local_2;
-        TEUIModelWeakRef<FVM_InventoryMain> local_4 = this.GetInventoryRef();
+        FVM_InventoryMain& local_2 = this.GetInventoryRef().Get();
         if (local_2)
         {
             local_2.SelectCategory(this.GetIndex());
@@ -352,11 +350,9 @@ FVM_InventoryMainRootCategory& Create(const UObject ContextObject, const FSoftBr
 {
     return FVM_InventoryMainRootCategory::CreateByManager(EUIInternal::GetContextManager(ContextObject), Icon, Categories, InventoryRef, Index);
 }
-FVM_InventoryMainRootCategory CreateByManager(const UEUIManagerSubsystem Manager, const FSoftBrush &inout Icon, const TArray<FGameplayTag> &inout Categories, const TEUIModelWeakRef<FVM_InventoryMain> &inout InventoryRef, const int Index)
+FVM_InventoryMainRootCategory& CreateByManager(const UEUIManagerSubsystem Manager, const FSoftBrush &inout Icon, const TArray<FGameplayTag> &inout Categories, const TEUIModelWeakRef<FVM_InventoryMain> &inout InventoryRef, const int Index)
 {
-    FVM_InventoryMainRootCategory __r;
-    TEUIModelRef<FVM_InventoryMainRootCategory> local_6 = TEUIModelRef<FVM_InventoryMainRootCategory>(EUIInternal::MakeModelWithManager_Generic(Manager, FVM_InventoryMainRootCategory::ModelId, 0, Icon, Categories, InventoryRef, Index));
-    return __r;
+    return TEUIModelRef<FVM_InventoryMainRootCategory>(EUIInternal::MakeModelWithManager_Generic(Manager, FVM_InventoryMainRootCategory::ModelId, 0, Icon, Categories, InventoryRef, Index)).Get();
 }
 void GetModelInfo(FEUIViewModelMetaInfo &inout Result)
 {
@@ -432,8 +428,7 @@ namespace __GeneratedProperties_FVM_InventoryMainRootCategory
 {
 UScriptStruct StaticStruct()
 {
-    UScriptStruct local_2;
-    return local_2;
+    return __GeneratedProperties_FVM_InventoryMainRootCategory.Get();
 }
 }
 namespace FVM_InventoryMainCategory
@@ -442,11 +437,9 @@ FVM_InventoryMainCategory& Create(const UObject ContextObject, const FGameplayTa
 {
     return FVM_InventoryMainCategory::CreateByManager(EUIInternal::GetContextManager(ContextObject), Category, InventoryRef, Index);
 }
-FVM_InventoryMainCategory CreateByManager(const UEUIManagerSubsystem Manager, const FGameplayTag &inout Category, const TEUIModelWeakRef<FVM_InventoryMain> &inout InventoryRef, const int Index)
+FVM_InventoryMainCategory& CreateByManager(const UEUIManagerSubsystem Manager, const FGameplayTag &inout Category, const TEUIModelWeakRef<FVM_InventoryMain> &inout InventoryRef, const int Index)
 {
-    FVM_InventoryMainCategory __r;
-    TEUIModelRef<FVM_InventoryMainCategory> local_6 = TEUIModelRef<FVM_InventoryMainCategory>(EUIInternal::MakeModelWithManager_Generic(Manager, FVM_InventoryMainCategory::ModelId, 0, Category, InventoryRef, Index));
-    return __r;
+    return TEUIModelRef<FVM_InventoryMainCategory>(EUIInternal::MakeModelWithManager_Generic(Manager, FVM_InventoryMainCategory::ModelId, 0, Category, InventoryRef, Index)).Get();
 }
 void GetModelInfo(FEUIViewModelMetaInfo &inout Result)
 {
@@ -518,7 +511,6 @@ namespace __GeneratedProperties_FVM_InventoryMainCategory
 {
 UScriptStruct StaticStruct()
 {
-    UScriptStruct local_2;
-    return local_2;
+    return __GeneratedProperties_FVM_InventoryMainCategory.Get();
 }
 }

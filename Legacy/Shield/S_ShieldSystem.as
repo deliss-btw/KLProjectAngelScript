@@ -144,7 +144,7 @@ class US_ShieldSystem : UECSScriptSystem
         float32 local_5 = 0.0f;
         for (auto& local_26 : ShieldOwner.GetNamedInherentShields())
         {
-            local_26;
+            FECSEntity local_30 = FECSEntity(local_26.GetValue());
             if (local_36)
             {
                 local_4 = local_4 + local_36.GetShieldHP().Evaluate(FixedTime.Time);

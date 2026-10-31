@@ -3,7 +3,6 @@ namespace __FPVPOverrideAvatarConfigFunctions
 UFUNCTION()
 TSoftClassPtr<ACharacterPrefab> __FPVPOverrideAvatarConfig_GetCharacterPrefab(const TDataObjectPtr<FPVPOverrideAvatarConfig> &inout DataObject)
 {
-    TSoftClassPtr<ACharacterPrefab> __r;
     if ((DataObject == nullptr))
     {
         if (!(EUIGlobals::GIsDuringPropertyConversion))
@@ -13,7 +12,7 @@ TSoftClassPtr<ACharacterPrefab> __FPVPOverrideAvatarConfig_GetCharacterPrefab(co
         FPVPOverrideAvatarConfig local_64;
         return local_64.CharacterPrefab;
     }
-    return __r;
+    return DataObject.Get().CharacterPrefab;
 }
 UFUNCTION()
 TArray<TDataObjectPtr<FSkillInitConfig>> __FPVPOverrideAvatarConfig_GetSkills(const TDataObjectPtr<FPVPOverrideAvatarConfig> &inout DataObject)
@@ -27,7 +26,7 @@ TArray<TDataObjectPtr<FSkillInitConfig>> __FPVPOverrideAvatarConfig_GetSkills(co
         FPVPOverrideAvatarConfig local_64;
         return local_64.GetSkills();
     }
-    return GetSkills();
+    return DataObject.Get().GetSkills();
 }
 UFUNCTION()
 FPVPGameAttributeByLevelConfig __FPVPOverrideAvatarConfig_GetGameAttributeConfig(const TDataObjectPtr<FPVPOverrideAvatarConfig> &inout DataObject)
@@ -57,7 +56,7 @@ TDataObjectPtr<FWeaponConfig> __FPVPOverrideAvatarConfig_GetDefaultWeapon(const 
         FPVPOverrideAvatarConfig local_64;
         return local_64.GetDefaultWeapon();
     }
-    return GetDefaultWeapon();
+    return DataObject.Get().GetDefaultWeapon();
 }
 UFUNCTION()
 FPVPOverrideAvatarConfig CastToFPVPOverrideAvatarConfig(const TDataObjectPtr<FPVPOverrideAvatarConfig> &inout DataObject)
@@ -71,7 +70,6 @@ namespace __FGameModeOverrideAvatarConfigFunctions
 UFUNCTION()
 TSoftClassPtr<ACharacterPrefab> __FGameModeOverrideAvatarConfig_GetCharacterPrefab(const TDataObjectPtr<FGameModeOverrideAvatarConfig> &inout DataObject)
 {
-    TSoftClassPtr<ACharacterPrefab> __r;
     if ((DataObject == nullptr))
     {
         if (!(EUIGlobals::GIsDuringPropertyConversion))
@@ -81,7 +79,7 @@ TSoftClassPtr<ACharacterPrefab> __FGameModeOverrideAvatarConfig_GetCharacterPref
         FGameModeOverrideAvatarConfig local_64;
         return local_64.CharacterPrefab;
     }
-    return __r;
+    return DataObject.Get().CharacterPrefab;
 }
 UFUNCTION()
 TArray<TDataObjectPtr<FSkillInitConfig>> __FGameModeOverrideAvatarConfig_GetSkills(const TDataObjectPtr<FGameModeOverrideAvatarConfig> &inout DataObject)
@@ -95,7 +93,7 @@ TArray<TDataObjectPtr<FSkillInitConfig>> __FGameModeOverrideAvatarConfig_GetSkil
         FGameModeOverrideAvatarConfig local_64;
         return local_64.GetSkills();
     }
-    return GetSkills();
+    return DataObject.Get().GetSkills();
 }
 UFUNCTION()
 FPVPGameAttributeByLevelConfig __FGameModeOverrideAvatarConfig_GetGameAttributeConfig(const TDataObjectPtr<FGameModeOverrideAvatarConfig> &inout DataObject)
@@ -125,7 +123,7 @@ TDataObjectPtr<FWeaponConfig> __FGameModeOverrideAvatarConfig_GetDefaultWeapon(c
         FGameModeOverrideAvatarConfig local_64;
         return local_64.GetDefaultWeapon();
     }
-    return GetDefaultWeapon();
+    return DataObject.Get().GetDefaultWeapon();
 }
 UFUNCTION()
 FGameModeOverrideAvatarConfig CastToFGameModeOverrideAvatarConfig(const TDataObjectPtr<FGameModeOverrideAvatarConfig> &inout DataObject)
@@ -154,7 +152,6 @@ int __FAvatarPrefabConfig_GetSortPriority(const TDataObjectPtr<FAvatarPrefabConf
 UFUNCTION()
 TSoftClassPtr<ACharacterPrefab> __FAvatarPrefabConfig_GetCharacterPrefab(const TDataObjectPtr<FAvatarPrefabConfig> &inout DataObject)
 {
-    TSoftClassPtr<ACharacterPrefab> __r;
     if ((DataObject == nullptr))
     {
         if (!(EUIGlobals::GIsDuringPropertyConversion))
@@ -164,12 +161,11 @@ TSoftClassPtr<ACharacterPrefab> __FAvatarPrefabConfig_GetCharacterPrefab(const T
         FAvatarPrefabConfig local_668;
         return local_668.CharacterPrefab;
     }
-    return __r;
+    return DataObject.Get().CharacterPrefab;
 }
 UFUNCTION()
 EGenderType __FAvatarPrefabConfig_GetGenderType(const TDataObjectPtr<FAvatarPrefabConfig> &inout DataObject)
 {
-    int local_669 = 0;
     if ((DataObject == nullptr))
     {
         if (!(EUIGlobals::GIsDuringPropertyConversion))
@@ -177,15 +173,13 @@ EGenderType __FAvatarPrefabConfig_GetGenderType(const TDataObjectPtr<FAvatarPref
             FBlueprintDebugFunctions::ThrowScriptException("Get 'GenderType' from a null 'FAvatarPrefabConfig' DataObject!");
         }
         FAvatarPrefabConfig local_668;
-        local_669 = int(local_668.GenderType);
-        return EGenderType(local_669);
+        return local_668.GenderType;
     }
-    return EGenderType(local_669);
+    return DataObject.Get().GenderType;
 }
 UFUNCTION()
 FSoftBrush __FAvatarPrefabConfig_GetAvatarIcon(const TDataObjectPtr<FAvatarPrefabConfig> &inout DataObject)
 {
-    FSoftBrush __r;
     if ((DataObject == nullptr))
     {
         if (!(EUIGlobals::GIsDuringPropertyConversion))
@@ -195,12 +189,11 @@ FSoftBrush __FAvatarPrefabConfig_GetAvatarIcon(const TDataObjectPtr<FAvatarPrefa
         FAvatarPrefabConfig local_668;
         return local_668.AvatarIcon;
     }
-    return __r;
+    return DataObject.Get().AvatarIcon;
 }
 UFUNCTION()
 FSoftBrush __FAvatarPrefabConfig_GetAvatarLargeIcon(const TDataObjectPtr<FAvatarPrefabConfig> &inout DataObject)
 {
-    FSoftBrush __r;
     if ((DataObject == nullptr))
     {
         if (!(EUIGlobals::GIsDuringPropertyConversion))
@@ -210,12 +203,11 @@ FSoftBrush __FAvatarPrefabConfig_GetAvatarLargeIcon(const TDataObjectPtr<FAvatar
         FAvatarPrefabConfig local_668;
         return local_668.AvatarLargeIcon;
     }
-    return __r;
+    return DataObject.Get().AvatarLargeIcon;
 }
 UFUNCTION()
 FSoftBrush __FAvatarPrefabConfig_GetUnlockedAvatarLargeIcon(const TDataObjectPtr<FAvatarPrefabConfig> &inout DataObject)
 {
-    FSoftBrush __r;
     if ((DataObject == nullptr))
     {
         if (!(EUIGlobals::GIsDuringPropertyConversion))
@@ -225,12 +217,11 @@ FSoftBrush __FAvatarPrefabConfig_GetUnlockedAvatarLargeIcon(const TDataObjectPtr
         FAvatarPrefabConfig local_668;
         return local_668.UnlockedAvatarLargeIcon;
     }
-    return __r;
+    return DataObject.Get().UnlockedAvatarLargeIcon;
 }
 UFUNCTION()
 TSoftClassPtr<AActor> __FAvatarPrefabConfig_GetShowcaseActor(const TDataObjectPtr<FAvatarPrefabConfig> &inout DataObject)
 {
-    TSoftClassPtr<AActor> __r;
     if ((DataObject == nullptr))
     {
         if (!(EUIGlobals::GIsDuringPropertyConversion))
@@ -240,12 +231,11 @@ TSoftClassPtr<AActor> __FAvatarPrefabConfig_GetShowcaseActor(const TDataObjectPt
         FAvatarPrefabConfig local_668;
         return local_668.ShowcaseActor;
     }
-    return __r;
+    return DataObject.Get().ShowcaseActor;
 }
 UFUNCTION()
 TSoftClassPtr<AActor> __FAvatarPrefabConfig_GetShowcaseLightActor(const TDataObjectPtr<FAvatarPrefabConfig> &inout DataObject)
 {
-    TSoftClassPtr<AActor> __r;
     if ((DataObject == nullptr))
     {
         if (!(EUIGlobals::GIsDuringPropertyConversion))
@@ -255,12 +245,11 @@ TSoftClassPtr<AActor> __FAvatarPrefabConfig_GetShowcaseLightActor(const TDataObj
         FAvatarPrefabConfig local_668;
         return local_668.ShowcaseLightActor;
     }
-    return __r;
+    return DataObject.Get().ShowcaseLightActor;
 }
 UFUNCTION()
 FVector __FAvatarPrefabConfig_GetShowcaseOffset(const TDataObjectPtr<FAvatarPrefabConfig> &inout DataObject)
 {
-    FVector __r;
     if ((DataObject == nullptr))
     {
         if (!(EUIGlobals::GIsDuringPropertyConversion))
@@ -270,12 +259,11 @@ FVector __FAvatarPrefabConfig_GetShowcaseOffset(const TDataObjectPtr<FAvatarPref
         FAvatarPrefabConfig local_668;
         return local_668.ShowcaseOffset;
     }
-    return __r;
+    return DataObject.Get().ShowcaseOffset;
 }
 UFUNCTION()
 TSoftObjectPtr<UTexture2D> __FAvatarPrefabConfig_GetAvatar3DIconSoft(const TDataObjectPtr<FAvatarPrefabConfig> &inout DataObject)
 {
-    TSoftObjectPtr<UTexture2D> __r;
     if ((DataObject == nullptr))
     {
         if (!(EUIGlobals::GIsDuringPropertyConversion))
@@ -285,12 +273,11 @@ TSoftObjectPtr<UTexture2D> __FAvatarPrefabConfig_GetAvatar3DIconSoft(const TData
         FAvatarPrefabConfig local_668;
         return local_668.Avatar3DIconSoft;
     }
-    return __r;
+    return DataObject.Get().Avatar3DIconSoft;
 }
 UFUNCTION()
 EDamageType __FAvatarPrefabConfig_GetDamageType(const TDataObjectPtr<FAvatarPrefabConfig> &inout DataObject)
 {
-    int local_669 = 0;
     if ((DataObject == nullptr))
     {
         if (!(EUIGlobals::GIsDuringPropertyConversion))
@@ -298,15 +285,13 @@ EDamageType __FAvatarPrefabConfig_GetDamageType(const TDataObjectPtr<FAvatarPref
             FBlueprintDebugFunctions::ThrowScriptException("Get 'DamageType' from a null 'FAvatarPrefabConfig' DataObject!");
         }
         FAvatarPrefabConfig local_668;
-        local_669 = int(local_668.DamageType);
-        return EDamageType(local_669);
+        return local_668.DamageType;
     }
-    return EDamageType(local_669);
+    return DataObject.Get().DamageType;
 }
 UFUNCTION()
 EAvatarCombatType __FAvatarPrefabConfig_GetCombatType(const TDataObjectPtr<FAvatarPrefabConfig> &inout DataObject)
 {
-    int local_669 = 0;
     if ((DataObject == nullptr))
     {
         if (!(EUIGlobals::GIsDuringPropertyConversion))
@@ -314,15 +299,13 @@ EAvatarCombatType __FAvatarPrefabConfig_GetCombatType(const TDataObjectPtr<FAvat
             FBlueprintDebugFunctions::ThrowScriptException("Get 'CombatType' from a null 'FAvatarPrefabConfig' DataObject!");
         }
         FAvatarPrefabConfig local_668;
-        local_669 = int(local_668.CombatType);
-        return EAvatarCombatType(local_669);
+        return local_668.CombatType;
     }
-    return EAvatarCombatType(local_669);
+    return DataObject.Get().CombatType;
 }
 UFUNCTION()
 FSoftBrush __FAvatarPrefabConfig_GetPlayerPowerIcon(const TDataObjectPtr<FAvatarPrefabConfig> &inout DataObject)
 {
-    FSoftBrush __r;
     if ((DataObject == nullptr))
     {
         if (!(EUIGlobals::GIsDuringPropertyConversion))
@@ -332,12 +315,11 @@ FSoftBrush __FAvatarPrefabConfig_GetPlayerPowerIcon(const TDataObjectPtr<FAvatar
         FAvatarPrefabConfig local_668;
         return local_668.PlayerPowerIcon;
     }
-    return __r;
+    return DataObject.Get().PlayerPowerIcon;
 }
 UFUNCTION()
 FSoftBrush __FAvatarPrefabConfig_GetPlayerTachie(const TDataObjectPtr<FAvatarPrefabConfig> &inout DataObject)
 {
-    FSoftBrush __r;
     if ((DataObject == nullptr))
     {
         if (!(EUIGlobals::GIsDuringPropertyConversion))
@@ -347,12 +329,11 @@ FSoftBrush __FAvatarPrefabConfig_GetPlayerTachie(const TDataObjectPtr<FAvatarPre
         FAvatarPrefabConfig local_668;
         return local_668.PlayerTachie;
     }
-    return __r;
+    return DataObject.Get().PlayerTachie;
 }
 UFUNCTION()
 FSoftBrush __FAvatarPrefabConfig_GetPlayerTachieBack(const TDataObjectPtr<FAvatarPrefabConfig> &inout DataObject)
 {
-    FSoftBrush __r;
     if ((DataObject == nullptr))
     {
         if (!(EUIGlobals::GIsDuringPropertyConversion))
@@ -362,12 +343,11 @@ FSoftBrush __FAvatarPrefabConfig_GetPlayerTachieBack(const TDataObjectPtr<FAvata
         FAvatarPrefabConfig local_668;
         return local_668.PlayerTachieBack;
     }
-    return __r;
+    return DataObject.Get().PlayerTachieBack;
 }
 UFUNCTION()
 FSoftBrush __FAvatarPrefabConfig_GetPlayerClassIcon(const TDataObjectPtr<FAvatarPrefabConfig> &inout DataObject)
 {
-    FSoftBrush __r;
     if ((DataObject == nullptr))
     {
         if (!(EUIGlobals::GIsDuringPropertyConversion))
@@ -377,12 +357,11 @@ FSoftBrush __FAvatarPrefabConfig_GetPlayerClassIcon(const TDataObjectPtr<FAvatar
         FAvatarPrefabConfig local_668;
         return local_668.PlayerClassIcon;
     }
-    return __r;
+    return DataObject.Get().PlayerClassIcon;
 }
 UFUNCTION()
 FText __FAvatarPrefabConfig_GetPlayerPowerName(const TDataObjectPtr<FAvatarPrefabConfig> &inout DataObject)
 {
-    FText __r;
     if ((DataObject == nullptr))
     {
         if (!(EUIGlobals::GIsDuringPropertyConversion))
@@ -392,12 +371,11 @@ FText __FAvatarPrefabConfig_GetPlayerPowerName(const TDataObjectPtr<FAvatarPrefa
         FAvatarPrefabConfig local_668;
         return local_668.PlayerPowerName;
     }
-    return __r;
+    return DataObject.Get().PlayerPowerName;
 }
 UFUNCTION()
 FText __FAvatarPrefabConfig_GetPlayerIllustrate1(const TDataObjectPtr<FAvatarPrefabConfig> &inout DataObject)
 {
-    FText __r;
     if ((DataObject == nullptr))
     {
         if (!(EUIGlobals::GIsDuringPropertyConversion))
@@ -407,12 +385,11 @@ FText __FAvatarPrefabConfig_GetPlayerIllustrate1(const TDataObjectPtr<FAvatarPre
         FAvatarPrefabConfig local_668;
         return local_668.PlayerIllustrate1;
     }
-    return __r;
+    return DataObject.Get().PlayerIllustrate1;
 }
 UFUNCTION()
 FText __FAvatarPrefabConfig_GetAvatarBackgroundDesc(const TDataObjectPtr<FAvatarPrefabConfig> &inout DataObject)
 {
-    FText __r;
     if ((DataObject == nullptr))
     {
         if (!(EUIGlobals::GIsDuringPropertyConversion))
@@ -422,12 +399,11 @@ FText __FAvatarPrefabConfig_GetAvatarBackgroundDesc(const TDataObjectPtr<FAvatar
         FAvatarPrefabConfig local_668;
         return local_668.AvatarBackgroundDesc;
     }
-    return __r;
+    return DataObject.Get().AvatarBackgroundDesc;
 }
 UFUNCTION()
 FText __FAvatarPrefabConfig_GetSpecialtyDesc(const TDataObjectPtr<FAvatarPrefabConfig> &inout DataObject)
 {
-    FText __r;
     if ((DataObject == nullptr))
     {
         if (!(EUIGlobals::GIsDuringPropertyConversion))
@@ -437,12 +413,11 @@ FText __FAvatarPrefabConfig_GetSpecialtyDesc(const TDataObjectPtr<FAvatarPrefabC
         FAvatarPrefabConfig local_668;
         return local_668.SpecialtyDesc;
     }
-    return __r;
+    return DataObject.Get().SpecialtyDesc;
 }
 UFUNCTION()
 EAvatarIllustrate __FAvatarPrefabConfig_GetAvatarIllustrate(const TDataObjectPtr<FAvatarPrefabConfig> &inout DataObject)
 {
-    int local_669 = 0;
     if ((DataObject == nullptr))
     {
         if (!(EUIGlobals::GIsDuringPropertyConversion))
@@ -450,15 +425,13 @@ EAvatarIllustrate __FAvatarPrefabConfig_GetAvatarIllustrate(const TDataObjectPtr
             FBlueprintDebugFunctions::ThrowScriptException("Get 'AvatarIllustrate' from a null 'FAvatarPrefabConfig' DataObject!");
         }
         FAvatarPrefabConfig local_668;
-        local_669 = int(local_668.AvatarIllustrate);
-        return EAvatarIllustrate(local_669);
+        return local_668.AvatarIllustrate;
     }
-    return EAvatarIllustrate(local_669);
+    return DataObject.Get().AvatarIllustrate;
 }
 UFUNCTION()
 EWeaponType __FAvatarPrefabConfig_GetWeaponType(const TDataObjectPtr<FAvatarPrefabConfig> &inout DataObject)
 {
-    int local_669 = 0;
     if ((DataObject == nullptr))
     {
         if (!(EUIGlobals::GIsDuringPropertyConversion))
@@ -466,63 +439,55 @@ EWeaponType __FAvatarPrefabConfig_GetWeaponType(const TDataObjectPtr<FAvatarPref
             FBlueprintDebugFunctions::ThrowScriptException("Get 'WeaponType' from a null 'FAvatarPrefabConfig' DataObject!");
         }
         FAvatarPrefabConfig local_668;
-        local_669 = int(local_668.WeaponType);
-        return EWeaponType(local_669);
+        return local_668.WeaponType;
     }
-    return EWeaponType(local_669);
+    return DataObject.Get().WeaponType;
 }
 UFUNCTION()
 bool __FAvatarPrefabConfig_GetbIsMainPlayer(const TDataObjectPtr<FAvatarPrefabConfig> &inout DataObject)
 {
-    bool local_1 = false;
     if ((DataObject == nullptr))
     {
-        local_1 = !(EUIGlobals::GIsDuringPropertyConversion);
-        if (local_1)
+        if (!(EUIGlobals::GIsDuringPropertyConversion))
         {
             FBlueprintDebugFunctions::ThrowScriptException("Get 'bIsMainPlayer' from a null 'FAvatarPrefabConfig' DataObject!");
         }
         FAvatarPrefabConfig local_668;
         return local_668.bIsMainPlayer;
     }
-    return local_1;
+    return DataObject.Get().bIsMainPlayer;
 }
 UFUNCTION()
 bool __FAvatarPrefabConfig_GetbAlwaysHidden(const TDataObjectPtr<FAvatarPrefabConfig> &inout DataObject)
 {
-    bool local_1 = false;
     if ((DataObject == nullptr))
     {
-        local_1 = !(EUIGlobals::GIsDuringPropertyConversion);
-        if (local_1)
+        if (!(EUIGlobals::GIsDuringPropertyConversion))
         {
             FBlueprintDebugFunctions::ThrowScriptException("Get 'bAlwaysHidden' from a null 'FAvatarPrefabConfig' DataObject!");
         }
         FAvatarPrefabConfig local_668;
         return local_668.bAlwaysHidden;
     }
-    return local_1;
+    return DataObject.Get().bAlwaysHidden;
 }
 UFUNCTION()
 bool __FAvatarPrefabConfig_GetbIsOfficialAvatar(const TDataObjectPtr<FAvatarPrefabConfig> &inout DataObject)
 {
-    bool local_1 = false;
     if ((DataObject == nullptr))
     {
-        local_1 = !(EUIGlobals::GIsDuringPropertyConversion);
-        if (local_1)
+        if (!(EUIGlobals::GIsDuringPropertyConversion))
         {
             FBlueprintDebugFunctions::ThrowScriptException("Get 'bIsOfficialAvatar' from a null 'FAvatarPrefabConfig' DataObject!");
         }
         FAvatarPrefabConfig local_668;
         return local_668.bIsOfficialAvatar;
     }
-    return local_1;
+    return DataObject.Get().bIsOfficialAvatar;
 }
 UFUNCTION()
 FDataObjectPtr __FAvatarPrefabConfig_GetInitValues(const TDataObjectPtr<FAvatarPrefabConfig> &inout DataObject)
 {
-    FDataObjectPtr __r;
     if ((DataObject == nullptr))
     {
         if (!(EUIGlobals::GIsDuringPropertyConversion))
@@ -532,12 +497,11 @@ FDataObjectPtr __FAvatarPrefabConfig_GetInitValues(const TDataObjectPtr<FAvatarP
         FAvatarPrefabConfig local_668;
         return local_668.InitValues;
     }
-    return __r;
+    return DataObject.Get().InitValues;
 }
 UFUNCTION()
 FName __FAvatarPrefabConfig_GetAvatarAudioSwitchName(const TDataObjectPtr<FAvatarPrefabConfig> &inout DataObject)
 {
-    FName __r;
     if ((DataObject == nullptr))
     {
         if (!(EUIGlobals::GIsDuringPropertyConversion))
@@ -547,7 +511,7 @@ FName __FAvatarPrefabConfig_GetAvatarAudioSwitchName(const TDataObjectPtr<FAvata
         FAvatarPrefabConfig local_668;
         return local_668.AvatarAudioSwitchName;
     }
-    return __r;
+    return DataObject.Get().AvatarAudioSwitchName;
 }
 UFUNCTION()
 TArray<TDataObjectPtr<FSkillInitConfig>> __FAvatarPrefabConfig_GetSkills(const TDataObjectPtr<FAvatarPrefabConfig> &inout DataObject)
@@ -561,7 +525,7 @@ TArray<TDataObjectPtr<FSkillInitConfig>> __FAvatarPrefabConfig_GetSkills(const T
         FAvatarPrefabConfig local_668;
         return local_668.GetSkills();
     }
-    return GetSkills();
+    return DataObject.Get().GetSkills();
 }
 UFUNCTION()
 TDataObjectPtr<FAvatarSkillConfig> __FAvatarPrefabConfig_GetSkillConfig(const TDataObjectPtr<FAvatarPrefabConfig> &inout DataObject)
@@ -575,7 +539,7 @@ TDataObjectPtr<FAvatarSkillConfig> __FAvatarPrefabConfig_GetSkillConfig(const TD
         FAvatarPrefabConfig local_668;
         return local_668.GetSkillConfig();
     }
-    return GetSkillConfig();
+    return DataObject.Get().GetSkillConfig();
 }
 UFUNCTION()
 TDataObjectPtr<FWeaponConfig> __FAvatarPrefabConfig_GetDefaultWeapon(const TDataObjectPtr<FAvatarPrefabConfig> &inout DataObject)
@@ -589,7 +553,7 @@ TDataObjectPtr<FWeaponConfig> __FAvatarPrefabConfig_GetDefaultWeapon(const TData
         FAvatarPrefabConfig local_668;
         return local_668.GetDefaultWeapon();
     }
-    return GetDefaultWeapon();
+    return DataObject.Get().GetDefaultWeapon();
 }
 UFUNCTION()
 TDataObjectPtr<FTalentConfig> __FAvatarPrefabConfig_GetDefaultFoundation(const TDataObjectPtr<FAvatarPrefabConfig> &inout DataObject)
@@ -603,7 +567,7 @@ TDataObjectPtr<FTalentConfig> __FAvatarPrefabConfig_GetDefaultFoundation(const T
         FAvatarPrefabConfig local_668;
         return local_668.GetDefaultFoundation();
     }
-    return GetDefaultFoundation();
+    return DataObject.Get().GetDefaultFoundation();
 }
 UFUNCTION()
 TDataObjectPtr<FSkillBtnConfig> __FAvatarPrefabConfig_GetSkillBtnConfig(const TDataObjectPtr<FAvatarPrefabConfig> &inout DataObject)
@@ -617,23 +581,21 @@ TDataObjectPtr<FSkillBtnConfig> __FAvatarPrefabConfig_GetSkillBtnConfig(const TD
         FAvatarPrefabConfig local_668;
         return local_668.GetSkillBtnConfig();
     }
-    return GetSkillBtnConfig();
+    return DataObject.Get().GetSkillBtnConfig();
 }
 UFUNCTION()
 bool __FAvatarPrefabConfig_GetbDefaultUnlock(const TDataObjectPtr<FAvatarPrefabConfig> &inout DataObject)
 {
-    bool local_1 = false;
     if ((DataObject == nullptr))
     {
-        local_1 = !(EUIGlobals::GIsDuringPropertyConversion);
-        if (local_1)
+        if (!(EUIGlobals::GIsDuringPropertyConversion))
         {
             FBlueprintDebugFunctions::ThrowScriptException("Get 'bDefaultUnlock' from a null 'FAvatarPrefabConfig' DataObject!");
         }
         FAvatarPrefabConfig local_668;
         return local_668.bDefaultUnlock;
     }
-    return local_1;
+    return DataObject.Get().bDefaultUnlock;
 }
 UFUNCTION()
 TArray<TDataObjectPtr<FServerConditionConfigBase>> __FAvatarPrefabConfig_GetUnlockCondition(const TDataObjectPtr<FAvatarPrefabConfig> &inout DataObject)
@@ -647,7 +609,7 @@ TArray<TDataObjectPtr<FServerConditionConfigBase>> __FAvatarPrefabConfig_GetUnlo
         FAvatarPrefabConfig local_668;
         return local_668.GetUnlockCondition();
     }
-    return GetUnlockCondition();
+    return DataObject.Get().GetUnlockCondition();
 }
 UFUNCTION()
 TDataObjectPtr<FPVPOverrideAvatarConfig> __FAvatarPrefabConfig_GetPVPOverride(const TDataObjectPtr<FAvatarPrefabConfig> &inout DataObject)
@@ -661,7 +623,7 @@ TDataObjectPtr<FPVPOverrideAvatarConfig> __FAvatarPrefabConfig_GetPVPOverride(co
         FAvatarPrefabConfig local_668;
         return local_668.GetPVPOverride();
     }
-    return GetPVPOverride();
+    return DataObject.Get().GetPVPOverride();
 }
 UFUNCTION()
 TMap<EGameModeType, TDataObjectPtr<FGameModeOverrideAvatarConfig>> __FAvatarPrefabConfig_GetGameModeOverride(const TDataObjectPtr<FAvatarPrefabConfig> &inout DataObject)
@@ -675,12 +637,11 @@ TMap<EGameModeType, TDataObjectPtr<FGameModeOverrideAvatarConfig>> __FAvatarPref
         FAvatarPrefabConfig local_668;
         return local_668.GetGameModeOverride();
     }
-    return GetGameModeOverride();
+    return DataObject.Get().GetGameModeOverride();
 }
 UFUNCTION()
 TArray<FTrainingLevelConfig> __FAvatarPrefabConfig_GetTrainingLevelConfigs(const TDataObjectPtr<FAvatarPrefabConfig> &inout DataObject)
 {
-    TArray<FTrainingLevelConfig> __r;
     if ((DataObject == nullptr))
     {
         if (!(EUIGlobals::GIsDuringPropertyConversion))
@@ -690,7 +651,7 @@ TArray<FTrainingLevelConfig> __FAvatarPrefabConfig_GetTrainingLevelConfigs(const
         FAvatarPrefabConfig local_668;
         return local_668.TrainingLevelConfigs;
     }
-    return __r;
+    return DataObject.Get().TrainingLevelConfigs;
 }
 UFUNCTION()
 TArray<TDataObjectPtr<FTrainingInfoConfig>> __FAvatarPrefabConfig_GetTrainingInfoConfigs(const TDataObjectPtr<FAvatarPrefabConfig> &inout DataObject)
@@ -704,7 +665,7 @@ TArray<TDataObjectPtr<FTrainingInfoConfig>> __FAvatarPrefabConfig_GetTrainingInf
         FAvatarPrefabConfig local_668;
         return local_668.GetTrainingInfoConfigs();
     }
-    return GetTrainingInfoConfigs();
+    return DataObject.Get().GetTrainingInfoConfigs();
 }
 UFUNCTION()
 TDataObjectPtr<FCharacterDefaultFashionConfig> __FAvatarPrefabConfig_GetDefaultFashion(const TDataObjectPtr<FAvatarPrefabConfig> &inout DataObject)
@@ -718,7 +679,7 @@ TDataObjectPtr<FCharacterDefaultFashionConfig> __FAvatarPrefabConfig_GetDefaultF
         FAvatarPrefabConfig local_668;
         return local_668.GetDefaultFashion();
     }
-    return GetDefaultFashion();
+    return DataObject.Get().GetDefaultFashion();
 }
 UFUNCTION()
 FAvatarPrefabConfig CastToFAvatarPrefabConfig(const TDataObjectPtr<FAvatarPrefabConfig> &inout DataObject)

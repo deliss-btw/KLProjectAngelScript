@@ -62,8 +62,7 @@ struct FVM_HeadsUpDisplayItem_HP : FEUIViewModel
     void Tick()
     {
         FECSEntity local_4 = FECSEntity(ENTITY_NULL);
-        TEUIModelRef<FM_Spot> local_6 = this.GetSpot();
-        if ((!((::GetOwnerEntityId() == ENTITY_ID_NULL))))
+        if ((!((::GetOwnerEntityId(this.GetSpot().Get()) == ENTITY_ID_NULL))))
         {
             FECSEntity local_12 = FECSEntity(::GetOwnerEntityId(this.GetSpot().opArrow()));
             local_4 = ::FASCommonUtils::GetControlledPawnEntity(local_12);
@@ -243,11 +242,9 @@ FVM_HeadsUpDisplayItem_HP& Create(const UObject ContextObject, const TEUIModelRe
 {
     return FVM_HeadsUpDisplayItem_HP::CreateByManager(EUIInternal::GetContextManager(ContextObject), Spot);
 }
-FVM_HeadsUpDisplayItem_HP CreateByManager(const UEUIManagerSubsystem Manager, const TEUIModelRef<FM_Spot> &inout Spot)
+FVM_HeadsUpDisplayItem_HP& CreateByManager(const UEUIManagerSubsystem Manager, const TEUIModelRef<FM_Spot> &inout Spot)
 {
-    FVM_HeadsUpDisplayItem_HP __r;
-    TEUIModelRef<FVM_HeadsUpDisplayItem_HP> local_6 = TEUIModelRef<FVM_HeadsUpDisplayItem_HP>(EUIInternal::MakeModelWithManager_Generic(Manager, FVM_HeadsUpDisplayItem_HP::ModelId, 0, Spot));
-    return __r;
+    return TEUIModelRef<FVM_HeadsUpDisplayItem_HP>(EUIInternal::MakeModelWithManager_Generic(Manager, FVM_HeadsUpDisplayItem_HP::ModelId, 0, Spot)).Get();
 }
 void GetModelInfo(FEUIViewModelMetaInfo &inout Result)
 {
@@ -342,7 +339,6 @@ namespace __GeneratedProperties_FVM_HeadsUpDisplayItem_HP
 {
 UScriptStruct StaticStruct()
 {
-    UScriptStruct local_2;
-    return local_2;
+    return __GeneratedProperties_FVM_HeadsUpDisplayItem_HP.Get();
 }
 }

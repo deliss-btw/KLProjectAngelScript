@@ -56,7 +56,7 @@ struct FVM_DialogueOptionItem : FEUIViewModel
     {
         if (this.GetOptionInfo().GetOptionStyle().IsSet())
         {
-            return FSlateBrush();
+            return this.GetOptionInfo().GetOptionStyle().Get().OptionIcon.LoadBrush();
         }
         else
         {
@@ -74,12 +74,13 @@ struct FVM_DialogueOptionItem : FEUIViewModel
     }
     void OnSelected()
     {
-        bool local_50 = false;
-        if (this.GetOptionInfo().GetOptionStyle().IsSet() && local_50)
+        TDataObjectPtr<FDialogueOptionStyleConfig> local_24 = this.GetOptionInfo().GetOptionStyle();
+        if (!(!(local_24.IsSet())) && local_24.Get().bNeedConfirm)
         {
             FDialogModelCallback local_76;
             local_76.Bind(this, FVM_DialogueOptionItem::OnComfirmed);
-            FDialogCallback local_108 = FDialogCallback(local_76);
+            FCommonDialogParam local_110;
+            ::CommonPopup::Dialog_Decision(local_24.Get().ConfirmTitle, local_24.Get().ConfirmMessage, FDialogCallback(local_76), local_24.Get().ConfirmButtonText, local_24.Get().CancelButtonText, local_110);
             return;
         }
         this.SelectOption();
@@ -162,11 +163,9 @@ FVM_DialogueOptionItem& Create(const UObject ContextObject, const FDialogueOptio
 {
     return FVM_DialogueOptionItem::CreateByManager(EUIInternal::GetContextManager(ContextObject), OptionInfo);
 }
-FVM_DialogueOptionItem CreateByManager(const UEUIManagerSubsystem Manager, const FDialogueOptionInfo &inout OptionInfo)
+FVM_DialogueOptionItem& CreateByManager(const UEUIManagerSubsystem Manager, const FDialogueOptionInfo &inout OptionInfo)
 {
-    FVM_DialogueOptionItem __r;
-    TEUIModelRef<FVM_DialogueOptionItem> local_6 = TEUIModelRef<FVM_DialogueOptionItem>(EUIInternal::MakeModelWithManager_Generic(Manager, FVM_DialogueOptionItem::ModelId, 0, OptionInfo));
-    return __r;
+    return TEUIModelRef<FVM_DialogueOptionItem>(EUIInternal::MakeModelWithManager_Generic(Manager, FVM_DialogueOptionItem::ModelId, 0, OptionInfo)).Get();
 }
 void GetModelInfo(FEUIViewModelMetaInfo &inout Result)
 {
@@ -222,7 +221,6 @@ namespace __GeneratedProperties_FVM_DialogueOptionItem
 {
 UScriptStruct StaticStruct()
 {
-    UScriptStruct local_2;
-    return local_2;
+    return __GeneratedProperties_FVM_DialogueOptionItem.Get();
 }
 }

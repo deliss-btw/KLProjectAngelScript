@@ -82,15 +82,14 @@ struct FVM_AvatarTraining : FEUIViewModel
     }
     void OnTrainingItemClicked(const FMsg_TrainingItemClicked &inout Msg)
     {
-        int local_1 = int(Msg.TrainingId);
-        if (local_1 == 0 || !(this.GetAvatarConfig().IsSet()))
+        if (int(Msg.TrainingId) == 0 || !(this.GetAvatarConfig().IsSet()))
         {
             return;
         }
         TDataObjectPtr<FTrainingInfoConfig> local_28;
-        for (auto& local_42 : GetTrainingInfoConfigs())
+        for (auto& local_42 : this.GetAvatarConfig().Get().GetTrainingInfoConfigs())
         {
-            if (local_42.IsSet() && (local_1 == int(Msg.TrainingId)))
+            if (local_42.IsSet() && (local_42.Get().DataId == int(Msg.TrainingId)))
             {
                 local_28 = local_42;
                 break;
@@ -105,10 +104,10 @@ struct FVM_AvatarTraining : FEUIViewModel
     }
     void OpenTrainingReward(const TDataObjectPtr<FTrainingInfoConfig> &inout TrainingInfo)
     {
-        int local_2 = 0;
+        int local_2 = TrainingInfo.Get().DataId;
         int local_1 = local_2;
         ::FMS_TrainingModel::Get(this.GetManager()).ConsumeTrainingRedDot(local_1);
-        TDataObjectPtr<FRewardConfig> local_28 = GetFinishReward();
+        TDataObjectPtr<FRewardConfig> local_28 = TrainingInfo.Get().GetFinishReward();
         if (!(local_28.IsSet()))
         {
             this.TryEnterTrainingLevel(local_1);
@@ -159,7 +158,6 @@ struct FVM_AvatarTraining : FEUIViewModel
     }
     void GenerateTrainingList()
     {
-        int local_24 = 0;
         this.GetModify_TrainingList().Reset(0);
         if (!(this.GetAvatarConfig().IsSet()))
         {
@@ -167,7 +165,7 @@ struct FVM_AvatarTraining : FEUIViewModel
             return;
         }
         FMS_TrainingModel& local_6 = ::FMS_TrainingModel::Get(this.GetManager());
-        for (auto& local_20 : GetTrainingInfoConfigs())
+        for (auto& local_20 : this.GetAvatarConfig().Get().GetTrainingInfoConfigs())
         {
             if (!(local_20.IsSet()))
             {
@@ -178,6 +176,7 @@ struct FVM_AvatarTraining : FEUIViewModel
                 continue;
             }
             FVM_TrainingItem& local_22 = ::FVM_TrainingItem::Create(this.GetManager(), local_20);
+            int local_24 = local_20.Get().DataId;
             int64 local_30 = local_24;
             FVM_RedDot& local_32 = ::FVM_RedDot::Create(this.GetContext().Manager, FRedDotNodeData(GameplayTags::RedDotSystem_AvatarTraining_UnlockTraining, local_30));
             FEUIModelContainer local_46;
@@ -276,11 +275,9 @@ FVM_AvatarTraining& Create(const UObject ContextObject, const TDataObjectPtr<FAv
 {
     return FVM_AvatarTraining::CreateByManager(EUIInternal::GetContextManager(ContextObject), AvatarConfig);
 }
-FVM_AvatarTraining CreateByManager(const UEUIManagerSubsystem Manager, const TDataObjectPtr<FAvatarPrefabConfig> &inout AvatarConfig)
+FVM_AvatarTraining& CreateByManager(const UEUIManagerSubsystem Manager, const TDataObjectPtr<FAvatarPrefabConfig> &inout AvatarConfig)
 {
-    FVM_AvatarTraining __r;
-    TEUIModelRef<FVM_AvatarTraining> local_6 = TEUIModelRef<FVM_AvatarTraining>(EUIInternal::MakeModelWithManager_Generic(Manager, FVM_AvatarTraining::ModelId, 0, AvatarConfig));
-    return __r;
+    return TEUIModelRef<FVM_AvatarTraining>(EUIInternal::MakeModelWithManager_Generic(Manager, FVM_AvatarTraining::ModelId, 0, AvatarConfig)).Get();
 }
 void GetModelInfo(FEUIViewModelMetaInfo &inout Result)
 {
@@ -350,7 +347,6 @@ namespace __GeneratedProperties_FVM_AvatarTraining
 {
 UScriptStruct StaticStruct()
 {
-    UScriptStruct local_2;
-    return local_2;
+    return __GeneratedProperties_FVM_AvatarTraining.Get();
 }
 }

@@ -2,10 +2,10 @@ namespace MissionExecUtils
 {
 EMissionActionType GetActionType(const FInstancedStruct &inout ActionData)
 {
-    int local_10 = 0;
-    if (FInstancedStruct::GetPtr(ActionData).opCall())
+    TConstRawPtr<FMissionActionBase> local_6 = FInstancedStruct::GetPtr(ActionData).opCall();
+    if (local_6)
     {
-        return EMissionActionType(local_10);
+        return local_6.Get().ActionType;
     }
     return EMissionActionType(0);
 }

@@ -29,6 +29,7 @@ TArray<FString> GetEcologyActivityOptions(const UObject Outer, const FCreatureAc
     }
     if (FPrologUtils::GetQueryValueResultByArgName(FString().Append("creature_activity_definition(").Append(Data.CreatureType.CreatureTypeName).Append(", CreatureActivityName, _, _)"), "CreatureActivityName", local_4, true, false))
     {
+        local_4.Sort(false);
     }
     return local_4;
 }
@@ -39,6 +40,7 @@ FECSEntityId FindConfigByUUID(const FConfigGUID &inout GUID, const FECSWorldPtr 
     FECSEntityId local_6;
     if (local_2)
     {
+        local_6 = local_2.Get();
     }
     else
     {
@@ -49,16 +51,15 @@ FECSEntityId FindConfigByUUID(const FConfigGUID &inout GUID, const FECSWorldPtr 
 UFUNCTION()
 EMonsterRank GetMonsterRank(const TDataObjectPtr<FMonsterMainConfig> &inout Config)
 {
-    int local_2 = 0;
     if (!(Config))
     {
         return EMonsterRank(0);
     }
-    if (!(GetCombatConfig()))
+    const TDataObjectPtr<FCombatUnitBaseConfig>& local_4 = Config.Get().GetCombatConfig();
+    if (!(local_4))
     {
-        local_2 = 0;
-        return EMonsterRank(local_2);
+        return EMonsterRank(0);
     }
-    return EMonsterRank(local_2);
+    return local_4.Get().Rank;
 }
 }

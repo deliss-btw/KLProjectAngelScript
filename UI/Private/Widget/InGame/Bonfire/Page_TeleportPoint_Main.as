@@ -48,14 +48,14 @@ class UPage_TeleportPoint : UEUIActivatableWidget
     UFUNCTION()
     FText TeleportPoint_TeleportTitle() const
     {
-        FVMS_TeleportPoint_Page& local_2;
+        FVMS_TeleportPoint_Page& local_2 = this.TeleportPoint.Get();
         FText local_12 = local_2 ? local_2.GetTeleportTitle() : FText();
         return local_12;
     }
     UFUNCTION()
     TArray<FEUIModelWeakRef> TeleportPoint_ItemRefs() const
     {
-        FVMS_TeleportPoint_Page& local_2;
+        FVMS_TeleportPoint_Page& local_2 = this.TeleportPoint.Get();
         TArray<FEUIModelWeakRef> local_16;
         if (local_2)
         {

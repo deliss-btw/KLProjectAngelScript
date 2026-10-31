@@ -310,11 +310,9 @@ FVM_TestLoad0& Create(const UObject ContextObject, const int Value0)
 {
     return FVM_TestLoad0::CreateByManager(EUIInternal::GetContextManager(ContextObject), Value0);
 }
-FVM_TestLoad0 CreateByManager(const UEUIManagerSubsystem Manager, const int Value0)
+FVM_TestLoad0& CreateByManager(const UEUIManagerSubsystem Manager, const int Value0)
 {
-    FVM_TestLoad0 __r;
-    TEUIModelRef<FVM_TestLoad0> local_6 = TEUIModelRef<FVM_TestLoad0>(EUIInternal::MakeModelWithManager_Generic(Manager, FVM_TestLoad0::ModelId, 0, Value0));
-    return __r;
+    return TEUIModelRef<FVM_TestLoad0>(EUIInternal::MakeModelWithManager_Generic(Manager, FVM_TestLoad0::ModelId, 0, Value0)).Get();
 }
 void GetModelInfo(FEUIViewModelMetaInfo &inout Result)
 {
@@ -348,8 +346,7 @@ namespace __GeneratedProperties_FVM_TestLoad0
 {
 UScriptStruct StaticStruct()
 {
-    UScriptStruct local_2;
-    return local_2;
+    return __GeneratedProperties_FVM_TestLoad0.Get();
 }
 }
 namespace FVM_TestLoad1
@@ -358,11 +355,9 @@ FVM_TestLoad1& Create(const UObject ContextObject, const int Value1)
 {
     return FVM_TestLoad1::CreateByManager(EUIInternal::GetContextManager(ContextObject), Value1);
 }
-FVM_TestLoad1 CreateByManager(const UEUIManagerSubsystem Manager, const int Value1)
+FVM_TestLoad1& CreateByManager(const UEUIManagerSubsystem Manager, const int Value1)
 {
-    FVM_TestLoad1 __r;
-    TEUIModelRef<FVM_TestLoad1> local_6 = TEUIModelRef<FVM_TestLoad1>(EUIInternal::MakeModelWithManager_Generic(Manager, FVM_TestLoad1::ModelId, 0, Value1));
-    return __r;
+    return TEUIModelRef<FVM_TestLoad1>(EUIInternal::MakeModelWithManager_Generic(Manager, FVM_TestLoad1::ModelId, 0, Value1)).Get();
 }
 void GetModelInfo(FEUIViewModelMetaInfo &inout Result)
 {
@@ -400,8 +395,7 @@ namespace __GeneratedProperties_FVM_TestLoad1
 {
 UScriptStruct StaticStruct()
 {
-    UScriptStruct local_2;
-    return local_2;
+    return __GeneratedProperties_FVM_TestLoad1.Get();
 }
 }
 namespace FVM_TestLoad2
@@ -410,11 +404,9 @@ FVM_TestLoad2& Create(const UObject ContextObject, const int Value2)
 {
     return FVM_TestLoad2::CreateByManager(EUIInternal::GetContextManager(ContextObject), Value2);
 }
-FVM_TestLoad2 CreateByManager(const UEUIManagerSubsystem Manager, const int Value2)
+FVM_TestLoad2& CreateByManager(const UEUIManagerSubsystem Manager, const int Value2)
 {
-    FVM_TestLoad2 __r;
-    TEUIModelRef<FVM_TestLoad2> local_6 = TEUIModelRef<FVM_TestLoad2>(EUIInternal::MakeModelWithManager_Generic(Manager, FVM_TestLoad2::ModelId, 0, Value2));
-    return __r;
+    return TEUIModelRef<FVM_TestLoad2>(EUIInternal::MakeModelWithManager_Generic(Manager, FVM_TestLoad2::ModelId, 0, Value2)).Get();
 }
 void GetModelInfo(FEUIViewModelMetaInfo &inout Result)
 {
@@ -448,8 +440,7 @@ namespace __GeneratedProperties_FVM_TestLoad2
 {
 UScriptStruct StaticStruct()
 {
-    UScriptStruct local_2;
-    return local_2;
+    return __GeneratedProperties_FVM_TestLoad2.Get();
 }
 }
 namespace FVM_TestLoad3
@@ -458,11 +449,9 @@ FVM_TestLoad3& Create(const UObject ContextObject)
 {
     return FVM_TestLoad3::CreateByManager(EUIInternal::GetContextManager(ContextObject));
 }
-FVM_TestLoad3 CreateByManager(const UEUIManagerSubsystem Manager)
+FVM_TestLoad3& CreateByManager(const UEUIManagerSubsystem Manager)
 {
-    FVM_TestLoad3 __r;
-    TEUIModelRef<FVM_TestLoad3> local_6 = TEUIModelRef<FVM_TestLoad3>(EUIInternal::MakeModelWithManager(Manager, FVM_TestLoad3::ModelId));
-    return __r;
+    return TEUIModelRef<FVM_TestLoad3>(EUIInternal::MakeModelWithManager(Manager, FVM_TestLoad3::ModelId)).Get();
 }
 void GetModelInfo(FEUIViewModelMetaInfo &inout Result)
 {
@@ -492,7 +481,6 @@ namespace __GeneratedProperties_FVM_TestLoad3
 {
 UScriptStruct StaticStruct()
 {
-    UScriptStruct local_2;
-    return local_2;
+    return __GeneratedProperties_FVM_TestLoad3.Get();
 }
 }

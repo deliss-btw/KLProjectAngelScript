@@ -527,7 +527,6 @@ struct FMS_ChatDataModel : FEUIModelSingleton
     void PublishGetItemSystemMsg(const TDataObjectPtr<FItemConfig> &inout ItemConfig, const int IncreaseNum)
     {
         const UChatSettings local_4;
-        int local_10 = 0;
         if (!(ItemConfig.IsSet()))
         {
             return;
@@ -546,41 +545,43 @@ struct FMS_ChatDataModel : FEUIModelSingleton
         {
             return;
         }
-        if (!(GetGetItemChatId().IsSet()))
+        if (!(local_4.ChatSettingsConfig.Get().GetGetItemChatId().IsSet()))
         {
             return;
         }
+        int local_10 = local_4.ChatSettingsConfig.Get().GetGetItemChatId().Get().DataId;
         int local_9 = local_10;
-        int local_11 = local_10;
+        int local_10_2 = ItemConfig.Get().DataId;
+        int local_11 = local_10_2;
         TArray<FChatSystemSerializedArg> local_16;
         local_16.Add(FChatSystemSerializedArg(EChatSystemPbArgKind(3), FString().Append(local_11)));
         local_16.Add(FChatSystemSerializedArg(EChatSystemPbArgKind(2), FString().Append(IncreaseNum)));
         FEUIModelRef local_38 = FEUIModelRef(this);
         FEUIMessageBus::Publish(EUIMessageBus);
-        local_10 = 4;
+        int local_10_3 = 4;
         FMsg_GenSystemMsg local_40;
-        local_40.ChannelType = local_10;
+        local_40.ChannelType = local_10_3;
         local_40.SystemContentDataId = local_9;
         local_40.SystemContentArgs = local_16;
         return;
     }
     void PublishCombatTeamMemberSystemMsg(const TDataObjectPtr<FChatContentConfig> &inout ContentRow, const uint PlayerUid)
     {
-        int local_6 = 0;
         XLog(ELog(74), FString().Append("PublishCombatTeamMemberSystemMsg PlayerUid=").Append(PlayerUid));
         if (PlayerUid == 0 || !(ContentRow.IsSet()))
         {
             return;
         }
-        FString local_4 = FString();
+        XLog(ELog(74), FString().Append("PublishCombatTeamMemberSystemMsg ContentRow=").Append(ContentRow.Get().DataId).Append(" PlayerUid=").Append(PlayerUid));
+        int local_6 = ContentRow.Get().DataId;
         int local_9 = local_6;
         TArray<FChatSystemSerializedArg> local_14;
         local_14.Add(FChatSystemSerializedArg(EChatSystemPbArgKind(3), FString().Append(PlayerUid)));
         FEUIModelRef local_32 = FEUIModelRef(this);
         FEUIMessageBus::Publish(EUIMessageBus);
-        local_6 = 3;
+        int local_6_2 = 3;
         FMsg_GenSystemMsg local_34;
-        local_34.ChannelType = local_6;
+        local_34.ChannelType = local_6_2;
         local_34.SystemContentDataId = local_9;
         local_34.SystemContentArgs = local_14;
         return;
@@ -594,6 +595,7 @@ struct FMS_ChatDataModel : FEUIModelSingleton
         {
             return;
         }
+        const FChatSettingsConfig& local_10 = local_2.ChatSettingsConfig.Get();
         if (bJoin)
         {
         }
@@ -824,10 +826,9 @@ struct FMS_ChatDataModel : FEUIModelSingleton
     }
     void OnFriendDataUpdated(const FMsg_FriendDataUpdated &inout Msg)
     {
-        const FChatPrivatePeerThread& local_22;
         for (auto& local_20 : this.GetPrivateChatThreadsByPeer())
         {
-            local_20;
+            const FChatPrivatePeerThread& local_22 = local_20.GetValue();
             FPlayerBriefInfo local_40 = FPlayerBriefInfo(local_22.CachedPeerBrief);
             bool local_17 = this.RebuildPlayerBrief(int(local_22.PeerUid), local_40);
             if (!(local_17))
@@ -855,8 +856,7 @@ struct FMS_ChatDataModel : FEUIModelSingleton
                 const FChatPrivatePeerThread& local_10 = this.GetPrivateChatThreadsByPeer()[local_6];
                 for (auto& local_24 : local_10.Messages)
                 {
-                    local_24;
-                    1.SetbIsRead();
+                    local_24.Get().SetbIsRead(true);
                 }
             }
         }
@@ -868,8 +868,7 @@ struct FMS_ChatDataModel : FEUIModelSingleton
                 const FChatChannelRecentMessageList& local_26 = this.GetRecentMessagesByChannel()[local_7];
                 for (auto& local_24 : local_26.Messages)
                 {
-                    local_24;
-                    1.SetbIsRead();
+                    local_24.Get().SetbIsRead(true);
                 }
             }
         }
@@ -1152,8 +1151,69 @@ struct FMS_ChatDataModel : FEUIModelSingleton
     }
     bool IsDuplicateChannelMessageByTimeMs(const uint Ch, const uint64 SendTimeMs, const FPbChatContent &inout Content)
     {
-        // body not fully recovered — stub [argmismatch:argtype]
-        bool __r; return __r;
+        int64 local_14;
+        bool local_1 = !(this.GetRecentMessagesByChannel().Contains(Ch));
+        if (local_1)
+        {
+            return false;
+        }
+        int local_5 = 0;
+        TArray<TEUIModelRef<FM_ChatMessage>> local_4;
+        int local_6 = local_4.Num() - 1;
+        int local_9 = -1;
+        while (local_5 <= local_6)
+        {
+            int local_11 = FMath::IntegerDivisionTrunc(local_5 + local_6, 2);
+            local_14 = local_4[local_11].Get().GetSendTimeMs();
+            if (local_14 == SendTimeMs)
+            {
+                local_9 = local_11;
+                break;
+            }
+            if (local_14 < SendTimeMs)
+            {
+                local_5 = local_11 + 1;
+            }
+            else
+            {
+                local_6 = local_11 - 1;
+            }
+        }
+        if (local_9 < 0)
+        {
+            return false;
+        }
+        int local_11_2 = local_9;
+        while (local_1)
+        {
+            if (this.IsSameChannelMessageContent(local_4[local_11_2].Get(), Content))
+            {
+                return true;
+            }
+            --local_11_2;
+            if (local_11_2 < 0)
+            {
+                local_1 = false;
+                continue;
+            }
+            local_1 = (local_4[local_11_2].Get().GetSendTimeMs() == SendTimeMs);
+        }
+        int local_7 = local_9 + 1;
+        while (local_1)
+        {
+            if (this.IsSameChannelMessageContent(local_4[local_7].Get(), Content))
+            {
+                return true;
+            }
+            ++local_7;
+            if (local_7 >= local_4.Num())
+            {
+                local_1 = false;
+                continue;
+            }
+            local_1 = (local_4[local_7].Get().GetSendTimeMs() == SendTimeMs);
+        }
+        return false;
     }
     bool IsSameChannelMessageContent(const FM_ChatMessage &inout M, const FPbChatContent &inout Content)
     {
@@ -1200,8 +1260,7 @@ struct FMS_ChatDataModel : FEUIModelSingleton
         {
             return 0;
         }
-        int local_8 = local_6.Num() - 1;
-        return GetSendTimeMs();
+        return (local_6[(local_6.Num() - 1)].Get().GetSendTimeMs());
     }
     bool IsClientSaveHistoryChannel(const uint PbChannel)
     {
@@ -1332,11 +1391,11 @@ struct FMS_ChatDataModel : FEUIModelSingleton
     }
     void RebuildChatSaveMessages(const UChatRecentHistorySaveGame SaveGame)
     {
-        FM_ChatMessage& local_6;
         SaveGame.Messages.Empty(0);
         int local_2 = 0;
         for (; local_2 < this.GetRecentMessages().Num(); ++local_2)
         {
+            FM_ChatMessage& local_6 = this.GetRecentMessages()[local_2].Get();
             if (!(this.IsClientSaveHistoryChannel(local_6.GetChannelType())))
             {
                 continue;
@@ -1349,7 +1408,6 @@ struct FMS_ChatDataModel : FEUIModelSingleton
     }
     void WritebackChatSaveSmallState(const UChatRecentHistorySaveGame SaveGame, const uint PlayerUid)
     {
-        const FPlayerBriefInfo& local_34;
         SaveGame.Version = 0;
         SaveGame.OwnerPlayerUid = PlayerUid;
         SaveGame.PrivatePeerOrderUids.Empty(0);
@@ -1364,6 +1422,7 @@ struct FMS_ChatDataModel : FEUIModelSingleton
         {
             FChatStrangerPeerBriefRecord local_32;
             local_32.PeerUid = local_24.GetKey();
+            const FPlayerBriefInfo& local_34 = local_24.GetValue();
             local_32.Nickname = local_34.GetNickname();
             local_32.Level = local_34.GetLevel();
             local_32.CurAvatarId = local_34.GetCurAvatarId();
@@ -1526,7 +1585,7 @@ struct FMS_ChatDataModel : FEUIModelSingleton
         int local_1 = 0;
         for (; local_1 < Arr.Num(); ++local_1)
         {
-            if (GetSendTimeMs() > SendTimeMs)
+            if (Arr[local_1].Get().GetSendTimeMs() > SendTimeMs)
             {
                 return local_1;
             }
@@ -1552,7 +1611,7 @@ struct FMS_ChatDataModel : FEUIModelSingleton
     }
     void IncrementalPrivateChatAfterPush(const TEUIModelRef<FM_ChatMessage> &inout PushedRef)
     {
-        FM_ChatMessage local_2;
+        FM_ChatMessage& local_2 = PushedRef.Get();
         int local_4 = this.ResolvePrivateChatPeerUid(local_2);
         if (local_4 == 0)
         {
@@ -1563,8 +1622,9 @@ struct FMS_ChatDataModel : FEUIModelSingleton
         local_8.PeerUid = local_4;
         int local_13 = this.FindInsertIndexBySendTimeAscending(local_8.Messages, local_2.GetSendTimeMs());
         local_8.Messages.Insert(PushedRef, local_13);
-        this.UpdatePrivatePeerCachesFromMessage(local_8);
-        if (local_13 < (local_8.Messages.Num() - 1))
+        int local_9 = local_8.Messages.Num() - 1;
+        this.UpdatePrivatePeerCachesFromMessage(local_8, local_8.Messages[local_9].Get());
+        if (local_13 < local_9)
         {
             this.TryUpsertStrangerWhenPeerSenderMidOrder(local_8, local_2);
         }
@@ -1605,8 +1665,7 @@ struct FMS_ChatDataModel : FEUIModelSingleton
         int local_5_2 = 0;
         for (; local_5_2 < local_12.Num(); ++local_5_2)
         {
-            FM_ChatMessage local_16;
-            int local_13 = this.ResolvePrivateChatPeerUid(local_16);
+            int local_13 = this.ResolvePrivateChatPeerUid(local_12[local_5_2].Get());
             if (local_13 == 0)
             {
                 continue;
@@ -1622,7 +1681,7 @@ struct FMS_ChatDataModel : FEUIModelSingleton
             int local_5_3 = 0;
             for (; local_5_3 < local_20_2.Messages.Num(); )
             {
-                this.UpdatePrivatePeerCachesFromMessage(local_20_2);
+                this.UpdatePrivatePeerCachesFromMessage(local_20_2, local_20_2.Messages[local_5_3].Get());
                 ++local_5_3;
             }
         }
@@ -1724,7 +1783,7 @@ struct FMS_ChatDataModel : FEUIModelSingleton
             int local_7 = local_3 + 1;
             for (; local_7 < local_2; ++local_7)
             {
-                if (GetSendTimeMs() < GetSendTimeMs())
+                if (Arr[local_7].Get().GetSendTimeMs() < Arr[local_3].Get().GetSendTimeMs())
                 {
                     TEUIModelRef<FM_ChatMessage> local_14 = TEUIModelRef<FM_ChatMessage>(Arr[local_3]);
                     Arr[local_3] = Arr[local_7];
@@ -2060,7 +2119,8 @@ struct FMS_ChatDataModel : FEUIModelSingleton
     }
     TArray<FChatSystemSerializedArg> FillPlayerNameSnapshots(const uint SystemContentDataId, const TArray<FChatSystemSerializedArg> &inout SystemContentArgs)
     {
-        if (!(::FChatContentConfig::GetByDataId(SystemContentDataId).IsSet()) || ((0 != 2)))
+        TDataObjectPtr<FChatContentConfig> local_48 = ::FChatContentConfig::GetByDataId(SystemContentDataId);
+        if (!(local_48.IsSet()) || (int(local_48.Get().ContentType) != 2))
         {
             return SystemContentArgs;
         }
@@ -2089,185 +2149,187 @@ struct FMS_ChatDataModel : FEUIModelSingleton
     }
     FText MakeSystemChatBodyText(const uint SystemContentDataId, const TArray<FChatSystemSerializedArg> &inout SystemContentArgs)
     {
-        FText local_126;
-        FText local_184;
         Make local_274;
         Make local_286;
         GetDataObjectByGSDataId<FCommissionConfig> local_364;
         const UChatSettings local_446;
         FText __return;
-        if (!(::FChatContentConfig::GetByDataId(SystemContentDataId).IsSet()))
+        TDataObjectPtr<FChatContentConfig> local_48 = ::FChatContentConfig::GetByDataId(SystemContentDataId);
+        if (!(local_48.IsSet()))
         {
             return FText::FromString(FString().Append("[System] data_id=").Append(SystemContentDataId));
         }
-        EChatSystemContentType local_60;
-        EChatSystemContentType local_59 = local_60;
+        EChatSystemContentType local_59 = local_48.Get().ContentType;
         TArray<FTextArgument> local_64;
         int local_65 = int(local_59);
-        FText local_72;
-        FText local_460;
         if (local_65 == 0 || (SystemContentArgs.Num() == 0))
         {
+            return local_48.Get().Content.FormatText;
         }
-        else
+        FText local_72 = FText(local_48.Get().Content.FormatText);
+        FText local_58;
+        FText local_460;
+        if (int(local_59) == 1)
         {
-            if (int(local_59) == 1)
+            FText local_184;
+            FText local_126;
+            int local_65_2 = SystemContentArgs.Num();
+            if (local_65_2 >= 2)
             {
-                int local_65_2 = SystemContentArgs.Num();
-                if (local_65_2 >= 2)
+                int local_127;
+                int local_73 = String::Conv_StringToInt(SystemContentArgs[0].GetValue());
+                TDataObjectPtr<FItemConfig> local_122 = ::FItemConfig::GetByDataId(local_73);
+                if (!(local_122))
                 {
-                    int local_127;
-                    int local_73 = String::Conv_StringToInt(SystemContentArgs[0].GetValue());
-                    if (!(::FItemConfig::GetByDataId(local_73)))
-                    {
-                        return FText::FromString(FString().Append("[System] unknown_item data_id=").Append(local_73));
-                    }
-                    EItemRarity local_128;
-                    local_127 = local_128;
-                    if (::UGlobalItemSettings::Get().GetRarityConfig(EItemRarity(local_127)))
-                    {
-                    }
-                    else
-                    {
-                        XError(ELog(74), FString().Append("Rarity config not found for rarity ").Append(local_127));
-                    }
-                    ::ChatSystemUtil::MakeSystemChatItemWithRarityHyperlinkText(local_126);
-                    int local_66 = String::Conv_StringToInt(SystemContentArgs[1].GetValue());
-                    FText local_58;
-                    local_72 = FText::Format(local_184, local_58, local_126);
-                    __return = local_184;
+                    return FText::FromString(FString().Append("[System] unknown_item data_id=").Append(local_73));
+                }
+                local_127 = local_122.Get().Rarity;
+                TDataObjectPtr<FItemRarityConfig> local_154 = ::UGlobalItemSettings::Get().GetRarityConfig(EItemRarity(local_127));
+                if (local_154)
+                {
+                    local_58 = local_154.Get().ItemNamePrefix;
                 }
                 else
                 {
+                    XError(ELog(74), FString().Append("Rarity config not found for rarity ").Append(local_127));
+                }
+                ::ChatSystemUtil::MakeSystemChatItemWithRarityHyperlinkText(local_126);
+                int local_66 = String::Conv_StringToInt(SystemContentArgs[1].GetValue());
+                local_72 = FText::Format(local_184, local_58, local_126);
+                __return = local_184;
+            }
+            else
+            {
+            }
+        }
+        else
+        {
+            FText local_184;
+            FText local_126;
+            if (int(local_59) == 2)
+            {
+                TMap<FString, FFormatArgumentValue> local_206;
+                if (local_72.ToString().Contains("{PlayerName}", ESearchCase(1), ESearchDir(0)))
+                {
+                    FPlayerBriefInfo local_244 = this.BuildLocalPlayerSenderBrief();
+                    if (local_244.GetNickname().IsEmpty())
+                    {
+                        FString local_258 = FString().Append(local_244.GetUid());
+                    }
+                    else
+                    {
+                        FString local_258_2 = local_244.GetNickname();
+                    }
+                    ::ChatSystemUtil::MakeSystemChatPlayerUidHyperlinkText(local_244.GetUid(), local_184);
+                    local_206.Add("PlayerName", FFormatArgumentValue());
+                }
+                int local_65_3 = SystemContentArgs.Num();
+                int local_267 = 0;
+                for (; local_267 < local_65_3; )
+                {
+                    int local_73_2 = String::Conv_StringToInt(SystemContentArgs[local_267].GetValue());
+                    this.ResolveSystemMessageDisplayName(local_73_2, SystemContentArgs[local_267].GetDisplayName());
+                    ::ChatSystemUtil::MakeSystemChatPlayerUidHyperlinkText(local_73_2, local_184);
+                    local_206.Add(FString().Append(local_267), FFormatArgumentValue());
+                    ++local_267;
+                }
+                local_72 = FText::Format(local_184);
+                return local_184;
+            }
+            if (int(local_59) == 3 || (int(local_59) == 4))
+            {
+                if (SystemContentArgs.Num() >= 2)
+                {
+                    int local_185 = String::Conv_StringToInt(SystemContentArgs[0].GetValue());
+                    local_64.Add(local_274.opImplConv());
+                    ::FItemConfig::GetByDataId(String::Conv_StringToInt(SystemContentArgs[1].GetValue()));
+                    local_64.Add(local_286.opImplConv());
+                    ::FChatContentConfig::ParseText(local_48.Get(), local_184);
+                    return local_184;
                 }
             }
             else
             {
-                if (int(local_59) == 2)
+                if (int(local_59) == 6)
                 {
-                    TMap<FString, FFormatArgumentValue> local_206;
-                    if (local_72.ToString().Contains("{PlayerName}", ESearchCase(1), ESearchDir(0)))
-                    {
-                        FPlayerBriefInfo local_244 = this.BuildLocalPlayerSenderBrief();
-                        if (local_244.GetNickname().IsEmpty())
-                        {
-                            FString local_258 = FString().Append(local_244.GetUid());
-                        }
-                        else
-                        {
-                            FString local_258_2 = local_244.GetNickname();
-                        }
-                        ::ChatSystemUtil::MakeSystemChatPlayerUidHyperlinkText(local_244.GetUid(), local_184);
-                        local_206.Add("PlayerName", FFormatArgumentValue());
-                    }
-                    int local_65_3 = SystemContentArgs.Num();
-                    int local_267 = 0;
-                    for (; local_267 < local_65_3; )
-                    {
-                        int local_73_2 = String::Conv_StringToInt(SystemContentArgs[local_267].GetValue());
-                        this.ResolveSystemMessageDisplayName(local_73_2, SystemContentArgs[local_267].GetDisplayName());
-                        ::ChatSystemUtil::MakeSystemChatPlayerUidHyperlinkText(local_73_2, local_184);
-                        local_206.Add(FString().Append(local_267), FFormatArgumentValue());
-                        ++local_267;
-                    }
-                    local_72 = FText::Format(local_184);
+                    int local_185_2 = String::Conv_StringToInt(SystemContentArgs[0].GetValue());
+                    local_64.Add(local_274.opImplConv());
+                    ::FItemConfig::GetByDataId(String::Conv_StringToInt(SystemContentArgs[1].GetValue()));
+                    local_64.Add(local_286.opImplConv());
+                    GetDataObjectByGSDataId<FExpOverflowConfig> local_310;
+                    TDataObjectPtr<FExpOverflowConfig> local_340 = local_310.opImplConv();
+                    Make local_316;
+                    local_64.Add(local_316.opImplConv());
+                    ::FChatContentConfig::ParseText(local_48.Get(), local_184);
                     return local_184;
                 }
-                if (int(local_59) == 3 || (int(local_59) == 4))
+                if (int(local_59) == 5)
                 {
-                    if (SystemContentArgs.Num() >= 2)
+                    if (SystemContentArgs.Num() >= 3)
                     {
-                        int local_185 = String::Conv_StringToInt(SystemContentArgs[0].GetValue());
+                        int local_73_3 = String::Conv_StringToInt(SystemContentArgs[0].GetValue());
+                        TDataObjectPtr<FCommissionConfig> local_394 = local_364.opImplConv();
+                        Make local_370;
+                        local_64.Add(local_370.opImplConv());
+                        int local_66_2 = String::Conv_StringToInt(SystemContentArgs[1].GetValue());
                         local_64.Add(local_274.opImplConv());
-                        ::FItemConfig::GetByDataId(String::Conv_StringToInt(SystemContentArgs[1].GetValue()));
+                        ::FItemConfig::GetByDataId(String::Conv_StringToInt(SystemContentArgs[2].GetValue()));
                         local_64.Add(local_286.opImplConv());
-                        ::FChatContentConfig::ParseText(local_184);
+                        ::FChatContentConfig::ParseText(local_48.Get(), local_184);
                         return local_184;
                     }
                 }
                 else
                 {
-                    if (int(local_59) == 6)
+                    if (int(local_59) == 7)
                     {
-                        int local_185_2 = String::Conv_StringToInt(SystemContentArgs[0].GetValue());
-                        local_64.Add(local_274.opImplConv());
-                        ::FItemConfig::GetByDataId(String::Conv_StringToInt(SystemContentArgs[1].GetValue()));
-                        local_64.Add(local_286.opImplConv());
-                        GetDataObjectByGSDataId<FExpOverflowConfig> local_310;
-                        TDataObjectPtr<FExpOverflowConfig> local_340 = local_310.opImplConv();
-                        Make local_316;
-                        local_64.Add(local_316.opImplConv());
-                        ::FChatContentConfig::ParseText(local_184);
-                        return local_184;
-                    }
-                    if (int(local_59) == 5)
-                    {
-                        if (SystemContentArgs.Num() >= 3)
+                        if (SystemContentArgs.Num() >= 2)
                         {
-                            int local_73_3 = String::Conv_StringToInt(SystemContentArgs[0].GetValue());
-                            TDataObjectPtr<FCommissionConfig> local_394 = local_364.opImplConv();
-                            Make local_370;
-                            local_64.Add(local_370.opImplConv());
-                            int local_66_2 = String::Conv_StringToInt(SystemContentArgs[1].GetValue());
-                            local_64.Add(local_274.opImplConv());
-                            ::FItemConfig::GetByDataId(String::Conv_StringToInt(SystemContentArgs[2].GetValue()));
-                            local_64.Add(local_286.opImplConv());
-                            ::FChatContentConfig::ParseText(local_184);
-                            return local_184;
-                        }
-                    }
-                    else
-                    {
-                        if (int(local_59) == 7)
-                        {
-                            if (SystemContentArgs.Num() >= 2)
+                            int local_73_4 = String::Conv_StringToInt(SystemContentArgs[0].GetValue());
+                            int local_395 = String::Conv_StringToInt(SystemContentArgs[1].GetValue());
+                            TDataObjectPtr<FCommissionConfig> local_420 = local_364.opImplConv();
+                            if (!(local_420.IsSet()))
                             {
-                                int local_73_4 = String::Conv_StringToInt(SystemContentArgs[0].GetValue());
-                                int local_395 = String::Conv_StringToInt(SystemContentArgs[1].GetValue());
-                                TDataObjectPtr<FCommissionConfig> local_394_2 = local_364.opImplConv();
-                                if (!(local_394_2.IsSet()))
-                                {
-                                    FString local_248 = FString();
-                                    FText::FromString(local_184);
-                                    return local_184;
-                                }
-                                GetGameplaySettings<UChatSettings> local_448;
-                                local_446 = local_448;
-                                FName local_456;
-                                if (local_446 != nullptr)
-                                {
-                                    local_456 = local_446.RecruitCommissionNameStyle;
-                                }
-                                else
-                                {
-                                    local_456 = FName();
-                                }
-                                FString local_258_3 = FString();
-                                FText::AsCultureInvariant(local_184);
-                                local_460 = FText::Format(local_72, local_184, local_126, ::ChatSystemUtil::MakeRecruitCommissionTeamHyperlinkText(local_395));
-                                __return = local_460;
+                                FString local_248 = FString();
+                                FText::FromString(local_184);
+                                return local_184;
+                            }
+                            GetGameplaySettings<UChatSettings> local_448;
+                            local_446 = local_448;
+                            FName local_456;
+                            if (local_446 != nullptr)
+                            {
+                                local_456 = local_446.RecruitCommissionNameStyle;
                             }
                             else
                             {
+                                local_456 = FName();
                             }
+                            FString local_258_3 = FString();
+                            FText::AsCultureInvariant(local_184);
+                            ::ChatSystemUtil::WrapTextWithRichTextStyleRow(local_420.Get().CommissionName, local_126);
+                            local_460 = FText::Format(local_72, local_184, local_126, ::ChatSystemUtil::MakeRecruitCommissionTeamHyperlinkText(local_395));
+                            __return = local_460;
+                        }
+                        else
+                        {
                         }
                     }
                 }
             }
-            __return = local_460;
         }
+        __return = local_460;
         return __return;
     }
     FText MakeNpcChatBodyText(const FChatServerSendChatSnapshot &inout S)
     {
-        FText local_12;
         if (!(S.GetDialogueLineConfig().IsSet()))
         {
             return FText();
         }
         else
         {
-            const FDialogueLineConfig& local_8;
+            const FDialogueLineConfig& local_8 = S.GetDialogueLineConfig().Get();
             FText local_6;
             if (S.GetbUseSpotName() && (S.GetNpcEntityId() != 0))
             {
@@ -2275,14 +2337,12 @@ struct FMS_ChatDataModel : FEUIModelSingleton
                 if (local_18)
                 {
                     FSpotViewAdapter local_28;
-                    local_12 = ::GetSpotName(local_18.opArrow(), local_28);
-                    local_6 = local_12;
+                    local_6 = ::GetSpotName(local_18.opArrow(), local_28);
                 }
             }
             if (local_6.IsEmpty() && local_8.GetSpeakerNPC().IsSet())
             {
-                local_12.GetNpcName();
-                local_6 = local_12;
+                local_6 = local_8.GetSpeakerNPC().Get().GetNpcName();
             }
             if (local_6.IsEmpty())
             {
@@ -2290,7 +2350,7 @@ struct FMS_ChatDataModel : FEUIModelSingleton
             }
             else
             {
-                local_12 = NSLOCTEXT("Chat", "NpcChatBodyFormat", "{0}: {1}");
+                FText local_12 = NSLOCTEXT("Chat", "NpcChatBodyFormat", "{0}: {1}");
                 return FText::Format(local_12, local_6, local_8.LineText);
             }
         }
@@ -2530,11 +2590,9 @@ FM_ChatMessage& Create(const UObject ContextObject)
 {
     return FM_ChatMessage::CreateByManager(EUIInternal::GetContextManager(ContextObject));
 }
-FM_ChatMessage CreateByManager(const UEUIManagerSubsystem Manager)
+FM_ChatMessage& CreateByManager(const UEUIManagerSubsystem Manager)
 {
-    FM_ChatMessage __r;
-    TEUIModelRef<FM_ChatMessage> local_6 = TEUIModelRef<FM_ChatMessage>(EUIInternal::MakeModelWithManager(Manager, FM_ChatMessage::ModelId));
-    return __r;
+    return TEUIModelRef<FM_ChatMessage>(EUIInternal::MakeModelWithManager(Manager, FM_ChatMessage::ModelId)).Get();
 }
 void GetModelInfo(FEUIModelOnlyMetaInfo &inout Result)
 {
@@ -2601,11 +2659,9 @@ FMS_ChatDataModel& Get(const UObject ContextObject)
 {
     return FMS_ChatDataModel::GetByManager(EUIInternal::GetContextManager(ContextObject));
 }
-FMS_ChatDataModel GetByManager(const UEUIManagerSubsystem Manager)
+FMS_ChatDataModel& GetByManager(const UEUIManagerSubsystem Manager)
 {
-    FMS_ChatDataModel __r;
-    TEUIModelRef<FMS_ChatDataModel> local_6 = TEUIModelRef<FMS_ChatDataModel>(EUIInternal::MakeModelWithManager(Manager, FMS_ChatDataModel::ModelId));
-    return __r;
+    return TEUIModelRef<FMS_ChatDataModel>(EUIInternal::MakeModelWithManager(Manager, FMS_ChatDataModel::ModelId)).Get();
 }
 void GetModelInfo(FEUIModelOnlyMetaInfo &inout Result)
 {

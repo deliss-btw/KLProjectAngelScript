@@ -135,11 +135,9 @@ FVM_MainMenuCategory& Create(const UObject ContextObject, const int CategoryInde
 {
     return FVM_MainMenuCategory::CreateByManager(EUIInternal::GetContextManager(ContextObject), CategoryIndex);
 }
-FVM_MainMenuCategory CreateByManager(const UEUIManagerSubsystem Manager, const int CategoryIndex)
+FVM_MainMenuCategory& CreateByManager(const UEUIManagerSubsystem Manager, const int CategoryIndex)
 {
-    FVM_MainMenuCategory __r;
-    TEUIModelRef<FVM_MainMenuCategory> local_6 = TEUIModelRef<FVM_MainMenuCategory>(EUIInternal::MakeModelWithManager_Generic(Manager, FVM_MainMenuCategory::ModelId, 0, CategoryIndex));
-    return __r;
+    return TEUIModelRef<FVM_MainMenuCategory>(EUIInternal::MakeModelWithManager_Generic(Manager, FVM_MainMenuCategory::ModelId, 0, CategoryIndex)).Get();
 }
 void GetModelInfo(FEUIViewModelMetaInfo &inout Result)
 {
@@ -195,7 +193,6 @@ namespace __GeneratedProperties_FVM_MainMenuCategory
 {
 UScriptStruct StaticStruct()
 {
-    UScriptStruct local_2;
-    return local_2;
+    return __GeneratedProperties_FVM_MainMenuCategory.Get();
 }
 }

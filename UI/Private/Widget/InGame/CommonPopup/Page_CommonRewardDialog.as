@@ -22,9 +22,9 @@ class UPage_CommonRewardDialog : UEUIActivatableWidget
     UFUNCTION()
     void OnViewBind_Implementation()
     {
-        GetModify_CloseDelegate().BindUFunction(this, n"ClosePage");
+        this.Dialog.Get().GetModify_CloseDelegate().BindUFunction(this, n"ClosePage");
         bool local_2 = false;
-        for (auto& local_18 : GetOptions())
+        for (auto& local_18 : this.Dialog.Get().GetOptions())
         {
             if (int(local_18.OptionType) == 1)
             {

@@ -66,7 +66,7 @@ class UWidget_InventoryMain : UEUIActivatableWidget
         this.RefreshCloseBindingVisibility();
         if (this.InventoryMain.IsValid())
         {
-            this.SetupQuickSlots();
+            this.InventoryMain.Get().SetupQuickSlots(this);
         }
         this.ApplySharedHoverAnchorToItemModels();
         this.ApplySharedHoverAnchorToCurrencyModels();
@@ -116,15 +116,15 @@ class UWidget_InventoryMain : UEUIActivatableWidget
     UFUNCTION()
     void OnConfirmSortAction()
     {
-        if (this.InventoryMain.IsValid() && ShouldShowFilterAndSorter())
+        if (this.InventoryMain.IsValid() && this.InventoryMain.Get().ShouldShowFilterAndSorter())
         {
-            ConfirmSort();
+            this.InventoryMain.Get().ConfirmSort();
         }
         return;
     }
     void RefreshInventoryActionBindings()
     {
-        bool local_2 = this.InventoryMain.IsValid() && ShouldShowFilterAndSorter();
+        bool local_2 = this.InventoryMain.IsValid() && this.InventoryMain.Get().ShouldShowFilterAndSorter();
         this.SwitchFocusActionBinding.SetCollapsed(!(local_2));
         this.ConfirmSortActionBinding.SetCollapsed(!(local_2));
         bool local_3 = (this.HorizontalBox_0 != nullptr) && this.IsPartOfFocusPath(this.HorizontalBox_0);
@@ -189,10 +189,10 @@ class UWidget_InventoryMain : UEUIActivatableWidget
         TEUIModelRef<FVM_InventoryMainItem> local_4 = TEUIModelRef<FVM_InventoryMainItem>(FEUIModelContainer::GetModel(Item).opCall());
         if (!(local_4.IsValid()))
         {
-            ClearSelection();
+            this.InventoryMain.Get().ClearSelection();
             return;
         }
-        GetCurrentDisplayItems().IndexOfByKey(local_4).SelectItemIndex();
+        this.InventoryMain.Get().SelectItemIndex(this.InventoryMain.Get().GetCurrentDisplayItems().IndexOfByKey(local_4));
         return;
     }
     UFUNCTION()
@@ -215,7 +215,19 @@ class UWidget_InventoryMain : UEUIActivatableWidget
     }
     void ApplySharedHoverAnchorToItemModels()
     {
-        // body not fully recovered — stub [argmismatch:argint]
+        if (!(this.InventoryMain.IsValid()))
+        {
+            return;
+        }
+        UWidget local_4 = this.GetSharedHoverAnchor();
+        for (auto& local_20 : this.InventoryMain.Get().GetCurrentDisplayItems())
+        {
+            if (local_20.IsValid())
+            {
+                local_20.Get().SetSharedHoverAnchor(local_4, this.SharedItemAndCurrencyHoverLayout);
+            }
+        }
+        return;
     }
     void SyncItemTileSelectionAndFocus()
     {
@@ -224,8 +236,8 @@ class UWidget_InventoryMain : UEUIActivatableWidget
         {
             return;
         }
-        local_5 = GetSelectedItemIndex();
-        if (!(GetCurrentDisplayItems().IsValidIndex(local_5)))
+        local_5 = this.InventoryMain.Get().GetSelectedItemIndex();
+        if (!(this.InventoryMain.Get().GetCurrentDisplayItems().IsValidIndex(local_5)))
         {
             this.w_tile_Item.SetSelectedIndex(INDEX_NONE);
             return;
@@ -247,7 +259,7 @@ class UWidget_InventoryMain : UEUIActivatableWidget
         }
         if (this.InventoryMain.IsValid())
         {
-            ClearSelection();
+            this.InventoryMain.Get().ClearSelection();
         }
         if (this.w_tile_Item != nullptr)
         {
@@ -261,7 +273,19 @@ class UWidget_InventoryMain : UEUIActivatableWidget
     }
     void ApplySharedHoverAnchorToCurrencyModels()
     {
-        // body not fully recovered — stub [argmismatch:argint]
+        if (!(this.InventoryMain.IsValid()))
+        {
+            return;
+        }
+        UWidget local_4 = this.GetSharedHoverAnchor();
+        for (auto& local_20 : this.InventoryMain.Get().GetItemBarItems())
+        {
+            if (local_20.IsValid())
+            {
+                local_20.Get().SetSharedHoverAnchor(local_4, this.SharedItemAndCurrencyHoverLayout);
+            }
+        }
+        return;
     }
     void ApplySharedHoverAnchorToExistingItemWidgets()
     {
@@ -360,7 +384,7 @@ class UWidget_InventoryMain : UEUIActivatableWidget
     UFUNCTION()
     TArray<FEUIModelWeakRef> InventoryMain_RootCategories() const
     {
-        FVM_InventoryMain& local_2;
+        FVM_InventoryMain& local_2 = this.InventoryMain.Get();
         TArray<FEUIModelWeakRef> local_16;
         if (local_2)
         {
@@ -375,7 +399,7 @@ class UWidget_InventoryMain : UEUIActivatableWidget
     UFUNCTION()
     TArray<FEUIModelWeakRef> InventoryMain_RedDots() const
     {
-        FVM_InventoryMain& local_2;
+        FVM_InventoryMain& local_2 = this.InventoryMain.Get();
         TArray<FEUIModelWeakRef> local_16;
         if (local_2)
         {
@@ -390,7 +414,7 @@ class UWidget_InventoryMain : UEUIActivatableWidget
     UFUNCTION()
     TArray<FEUIModelContainer> InventoryMain_RootCategoryListItems() const
     {
-        FVM_InventoryMain& local_2;
+        FVM_InventoryMain& local_2 = this.InventoryMain.Get();
         TArray<FEUIModelContainer> local_12;
         if (local_2)
         {
@@ -405,14 +429,14 @@ class UWidget_InventoryMain : UEUIActivatableWidget
     UFUNCTION()
     FEUIModelContainer InventoryMain_SelectedRootCategoryItem() const
     {
-        FVM_InventoryMain& local_2;
+        FVM_InventoryMain& local_2 = this.InventoryMain.Get();
         FEUIModelContainer local_32 = local_2 ? local_2.GetSelectedRootCategoryItem() : FEUIModelContainer();
         return local_32;
     }
     UFUNCTION()
     TArray<FEUIModelWeakRef> InventoryMain_Categories() const
     {
-        FVM_InventoryMain& local_2;
+        FVM_InventoryMain& local_2 = this.InventoryMain.Get();
         TArray<FEUIModelWeakRef> local_16;
         if (local_2)
         {
@@ -427,7 +451,7 @@ class UWidget_InventoryMain : UEUIActivatableWidget
     UFUNCTION()
     TArray<FEUIModelWeakRef> InventoryMain_CurrentDisplayItems() const
     {
-        FVM_InventoryMain& local_2;
+        FVM_InventoryMain& local_2 = this.InventoryMain.Get();
         TArray<FEUIModelWeakRef> local_16;
         if (local_2)
         {
@@ -442,7 +466,7 @@ class UWidget_InventoryMain : UEUIActivatableWidget
     UFUNCTION()
     FEUIModelContainer InventoryMain_SelectedItem() const
     {
-        FVM_InventoryMain& local_2;
+        FVM_InventoryMain& local_2 = this.InventoryMain.Get();
         FEUIModelContainer local_32;
         if (local_2)
         {
@@ -545,10 +569,10 @@ class UWidget_InventoryMain : UEUIActivatableWidget
     }
     void HandleObservedModelChanges(FEUIReactiveSubscriberIterator &inout It)
     {
-        FVM_InventoryMain& local_6;
-        FVM_CloseVisibilityState& local_12;
         TEUIModelRef<FVM_InventoryMain> local_2 = this.InventoryMain.AsRef();
+        FVM_InventoryMain& local_6 = local_2.Get();
         TEUIModelRef<FVM_CloseVisibilityState> local_8 = this.VisibilityState.AsRef();
+        FVM_CloseVisibilityState& local_12 = local_8.Get();
         for (; It; )
         {
             FEUIReactiveSubscriberTrackScope local_62 = FEUIReactiveSubscriberTrackScope(It);
@@ -683,7 +707,7 @@ class UWidget_InventoryMainItem : UEUIUserListItemWidget
     UFUNCTION()
     void OnViewBind_Implementation()
     {
-        this.LastHandledPinnedTipRequestVersion = this.InventoryMainItem.IsValid() ? GetPinnedTipRequestVersion() : 0;
+        this.LastHandledPinnedTipRequestVersion = this.InventoryMainItem.IsValid() ? this.InventoryMainItem.Get().GetPinnedTipRequestVersion() : 0;
         this.BindHoverProviderHoverIntent();
         this.RefreshChildVisibility();
         this.ApplyConfiguredSharedHoverAnchor();
@@ -717,21 +741,21 @@ class UWidget_InventoryMainItem : UEUIUserListItemWidget
             this.LastHandledPinnedTipRequestVersion = 0;
             return;
         }
-        local_3 = GetPinnedTipRequestVersion();
+        local_3 = this.InventoryMainItem.Get().GetPinnedTipRequestVersion();
         if (local_3 <= this.LastHandledPinnedTipRequestVersion)
         {
             return;
         }
         this.LastHandledPinnedTipRequestVersion = local_3;
-        if (!(GetbHasItem()) || ((this.UI_Common_HoverProvider == nullptr)))
+        if (!(this.InventoryMainItem.Get().GetbHasItem()) || ((this.UI_Common_HoverProvider == nullptr)))
         {
             return;
         }
-        this.UI_Common_HoverProvider.SetHoverModels(GetTipHoverModels());
+        this.UI_Common_HoverProvider.SetHoverModels(this.InventoryMainItem.Get().GetTipHoverModels());
         this.UI_Common_HoverProvider.PinOrOpenPinnedPassThrough();
         if (this.UI_Common_HoverProvider.HoverProvider.IsValid())
         {
-            GetHoverHandle().UpdatePinnedTipHoverHandle();
+            this.InventoryMainItem.Get().UpdatePinnedTipHoverHandle(this.UI_Common_HoverProvider.HoverProvider.Get().GetHoverHandle());
         }
         return;
     }
@@ -746,7 +770,7 @@ class UWidget_InventoryMainItem : UEUIUserListItemWidget
         {
             if (this.InventoryMainItem.IsValid())
             {
-                ClosePinnedTipHover();
+                this.InventoryMainItem.Get().ClosePinnedTipHover();
             }
             return;
         }
@@ -760,7 +784,20 @@ class UWidget_InventoryMainItem : UEUIUserListItemWidget
     UFUNCTION()
     void ApplySharedHoverAnchor(const UWidget InHoverAnchor, const ECommonHoverLayout InHoverLayout)
     {
-        // body not fully recovered — stub [argmismatch:argint]
+        if (this.InventoryMainItem.IsValid())
+        {
+            this.InventoryMainItem.Get().SetSharedHoverAnchor(InHoverAnchor, ECommonHoverLayout(InHoverLayout));
+        }
+        if (this.UI_Common_HoverProvider == nullptr)
+        {
+            return;
+        }
+        this.UI_Common_HoverProvider.SetHoverForWidgetOverride(InHoverAnchor);
+        if (this.UI_Common_HoverProvider.HoverProvider.IsValid())
+        {
+            this.UI_Common_HoverProvider.HoverProvider.Get().SetHoverPosition(ECommonHoverLayout(InHoverLayout));
+        }
+        return;
     }
     void ApplyConfiguredSharedHoverAnchor()
     {
@@ -768,12 +805,12 @@ class UWidget_InventoryMainItem : UEUIUserListItemWidget
         {
             return;
         }
-        UWidget local_4 = ResolveSharedHoverAnchorWidget();
+        UWidget local_4 = this.InventoryMainItem.Get().ResolveSharedHoverAnchorWidget();
         if (!(IsValid(local_4)))
         {
             return;
         }
-        this.ApplySharedHoverAnchor(local_4, ResolveSharedHoverLayout());
+        this.ApplySharedHoverAnchor(local_4, this.InventoryMainItem.Get().ResolveSharedHoverLayout());
         return;
     }
     UFUNCTION()
@@ -783,7 +820,7 @@ class UWidget_InventoryMainItem : UEUIUserListItemWidget
         {
             return;
         }
-        if (!(GetbHasItem()))
+        if (!(this.InventoryMainItem.Get().GetbHasItem()))
         {
             this.UI_Common_HoverProvider.SetHoverModels(FEUIModelContainer());
             return;
@@ -792,8 +829,8 @@ class UWidget_InventoryMainItem : UEUIUserListItemWidget
         {
             return;
         }
-        PrepareHoverPreview();
-        this.UI_Common_HoverProvider.SetHoverModels(GetTipHoverModels());
+        this.InventoryMainItem.Get().PrepareHoverPreview();
+        this.UI_Common_HoverProvider.SetHoverModels(this.InventoryMainItem.Get().GetTipHoverModels());
         return;
     }
     void RefreshChildVisibility()
@@ -810,7 +847,7 @@ class UWidget_InventoryMainItem : UEUIUserListItemWidget
         }
         if (this.UI_Common_HoverProvider != nullptr)
         {
-            if (GetbHasItem())
+            if (this.InventoryMainItem.Get().GetbHasItem())
             {
                 local_5 = 0;
             }
@@ -819,7 +856,7 @@ class UWidget_InventoryMainItem : UEUIUserListItemWidget
                 local_5 = 4;
             }
             this.UI_Common_HoverProvider.SetVisibility(ESlateVisibility(local_5));
-            if (!(GetbHasItem()))
+            if (!(this.InventoryMainItem.Get().GetbHasItem()))
             {
                 this.UI_Common_HoverProvider.SetHoverModels(FEUIModelContainer());
             }
@@ -858,10 +895,10 @@ class UWidget_InventoryMainItem : UEUIUserListItemWidget
     }
     void HandleObservedModelChanges(FEUIReactiveSubscriberIterator &inout It)
     {
-        FVM_InventoryMainItem& local_6;
-        FVM_SelectableItem& local_12;
         TEUIModelRef<FVM_InventoryMainItem> local_2 = this.InventoryMainItem.AsRef();
+        FVM_InventoryMainItem& local_6 = local_2.Get();
         TEUIModelRef<FVM_SelectableItem> local_8 = this.SelectableItem.AsRef();
+        FVM_SelectableItem& local_12 = local_8.Get();
         for (; It; )
         {
             FEUIReactiveSubscriberTrackScope local_62 = FEUIReactiveSubscriberTrackScope(It);

@@ -40,7 +40,7 @@ class UWidget_MissionMainPanel : UEUIActivatableWidget
         bool local_3;
         if (this.MissionPanel)
         {
-            local_3 = IsCommissionTabSelected();
+            local_3 = this.MissionPanel.Get().IsCommissionTabSelected();
         }
         else
         {
@@ -54,7 +54,7 @@ class UWidget_MissionMainPanel : UEUIActivatableWidget
         bool local_3;
         if (this.MissionPanel)
         {
-            local_3 = GetbIsChapterEntryHighlighted();
+            local_3 = this.MissionPanel.Get().GetbIsChapterEntryHighlighted();
         }
         else
         {
@@ -68,7 +68,7 @@ class UWidget_MissionMainPanel : UEUIActivatableWidget
         bool local_3;
         if (this.MissionPanel)
         {
-            local_3 = TabType.IsTabTypeSelected();
+            local_3 = this.MissionPanel.Get().IsTabTypeSelected(EMissionTabType(TabType));
         }
         else
         {
@@ -79,23 +79,11 @@ class UWidget_MissionMainPanel : UEUIActivatableWidget
     UFUNCTION()
     bool HasSelectedMission() const
     {
-        TEUIModelRef<FVM_MissionList> local_4;
-        bool local_1 = !(this.MissionPanel.IsValid());
-        if (local_1)
-        {
-            local_1 = true;
-        }
-        else
-        {
-            local_4.GetMissionList();
-            local_1 = !(local_4.IsValid());
-        }
-        if (local_1)
+        if (!(this.MissionPanel.IsValid()) || !(this.MissionPanel.Get().GetMissionList().IsValid()))
         {
             return false;
         }
-        local_4.GetMissionList();
-        return HasSelectedMission();
+        return this.MissionPanel.Get().GetMissionList().Get().HasSelectedMission();
     }
     UFUNCTION()
     void SetSelectedTabIndex(const int Index)
@@ -104,8 +92,8 @@ class UWidget_MissionMainPanel : UEUIActivatableWidget
         {
             return;
         }
-        Index.SetSelectedTabIndex();
-        bool local_1 = IsCommissionTabSelected();
+        this.MissionPanel.Get().SetSelectedTabIndex(Index);
+        bool local_1 = this.MissionPanel.Get().IsCommissionTabSelected();
         if (this.UI_Mission_CommissionDetail != nullptr)
         {
             this.UI_Mission_CommissionDetail.ViewLocation.SetCollapsed(!(local_1));
@@ -114,14 +102,10 @@ class UWidget_MissionMainPanel : UEUIActivatableWidget
         {
             if ((int(this.GetCurrentInputType())) == 1 || local_1)
             {
-                TEUIModelRef<FVM_MissionList> local_12;
                 this.UI_Mission_MissionList.SetAllCollapsed(true);
-                local_12.GetMissionList();
-                if (local_12)
+                if (this.MissionPanel.Get().GetMissionList())
                 {
-                    bool local_2 = false;
-                    local_12.GetMissionList();
-                    local_2.SetbShowTrackingButton();
+                    this.MissionPanel.Get().GetMissionList().Get().SetbShowTrackingButton(false);
                 }
             }
             this.UI_Mission_MissionList.ScrollToTop();
@@ -131,13 +115,13 @@ class UWidget_MissionMainPanel : UEUIActivatableWidget
     UFUNCTION()
     void OnChapterEntryHighlightedChanged()
     {
-        this.ToggleTracking.SetCollapsed(GetbIsChapterEntryHighlighted());
+        this.ToggleTracking.SetCollapsed(this.MissionPanel.Get().GetbIsChapterEntryHighlighted());
         return;
     }
     UFUNCTION()
     void OnSelectedMissionTrackedChanged()
     {
-        if (GetbIsSelectedMissionTracked())
+        if (this.MissionPanel.Get().GetbIsSelectedMissionTracked())
         {
         }
         else
@@ -149,7 +133,7 @@ class UWidget_MissionMainPanel : UEUIActivatableWidget
     UFUNCTION()
     void OnShowTrackingButtonChanged()
     {
-        this.ToggleTracking.SetCollapsed(!(GetbShowTrackingButton()));
+        this.ToggleTracking.SetCollapsed(!(this.MissionPanel.Get().GetbShowTrackingButton()));
         return;
     }
     UFUNCTION()
@@ -174,8 +158,8 @@ class UWidget_MissionMainPanel : UEUIActivatableWidget
     }
     void HandleObservedModelChanges(FEUIReactiveSubscriberIterator &inout It)
     {
-        FVM_MissionMainPanel& local_6;
         TEUIModelRef<FVM_MissionMainPanel> local_2 = this.MissionPanel.AsRef();
+        FVM_MissionMainPanel& local_6 = local_2.Get();
         for (; It; )
         {
             FEUIReactiveSubscriberTrackScope local_56 = FEUIReactiveSubscriberTrackScope(It);

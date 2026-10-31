@@ -81,8 +81,7 @@ struct FVM_MissionMinimapIcon : FEUIViewModel
         bool local_7;
         if (this.GetRewardInfo())
         {
-            TEUIModelRef<FVM_CommonRewardList> local_2 = this.GetRewardInfo();
-            local_7 = (GetRewards().Num() > 0);
+            local_7 = (this.GetRewardInfo().Get().GetRewards().Num() > 0);
         }
         else
         {
@@ -210,11 +209,9 @@ FVM_MissionMinimapIcon& Create(const UObject ContextObject, const TEUIModelRef<F
 {
     return FVM_MissionMinimapIcon::CreateByManager(EUIInternal::GetContextManager(ContextObject), Spot);
 }
-FVM_MissionMinimapIcon CreateByManager(const UEUIManagerSubsystem Manager, const TEUIModelRef<FM_Spot> &inout Spot)
+FVM_MissionMinimapIcon& CreateByManager(const UEUIManagerSubsystem Manager, const TEUIModelRef<FM_Spot> &inout Spot)
 {
-    FVM_MissionMinimapIcon __r;
-    TEUIModelRef<FVM_MissionMinimapIcon> local_6 = TEUIModelRef<FVM_MissionMinimapIcon>(EUIInternal::MakeModelWithManager_Generic(Manager, FVM_MissionMinimapIcon::ModelId, 0, Spot));
-    return __r;
+    return TEUIModelRef<FVM_MissionMinimapIcon>(EUIInternal::MakeModelWithManager_Generic(Manager, FVM_MissionMinimapIcon::ModelId, 0, Spot)).Get();
 }
 void GetModelInfo(FEUIViewModelMetaInfo &inout Result)
 {
@@ -309,7 +306,6 @@ namespace __GeneratedProperties_FVM_MissionMinimapIcon
 {
 UScriptStruct StaticStruct()
 {
-    UScriptStruct local_2;
-    return local_2;
+    return __GeneratedProperties_FVM_MissionMinimapIcon.Get();
 }
 }

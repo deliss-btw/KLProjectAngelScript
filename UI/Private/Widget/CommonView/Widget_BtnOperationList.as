@@ -82,8 +82,8 @@ class UWidget_BtnOperationList : UEUIActivatableWidget
     }
     void HandleObservedModelChanges(FEUIReactiveSubscriberIterator &inout It)
     {
-        FVM_BtnOperationList& local_6;
         TEUIModelRef<FVM_BtnOperationList> local_2 = this.ItemList.AsRef();
+        FVM_BtnOperationList& local_6 = local_2.Get();
         for (; It; )
         {
             FEUIReactiveSubscriberTrackScope local_56 = FEUIReactiveSubscriberTrackScope(It);

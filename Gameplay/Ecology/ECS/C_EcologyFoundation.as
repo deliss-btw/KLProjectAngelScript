@@ -45,9 +45,10 @@ struct FC_EcologyConfigReference : FECSComponent
         if (local_9_2)
         {
             const FLevelConfigInstance& local_36 = local_34.GetLevelUnitConfigInstance();
-            if (FInstancedStruct::GetPtr(local_36.GetConfigData()).opCall())
+            TConstRawPtr<FCommonEcologyUnitConfig> local_42 = FInstancedStruct::GetPtr(local_36.GetConfigData()).opCall();
+            if (local_42)
             {
-                return TConstRawPtr<FVirtualConfigData>();
+                return TConstRawPtr<FVirtualConfigData>(local_42.Get().ConfigData);
             }
         }
         return local_12;

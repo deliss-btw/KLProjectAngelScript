@@ -48,17 +48,11 @@ struct FVM_TaskGroup : FEUIViewModel
     }
     FText GetTitle() const
     {
-        TEUIModelRef<FM_Task> local_2 = this.GetTask();
-        FText local_6;
-        local_6.GetGroupTitle();
-        return local_6;
+        return this.GetTask().Get().GetGroupTitle();
     }
     FText GetDesc() const
     {
-        TEUIModelRef<FM_Task> local_2 = this.GetTask();
-        FText local_6;
-        local_6.GetGroupDesc();
-        return local_6;
+        return this.GetTask().Get().GetGroupDesc();
     }
     TEUIModelRef<FM_Task> GetTask() const property
     {
@@ -123,11 +117,9 @@ FVM_TaskGroup& Create(const UObject ContextObject, const TEUIModelRef<FM_Task> &
 {
     return FVM_TaskGroup::CreateByManager(EUIInternal::GetContextManager(ContextObject), Task);
 }
-FVM_TaskGroup CreateByManager(const UEUIManagerSubsystem Manager, const TEUIModelRef<FM_Task> &inout Task)
+FVM_TaskGroup& CreateByManager(const UEUIManagerSubsystem Manager, const TEUIModelRef<FM_Task> &inout Task)
 {
-    FVM_TaskGroup __r;
-    TEUIModelRef<FVM_TaskGroup> local_6 = TEUIModelRef<FVM_TaskGroup>(EUIInternal::MakeModelWithManager_Generic(Manager, FVM_TaskGroup::ModelId, 0, Task));
-    return __r;
+    return TEUIModelRef<FVM_TaskGroup>(EUIInternal::MakeModelWithManager_Generic(Manager, FVM_TaskGroup::ModelId, 0, Task)).Get();
 }
 void GetModelInfo(FEUIViewModelMetaInfo &inout Result)
 {
@@ -192,7 +184,6 @@ namespace __GeneratedProperties_FVM_TaskGroup
 {
 UScriptStruct StaticStruct()
 {
-    UScriptStruct local_2;
-    return local_2;
+    return __GeneratedProperties_FVM_TaskGroup.Get();
 }
 }

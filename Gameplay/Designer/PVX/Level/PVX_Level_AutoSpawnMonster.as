@@ -97,11 +97,11 @@ class APVX_Level_AutoSpawnMonster : AKLLevelScriptBaseActor
     }
     FECSEntity ResolveSpawnerFromSoftPtr(const TSoftObjectPtr<AGenericSpawnerECSPrefab> &inout Prefab)
     {
-        AGenericSpawnerECSPrefab local_8;
         if (Prefab.IsNull())
         {
             return FECSEntity();
         }
+        AGenericSpawnerECSPrefab local_8 = Prefab.Get();
         if ((!((local_8 != nullptr))))
         {
             return FECSEntity();
@@ -293,6 +293,7 @@ class APVX_Level_AutoSpawnMonster : AKLLevelScriptBaseActor
             Get local_16;
             if ((local_16.opCall().GetOwnerDataLayerName() == local_20.opCall().DataLayerName))
             {
+                this.SpawnedMonsters.Remove(DeathEvent.Sender);
                 --this.SpawnCount;
                 if (this.SpawnCount <= 0)
                 {

@@ -15,8 +15,7 @@ class US_LevelPublicEventSystem : UECSScriptSystem
     UFUNCTION()
     void ServerJob_UpdatePublicEvent(const FECSEntity &inout Entity, const FCS_FixedTime &inout FixedTime, const FC_LevelPublicEventInfo &inout LevelPublicEventInfo, const FC_LevelScriptActor &inout LevelScriptActor) const
     {
-        AActor local_2;
-        AKLLevelScriptPublicEvent local_6 = (Cast<AKLLevelScriptPublicEvent>(local_2));
+        AKLLevelScriptPublicEvent local_6 = (Cast<AKLLevelScriptPublicEvent>(LevelScriptActor.LevelScript.Get()));
         if (int(LevelPublicEventInfo.GetStatus()) == 0)
         {
             FFPTime local_12 = FFPTime(LevelPublicEventInfo.GetChangeStatusTime());
@@ -84,13 +83,12 @@ class US_LevelPublicEventSystem : UECSScriptSystem
         {
             if (local_20.GetEventInfo().IsSet())
             {
-                FString local_24;
-                local_14 = local_24;
+                local_14 = local_20.GetEventInfo().Get().DisplayName.ToString();
             }
         }
         EPublicEventStatus local_30 = LevelPublicEventInfo.GetStatus();
         int local_29 = Entity.GetIdValue();
-        System::PrintString(__GetWorldContext(), FString(local_24.Append("Event: ").Append(local_14).Append("  entity: ").Append(local_29).Append(" Status: ").Append(local_30).Append(" Time: ").Append(local_1)), true, false, FLinearColor::Green, -1.0f, Entity.GetEntityName());
+        System::PrintString(__GetWorldContext(), FString(FString().Append("Event: ").Append(local_14).Append("  entity: ").Append(local_29).Append(" Status: ").Append(local_30).Append(" Time: ").Append(local_1)), true, false, FLinearColor::Green, -1.0f, Entity.GetEntityName());
         return;
     }
     UFUNCTION()

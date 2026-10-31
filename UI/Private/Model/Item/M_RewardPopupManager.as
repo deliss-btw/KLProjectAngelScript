@@ -57,7 +57,6 @@ struct FMS_RewardPopupManager : FEUIModelSingleton
     }
     void OnRewardPopupNotify(const FCE_RewardPopupNotify &inout Event)
     {
-        int local_28 = 0;
         if (Event.Items.IsEmpty())
         {
             return;
@@ -67,7 +66,7 @@ struct FMS_RewardPopupManager : FEUIModelSingleton
         {
             if (local_20.GetConfig())
             {
-                local_6.AddItem(local_28, local_20.GetNumber(), FName(), FText(), false);
+                local_6.AddItem(local_20.GetConfig().Get().DataId, local_20.GetNumber(), FName(), FText(), false);
             }
         }
         TArray<FRewardItemEntry> local_36 = local_6.Build();
@@ -162,11 +161,9 @@ FMS_RewardPopupManager& Get(const UObject ContextObject)
 {
     return FMS_RewardPopupManager::GetByManager(EUIInternal::GetContextManager(ContextObject));
 }
-FMS_RewardPopupManager GetByManager(const UEUIManagerSubsystem Manager)
+FMS_RewardPopupManager& GetByManager(const UEUIManagerSubsystem Manager)
 {
-    FMS_RewardPopupManager __r;
-    TEUIModelRef<FMS_RewardPopupManager> local_6 = TEUIModelRef<FMS_RewardPopupManager>(EUIInternal::MakeModelWithManager(Manager, FMS_RewardPopupManager::ModelId));
-    return __r;
+    return TEUIModelRef<FMS_RewardPopupManager>(EUIInternal::MakeModelWithManager(Manager, FMS_RewardPopupManager::ModelId)).Get();
 }
 void GetModelInfo(FEUIModelOnlyMetaInfo &inout Result)
 {

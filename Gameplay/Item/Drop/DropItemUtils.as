@@ -386,34 +386,22 @@ int RandomChooseFromDropItems(const DropItemsUtils::FDropWeigthChooseItem &inout
 FECSEntity CreateDropGroundBagEntity(const DropItemsUtils::FDropRequestContext &inout RequestCtx, DropItemsUtils::FDropSpawnParams &inout SpawnParams, const TDataObjectPtr<FDropItemGroundBagConfig> &inout GroundBagConfig)
 {
     TSoftClassPtr<ACollectionPrefab> local_10;
-    bool local_11 = false;
-    bool local_12;
-    UClass local_14;
-    if (!(GroundBagConfig))
+    if (GroundBagConfig && !(GroundBagConfig.Get().GroundBagPrefab.IsNull()))
     {
-        local_12 = false;
-    }
-    else
-    {
-        local_11 = !local_11;
-        local_12 = local_11;
-    }
-    if (local_12)
-    {
-        if (IsValid(local_14))
+        if (IsValid(System::LoadClassAsset_Blocking(GroundBagConfig.Get().GroundBagPrefab)))
         {
+            local_10 = GroundBagConfig.Get().GroundBagPrefab;
         }
     }
     else
     {
         EItemRarity local_17;
-        EItemRarity local_18 = EItemRarity(0);
-        local_17 = local_18;
+        local_17 = EItemRarity::RarityD;
         for (auto& local_32 : SpawnParams.PendingItemConfigs)
         {
-            if (local_32 && (int(local_18) > int(local_17)))
+            if (local_32 && ((int(local_32.Get().Rarity) > int(local_17))))
             {
-                local_17 = local_18;
+                local_17 = local_32.Get().Rarity;
             }
         }
         UGlobalItemSettings::Get().Drops.Find(local_17, local_10);
@@ -490,7 +478,6 @@ void DropItemsFromWeightChooseItem(const DropItemsUtils::FDropWeigthChooseItem &
 void InternalDropItemsFromWeightChooseItem(const DropItemsUtils::FDropWeigthChooseItem &inout WeightChooseItem, const DropItemsUtils::FDropRequestContext &inout RequestCtx, DropItemsUtils::FDropSpawnParams &inout SpawnParams, TArray<FECSEntity> &inout ResultEntities)
 {
     int local_31;
-    const FItemConfig& local_82;
     EDropItemAllocation local_83;
     UClass local_200;
     int local_232 = 0;
@@ -535,6 +522,7 @@ void InternalDropItemsFromWeightChooseItem(const DropItemsUtils::FDropWeigthChoo
             XLog(ELog(71), FString().Append("DropItemPackage: is not valid"));
             continue;
         }
+        const FItemConfig& local_82 = local_56.Get();
         local_83 = local_82.DefaultDropAllocation;
         if (int(local_13) != 0)
         {
@@ -542,7 +530,7 @@ void InternalDropItemsFromWeightChooseItem(const DropItemsUtils::FDropWeigthChoo
         }
         if (int(local_83) == 0)
         {
-            local_83 = EDropItemAllocation(2);
+            local_83 = EDropItemAllocation::Ground;
         }
         FECSEntity local_88 = SpawnParams.PlayerEntity;
         if (int(local_83) == 1)
@@ -562,23 +550,23 @@ void InternalDropItemsFromWeightChooseItem(const DropItemsUtils::FDropWeigthChoo
             local_94 = false;
             TDataObjectPtr<FTestThreeChooseOneItemConfig> local_142 = TDataObjectPtr<FTestThreeChooseOneItemConfig>(local_56.opImplConv());
             TArray<FTraitParam> local_170;
-            EItemRarity local_172 = EItemRarity(0);
-            local_171 = local_172;
+            local_171 = EItemRarity::RarityD;
             if (local_142)
             {
                 local_94 = true;
-                if (GetBoonRandomSlots())
+                if (local_142.Get().GetBoonRandomSlots())
                 {
-                    local_170 = BoonRandomDropUtils::RandomTraitsFromSlotsConfig(SpawnParams.PlayerEntity);
+                    local_170 = BoonRandomDropUtils::RandomTraitsFromSlotsConfig(SpawnParams.PlayerEntity, local_142.Get().GetBoonRandomSlots().Get());
                     int local_177 = 0;
                     for (; local_177 < local_170.Num(); ++local_177)
                     {
                         FTraitParam& local_180 = local_170[local_177];
                         if (local_180.GetTrait())
                         {
+                            EItemRarity local_172 = local_180.GetTrait().Get().Rarity;
                             if (int(local_172) > int(local_171))
                             {
-                                local_171 = local_172;
+                                local_171 = local_180.GetTrait().Get().Rarity;
                             }
                         }
                     }
@@ -868,15 +856,15 @@ void AddDropCollectItem(const FECSEntity &inout DropEntity, const int DropNum, c
     }
     if (DropEntity)
     {
-        if (TDataObjectPtr<FRemnantItemConfig>(Item.opImplConv()))
+        TDataObjectPtr<FRemnantItemConfig> local_58 = TDataObjectPtr<FRemnantItemConfig>(Item.opImplConv());
+        if (local_58)
         {
-            int local_2 = WeightChooseItem.RemnantUsableCount;
-            if (local_2 > 0)
+            if (int(WeightChooseItem.RemnantUsableCount) > 0)
             {
                 local_88.opCall(local_90).SetRemainUsableCount(int(WeightChooseItem.RemnantUsableCount));
                 return;
             }
-            local_88.opCall(local_90).SetRemainUsableCount(local_2);
+            local_88.opCall(local_90).SetRemainUsableCount(local_58.Get().UsableCount);
         }
     }
     return;
@@ -893,9 +881,10 @@ TArray<TDataObjectPtr<FDropItemConfig>> CollectDisplayDropItemConfigs(const TArr
         }
         else
         {
-            if (TDataObjectPtr<FDropItemGroupConfig>(local_20.opImplConv()))
+            TDataObjectPtr<FDropItemGroupConfig> local_118 = TDataObjectPtr<FDropItemGroupConfig>(local_20.opImplConv());
+            if (local_118)
             {
-                const FDropItemGroupConfig& local_168;
+                const FDropItemGroupConfig& local_168 = local_118.Get();
                 for (auto& local_182 : local_168.Drops)
                 {
                     TDataObjectPtr<FDropItemConfig> local_206 = local_182.Item;
@@ -913,10 +902,8 @@ void CollectDropDeliverForPlayers(const TArray<TDataObjectPtr<FDropItemConfigBas
 {
     bool local_11;
     Has local_28;
-    DropItemsUtils::FDropWeigthChooseItem local_264;
-    TArray<FECSEntity> local_4;
-    int local_265 = 0;
     float32 local_381;
+    TArray<FECSEntity> local_4;
     if ((DropTriggerBy == ENTITY_NULL) || FGameUtils::GetLevelScriptEntities().Contains(DropTriggerBy))
     {
         local_4 = FGameUtils::GetAllPlayerControllerEntities(true);
@@ -963,29 +950,29 @@ void CollectDropDeliverForPlayers(const TArray<TDataObjectPtr<FDropItemConfigBas
     {
         if (local_110.StartWeatherConfig)
         {
-            local_54 = GetBadWeatherUpRule();
+            local_54 = local_110.StartWeatherConfig.Get().GetBadWeatherUpRule();
         }
     }
     for (auto& local_124 : DropBaseConfigs)
     {
-        if (TDataObjectPtr<FDropItemConfig>(local_124.opImplConv()))
+        TDataObjectPtr<FDropItemConfig> local_148 = TDataObjectPtr<FDropItemConfig>(local_124.opImplConv());
+        if (local_148)
         {
             DropItemsUtils::FDropItemDeliver local_230;
-            local_230.DropWeightChooseItems.Add(local_264);
-            if (local_265 == 1)
+            local_230.DropWeightChooseItems.Add(DropItemsUtils::FDropWeigthChooseItem(local_148.Get()));
+            if (int(local_148.Get().DropType) == 1)
             {
                 local_230.PlayerEntities.Add(ENTITY_NULL);
             }
             else
             {
-                if (local_265 == 2)
+                if (int(local_148.Get().DropType) == 2)
                 {
                     local_230.PlayerEntities.Add(local_16);
                 }
                 else
                 {
-                    int local_29 = local_265;
-                    if (local_29 == 0)
+                    if (int(local_148.Get().DropType) == 0)
                     {
                         local_230.PlayerEntities.Append(local_4);
                     }
@@ -995,14 +982,14 @@ void CollectDropDeliverForPlayers(const TArray<TDataObjectPtr<FDropItemConfigBas
         }
         else
         {
-            if (TDataObjectPtr<FDropItemGroupConfig>(local_124.opImplConv()))
+            TDataObjectPtr<FDropItemGroupConfig> local_290 = TDataObjectPtr<FDropItemGroupConfig>(local_124.opImplConv());
+            if (local_290)
             {
-                const FDropItemGroupConfig& local_340;
+                const FDropItemGroupConfig& local_340 = local_290.Get();
                 DropItemsUtils::FDropItemDeliver local_230;
                 local_230.OverrideDropAllocation = EDropItemAllocation(local_340.DropAllocation);
                 local_230.GroundBagConfig = local_340.GetGroundBagConfig();
-                int local_29_2 = int(local_340.DropType);
-                if (local_29_2 == 1)
+                if (int(local_340.DropType) == 1)
                 {
                     local_230.PlayerEntities.Add(ENTITY_NULL);
                 }
@@ -1014,8 +1001,7 @@ void CollectDropDeliverForPlayers(const TArray<TDataObjectPtr<FDropItemConfigBas
                     }
                     else
                     {
-                        local_29_2 = int(local_340.DropType);
-                        if (local_29_2 == 0)
+                        if (int(local_340.DropType) == 0)
                         {
                             local_230.PlayerEntities.Append(local_4);
                         }
@@ -1023,8 +1009,7 @@ void CollectDropDeliverForPlayers(const TArray<TDataObjectPtr<FDropItemConfigBas
                 }
                 for (auto& local_380 : local_340.Drops)
                 {
-                    float32 local_382 = local_380.DropRate;
-                    local_381 = local_382;
+                    local_381 = local_380.DropRate;
                     int local_383 = 1;
                     local_11 = local_380.bUseBadWeatherDropRateUpRule;
                     if (!(local_11))
@@ -1037,16 +1022,16 @@ void CollectDropDeliverForPlayers(const TArray<TDataObjectPtr<FDropItemConfigBas
                     }
                     if (local_11)
                     {
-                        local_382 = local_382 / 100.0f;
-                        local_381 = local_381 * FMath::Max(1.0f, local_382 + 1.0f);
-                        local_383 = local_383 + FMath::Max(0, local_29_2);
+                        local_381 = local_381 * FMath::Max(1.0f, (local_54.Get().ExtraDropRateUpPercentage / 100.0f) + 1.0f);
+                        int local_29 = local_54.Get().ExtraDropRateCountUp;
+                        local_383 = local_383 + FMath::Max(0, local_29);
                     }
                     int local_387 = 0;
                     for (; local_387 < local_383; ++local_387)
                     {
                         if (local_381 >= 100.0f || (FMath::RandRange(0.0f, 100.0f) < local_381))
                         {
-                            local_230.DropWeightChooseItems.Add(local_264);
+                            local_230.DropWeightChooseItems.Add(DropItemsUtils::FDropWeigthChooseItem(local_380.Item.Get()));
                         }
                     }
                 }
@@ -1067,9 +1052,10 @@ void CollectDropItemConfigs(const TArray<TDataObjectPtr<FDropItemConfigBase>> &i
         }
         else
         {
-            if (TDataObjectPtr<FDropItemGroupConfig>(local_16.opImplConv()))
+            TDataObjectPtr<FDropItemGroupConfig> local_114 = TDataObjectPtr<FDropItemGroupConfig>(local_16.opImplConv());
+            if (local_114)
             {
-                const FDropItemGroupConfig& local_164;
+                const FDropItemGroupConfig& local_164 = local_114.Get();
                 for (auto& local_178 : local_164.Drops)
                 {
                     if (local_178.DropRate > 0.0f)
@@ -1091,7 +1077,6 @@ void CollectDropItemConfigs(const TArray<TDataObjectPtr<FDropItemConfigBase>> &i
 }
 void ServerDataTrackLootDrop(const FECSEntity &inout DropSourceEntity, const TArray<FECSEntity> &inout ResultEntities)
 {
-    int local_3 = 0;
     int local_25;
     int local_53;
     int local_54;
@@ -1107,7 +1092,7 @@ void ServerDataTrackLootDrop(const FECSEntity &inout DropSourceEntity, const TAr
     {
         if (local_10.GetMonsterConfig())
         {
-            local_2 = local_3;
+            local_2 = local_10.GetMonsterConfig().Get().DataId;
             local_4 = DropSourceEntity.GetIdValue();
         }
     }
@@ -1123,8 +1108,7 @@ void ServerDataTrackLootDrop(const FECSEntity &inout DropSourceEntity, const TAr
         FPbPlayerLogDsLootDrop local_42;
         local_42.SetMonsterId(local_2);
         local_42.SetMonsterSessionId(local_4);
-        local_3 = local_24.GetIdValue();
-        local_42.SetTreasureInstanceId(local_3);
+        local_42.SetTreasureInstanceId(local_24.GetIdValue());
         Get local_46;
         const FC_CollectItem& local_48 = local_46.opCall();
         if (local_48)
@@ -1137,6 +1121,7 @@ void ServerDataTrackLootDrop(const FECSEntity &inout DropSourceEntity, const TAr
                 {
                     continue;
                 }
+                int local_3 = local_48.GetItems()[local_52].Get().DataId;
                 local_53 = local_3;
                 local_54 = local_48.GetNums()[local_52];
                 FPbLootDropItemInfo local_64 = local_42.AddItemList();

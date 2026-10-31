@@ -211,12 +211,11 @@ class US_SocialSystem : UECSScriptSystem
             {
                 if (Event.MotionData.IsSet())
                 {
-                    EMotionType local_24;
-                    local_23 = local_24;
+                    local_23 = Event.MotionData.Get().MotionType;
                 }
                 else
                 {
-                    local_23 = EMotionType(0);
+                    local_23 = EMotionType::Single;
                 }
                 this.SendSocialActionRejected(local_12, EMotionType(local_23), true, false);
                 return;
@@ -229,7 +228,7 @@ class US_SocialSystem : UECSScriptSystem
         }
         else
         {
-            local_37 = EInteractionSocialTypeForESM(0);
+            local_37 = EInteractionSocialTypeForESM::None;
         }
         local_36.SetSocialAnimName(EInteractionSocialTypeForESM(local_37));
         if (local_12.IsValid())
@@ -272,12 +271,11 @@ class US_SocialSystem : UECSScriptSystem
                 FECSEntity local_24 = Event.RequestInteractAnimTargetEntity;
                 if (Event.MotionData.IsSet())
                 {
-                    EMotionType local_27;
-                    local_26 = local_27;
+                    local_26 = Event.MotionData.Get().MotionType;
                 }
                 else
                 {
-                    local_26 = EMotionType(1);
+                    local_26 = EMotionType::Multi;
                 }
                 if (!(this.EvaluateSocialCondition(local_16.DualActionSourceCondition, local_4, local_24)))
                 {
@@ -300,7 +298,7 @@ class US_SocialSystem : UECSScriptSystem
         }
         else
         {
-            local_39 = EInteractionSocialTypeForESM(0);
+            local_39 = EInteractionSocialTypeForESM::None;
         }
         local_34.SetSocialAnimName(EInteractionSocialTypeForESM(local_39));
         FESMTriggerUtils::ActivateESMTrigger(local_4, n"SocialRequestInteractActionTrigger", Event.Time, FFPTime(0.1), 0);
@@ -323,8 +321,8 @@ class US_SocialSystem : UECSScriptSystem
         {
             return;
         }
+        const FMotionData& local_4 = MotionData.Get();
         FPbPlayerLogDsAvatarActionTrigger local_14;
-        FMotionData local_4;
         local_14.SetActionId(int(local_4.DataId));
         int local_19 = int(local_4.MotionType) == 1 ? 1 : 0;
         local_14.SetSceneType(local_19);
@@ -381,6 +379,7 @@ class US_SocialSystem : UECSScriptSystem
         FText local_16;
         if (local_2 != nullptr && local_2.bShowCheckFailContent && local_2.CheckFailContentTextData.IsSet())
         {
+            local_16 = local_2.CheckFailContentTextData.Get().Text;
         }
         if (local_16.IsEmpty())
         {

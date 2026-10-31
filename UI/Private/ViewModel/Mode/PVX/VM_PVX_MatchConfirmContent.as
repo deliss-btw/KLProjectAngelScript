@@ -46,10 +46,10 @@ struct FVM_PVX_MatchConfirmContent : FEUIViewModel
         {
             return;
         }
-        TEUIModelRef<FM_ModeMatchConfirm> local_2 = this.GetMatchData();
-        FM_ModeItem& local_6 = ::FM_ModeItem::Create(this.GetContext().Manager, GetMatchId());
+        FM_ModeItem& local_6 = ::FM_ModeItem::Create(this.GetContext().Manager, this.GetMatchData().Get().GetMatchId());
         if (local_6.GetMatchConfig().IsSet())
         {
+            this.SetModeName(local_6.GetMatchConfig().Get().ModeName);
         }
         return;
     }
@@ -112,11 +112,9 @@ FVM_PVX_MatchConfirmContent& Create(const UObject ContextObject, const TEUIModel
 {
     return FVM_PVX_MatchConfirmContent::CreateByManager(EUIInternal::GetContextManager(ContextObject), MatchData);
 }
-FVM_PVX_MatchConfirmContent CreateByManager(const UEUIManagerSubsystem Manager, const TEUIModelRef<FM_ModeMatchConfirm> &inout MatchData)
+FVM_PVX_MatchConfirmContent& CreateByManager(const UEUIManagerSubsystem Manager, const TEUIModelRef<FM_ModeMatchConfirm> &inout MatchData)
 {
-    FVM_PVX_MatchConfirmContent __r;
-    TEUIModelRef<FVM_PVX_MatchConfirmContent> local_6 = TEUIModelRef<FVM_PVX_MatchConfirmContent>(EUIInternal::MakeModelWithManager_Generic(Manager, FVM_PVX_MatchConfirmContent::ModelId, 0, MatchData));
-    return __r;
+    return TEUIModelRef<FVM_PVX_MatchConfirmContent>(EUIInternal::MakeModelWithManager_Generic(Manager, FVM_PVX_MatchConfirmContent::ModelId, 0, MatchData)).Get();
 }
 void GetModelInfo(FEUIViewModelMetaInfo &inout Result)
 {
@@ -163,7 +161,6 @@ namespace __GeneratedProperties_FVM_PVX_MatchConfirmContent
 {
 UScriptStruct StaticStruct()
 {
-    UScriptStruct local_2;
-    return local_2;
+    return __GeneratedProperties_FVM_PVX_MatchConfirmContent.Get();
 }
 }

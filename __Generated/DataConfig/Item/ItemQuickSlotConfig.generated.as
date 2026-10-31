@@ -3,7 +3,6 @@ namespace __FItemQuickSlotConfigFunctions
 UFUNCTION()
 FText __FItemQuickSlotConfig_GetDisplayName(const TDataObjectPtr<FItemQuickSlotConfig> &inout DataObject)
 {
-    FText __r;
     if ((DataObject == nullptr))
     {
         if (!(EUIGlobals::GIsDuringPropertyConversion))
@@ -13,7 +12,7 @@ FText __FItemQuickSlotConfig_GetDisplayName(const TDataObjectPtr<FItemQuickSlotC
         FItemQuickSlotConfig local_92;
         return local_92.DisplayName;
     }
-    return __r;
+    return DataObject.Get().DisplayName;
 }
 UFUNCTION()
 FItemQuickSlotFilter __FItemQuickSlotConfig_GetItemFilter(const TDataObjectPtr<FItemQuickSlotConfig> &inout DataObject)
@@ -59,12 +58,11 @@ TDataObjectPtr<FItemConfig> __FItemQuickSlotConfig_GetDefaultItem(const TDataObj
         FItemQuickSlotConfig local_92;
         return local_92.GetDefaultItem();
     }
-    return GetDefaultItem();
+    return DataObject.Get().GetDefaultItem();
 }
 UFUNCTION()
 EItemQuickSlotMutuallyExclusiveCondition __FItemQuickSlotConfig_GetMutuallyExclusiveCondition(const TDataObjectPtr<FItemQuickSlotConfig> &inout DataObject)
 {
-    int local_93 = 0;
     if ((DataObject == nullptr))
     {
         if (!(EUIGlobals::GIsDuringPropertyConversion))
@@ -72,47 +70,41 @@ EItemQuickSlotMutuallyExclusiveCondition __FItemQuickSlotConfig_GetMutuallyExclu
             FBlueprintDebugFunctions::ThrowScriptException("Get 'MutuallyExclusiveCondition' from a null 'FItemQuickSlotConfig' DataObject!");
         }
         FItemQuickSlotConfig local_92;
-        local_93 = int(local_92.MutuallyExclusiveCondition);
-        return EItemQuickSlotMutuallyExclusiveCondition(local_93);
+        return local_92.MutuallyExclusiveCondition;
     }
-    return EItemQuickSlotMutuallyExclusiveCondition(local_93);
+    return DataObject.Get().MutuallyExclusiveCondition;
 }
 UFUNCTION()
 bool __FItemQuickSlotConfig_GetbAllowEmpty(const TDataObjectPtr<FItemQuickSlotConfig> &inout DataObject)
 {
-    bool local_1 = false;
     if ((DataObject == nullptr))
     {
-        local_1 = !(EUIGlobals::GIsDuringPropertyConversion);
-        if (local_1)
+        if (!(EUIGlobals::GIsDuringPropertyConversion))
         {
             FBlueprintDebugFunctions::ThrowScriptException("Get 'bAllowEmpty' from a null 'FItemQuickSlotConfig' DataObject!");
         }
         FItemQuickSlotConfig local_92;
         return local_92.bAllowEmpty;
     }
-    return local_1;
+    return DataObject.Get().bAllowEmpty;
 }
 UFUNCTION()
 bool __FItemQuickSlotConfig_GetbAllowUnownedItem(const TDataObjectPtr<FItemQuickSlotConfig> &inout DataObject)
 {
-    bool local_1 = false;
     if ((DataObject == nullptr))
     {
-        local_1 = !(EUIGlobals::GIsDuringPropertyConversion);
-        if (local_1)
+        if (!(EUIGlobals::GIsDuringPropertyConversion))
         {
             FBlueprintDebugFunctions::ThrowScriptException("Get 'bAllowUnownedItem' from a null 'FItemQuickSlotConfig' DataObject!");
         }
         FItemQuickSlotConfig local_92;
         return local_92.bAllowUnownedItem;
     }
-    return local_1;
+    return DataObject.Get().bAllowUnownedItem;
 }
 UFUNCTION()
 EESMTriggerInputSlot __FItemQuickSlotConfig_GetInputSlot(const TDataObjectPtr<FItemQuickSlotConfig> &inout DataObject)
 {
-    int local_93 = 0;
     if ((DataObject == nullptr))
     {
         if (!(EUIGlobals::GIsDuringPropertyConversion))
@@ -120,10 +112,9 @@ EESMTriggerInputSlot __FItemQuickSlotConfig_GetInputSlot(const TDataObjectPtr<FI
             FBlueprintDebugFunctions::ThrowScriptException("Get 'InputSlot' from a null 'FItemQuickSlotConfig' DataObject!");
         }
         FItemQuickSlotConfig local_92;
-        local_93 = int(local_92.InputSlot);
-        return EESMTriggerInputSlot(local_93);
+        return local_92.InputSlot;
     }
-    return EESMTriggerInputSlot(local_93);
+    return DataObject.Get().InputSlot;
 }
 UFUNCTION()
 FItemQuickSlotConfig CastToFItemQuickSlotConfig(const TDataObjectPtr<FItemQuickSlotConfig> &inout DataObject)

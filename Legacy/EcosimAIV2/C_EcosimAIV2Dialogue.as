@@ -137,7 +137,7 @@ struct FEcosimAIV2DialogueOptionCondition_ConsumeItem : FEcosimAIV2DialogueOptio
         {
             return "";
         }
-        return FString();
+        return this._base_FEcosimAIV2DialogueOptionConditionBase.Get().ItemName.ToString();
     }
 }
 

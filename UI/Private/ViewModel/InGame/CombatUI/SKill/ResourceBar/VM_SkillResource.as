@@ -74,11 +74,9 @@ FMS_SkillBtnsManager& Get(const UObject ContextObject)
 {
     return FMS_SkillBtnsManager::GetByManager(EUIInternal::GetContextManager(ContextObject));
 }
-FMS_SkillBtnsManager GetByManager(const UEUIManagerSubsystem Manager)
+FMS_SkillBtnsManager& GetByManager(const UEUIManagerSubsystem Manager)
 {
-    FMS_SkillBtnsManager __r;
-    TEUIModelRef<FMS_SkillBtnsManager> local_6 = TEUIModelRef<FMS_SkillBtnsManager>(EUIInternal::MakeModelWithManager(Manager, FMS_SkillBtnsManager::ModelId));
-    return __r;
+    return TEUIModelRef<FMS_SkillBtnsManager>(EUIInternal::MakeModelWithManager(Manager, FMS_SkillBtnsManager::ModelId)).Get();
 }
 void GetModelInfo(FEUIModelOnlyMetaInfo &inout Result)
 {

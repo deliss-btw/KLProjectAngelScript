@@ -82,10 +82,9 @@ class USPT_FootPlacement_Template : USkeletalPoseTweaker
     UFUNCTION()
     void OnInitialization_Implementation()
     {
-        FFootPlacementLeg& local_22;
         for (auto& local_20 : this.Legs)
         {
-            local_20;
+            FFootPlacementLeg& local_22 = local_20.GetValue();
             local_22.IK.ChainBoneNames = UPoseTweakerUtil::ParseIntoNames(local_22.BoneChainString);
             local_22.IK.EffectorBoneName = local_22.EffectorBoneName;
             local_22.IK.Initialize();
@@ -98,15 +97,20 @@ class USPT_FootPlacement_Template : USkeletalPoseTweaker
     {
         for (auto& local_20 : this.Legs)
         {
-            local_20;
-            Reset();
+            local_20.GetValue().Reset();
         }
         return;
     }
     UFUNCTION()
     void EvaluatePose_Implementation()
     {
-        // body not fully recovered — stub [argmismatch:argint]
+        int local_1 = 0;
+        for (auto& local_22 : this.Legs)
+        {
+            this.ProcessLeg(local_22.GetKey(), local_22.GetValue(), local_1);
+            ++local_1;
+        }
+        return;
     }
     void ProcessLeg(const FName &inout LegName, FFootPlacementLeg &inout Leg, const int Index)
     {

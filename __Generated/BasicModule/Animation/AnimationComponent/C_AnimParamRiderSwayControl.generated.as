@@ -33,6 +33,7 @@ struct FC_AnimParamRiderSwayControlHistory : FECSComponent
     }
     void Clear()
     {
+        this.History.Clear();
         return;
     }
     bool GetInterpoValue(const FFPTime &inout WorldTime, FC_AnimParamRiderSwayControl &inout OutValue) const

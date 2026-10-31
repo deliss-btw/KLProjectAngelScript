@@ -521,12 +521,11 @@ struct FProjectileAudioKeepRtpcEntry
     }
     FProjectileAudioKeepRtpcEntry opAssign(const FProjectileAudioKeepRtpcEntry &inout Other)
     {
-        float32 local_2 = 0.0f;
         FProjectileAudioKeepRtpcEntry __r;
         this.SetTimelineIndex(Other.GetTimelineIndex());
         this.SetActionIndex(Other.GetActionIndex());
         this.SetRtpc(Other.GetRtpc());
-        this.SetValue(local_2);
+        this.SetValue(Other.GetValue());
         this.SetResetValue(Other.GetResetValue());
         this.SetInterpolateTime(Other.GetInterpolateTime());
         return __r;

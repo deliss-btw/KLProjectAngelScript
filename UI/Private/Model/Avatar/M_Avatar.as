@@ -55,10 +55,9 @@ struct FM_Avatar : FEUIModel
     }
     bool IsAlwaysHidden()
     {
-        bool local_1 = false;
         if (this.GetAvatarConfig())
         {
-            return local_1;
+            return this.GetAvatarConfig().Get().bAlwaysHidden;
         }
         return true;
     }
@@ -226,11 +225,9 @@ FM_Avatar& Create(const UObject ContextObject, const TDataObjectPtr<FAvatarPrefa
 {
     return FM_Avatar::CreateByManager(EUIInternal::GetContextManager(ContextObject), AvatarConfig);
 }
-FM_Avatar CreateByManager(const UEUIManagerSubsystem Manager, const TDataObjectPtr<FAvatarPrefabConfig> &inout AvatarConfig)
+FM_Avatar& CreateByManager(const UEUIManagerSubsystem Manager, const TDataObjectPtr<FAvatarPrefabConfig> &inout AvatarConfig)
 {
-    FM_Avatar __r;
-    TEUIModelRef<FM_Avatar> local_6 = TEUIModelRef<FM_Avatar>(EUIInternal::MakeModelWithManager_Generic(Manager, FM_Avatar::ModelId, 0, AvatarConfig));
-    return __r;
+    return TEUIModelRef<FM_Avatar>(EUIInternal::MakeModelWithManager_Generic(Manager, FM_Avatar::ModelId, 0, AvatarConfig)).Get();
 }
 void GetModelInfo(FEUIModelOnlyMetaInfo &inout Result)
 {
@@ -257,11 +254,9 @@ FMS_EditingAvatar& Get(const UObject ContextObject)
 {
     return FMS_EditingAvatar::GetByManager(EUIInternal::GetContextManager(ContextObject));
 }
-FMS_EditingAvatar GetByManager(const UEUIManagerSubsystem Manager)
+FMS_EditingAvatar& GetByManager(const UEUIManagerSubsystem Manager)
 {
-    FMS_EditingAvatar __r;
-    TEUIModelRef<FMS_EditingAvatar> local_6 = TEUIModelRef<FMS_EditingAvatar>(EUIInternal::MakeModelWithManager(Manager, FMS_EditingAvatar::ModelId));
-    return __r;
+    return TEUIModelRef<FMS_EditingAvatar>(EUIInternal::MakeModelWithManager(Manager, FMS_EditingAvatar::ModelId)).Get();
 }
 void GetModelInfo(FEUIModelOnlyMetaInfo &inout Result)
 {
@@ -284,11 +279,9 @@ FVM_EditAvatarScope& Create(const UObject ContextObject)
 {
     return FVM_EditAvatarScope::CreateByManager(EUIInternal::GetContextManager(ContextObject));
 }
-FVM_EditAvatarScope CreateByManager(const UEUIManagerSubsystem Manager)
+FVM_EditAvatarScope& CreateByManager(const UEUIManagerSubsystem Manager)
 {
-    FVM_EditAvatarScope __r;
-    TEUIModelRef<FVM_EditAvatarScope> local_6 = TEUIModelRef<FVM_EditAvatarScope>(EUIInternal::MakeModelWithManager(Manager, FVM_EditAvatarScope::ModelId));
-    return __r;
+    return TEUIModelRef<FVM_EditAvatarScope>(EUIInternal::MakeModelWithManager(Manager, FVM_EditAvatarScope::ModelId)).Get();
 }
 void GetModelInfo(FEUIViewModelMetaInfo &inout Result)
 {
@@ -323,7 +316,6 @@ namespace __GeneratedProperties_FVM_EditAvatarScope
 {
 UScriptStruct StaticStruct()
 {
-    UScriptStruct local_2;
-    return local_2;
+    return __GeneratedProperties_FVM_EditAvatarScope.Get();
 }
 }

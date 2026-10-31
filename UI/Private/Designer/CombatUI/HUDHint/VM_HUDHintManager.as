@@ -154,11 +154,9 @@ FVMS_HUDHintManager& Get(const UObject ContextObject)
 {
     return FVMS_HUDHintManager::GetByManager(EUIInternal::GetContextManager(ContextObject));
 }
-FVMS_HUDHintManager GetByManager(const UEUIManagerSubsystem Manager)
+FVMS_HUDHintManager& GetByManager(const UEUIManagerSubsystem Manager)
 {
-    FVMS_HUDHintManager __r;
-    TEUIModelRef<FVMS_HUDHintManager> local_6 = TEUIModelRef<FVMS_HUDHintManager>(EUIInternal::MakeModelWithManager(Manager, FVMS_HUDHintManager::ModelId));
-    return __r;
+    return TEUIModelRef<FVMS_HUDHintManager>(EUIInternal::MakeModelWithManager(Manager, FVMS_HUDHintManager::ModelId)).Get();
 }
 void GetModelInfo(FEUIViewModelMetaInfo &inout Result)
 {
@@ -223,7 +221,6 @@ namespace __GeneratedProperties_FVMS_HUDHintManager
 {
 UScriptStruct StaticStruct()
 {
-    UScriptStruct local_2;
-    return local_2;
+    return __GeneratedProperties_FVMS_HUDHintManager.Get();
 }
 }

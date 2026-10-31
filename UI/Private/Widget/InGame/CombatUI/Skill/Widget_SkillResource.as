@@ -97,11 +97,11 @@ class UWidget_SwordSkillResource : UEUIUserWidget
     void OnSecondSlotFullChanged(const bool bFull)
     {
         bool local_4;
-        if (GetFoundationIndex() != 2)
+        if (this.SkillResource.Get().GetFoundationIndex() != 2)
         {
             return;
         }
-        local_4 = GetbLastSecondSlotFull();
+        local_4 = this.SkillResource.Get().GetbLastSecondSlotFull();
         if ((!(local_4) && bFull))
         {
             this.AnimCache.Play(this.Anim_Charging2);
@@ -123,11 +123,11 @@ class UWidget_SwordSkillResource : UEUIUserWidget
     void OnFourthSlotFullChanged(const bool bFull)
     {
         bool local_4;
-        if (GetFoundationIndex() != 2)
+        if (this.SkillResource.Get().GetFoundationIndex() != 2)
         {
             return;
         }
-        local_4 = GetbLastFourthSlotFull();
+        local_4 = this.SkillResource.Get().GetbLastFourthSlotFull();
         if ((!(local_4) && bFull))
         {
             this.AnimCache.Play(this.Anim_Charging3);
@@ -148,7 +148,7 @@ class UWidget_SwordSkillResource : UEUIUserWidget
     UFUNCTION()
     TEUIModelRef<FVM_SwordSkillResourcePoint> SkillResource_ResourcePoint() const
     {
-        FVM_SwordSkillResource& local_2;
+        FVM_SwordSkillResource& local_2 = this.SkillResource.Get();
         TEUIModelRef<FVM_SwordSkillResourcePoint> local_10;
         if (local_2)
         {
@@ -163,7 +163,7 @@ class UWidget_SwordSkillResource : UEUIUserWidget
     UFUNCTION()
     TArray<FEUIModelWeakRef> SkillResource_CurrentResourceItems() const
     {
-        FVM_SwordSkillResource& local_2;
+        FVM_SwordSkillResource& local_2 = this.SkillResource.Get();
         TArray<FEUIModelWeakRef> local_16;
         if (local_2)
         {
@@ -177,8 +177,8 @@ class UWidget_SwordSkillResource : UEUIUserWidget
     }
     void HandleObservedModelChanges(FEUIReactiveSubscriberIterator &inout It)
     {
-        FVM_SwordSkillResource& local_6;
         TEUIModelRef<FVM_SwordSkillResource> local_2 = this.SkillResource.AsRef();
+        FVM_SwordSkillResource& local_6 = local_2.Get();
         for (; It; )
         {
             FEUIReactiveSubscriberTrackScope local_56 = FEUIReactiveSubscriberTrackScope(It);
@@ -301,7 +301,7 @@ class UWidget_SwordSkillResourceItem : UEUIUserWidget
     UFUNCTION()
     void OnItemPercentChanged(const float32 Percent)
     {
-        float32 local_1 = GetLastPercent();
+        float32 local_1 = this.ResourceItem.Get().GetLastPercent();
         if (((local_1 < 1.0f && (Percent >= 1.0f))) || (local_1 == Percent && (Percent >= 1.0f)))
         {
             this.AnimCache.Play(this.Anim_FullyCharged);
@@ -316,8 +316,8 @@ class UWidget_SwordSkillResourceItem : UEUIUserWidget
     }
     void HandleObservedModelChanges(FEUIReactiveSubscriberIterator &inout It)
     {
-        FVM_SwordSkillResourceItem& local_6;
         TEUIModelRef<FVM_SwordSkillResourceItem> local_2 = this.ResourceItem.AsRef();
+        FVM_SwordSkillResourceItem& local_6 = local_2.Get();
         for (; It; )
         {
             FEUIReactiveSubscriberTrackScope local_56 = FEUIReactiveSubscriberTrackScope(It);
@@ -409,9 +409,9 @@ class UWidget_SwordSkillResourcePoint : UEUIUserWidget
     void OnPointPercentChanged(const float32 ResourcePointPercent)
     {
         bool local_4;
-        float32 local_1 = GetLastResourcePointPercent();
-        float32 local_3 = GetConsumeAnimChangeThreshold();
-        local_4 = GetbInverseAnimPlay();
+        float32 local_1 = this.ResourcePoint.Get().GetLastResourcePointPercent();
+        float32 local_3 = this.ResourcePoint.Get().GetConsumeAnimChangeThreshold();
+        local_4 = this.ResourcePoint.Get().GetbInverseAnimPlay();
         if (!(local_4) && (((local_1 - ResourcePointPercent) > local_3)))
         {
             this.AnimCache.Play(this.Anim_Consume);
@@ -444,8 +444,8 @@ class UWidget_SwordSkillResourcePoint : UEUIUserWidget
     }
     void HandleObservedModelChanges(FEUIReactiveSubscriberIterator &inout It)
     {
-        FVM_SwordSkillResourcePoint& local_6;
         TEUIModelRef<FVM_SwordSkillResourcePoint> local_2 = this.ResourcePoint.AsRef();
+        FVM_SwordSkillResourcePoint& local_6 = local_2.Get();
         for (; It; )
         {
             FEUIReactiveSubscriberTrackScope local_56 = FEUIReactiveSubscriberTrackScope(It);
@@ -531,7 +531,7 @@ class UWidget_WizardSkillResource : UEUIUserWidget
     UFUNCTION()
     TEUIModelRef<FVM_SwordSkillResourcePoint> SkillResource_ResourcePointer() const
     {
-        FVM_WizardSkillResource& local_2;
+        FVM_WizardSkillResource& local_2 = this.SkillResource.Get();
         TEUIModelRef<FVM_SwordSkillResourcePoint> local_10;
         if (local_2)
         {
@@ -546,7 +546,7 @@ class UWidget_WizardSkillResource : UEUIUserWidget
     UFUNCTION()
     TEUIModelRef<FVM_WizardSkillResourceStarItem> SkillResource_Star0() const
     {
-        FVM_WizardSkillResource& local_2;
+        FVM_WizardSkillResource& local_2 = this.SkillResource.Get();
         TEUIModelRef<FVM_WizardSkillResourceStarItem> local_10;
         if (local_2)
         {
@@ -561,7 +561,7 @@ class UWidget_WizardSkillResource : UEUIUserWidget
     UFUNCTION()
     TEUIModelRef<FVM_WizardSkillResourceStarItem> SkillResource_Star1() const
     {
-        FVM_WizardSkillResource& local_2;
+        FVM_WizardSkillResource& local_2 = this.SkillResource.Get();
         TEUIModelRef<FVM_WizardSkillResourceStarItem> local_10;
         if (local_2)
         {
@@ -576,7 +576,7 @@ class UWidget_WizardSkillResource : UEUIUserWidget
     UFUNCTION()
     TEUIModelRef<FVM_WizardSkillResourceStarItem> SkillResource_Star2() const
     {
-        FVM_WizardSkillResource& local_2;
+        FVM_WizardSkillResource& local_2 = this.SkillResource.Get();
         TEUIModelRef<FVM_WizardSkillResourceStarItem> local_10;
         if (local_2)
         {
@@ -591,7 +591,7 @@ class UWidget_WizardSkillResource : UEUIUserWidget
     UFUNCTION()
     TEUIModelRef<FVM_WizardSkillResourceStarItem> SkillResource_Star3() const
     {
-        FVM_WizardSkillResource& local_2;
+        FVM_WizardSkillResource& local_2 = this.SkillResource.Get();
         TEUIModelRef<FVM_WizardSkillResourceStarItem> local_10;
         if (local_2)
         {
@@ -606,7 +606,7 @@ class UWidget_WizardSkillResource : UEUIUserWidget
     UFUNCTION()
     TEUIModelRef<FVM_WizardSkillResourceStarItem> SkillResource_Star4() const
     {
-        FVM_WizardSkillResource& local_2;
+        FVM_WizardSkillResource& local_2 = this.SkillResource.Get();
         TEUIModelRef<FVM_WizardSkillResourceStarItem> local_10;
         if (local_2)
         {
@@ -678,9 +678,9 @@ class UWidget_WizardSkillResourceStarItem : UEUIUserWidget
         int local_1;
         int local_3;
         int local_4;
-        local_1 = GetMaxMagicUseCount();
-        local_3 = GetIndex();
-        local_4 = GetLastFrameMagicUseCount();
+        local_1 = this.ResourceItem.Get().GetMaxMagicUseCount();
+        local_3 = this.ResourceItem.Get().GetIndex();
+        local_4 = this.ResourceItem.Get().GetLastFrameMagicUseCount();
         if ((MagicUseCount == 0 && (local_4 == 0)))
         {
             return;
@@ -702,8 +702,8 @@ class UWidget_WizardSkillResourceStarItem : UEUIUserWidget
     }
     void HandleObservedModelChanges(FEUIReactiveSubscriberIterator &inout It)
     {
-        FVM_WizardSkillResourceStarItem& local_6;
         TEUIModelRef<FVM_WizardSkillResourceStarItem> local_2 = this.ResourceItem.AsRef();
+        FVM_WizardSkillResourceStarItem& local_6 = local_2.Get();
         for (; It; )
         {
             FEUIReactiveSubscriberTrackScope local_56 = FEUIReactiveSubscriberTrackScope(It);
@@ -829,11 +829,11 @@ class UWidget_GramherSkillResource : UEUIUserWidget
     void OnChargeStateChanged(const int NewChargeState)
     {
         int local_4;
-        if (GetFoundationIndex() == 2)
+        if (this.SkillResource.Get().GetFoundationIndex() == 2)
         {
             return;
         }
-        local_4 = GetLastChargeState();
+        local_4 = this.SkillResource.Get().GetLastChargeState();
         if ((local_4 == 0 && (NewChargeState == 1)))
         {
             this.AnimCache.Play(this.Anim_Charging);
@@ -843,7 +843,7 @@ class UWidget_GramherSkillResource : UEUIUserWidget
     UFUNCTION()
     void OnCustomSkillEnergy2Changed(const float32 CurCustomSkillEnergy2)
     {
-        if (CurCustomSkillEnergy2 == GetMaxCustomSkillEnergy2())
+        if (CurCustomSkillEnergy2 == this.SkillResource.Get().GetMaxCustomSkillEnergy2())
         {
             this.AnimCache.Play(this.Anim_FullyCharged_Genre2);
         }
@@ -852,7 +852,7 @@ class UWidget_GramherSkillResource : UEUIUserWidget
     UFUNCTION()
     TEUIModelRef<FVM_SwordSkillResourcePoint> SkillResource_ResourcePointer() const
     {
-        FVM_GramherSkillResource& local_2;
+        FVM_GramherSkillResource& local_2 = this.SkillResource.Get();
         TEUIModelRef<FVM_SwordSkillResourcePoint> local_10;
         if (local_2)
         {
@@ -867,7 +867,7 @@ class UWidget_GramherSkillResource : UEUIUserWidget
     UFUNCTION()
     TEUIModelRef<FVM_SwordSkillResourcePoint> SkillResource_ResourcePointerFoundationIndex_2() const
     {
-        FVM_GramherSkillResource& local_2;
+        FVM_GramherSkillResource& local_2 = this.SkillResource.Get();
         TEUIModelRef<FVM_SwordSkillResourcePoint> local_10;
         if (local_2)
         {
@@ -882,7 +882,7 @@ class UWidget_GramherSkillResource : UEUIUserWidget
     UFUNCTION()
     TEUIModelRef<FVM_GramherSkillResourceItem> SkillResource_Item0() const
     {
-        FVM_GramherSkillResource& local_2;
+        FVM_GramherSkillResource& local_2 = this.SkillResource.Get();
         TEUIModelRef<FVM_GramherSkillResourceItem> local_10;
         if (local_2)
         {
@@ -897,7 +897,7 @@ class UWidget_GramherSkillResource : UEUIUserWidget
     UFUNCTION()
     TEUIModelRef<FVM_GramherSkillResourceItem> SkillResource_Item1() const
     {
-        FVM_GramherSkillResource& local_2;
+        FVM_GramherSkillResource& local_2 = this.SkillResource.Get();
         TEUIModelRef<FVM_GramherSkillResourceItem> local_10;
         if (local_2)
         {
@@ -912,7 +912,7 @@ class UWidget_GramherSkillResource : UEUIUserWidget
     UFUNCTION()
     TEUIModelRef<FVM_GramherSkillResourceItem> SkillResource_Item2() const
     {
-        FVM_GramherSkillResource& local_2;
+        FVM_GramherSkillResource& local_2 = this.SkillResource.Get();
         TEUIModelRef<FVM_GramherSkillResourceItem> local_10;
         if (local_2)
         {
@@ -926,8 +926,8 @@ class UWidget_GramherSkillResource : UEUIUserWidget
     }
     void HandleObservedModelChanges(FEUIReactiveSubscriberIterator &inout It)
     {
-        FVM_GramherSkillResource& local_6;
         TEUIModelRef<FVM_GramherSkillResource> local_2 = this.SkillResource.AsRef();
+        FVM_GramherSkillResource& local_6 = local_2.Get();
         for (; It; )
         {
             FEUIReactiveSubscriberTrackScope local_56 = FEUIReactiveSubscriberTrackScope(It);
@@ -1094,7 +1094,7 @@ class UWidget_GramherSkillResourceItem : UEUIUserWidget
         bool local_1;
         bool local_2;
         bool local_4;
-        local_1 = GetbLastReachLimit();
+        local_1 = this.ResourceItem.Get().GetbLastReachLimit();
         if ((local_1 && !(bReach)))
         {
             local_4 = true;
@@ -1116,7 +1116,7 @@ class UWidget_GramherSkillResourceItem : UEUIUserWidget
         }
         if (!(local_1) && bReach)
         {
-            UWidgetAnimation local_6 = this.GetFullyChargedAnimForIndex(GetIndex());
+            UWidgetAnimation local_6 = this.GetFullyChargedAnimForIndex(this.ResourceItem.Get().GetIndex());
             if (local_6 != nullptr)
             {
                 this.AnimCache.Play(local_6);
@@ -1148,8 +1148,8 @@ class UWidget_GramherSkillResourceItem : UEUIUserWidget
     }
     void HandleObservedModelChanges(FEUIReactiveSubscriberIterator &inout It)
     {
-        FVM_GramherSkillResourceItem& local_6;
         TEUIModelRef<FVM_GramherSkillResourceItem> local_2 = this.ResourceItem.AsRef();
+        FVM_GramherSkillResourceItem& local_6 = local_2.Get();
         for (; It; )
         {
             FEUIReactiveSubscriberTrackScope local_56 = FEUIReactiveSubscriberTrackScope(It);
@@ -1252,7 +1252,7 @@ class UWidget_SuiXiSkillResource : UEUIUserWidget
     UFUNCTION()
     void OnLeftBarPercentChanged(const float32 Percent)
     {
-        if (GetLastLeftBarPercent() < 1.0f && (Percent >= 1.0f))
+        if (this.SkillResource.Get().GetLastLeftBarPercent() < 1.0f && (Percent >= 1.0f))
         {
             this.AnimCache.Play(this.Anim_FullyCharged_L);
         }
@@ -1261,7 +1261,7 @@ class UWidget_SuiXiSkillResource : UEUIUserWidget
     UFUNCTION()
     void OnRightBarPercentChanged(const float32 Percent)
     {
-        if (GetLastRightBarPercent() < 1.0f && (Percent >= 1.0f))
+        if (this.SkillResource.Get().GetLastRightBarPercent() < 1.0f && (Percent >= 1.0f))
         {
             this.AnimCache.Play(this.Anim_FullyCharged_R);
         }
@@ -1287,7 +1287,7 @@ class UWidget_SuiXiSkillResource : UEUIUserWidget
     UFUNCTION()
     void OnChargeEnergySpeedChargeChanged(const float32 NewSpeed)
     {
-        float32 local_1 = GetLastChargeEnergySpeed_Charge();
+        float32 local_1 = this.SkillResource.Get().GetLastChargeEnergySpeed_Charge();
         if ((local_1 != 0.0f && (NewSpeed == 0.0f)))
         {
             this.AnimCache.Play(this.Anim_Charging);
@@ -1307,8 +1307,8 @@ class UWidget_SuiXiSkillResource : UEUIUserWidget
     }
     void HandleObservedModelChanges(FEUIReactiveSubscriberIterator &inout It)
     {
-        FVM_SuiXiSkillResource& local_6;
         TEUIModelRef<FVM_SuiXiSkillResource> local_2 = this.SkillResource.AsRef();
+        FVM_SuiXiSkillResource& local_6 = local_2.Get();
         for (; It; )
         {
             FEUIReactiveSubscriberTrackScope local_56 = FEUIReactiveSubscriberTrackScope(It);
@@ -1467,10 +1467,10 @@ class UWidget_QiongSkillResourceItem : UEUIUserWidget
     UFUNCTION()
     void OnItemPercentChanged(const float32 Percent)
     {
-        float32 local_1 = GetLastPercent();
+        float32 local_1 = this.ResourceItem.Get().GetLastPercent();
         if (((local_1 < 1.0f && (Percent >= 1.0f))) || (local_1 == Percent && (Percent >= 1.0f)))
         {
-            if (GetbReverseItem())
+            if (this.ResourceItem.Get().GetbReverseItem())
             {
                 this.AnimCache.Play(this.Anim_FullyCharged_Reverse);
             }
@@ -1500,8 +1500,8 @@ class UWidget_QiongSkillResourceItem : UEUIUserWidget
     }
     void HandleObservedModelChanges(FEUIReactiveSubscriberIterator &inout It)
     {
-        FVM_QiongSkillResourceItem& local_6;
         TEUIModelRef<FVM_QiongSkillResourceItem> local_2 = this.ResourceItem.AsRef();
+        FVM_QiongSkillResourceItem& local_6 = local_2.Get();
         for (; It; )
         {
             FEUIReactiveSubscriberTrackScope local_56 = FEUIReactiveSubscriberTrackScope(It);
@@ -1615,7 +1615,7 @@ class UWidget_QiongSkillResource : UEUIUserWidget
     void OnChargeEnhanceCountChanged(const int NewCount)
     {
         int local_1;
-        local_1 = GetLastChargeEnhanceCount();
+        local_1 = this.SkillResource.Get().GetLastChargeEnhanceCount();
         if (NewCount == local_1)
         {
             return;
@@ -1639,7 +1639,7 @@ class UWidget_QiongSkillResource : UEUIUserWidget
     UFUNCTION()
     TArray<FEUIModelWeakRef> SkillResource_LeftResourceItems() const
     {
-        FVM_QiongSkillResource& local_2;
+        FVM_QiongSkillResource& local_2 = this.SkillResource.Get();
         TArray<FEUIModelWeakRef> local_16;
         if (local_2)
         {
@@ -1654,7 +1654,7 @@ class UWidget_QiongSkillResource : UEUIUserWidget
     UFUNCTION()
     TArray<FEUIModelWeakRef> SkillResource_RightResourceItems() const
     {
-        FVM_QiongSkillResource& local_2;
+        FVM_QiongSkillResource& local_2 = this.SkillResource.Get();
         TArray<FEUIModelWeakRef> local_16;
         if (local_2)
         {
@@ -1669,7 +1669,7 @@ class UWidget_QiongSkillResource : UEUIUserWidget
     UFUNCTION()
     TEUIModelRef<FVM_SwordSkillResourcePoint> SkillResource_LeftResourcePointer() const
     {
-        FVM_QiongSkillResource& local_2;
+        FVM_QiongSkillResource& local_2 = this.SkillResource.Get();
         TEUIModelRef<FVM_SwordSkillResourcePoint> local_10;
         if (local_2)
         {
@@ -1684,7 +1684,7 @@ class UWidget_QiongSkillResource : UEUIUserWidget
     UFUNCTION()
     TEUIModelRef<FVM_SwordSkillResourcePoint> SkillResource_RightResourcePointer() const
     {
-        FVM_QiongSkillResource& local_2;
+        FVM_QiongSkillResource& local_2 = this.SkillResource.Get();
         TEUIModelRef<FVM_SwordSkillResourcePoint> local_10;
         if (local_2)
         {
@@ -1698,8 +1698,8 @@ class UWidget_QiongSkillResource : UEUIUserWidget
     }
     void HandleObservedModelChanges(FEUIReactiveSubscriberIterator &inout It)
     {
-        FVM_QiongSkillResource& local_6;
         TEUIModelRef<FVM_QiongSkillResource> local_2 = this.SkillResource.AsRef();
+        FVM_QiongSkillResource& local_6 = local_2.Get();
         for (; It; )
         {
             FEUIReactiveSubscriberTrackScope local_56 = FEUIReactiveSubscriberTrackScope(It);

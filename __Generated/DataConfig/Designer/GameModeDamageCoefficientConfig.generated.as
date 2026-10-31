@@ -3,7 +3,6 @@ namespace __FGameModeDamageCoefficientRowFunctions
 UFUNCTION()
 EGameModeDamageCoefficientEntity __FGameModeDamageCoefficientRow_GetTaker(const TDataObjectPtr<FGameModeDamageCoefficientRow> &inout DataObject)
 {
-    int local_27 = 0;
     if ((DataObject == nullptr))
     {
         if (!(EUIGlobals::GIsDuringPropertyConversion))
@@ -11,10 +10,9 @@ EGameModeDamageCoefficientEntity __FGameModeDamageCoefficientRow_GetTaker(const 
             FBlueprintDebugFunctions::ThrowScriptException("Get 'Taker' from a null 'FGameModeDamageCoefficientRow' DataObject!");
         }
         FGameModeDamageCoefficientRow local_26;
-        local_27 = int(local_26.Taker);
-        return EGameModeDamageCoefficientEntity(local_27);
+        return local_26.Taker;
     }
-    return EGameModeDamageCoefficientEntity(local_27);
+    return DataObject.Get().Taker;
 }
 UFUNCTION()
 float32 __FGameModeDamageCoefficientRow_GetPlayer(const TDataObjectPtr<FGameModeDamageCoefficientRow> &inout DataObject)

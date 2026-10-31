@@ -9,12 +9,13 @@ class US_ProjectileTimelineSystem : UECSScriptSystem
         int local_8 = 0;
         int local_90 = 0;
         int local_96 = 0;
-        UProjectileTimelineAsset local_4;
+        UProjectileTimelineAsset local_4 = TimelineData.GetTimelineAsset().Get();
         bool local_5 = !((local_4 != nullptr));
         if (local_5)
         {
             return;
         }
+        UProjectileTimelineAsset local_2 = TimelineData.GetTimelineAsset().Get();
         for (auto& local_24 : Change.GetPendingActivateTimelineContext())
         {
             FProjectileTimelineRuntimeInfo local_76;
@@ -91,16 +92,17 @@ class US_ProjectileTimelineSystem : UECSScriptSystem
     void Job_TickProjectileTimelineAction(const FECSEntity &inout Entity, FC_ProjectileTimelineController &inout Controller, const FC_ProjectileTimelineData &inout TimelineData) const
     {
         Has local_4;
-        UProjectileTimelineAsset local_10;
         int local_12 = 0;
         if (!(local_4.opCall()))
         {
             return;
         }
+        UProjectileTimelineAsset local_10 = TimelineData.GetTimelineAsset().Get();
         if ((!((local_10 != nullptr))))
         {
             return;
         }
+        UProjectileTimelineAsset local_8 = TimelineData.GetTimelineAsset().Get();
         FFPTime local_20 = Controller.GetNextTickWorldTime();
         while (local_20.opCmp(0.0) >= 0 && (local_20.opCmp(FFPTime(ECS::GetECSWorld().GetFixedTime().Time)) <= 0))
         {
@@ -121,12 +123,13 @@ class US_ProjectileTimelineSystem : UECSScriptSystem
     UFUNCTION()
     void Job_TickProjectileTimelineActionWithTimeTweak(const FECSEntity &inout Entity, const FC_LifeTime &inout LifeTime, const FC_TimeTweak &inout TimeTweak, FC_ProjectileTimelineController &inout Controller, const FC_ProjectileTimelineData &inout TimelineData, const FCS_FixedTime &inout FixedTime) const
     {
-        UProjectileTimelineAsset local_4;
         int local_8 = 0;
+        UProjectileTimelineAsset local_4 = TimelineData.GetTimelineAsset().Get();
         if ((!((local_4 != nullptr))))
         {
             return;
         }
+        UProjectileTimelineAsset local_2 = TimelineData.GetTimelineAsset().Get();
         ::FProjectileTimelineUtils::AdvanceTimeline(Entity, local_4, Controller, local_8, (FProjectileTimeUtils::GetProjectileTime(LifeTime, TimeTweak, FixedTime.Time) - FProjectileTimeUtils::GetProjectileTime(LifeTime, TimeTweak, FixedTime.LastTime)));
         return;
     }

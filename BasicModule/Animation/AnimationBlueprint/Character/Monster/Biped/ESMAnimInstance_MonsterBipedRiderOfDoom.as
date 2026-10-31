@@ -48,7 +48,7 @@ class UESMAnimInstance_MonsterBipedRiderOfDoom : UESMAnimInstance_MonsterBipedBa
     }
     void UpdateRiderHandIKData()
     {
-        AActor local_30;
+        int local_28 = 0;
         this.bRiderHandIKHasSocketLocation = false;
         if (this.RiderHandIKSocketName.IsNone())
         {
@@ -65,6 +65,7 @@ class UESMAnimInstance_MonsterBipedRiderOfDoom : UESMAnimInstance_MonsterBipedBa
         {
             return;
         }
+        AActor local_30 = local_28.Actor.Get();
         if (local_30 == nullptr)
         {
             return;

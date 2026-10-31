@@ -239,6 +239,7 @@ struct FMS_HeadsUpDisplay3DManager : FEUIModelSingleton
                 local_2.ClearDisplay();
                 this.GetModify_ActorPool().Add(local_2);
             }
+            this.GetModify_SpotActors().Remove(Spot);
         }
         return;
     }
@@ -404,11 +405,9 @@ FMS_HeadsUpDisplay3DManager& Get(const UObject ContextObject)
 {
     return FMS_HeadsUpDisplay3DManager::GetByManager(EUIInternal::GetContextManager(ContextObject));
 }
-FMS_HeadsUpDisplay3DManager GetByManager(const UEUIManagerSubsystem Manager)
+FMS_HeadsUpDisplay3DManager& GetByManager(const UEUIManagerSubsystem Manager)
 {
-    FMS_HeadsUpDisplay3DManager __r;
-    TEUIModelRef<FMS_HeadsUpDisplay3DManager> local_6 = TEUIModelRef<FMS_HeadsUpDisplay3DManager>(EUIInternal::MakeModelWithManager(Manager, FMS_HeadsUpDisplay3DManager::ModelId));
-    return __r;
+    return TEUIModelRef<FMS_HeadsUpDisplay3DManager>(EUIInternal::MakeModelWithManager(Manager, FMS_HeadsUpDisplay3DManager::ModelId)).Get();
 }
 void GetModelInfo(FEUIModelOnlyMetaInfo &inout Result)
 {

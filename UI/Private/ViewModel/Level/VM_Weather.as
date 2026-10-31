@@ -145,7 +145,7 @@ struct FVMS_CurrentWeather : FEUIViewModelSingleton
     }
     void ShowWeatherChangePopup(const FMsg_WeatherChanged &inout Msg)
     {
-        this.SetNeedAnimShowWeatherID(0);
+        this.SetNeedAnimShowWeatherID(Msg.NewWeatherConfig.Get().DataId);
         return;
     }
     TEUIModelRef<FVM_Weather> GetWeatherModel() const
@@ -293,11 +293,9 @@ FVM_Weather& Create(const UObject ContextObject, const TDataObjectPtr<FWeatherCo
 {
     return FVM_Weather::CreateByManager(EUIInternal::GetContextManager(ContextObject), WeatherConfig);
 }
-FVM_Weather CreateByManager(const UEUIManagerSubsystem Manager, const TDataObjectPtr<FWeatherConfig> &inout WeatherConfig)
+FVM_Weather& CreateByManager(const UEUIManagerSubsystem Manager, const TDataObjectPtr<FWeatherConfig> &inout WeatherConfig)
 {
-    FVM_Weather __r;
-    TEUIModelRef<FVM_Weather> local_6 = TEUIModelRef<FVM_Weather>(EUIInternal::MakeModelWithManager_Generic(Manager, FVM_Weather::ModelId, 0, WeatherConfig));
-    return __r;
+    return TEUIModelRef<FVM_Weather>(EUIInternal::MakeModelWithManager_Generic(Manager, FVM_Weather::ModelId, 0, WeatherConfig)).Get();
 }
 void GetModelInfo(FEUIViewModelMetaInfo &inout Result)
 {
@@ -366,8 +364,7 @@ namespace __GeneratedProperties_FVM_Weather
 {
 UScriptStruct StaticStruct()
 {
-    UScriptStruct local_2;
-    return local_2;
+    return __GeneratedProperties_FVM_Weather.Get();
 }
 }
 namespace FVMS_CurrentWeather
@@ -376,11 +373,9 @@ FVMS_CurrentWeather& Get(const UObject ContextObject)
 {
     return FVMS_CurrentWeather::GetByManager(EUIInternal::GetContextManager(ContextObject));
 }
-FVMS_CurrentWeather GetByManager(const UEUIManagerSubsystem Manager)
+FVMS_CurrentWeather& GetByManager(const UEUIManagerSubsystem Manager)
 {
-    FVMS_CurrentWeather __r;
-    TEUIModelRef<FVMS_CurrentWeather> local_6 = TEUIModelRef<FVMS_CurrentWeather>(EUIInternal::MakeModelWithManager(Manager, FVMS_CurrentWeather::ModelId));
-    return __r;
+    return TEUIModelRef<FVMS_CurrentWeather>(EUIInternal::MakeModelWithManager(Manager, FVMS_CurrentWeather::ModelId)).Get();
 }
 void GetModelInfo(FEUIViewModelMetaInfo &inout Result)
 {
@@ -472,7 +467,6 @@ namespace __GeneratedProperties_FVMS_CurrentWeather
 {
 UScriptStruct StaticStruct()
 {
-    UScriptStruct local_2;
-    return local_2;
+    return __GeneratedProperties_FVMS_CurrentWeather.Get();
 }
 }

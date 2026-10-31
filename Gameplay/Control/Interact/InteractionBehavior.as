@@ -273,9 +273,7 @@ class UInteractionBehaviorBase : UObject
         {
             if (this.HUDContentRow.IsSet())
             {
-            }
-            else
-            {
+                return this.HUDContentRow.Get().Text;
             }
         }
         return local_12;
@@ -325,21 +323,17 @@ class UInteractionBehaviorBase : UObject
         }
         if (ShowFailConditionIndex != -1)
         {
-            return EInteractCustomConditionType(2);
+            return EInteractCustomConditionType::FailAndShowContent;
         }
-        return EInteractCustomConditionType(0);
+        return EInteractCustomConditionType::Success;
     }
     FText GetInteractProgressContent() const
     {
-        FText __return;
         if (this.InteractProgressContentRow.IsSet())
         {
+            return this.InteractProgressContentRow.Get().Text;
         }
-        else
-        {
-            __return = FText();
-        }
-        return __return;
+        return FText();
     }
 }
 
@@ -457,7 +451,6 @@ class UInteractionBehavior_Collect : UInteractionBehaviorBase
 
     void OnInteractSuccess(const FECSEntity &inout InteractSource, const FECSEntity &inout InteractTarget, const FInteractionPointAndBehaviorIndex &inout InteractTargetPointAndBehaviorIndex)
     {
-        int local_47 = 0;
         if (ECS::GetRuntimeInfo().IsClient)
         {
             return;
@@ -470,7 +463,8 @@ class UInteractionBehavior_Collect : UInteractionBehaviorBase
         {
             if (local_8.GetGroundBagConfig())
             {
-                local_2 = local_1_2;
+                bool local_1_3 = local_8.GetGroundBagConfig().Get().bShowRewardPopup;
+                local_2 = local_1_3;
             }
         }
         FInventoryAddItemCollectScope local_10 = FInventoryAddItemCollectScope((local_2 != 0));
@@ -513,8 +507,8 @@ class UInteractionBehavior_Collect : UInteractionBehaviorBase
         FC_TreasureTracker& local_32 = local_30.opCall();
         if (local_32)
         {
-            bool local_1_3 = true;
-            local_32.bCollected = local_1_3;
+            bool local_1_4 = true;
+            local_32.bCollected = local_1_4;
             FFPTime local_38 = FFPTime(-1);
             SendEvent local_36;
             FCE_AccountExclusiveTreasureBoxCollected_DataTracker& local_40 = local_36.opCall(local_38);
@@ -530,7 +524,7 @@ class UInteractionBehavior_Collect : UInteractionBehaviorBase
                     {
                         if (local_46.LevelObjectStatConfig.IsSet())
                         {
-                            local_40.DataId = local_47;
+                            local_40.DataId = local_46.LevelObjectStatConfig.Get().DataId;
                         }
                     }
                 }
@@ -566,8 +560,7 @@ class UInteractionBehavior_Collect : UInteractionBehaviorBase
             {
                 if (local_16.GetItems()[0].IsSet())
                 {
-                    FString local_22 = local_8.ToString();
-                    FString local_26 = (local_22 + " ");
+                    FString local_22 = ((local_8.ToString() + " ") + local_16.GetItems()[0].Get().ItemName);
                     return FText::FromString(local_22);
                 }
             }
@@ -606,8 +599,7 @@ class UInteractionBehavior_TestThreeChooseOne : UInteractionBehaviorBase
             {
                 if (local_16.GetItems()[0].IsSet())
                 {
-                    FString local_22 = local_8.ToString();
-                    FString local_26 = (local_22 + " ");
+                    FString local_22 = ((local_8.ToString() + " ") + local_16.GetItems()[0].Get().ItemName);
                     return FText::FromString(local_22);
                 }
             }
@@ -1277,9 +1269,7 @@ FText GetCustomCheckFailHUDContent(const TArray<UInteractCustomCheckConditionBas
         {
             if (local_6.CheckFailContentTextData)
             {
-            }
-            else
-            {
+                return local_6.CheckFailContentTextData.Get().Text;
             }
         }
     }

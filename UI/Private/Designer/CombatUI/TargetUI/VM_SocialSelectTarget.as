@@ -124,11 +124,9 @@ FVMS_SocialSelectTarget& Get(const UObject ContextObject)
 {
     return FVMS_SocialSelectTarget::GetByManager(EUIInternal::GetContextManager(ContextObject));
 }
-FVMS_SocialSelectTarget GetByManager(const UEUIManagerSubsystem Manager)
+FVMS_SocialSelectTarget& GetByManager(const UEUIManagerSubsystem Manager)
 {
-    FVMS_SocialSelectTarget __r;
-    TEUIModelRef<FVMS_SocialSelectTarget> local_6 = TEUIModelRef<FVMS_SocialSelectTarget>(EUIInternal::MakeModelWithManager(Manager, FVMS_SocialSelectTarget::ModelId));
-    return __r;
+    return TEUIModelRef<FVMS_SocialSelectTarget>(EUIInternal::MakeModelWithManager(Manager, FVMS_SocialSelectTarget::ModelId)).Get();
 }
 void GetModelInfo(FEUIViewModelMetaInfo &inout Result)
 {
@@ -180,7 +178,6 @@ namespace __GeneratedProperties_FVMS_SocialSelectTarget
 {
 UScriptStruct StaticStruct()
 {
-    UScriptStruct local_2;
-    return local_2;
+    return __GeneratedProperties_FVMS_SocialSelectTarget.Get();
 }
 }

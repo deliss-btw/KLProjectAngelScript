@@ -12,7 +12,7 @@ TDataObjectPtr<FEcologyCreatureDefinitionRow> __FEcologyActivityDefinitionRow_Ge
         FEcologyActivityDefinitionRow local_122;
         return local_122.GetCreature();
     }
-    return GetCreature();
+    return DataObject.Get().GetCreature();
 }
 UFUNCTION()
 TDataObjectPtr<FEcologyResourceDefinitionRow> __FEcologyActivityDefinitionRow_GetResource(const TDataObjectPtr<FEcologyActivityDefinitionRow> &inout DataObject)
@@ -26,12 +26,11 @@ TDataObjectPtr<FEcologyResourceDefinitionRow> __FEcologyActivityDefinitionRow_Ge
         FEcologyActivityDefinitionRow local_122;
         return local_122.GetResource();
     }
-    return GetResource();
+    return DataObject.Get().GetResource();
 }
 UFUNCTION()
 FName __FEcologyActivityDefinitionRow_GetBehavior(const TDataObjectPtr<FEcologyActivityDefinitionRow> &inout DataObject)
 {
-    FName __r;
     if ((DataObject == nullptr))
     {
         if (!(EUIGlobals::GIsDuringPropertyConversion))
@@ -41,12 +40,11 @@ FName __FEcologyActivityDefinitionRow_GetBehavior(const TDataObjectPtr<FEcologyA
         FEcologyActivityDefinitionRow local_122;
         return local_122.Behavior;
     }
-    return __r;
+    return DataObject.Get().Behavior;
 }
 UFUNCTION()
 TObjectPtr<UEcologyBehaviorDefine> __FEcologyActivityDefinitionRow_GetBehaviorDefine(const TDataObjectPtr<FEcologyActivityDefinitionRow> &inout DataObject)
 {
-    TObjectPtr<UEcologyBehaviorDefine> __r;
     if ((DataObject == nullptr))
     {
         if (!(EUIGlobals::GIsDuringPropertyConversion))
@@ -56,12 +54,11 @@ TObjectPtr<UEcologyBehaviorDefine> __FEcologyActivityDefinitionRow_GetBehaviorDe
         FEcologyActivityDefinitionRow local_122;
         return local_122.BehaviorDefine;
     }
-    return __r;
+    return DataObject.Get().BehaviorDefine;
 }
 UFUNCTION()
 bool __FEcologyActivityDefinitionRow_GetbIsDefaultBehavior(const TDataObjectPtr<FEcologyActivityDefinitionRow> &inout DataObject)
 {
-    bool local_1 = false;
     if ((DataObject == nullptr))
     {
         if (!(EUIGlobals::GIsDuringPropertyConversion))
@@ -71,12 +68,11 @@ bool __FEcologyActivityDefinitionRow_GetbIsDefaultBehavior(const TDataObjectPtr<
         FEcologyActivityDefinitionRow local_122;
         return local_122.bIsDefaultBehavior;
     }
-    return local_1;
+    return DataObject.Get().bIsDefaultBehavior;
 }
 UFUNCTION()
 bool __FEcologyActivityDefinitionRow_GetbCanUseWithoutSlot(const TDataObjectPtr<FEcologyActivityDefinitionRow> &inout DataObject)
 {
-    bool local_1 = false;
     if ((DataObject == nullptr))
     {
         if (!(EUIGlobals::GIsDuringPropertyConversion))
@@ -86,12 +82,11 @@ bool __FEcologyActivityDefinitionRow_GetbCanUseWithoutSlot(const TDataObjectPtr<
         FEcologyActivityDefinitionRow local_122;
         return local_122.bCanUseWithoutSlot;
     }
-    return local_1;
+    return DataObject.Get().bCanUseWithoutSlot;
 }
 UFUNCTION()
 FGameplayTag __FEcologyActivityDefinitionRow_GetGameplayTagForResourceSlot(const TDataObjectPtr<FEcologyActivityDefinitionRow> &inout DataObject)
 {
-    FGameplayTag __r;
     if ((DataObject == nullptr))
     {
         if (!(EUIGlobals::GIsDuringPropertyConversion))
@@ -101,7 +96,7 @@ FGameplayTag __FEcologyActivityDefinitionRow_GetGameplayTagForResourceSlot(const
         FEcologyActivityDefinitionRow local_122;
         return local_122.GameplayTagForResourceSlot;
     }
-    return __r;
+    return DataObject.Get().GameplayTagForResourceSlot;
 }
 UFUNCTION()
 FEcologyDOTCondition __FEcologyActivityDefinitionRow_GetDOTCondition(const TDataObjectPtr<FEcologyActivityDefinitionRow> &inout DataObject)

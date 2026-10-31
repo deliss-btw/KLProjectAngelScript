@@ -41,8 +41,10 @@ void HandleEntityLandedSound(const FECSEntity &inout EventSender, const FEntityL
     bool local_25 = false;
     FName local_90 = FSceneInteractUtils::GetLineTraceSurfaceName(local_25, local_12, local_18, local_24, EventSender, FImpactFXUtils::ConvertLandedInfo2SurfaceContanctInfo(LandedInfo));
     TSoftObjectPtr<UAkSwitchValue> local_100 = local_4.DefaultPhysMaterialSwitch;
-    if (local_4.PhysMaterialSwitchMap.Find(FGamePhysicsUtils::GetPhysicalSurfaceType(local_90)))
+    TRawPtr<TSoftObjectPtr<UAkSwitchValue>> local_104 = local_4.PhysMaterialSwitchMap.Find(FGamePhysicsUtils::GetPhysicalSurfaceType(local_90));
+    if (local_104)
     {
+        local_100 = local_104.Get();
     }
     FGameAudioUtils::SetAudioSwitch(local_100, EventSender, FOnLoadEventCallbackWithEntity(), true, FGameAudioUtils::GetCachedAudioWorld());
     FGameAudioUtils::SetAudioSwitch(local_4.LandedStrengthSwitch[int(LandedInfo.GetLandedStrengthLevel())], EventSender, FOnLoadEventCallbackWithEntity(), true, FGameAudioUtils::GetCachedAudioWorld());
@@ -70,19 +72,21 @@ void HandleEntityLandedSound(const FECSEntity &inout EventSender, const FEntityL
 }
 void HandleAttackImpact(const FCE_ImpactFXEvent &inout Event)
 {
-    UGamePhysicalMaterial local_20;
     USFXSettings local_4 = UCombatGlobalSettings::Get().SFXSettings;
     if (local_4 == nullptr)
     {
         return;
     }
     TSoftObjectPtr<UAkSwitchValue> local_16 = local_4.DefaultPhysMaterialSwitch;
+    UGamePhysicalMaterial local_20 = Event.PhysicalMaterial.Get();
     if (local_20 != nullptr)
     {
         int local_21;
         local_21 = int(local_20.SurfaceType);
-        if (local_4.PhysMaterialSwitchMap.Find(EPhysicalSurface(local_21)))
+        TRawPtr<TSoftObjectPtr<UAkSwitchValue>> local_24 = local_4.PhysMaterialSwitchMap.Find(EPhysicalSurface(local_21));
+        if (local_24)
         {
+            local_16 = local_24.Get();
         }
     }
     FGameAudioUtils::SetAudioSwitch(local_16, Event.Sender, FOnLoadEventCallbackWithEntity(), true, FGameAudioUtils::GetCachedAudioWorld());

@@ -302,8 +302,7 @@ struct FVM_WizardSkillResource : FEUIViewModel
     {
         this.SetResourcePointer(TEUIModelRef<FVM_SwordSkillResourcePoint>(::FVM_SwordSkillResourcePoint::Create(this.GetContext().Manager)));
         float32 local_3 = 0.0f;
-        TEUIModelRef<FVM_SwordSkillResourcePoint> local_2 = this.GetResourcePointer();
-        local_3.SetConsumeAnimChangeThreshold();
+        this.GetResourcePointer().Get().SetConsumeAnimChangeThreshold(local_3);
         this.InitStars();
         return;
     }
@@ -334,11 +333,8 @@ struct FVM_WizardSkillResource : FEUIViewModel
                 local_24 = 0.0f;
             }
             this.SetCustomSkillEnergyRatio(local_24);
-            TEUIModelRef<FVM_SwordSkillResourcePoint> local_26 = this.GetResourcePointer();
-            this.GetCustomSkillEnergyRatio().SetResourcePointPercent();
-            bool local_22 = (this.GetCustomSkillEnergyRatio() < 1.0f);
-            TEUIModelRef<FVM_SwordSkillResourcePoint> local_26_2 = this.GetResourcePointer();
-            local_22.SetbPointVisible();
+            this.GetResourcePointer().Get().SetResourcePointPercent(this.GetCustomSkillEnergyRatio());
+            this.GetResourcePointer().Get().SetbPointVisible((this.GetCustomSkillEnergyRatio() < 1.0f));
         }
         this.SetLastFrameMagicUseCount(this.GetMagicUseCount());
         FNameHandle_EntityBBVar local_32;
@@ -352,9 +348,9 @@ struct FVM_WizardSkillResource : FEUIViewModel
         int local_37 = 0;
         for (; local_37 < this.GetCurrentMaxStarsCount(); )
         {
-            this.GetLastFrameMagicUseCount().SetLastFrameMagicUseCount();
-            this.GetMagicUseCount().SetMagicUseCount();
-            this.GetCurrentMaxStarsCount().SetMaxMagicUseCount();
+            this.GetModify_Stars()[local_37].Get().SetLastFrameMagicUseCount(this.GetLastFrameMagicUseCount());
+            this.GetModify_Stars()[local_37].Get().SetMagicUseCount(this.GetMagicUseCount());
+            this.GetModify_Stars()[local_37].Get().SetMaxMagicUseCount(this.GetCurrentMaxStarsCount());
             ++local_37;
         }
         return;
@@ -636,11 +632,9 @@ FVM_WizardSkillResourceStarItem& Create(const UObject ContextObject, const int I
 {
     return FVM_WizardSkillResourceStarItem::CreateByManager(EUIInternal::GetContextManager(ContextObject), Index);
 }
-FVM_WizardSkillResourceStarItem CreateByManager(const UEUIManagerSubsystem Manager, const int Index)
+FVM_WizardSkillResourceStarItem& CreateByManager(const UEUIManagerSubsystem Manager, const int Index)
 {
-    FVM_WizardSkillResourceStarItem __r;
-    TEUIModelRef<FVM_WizardSkillResourceStarItem> local_6 = TEUIModelRef<FVM_WizardSkillResourceStarItem>(EUIInternal::MakeModelWithManager_Generic(Manager, FVM_WizardSkillResourceStarItem::ModelId, 0, Index));
-    return __r;
+    return TEUIModelRef<FVM_WizardSkillResourceStarItem>(EUIInternal::MakeModelWithManager_Generic(Manager, FVM_WizardSkillResourceStarItem::ModelId, 0, Index)).Get();
 }
 void GetModelInfo(FEUIViewModelMetaInfo &inout Result)
 {
@@ -685,8 +679,7 @@ namespace __GeneratedProperties_FVM_WizardSkillResourceStarItem
 {
 UScriptStruct StaticStruct()
 {
-    UScriptStruct local_2;
-    return local_2;
+    return __GeneratedProperties_FVM_WizardSkillResourceStarItem.Get();
 }
 }
 namespace FVM_WizardSkillResource
@@ -695,11 +688,9 @@ FVM_WizardSkillResource& Create(const UObject ContextObject)
 {
     return FVM_WizardSkillResource::CreateByManager(EUIInternal::GetContextManager(ContextObject));
 }
-FVM_WizardSkillResource CreateByManager(const UEUIManagerSubsystem Manager)
+FVM_WizardSkillResource& CreateByManager(const UEUIManagerSubsystem Manager)
 {
-    FVM_WizardSkillResource __r;
-    TEUIModelRef<FVM_WizardSkillResource> local_6 = TEUIModelRef<FVM_WizardSkillResource>(EUIInternal::MakeModelWithManager(Manager, FVM_WizardSkillResource::ModelId));
-    return __r;
+    return TEUIModelRef<FVM_WizardSkillResource>(EUIInternal::MakeModelWithManager(Manager, FVM_WizardSkillResource::ModelId)).Get();
 }
 void GetModelInfo(FEUIViewModelMetaInfo &inout Result)
 {
@@ -895,7 +886,6 @@ namespace __GeneratedProperties_FVM_WizardSkillResource
 {
 UScriptStruct StaticStruct()
 {
-    UScriptStruct local_2;
-    return local_2;
+    return __GeneratedProperties_FVM_WizardSkillResource.Get();
 }
 }

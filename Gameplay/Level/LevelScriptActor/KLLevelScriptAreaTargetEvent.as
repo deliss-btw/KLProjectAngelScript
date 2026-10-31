@@ -20,8 +20,7 @@ class AKLLevelScriptAreaTargetEvent : AKLLevelScriptAreaEventBase
             if (this.EventInfo && !(local_58.opCall()))
             {
                 FC_PrefabConfig local_66;
-                TDataObjectPtr<FBasePrefabConfig> local_90;
-                local_66.ConfigPtr = local_90;
+                local_66.ConfigPtr = TDataObjectPtr<FBasePrefabConfig>(this.EventInfo.Get());
                 local_66.PrefabType = EPrefabType(5);
             }
         }
@@ -82,27 +81,27 @@ class AKLLevelScriptAreaTargetEvent : AKLLevelScriptAreaEventBase
     ULevelEventAttribute GetLevelEventAttribute() const
     {
         CastTo local_4;
-        if (local_4.opCall())
+        TDataObjectPtr<FLevelRandomEventInfoConfig> local_28 = local_4.opCall();
+        if (local_28)
         {
-            ULevelEventAttribute local_56;
-            return local_56;
+            return Cast<ULevelEventAttribute>(System::LoadAsset_Blocking(local_28.Get().LevelEventAttribute));
         }
         return nullptr;
     }
     bool GetCurrentTypeAttribute(FLevelEventTypeAttribute &inout OutAttr) const
     {
-        int local_59 = 0;
         ULevelEventAttribute local_4 = this.GetLevelEventAttribute();
         if (local_4 == nullptr)
         {
             return false;
         }
         CastTo local_10;
-        if (!(local_10.opCall()))
+        TDataObjectPtr<FLevelRandomEventInfoConfig> local_34 = local_10.opCall();
+        if (!(local_34))
         {
             return false;
         }
-        return local_4.GetTypeAttribute(ELevelRandomEventType(local_59), OutAttr);
+        return local_4.GetTypeAttribute(local_34.Get().LevelRandomEventType, OutAttr);
     }
     void ServerInitAreaEvent()
     {

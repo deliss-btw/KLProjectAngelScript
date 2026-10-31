@@ -92,10 +92,9 @@ struct FMS_TreasureBoxSpotManager : FEUIModelSingleton
         FM_SpotRegistry& local_4 = ::PresentationSpotUtils::GetDefaultRegistry(this.GetManager());
         for (auto& local_24 : this.GetTreasureBoxSpots())
         {
-            local_24;
-            if (local_4.HasSpot())
+            if (local_4.HasSpot(local_24.GetValue()))
             {
-                local_4.RemoveSpot();
+                local_4.RemoveSpot(local_24.GetValue());
             }
         }
         this.GetModify_TreasureBoxSpots().Empty(0);
@@ -257,11 +256,9 @@ FMS_TreasureBoxSpotManager& Get(const UObject ContextObject)
 {
     return FMS_TreasureBoxSpotManager::GetByManager(EUIInternal::GetContextManager(ContextObject));
 }
-FMS_TreasureBoxSpotManager GetByManager(const UEUIManagerSubsystem Manager)
+FMS_TreasureBoxSpotManager& GetByManager(const UEUIManagerSubsystem Manager)
 {
-    FMS_TreasureBoxSpotManager __r;
-    TEUIModelRef<FMS_TreasureBoxSpotManager> local_6 = TEUIModelRef<FMS_TreasureBoxSpotManager>(EUIInternal::MakeModelWithManager(Manager, FMS_TreasureBoxSpotManager::ModelId));
-    return __r;
+    return TEUIModelRef<FMS_TreasureBoxSpotManager>(EUIInternal::MakeModelWithManager(Manager, FMS_TreasureBoxSpotManager::ModelId)).Get();
 }
 void GetModelInfo(FEUIModelOnlyMetaInfo &inout Result)
 {

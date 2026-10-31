@@ -292,9 +292,9 @@ class UESMAction_RootMotionWarping : UESMBPBaseSpanTickAction
             Get local_38;
             const FC_Transform& local_34;
             FQuat local_12 = FQuat(FQuat::Identity);
-            switch (int(this.TranslationType))
+            switch (this.TranslationType)
             {
-            case 0:
+            case ERootMotionWarpingMoveType::LockTarget:
             {
                 FLockPointInfo local_32;
                 const FC_LockTarget& local_44 = local_42.opCall();
@@ -375,20 +375,20 @@ class UESMAction_RootMotionWarping : UESMBPBaseSpanTickAction
                 }
                 break;
             }
-            case 1:
+            case ERootMotionWarpingMoveType::ESMBB:
             {
                 FVector local_80_2 = this.GetESMBBWorldSpaceLocation(Context);
                 bool local_116 = !((local_80_2 == FVector::ZeroVector));
                 RootMotionWarping.SetTargetLocation((local_80_2 + (FVector(local_34.GetPosition()) - local_80_2).GetSafeNormal2D(9.99999993922529e-9, FVector::ZeroVector).Rotation().Quaternion().RotateVector(this.LocationOffset)));
                 break;
             }
-            case 2:
+            case ERootMotionWarpingMoveType::Relative:
             {
                 local_12 = this.GetRotator(local_34.GetRotation(), this.bSourceRotYawOnly);
                 RootMotionWarping.SetTargetLocation((FVector(local_34.GetPosition()) + local_12.RotateVector(this.RelativeLocation)));
                 break;
             }
-            case 3:
+            case ERootMotionWarpingMoveType::LockTargetRelative:
             {
                 const FC_LockTarget& local_44_2 = local_42.opCall();
                 if (local_44_2)
@@ -423,7 +423,7 @@ class UESMAction_RootMotionWarping : UESMBPBaseSpanTickAction
                 }
                 break;
             }
-            case 4:
+            case ERootMotionWarpingMoveType::ESMBBEntity:
             {
                 local_132;
                 FECSEntity local_136 = Context.GetEntity().GetBB_Entity(local_132);
@@ -455,7 +455,7 @@ class UESMAction_RootMotionWarping : UESMBPBaseSpanTickAction
                 }
                 break;
             }
-            case 5:
+            case ERootMotionWarpingMoveType::ESMBBEntityRelative:
             {
                 local_132;
                 FECSEntity local_128 = Context.GetEntity().GetBB_Entity(local_132);
@@ -529,9 +529,9 @@ class UESMAction_RootMotionWarping : UESMBPBaseSpanTickAction
             const FC_Transform& local_34;
             float32 local_321;
             FRotator local_266;
-            switch (int(this.RotationType))
+            switch (this.RotationType)
             {
-            case 0:
+            case ERootMotionWarpingFaceType::LockTarget:
             {
                 const FC_LockTarget& local_44_3 = local_42.opCall();
                 if (local_44_3)
@@ -553,23 +553,23 @@ class UESMAction_RootMotionWarping : UESMBPBaseSpanTickAction
                 local_266 = ::FCharacterDirectionUtils::GetTargetRotation(local_2, ECharacterDirectionType(6), false, FFPTime(-1));
                 break;
             }
-            case 1:
+            case ERootMotionWarpingFaceType::ESMBB:
             {
                 local_266 = this.GetESMBBWorldSpaceRotation(Context);
                 break;
             }
-            case 2:
+            case ERootMotionWarpingFaceType::Camera:
             {
                 local_266 = FCharacterInputUtils::GetViewInputDir(Context.GetEntity(), Time.WorldTime);
                 break;
             }
-            case 3:
+            case ERootMotionWarpingFaceType::Input:
             {
                 Get local_304;
                 local_266 = local_124.ToFTransform().InverseTransformRotation(local_304.opCall().GetDesiredRotation());
                 break;
             }
-            case 4:
+            case ERootMotionWarpingFaceType::ESMBBEntity:
             {
                 local_132;
                 FECSEntity local_136_2 = Context.GetEntity().GetBB_Entity(local_132);
@@ -585,7 +585,7 @@ class UESMAction_RootMotionWarping : UESMBPBaseSpanTickAction
                 }
                 break;
             }
-            case 5:
+            case ERootMotionWarpingFaceType::ESMBBEntityRelative:
             {
                 local_132;
                 FECSEntity local_128_2 = Context.GetEntity().GetBB_Entity(local_132);

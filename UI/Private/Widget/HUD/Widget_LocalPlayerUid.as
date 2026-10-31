@@ -27,8 +27,8 @@ class UWidget_LocalPlayerUid : UEUIUserWidget
     }
     void HandleObservedModelChanges(FEUIReactiveSubscriberIterator &inout It)
     {
-        FVMS_LocalPlayerUid& local_6;
         TEUIModelRef<FVMS_LocalPlayerUid> local_2 = this.PlayerUid.AsRef();
+        FVMS_LocalPlayerUid& local_6 = local_2.Get();
         for (; It; )
         {
             FEUIReactiveSubscriberTrackScope local_56 = FEUIReactiveSubscriberTrackScope(It);

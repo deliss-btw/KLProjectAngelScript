@@ -59,10 +59,10 @@ class UModeMatchContentSettings : UGameplaySettingsBase
     }
     const UModeMatchContentAdapterBase GetContentAdapter(const uint InMatchMode) const
     {
-        TConstRawPtr<FModeMatchContentCache> local_18 = FInstancedStruct::GetPtr(this.GetCacheData()).opCall();
-        if (false)
+        FModeMatchContentInfo local_12;
+        bool local_19 = FInstancedStruct::GetPtr(this.GetCacheData()).opCall().Get().MatchModeToAdapter.Find(InMatchMode, local_12);
+        if (local_19)
         {
-            FModeMatchContentInfo local_12;
             return local_12.Adapter.GetDefaultObject();
         }
         UModeMatchContentAdapterBase local_24;
@@ -70,10 +70,10 @@ class UModeMatchContentSettings : UGameplaySettingsBase
     }
     TSoftClassPtr<UEUIUserWidget> GetContentWidgetClass(const uint InMatchMode) const
     {
-        TConstRawPtr<FModeMatchContentCache> local_18 = FInstancedStruct::GetPtr(this.GetCacheData()).opCall();
-        if (false)
+        FModeMatchContentInfo local_12;
+        bool local_19 = FInstancedStruct::GetPtr(this.GetCacheData()).opCall().Get().MatchModeToAdapter.Find(InMatchMode, local_12);
+        if (local_19)
         {
-            FModeMatchContentInfo local_12;
             return local_12.Widget;
         }
         return TSoftClassPtr<UEUIUserWidget>(nullptr);

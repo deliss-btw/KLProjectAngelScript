@@ -71,8 +71,7 @@ struct FVM_AvatarEquipmentItemInfo : FEUIViewModel
     {
         if (this.GetItemInfoDetail().IsValid())
         {
-            TEUIModelRef<FVM_AvatarEquipmentItemInfoDetail> local_2 = this.GetItemInfoDetail();
-            bShow.SetIsEquipmentDescriptionShow();
+            this.GetItemInfoDetail().Get().SetIsEquipmentDescriptionShow(bShow);
         }
         return;
     }
@@ -84,10 +83,7 @@ struct FVM_AvatarEquipmentItemInfo : FEUIViewModel
         }
         if (::FEquipmentUtils::IsTalismanSlot(EEquipSlotType(this.GetEquipSlot())) || (int(this.GetEquipSlot()) == 1))
         {
-            TEUIModelRef<FVM_EquipmentInfo> local_8 = this.GetEquipmentInfo();
-            TEUIModelRef<FM_Equipment> local_10;
-            local_10.GetEquipment();
-            ::AvatarEquipmentMainUtil::GotoPage(this.GetContext().UELocalPlayer, this.GetEquipSlot(), GetEquiptingAvatar());
+            ::AvatarEquipmentMainUtil::GotoPage(this.GetContext().UELocalPlayer, this.GetEquipSlot(), this.GetEquipmentInfo().Get().GetEquipment().Get().GetEquiptingAvatar());
         }
         return;
     }
@@ -191,11 +187,9 @@ FVM_AvatarEquipmentItemInfo& Create(const UObject ContextObject, const TEUIModel
 {
     return FVM_AvatarEquipmentItemInfo::CreateByManager(EUIInternal::GetContextManager(ContextObject), EquipmentInfo);
 }
-FVM_AvatarEquipmentItemInfo CreateByManager(const UEUIManagerSubsystem Manager, const TEUIModelRef<FVM_EquipmentInfo> &inout EquipmentInfo)
+FVM_AvatarEquipmentItemInfo& CreateByManager(const UEUIManagerSubsystem Manager, const TEUIModelRef<FVM_EquipmentInfo> &inout EquipmentInfo)
 {
-    FVM_AvatarEquipmentItemInfo __r;
-    TEUIModelRef<FVM_AvatarEquipmentItemInfo> local_6 = TEUIModelRef<FVM_AvatarEquipmentItemInfo>(EUIInternal::MakeModelWithManager_Generic(Manager, FVM_AvatarEquipmentItemInfo::ModelId, 0, EquipmentInfo));
-    return __r;
+    return TEUIModelRef<FVM_AvatarEquipmentItemInfo>(EUIInternal::MakeModelWithManager_Generic(Manager, FVM_AvatarEquipmentItemInfo::ModelId, 0, EquipmentInfo)).Get();
 }
 void GetModelInfo(FEUIViewModelMetaInfo &inout Result)
 {
@@ -272,7 +266,6 @@ namespace __GeneratedProperties_FVM_AvatarEquipmentItemInfo
 {
 UScriptStruct StaticStruct()
 {
-    UScriptStruct local_2;
-    return local_2;
+    return __GeneratedProperties_FVM_AvatarEquipmentItemInfo.Get();
 }
 }

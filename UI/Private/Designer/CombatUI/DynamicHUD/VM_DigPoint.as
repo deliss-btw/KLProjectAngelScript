@@ -91,11 +91,9 @@ FVMS_DigPoint& Get(const UObject ContextObject)
 {
     return FVMS_DigPoint::GetByManager(EUIInternal::GetContextManager(ContextObject));
 }
-FVMS_DigPoint GetByManager(const UEUIManagerSubsystem Manager)
+FVMS_DigPoint& GetByManager(const UEUIManagerSubsystem Manager)
 {
-    FVMS_DigPoint __r;
-    TEUIModelRef<FVMS_DigPoint> local_6 = TEUIModelRef<FVMS_DigPoint>(EUIInternal::MakeModelWithManager(Manager, FVMS_DigPoint::ModelId));
-    return __r;
+    return TEUIModelRef<FVMS_DigPoint>(EUIInternal::MakeModelWithManager(Manager, FVMS_DigPoint::ModelId)).Get();
 }
 void GetModelInfo(FEUIViewModelMetaInfo &inout Result)
 {
@@ -143,7 +141,6 @@ namespace __GeneratedProperties_FVMS_DigPoint
 {
 UScriptStruct StaticStruct()
 {
-    UScriptStruct local_2;
-    return local_2;
+    return __GeneratedProperties_FVMS_DigPoint.Get();
 }
 }

@@ -72,8 +72,7 @@ struct FVM_ItemFeature_EquipMark : FEUIViewModel
     {
         if (this.GetCommonItemVM().IsValid())
         {
-            TEUIModelRef<FVM_CommonItem> local_2 = this.GetCommonItemVM();
-            GetOnCommonItemClicked().AddUnique(this, FVM_ItemFeature_EquipMark::OnItemSelect);
+            this.GetCommonItemVM().Get().GetOnCommonItemClicked().AddUnique(this, FVM_ItemFeature_EquipMark::OnItemSelect);
         }
         return;
     }
@@ -81,7 +80,7 @@ struct FVM_ItemFeature_EquipMark : FEUIViewModel
     {
         if (this.GetCommonItemVM().IsValid())
         {
-            TEUIModelRef<FVM_CommonItem> local_2 = this.GetCommonItemVM();
+            this.GetCommonItemVM().Get().GetOnCommonItemClicked().Remove(this, FVM_ItemFeature_EquipMark::OnItemSelect);
         }
         return;
     }
@@ -100,27 +99,12 @@ struct FVM_ItemFeature_EquipMark : FEUIViewModel
     }
     void OnItemSelect()
     {
-        TEUIModelRef<FVM_Item> local_8;
         if (this.GetCurItemState() == 3)
         {
             this.SetbCheckableSelected(!(this.GetbCheckableSelected()));
-            bool local_3 = this.GetCommonItemVM().IsValid();
-            if (!(local_3))
+            if (this.GetCommonItemVM().IsValid() && this.GetCommonItemVM().Get().GetItemVM().IsValid())
             {
-                local_3 = false;
-            }
-            else
-            {
-                TEUIModelRef<FVM_CommonItem> local_6 = this.GetCommonItemVM();
-                local_8.GetItemVM();
-                local_3 = local_8.IsValid();
-            }
-            if (local_3)
-            {
-                TEUIModelRef<FM_Equipment> local_12;
-                TEUIModelRef<FVM_CommonItem> local_6_2 = this.GetCommonItemVM();
-                local_8.GetItemVM();
-                local_12.GetValidEquipmentModel();
+                TEUIModelRef<FM_Equipment> local_12 = this.GetCommonItemVM().Get().GetItemVM().Get().GetValidEquipmentModel();
                 if (local_12.IsValid())
                 {
                     FMsg_ItemFeature_EquipMark_CheckableSelectedUpdate local_16;
@@ -278,11 +262,9 @@ FVM_ItemFeature_EquipMark& Create(const UObject ContextObject, const TEUIModelRe
 {
     return FVM_ItemFeature_EquipMark::CreateByManager(EUIInternal::GetContextManager(ContextObject), CommonItemVM);
 }
-FVM_ItemFeature_EquipMark CreateByManager(const UEUIManagerSubsystem Manager, const TEUIModelRef<FVM_CommonItem> &inout CommonItemVM)
+FVM_ItemFeature_EquipMark& CreateByManager(const UEUIManagerSubsystem Manager, const TEUIModelRef<FVM_CommonItem> &inout CommonItemVM)
 {
-    FVM_ItemFeature_EquipMark __r;
-    TEUIModelRef<FVM_ItemFeature_EquipMark> local_6 = TEUIModelRef<FVM_ItemFeature_EquipMark>(EUIInternal::MakeModelWithManager_Generic(Manager, FVM_ItemFeature_EquipMark::ModelId, 0, CommonItemVM));
-    return __r;
+    return TEUIModelRef<FVM_ItemFeature_EquipMark>(EUIInternal::MakeModelWithManager_Generic(Manager, FVM_ItemFeature_EquipMark::ModelId, 0, CommonItemVM)).Get();
 }
 void GetModelInfo(FEUIViewModelMetaInfo &inout Result)
 {
@@ -365,7 +347,6 @@ namespace __GeneratedProperties_FVM_ItemFeature_EquipMark
 {
 UScriptStruct StaticStruct()
 {
-    UScriptStruct local_2;
-    return local_2;
+    return __GeneratedProperties_FVM_ItemFeature_EquipMark.Get();
 }
 }

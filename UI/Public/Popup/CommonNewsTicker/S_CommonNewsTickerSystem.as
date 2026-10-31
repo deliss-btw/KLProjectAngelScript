@@ -20,6 +20,7 @@ class US_CommonNewsTickerSystem : UECSScriptSystem
                 Manager.DisplayingTicker = local_22;
                 continue;
             }
+            Manager.PendingTickers.Remove(local_18);
         }
         for (auto local_23 : Event.NewDisplayingPopupIds)
         {
@@ -51,7 +52,7 @@ class US_CommonNewsTickerSystem : UECSScriptSystem
             local_8 = (Cast<UWidget_NewsTracker>(Manager.DisplayingTicker.RequireWidget()));
             if (local_8 != nullptr)
             {
-                local_2 = GetbTickerEnd();
+                local_2 = local_8.NewsTicker.Get().GetbTickerEnd();
             }
             if (!(local_2))
             {

@@ -273,6 +273,8 @@ struct FVM_ShopPanel : FEUIViewModel
                 }
             }
         }
+        __Lambda_UI_Private_ViewModel_Menu_Shop_VM_ShopPanel_254 local_24;
+        this.GetModify_DisplayingGoodsItems().Sort(local_24);
         this.GetModify_DisplayingComposableItems().Empty(0);
         for (auto& local_38 : this.GetModify_DisplayingGoodsItems())
         {
@@ -280,6 +282,7 @@ struct FVM_ShopPanel : FEUIViewModel
             local_52.AddModel(local_38.opArrow().GetSelectable().opImplConv(), false);
             local_52.AddModel(local_38.opArrow().GetComposableItem().opImplConv(), false);
             this.GetModify_DisplayingComposableItems().Add(local_52);
+            local_38.opArrow().GetCallbackOnItemSelected().Clear();
             local_38.opArrow().GetCallbackOnItemSelected().Add(this, FVM_ShopPanel::OnShopGoodsItemSelected);
         }
         return;
@@ -332,15 +335,12 @@ struct FVM_ShopPanel : FEUIViewModel
         if (Result.Items.Num() > 0)
         {
             TEUIModelRef<FM_Equipment> local_8 = ::FMS_EquipmentDataCache::Get(this.GetContext().Manager).GetEquipment(Result.Items[0].ItemGuid);
-            if (local_8.IsValid() && GetEquipmentConfig().IsSet())
+            if (local_8.IsValid() && local_8.Get().GetEquipmentConfig().IsSet())
             {
                 FVM_EquipmentInfo& local_14 = ::FVM_EquipmentInfo::Create(this.GetContext().Manager, local_8);
                 for (auto& local_28 : local_14.GetEquipmentTraits())
                 {
-                    local_28;
-                    TEUIModelRef<FM_Trait> local_30;
-                    local_30.GetTrait();
-                    GetbIsRandomTrait().SetbHighlight();
+                    local_28.Get().SetbHighlight(local_28.Get().GetTrait().Get().GetbIsRandomTrait());
                 }
                 local_32 = (Cast<UWidget_EquipmentCraftPopup>(FEUIWidget::AddWidgetByClass(this.GetContext().UELocalPlayer, this.GetPopupClass(), FEUIModelRef(local_14)).RequireWidget()));
                 if (local_32 != nullptr)
@@ -557,8 +557,7 @@ struct __Lambda_UI_Private_ViewModel_Menu_Shop_VM_ShopPanel_254
     }
     bool opCall(const TEUIModelRef<FVM_ShopGoodsItem> &inout A, const TEUIModelRef<FVM_ShopGoodsItem> &inout B)
     {
-        TEUIModelRef<FM_ShopGoods> local_4 = B.opArrow().GetShopGoods();
-        return A.opArrow().GetShopGoods().opArrow().CmpWith();
+        return A.opArrow().GetShopGoods().opArrow().CmpWith(B.opArrow().GetShopGoods().Get());
     }
 }
 
@@ -595,11 +594,9 @@ FVM_ShopPanel& Create(const UObject ContextObject, const TDataObjectPtr<FShopCon
 {
     return FVM_ShopPanel::CreateByManager(EUIInternal::GetContextManager(ContextObject), ShopConfig);
 }
-FVM_ShopPanel CreateByManager(const UEUIManagerSubsystem Manager, const TDataObjectPtr<FShopConfig> &inout ShopConfig)
+FVM_ShopPanel& CreateByManager(const UEUIManagerSubsystem Manager, const TDataObjectPtr<FShopConfig> &inout ShopConfig)
 {
-    FVM_ShopPanel __r;
-    TEUIModelRef<FVM_ShopPanel> local_6 = TEUIModelRef<FVM_ShopPanel>(EUIInternal::MakeModelWithManager_Generic(Manager, FVM_ShopPanel::ModelId, 0, ShopConfig));
-    return __r;
+    return TEUIModelRef<FVM_ShopPanel>(EUIInternal::MakeModelWithManager_Generic(Manager, FVM_ShopPanel::ModelId, 0, ShopConfig)).Get();
 }
 void GetModelInfo(FEUIViewModelMetaInfo &inout Result)
 {
@@ -867,7 +864,6 @@ namespace __GeneratedProperties_FVM_ShopPanel
 {
 UScriptStruct StaticStruct()
 {
-    UScriptStruct local_2;
-    return local_2;
+    return __GeneratedProperties_FVM_ShopPanel.Get();
 }
 }

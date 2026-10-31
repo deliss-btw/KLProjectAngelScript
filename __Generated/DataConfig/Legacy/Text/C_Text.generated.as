@@ -3,7 +3,6 @@ namespace __FAttributeTextDataFunctions
 UFUNCTION()
 FGameAttributeRef __FAttributeTextData_GetAttribute(const TDataObjectPtr<FAttributeTextData> &inout DataObject)
 {
-    FGameAttributeRef __r;
     if ((DataObject == nullptr))
     {
         if (!(EUIGlobals::GIsDuringPropertyConversion))
@@ -13,12 +12,11 @@ FGameAttributeRef __FAttributeTextData_GetAttribute(const TDataObjectPtr<FAttrib
         FAttributeTextData local_32;
         return local_32.Attribute;
     }
-    return __r;
+    return DataObject.Get().Attribute;
 }
 UFUNCTION()
 FText __FAttributeTextData_GetText(const TDataObjectPtr<FAttributeTextData> &inout DataObject)
 {
-    FText __r;
     if ((DataObject == nullptr))
     {
         if (!(EUIGlobals::GIsDuringPropertyConversion))
@@ -28,7 +26,7 @@ FText __FAttributeTextData_GetText(const TDataObjectPtr<FAttributeTextData> &ino
         FAttributeTextData local_32;
         return local_32.Text;
     }
-    return __r;
+    return DataObject.Get().Text;
 }
 UFUNCTION()
 FAttributeTextData CastToFAttributeTextData(const TDataObjectPtr<FAttributeTextData> &inout DataObject)
@@ -42,7 +40,6 @@ namespace __FKLTextDataFunctions
 UFUNCTION()
 FText __FKLTextData_GetText(const TDataObjectPtr<FKLTextData> &inout DataObject)
 {
-    FText __r;
     if ((DataObject == nullptr))
     {
         if (!(EUIGlobals::GIsDuringPropertyConversion))
@@ -52,7 +49,7 @@ FText __FKLTextData_GetText(const TDataObjectPtr<FKLTextData> &inout DataObject)
         FKLTextData local_18;
         return local_18.Text;
     }
-    return __r;
+    return DataObject.Get().Text;
 }
 UFUNCTION()
 FKLTextData CastToFKLTextData(const TDataObjectPtr<FKLTextData> &inout DataObject)

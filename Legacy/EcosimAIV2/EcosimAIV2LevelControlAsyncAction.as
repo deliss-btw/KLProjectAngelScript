@@ -231,6 +231,8 @@ struct FASECSDelayActionTest : FECSAsyncAction
     UPROPERTY()
     FECSAsyncActionDelegate OnDelayFinished1;
 
+    default m_ScriptOverrideMeta = Cast<UASStruct>(FASECSDelayActionTest.Get());
+
     FASECSDelayActionTest()
     {
         this.DelayTime = 3.0f;

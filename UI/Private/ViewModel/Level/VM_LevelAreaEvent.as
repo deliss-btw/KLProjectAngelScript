@@ -134,7 +134,7 @@ struct FVMS_LevelAreaEvent : FEUIViewModelSingleton
         {
             FText local_48 = FText::FromString("");
             TEUIModelRef<FVM_MissionInfoTitle> local_52_3 = this.GetTitleModel();
-            local_48.SetTitle();
+            local_52_3.Get().SetTitle(local_48);
         }
         if (this.GetModify_TargetModels().Num() > 0)
         {
@@ -156,11 +156,18 @@ struct FVMS_LevelAreaEvent : FEUIViewModelSingleton
     uint64 LevelAreaEventDbg_ItemKey(FEUIModelContainer &inout C)
     {
         int local_6 = 0;
-        int local_10 = 0;
+        int local_9;
         FEUIModelContainer::RequireModel(C);
-        int local_9 = local_6.GetSingleObjectiveConfig().IsSet() ? local_10 : 0;
+        if (local_6.GetSingleObjectiveConfig().IsSet())
+        {
+            local_9 = local_6.GetSingleObjectiveConfig().Get().DataId;
+        }
+        else
+        {
+            local_9 = 0;
+        }
         int64 local_12 = local_9;
-        local_10 = 1;
+        int local_10 = 1;
         local_12 = local_12 << local_10;
         local_12 = local_12 | local_6.GetSubObj() ? 1 : 0;
         return local_12;
@@ -168,10 +175,17 @@ struct FVMS_LevelAreaEvent : FEUIViewModelSingleton
     FString LevelAreaEventDbg_FormatVmLine(const FString &inout Prefix, const int Idx, FEUIModelContainer &inout C)
     {
         int local_6 = 0;
-        int local_14 = 0;
+        int local_13;
         FEUIModelContainer::RequireModel(C);
         int local_10 = this.LevelAreaEventDbg_ItemKey(C);
-        int local_13 = local_6.GetSingleObjectiveConfig().IsSet() ? local_14 : 0;
+        if (local_6.GetSingleObjectiveConfig().IsSet())
+        {
+            local_13 = local_6.GetSingleObjectiveConfig().Get().DataId;
+        }
+        else
+        {
+            local_13 = 0;
+        }
         int local_24 = local_6.GetProgress().GetFailedProgressValue();
         int local_23 = local_6.GetProgress().GetSuccessProgressValue();
         int local_22 = int(local_6.GetUIState());
@@ -210,22 +224,26 @@ struct FVMS_LevelAreaEvent : FEUIViewModelSingleton
     }
     bool UpdateUIType()
     {
-        int local_1 = EShowInfoType(0);
+        EShowInfoType local_2 = EShowInfoType::None;
+        int local_1 = local_2;
         if (this.HasLevelEvent())
         {
-            local_1 = EShowInfoType(1);
+            EShowInfoType local_2_2 = EShowInfoType::LevelEvent;
+            local_1 = local_2_2;
         }
         else
         {
             if (this.HasUnActiveLevelEvent())
             {
-                local_1 = EShowInfoType(2);
+                EShowInfoType local_2_3 = EShowInfoType::UnActiveLevelEvent;
+                local_1 = local_2_3;
             }
             else
             {
                 if (this.HasTrackingSideMission())
                 {
-                    local_1 = EShowInfoType(3);
+                    EShowInfoType local_2_4 = EShowInfoType::SideMission;
+                    local_1 = local_2_4;
                 }
             }
         }
@@ -254,8 +272,7 @@ struct FVMS_LevelAreaEvent : FEUIViewModelSingleton
                 {
                     if (this.GetTitleModel().IsValid())
                     {
-                        TEUIModelRef<FVM_MissionInfoTitle> local_8 = this.GetTitleModel();
-                        FText::FromString("").SetTitle();
+                        this.GetTitleModel().Get().SetTitle(FText::FromString(""));
                     }
                     if (this.GetModify_TargetModels().Num() > 0)
                     {
@@ -287,8 +304,7 @@ struct FVMS_LevelAreaEvent : FEUIViewModelSingleton
                 this.SetLevelEventTargetEntity(FECSEntity());
                 if (this.GetTitleModel().IsValid())
                 {
-                    TEUIModelRef<FVM_MissionInfoTitle> local_8 = this.GetTitleModel();
-                    FText::FromString("").SetTitle();
+                    this.GetTitleModel().Get().SetTitle(FText::FromString(""));
                 }
                 this.GetModify_TargetModels().Empty(0);
                 this.SyncViewTargetModels();
@@ -331,8 +347,7 @@ struct FVMS_LevelAreaEvent : FEUIViewModelSingleton
             {
                 if (this.GetTitleModel().IsValid())
                 {
-                    TEUIModelRef<FVM_MissionInfoTitle> local_4 = this.GetTitleModel();
-                    FText::FromString("").SetTitle();
+                    this.GetTitleModel().Get().SetTitle(FText::FromString(""));
                 }
                 this.GetModify_TargetModels().Empty(0);
                 this.SyncViewTargetModels();
@@ -363,8 +378,7 @@ struct FVMS_LevelAreaEvent : FEUIViewModelSingleton
             {
                 if (this.GetTitleModel().IsValid())
                 {
-                    TEUIModelRef<FVM_MissionInfoTitle> local_58 = this.GetTitleModel();
-                    FText::FromString("").SetTitle();
+                    this.GetTitleModel().Get().SetTitle(FText::FromString(""));
                 }
                 this.GetModify_TargetModels().Empty(0);
                 this.SyncViewTargetModels();
@@ -387,8 +401,7 @@ struct FVMS_LevelAreaEvent : FEUIViewModelSingleton
             {
                 if (this.GetTitleModel().IsValid())
                 {
-                    TEUIModelRef<FVM_MissionInfoTitle> local_58 = this.GetTitleModel();
-                    FText::FromString("").SetTitle();
+                    this.GetTitleModel().Get().SetTitle(FText::FromString(""));
                 }
                 this.GetModify_TargetModels().Empty(0);
                 this.SyncViewTargetModels();
@@ -477,31 +490,12 @@ struct FVMS_LevelAreaEvent : FEUIViewModelSingleton
         {
             FText local_20 = this.GetEventTitleText();
             TEUIModelRef<FVM_MissionInfoTitle> local_22 = this.GetTitleModel();
-            if (!(local_22.IsValid()))
-            {
-                local_24 = true;
-            }
-            else
-            {
-                TEUIModelRef<FVM_MissionInfoTitle> local_22_2 = this.GetTitleModel();
-                bool local_23 = local_22_2.IsValid();
-                if (!(local_23))
-                {
-                    local_23 = false;
-                }
-                else
-                {
-                    TEUIModelRef<FVM_MissionInfoTitle> local_22_3 = this.GetTitleModel();
-                    local_23 = !((FText(GetTitle()) == local_20));
-                }
-                local_24 = local_23;
-            }
-            if (local_24)
+            if (!(local_22.IsValid()) || (this.GetTitleModel().IsValid() && (!((FText(this.GetTitleModel().Get().GetTitle()) == local_20)))))
             {
                 bool local_11 = true;
                 local_24 = false;
-                TEUIModelRef<FVM_MissionInfoTitle> local_22_4 = TEUIModelRef<FVM_MissionInfoTitle>(::FVM_MissionInfoTitle::Create(this.GetContext().Manager, local_20, local_24, this.GetEventIcon(), local_11));
-                this.SetTitleModel(local_22_4);
+                TEUIModelRef<FVM_MissionInfoTitle> local_22_3 = TEUIModelRef<FVM_MissionInfoTitle>(::FVM_MissionInfoTitle::Create(this.GetContext().Manager, local_20, local_24, this.GetEventIcon(), local_11));
+                this.SetTitleModel(local_22_3);
             }
             this.GetModify_TargetModels().Empty(0);
             if (local_76)
@@ -525,16 +519,16 @@ struct FVMS_LevelAreaEvent : FEUIViewModelSingleton
                 {
                     local_143 = true;
                     bool local_11_2 = true;
+                    TEUIModelRef<FVM_MissionInfoTitle> local_22_4 = this.GetTitleModel();
+                    local_22_4.Get().SetbHasTimer(local_11_2);
                     TEUIModelRef<FVM_MissionInfoTitle> local_22_5 = this.GetTitleModel();
-                    local_11_2.SetbHasTimer();
-                    TEUIModelRef<FVM_MissionInfoTitle> local_22_6 = this.GetTitleModel();
-                    local_76.GetChangeStatusTime().SetEndTime();
+                    local_22_5.Get().SetEndTime(local_76.GetChangeStatusTime());
                 }
                 else
                 {
                     local_24 = false;
-                    TEUIModelRef<FVM_MissionInfoTitle> local_22_7 = this.GetTitleModel();
-                    local_24.SetbHasTimer();
+                    TEUIModelRef<FVM_MissionInfoTitle> local_22_6 = this.GetTitleModel();
+                    local_22_6.Get().SetbHasTimer(local_24);
                 }
             }
         }
@@ -544,13 +538,10 @@ struct FVMS_LevelAreaEvent : FEUIViewModelSingleton
     {
         bool local_38;
         int local_106 = 0;
-        int local_107 = 0;
         int local_197;
         int local_198;
         FEUIModelContainer::MakeCached local_236;
         int local_256 = 0;
-        TConstRawPtr<FObjectiveProgressData> local_328;
-        int local_331 = 0;
         int local_332;
         int local_333;
         if (!(this.GetEventInfoConfig()))
@@ -559,53 +550,28 @@ struct FVMS_LevelAreaEvent : FEUIViewModelSingleton
         }
         FText local_34 = this.GetEventTitleText();
         TEUIModelRef<FVM_MissionInfoTitle> local_36 = this.GetTitleModel();
-        bool local_25 = !(local_36.IsValid());
-        if (local_25)
+        if (!(local_36.IsValid()) || (this.GetTitleModel().IsValid() && (!((FText(this.GetTitleModel().Get().GetTitle()) == local_34)))))
         {
-            local_38 = true;
-        }
-        else
-        {
-            bool local_37;
-            TEUIModelRef<FVM_MissionInfoTitle> local_36_2 = this.GetTitleModel();
-            local_37 = local_36_2.IsValid();
-            if (!(local_37))
-            {
-                local_37 = false;
-            }
-            else
-            {
-                TEUIModelRef<FVM_MissionInfoTitle> local_36_3 = this.GetTitleModel();
-                local_37 = !((FText(GetTitle()) == local_34));
-            }
-            local_38 = local_37;
-        }
-        if (local_38)
-        {
-            local_25 = true;
             local_38 = false;
-            TEUIModelRef<FVM_MissionInfoTitle> local_36_4 = TEUIModelRef<FVM_MissionInfoTitle>(::FVM_MissionInfoTitle::Create(this.GetContext().Manager, local_34, local_38, this.GetEventIcon(), local_25));
-            this.SetTitleModel(local_36_4);
+            TEUIModelRef<FVM_MissionInfoTitle> local_36_3 = TEUIModelRef<FVM_MissionInfoTitle>(::FVM_MissionInfoTitle::Create(this.GetContext().Manager, local_34, local_38, this.GetEventIcon(), true));
+            this.SetTitleModel(local_36_3);
         }
         this.GetModify_TargetModels().Empty(0);
         FECSEntity local_90 = this.GetContext().GetLocalPlayer();
         Get local_94;
+        CastTo local_326;
         if (local_94.opCall())
         {
-            bool local_37;
             Has local_100;
-            local_37 = local_100.opCall();
+            bool local_37 = local_100.opCall();
             if (local_37)
             {
                 if (local_106.GetCurrentObjective())
                 {
-                    int local_85 = local_107;
-                    if (local_85 == 0)
+                    if (int(local_106.GetCurrentObjective().Get().ObjectiveType) == 0)
                     {
                         CastTo local_112;
-                        TDataObjectPtr<FObjectiveSingleConfig> local_136 = local_112.opCall();
-                        local_37 = !local_37;
-                        if (local_37)
+                        if (!(local_112.opCall().Get().bHidden))
                         {
                             local_38 = (int(local_106.GetProgress().GetObjectiveState()) == 2);
                             FCommissionObjItemModelData local_196;
@@ -629,23 +595,20 @@ struct FVMS_LevelAreaEvent : FEUIViewModelSingleton
                     {
                         CastTo local_260;
                         TDataObjectPtr<FObjectiveGroupConfig> local_284 = local_260.opCall();
-                        for (auto& local_322 : GetChildObjectives())
+                        for (auto& local_322 : local_284.Get().GetChildObjectives())
                         {
-                            TDataObjectPtr<FObjectiveSingleConfig> local_160;
-                            CastTo local_326;
-                            local_160 = local_326.opCall();
-                            if (local_25)
+                            if (local_326.opCall().Get().bHidden)
                             {
                                 continue;
                             }
-                            local_85 = local_331;
-                            if (local_85 == 2)
+                            TConstRawPtr<FObjectiveProgressData> local_328 = local_106.GetObjectiveGroupSuccessProgress().Find(local_322.Get().DataId);
+                            if (int(local_284.Get().FinishType) == 2)
                             {
                                 if (!(local_328))
                                 {
                                     continue;
                                 }
-                                if (int(GetObjectiveState()) == 2)
+                                if (int(local_328.Get().GetObjectiveState()) == 2)
                                 {
                                     continue;
                                 }
@@ -655,9 +618,9 @@ struct FVMS_LevelAreaEvent : FEUIViewModelSingleton
                             local_38 = false;
                             if (local_328)
                             {
-                                local_332 = GetSuccessProgressValue();
-                                local_333 = GetFailedProgressValue();
-                                local_38 = (int(GetObjectiveState()) == 2);
+                                local_332 = local_328.Get().GetSuccessProgressValue();
+                                local_333 = local_328.Get().GetFailedProgressValue();
+                                local_38 = (int(local_328.Get().GetObjectiveState()) == 2);
                             }
                             FCommissionObjItemModelData local_196;
                             if (local_38)
@@ -686,11 +649,11 @@ struct FVMS_LevelAreaEvent : FEUIViewModelSingleton
                 if (int(local_340.GetStatus()) == 2)
                 {
                     local_38 = true;
-                    local_37 = true;
+                    bool local_37_2 = true;
+                    TEUIModelRef<FVM_MissionInfoTitle> local_36_4 = this.GetTitleModel();
+                    local_36_4.Get().SetbHasTimer(local_37_2);
                     TEUIModelRef<FVM_MissionInfoTitle> local_36_5 = this.GetTitleModel();
-                    local_37.SetbHasTimer();
-                    TEUIModelRef<FVM_MissionInfoTitle> local_36_6 = this.GetTitleModel();
-                    local_340.GetChangeStatusTime().SetEndTime();
+                    local_36_5.Get().SetEndTime(local_340.GetChangeStatusTime());
                 }
             }
         }
@@ -698,87 +661,58 @@ struct FVMS_LevelAreaEvent : FEUIViewModelSingleton
     }
     void UpdateTrackingSideMission()
     {
-        bool local_105;
-        int local_223 = 0;
-        bool local_224 = false;
-        FMissionObjectiveInfo local_484;
+        bool local_224;
         int local_608 = 0;
         TDataObjectPtr<FMissionConfig> local_30 = ::MissionUtils::GetCurrentTrackingMission(this.GetContext().GetLocalPlayer(), EMissionType(1));
         if (!(local_30.IsSet()))
         {
-            local_105 = false;
-            TEUIModelRef<FVM_MissionInfoTitle> local_108 = TEUIModelRef<FVM_MissionInfoTitle>(::FVM_MissionInfoTitle::Create(this.GetContext().Manager, FText::FromString(""), local_105, FSoftBrush(), false));
+            TEUIModelRef<FVM_MissionInfoTitle> local_108 = TEUIModelRef<FVM_MissionInfoTitle>(::FVM_MissionInfoTitle::Create(this.GetContext().Manager, FText::FromString(""), false, FSoftBrush(), false));
             this.SetTitleModel(local_108);
             this.GetModify_TargetModels().Empty(0);
             return;
         }
         FMissionDetail local_222;
-        if (!(::MissionUtils::TryFindMissionDetail(this.GetContext().GetLocalPlayer(), local_223, local_222, false)))
+        if (!(::MissionUtils::TryFindMissionDetail(this.GetContext().GetLocalPlayer(), local_30.Get().DataId, local_222, false)))
         {
-            FSoftBrush local_100;
-            local_105 = false;
-            local_100 = FSoftBrush();
-            TEUIModelRef<FVM_MissionInfoTitle> local_108_2 = TEUIModelRef<FVM_MissionInfoTitle>(::FVM_MissionInfoTitle::Create(this.GetContext().Manager, FText::FromString(""), false, local_100, local_105));
+            TEUIModelRef<FVM_MissionInfoTitle> local_108_2 = TEUIModelRef<FVM_MissionInfoTitle>(::FVM_MissionInfoTitle::Create(this.GetContext().Manager, FText::FromString(""), false, FSoftBrush(), false));
             this.SetTitleModel(local_108_2);
             this.GetModify_TargetModels().Empty(0);
             return;
         }
         TEUIModelRef<FVM_MissionInfoTitle> local_108_3 = this.GetTitleModel();
-        if (!(local_108_3.IsValid()))
+        if (!(local_108_3.IsValid()) || (this.GetTitleModel().IsValid() && (!((FText(this.GetTitleModel().Get().GetTitle()) == local_30.Get().MissionTitle)))))
         {
-            local_224 = true;
-        }
-        else
-        {
-            local_108_3 = this.GetTitleModel();
-            local_105 = local_108_3.IsValid();
-            if (!(local_105))
-            {
-                local_105 = false;
-            }
-            else
-            {
-                local_108_3 = this.GetTitleModel();
-                FText local_104 = FText(GetTitle());
-                local_224 = !local_224;
-                local_105 = local_224;
-            }
-            local_224 = local_105;
-        }
-        if (local_224)
-        {
-            FSoftBrush local_100;
             FSoftBrush local_268;
             TDataObjectPtr<FMissionPhaseConfig> local_292;
-            if (::MissionUtils::GetGuidePresentationConfig(local_30, local_292).IsSet())
+            TDataObjectPtr<FGuidePresentationConfig> local_316 = ::MissionUtils::GetGuidePresentationConfig(local_30, local_292);
+            if (local_316.IsSet())
             {
-                local_100.GetGuideIcon();
-                local_268 = local_100;
+                local_268 = local_316.Get().GetGuideIcon();
             }
-            local_105 = false;
-            this.SetTitleModel(local_108_3);
+            TEUIModelRef<FVM_MissionInfoTitle> local_108_5 = TEUIModelRef<FVM_MissionInfoTitle>(::FVM_MissionInfoTitle::Create(this.GetContext().Manager, local_30.Get().MissionTitle, false, local_268, false));
+            this.SetTitleModel(local_108_5);
         }
         this.GetModify_TargetModels().Empty(0);
         TArray<uint> local_344;
-        CastTo local_414;
         for (auto& local_362 : local_222.GetActiveObjectiveStatusMap())
         {
-            local_362;
-            ::ObjectiveUtils::FindObjectiveConfig(GetObjectiveId());
-            if (local_414.opCall())
+            ::ObjectiveUtils::FindObjectiveConfig(local_362.GetValue().GetObjectiveId());
+            CastTo local_414;
+            TDataObjectPtr<FObjectiveGroupConfig> local_438 = local_414.opCall();
+            if (local_438)
             {
-                if (0 == 2)
+                if (int(local_438.Get().FinishType) == 2)
                 {
-                    for (auto& local_478 : GetChildObjectives())
+                    for (auto& local_478 : local_438.Get().GetChildObjectives())
                     {
-                        local_478;
+                        local_344.Add(local_478.Get().DataId);
                     }
                 }
             }
         }
         for (auto& local_362 : local_222.GetActiveObjectiveStatusMap())
         {
-            local_362;
+            FMissionObjectiveInfo local_484 = FMissionObjectiveInfo(local_362.GetValue());
             if (!(::ObjectiveUtils::FindObjectiveConfig(local_484.GetObjectiveId())))
             {
                 continue;
@@ -789,11 +723,12 @@ struct FVMS_LevelAreaEvent : FEUIViewModelSingleton
             {
                 continue;
             }
+            local_224 = local_536.Get().bHidden;
             if (local_224)
             {
                 continue;
             }
-            if (local_344.Contains(unresolved.DataId))
+            if (local_344.Contains(local_536.Get().DataId))
             {
                 if (int(local_484.GetObjectiveStatus()) != 1)
                 {
@@ -815,11 +750,18 @@ struct FVMS_LevelAreaEvent : FEUIViewModelSingleton
     uint64 MakeItemKey(FEUIModelContainer &inout Container)
     {
         int local_6 = 0;
-        int local_10 = 0;
+        int local_9;
         FEUIModelContainer::RequireModel(Container);
-        int local_9 = local_6.GetSingleObjectiveConfig().IsSet() ? local_10 : 0;
+        if (local_6.GetSingleObjectiveConfig().IsSet())
+        {
+            local_9 = local_6.GetSingleObjectiveConfig().Get().DataId;
+        }
+        else
+        {
+            local_9 = 0;
+        }
         int64 local_12 = local_9;
-        local_10 = 1;
+        int local_10 = 1;
         local_12 = local_12 << local_10;
         local_12 = local_12 | local_6.GetSubObj() ? 1 : 0;
         return local_12;
@@ -1106,7 +1048,6 @@ struct FVMS_LevelAreaEvent : FEUIViewModelSingleton
         TArray<uint64> local_4;
         int local_18 = 0;
         int local_20;
-        int local_21 = 0;
         this.BuildViewKeyOrderMainBeforeSub(local_4);
         int local_6 = this.GetPendingAddModels().Num();
         int local_7 = 0;
@@ -1114,9 +1055,16 @@ struct FVMS_LevelAreaEvent : FEUIViewModelSingleton
         {
             const FEUIModelContainer& local_12 = this.GetPendingAddModels()[local_7];
             FEUIModelContainer::RequireModel(local_12);
-            local_20 = local_18.GetSingleObjectiveConfig().IsSet() ? local_21 : 0;
+            if (local_18.GetSingleObjectiveConfig().IsSet())
+            {
+                local_20 = local_18.GetSingleObjectiveConfig().Get().DataId;
+            }
+            else
+            {
+                local_20 = 0;
+            }
             int64 local_26 = local_20;
-            local_21 = 1;
+            int local_21 = 1;
             local_26 = local_26 << local_21;
             local_26 = local_26 | local_18.GetSubObj() ? 1 : 0;
             int local_27 = this.GetViewInsertIndexForNewKey(local_4, local_26);
@@ -1396,11 +1344,9 @@ FVMS_LevelAreaEvent& Get(const UObject ContextObject)
 {
     return FVMS_LevelAreaEvent::GetByManager(EUIInternal::GetContextManager(ContextObject));
 }
-FVMS_LevelAreaEvent GetByManager(const UEUIManagerSubsystem Manager)
+FVMS_LevelAreaEvent& GetByManager(const UEUIManagerSubsystem Manager)
 {
-    FVMS_LevelAreaEvent __r;
-    TEUIModelRef<FVMS_LevelAreaEvent> local_6 = TEUIModelRef<FVMS_LevelAreaEvent>(EUIInternal::MakeModelWithManager(Manager, FVMS_LevelAreaEvent::ModelId));
-    return __r;
+    return TEUIModelRef<FVMS_LevelAreaEvent>(EUIInternal::MakeModelWithManager(Manager, FVMS_LevelAreaEvent::ModelId)).Get();
 }
 void GetModelInfo(FEUIViewModelMetaInfo &inout Result)
 {
@@ -1592,7 +1538,6 @@ namespace __GeneratedProperties_FVMS_LevelAreaEvent
 {
 UScriptStruct StaticStruct()
 {
-    UScriptStruct local_2;
-    return local_2;
+    return __GeneratedProperties_FVMS_LevelAreaEvent.Get();
 }
 }

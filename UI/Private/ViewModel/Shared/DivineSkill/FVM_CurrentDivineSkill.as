@@ -30,8 +30,8 @@ struct FVM_CurrentDivineSkill : FEUIViewModel
     }
     bool GetEquipableSkillNotSuit() const
     {
-        FVM_DivineSkillInfo& local_6;
         TEUIModelRef<FVM_DivineSkillInfo> local_2 = this.GetEquipableSkillInfo();
+        FVM_DivineSkillInfo& local_6 = local_2.Get();
         if (local_6)
         {
             return local_6.GetEquipableSkillConfig() && !(local_6.SuitForCurrentAvatar());
@@ -40,8 +40,7 @@ struct FVM_CurrentDivineSkill : FEUIViewModel
     }
     FText GetEquipableSkillNotSuitHint() const
     {
-        FVM_DivineSkillInfo& local_6;
-        TEUIModelRef<FVM_DivineSkillInfo> local_2 = this.GetEquipableSkillInfo();
+        FVM_DivineSkillInfo& local_6 = this.GetEquipableSkillInfo().Get();
         FText local_12;
         if (local_6)
         {
@@ -71,11 +70,9 @@ FVM_CurrentDivineSkill& Create(const UObject ContextObject)
 {
     return FVM_CurrentDivineSkill::CreateByManager(EUIInternal::GetContextManager(ContextObject));
 }
-FVM_CurrentDivineSkill CreateByManager(const UEUIManagerSubsystem Manager)
+FVM_CurrentDivineSkill& CreateByManager(const UEUIManagerSubsystem Manager)
 {
-    FVM_CurrentDivineSkill __r;
-    TEUIModelRef<FVM_CurrentDivineSkill> local_6 = TEUIModelRef<FVM_CurrentDivineSkill>(EUIInternal::MakeModelWithManager(Manager, FVM_CurrentDivineSkill::ModelId));
-    return __r;
+    return TEUIModelRef<FVM_CurrentDivineSkill>(EUIInternal::MakeModelWithManager(Manager, FVM_CurrentDivineSkill::ModelId)).Get();
 }
 void GetModelInfo(FEUIViewModelMetaInfo &inout Result)
 {
@@ -131,7 +128,6 @@ namespace __GeneratedProperties_FVM_CurrentDivineSkill
 {
 UScriptStruct StaticStruct()
 {
-    UScriptStruct local_2;
-    return local_2;
+    return __GeneratedProperties_FVM_CurrentDivineSkill.Get();
 }
 }

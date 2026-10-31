@@ -39,7 +39,6 @@ struct FVM_HeadsUpDisplayList : FEUIViewModel
     }
     void ManualAsyncTick()
     {
-        AECSPlayerController local_18;
         this.PendingHeadsUpDisplays.Reset(0);
         if (!(HeadsUpDisplay_Dev::CVar_EnableHeadsUpDisplay.GetBool()) || !(this.GetSpotFilter()))
         {
@@ -49,8 +48,8 @@ struct FVM_HeadsUpDisplayList : FEUIViewModel
         this.PendingHeadsUpDisplays.Reserve(this.GetSpotFilter().opArrow().GetDisplayingSpots().Num());
         FECSEntity local_10 = this.GetContext().GetLocalPlayer();
         GetDefaulted local_14;
-        TWeakObjectPtr<AECSPlayerController> local_16 = local_14.opCall().GetUEPlayerController();
-        if (!((local_18 != nullptr)))
+        AECSPlayerController local_20 = local_14.opCall().GetUEPlayerController().Get();
+        if (!((local_20 != nullptr)))
         {
             this.CommitHeadsUpDisplaysIfChanged(this.PendingHeadsUpDisplays);
             return;
@@ -70,6 +69,8 @@ struct FVM_HeadsUpDisplayList : FEUIViewModel
             this.PendingHeadsUpDisplays.Add(TEUIModelRef<FVM_HeadsUpDisplay>(::FVM_HeadsUpDisplay::Create(this.GetContext().Manager, local_34)));
         }
         FVector local_104 = FTransformUtils::GetLocation(this.GetContext().GetLocalPlayerPawn(), FFPTime(-1));
+        __Lambda_UI_Private_ViewModel_HUD_HeadsUpDisplay_VM_HeadsUpDisplayList_54 local_116;
+        this.PendingHeadsUpDisplays.Sort(local_116);
         this.CommitHeadsUpDisplaysIfChanged(this.PendingHeadsUpDisplays);
         return;
     }
@@ -168,11 +169,9 @@ FVM_HeadsUpDisplayList& Create(const UObject ContextObject)
 {
     return FVM_HeadsUpDisplayList::CreateByManager(EUIInternal::GetContextManager(ContextObject));
 }
-FVM_HeadsUpDisplayList CreateByManager(const UEUIManagerSubsystem Manager)
+FVM_HeadsUpDisplayList& CreateByManager(const UEUIManagerSubsystem Manager)
 {
-    FVM_HeadsUpDisplayList __r;
-    TEUIModelRef<FVM_HeadsUpDisplayList> local_6 = TEUIModelRef<FVM_HeadsUpDisplayList>(EUIInternal::MakeModelWithManager(Manager, FVM_HeadsUpDisplayList::ModelId));
-    return __r;
+    return TEUIModelRef<FVM_HeadsUpDisplayList>(EUIInternal::MakeModelWithManager(Manager, FVM_HeadsUpDisplayList::ModelId)).Get();
 }
 void GetModelInfo(FEUIViewModelMetaInfo &inout Result)
 {
@@ -219,7 +218,6 @@ namespace __GeneratedProperties_FVM_HeadsUpDisplayList
 {
 UScriptStruct StaticStruct()
 {
-    UScriptStruct local_2;
-    return local_2;
+    return __GeneratedProperties_FVM_HeadsUpDisplayList.Get();
 }
 }

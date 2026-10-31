@@ -133,29 +133,21 @@ struct FVM_AbnormalIcon : FEUIViewModel
     }
     void SyncActiveTimeProgress()
     {
-        bool local_10 = false;
         int local_16 = 0;
         int local_68 = 0;
-        bool local_9 = !(this.GetbHasValidSource()) || !(this.GetContext().GetLocalPlayerPawn().IsValid());
-        if (local_9)
+        if (!(this.GetbHasValidSource()) || !(this.GetContext().GetLocalPlayerPawn().IsValid()) || !(this.GetActiveState().GetValue()))
         {
-            local_9 = true;
-        }
-        else
-        {
-            local_10 = !local_10;
-            local_9 = local_10;
-        }
-        if (local_9)
-        {
+            this.GetModify_ActiveTimeProgress().Clear();
             return;
         }
         if (!(local_16))
         {
+            this.GetModify_ActiveTimeProgress().Clear();
             return;
         }
         if (!(this.GetAbnormalStateConfig().AbnormalStateBuffConfig.IsValid()))
         {
+            this.GetModify_ActiveTimeProgress().Clear();
             return;
         }
         float32 local_17 = TDataObjectPtr<FBuffConfig>(this.GetAbnormalStateConfig().AbnormalStateBuffConfig).opArrow().BuffDuration;
@@ -175,16 +167,17 @@ struct FVM_AbnormalIcon : FEUIViewModel
                 return;
             }
         }
+        this.GetModify_ActiveTimeProgress().Clear();
         return;
     }
     void RefreshAbnormalDisplay()
     {
-        bool local_2 = false;
         float local_14;
+        bool local_2 = this.GetActiveState().GetValue();
         bool local_3 = false;
         if (this.GetbHasValidSource())
         {
-            local_3 = !(local_2 && ::UCombatGlobalSettings::Get().AbnormalData.NotShowAbnormalActiveUI.Contains(EAbnormalState(this.GetTargetAbnormal()))) && (0.0f < this.GetAccumulation().GetMaxValue() || local_2);
+            local_3 = !(local_2 && ::UCombatGlobalSettings::Get().AbnormalData.NotShowAbnormalActiveUI.Contains(EAbnormalState(this.GetTargetAbnormal()))) && (this.GetAccumulation().GetValue() < this.GetAccumulation().GetMaxValue() || local_2);
         }
         if (local_2)
         {
@@ -195,10 +188,11 @@ struct FVM_AbnormalIcon : FEUIViewModel
         else
         {
             float32 local_11_2 = this.GetAccumulation().GetMaxValue();
+            float32 local_10_2 = this.GetAccumulation().GetValue();
             this.SetAccumulationColor(this.GetAbnormalStateConfig().AccumulationColor);
             if (local_11_2 > 0.0f)
             {
-                local_14 = (1.0f - (0.0f / local_11_2));
+                local_14 = (1.0f - (local_10_2 / local_11_2));
             }
             else
             {
@@ -218,12 +212,12 @@ struct FVM_AbnormalIcon : FEUIViewModel
         this.SetbHasValidSource(false);
         this.GetModify_Accumulation().Reset();
         this.GetModify_ActiveState().Reset();
+        this.GetModify_ActiveTimeProgress().Clear();
         return;
     }
     void NotifyOwnerAbnormalDisplayChanged()
     {
-        FVMS_AbnormalInfo& local_2;
-        TEUIModelWeakRef<FVMS_AbnormalInfo> local_4 = this.GetAbnormalInfoOwner();
+        FVMS_AbnormalInfo& local_2 = this.GetAbnormalInfoOwner().Get();
         if (local_2)
         {
             local_2.RequestAbnormalModelsRefresh();
@@ -462,11 +456,9 @@ FVM_AbnormalIcon& Create(const UObject ContextObject, const EAbnormalState Targe
 {
     return FVM_AbnormalIcon::CreateByManager(EUIInternal::GetContextManager(ContextObject), EAbnormalState(TargetAbnormal), AbnormalInfoOwner);
 }
-FVM_AbnormalIcon CreateByManager(const UEUIManagerSubsystem Manager, const EAbnormalState TargetAbnormal, const TEUIModelWeakRef<FVMS_AbnormalInfo> &inout AbnormalInfoOwner)
+FVM_AbnormalIcon& CreateByManager(const UEUIManagerSubsystem Manager, const EAbnormalState TargetAbnormal, const TEUIModelWeakRef<FVMS_AbnormalInfo> &inout AbnormalInfoOwner)
 {
-    FVM_AbnormalIcon __r;
-    TEUIModelRef<FVM_AbnormalIcon> local_6 = TEUIModelRef<FVM_AbnormalIcon>(EUIInternal::MakeModelWithManager_Generic(Manager, FVM_AbnormalIcon::ModelId, 0, TargetAbnormal, AbnormalInfoOwner));
-    return __r;
+    return TEUIModelRef<FVM_AbnormalIcon>(EUIInternal::MakeModelWithManager_Generic(Manager, FVM_AbnormalIcon::ModelId, 0, TargetAbnormal, AbnormalInfoOwner)).Get();
 }
 void GetModelInfo(FEUIViewModelMetaInfo &inout Result)
 {
@@ -584,7 +576,6 @@ namespace __GeneratedProperties_FVM_AbnormalIcon
 {
 UScriptStruct StaticStruct()
 {
-    UScriptStruct local_2;
-    return local_2;
+    return __GeneratedProperties_FVM_AbnormalIcon.Get();
 }
 }

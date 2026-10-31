@@ -55,8 +55,8 @@ class UWidget_TalentUpgradeConfirm : UEUIActivatableWidget
     }
     void HandleObservedModelChanges(FEUIReactiveSubscriberIterator &inout It)
     {
-        FVM_TalentUpgradeConfirm& local_6;
         TEUIModelRef<FVM_TalentUpgradeConfirm> local_2 = this.ConfirmVM.AsRef();
+        FVM_TalentUpgradeConfirm& local_6 = local_2.Get();
         for (; It; )
         {
             FEUIReactiveSubscriberTrackScope local_56 = FEUIReactiveSubscriberTrackScope(It);

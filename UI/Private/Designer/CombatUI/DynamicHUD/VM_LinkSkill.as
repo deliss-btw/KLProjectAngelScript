@@ -50,9 +50,10 @@ struct FVMS_LinkSkill : FEUIViewModelSingleton
             bool local_19 = local_26.opCall();
             if (local_19)
             {
-                if (::FASCommonUtils::GetPropConfigDataPtr(local_22))
+                TDataObjectPtr<FPropPrefabConfig> local_50 = ::FASCommonUtils::GetPropConfigDataPtr(local_22);
+                if (local_50)
                 {
-                    const FPropPrefabConfig& local_76;
+                    const FPropPrefabConfig& local_76 = local_50.Get();
                     if ((int(local_76.PropType) == 2 && (int(local_76.CombatPropType) == 1)))
                     {
                         this.SetbVisibility(true);
@@ -121,11 +122,9 @@ FVMS_LinkSkill& Get(const UObject ContextObject)
 {
     return FVMS_LinkSkill::GetByManager(EUIInternal::GetContextManager(ContextObject));
 }
-FVMS_LinkSkill GetByManager(const UEUIManagerSubsystem Manager)
+FVMS_LinkSkill& GetByManager(const UEUIManagerSubsystem Manager)
 {
-    FVMS_LinkSkill __r;
-    TEUIModelRef<FVMS_LinkSkill> local_6 = TEUIModelRef<FVMS_LinkSkill>(EUIInternal::MakeModelWithManager(Manager, FVMS_LinkSkill::ModelId));
-    return __r;
+    return TEUIModelRef<FVMS_LinkSkill>(EUIInternal::MakeModelWithManager(Manager, FVMS_LinkSkill::ModelId)).Get();
 }
 void GetModelInfo(FEUIViewModelMetaInfo &inout Result)
 {
@@ -178,7 +177,6 @@ namespace __GeneratedProperties_FVMS_LinkSkill
 {
 UScriptStruct StaticStruct()
 {
-    UScriptStruct local_2;
-    return local_2;
+    return __GeneratedProperties_FVMS_LinkSkill.Get();
 }
 }

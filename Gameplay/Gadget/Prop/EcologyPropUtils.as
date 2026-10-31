@@ -19,7 +19,6 @@ bool CalculateActivationState(const FECSEntity &inout Entity, bool &out bOutShow
     int local_8;
     int local_9;
     int local_10;
-    float32 local_40 = 0.0f;
     bOutShow = false;
     if ((EcologyPropUtils::GetWeatherName(Entity) == NAME_None))
     {
@@ -32,13 +31,11 @@ bool CalculateActivationState(const FECSEntity &inout Entity, bool &out bOutShow
     FC_EcologyPropLayoutInfo& local_20 = local_18.opCall();
     if (local_20)
     {
-        bool local_7;
         if ((local_20.CachedSpawnerEntityId == ENTITY_ID_NULL))
         {
             local_20.CachedSpawnerEntityId = EcologyConfigUtils::FindConfigByUUID(local_20.LayoutInfo.SpawnerGUID, ECS::GetECSWorld());
         }
-        local_7 = !((local_20.CachedSpawnerEntityId == ENTITY_ID_NULL));
-        if (local_7)
+        if (!((local_20.CachedSpawnerEntityId == ENTITY_ID_NULL)))
         {
             FECSEntity local_32 = FECSEntity(local_20.CachedSpawnerEntityId);
             Get local_36;
@@ -55,23 +52,13 @@ bool CalculateActivationState(const FECSEntity &inout Entity, bool &out bOutShow
                     local_88;
                     if (local_136.IsSet())
                     {
-                        local_39 = local_40;
+                        local_39 = local_136.Get().CreatureCountSpawnRatio;
                     }
                     if (local_38.EcologyPropDefToCountMap.Contains(local_20.LayoutInfo.EcologyPropDef))
                     {
                         int local_161;
                         local_161 = local_38.EcologyPropDefToCountMap[local_20.LayoutInfo.EcologyPropDef];
-                        if (local_20.LayoutInfo.BakedOrderIndex == -1)
-                        {
-                            local_7 = false;
-                        }
-                        else
-                        {
-                            local_40 = local_161;
-                            local_40 = local_40 * local_39;
-                            local_7 = (local_20.LayoutInfo.BakedOrderIndex >= local_40);
-                        }
-                        if (local_7)
+                        if (local_20.LayoutInfo.BakedOrderIndex != -1 && (local_20.LayoutInfo.BakedOrderIndex >= (local_161 * local_39)))
                         {
                             bOutShow = false;
                             return true;

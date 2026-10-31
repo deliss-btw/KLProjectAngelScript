@@ -137,69 +137,57 @@ struct FVM_PVX_Match : FEUIViewModel
         if (this.GetMode().IsValid())
         {
             this.SetMatchHint(TEUIModelRef<FVM_Match_HintComp>(::FVM_Match_HintComp::Create(this.GetContext().Manager)));
-            TEUIModelWeakRef<FM_ModeItem> local_6 = this.GetMode();
-            TEUIModelRef<FVM_Match_HintComp> local_8 = this.GetMatchHint();
-            TEUIModelRef<FM_ModeItem> local_10;
-            local_10.SetModeData();
-            TEUIModelWeakRef<FM_ModeItem> local_6_2 = this.GetMode();
-            if (GetMatchConfig().IsSet())
+            TEUIModelRef<FM_ModeItem> local_10 = TEUIModelRef<FM_ModeItem>(this.GetMode().Get());
+            this.GetMatchHint().Get().SetModeData(local_10);
+            if (this.GetMode().Get().GetMatchConfig().IsSet())
             {
-                TEUIModelWeakRef<FM_ModeItem> local_6_3 = this.GetMode();
+                TEUIModelWeakRef<FM_ModeItem> local_6 = this.GetMode();
                 CastTo local_38;
                 TDataObjectPtr<FPvxMatchConfig> local_62 = local_38.opCall();
                 if (local_62)
                 {
-                    UEUIManagerSubsystem local_64 = this.GetManager();
-                    this.SetTitleHoverTipsVM(TEUIModelRef<FVM_TitleAndDesc>());
+                    this.SetTitleHoverTipsVM(TEUIModelRef<FVM_TitleAndDesc>(::FVM_TitleAndDesc::Create(this.GetManager(), local_62.Get().ModeName, local_62.Get().ModeDesc)));
                     this.SetPlayerCampusItem(TEUIModelRef<FVM_PVX_Match_CampusItem>(::FVM_PVX_Match_CampusItem::Create(this.GetContext().Manager, local_62, true)));
                     this.SetBossCampusItem(TEUIModelRef<FVM_PVX_Match_CampusItem>(::FVM_PVX_Match_CampusItem::Create(this.GetContext().Manager, local_62, false)));
+                    this.SetOutOfOpenPeriodTips(local_62.Get().OutOfOpenPeriodTips);
                     if (this.GetOutOfOpenPeriodTips().IsEmpty())
                     {
                         this.SetOutOfOpenPeriodTips(NSLOCTEXT("PVXMatch", "OutOfOpenPeriod", "未在玩法开始时段"));
                     }
-                    bool local_3 = ::OpenTimeRangeUtils::IsNowInAnyRange(GetOpenPeriods());
+                    bool local_3 = ::OpenTimeRangeUtils::IsNowInAnyRange(local_62.Get().GetOpenPeriods());
                     this.SetbInOpenPeriod(local_3);
-                    if (GetOpenPeriods().Num() > 0)
+                    if (local_62.Get().GetOpenPeriods().Num() > 0)
                     {
                         this.ScheduleTick(this.GetModify_OpenPeriodTickTimer(), n"RefreshOpenPeriod", 30.0f, -1.0f);
-                        FText local_72 = ::OpenTimeRangeUtils::GetRangesDisplayText(GetOpenPeriods());
+                        FText local_72 = ::OpenTimeRangeUtils::GetRangesDisplayText(local_62.Get().GetOpenPeriods());
                         if (!(local_72.IsEmpty()))
                         {
                             this.SetOpenPeriodHint(FText::Format(NSLOCTEXT("PVXMatch", "OpenPeriodHint", "<Beige20F>每日 </>{0}<Beige20F> 开启</>"), local_72));
                         }
                     }
-                    TEUIModelRef<FMS_Mode> local_2 = this.GetModeMS();
-                    int local_85 = GetCurSelectCampus() & 1;
+                    int local_85 = this.GetModeMS().Get().GetCurSelectCampus() & 1;
                     if (local_85 != 0)
                     {
                         local_3 = false;
                     }
                     else
                     {
-                        TEUIModelRef<FMS_Mode> local_2_2 = this.GetModeMS();
-                        int local_85_2 = GetCurSelectCampus() & 2;
+                        int local_85_2 = this.GetModeMS().Get().GetCurSelectCampus() & 2;
                         local_3 = (local_85_2 == 0);
                     }
                     if (local_3)
                     {
-                        TEUIModelRef<FVM_PVX_Match_CampusItem> local_68 = this.GetPlayerCampusItem();
-                        true.SetbSelected();
+                        this.GetPlayerCampusItem().Get().SetbSelected(true);
                     }
-                    TEUIModelRef<FMS_Mode> local_2_3 = this.GetModeMS();
-                    int local_85_3 = GetCurSelectCampus() & 1;
+                    int local_85_3 = this.GetModeMS().Get().GetCurSelectCampus() & 1;
                     if (local_85_3 != 0)
                     {
-                        bool local_89 = true;
-                        TEUIModelRef<FVM_PVX_Match_CampusItem> local_68_2 = this.GetPlayerCampusItem();
-                        local_89.SetbSelected();
+                        this.GetPlayerCampusItem().Get().SetbSelected(true);
                     }
-                    TEUIModelRef<FMS_Mode> local_2_4 = this.GetModeMS();
-                    int local_87 = GetCurSelectCampus() & 2;
+                    int local_87 = this.GetModeMS().Get().GetCurSelectCampus() & 2;
                     if (local_87 != 0)
                     {
-                        bool local_3_3 = true;
-                        TEUIModelRef<FVM_PVX_Match_CampusItem> local_68_3 = this.GetBossCampusItem();
-                        local_3_3.SetbSelected();
+                        this.GetBossCampusItem().Get().SetbSelected(true);
                     }
                 }
             }
@@ -217,15 +205,13 @@ struct FVM_PVX_Match : FEUIViewModel
         this.SetTeamPanel(InTeamPanel);
         int64 local_2 = 0;
         this.SetMyTeam(TEUIModelRef<FM_SocialTeam>(::FM_SocialTeam::Create(this.GetContext().Manager, 0)));
-        TEUIModelRef<FM_SocialTeam> local_6 = this.GetMyTeam();
-        FEUIModelWeakRef local_8 = FEUIModelWeakRef(FEUIModelRef());
+        FEUIModelRef local_10 = FEUIModelRef(this.GetMyTeam().Get());
+        FEUIModelWeakRef local_8 = FEUIModelWeakRef(local_10);
         local_12.SetPlayer(::FMS_PlayerData::Get(this.GetContext().Manager).GetLocalPlayerData());
         this.GetMyTeam().opArrow().GetModify_TeamCommonData().Members.Add(TEUIModelRef<FM_TeamMember>(local_12));
-        TEUIModelRef<FM_SocialTeam> local_6_2 = this.GetMyTeam();
-        local_6_2.opArrow().GetModify_TeamCommonData().Captain = (TEUIModelRef<FM_TeamMember>(local_12));
+        this.GetMyTeam().opArrow().GetModify_TeamCommonData().Captain = (TEUIModelRef<FM_TeamMember>(local_12));
         this.SetLocalPlayerTeammateInfo(TEUIModelRef<FVM_TeammateInfo>(::FVM_TeammateInfo::Create(this.GetContext().Manager, (TEUIModelRef<FM_TeamMember>(local_12)))));
-        TEUIModelRef<FVM_TeamPanel> local_22 = this.GetTeamPanel();
-        1.SetTeamType();
+        this.GetTeamPanel().Get().SetTeamType(ETeamType(1));
         return;
     }
     void SetCurrentShowcase(const TEUIModelRef<FVM_AvatarShowcase> &inout InShowcase)
@@ -238,16 +224,14 @@ struct FVM_PVX_Match : FEUIViewModel
     {
         if (this.GetTeamPanel().IsValid())
         {
-            TEUIModelRef<FVM_TeamPanel> local_2 = this.GetTeamPanel();
-            if (GetDisplayingTeammates().IsEmpty())
+            if (this.GetTeamPanel().Get().GetDisplayingTeammates().IsEmpty())
             {
                 this.GetModify_CurDisplayingTeammates().Empty(0);
                 this.GetModify_CurDisplayingTeammates().Add(this.GetLocalPlayerTeammateInfo());
             }
             else
             {
-                TEUIModelRef<FVM_TeamPanel> local_2_2 = this.GetTeamPanel();
-                this.SetCurDisplayingTeammates(GetDisplayingTeammates());
+                this.SetCurDisplayingTeammates(this.GetTeamPanel().Get().GetDisplayingTeammates());
             }
             this.RefreshCanMatch();
             this.RefreshCampusItemCanMatch();
@@ -256,17 +240,7 @@ struct FVM_PVX_Match : FEUIViewModel
     }
     bool CanLeaveTeam() const
     {
-        bool local_3 = this.GetTeamPanel().IsValid();
-        if (!(local_3))
-        {
-            local_3 = false;
-        }
-        else
-        {
-            TEUIModelRef<FVM_TeamPanel> local_2 = this.GetTeamPanel();
-            local_3 = HasSocialTeamOtherMembers();
-        }
-        if (local_3)
+        if (this.GetTeamPanel().IsValid() && this.GetTeamPanel().Get().HasSocialTeamOtherMembers())
         {
             return true;
         }
@@ -276,8 +250,7 @@ struct FVM_PVX_Match : FEUIViewModel
     {
         if (this.CanLeaveTeam())
         {
-            TEUIModelRef<FVM_TeamPanel> local_4 = this.GetTeamPanel();
-            LeaveTeam();
+            this.GetTeamPanel().Get().LeaveTeam();
         }
         return;
     }
@@ -286,8 +259,7 @@ struct FVM_PVX_Match : FEUIViewModel
         bool local_5;
         if (this.GetPlayerCampusItem().IsValid())
         {
-            TEUIModelRef<FVM_PVX_Match_CampusItem> local_2 = this.GetPlayerCampusItem();
-            local_5 = GetbSelected();
+            local_5 = this.GetPlayerCampusItem().Get().GetbSelected();
         }
         else
         {
@@ -300,8 +272,7 @@ struct FVM_PVX_Match : FEUIViewModel
         bool local_5;
         if (this.GetBossCampusItem().IsValid())
         {
-            TEUIModelRef<FVM_PVX_Match_CampusItem> local_2 = this.GetBossCampusItem();
-            local_5 = GetbSelected();
+            local_5 = this.GetBossCampusItem().Get().GetbSelected();
         }
         else
         {
@@ -313,7 +284,7 @@ struct FVM_PVX_Match : FEUIViewModel
     {
         if (Msg.ClickCampusItem.IsValid())
         {
-            FVM_PVX_Match_CampusItem& local_4;
+            FVM_PVX_Match_CampusItem& local_4 = Msg.ClickCampusItem.Get();
             local_4.SetbSelected(!(local_4.GetbSelected()));
             this.RefreshCanMatch();
         }
@@ -327,8 +298,7 @@ struct FVM_PVX_Match : FEUIViewModel
         if (local_1)
         {
             bool local_3;
-            TEUIModelRef<FVM_PVX_Match_CampusItem> local_8 = this.GetPlayerCampusItem();
-            local_3 = (this.GetCurDisplayingTeammates().Num() <= GetMaxMemberNum());
+            local_3 = (this.GetCurDisplayingTeammates().Num() <= this.GetPlayerCampusItem().Get().GetMaxMemberNum());
             if (!(local_3))
             {
                 this.SetForbiddenMatchText(this.GetDismatchTeamMemberCountTips());
@@ -338,9 +308,7 @@ struct FVM_PVX_Match : FEUIViewModel
         if (local_2)
         {
             bool local_4;
-            int local_9 = this.GetCurDisplayingTeammates().Num();
-            TEUIModelRef<FVM_PVX_Match_CampusItem> local_8_2 = this.GetBossCampusItem();
-            local_4 = (local_9 <= GetMaxMemberNum());
+            local_4 = (this.GetCurDisplayingTeammates().Num() <= this.GetBossCampusItem().Get().GetMaxMemberNum());
             if (!(local_4))
             {
                 this.SetForbiddenMatchText(this.GetDismatchTeamMemberCountTips());
@@ -361,20 +329,9 @@ struct FVM_PVX_Match : FEUIViewModel
     }
     void RefreshOpenPeriod()
     {
-        bool local_3 = this.GetMode().IsValid();
-        if (!(local_3))
+        if (this.GetMode().IsValid() && this.GetMode().Get().GetMatchConfig().IsSet())
         {
-            local_3 = false;
-        }
-        else
-        {
-            TEUIModelWeakRef<FM_ModeItem> local_2 = this.GetMode();
-            local_3 = GetMatchConfig().IsSet();
-        }
-        if (local_3)
-        {
-            TEUIModelWeakRef<FM_ModeItem> local_2_2 = this.GetMode();
-            this.SetbInOpenPeriod(::OpenTimeRangeUtils::IsNowInAnyRange(GetOpenPeriods()));
+            this.SetbInOpenPeriod(::OpenTimeRangeUtils::IsNowInAnyRange(this.GetMode().Get().GetMatchConfig().Get().GetOpenPeriods()));
         }
         this.RefreshCanMatch();
         return;
@@ -383,55 +340,40 @@ struct FVM_PVX_Match : FEUIViewModel
     {
         if (this.GetPlayerCampusItem().IsValid())
         {
-            TEUIModelRef<FVM_PVX_Match_CampusItem> local_2 = this.GetPlayerCampusItem();
-            bool local_3 = (this.GetCurDisplayingTeammates().Num() <= GetMaxMemberNum());
-            TEUIModelRef<FVM_PVX_Match_CampusItem> local_2_2 = this.GetPlayerCampusItem();
-            local_3.SetbCanMatch();
+            this.GetPlayerCampusItem().Get().SetbCanMatch((this.GetCurDisplayingTeammates().Num() <= this.GetPlayerCampusItem().Get().GetMaxMemberNum()));
         }
         if (this.GetBossCampusItem().IsValid())
         {
-            int local_5 = this.GetCurDisplayingTeammates().Num();
-            TEUIModelRef<FVM_PVX_Match_CampusItem> local_2_3 = this.GetBossCampusItem();
-            bool local_3_2 = (local_5 <= GetMaxMemberNum());
-            TEUIModelRef<FVM_PVX_Match_CampusItem> local_2_4 = this.GetBossCampusItem();
-            local_3_2.SetbCanMatch();
+            this.GetBossCampusItem().Get().SetbCanMatch((this.GetCurDisplayingTeammates().Num() <= this.GetBossCampusItem().Get().GetMaxMemberNum()));
         }
         return;
     }
     void OnPlayerCampusItemSelectedChange()
     {
         int local_10;
-        TEUIModelRef<FVM_PVX_Match_CampusItem> local_2 = this.GetPlayerCampusItem();
-        if (GetbSelected())
+        if (this.GetPlayerCampusItem().Get().GetbSelected())
         {
-            TEUIModelRef<FMS_Mode> local_6 = this.GetModeMS();
-            local_10 = GetCurSelectCampus() | 1;
+            local_10 = this.GetModeMS().Get().GetCurSelectCampus() | 1;
         }
         else
         {
-            TEUIModelRef<FMS_Mode> local_6_2 = this.GetModeMS();
-            local_10 = GetCurSelectCampus() & -2;
+            local_10 = this.GetModeMS().Get().GetCurSelectCampus() & -2;
         }
-        TEUIModelRef<FMS_Mode> local_6_3 = this.GetModeMS();
-        local_10.SetCurSelectCampus();
+        this.GetModeMS().Get().SetCurSelectCampus(local_10);
         return;
     }
     void OnBossCampusItemSelectedChange()
     {
         int local_10;
-        TEUIModelRef<FVM_PVX_Match_CampusItem> local_2 = this.GetBossCampusItem();
-        if (GetbSelected())
+        if (this.GetBossCampusItem().Get().GetbSelected())
         {
-            TEUIModelRef<FMS_Mode> local_6 = this.GetModeMS();
-            local_10 = GetCurSelectCampus() | 2;
+            local_10 = this.GetModeMS().Get().GetCurSelectCampus() | 2;
         }
         else
         {
-            TEUIModelRef<FMS_Mode> local_6_2 = this.GetModeMS();
-            local_10 = GetCurSelectCampus() & -3;
+            local_10 = this.GetModeMS().Get().GetCurSelectCampus() & -3;
         }
-        TEUIModelRef<FMS_Mode> local_6_3 = this.GetModeMS();
-        local_10.SetCurSelectCampus();
+        this.GetModeMS().Get().SetCurSelectCampus(local_10);
         return;
     }
     bool GetIsCurrentModeMatching() const
@@ -441,17 +383,7 @@ struct FVM_PVX_Match : FEUIViewModel
             return false;
         }
         FMS_Mode& local_6 = ::FMS_Mode::Get(this.GetContext().Manager);
-        bool local_9 = local_6.GetbMatching() && (local_6.GetCurMatchMode() == 1);
-        if (!(local_9))
-        {
-            local_9 = false;
-        }
-        else
-        {
-            TEUIModelWeakRef<FM_ModeItem> local_2 = this.GetMode();
-            local_9 = (local_6.GetCurMatchId() == GetDataId());
-        }
-        return local_9;
+        return local_6.GetbMatching() && (local_6.GetCurMatchMode() == 1) && (local_6.GetCurMatchId() == this.GetMode().Get().GetDataId());
     }
     void OnModeMatchStatusUpdate(const FMsg_ModeMatchStatusUpdate &inout Msg)
     {
@@ -462,9 +394,7 @@ struct FVM_PVX_Match : FEUIViewModel
             this.SetbMatching(local_2);
             if (this.GetbMatching() && this.GetMatchHint().IsValid())
             {
-                TEUIModelWeakRef<FM_ModeItem> local_8 = this.GetMode();
-                TEUIModelRef<FVM_Match_HintComp> local_6 = this.GetMatchHint();
-                1.SetMatchContext(GetDataId(), 0);
+                this.GetMatchHint().Get().SetMatchContext(1, this.GetMode().Get().GetDataId(), 0);
             }
         }
         return;
@@ -477,13 +407,10 @@ struct FVM_PVX_Match : FEUIViewModel
         }
         if (this.GetbMatching())
         {
-            ::FMS_PlayerData::Get(this.GetContext().Manager).GetLocalPlayerData();
-            TEUIModelRef<FMS_Mode> local_10 = this.GetModeMS();
-            GetPlayerUid().GS_RequestCancelMatch(1);
+            this.GetModeMS().Get().GS_RequestCancelMatch(::FMS_PlayerData::Get(this.GetContext().Manager).GetLocalPlayerData().Get().GetPlayerUid(), 1);
             return;
         }
-        TEUIModelRef<FMS_Mode> local_10_2 = this.GetModeMS();
-        if (GetbMatching())
+        if (this.GetModeMS().Get().GetbMatching())
         {
             FCommonTipsParam local_18;
             ::CommonPopup::Tips(NSLOCTEXT("PVXMatch", "AlreadyMatchingOther", "已有进行中的匹配"), local_18);
@@ -491,12 +418,7 @@ struct FVM_PVX_Match : FEUIViewModel
         }
         if (this.GetbCanMatch())
         {
-            TEUIModelRef<FMS_Mode> local_20 = this.GetModeMS();
-            int local_4 = GetCurSelectCampus();
-            TEUIModelWeakRef<FM_ModeItem> local_2 = this.GetMode();
-            int local_21 = GetDataId();
-            TEUIModelRef<FMS_Mode> local_10_3 = this.GetModeMS();
-            local_21.GS_RequestStartPvxMatch(local_4);
+            this.GetModeMS().Get().GS_RequestStartPvxMatch(this.GetMode().Get().GetDataId(), this.GetModeMS().Get().GetCurSelectCampus());
             return;
         }
         if (!(this.GetForbiddenMatchText().IsEmpty()))
@@ -905,11 +827,9 @@ FVM_PVX_Match& Create(const UObject ContextObject, const TEUIModelWeakRef<FM_Mod
 {
     return FVM_PVX_Match::CreateByManager(EUIInternal::GetContextManager(ContextObject), Mode);
 }
-FVM_PVX_Match CreateByManager(const UEUIManagerSubsystem Manager, const TEUIModelWeakRef<FM_ModeItem> &inout Mode)
+FVM_PVX_Match& CreateByManager(const UEUIManagerSubsystem Manager, const TEUIModelWeakRef<FM_ModeItem> &inout Mode)
 {
-    FVM_PVX_Match __r;
-    TEUIModelRef<FVM_PVX_Match> local_6 = TEUIModelRef<FVM_PVX_Match>(EUIInternal::MakeModelWithManager_Generic(Manager, FVM_PVX_Match::ModelId, 0, Mode));
-    return __r;
+    return TEUIModelRef<FVM_PVX_Match>(EUIInternal::MakeModelWithManager_Generic(Manager, FVM_PVX_Match::ModelId, 0, Mode)).Get();
 }
 void GetModelInfo(FEUIViewModelMetaInfo &inout Result)
 {
@@ -1196,7 +1116,6 @@ namespace __GeneratedProperties_FVM_PVX_Match
 {
 UScriptStruct StaticStruct()
 {
-    UScriptStruct local_2;
-    return local_2;
+    return __GeneratedProperties_FVM_PVX_Match.Get();
 }
 }

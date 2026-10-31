@@ -301,14 +301,14 @@ class US_ClientPerfReportSystem : UECSScriptSystem
     }
     void WriteGameplayFields(FPerfHeartbeatBody &inout Body) const
     {
-        int local_121 = 0;
         UEnum local_172;
         FECSEntity local_8 = ::FASCommonUtils::GetLocalPlayerPawnEntity();
         if (local_8.IsValid())
         {
-            if (::GetAvatarConfig(local_8))
+            TDataObjectPtr<FAvatarPrefabConfig> local_34 = ::GetAvatarConfig(local_8);
+            if (local_34)
             {
-                FString local_62 = FString();
+                Body.avatar_id = FString().Append(local_34.Get().DataId);
             }
             Get local_68;
             const FC_Transform& local_64 = local_68.opCall();
@@ -319,9 +319,10 @@ class US_ClientPerfReportSystem : UECSScriptSystem
                 Body.z_coordinate = float32(local_64.GetPosition().Z);
             }
         }
-        if (::FLevelUtils::GetCurrentLevelInfoConfig(nullptr))
+        TDataObjectPtr<FLevelInfoConfig> local_96 = ::FLevelUtils::GetCurrentLevelInfoConfig(nullptr);
+        if (local_96)
         {
-            Body.scene_id = local_121;
+            Body.scene_id = local_96.Get().DataId;
         }
         ::FASCommonUtils::GetLocalPlayerProxy();
         Get local_132;
@@ -339,7 +340,7 @@ class US_ClientPerfReportSystem : UECSScriptSystem
             {
                 if (local_142.GetWorldAreaConfig())
                 {
-                    Body.region_id = local_121;
+                    Body.region_id = local_142.GetWorldAreaConfig().Get().DataId;
                 }
             }
         }

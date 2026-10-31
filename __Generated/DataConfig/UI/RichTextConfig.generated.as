@@ -3,7 +3,6 @@ namespace __FRichTextImageDataFunctions
 UFUNCTION()
 FSoftBrush __FRichTextImageData_GetImage(const TDataObjectPtr<FRichTextImageData> &inout DataObject)
 {
-    FSoftBrush __r;
     if ((DataObject == nullptr))
     {
         if (!(EUIGlobals::GIsDuringPropertyConversion))
@@ -13,7 +12,7 @@ FSoftBrush __FRichTextImageData_GetImage(const TDataObjectPtr<FRichTextImageData
         FRichTextImageData local_60;
         return local_60.Image;
     }
-    return __r;
+    return DataObject.Get().Image;
 }
 UFUNCTION()
 FRichTextImageData CastToFRichTextImageData(const TDataObjectPtr<FRichTextImageData> &inout DataObject)

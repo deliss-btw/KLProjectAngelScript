@@ -45,7 +45,6 @@ class UESMAction_CharacterStrafe : UESMBPBaseSpanAction
     }
     float32 GetMaxTurnSpeed(const FESMContext &inout Context) const
     {
-        float32 local_2 = 0.0f;
         if (this.bOverrideMaxTurnSpeed)
         {
             return this.MaxTurnSpeed;
@@ -54,9 +53,10 @@ class UESMAction_CharacterStrafe : UESMBPBaseSpanAction
         const FC_CharacterMovementConfig& local_8 = local_6.opCall();
         if (local_8)
         {
-            if (TDataObjectPtr<FDTCharacterMovementConfig>(local_8.ConfigDataKey).IsSet())
+            TDataObjectPtr<FDTCharacterMovementConfig> local_32 = TDataObjectPtr<FDTCharacterMovementConfig>(local_8.ConfigDataKey);
+            if (local_32.IsSet())
             {
-                return local_2;
+                return local_32.Get().MaxTurnSpeed;
             }
         }
         XError(ELog(11), FString().Append("No valid MaxTurnSpeed found for entity [").Append(Context.GetEntity().GetIdValue()).Append("], using default value [180.0f]."));

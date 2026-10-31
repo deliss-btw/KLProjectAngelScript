@@ -80,7 +80,7 @@ int TryEnqueuePopup(const FGameplayTag &inout PopupType, const int Priority = Co
     for (auto& local_102 : local_56)
     {
         CommonPopupDisplayingUtils_Internal::RemovePopupFromAllQueues(local_12, local_102.GetKey(), local_80);
-        local_84.Add();
+        local_84.Add(local_102.GetValue());
     }
     if (!(local_84.IsEmpty()))
     {
@@ -96,6 +96,8 @@ int TryEnqueuePopup(const FGameplayTag &inout PopupType, const int Priority = Co
         local_35 = int(local_28_2.Proceed());
         FCommonPopupQueueRuleList& local_58_2 = local_12.QueuedPopups[ECommonPopupQueueType(local_35)];
         local_58_2.QueuedPopups.Add(local_108);
+        FCommonPopupInfoSorter local_110;
+        local_58_2.QueuedPopups.Sort(local_110);
         if (local_35 != 9 && !(local_58_2.DisplayingPopup.IsValid()) && !(local_12.CollectStartTime.Contains(ECommonPopupQueueType(local_35))))
         {
             local_12.CollectStartTime.Add(ECommonPopupQueueType(local_35), ECS::GetContextTime());
@@ -341,6 +343,7 @@ void RemovePopupFromAllQueues(FCS_CommonPopupManager &inout Manager, const int P
                 {
                     if (local_28.QueuedPopups.IsEmpty())
                     {
+                        Manager.CollectStartTime.Remove(local_25);
                     }
                     else
                     {
@@ -357,6 +360,8 @@ void RemovePopupFromAllQueues(FCS_CommonPopupManager &inout Manager, const int P
     }
     if (local_5)
     {
+        Manager.DisplayingStartTime.Remove(PopupId);
+        Manager.StuckWarnedPopupIds.Remove(PopupId);
         FString local_48;
         if (local_7)
         {

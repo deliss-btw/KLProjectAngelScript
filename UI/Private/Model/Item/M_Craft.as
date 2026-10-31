@@ -204,11 +204,9 @@ FMS_Craft& Get(const UObject ContextObject)
 {
     return FMS_Craft::GetByManager(EUIInternal::GetContextManager(ContextObject));
 }
-FMS_Craft GetByManager(const UEUIManagerSubsystem Manager)
+FMS_Craft& GetByManager(const UEUIManagerSubsystem Manager)
 {
-    FMS_Craft __r;
-    TEUIModelRef<FMS_Craft> local_6 = TEUIModelRef<FMS_Craft>(EUIInternal::MakeModelWithManager(Manager, FMS_Craft::ModelId));
-    return __r;
+    return TEUIModelRef<FMS_Craft>(EUIInternal::MakeModelWithManager(Manager, FMS_Craft::ModelId)).Get();
 }
 void GetModelInfo(FEUIModelOnlyMetaInfo &inout Result)
 {

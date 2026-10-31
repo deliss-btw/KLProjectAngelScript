@@ -9,7 +9,8 @@ class US_NearDeathSystem : UECSScriptSystem
     {
         int local_8 = 0;
         FECSWorldPtr local_2 = ECS::GetECSWorld();
-        if (::FLevelUtils::GetCurrentLevelInfoConfig(nullptr))
+        TDataObjectPtr<FLevelInfoConfig> local_32 = ::FLevelUtils::GetCurrentLevelInfoConfig(nullptr);
+        if (local_32)
         {
             FGameModeFlowSettings local_106 = ::UniversalGameModeUtils::GetGameModeFlowSettings();
             if (local_106.IsValid())
@@ -18,7 +19,7 @@ class US_NearDeathSystem : UECSScriptSystem
             }
             else
             {
-                local_8.SetReviveData(GetReviveRule());
+                local_8.SetReviveData(local_32.Get().GetReviveRule());
             }
             if (local_8.GetReviveData().IsSet())
             {
@@ -59,7 +60,7 @@ class US_NearDeathSystem : UECSScriptSystem
         {
             return;
         }
-        float32 local_6 = NearDeathInfo.GetNearDeathHP() - (float32(float32(FixedTime.DeltaTime.ToSeconds()) * (0 / 100.0f)) * NearDeathInfo.GetMaxNearDeathHP());
+        float32 local_6 = NearDeathInfo.GetNearDeathHP() - ((float32(FixedTime.DeltaTime.ToSeconds()) * (Rule.GetReviveData().Get().KnockdownDecHp / 100.0f)) * NearDeathInfo.GetMaxNearDeathHP());
         NearDeathInfo.SetNearDeathHP(FMath::Max(0.0f, local_6));
         if (NearDeathInfo.GetNearDeathHP() <= 0.0f)
         {
@@ -108,7 +109,7 @@ class US_NearDeathSystem : UECSScriptSystem
         FECSWorldPtr local_2 = ECS::GetECSWorld();
         if (!(!(local_8)) && local_8.GetReviveData())
         {
-            FBuffConfigRef local_34;
+            FBuffConfigRef local_34 = FBuffConfigRef(local_8.GetReviveData().Get().KnockdownBuff);
             if (local_34.IsValid())
             {
                 FECSWorldPtr local_2_2 = ECS::GetECSWorld();
@@ -126,7 +127,7 @@ class US_NearDeathSystem : UECSScriptSystem
         FECSWorldPtr local_2 = ECS::GetECSWorld();
         if (!(!(local_8)) && local_8.GetReviveData())
         {
-            FBuffConfigRef local_34;
+            FBuffConfigRef local_34 = FBuffConfigRef(local_8.GetReviveData().Get().KnockdownBuff);
             if (local_34.IsValid())
             {
                 FECSWorldPtr local_2_2 = ECS::GetECSWorld();

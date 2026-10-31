@@ -55,23 +55,15 @@ struct FM_Trait : FEUIModel
     }
     FText GetTraitDescription() const
     {
-        FText __return;
-        if (unresolved.ModifiersByLevel.Contains(this.GetTraitLevel()))
+        if (this.GetTraitConfig().Get().ModifiersByLevel.Contains(this.GetTraitLevel()))
         {
-            int local_1 = this.GetTraitLevel();
+            return this.GetTraitConfig().Get().ModifiersByLevel[this.GetTraitLevel()].Description;
         }
-        else
+        if (this.GetTraitConfig().Get().CapabilitiesByLevel.Contains(this.GetTraitLevel()))
         {
-            if (unresolved.CapabilitiesByLevel.Contains(this.GetTraitLevel()))
-            {
-                int local_1_2 = this.GetTraitLevel();
-            }
-            else
-            {
-                __return = FText();
-            }
+            return this.GetTraitConfig().Get().CapabilitiesByLevel[this.GetTraitLevel()].Description;
         }
-        return __return;
+        return FText();
     }
     TDataObjectPtr<FTraitConfig> GetTraitConfig() const property
     {
@@ -134,11 +126,9 @@ FM_Trait& Create(const UObject ContextObject, const TDataObjectPtr<FTraitConfig>
 {
     return FM_Trait::CreateByManager(EUIInternal::GetContextManager(ContextObject), TraitConfig, TraitLevel);
 }
-FM_Trait CreateByManager(const UEUIManagerSubsystem Manager, const TDataObjectPtr<FTraitConfig> &inout TraitConfig, const int TraitLevel)
+FM_Trait& CreateByManager(const UEUIManagerSubsystem Manager, const TDataObjectPtr<FTraitConfig> &inout TraitConfig, const int TraitLevel)
 {
-    FM_Trait __r;
-    TEUIModelRef<FM_Trait> local_6 = TEUIModelRef<FM_Trait>(EUIInternal::MakeModelWithManager_Generic(Manager, FM_Trait::ModelId, 0, TraitConfig, TraitLevel));
-    return __r;
+    return TEUIModelRef<FM_Trait>(EUIInternal::MakeModelWithManager_Generic(Manager, FM_Trait::ModelId, 0, TraitConfig, TraitLevel)).Get();
 }
 void GetModelInfo(FEUIModelOnlyMetaInfo &inout Result)
 {

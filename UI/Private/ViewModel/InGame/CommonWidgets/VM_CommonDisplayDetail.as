@@ -100,14 +100,15 @@ struct FVM_CommonDisplayDetail : FEUIViewModel
     void SetupFashion(const TDataObjectPtr<FFashionConfig> &inout FashionConfig, const bool bUnlocked)
     {
         int local_7;
-        bool local_9 = false;
         this.SetupEmpty();
         if (!(FashionConfig))
         {
             return;
         }
         this.SetbHasDisplayContent(true);
+        this.SetItemName(FashionConfig.Get().Name);
         this.SetItemCategory(this.BuildFashionCategoryText(FashionConfig));
+        this.SetDetailIpText(FashionConfig.Get().Des);
         if (bUnlocked)
         {
             int local_8;
@@ -121,30 +122,16 @@ struct FVM_CommonDisplayDetail : FEUIViewModel
             local_7 = local_8;
         }
         this.SetRightInfoMode(ECommonDetailRightInfoMode(local_7));
-        bool local_1 = !(bUnlocked);
-        if (local_1)
+        if (!(bUnlocked))
         {
-            local_1 = !local_1;
-            if (!(local_1))
+            if (!(FashionConfig.Get().bDefaultUnlock) && !(FashionConfig.Get().UnlockDesOverride.IsEmpty()))
             {
-                local_1 = false;
-            }
-            else
-            {
-                local_9 = !local_9;
-                local_1 = local_9;
-            }
-            if (local_1)
-            {
-                NSLOCTEXT("CommonDisplayDetail_UnlockCondition", "解锁条件：{0}");
-                FText local_14;
-                this.SetDetailText(local_14);
+                this.SetDetailText(FText::Format(NSLOCTEXT("CommonDisplayDetail_UnlockCondition", "解锁条件：{0}"), FashionConfig.Get().UnlockDesOverride));
                 return;
             }
-            if (GetUnlockCondition())
+            if (FashionConfig.Get().GetUnlockCondition())
             {
-                FText local_18;
-                this.SetDetailText(FText::Format(NSLOCTEXT("CommonDisplayDetail_UnlockCondition", "解锁条件：{0}"), local_18));
+                this.SetDetailText(FText::Format(NSLOCTEXT("CommonDisplayDetail_UnlockCondition", "解锁条件：{0}"), FText(FashionConfig.Get().GetUnlockCondition().Get().ConditionTips)));
                 return;
             }
             this.SetDetailText(NSLOCTEXT("CommonDisplayDetail_LockedNoConditionFallback", "<限定获取>"));
@@ -153,27 +140,26 @@ struct FVM_CommonDisplayDetail : FEUIViewModel
     }
     FText BuildFashionCategoryText(const TDataObjectPtr<FFashionConfig> &inout FashionConfig) const
     {
-        int local_5 = 0;
-        int local_67 = 0;
         FText __return;
+        int local_5 = int(FashionConfig.Get().SlotType);
         FText local_10;
         ::FashionSettings::GetFashionSlotName(local_10);
-        int local_11 = local_5;
-        if (local_11 != -55)
+        if (int(FashionConfig.Get().SlotType) != -55)
         {
             return local_10;
         }
         CastTo local_42;
-        if (!(local_42.opCall()))
+        TDataObjectPtr<FMountFashionConfig> local_66 = local_42.opCall();
+        if (!(local_66))
         {
             return local_10;
         }
-        int local_11_2 = local_67;
-        if (local_11_2 <= 1)
+        int local_11 = int(local_66.Get().SeatType);
+        if (local_11 <= 1)
         {
-            if (local_11_2 != 0)
+            if (local_11 != 0)
             {
-                if (local_11_2 != 1)
+                if (local_11 != 1)
                 {
                 }
                 else
@@ -426,11 +412,9 @@ FVM_CommonDisplayDetail& Create(const UObject ContextObject)
 {
     return FVM_CommonDisplayDetail::CreateByManager(EUIInternal::GetContextManager(ContextObject));
 }
-FVM_CommonDisplayDetail CreateByManager(const UEUIManagerSubsystem Manager)
+FVM_CommonDisplayDetail& CreateByManager(const UEUIManagerSubsystem Manager)
 {
-    FVM_CommonDisplayDetail __r;
-    TEUIModelRef<FVM_CommonDisplayDetail> local_6 = TEUIModelRef<FVM_CommonDisplayDetail>(EUIInternal::MakeModelWithManager(Manager, FVM_CommonDisplayDetail::ModelId));
-    return __r;
+    return TEUIModelRef<FVM_CommonDisplayDetail>(EUIInternal::MakeModelWithManager(Manager, FVM_CommonDisplayDetail::ModelId)).Get();
 }
 void GetModelInfo(FEUIViewModelMetaInfo &inout Result)
 {
@@ -598,7 +582,6 @@ namespace __GeneratedProperties_FVM_CommonDisplayDetail
 {
 UScriptStruct StaticStruct()
 {
-    UScriptStruct local_2;
-    return local_2;
+    return __GeneratedProperties_FVM_CommonDisplayDetail.Get();
 }
 }

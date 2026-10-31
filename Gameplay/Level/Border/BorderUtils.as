@@ -54,8 +54,7 @@ TArray<FMinimapBorderInfo> GetAllActiveBorderMinimapInfos()
                 {
                     continue;
                 }
-                AKLBorder local_36;
-                local_40 = Cast<AKLBorderActor>(local_36);
+                local_40 = Cast<AKLBorderActor>(local_34.Border.Get());
                 if (local_40 != nullptr)
                 {
                     if (local_40.bDisplayOnMiniMap)
@@ -66,6 +65,8 @@ TArray<FMinimapBorderInfo> GetAllActiveBorderMinimapInfos()
             }
         }
     }
+    __Lambda_Gameplay_Level_Border_BorderUtils_53 local_56;
+    local_4.Sort(local_56);
     return local_4;
 }
 void FilterEntitiesOutsideBorder(TArray<FECSEntity> &inout Entities)
@@ -120,8 +121,7 @@ bool CheckEntityInsideBorder(const FECSEntity &inout Entity, const FECSEntity &i
         {
             return false;
         }
-        AKLBorder local_10;
-        local_14 = (Cast<AKLBorderActor>(local_10));
+        local_14 = (Cast<AKLBorderActor>(local_8.Border.Get()));
         if (local_14 != nullptr)
         {
             Get local_18;

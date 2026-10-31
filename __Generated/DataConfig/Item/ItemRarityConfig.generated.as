@@ -3,7 +3,6 @@ namespace __FItemRarityConfigFunctions
 UFUNCTION()
 EItemRarity __FItemRarityConfig_GetRarity(const TDataObjectPtr<FItemRarityConfig> &inout DataObject)
 {
-    int local_209 = 0;
     if ((DataObject == nullptr))
     {
         if (!(EUIGlobals::GIsDuringPropertyConversion))
@@ -11,15 +10,13 @@ EItemRarity __FItemRarityConfig_GetRarity(const TDataObjectPtr<FItemRarityConfig
             FBlueprintDebugFunctions::ThrowScriptException("Get 'Rarity' from a null 'FItemRarityConfig' DataObject!");
         }
         FItemRarityConfig local_208;
-        local_209 = int(local_208.Rarity);
-        return EItemRarity(local_209);
+        return local_208.Rarity;
     }
-    return EItemRarity(local_209);
+    return DataObject.Get().Rarity;
 }
 UFUNCTION()
 FText __FItemRarityConfig_GetRarityName(const TDataObjectPtr<FItemRarityConfig> &inout DataObject)
 {
-    FText __r;
     if ((DataObject == nullptr))
     {
         if (!(EUIGlobals::GIsDuringPropertyConversion))
@@ -29,12 +26,11 @@ FText __FItemRarityConfig_GetRarityName(const TDataObjectPtr<FItemRarityConfig> 
         FItemRarityConfig local_208;
         return local_208.RarityName;
     }
-    return __r;
+    return DataObject.Get().RarityName;
 }
 UFUNCTION()
 FLinearColor __FItemRarityConfig_GetDefaultColor(const TDataObjectPtr<FItemRarityConfig> &inout DataObject)
 {
-    FLinearColor __r;
     if ((DataObject == nullptr))
     {
         if (!(EUIGlobals::GIsDuringPropertyConversion))
@@ -44,12 +40,11 @@ FLinearColor __FItemRarityConfig_GetDefaultColor(const TDataObjectPtr<FItemRarit
         FItemRarityConfig local_208;
         return local_208.DefaultColor;
     }
-    return __r;
+    return DataObject.Get().DefaultColor;
 }
 UFUNCTION()
 FSoftBrush __FItemRarityConfig_GetRarityImage(const TDataObjectPtr<FItemRarityConfig> &inout DataObject)
 {
-    FSoftBrush __r;
     if ((DataObject == nullptr))
     {
         if (!(EUIGlobals::GIsDuringPropertyConversion))
@@ -59,12 +54,11 @@ FSoftBrush __FItemRarityConfig_GetRarityImage(const TDataObjectPtr<FItemRarityCo
         FItemRarityConfig local_208;
         return local_208.RarityImage;
     }
-    return __r;
+    return DataObject.Get().RarityImage;
 }
 UFUNCTION()
 FSoftBrush __FItemRarityConfig_GetRectangleRarityImage(const TDataObjectPtr<FItemRarityConfig> &inout DataObject)
 {
-    FSoftBrush __r;
     if ((DataObject == nullptr))
     {
         if (!(EUIGlobals::GIsDuringPropertyConversion))
@@ -74,12 +68,11 @@ FSoftBrush __FItemRarityConfig_GetRectangleRarityImage(const TDataObjectPtr<FIte
         FItemRarityConfig local_208;
         return local_208.RectangleRarityImage;
     }
-    return __r;
+    return DataObject.Get().RectangleRarityImage;
 }
 UFUNCTION()
 FSoftBrush __FItemRarityConfig_GetTipRarityImage(const TDataObjectPtr<FItemRarityConfig> &inout DataObject)
 {
-    FSoftBrush __r;
     if ((DataObject == nullptr))
     {
         if (!(EUIGlobals::GIsDuringPropertyConversion))
@@ -89,12 +82,11 @@ FSoftBrush __FItemRarityConfig_GetTipRarityImage(const TDataObjectPtr<FItemRarit
         FItemRarityConfig local_208;
         return local_208.TipRarityImage;
     }
-    return __r;
+    return DataObject.Get().TipRarityImage;
 }
 UFUNCTION()
 FSoftBrush __FItemRarityConfig_GetPopupBGRarityImage(const TDataObjectPtr<FItemRarityConfig> &inout DataObject)
 {
-    FSoftBrush __r;
     if ((DataObject == nullptr))
     {
         if (!(EUIGlobals::GIsDuringPropertyConversion))
@@ -104,12 +96,11 @@ FSoftBrush __FItemRarityConfig_GetPopupBGRarityImage(const TDataObjectPtr<FItemR
         FItemRarityConfig local_208;
         return local_208.PopupBGRarityImage;
     }
-    return __r;
+    return DataObject.Get().PopupBGRarityImage;
 }
 UFUNCTION()
 FText __FItemRarityConfig_GetItemNamePrefix(const TDataObjectPtr<FItemRarityConfig> &inout DataObject)
 {
-    FText __r;
     if ((DataObject == nullptr))
     {
         if (!(EUIGlobals::GIsDuringPropertyConversion))
@@ -119,7 +110,7 @@ FText __FItemRarityConfig_GetItemNamePrefix(const TDataObjectPtr<FItemRarityConf
         FItemRarityConfig local_208;
         return local_208.ItemNamePrefix;
     }
-    return __r;
+    return DataObject.Get().ItemNamePrefix;
 }
 UFUNCTION()
 FItemRarityConfig CastToFItemRarityConfig(const TDataObjectPtr<FItemRarityConfig> &inout DataObject)

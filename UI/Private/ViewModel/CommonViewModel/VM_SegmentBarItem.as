@@ -112,11 +112,9 @@ FVM_SegmentBarItem& Create(const UObject ContextObject, const FText &inout Nop, 
 {
     return FVM_SegmentBarItem::CreateByManager(EUIInternal::GetContextManager(ContextObject), Nop, IsFinish);
 }
-FVM_SegmentBarItem CreateByManager(const UEUIManagerSubsystem Manager, const FText &inout Nop, const bool IsFinish)
+FVM_SegmentBarItem& CreateByManager(const UEUIManagerSubsystem Manager, const FText &inout Nop, const bool IsFinish)
 {
-    FVM_SegmentBarItem __r;
-    TEUIModelRef<FVM_SegmentBarItem> local_6 = TEUIModelRef<FVM_SegmentBarItem>(EUIInternal::MakeModelWithManager_Generic(Manager, FVM_SegmentBarItem::ModelId, 0, Nop, IsFinish));
-    return __r;
+    return TEUIModelRef<FVM_SegmentBarItem>(EUIInternal::MakeModelWithManager_Generic(Manager, FVM_SegmentBarItem::ModelId, 0, Nop, IsFinish)).Get();
 }
 void GetModelInfo(FEUIViewModelMetaInfo &inout Result)
 {
@@ -162,7 +160,6 @@ namespace __GeneratedProperties_FVM_SegmentBarItem
 {
 UScriptStruct StaticStruct()
 {
-    UScriptStruct local_2;
-    return local_2;
+    return __GeneratedProperties_FVM_SegmentBarItem.Get();
 }
 }

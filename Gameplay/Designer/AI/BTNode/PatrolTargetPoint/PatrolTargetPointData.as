@@ -23,6 +23,7 @@ struct FPatrolTargetPointConfig
     ATargetPoint PickSpawnPoint() const
     {
         int local_2;
+        int local_9;
         if (this.bUsePatrolTargetPoint)
         {
             if (this.PatrolTargetPoints.Num() == 0)
@@ -33,13 +34,13 @@ struct FPatrolTargetPointConfig
             {
                 if (this.bRandomSpawnPoint)
                 {
-                    int local_8 = FMath::RandRange(0, (this.PatrolTargetPoints.Num() - 1));
+                    local_9 = FMath::RandRange(0, (this.PatrolTargetPoints.Num() - 1));
                 }
                 else
                 {
+                    local_9 = 0;
                 }
-                APatrolTargetPoint local_12;
-                return local_12;
+                return this.PatrolTargetPoints[local_9].Get();
             }
         }
         else
@@ -58,15 +59,12 @@ struct FPatrolTargetPointConfig
                 {
                     local_2 = 0;
                 }
-                ATargetPoint local_6;
-                return local_6;
+                return this.PlainTargetPoints[local_2].Get();
             }
         }
     }
     ATargetPoint GetNextPoint(int &inout CurrentIndex)
     {
-        APatrolTargetPoint local_10;
-        APatrolTargetPoint local_12;
         if (this.bUsePatrolTargetPoint)
         {
             if (this.PatrolTargetPoints.Num() == 0)
@@ -79,7 +77,7 @@ struct FPatrolTargetPointConfig
                 {
                     CurrentIndex = 0;
                 }
-                int local_2 = CurrentIndex;
+                APatrolTargetPoint local_10 = this.PatrolTargetPoints[CurrentIndex].Get();
                 if (local_10 == nullptr)
                 {
                     return nullptr;
@@ -98,7 +96,7 @@ struct FPatrolTargetPointConfig
                         int local_16 = 0;
                         for (; local_16 < this.PatrolTargetPoints.Num(); ++local_16)
                         {
-                            if (local_12 == local_14)
+                            if (this.PatrolTargetPoints[local_16].Get() == local_14)
                             {
                                 CurrentIndex = local_16;
                                 local_15 = true;
@@ -108,9 +106,7 @@ struct FPatrolTargetPointConfig
                         if (!(local_15))
                         {
                             this.PatrolTargetPoints.Add(TSoftObjectPtr<APatrolTargetPoint>(local_14));
-                            local_2 = this.PatrolTargetPoints.Num();
-                            local_2 = local_2 - 1;
-                            CurrentIndex = local_2;
+                            CurrentIndex = (this.PatrolTargetPoints.Num() - 1);
                         }
                         return local_14;
                     }
@@ -130,9 +126,7 @@ struct FPatrolTargetPointConfig
                     CurrentIndex = 0;
                 }
                 CurrentIndex = ((CurrentIndex + 1) % this.PlainTargetPoints.Num());
-                int local_3 = CurrentIndex;
-                ATargetPoint local_6;
-                return local_6;
+                return this.PlainTargetPoints[CurrentIndex].Get();
             }
         }
     }

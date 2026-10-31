@@ -283,11 +283,10 @@ TDataObjectPtr<FLevelEventInfoConfigBase> GetLevelEventInfoConfig(const FECSEnti
 const FLevelEventInfoConfigBase GetDefaultedLevelEventInfoConfig(const FECSEntity &inout Entity)
 {
     const FLevelEventInfoConfigBase __r;
-    if (GetLevelEventInfoConfig(Entity))
+    TDataObjectPtr<FLevelEventInfoConfigBase> local_24 = GetLevelEventInfoConfig(Entity);
+    if (local_24)
     {
-    }
-    else
-    {
+        return local_24.Get();
     }
     return __r;
 }

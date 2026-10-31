@@ -51,26 +51,9 @@ struct FVM_ItemFeature_Level : FEUIViewModel
     }
     void PostConstruct()
     {
-        bool local_3 = this.GetCommonItemVM().IsValid();
-        if (!(local_3))
+        if (this.GetCommonItemVM().IsValid() && this.GetCommonItemVM().Get().GetItemVM().IsValid())
         {
-            local_3 = false;
-        }
-        else
-        {
-            TEUIModelRef<FVM_Item> local_6;
-            TEUIModelRef<FVM_CommonItem> local_2 = this.GetCommonItemVM();
-            local_6.GetItemVM();
-            local_3 = local_6.IsValid();
-        }
-        if (local_3)
-        {
-            TEUIModelRef<FVM_Item> local_6;
-            FText local_12;
-            TEUIModelRef<FVM_CommonItem> local_2_2 = this.GetCommonItemVM();
-            local_6.GetItemVM();
-            local_12.GetEquipmentLevelText();
-            this.SetDisplayLevelText(local_12);
+            this.SetDisplayLevelText(this.GetCommonItemVM().Get().GetItemVM().Get().GetEquipmentLevelText());
         }
         return;
     }
@@ -169,11 +152,9 @@ FVM_ItemFeature_Level& Create(const UObject ContextObject, const TEUIModelRef<FV
 {
     return FVM_ItemFeature_Level::CreateByManager(EUIInternal::GetContextManager(ContextObject), CommonItemVM);
 }
-FVM_ItemFeature_Level CreateByManager(const UEUIManagerSubsystem Manager, const TEUIModelRef<FVM_CommonItem> &inout CommonItemVM)
+FVM_ItemFeature_Level& CreateByManager(const UEUIManagerSubsystem Manager, const TEUIModelRef<FVM_CommonItem> &inout CommonItemVM)
 {
-    FVM_ItemFeature_Level __r;
-    TEUIModelRef<FVM_ItemFeature_Level> local_6 = TEUIModelRef<FVM_ItemFeature_Level>(EUIInternal::MakeModelWithManager_Generic(Manager, FVM_ItemFeature_Level::ModelId, 0, CommonItemVM));
-    return __r;
+    return TEUIModelRef<FVM_ItemFeature_Level>(EUIInternal::MakeModelWithManager_Generic(Manager, FVM_ItemFeature_Level::ModelId, 0, CommonItemVM)).Get();
 }
 void GetModelInfo(FEUIViewModelMetaInfo &inout Result)
 {
@@ -233,7 +214,6 @@ namespace __GeneratedProperties_FVM_ItemFeature_Level
 {
 UScriptStruct StaticStruct()
 {
-    UScriptStruct local_2;
-    return local_2;
+    return __GeneratedProperties_FVM_ItemFeature_Level.Get();
 }
 }

@@ -34,7 +34,7 @@ class UWidget_TauntHintPointer : UEUIUserWidget
             local_8.SetAnchors(FAnchors(0.0f, 0.0f, 1.0f, 1.0f));
             local_8.SetOffsets(FMargin(0.0f, 0.0f, 0.0f, 0.0f));
         }
-        FECSEntity local_28 = FECSEntity(GetTargetEntity());
+        FECSEntity local_28 = FECSEntity(this.TauntHintPointer.Get().GetTargetEntity());
         APlayerController local_30 = this.GetOwningPlayer();
         if ((local_28 == ENTITY_NULL))
         {

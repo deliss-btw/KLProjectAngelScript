@@ -182,54 +182,54 @@ class UWidget_SkillInfo_Avatar_PlayerWizard : UEUIUserWidget
     UFUNCTION()
     FEUIModelRef SkillInfo_VM_SimpleSkillButton() const
     {
-        FVMS_SkillInfo_Avatar_PlayerWizard& local_2;
+        FVMS_SkillInfo_Avatar_PlayerWizard& local_2 = this.SkillInfo.Get();
         FEUIModelRef local_8 = local_2 ? local_2.GetVM_SimpleSkillButton() : FEUIModelRef();
         return local_8;
     }
     UFUNCTION()
     FEUIModelRef SkillInfo_VM_ExtraSkill1Button() const
     {
-        FVMS_SkillInfo_Avatar_PlayerWizard& local_2;
+        FVMS_SkillInfo_Avatar_PlayerWizard& local_2 = this.SkillInfo.Get();
         FEUIModelRef local_8 = local_2 ? local_2.GetVM_ExtraSkill1Button() : FEUIModelRef();
         return local_8;
     }
     UFUNCTION()
     FEUIModelRef SkillInfo_VM_ExtraSkill2Button() const
     {
-        FVMS_SkillInfo_Avatar_PlayerWizard& local_2;
+        FVMS_SkillInfo_Avatar_PlayerWizard& local_2 = this.SkillInfo.Get();
         FEUIModelRef local_8 = local_2 ? local_2.GetVM_ExtraSkill2Button() : FEUIModelRef();
         return local_8;
     }
     UFUNCTION()
     FEUIModelRef SkillInfo_VM_UltraSkillButton() const
     {
-        FVMS_SkillInfo_Avatar_PlayerWizard& local_2;
+        FVMS_SkillInfo_Avatar_PlayerWizard& local_2 = this.SkillInfo.Get();
         FEUIModelRef local_8 = local_2 ? local_2.GetVM_UltraSkillButton() : FEUIModelRef();
         return local_8;
     }
     UFUNCTION()
     float32 SkillInfo_CustomSkillEnergyRatio() const
     {
-        FVMS_SkillInfo_Avatar_PlayerWizard& local_2;
+        FVMS_SkillInfo_Avatar_PlayerWizard& local_2 = this.SkillInfo.Get();
         return local_2 ? local_2.GetCustomSkillEnergyRatio() : 0.0f;
     }
     UFUNCTION()
     float32 SkillInfo_CastProgress() const
     {
-        FVMS_SkillInfo_Avatar_PlayerWizard& local_2;
+        FVMS_SkillInfo_Avatar_PlayerWizard& local_2 = this.SkillInfo.Get();
         return local_2 ? local_2.GetCastProgress() : 0.0f;
     }
     UFUNCTION()
     FEUIModelRef LinkSkillInfo_VM_LinkSkillButton() const
     {
-        FVMS_LinkSkillInfo& local_2;
+        FVMS_LinkSkillInfo& local_2 = this.LinkSkillInfo.Get();
         FEUIModelRef local_8 = local_2 ? local_2.GetVM_LinkSkillButton() : FEUIModelRef();
         return local_8;
     }
     void HandleObservedModelChanges(FEUIReactiveSubscriberIterator &inout It)
     {
-        FVMS_SkillInfo_Avatar_PlayerWizard& local_6;
         TEUIModelRef<FVMS_SkillInfo_Avatar_PlayerWizard> local_2 = this.SkillInfo.AsRef();
+        FVMS_SkillInfo_Avatar_PlayerWizard& local_6 = local_2.Get();
         for (; It; )
         {
             FEUIReactiveSubscriberTrackScope local_56 = FEUIReactiveSubscriberTrackScope(It);

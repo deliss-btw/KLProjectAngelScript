@@ -16,6 +16,8 @@ struct FAICommand_RequireNewTarget : FAICommandScript
     UPROPERTY()
     FAISmart_EntityId TargetEntityID;
 
+    default m_ScriptOverrideMeta = Cast<UASStruct>(FAICommand_RequireNewTarget.Get());
+
     FAICommand_RequireNewTarget()
     {
         this.__InitDefaults();
@@ -44,6 +46,8 @@ class UBTService_RequireNewTarget : UBTService_AICommandScript
 {
     UPROPERTY()
     FAICommand_RequireNewTarget AICommand;
+
+    default SetNodeName("选择攻击目标");
 
     UBTService_RequireNewTarget()
     {

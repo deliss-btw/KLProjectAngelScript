@@ -17,8 +17,7 @@ class UBTDecorator_Random : UBTDecorator_ECSScriptBase
         const FC_RandomSeed& local_2 = local_10.opCall();
         if (local_2)
         {
-            FAISmartValueContext local_20 = Context.opImplConv();
-            return ((local_2.RandRange(0.0f, 1.0f, nullptr, ECS::GetECSWorld().GetFixedTime().Time, 0)) < 0.0f);
+            return (local_2.RandRange(0.0f, 1.0f, nullptr, ECS::GetECSWorld().GetFixedTime().Time, 0) < this.Probability.GetValue(Context.opImplConv()));
         }
         return false;
     }

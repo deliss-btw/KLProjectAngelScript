@@ -148,7 +148,6 @@ struct FVM_CommissionPanel : FEUIViewModel
     }
     void PostConstruct()
     {
-        int local_59 = 0;
         UCommissionSettings local_2 = ::CommissionUtils::GetCommissionSettings();
         int local_5 = 1;
         for (; local_5 < 6; ++local_5)
@@ -162,7 +161,7 @@ struct FVM_CommissionPanel : FEUIViewModel
             {
                 continue;
             }
-            if (!(::FMS_SystemControl::Get(this.GetContext().Manager).IsSystemUnlock(ESystemModule(local_59), false)))
+            if (!(::FMS_SystemControl::Get(this.GetContext().Manager).IsSystemUnlock(ESystemModule(local_34.Get().SystemModule), false)))
             {
                 continue;
             }
@@ -195,6 +194,8 @@ struct FVM_CommissionPanel : FEUIViewModel
     {
         TArray<TEUIModelRef<FVM_CommissionInfo>> local_4;
         TArray<TEUIModelRef<FM_Commission>> local_12 = ::FMS_CommissionData::Get(this.GetContext().Manager).GetCommissionListByType(ECommissionType(InCommissionType));
+        FCommissionListSorter local_14;
+        local_12.Sort(local_14);
         for (auto& local_30 : local_12)
         {
             local_4.Add(TEUIModelRef<FVM_CommissionInfo>(::FVM_CommissionInfo::Create(this.GetContext().Manager, local_30)));
@@ -262,10 +263,7 @@ struct FVM_CommissionPanel : FEUIViewModel
         {
             return;
         }
-        TEUIModelRef<FVM_CommissionInfo> local_2 = this.GetSelectedCommission();
-        TDataObjectPtr<FCommissionConfig> local_28;
-        local_28.GetCommissionConfig();
-        ::FMS_CommissionData::Get(this.GetContext().Manager).RequestSendCommissionRecruit(local_28);
+        ::FMS_CommissionData::Get(this.GetContext().Manager).RequestSendCommissionRecruit(this.GetSelectedCommission().Get().GetCommissionConfig());
         return;
     }
     void RefreshRecruitCountdown()
@@ -276,15 +274,12 @@ struct FVM_CommissionPanel : FEUIViewModel
     void RefreshRecruitSendDisabled()
     {
         bool local_1 = true;
-        bool local_2 = this.GetSelectedCommission();
-        if (local_2)
+        if (this.GetSelectedCommission())
         {
-            TDataObjectPtr<FCommissionConfig> local_28;
-            TEUIModelRef<FVM_CommissionInfo> local_4 = this.GetSelectedCommission();
-            local_28.GetCommissionConfig();
+            TDataObjectPtr<FCommissionConfig> local_28 = this.GetSelectedCommission().Get().GetCommissionConfig();
             if (local_28.IsSet())
             {
-                local_1 = local_2;
+                local_1 = local_28.Get().bDisableRecruitSend;
             }
         }
         this.SetbRecruitSendDisabled(local_1);
@@ -292,17 +287,7 @@ struct FVM_CommissionPanel : FEUIViewModel
     }
     void RefreshSelectedCommissionMatchState()
     {
-        bool local_3 = this.GetSelectedCommission().IsValid();
-        if (!(local_3))
-        {
-            local_3 = false;
-        }
-        else
-        {
-            TEUIModelRef<FVM_CommissionInfo> local_2 = this.GetSelectedCommission();
-            local_3 = CanMatchmakingEntry();
-        }
-        this.SetbSelectedCommissionCanMatch(local_3);
+        this.SetbSelectedCommissionCanMatch(this.GetSelectedCommission().IsValid() && this.GetSelectedCommission().Get().CanMatchmakingEntry());
         this.SetbSelectedCommissionMatching(this.IsSelectedCommissionMatching());
         this.SetbGlobalMatching(::FMS_Mode::Get(this.GetContext().Manager).GetbMatching());
         if (this.GetbSelectedCommissionMatching())
@@ -323,33 +308,26 @@ struct FVM_CommissionPanel : FEUIViewModel
     }
     void RefreshMatchHintName()
     {
-        int local_59 = 0;
+        int local_58;
         if (!(this.GetMatchHint().IsValid()) || !(this.GetSelectedCommission()))
         {
             return;
         }
-        TEUIModelRef<FVM_CommissionInfo> local_6 = this.GetSelectedCommission();
-        TDataObjectPtr<FPveCommissionMatchConfig> local_32;
-        local_32.GetCommissionMatchConfig();
-        int local_58 = local_32.IsSet() ? local_59 : 0;
-        TEUIModelRef<FVM_CommissionInfo> local_6_2 = this.GetSelectedCommission();
-        TEUIModelRef<FVM_Match_HintComp> local_2 = this.GetMatchHint();
-        2.SetMatchContext(local_58, GetCommissionId());
+        TDataObjectPtr<FPveCommissionMatchConfig> local_32 = this.GetSelectedCommission().Get().GetCommissionMatchConfig();
+        if (local_32.IsSet())
+        {
+            local_58 = local_32.Get().DataId;
+        }
+        else
+        {
+            local_58 = 0;
+        }
+        this.GetMatchHint().Get().SetMatchContext(2, local_58, this.GetSelectedCommission().Get().GetCommissionId());
         return;
     }
     bool IsSelectedCommissionMatching() const
     {
-        bool local_3 = this.GetSelectedCommission().IsValid();
-        if (!(local_3))
-        {
-            local_3 = false;
-        }
-        else
-        {
-            TEUIModelRef<FVM_CommissionInfo> local_2 = this.GetSelectedCommission();
-            local_3 = GetIsCurrentCommissionMatching();
-        }
-        return local_3;
+        return this.GetSelectedCommission().IsValid() && this.GetSelectedCommission().Get().GetIsCurrentCommissionMatching();
     }
     void OnSwitchMatchStatus()
     {
@@ -360,22 +338,16 @@ struct FVM_CommissionPanel : FEUIViewModel
         FMS_Mode& local_6 = ::FMS_Mode::Get(this.GetContext().Manager);
         if (this.IsSelectedCommissionMatching())
         {
-            ::FMS_PlayerData::Get(this.GetContext().Manager).GetLocalPlayerData();
-            local_6.GS_RequestCancelMatch(GetPlayerUid(), 1);
+            local_6.GS_RequestCancelMatch(::FMS_PlayerData::Get(this.GetContext().Manager).GetLocalPlayerData().Get().GetPlayerUid(), 1);
             return;
         }
-        TEUIModelRef<FVM_CommissionInfo> local_2 = this.GetSelectedCommission();
-        TDataObjectPtr<FPveCommissionMatchConfig> local_36;
-        local_36.GetCommissionMatchConfig();
-        if (!(local_36.IsSet()))
+        if (!(this.GetSelectedCommission().Get().GetCommissionMatchConfig().IsSet()))
         {
             return;
         }
         FDialogModelCallback local_86;
         local_86.Bind(this, FVM_CommissionPanel::OnConfirmSwitchMatch);
-        FDialogCallback local_118 = FDialogCallback(local_86);
-        TEUIModelRef<FVM_CommissionInfo> local_2_2 = this.GetSelectedCommission();
-        if (local_118.ShowLowLevelWarningIfNeeded())
+        if (this.GetSelectedCommission().Get().ShowLowLevelWarningIfNeeded(FDialogCallback(local_86)))
         {
             return;
         }
@@ -392,32 +364,25 @@ struct FVM_CommissionPanel : FEUIViewModel
     }
     void DoSwitchMatch()
     {
-        int local_56 = 0;
-        int local_64 = 0;
         if (!(this.GetSelectedCommission()))
         {
             return;
         }
-        TEUIModelRef<FVM_CommissionInfo> local_2 = this.GetSelectedCommission();
-        TDataObjectPtr<FPveCommissionMatchConfig> local_28;
-        local_28.GetCommissionMatchConfig();
+        TDataObjectPtr<FPveCommissionMatchConfig> local_28 = this.GetSelectedCommission().Get().GetCommissionMatchConfig();
         if (!(local_28.IsSet()))
         {
             return;
         }
         FMS_Mode& local_54 = ::FMS_Mode::Get(this.GetContext().Manager);
+        int local_56 = local_28.Get().MaxPlayerNum;
         int local_55 = local_56;
         if ((local_55 > 0 && (::FMS_LocalPlayerTeamData::Get(this.GetContext().Manager).GetTeamMemberCount(ETeamType(1)) == local_55)))
         {
-            TEUIModelRef<FM_Commission> local_62;
-            TEUIModelRef<FVM_CommissionInfo> local_2_2 = this.GetSelectedCommission();
-            local_62.GetCommissionModel();
-            local_54.BeginSwitchToDirectEnter(local_62);
+            local_54.BeginSwitchToDirectEnter(this.GetSelectedCommission().Get().GetCommissionModel());
             return;
         }
         this.RefreshMatchHintName();
-        TEUIModelRef<FVM_CommissionInfo> local_2_3 = this.GetSelectedCommission();
-        local_54.BeginSwitchToCommissionMatch(local_64, GetCommissionId());
+        local_54.BeginSwitchToCommissionMatch(local_28.Get().DataId, this.GetSelectedCommission().Get().GetCommissionId());
         return;
     }
     void OnRecruitCdUpdated(const FMsg_CommissionRecruitCdUpdated &inout Msg)
@@ -433,6 +398,7 @@ struct FVM_CommissionPanel : FEUIViewModel
             this.GetModify_RecruitCooldown().SetRemainedTimeWithPrecision(FFPTime(local_2), EMWCounterDownPrecision(0));
             return;
         }
+        this.GetModify_RecruitCooldown().Clear();
         return;
     }
     bool ShouldShowCommissionTypeBar() const
@@ -450,7 +416,7 @@ struct FVM_CommissionPanel : FEUIViewModel
             {
                 for (auto& local_18 : this.GetCommissionList())
                 {
-                    if (local_18.IsValid() && (GetCommissionId() == this.GetInitialSelectedCommissionId()))
+                    if (local_18.IsValid() && (local_18.Get().GetCommissionId() == this.GetInitialSelectedCommissionId()))
                     {
                         this.SetSelectedCommission(local_18);
                         return;
@@ -778,11 +744,9 @@ FVM_CommissionPanel& Create(const UObject ContextObject, const ECommissionType D
 {
     return FVM_CommissionPanel::CreateByManager(EUIInternal::GetContextManager(ContextObject), ECommissionType(DefaultCommissionType), InitialSelectedCommissionId);
 }
-FVM_CommissionPanel CreateByManager(const UEUIManagerSubsystem Manager, const ECommissionType DefaultCommissionType, const uint InitialSelectedCommissionId)
+FVM_CommissionPanel& CreateByManager(const UEUIManagerSubsystem Manager, const ECommissionType DefaultCommissionType, const uint InitialSelectedCommissionId)
 {
-    FVM_CommissionPanel __r;
-    TEUIModelRef<FVM_CommissionPanel> local_6 = TEUIModelRef<FVM_CommissionPanel>(EUIInternal::MakeModelWithManager_Generic(Manager, FVM_CommissionPanel::ModelId, 0, DefaultCommissionType, InitialSelectedCommissionId));
-    return __r;
+    return TEUIModelRef<FVM_CommissionPanel>(EUIInternal::MakeModelWithManager_Generic(Manager, FVM_CommissionPanel::ModelId, 0, DefaultCommissionType, InitialSelectedCommissionId)).Get();
 }
 void GetModelInfo(FEUIViewModelMetaInfo &inout Result)
 {
@@ -1007,7 +971,6 @@ namespace __GeneratedProperties_FVM_CommissionPanel
 {
 UScriptStruct StaticStruct()
 {
-    UScriptStruct local_2;
-    return local_2;
+    return __GeneratedProperties_FVM_CommissionPanel.Get();
 }
 }

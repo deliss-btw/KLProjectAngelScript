@@ -416,11 +416,9 @@ FVMS_MotionPage& Get(const UObject ContextObject)
 {
     return FVMS_MotionPage::GetByManager(EUIInternal::GetContextManager(ContextObject));
 }
-FVMS_MotionPage GetByManager(const UEUIManagerSubsystem Manager)
+FVMS_MotionPage& GetByManager(const UEUIManagerSubsystem Manager)
 {
-    FVMS_MotionPage __r;
-    TEUIModelRef<FVMS_MotionPage> local_6 = TEUIModelRef<FVMS_MotionPage>(EUIInternal::MakeModelWithManager(Manager, FVMS_MotionPage::ModelId));
-    return __r;
+    return TEUIModelRef<FVMS_MotionPage>(EUIInternal::MakeModelWithManager(Manager, FVMS_MotionPage::ModelId)).Get();
 }
 void GetModelInfo(FEUIViewModelMetaInfo &inout Result)
 {
@@ -543,7 +541,6 @@ namespace __GeneratedProperties_FVMS_MotionPage
 {
 UScriptStruct StaticStruct()
 {
-    UScriptStruct local_2;
-    return local_2;
+    return __GeneratedProperties_FVMS_MotionPage.Get();
 }
 }

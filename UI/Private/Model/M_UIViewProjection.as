@@ -34,9 +34,7 @@ struct FMS_UIViewProjection : FEUIModelSingleton
         const FC_PlayerController& local_12 = local_10.opCall();
         if (local_12)
         {
-            TWeakObjectPtr<AECSPlayerController> local_15 = local_12.GetUEPlayerController();
-            AECSPlayerController local_18;
-            local_2 = local_18;
+            local_2 = local_12.GetUEPlayerController().Get();
         }
         this.GetModify_Snapshot().CaptureFromPlayer(local_2);
         return;
@@ -98,11 +96,9 @@ FMS_UIViewProjection& Get(const UObject ContextObject)
 {
     return FMS_UIViewProjection::GetByManager(EUIInternal::GetContextManager(ContextObject));
 }
-FMS_UIViewProjection GetByManager(const UEUIManagerSubsystem Manager)
+FMS_UIViewProjection& GetByManager(const UEUIManagerSubsystem Manager)
 {
-    FMS_UIViewProjection __r;
-    TEUIModelRef<FMS_UIViewProjection> local_6 = TEUIModelRef<FMS_UIViewProjection>(EUIInternal::MakeModelWithManager(Manager, FMS_UIViewProjection::ModelId));
-    return __r;
+    return TEUIModelRef<FMS_UIViewProjection>(EUIInternal::MakeModelWithManager(Manager, FMS_UIViewProjection::ModelId)).Get();
 }
 void GetModelInfo(FEUIModelOnlyMetaInfo &inout Result)
 {

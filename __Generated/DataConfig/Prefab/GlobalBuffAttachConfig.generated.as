@@ -3,7 +3,6 @@ namespace __FBuffAttachListConfigFunctions
 UFUNCTION()
 TArray<FBuffConfigRef> __FBuffAttachListConfig_GetBuffs(const TDataObjectPtr<FBuffAttachListConfig> &inout DataObject)
 {
-    TArray<FBuffConfigRef> __r;
     if ((DataObject == nullptr))
     {
         if (!(EUIGlobals::GIsDuringPropertyConversion))
@@ -13,7 +12,7 @@ TArray<FBuffConfigRef> __FBuffAttachListConfig_GetBuffs(const TDataObjectPtr<FBu
         FBuffAttachListConfig local_18;
         return local_18.Buffs;
     }
-    return __r;
+    return DataObject.Get().Buffs;
 }
 UFUNCTION()
 FBuffAttachListConfig CastToFBuffAttachListConfig(const TDataObjectPtr<FBuffAttachListConfig> &inout DataObject)
@@ -27,7 +26,6 @@ namespace __FBuffAttachRuleConfigFunctions
 UFUNCTION()
 TArray<FBuffAttachLevelEventMapping> __FBuffAttachRuleConfig_GetLevelEventMappings(const TDataObjectPtr<FBuffAttachRuleConfig> &inout DataObject)
 {
-    TArray<FBuffAttachLevelEventMapping> __r;
     if ((DataObject == nullptr))
     {
         if (!(EUIGlobals::GIsDuringPropertyConversion))
@@ -37,7 +35,7 @@ TArray<FBuffAttachLevelEventMapping> __FBuffAttachRuleConfig_GetLevelEventMappin
         FBuffAttachRuleConfig local_18;
         return local_18.LevelEventMappings;
     }
-    return __r;
+    return DataObject.Get().LevelEventMappings;
 }
 UFUNCTION()
 FBuffAttachRuleConfig CastToFBuffAttachRuleConfig(const TDataObjectPtr<FBuffAttachRuleConfig> &inout DataObject)

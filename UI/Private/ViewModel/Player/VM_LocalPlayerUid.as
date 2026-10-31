@@ -72,11 +72,9 @@ FVMS_LocalPlayerUid& Create(const UObject ContextObject)
 {
     return FVMS_LocalPlayerUid::CreateByManager(EUIInternal::GetContextManager(ContextObject));
 }
-FVMS_LocalPlayerUid CreateByManager(const UEUIManagerSubsystem Manager)
+FVMS_LocalPlayerUid& CreateByManager(const UEUIManagerSubsystem Manager)
 {
-    FVMS_LocalPlayerUid __r;
-    TEUIModelRef<FVMS_LocalPlayerUid> local_6 = TEUIModelRef<FVMS_LocalPlayerUid>(EUIInternal::MakeModelWithManager(Manager, FVMS_LocalPlayerUid::ModelId));
-    return __r;
+    return TEUIModelRef<FVMS_LocalPlayerUid>(EUIInternal::MakeModelWithManager(Manager, FVMS_LocalPlayerUid::ModelId)).Get();
 }
 void GetModelInfo(FEUIViewModelMetaInfo &inout Result)
 {
@@ -121,7 +119,6 @@ namespace __GeneratedProperties_FVMS_LocalPlayerUid
 {
 UScriptStruct StaticStruct()
 {
-    UScriptStruct local_2;
-    return local_2;
+    return __GeneratedProperties_FVMS_LocalPlayerUid.Get();
 }
 }

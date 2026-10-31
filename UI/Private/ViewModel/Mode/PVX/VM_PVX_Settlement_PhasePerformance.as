@@ -11,7 +11,7 @@ struct FPVX_SettlementPlayerInfoSorter
     }
     bool opCall(const TEUIModelRef<FVM_PVX_Settlement_PlayerInfo> &inout A, const TEUIModelRef<FVM_PVX_Settlement_PlayerInfo> &inout B)
     {
-        return (GetPlayerData().GetPlayerInTeamIndex() < GetPlayerData().GetPlayerInTeamIndex());
+        return (A.Get().GetPlayerData().GetPlayerInTeamIndex() < B.Get().GetPlayerData().GetPlayerInTeamIndex());
     }
 }
 
@@ -51,12 +51,14 @@ struct FVM_PVX_Settlement_PhasePerformance : FEUIViewModel
             }
             for (auto& local_70 : local_48)
             {
-                if (GetTeamId() == local_6)
+                if (local_70.GetValue().GetTeamId() == local_6)
                 {
-                    TEUIModelRef<FVM_PVX_Settlement_PlayerInfo> local_72 = TEUIModelRef<FVM_PVX_Settlement_PlayerInfo>(::FVM_PVX_Settlement_PlayerInfo::Create(this.GetContext().Manager, local_70.GetKey()));
+                    TEUIModelRef<FVM_PVX_Settlement_PlayerInfo> local_72 = TEUIModelRef<FVM_PVX_Settlement_PlayerInfo>(::FVM_PVX_Settlement_PlayerInfo::Create(this.GetContext().Manager, local_70.GetKey(), local_70.GetValue()));
                     this.GetModify_TeamPlayerInfoList().Add(local_72);
                 }
             }
+            FPVX_SettlementPlayerInfoSorter local_76;
+            this.GetModify_TeamPlayerInfoList().Sort(local_76);
         }
         return;
     }
@@ -102,11 +104,9 @@ FVM_PVX_Settlement_PhasePerformance& Create(const UObject ContextObject)
 {
     return FVM_PVX_Settlement_PhasePerformance::CreateByManager(EUIInternal::GetContextManager(ContextObject));
 }
-FVM_PVX_Settlement_PhasePerformance CreateByManager(const UEUIManagerSubsystem Manager)
+FVM_PVX_Settlement_PhasePerformance& CreateByManager(const UEUIManagerSubsystem Manager)
 {
-    FVM_PVX_Settlement_PhasePerformance __r;
-    TEUIModelRef<FVM_PVX_Settlement_PhasePerformance> local_6 = TEUIModelRef<FVM_PVX_Settlement_PhasePerformance>(EUIInternal::MakeModelWithManager(Manager, FVM_PVX_Settlement_PhasePerformance::ModelId));
-    return __r;
+    return TEUIModelRef<FVM_PVX_Settlement_PhasePerformance>(EUIInternal::MakeModelWithManager(Manager, FVM_PVX_Settlement_PhasePerformance::ModelId)).Get();
 }
 void GetModelInfo(FEUIViewModelMetaInfo &inout Result)
 {
@@ -149,7 +149,6 @@ namespace __GeneratedProperties_FVM_PVX_Settlement_PhasePerformance
 {
 UScriptStruct StaticStruct()
 {
-    UScriptStruct local_2;
-    return local_2;
+    return __GeneratedProperties_FVM_PVX_Settlement_PhasePerformance.Get();
 }
 }

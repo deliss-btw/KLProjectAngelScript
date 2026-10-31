@@ -71,8 +71,7 @@ struct FMaterialAnimCurve
             {
                 for (auto& local_58 : this.FloatCurves)
                 {
-                    FMaterialAnimCurveFloat local_62;
-                    local_36.SetScalarParameterValueOnMaterials(local_58.GetKey(), local_62.DefaultValue);
+                    local_36.SetScalarParameterValueOnMaterials(local_58.GetKey(), local_58.GetValue().DefaultValue);
                 }
             }
         }
@@ -80,7 +79,6 @@ struct FMaterialAnimCurve
     }
     void Update(const FECSEntity &inout Entity, const FName &inout LogicName, const float Time, const FFPTime &inout WorldTime, const float32 DeltaSeconds, TMap<FName, float32> &inout InterpoPrevValues) const
     {
-        const FMaterialAnimCurveFloat& local_30;
         float32 local_37 = 0.0f;
         AGameActor local_6 = (Cast<AGameActor>(Entity.GetActor()));
         if (local_6 == nullptr)
@@ -90,6 +88,7 @@ struct FMaterialAnimCurve
         for (auto& local_26 : this.FloatCurves)
         {
             const FName& local_28 = local_26.GetKey();
+            const FMaterialAnimCurveFloat& local_30 = local_26.GetValue();
             float local_36 = this.GetSampleTime(local_30.Source, Entity, Time, local_30.BBVarName, local_30.Attribute.AttributeClass, WorldTime);
             float32 local_38 = local_30.InterpoSpeed;
             if (local_38 > 0.0f)

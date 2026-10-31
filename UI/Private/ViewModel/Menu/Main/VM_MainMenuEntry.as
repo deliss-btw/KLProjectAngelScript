@@ -208,11 +208,9 @@ FVM_MainMenuEntry& Create(const UObject ContextObject, const TDataObjectPtr<FMen
 {
     return FVM_MainMenuEntry::CreateByManager(EUIInternal::GetContextManager(ContextObject), MenuConfig, MenuOperation);
 }
-FVM_MainMenuEntry CreateByManager(const UEUIManagerSubsystem Manager, const TDataObjectPtr<FMenuConfig> &inout MenuConfig, const FMenuOperation &inout MenuOperation)
+FVM_MainMenuEntry& CreateByManager(const UEUIManagerSubsystem Manager, const TDataObjectPtr<FMenuConfig> &inout MenuConfig, const FMenuOperation &inout MenuOperation)
 {
-    FVM_MainMenuEntry __r;
-    TEUIModelRef<FVM_MainMenuEntry> local_6 = TEUIModelRef<FVM_MainMenuEntry>(EUIInternal::MakeModelWithManager_Generic(Manager, FVM_MainMenuEntry::ModelId, 0, MenuConfig, MenuOperation));
-    return __r;
+    return TEUIModelRef<FVM_MainMenuEntry>(EUIInternal::MakeModelWithManager_Generic(Manager, FVM_MainMenuEntry::ModelId, 0, MenuConfig, MenuOperation)).Get();
 }
 void GetModelInfo(FEUIViewModelMetaInfo &inout Result)
 {
@@ -290,7 +288,6 @@ namespace __GeneratedProperties_FVM_MainMenuEntry
 {
 UScriptStruct StaticStruct()
 {
-    UScriptStruct local_2;
-    return local_2;
+    return __GeneratedProperties_FVM_MainMenuEntry.Get();
 }
 }

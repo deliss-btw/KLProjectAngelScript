@@ -167,8 +167,7 @@ struct FMS_CrossDSMarkGuide : FEUIModelSingleton
         }
         this.SetDialogHelper(TEUIModelRef<FVM_CrossDSMarkGuideDialogHelper>(::FVM_CrossDSMarkGuideDialogHelper::Create(this.GetContext().Manager, Spot, local_140)));
         FDialogModelCallback local_200;
-        TEUIModelRef<FVM_CrossDSMarkGuideDialogHelper> local_174 = this.GetDialogHelper();
-        local_200.Bind(FVM_CrossDSMarkGuideDialogHelper::OnDialogCallback);
+        local_200.Bind(this.GetDialogHelper().Get(), FVM_CrossDSMarkGuideDialogHelper::OnDialogCallback);
         FText local_242 = FText();
         FText local_246 = FText();
         FDialogCallback local_232 = FDialogCallback(local_200);
@@ -467,11 +466,9 @@ FVM_CrossDSMarkGuideDialogHelper& Create(const UObject ContextObject, const TEUI
 {
     return FVM_CrossDSMarkGuideDialogHelper::CreateByManager(EUIInternal::GetContextManager(ContextObject), TargetSpot, NearestTeleporter);
 }
-FVM_CrossDSMarkGuideDialogHelper CreateByManager(const UEUIManagerSubsystem Manager, const TEUIModelRef<FM_Spot> &inout TargetSpot, const TDataObjectPtr<FTeleporterConfig> &inout NearestTeleporter)
+FVM_CrossDSMarkGuideDialogHelper& CreateByManager(const UEUIManagerSubsystem Manager, const TEUIModelRef<FM_Spot> &inout TargetSpot, const TDataObjectPtr<FTeleporterConfig> &inout NearestTeleporter)
 {
-    FVM_CrossDSMarkGuideDialogHelper __r;
-    TEUIModelRef<FVM_CrossDSMarkGuideDialogHelper> local_6 = TEUIModelRef<FVM_CrossDSMarkGuideDialogHelper>(EUIInternal::MakeModelWithManager_Generic(Manager, FVM_CrossDSMarkGuideDialogHelper::ModelId, 0, TargetSpot, NearestTeleporter));
-    return __r;
+    return TEUIModelRef<FVM_CrossDSMarkGuideDialogHelper>(EUIInternal::MakeModelWithManager_Generic(Manager, FVM_CrossDSMarkGuideDialogHelper::ModelId, 0, TargetSpot, NearestTeleporter)).Get();
 }
 void GetModelInfo(FEUIViewModelMetaInfo &inout Result)
 {
@@ -508,8 +505,7 @@ namespace __GeneratedProperties_FVM_CrossDSMarkGuideDialogHelper
 {
 UScriptStruct StaticStruct()
 {
-    UScriptStruct local_2;
-    return local_2;
+    return __GeneratedProperties_FVM_CrossDSMarkGuideDialogHelper.Get();
 }
 }
 namespace FMS_CrossDSMarkGuide
@@ -518,11 +514,9 @@ FMS_CrossDSMarkGuide& Get(const UObject ContextObject)
 {
     return FMS_CrossDSMarkGuide::GetByManager(EUIInternal::GetContextManager(ContextObject));
 }
-FMS_CrossDSMarkGuide GetByManager(const UEUIManagerSubsystem Manager)
+FMS_CrossDSMarkGuide& GetByManager(const UEUIManagerSubsystem Manager)
 {
-    FMS_CrossDSMarkGuide __r;
-    TEUIModelRef<FMS_CrossDSMarkGuide> local_6 = TEUIModelRef<FMS_CrossDSMarkGuide>(EUIInternal::MakeModelWithManager(Manager, FMS_CrossDSMarkGuide::ModelId));
-    return __r;
+    return TEUIModelRef<FMS_CrossDSMarkGuide>(EUIInternal::MakeModelWithManager(Manager, FMS_CrossDSMarkGuide::ModelId)).Get();
 }
 void GetModelInfo(FEUIModelOnlyMetaInfo &inout Result)
 {

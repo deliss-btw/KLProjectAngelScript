@@ -195,6 +195,11 @@ class UWidget_Login : UEUIActivatableWidget
     void Destruct_Implementation()
     {
         System::ClearAndInvalidateTimerHandle(__GetWorldContext(), this.WaitDSConnectTimerHandle);
+        this.RecievedRegionListDelegate.Clear();
+        this.RecievedGateAddressDelegate.Clear();
+        this.OnConnectToGateSuccessDelegate.Clear();
+        this.GetPlayerTokenRspDelegate.Clear();
+        this.PlayerLoginRspDelegate.Clear();
         UECSLocalPlayer local_8 = (Cast<UECSLocalPlayer>(this.GetOwningLocalPlayer()));
         if (local_8 != nullptr)
         {
@@ -410,6 +415,8 @@ class UWidget_Login : UEUIActivatableWidget
             }
             this.GateInfoList.Add(local_56);
         }
+        FLoginGateInfoDisplaySorter local_60;
+        this.GateInfoList.Sort(local_60);
         for (auto& local_56 : this.GateInfoList)
         {
             FString local_64 = local_56.RegionTitle;

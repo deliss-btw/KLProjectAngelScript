@@ -95,8 +95,7 @@ struct FC_VengeanceKiller : FECSComponent
         int local_1 = 0;
         for (auto& local_22 : this.KillDataMap)
         {
-            local_22;
-            local_1 = local_1 + 0;
+            local_1 = local_1 + local_22.GetValue().KillTimes;
         }
         return local_1;
     }

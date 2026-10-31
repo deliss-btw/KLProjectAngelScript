@@ -17,20 +17,20 @@ class UWidget_CommonBGItemMenu : UEUIUserListItemWidget
     UFUNCTION()
     FText CommonBGItemMenu_DisplayText() const
     {
-        FVM_CommonBGItemMenu& local_2;
+        FVM_CommonBGItemMenu& local_2 = this.CommonBGItemMenu.Get();
         FText local_12 = local_2 ? local_2.GetDisplayText() : FText();
         return local_12;
     }
     UFUNCTION()
     float32 CommonBGItemMenu_ForbiddenOpacity() const
     {
-        FVM_CommonBGItemMenu& local_2;
+        FVM_CommonBGItemMenu& local_2 = this.CommonBGItemMenu.Get();
         return local_2 ? local_2.GetForbiddenOpacity() : 0.0f;
     }
     UFUNCTION()
     int CommonBGItemMenu_HoveredIndex() const
     {
-        FVM_CommonBGItemMenu& local_2;
+        FVM_CommonBGItemMenu& local_2 = this.CommonBGItemMenu.Get();
         return local_2 ? local_2.GetHoveredIndex() : 0;
     }
     UFUNCTION()

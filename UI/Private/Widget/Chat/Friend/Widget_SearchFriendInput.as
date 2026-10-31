@@ -30,7 +30,7 @@ class UWidget_SearchFriendInput : UEUIUserWidget
         {
             return;
         }
-        this.EditInput.SetText(FText::FromString(GetAlreadyInputText()));
+        this.EditInput.SetText(FText::FromString(this.SearchFriendInput.Get().GetAlreadyInputText()));
         return;
     }
     UFUNCTION()
@@ -68,7 +68,7 @@ class UWidget_SearchFriendInput : UEUIUserWidget
     {
         if (this.SearchFriendInput.IsValid())
         {
-            OnBeginSearch();
+            this.SearchFriendInput.Get().OnBeginSearch();
         }
         return;
     }
@@ -84,8 +84,8 @@ class UWidget_SearchFriendInput : UEUIUserWidget
         {
             return;
         }
-        Input.ApplySearchInputFromEdit();
-        FString local_6 = FString(GetTempInputText());
+        this.SearchFriendInput.Get().ApplySearchInputFromEdit(Input);
+        FString local_6 = FString(this.SearchFriendInput.Get().GetTempInputText());
         if ((!((local_6 == Input)) && ((this.EditInput != nullptr))))
         {
             this.EditInput.SetText(FText::FromString(local_6));
@@ -104,15 +104,15 @@ class UWidget_SearchFriendInput : UEUIUserWidget
     {
         if (this.SearchFriendInput.IsValid())
         {
-            ClearSearchResult();
+            this.SearchFriendInput.Get().ClearSearchResult();
             this.OnAlreadyInputTextChanged();
         }
         return;
     }
     void HandleObservedModelChanges(FEUIReactiveSubscriberIterator &inout It)
     {
-        FVM_SearchFriendInput& local_6;
         TEUIModelRef<FVM_SearchFriendInput> local_2 = this.SearchFriendInput.AsRef();
+        FVM_SearchFriendInput& local_6 = local_2.Get();
         for (; It; )
         {
             FEUIReactiveSubscriberTrackScope local_56 = FEUIReactiveSubscriberTrackScope(It);

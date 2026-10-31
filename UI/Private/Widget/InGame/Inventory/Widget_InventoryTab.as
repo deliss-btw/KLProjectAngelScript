@@ -121,7 +121,7 @@ class UWidget_InventoryMainTabSecond : UEUIUserWidget
     {
         if (this.Category.IsValid())
         {
-            Select();
+            this.Category.Get().Select();
         }
         return;
     }

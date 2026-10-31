@@ -18,14 +18,14 @@ class UWidget_StigmataGifts : UEUIUserWidget
     UFUNCTION()
     FText StigmataGifts_UnlockPercentText() const
     {
-        FVM_StigmataGifts& local_2;
+        FVM_StigmataGifts& local_2 = this.StigmataGifts.Get();
         FText local_12 = local_2 ? local_2.GetUnlockPercentText() : FText();
         return local_12;
     }
     UFUNCTION()
     float32 StigmataGifts_UnlockPercent() const
     {
-        FVM_StigmataGifts& local_2;
+        FVM_StigmataGifts& local_2 = this.StigmataGifts.Get();
         return local_2 ? local_2.GetUnlockPercent() : 0.0f;
     }
     UFUNCTION()

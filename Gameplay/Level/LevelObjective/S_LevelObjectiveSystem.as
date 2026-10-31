@@ -10,13 +10,12 @@ class US_LevelObjectiveSystem : UECSScriptSystem
         int local_22 = 0;
         Remove local_4;
         local_4.opCall();
-        AActor local_8;
-        AKLLevelScriptAreaEventBase local_12 = (Cast<AKLLevelScriptAreaEventBase>(local_8));
+        AKLLevelScriptAreaEventBase local_12 = (Cast<AKLLevelScriptAreaEventBase>(C_LevelScriptActor.LevelScript.Get()));
         if (local_12 != nullptr)
         {
-            if (local_12.EventInfo.IsSet() && (GetLevelObjectives().Num() > 0))
+            if (local_12.EventInfo.IsSet() && (local_12.EventInfo.Get().GetLevelObjectives().Num() > 0))
             {
-                local_22.SetObjectives(GetLevelObjectives());
+                local_22.SetObjectives(local_12.EventInfo.Get().GetLevelObjectives());
                 local_22.SetCurrentObjectiveIndex(0);
                 FObjectiveContext local_28;
                 local_22.SetCurrentObjectiveInstanceId(::ObjectiveUtils::ActivateObjective(local_22.GetObjectives()[0], local_28));
@@ -45,8 +44,8 @@ class US_LevelObjectiveSystem : UECSScriptSystem
             local_82.Proceed();
             if (local_126.GetCurrentObjectiveInstanceId() == int(Event.ObjectiveInstanceId))
             {
-                AActor local_134;
-                local_138 = Cast<AKLLevelScriptAreaEventBase>(local_134);
+                Get local_132;
+                local_138 = Cast<AKLLevelScriptAreaEventBase>(local_132.opCall().LevelScript.Get());
                 local_126.GetCurrentObjective().IsSet();
                 local_138.NotifyLevelObjectiveStatusChanged(local_126.GetCurrentObjectiveIndex(), local_126.GetCurrentObjectiveInstanceId(), local_126.GetCurrentObjective(), Event.Status);
                 if (int(Event.Status) == 2)
@@ -93,7 +92,6 @@ class US_LevelObjectiveSystem : UECSScriptSystem
     void ServerJob_HandleLevelObjectiveProgressUpdate(const FCE_ObjectiveProgressUpdated &inout Event) const
     {
         int local_126 = 0;
-        int local_127 = 0;
         FObjectiveInstance local_278;
         FObjectiveInstance local_462;
         FECSRuntimeView local_40 = this.GetECSWorld().GetRuntimeView(EECSRuntimeViewType(2));
@@ -105,11 +103,11 @@ class US_LevelObjectiveSystem : UECSScriptSystem
         for (; local_82.CanProceed;)
         {
             local_82.Proceed();
-            if (local_127 == 0)
+            if (int(local_126.GetCurrentObjective().Get().ObjectiveType) == 0)
             {
                 if (local_126.GetCurrentObjectiveInstanceId() == int(Event.ObjectiveInstanceId))
                 {
-                    if (local_127 == 0)
+                    if (int(local_126.GetCurrentObjective().Get().ObjectiveType) == 0)
                     {
                         if (Event.bIsFinishProgress)
                         {
@@ -123,21 +121,19 @@ class US_LevelObjectiveSystem : UECSScriptSystem
                 }
                 continue;
             }
-            int local_130 = local_126.GetCurrentObjectiveInstanceId();
-            if (::ObjectiveUtils::TryFindActivetedObjectiveInstance(local_130, local_278))
+            if (::ObjectiveUtils::TryFindActivetedObjectiveInstance(local_126.GetCurrentObjectiveInstanceId(), local_278))
             {
-                int local_131 = int(Event.ObjectiveInstanceId);
-                if (::ObjectiveUtils::GroupContainsChildInstance(local_278, local_131))
+                if (::ObjectiveUtils::GroupContainsChildInstance(local_278, int(Event.ObjectiveInstanceId)))
                 {
                     TMap<uint, FObjectiveProgressData> local_298;
                     for (auto& local_316 : local_278.ChildObjectiveMap)
                     {
-                        local_316;
+                        int local_130 = local_316.GetValue();
                         if (local_130 == 0)
                         {
                             continue;
                         }
-                        if (::ObjectiveUtils::TryFindActivetedObjectiveInstance(local_131, local_462))
+                        if (::ObjectiveUtils::TryFindActivetedObjectiveInstance(local_316.GetValue(), local_462))
                         {
                             FObjectiveProgressData local_466;
                             local_466.SetSuccessProgressValue(local_462.GetFinishProgressValue());

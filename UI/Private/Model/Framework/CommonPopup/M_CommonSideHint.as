@@ -97,6 +97,7 @@ struct FM_CommonSideHintManager : FEUIModel
         for (auto local_16 : Event.RemovedPopupIds)
         {
             XLog(ELog(16), FString().Append("Side hint removed when pending: ").Append(local_16));
+            this.GetModify_PendingSideHintInfos().Remove(local_16);
         }
         if (Event.NewDisplayingPopupIds.Contains(this.GetCurrentOccupyingSideHintId()))
         {
@@ -140,7 +141,7 @@ struct FM_CommonSideHintManager : FEUIModel
     {
         if (this.GetPrivateCurrentOccupyingSideHintId() != INDEX_NONE)
         {
-            int local_1 = this.GetPrivateCurrentOccupyingSideHintId();
+            this.GetModify_PendingSideHintInfos().Remove(this.GetPrivateCurrentOccupyingSideHintId());
         }
         this.SetPrivateCurrentOccupyingSideHintId(InCurrentOccupyingSideHintId);
         if (this.GetPrivateCurrentOccupyingSideHintId() == INDEX_NONE)
@@ -329,11 +330,9 @@ FM_CommonSideHintManager& Create(const UObject ContextObject, const float32 Disp
 {
     return FM_CommonSideHintManager::CreateByManager(EUIInternal::GetContextManager(ContextObject), DisplayInterval);
 }
-FM_CommonSideHintManager CreateByManager(const UEUIManagerSubsystem Manager, const float32 DisplayInterval)
+FM_CommonSideHintManager& CreateByManager(const UEUIManagerSubsystem Manager, const float32 DisplayInterval)
 {
-    FM_CommonSideHintManager __r;
-    TEUIModelRef<FM_CommonSideHintManager> local_6 = TEUIModelRef<FM_CommonSideHintManager>(EUIInternal::MakeModelWithManager_Generic(Manager, FM_CommonSideHintManager::ModelId, 0, DisplayInterval));
-    return __r;
+    return TEUIModelRef<FM_CommonSideHintManager>(EUIInternal::MakeModelWithManager_Generic(Manager, FM_CommonSideHintManager::ModelId, 0, DisplayInterval)).Get();
 }
 void GetModelInfo(FEUIModelOnlyMetaInfo &inout Result)
 {
@@ -387,11 +386,9 @@ FMS_CommonSideHintManagerAccessor& Get(const UObject ContextObject)
 {
     return FMS_CommonSideHintManagerAccessor::GetByManager(EUIInternal::GetContextManager(ContextObject));
 }
-FMS_CommonSideHintManagerAccessor GetByManager(const UEUIManagerSubsystem Manager)
+FMS_CommonSideHintManagerAccessor& GetByManager(const UEUIManagerSubsystem Manager)
 {
-    FMS_CommonSideHintManagerAccessor __r;
-    TEUIModelRef<FMS_CommonSideHintManagerAccessor> local_6 = TEUIModelRef<FMS_CommonSideHintManagerAccessor>(EUIInternal::MakeModelWithManager(Manager, FMS_CommonSideHintManagerAccessor::ModelId));
-    return __r;
+    return TEUIModelRef<FMS_CommonSideHintManagerAccessor>(EUIInternal::MakeModelWithManager(Manager, FMS_CommonSideHintManagerAccessor::ModelId)).Get();
 }
 void GetModelInfo(FEUIModelOnlyMetaInfo &inout Result)
 {

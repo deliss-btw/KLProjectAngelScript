@@ -285,13 +285,13 @@ struct FM_SpotRegistry : FEUIModel
         {
             if (local_40.GetKey())
             {
-                local_20.Add(local_40.GetKey(), this.GetPresentationDataTypesAsBitSetInternal());
+                local_20.Add(local_40.GetKey(), this.GetPresentationDataTypesAsBitSetInternal(local_40.GetValue()));
             }
         }
         this.GetModify_AllSpotsPrivate().Empty(0);
         for (auto& local_60 : local_20)
         {
-            this.NotifySpotRemovedInternal(local_60.GetKey());
+            this.NotifySpotRemovedInternal(local_60.GetKey(), local_60.GetValue());
         }
         return;
     }
@@ -307,11 +307,10 @@ struct FM_SpotRegistry : FEUIModel
             TConstRawPtr<FSpotPresentationData> local_4 = this.GetAllSpotsPrivate().Find(Spot);
             if (local_4)
             {
-                if (local_4.opArrow().PresentationDataMap.Find(DataType))
+                TConstRawPtr<FInstancedStruct> local_8 = local_4.opArrow().PresentationDataMap.Find(DataType);
+                if (local_8)
                 {
-                }
-                else
-                {
+                    return local_8.Get();
                 }
             }
         }
@@ -593,7 +592,7 @@ struct FM_SpotRegistry : FEUIModel
             {
                 bool local_1 = local_4.opArrow().HasPresentationConfigData() || local_4.opArrow().PresentationDataMap.Contains(EPresentationDataType(0));
                 local_4.opArrow().SetPresentationConfigData(FDataObjectPtr());
-                if (local_1)
+                if (local_4.opArrow().PresentationDataMap.Remove(EPresentationDataType(0)))
                 {
                     this.NotifySpotPresentationDataModifiedInternal(Spot, EPresentationDataType(0));
                 }
@@ -610,7 +609,7 @@ struct FM_SpotRegistry : FEUIModel
             {
                 bool local_1 = local_4.opArrow().HasMinimapIconConfigData() || local_4.opArrow().PresentationDataMap.Contains(EPresentationDataType(1));
                 local_4.opArrow().SetMinimapIconConfigData(FDataObjectPtr());
-                if (local_1)
+                if (local_4.opArrow().PresentationDataMap.Remove(EPresentationDataType(1)))
                 {
                     this.NotifySpotPresentationDataModifiedInternal(Spot, EPresentationDataType(1));
                 }
@@ -627,7 +626,7 @@ struct FM_SpotRegistry : FEUIModel
             {
                 bool local_1 = local_4.opArrow().HasIndicatorConfigData() || local_4.opArrow().PresentationDataMap.Contains(EPresentationDataType(2));
                 local_4.opArrow().SetIndicatorConfigData(FDataObjectPtr());
-                if (local_1)
+                if (local_4.opArrow().PresentationDataMap.Remove(EPresentationDataType(2)))
                 {
                     this.NotifySpotPresentationDataModifiedInternal(Spot, EPresentationDataType(2));
                 }
@@ -644,7 +643,7 @@ struct FM_SpotRegistry : FEUIModel
             {
                 bool local_1 = local_4.opArrow().HasNavigationBarIconConfigData() || local_4.opArrow().PresentationDataMap.Contains(EPresentationDataType(3));
                 local_4.opArrow().SetNavigationBarIconConfigData(FDataObjectPtr());
-                if (local_1)
+                if (local_4.opArrow().PresentationDataMap.Remove(EPresentationDataType(3)))
                 {
                     this.NotifySpotPresentationDataModifiedInternal(Spot, EPresentationDataType(3));
                 }
@@ -661,7 +660,7 @@ struct FM_SpotRegistry : FEUIModel
             {
                 bool local_1 = local_4.opArrow().HasHeadsUpDisplayConfigData() || local_4.opArrow().PresentationDataMap.Contains(EPresentationDataType(4));
                 local_4.opArrow().SetHeadsUpDisplayConfigData(FDataObjectPtr());
-                if (local_1)
+                if (local_4.opArrow().PresentationDataMap.Remove(EPresentationDataType(4)))
                 {
                     this.NotifySpotPresentationDataModifiedInternal(Spot, EPresentationDataType(4));
                 }
@@ -765,8 +764,10 @@ struct FM_SpotRegistry : FEUIModel
         }
         if (Spot)
         {
-            if (this.GetModify_AllSpotsPrivate().Find(Spot))
+            TRawPtr<FSpotPresentationData> local_4 = this.GetModify_AllSpotsPrivate().Find(Spot);
+            if (local_4)
             {
+                local_4.opArrow().PresentationDataMap.Remove(DataType);
                 this.NotifySpotPresentationDataModifiedInternal(Spot, EPresentationDataType(DataType));
             }
         }
@@ -792,9 +793,10 @@ struct FM_SpotRegistry : FEUIModel
     {
         if (Spot)
         {
-            if (this.GetAllSpotsPrivate().Find(Spot))
+            TConstRawPtr<FSpotPresentationData> local_4 = this.GetAllSpotsPrivate().Find(Spot);
+            if (local_4)
             {
-                return this.GetPresentationDataTypesAsBitSetInternal();
+                return this.GetPresentationDataTypesAsBitSetInternal(local_4.Get());
             }
         }
         return FBitSet32();
@@ -1146,11 +1148,9 @@ FM_SpotRegistry& Create(const UObject ContextObject, const FName &inout Registry
 {
     return FM_SpotRegistry::CreateByManager(EUIInternal::GetContextManager(ContextObject), RegistryName, bBroadcastMessages);
 }
-FM_SpotRegistry CreateByManager(const UEUIManagerSubsystem Manager, const FName &inout RegistryName, const bool bBroadcastMessages)
+FM_SpotRegistry& CreateByManager(const UEUIManagerSubsystem Manager, const FName &inout RegistryName, const bool bBroadcastMessages)
 {
-    FM_SpotRegistry __r;
-    TEUIModelRef<FM_SpotRegistry> local_6 = TEUIModelRef<FM_SpotRegistry>(EUIInternal::MakeModelWithManager_Generic(Manager, FM_SpotRegistry::ModelId, 0, RegistryName, bBroadcastMessages));
-    return __r;
+    return TEUIModelRef<FM_SpotRegistry>(EUIInternal::MakeModelWithManager_Generic(Manager, FM_SpotRegistry::ModelId, 0, RegistryName, bBroadcastMessages)).Get();
 }
 void GetModelInfo(FEUIModelOnlyMetaInfo &inout Result)
 {
@@ -1189,11 +1189,9 @@ FMS_SpotRegistries& Get(const UObject ContextObject)
 {
     return FMS_SpotRegistries::GetByManager(EUIInternal::GetContextManager(ContextObject));
 }
-FMS_SpotRegistries GetByManager(const UEUIManagerSubsystem Manager)
+FMS_SpotRegistries& GetByManager(const UEUIManagerSubsystem Manager)
 {
-    FMS_SpotRegistries __r;
-    TEUIModelRef<FMS_SpotRegistries> local_6 = TEUIModelRef<FMS_SpotRegistries>(EUIInternal::MakeModelWithManager(Manager, FMS_SpotRegistries::ModelId));
-    return __r;
+    return TEUIModelRef<FMS_SpotRegistries>(EUIInternal::MakeModelWithManager(Manager, FMS_SpotRegistries::ModelId)).Get();
 }
 void GetModelInfo(FEUIModelOnlyMetaInfo &inout Result)
 {

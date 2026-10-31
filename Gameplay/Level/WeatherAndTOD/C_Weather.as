@@ -583,9 +583,17 @@ struct FC_PlayerControllerWeatherEntity : FECSComponent
     }
     int64 GetWeatherDataId() const
     {
-        int local_55 = 0;
+        int local_54;
         GetDefaulted local_4;
-        int local_54 = local_4.opCall().GetWeatherConfig().IsSet() ? local_55 : 0;
+        TDataObjectPtr<FWeatherConfig> local_28 = local_4.opCall().GetWeatherConfig();
+        if (local_28.IsSet())
+        {
+            local_54 = local_28.Get().DataId;
+        }
+        else
+        {
+            local_54 = 0;
+        }
         return local_54;
     }
     const FECSEntity GetWeatherEntity() const property

@@ -106,6 +106,7 @@ bool RemoveTimer(const int HandleId)
     {
         return false;
     }
+    local_14.TimerEntries.Remove(HandleId);
     local_14.RefreshNextTriggerTime();
     return true;
 }

@@ -347,9 +347,7 @@ struct FVM_CommonItemTipOperationItem : FEUIViewModel
     }
     UWidget ResolveSharedHoverAnchorWidget() const
     {
-        TWeakObjectPtr<UWidget> local_2 = this.GetSharedHoverAnchor();
-        UWidget local_4;
-        return local_4;
+        return this.GetSharedHoverAnchor().Get();
     }
     UItemOperationConfigBase GetOperationConfig() const property
     {
@@ -661,9 +659,7 @@ struct FVM_CommonItemTipOperationList : FEUIViewModel
             if (local_20.ShowOperationForItem(this.GetData().ItemData))
             {
                 FEUIModelWeakRef local_22 = FEUIModelWeakRef(FEUIModelRef(this));
-                TWeakObjectPtr<UWidget> local_28 = this.GetSharedHoverAnchor();
-                UWidget local_30;
-                local_26.SetSharedHoverAnchor(local_30);
+                local_26.SetSharedHoverAnchor(this.GetSharedHoverAnchor().Get());
                 this.GetModify_OperationPayloads().Add(TEUIModelRef<FVM_CommonItemTipOperationItem>(local_26));
                 this.GetModify_OperationItems().Add(local_26.CreateActionEntry());
             }
@@ -678,14 +674,14 @@ struct FVM_CommonItemTipOperationList : FEUIViewModel
         {
             if (local_18.IsValid())
             {
-                InHoverAnchor.SetSharedHoverAnchor();
+                local_18.Get().SetSharedHoverAnchor(InHoverAnchor);
             }
         }
         for (auto& local_32 : this.GetOperationPayloads())
         {
             if (local_32.IsValid())
             {
-                InHoverAnchor.SetSharedHoverAnchor();
+                local_32.Get().SetSharedHoverAnchor(InHoverAnchor);
             }
         }
         return;
@@ -919,10 +915,7 @@ struct FVM_CommonItemTip : FEUIViewModel
             this.SetDisplayItem(TEUIModelRef<FVM_DisplayItem>(::FVM_DisplayItem::Create(this.GetContext().Manager, this.GetData().DisplayData, EItemDisplayScenario(0))));
             if (this.GetDisplayItem().IsValid())
             {
-                TEUIModelRef<FVM_CommonItem> local_106;
-                TEUIModelRef<FVM_DisplayItem> local_104 = this.GetDisplayItem();
-                local_106.GetCommonItemVM();
-                this.SetCommonItem(local_106);
+                this.SetCommonItem(this.GetDisplayItem().Get().GetCommonItemVM());
             }
         }
         this.SetOperationList(TEUIModelRef<FVM_CommonItemTipOperationList>(::FVM_CommonItemTipOperationList::Create(this.GetContext().Manager, local_38)));
@@ -962,8 +955,7 @@ struct FVM_CommonItemTip : FEUIViewModel
     {
         if (this.GetOperationList().IsValid())
         {
-            TEUIModelRef<FVM_CommonItemTipOperationList> local_2 = this.GetOperationList();
-            GetShowList();
+            this.GetOperationList().Get().GetShowList();
         }
         this.RebuildTipActions();
         return;
@@ -972,8 +964,7 @@ struct FVM_CommonItemTip : FEUIViewModel
     {
         if (this.GetOperationList().IsValid())
         {
-            TEUIModelRef<FVM_CommonItemTipOperationList> local_2 = this.GetOperationList();
-            ToggleShowList();
+            this.GetOperationList().Get().ToggleShowList();
         }
         return;
     }
@@ -1063,8 +1054,7 @@ struct FVM_CommonItemTip : FEUIViewModel
     }
     void AddItemAction(const EItemActionType ActionType)
     {
-        TEUIModelRef<FM_ItemData> local_2 = this.GetItemData();
-        if (!(::ItemActionUtils::CanExecuteAction(this.GetItemData().opArrow().GetConfig(), ::FItemActionSource::InvokeFromInventory(this.GetContext()), EItemActionType(ActionType))))
+        if (!(::ItemActionUtils::CanExecuteAction(this.GetItemData().opArrow().GetConfig(), ::FItemActionSource::InvokeFromInventory(this.GetContext(), this.GetItemData().Get()), EItemActionType(ActionType))))
         {
             return;
         }
@@ -1115,17 +1105,7 @@ struct FVM_CommonItemTip : FEUIViewModel
     {
         FSimpleModelEvent local_22;
         this.SetMoreActionPreExecute(local_22);
-        bool local_25 = !(this.GetOperationList().IsValid());
-        if (local_25)
-        {
-            local_25 = true;
-        }
-        else
-        {
-            TEUIModelRef<FVM_CommonItemTipOperationList> local_24 = this.GetOperationList();
-            local_25 = !(HasAnyOperation());
-        }
-        if (local_25)
+        if (!(this.GetOperationList().IsValid()) || !(this.GetOperationList().Get().HasAnyOperation()))
         {
             return;
         }
@@ -1210,8 +1190,7 @@ struct FVM_CommonItemTip : FEUIViewModel
     }
     void ExecuteItemAction(const EItemActionType ActionType)
     {
-        TEUIModelRef<FM_ItemData> local_2 = this.GetItemData();
-        ::ItemActionUtils::ExecuteActionFromUI(this.GetItemData().opArrow().GetConfig(), ::FItemActionSource::InvokeFromInventory(this.GetContext()), EItemActionType(ActionType));
+        ::ItemActionUtils::ExecuteActionFromUI(this.GetItemData().opArrow().GetConfig(), ::FItemActionSource::InvokeFromInventory(this.GetContext(), this.GetItemData().Get()), EItemActionType(ActionType));
         return;
     }
     void BuildItemData()
@@ -1477,7 +1456,7 @@ struct FVM_CommonItemTipHost : FEUIViewModel
             TEUIModelRef<FVM_CommonItemTip> local_4 = this.GetDisplayTip();
             for (auto& local_22 : local_8)
             {
-                if (local_22.IsValid() && !(GetInputAction().IsNull()))
+                if (local_22.IsValid() && !(local_22.Get().GetInputAction().IsNull()))
                 {
                     ++local_1;
                 }
@@ -1534,27 +1513,10 @@ struct FVM_CommonItemTipHost : FEUIViewModel
         }
         local_34.bCollectOperations = true;
         this.Pin(local_34);
-        bool local_69 = this.GetDisplayTip().IsValid();
-        if (!(local_69))
+        if (this.GetDisplayTip().IsValid() && this.GetDisplayTip().Get().GetOperationList().IsValid())
         {
-            local_69 = false;
-        }
-        else
-        {
-            TEUIModelRef<FVM_CommonItemTipOperationList> local_74;
-            TEUIModelRef<FVM_CommonItemTip> local_72 = this.GetDisplayTip();
-            local_74.GetOperationList();
-            local_69 = local_74.IsValid();
-        }
-        if (local_69)
-        {
-            TEUIModelRef<FVM_CommonItemTipOperationList> local_74;
-            bool local_69_2 = true;
-            TEUIModelRef<FVM_CommonItemTip> local_72_2 = this.GetDisplayTip();
-            local_74.GetOperationList();
-            local_69_2.SetShowList();
-            TEUIModelRef<FVM_CommonItemTip> local_72_3 = this.GetDisplayTip();
-            RefreshTipActionsForOperationList();
+            this.GetDisplayTip().Get().GetOperationList().Get().SetShowList(true);
+            this.GetDisplayTip().Get().RefreshTipActionsForOperationList();
             this.RefreshDisplayTipActionFingerprint();
         }
         return;
@@ -1699,7 +1661,7 @@ struct FItemTipHandle
     {
         if (this.State.IsValid())
         {
-            EnsureDisplayTip();
+            this.State.Get().EnsureDisplayTip();
         }
         return;
     }
@@ -1755,7 +1717,7 @@ struct FItemTipHandle
     {
         if (this.State.IsValid())
         {
-            PinAndOpenOperations();
+            this.State.Get().PinAndOpenOperations();
         }
         return;
     }
@@ -1763,7 +1725,7 @@ struct FItemTipHandle
     {
         if (this.State.IsValid())
         {
-            Unpin();
+            this.State.Get().Unpin();
         }
         return;
     }
@@ -1898,11 +1860,9 @@ FVM_CommonItemTipOperationItem& Create(const UObject ContextObject, const UItemO
 {
     return FVM_CommonItemTipOperationItem::CreateByManager(EUIInternal::GetContextManager(ContextObject), OperationConfig, Data, OwningList);
 }
-FVM_CommonItemTipOperationItem CreateByManager(const UEUIManagerSubsystem Manager, const UItemOperationConfigBase OperationConfig, const FItemTipData &inout Data, const FEUIModelWeakRef &inout OwningList)
+FVM_CommonItemTipOperationItem& CreateByManager(const UEUIManagerSubsystem Manager, const UItemOperationConfigBase OperationConfig, const FItemTipData &inout Data, const FEUIModelWeakRef &inout OwningList)
 {
-    FVM_CommonItemTipOperationItem __r;
-    TEUIModelRef<FVM_CommonItemTipOperationItem> local_6 = TEUIModelRef<FVM_CommonItemTipOperationItem>(EUIInternal::MakeModelWithManager_Generic(Manager, FVM_CommonItemTipOperationItem::ModelId, 0, OperationConfig, Data, OwningList));
-    return __r;
+    return TEUIModelRef<FVM_CommonItemTipOperationItem>(EUIInternal::MakeModelWithManager_Generic(Manager, FVM_CommonItemTipOperationItem::ModelId, 0, OperationConfig, Data, OwningList)).Get();
 }
 void GetModelInfo(FEUIViewModelMetaInfo &inout Result)
 {
@@ -2061,8 +2021,7 @@ namespace __GeneratedProperties_FVM_CommonItemTipOperationItem
 {
 UScriptStruct StaticStruct()
 {
-    UScriptStruct local_2;
-    return local_2;
+    return __GeneratedProperties_FVM_CommonItemTipOperationItem.Get();
 }
 }
 namespace FVM_CommonItemTipOperationList
@@ -2071,11 +2030,9 @@ FVM_CommonItemTipOperationList& Create(const UObject ContextObject, const FItemT
 {
     return FVM_CommonItemTipOperationList::CreateByManager(EUIInternal::GetContextManager(ContextObject), Data);
 }
-FVM_CommonItemTipOperationList CreateByManager(const UEUIManagerSubsystem Manager, const FItemTipData &inout Data)
+FVM_CommonItemTipOperationList& CreateByManager(const UEUIManagerSubsystem Manager, const FItemTipData &inout Data)
 {
-    FVM_CommonItemTipOperationList __r;
-    TEUIModelRef<FVM_CommonItemTipOperationList> local_6 = TEUIModelRef<FVM_CommonItemTipOperationList>(EUIInternal::MakeModelWithManager_Generic(Manager, FVM_CommonItemTipOperationList::ModelId, 0, Data));
-    return __r;
+    return TEUIModelRef<FVM_CommonItemTipOperationList>(EUIInternal::MakeModelWithManager_Generic(Manager, FVM_CommonItemTipOperationList::ModelId, 0, Data)).Get();
 }
 void GetModelInfo(FEUIViewModelMetaInfo &inout Result)
 {
@@ -2170,8 +2127,7 @@ namespace __GeneratedProperties_FVM_CommonItemTipOperationList
 {
 UScriptStruct StaticStruct()
 {
-    UScriptStruct local_2;
-    return local_2;
+    return __GeneratedProperties_FVM_CommonItemTipOperationList.Get();
 }
 }
 namespace FVM_CommonItemTip
@@ -2180,11 +2136,9 @@ FVM_CommonItemTip& Create(const UObject ContextObject, const FItemTipData &inout
 {
     return FVM_CommonItemTip::CreateByManager(EUIInternal::GetContextManager(ContextObject), Data);
 }
-FVM_CommonItemTip CreateByManager(const UEUIManagerSubsystem Manager, const FItemTipData &inout Data)
+FVM_CommonItemTip& CreateByManager(const UEUIManagerSubsystem Manager, const FItemTipData &inout Data)
 {
-    FVM_CommonItemTip __r;
-    TEUIModelRef<FVM_CommonItemTip> local_6 = TEUIModelRef<FVM_CommonItemTip>(EUIInternal::MakeModelWithManager_Generic(Manager, FVM_CommonItemTip::ModelId, 0, Data));
-    return __r;
+    return TEUIModelRef<FVM_CommonItemTip>(EUIInternal::MakeModelWithManager_Generic(Manager, FVM_CommonItemTip::ModelId, 0, Data)).Get();
 }
 void GetModelInfo(FEUIViewModelMetaInfo &inout Result)
 {
@@ -2338,8 +2292,7 @@ namespace __GeneratedProperties_FVM_CommonItemTip
 {
 UScriptStruct StaticStruct()
 {
-    UScriptStruct local_2;
-    return local_2;
+    return __GeneratedProperties_FVM_CommonItemTip.Get();
 }
 }
 namespace FVM_CommonItemTipHost
@@ -2348,11 +2301,9 @@ FVM_CommonItemTipHost& Create(const UObject ContextObject)
 {
     return FVM_CommonItemTipHost::CreateByManager(EUIInternal::GetContextManager(ContextObject));
 }
-FVM_CommonItemTipHost CreateByManager(const UEUIManagerSubsystem Manager)
+FVM_CommonItemTipHost& CreateByManager(const UEUIManagerSubsystem Manager)
 {
-    FVM_CommonItemTipHost __r;
-    TEUIModelRef<FVM_CommonItemTipHost> local_6 = TEUIModelRef<FVM_CommonItemTipHost>(EUIInternal::MakeModelWithManager(Manager, FVM_CommonItemTipHost::ModelId));
-    return __r;
+    return TEUIModelRef<FVM_CommonItemTipHost>(EUIInternal::MakeModelWithManager(Manager, FVM_CommonItemTipHost::ModelId)).Get();
 }
 void GetModelInfo(FEUIViewModelMetaInfo &inout Result)
 {
@@ -2431,7 +2382,6 @@ namespace __GeneratedProperties_FVM_CommonItemTipHost
 {
 UScriptStruct StaticStruct()
 {
-    UScriptStruct local_2;
-    return local_2;
+    return __GeneratedProperties_FVM_CommonItemTipHost.Get();
 }
 }

@@ -3,18 +3,22 @@ namespace FManipulateUtils
 UFUNCTION()
 void CleanupManipulatedByCurve(const FECSEntity &inout SlaveEntity, const FECSEntity &inout MasterEntity)
 {
-    Modify local_10;
     Remove local_4;
     local_4.opCall();
-    if (local_10.opCall())
+    Modify local_10;
+    FC_CharacterMovement& local_12 = local_10.opCall();
+    if (local_12)
     {
+        local_12.GetModify_AttachIgnoreCollisionEntities().Remove(MasterEntity);
     }
     Has local_18;
     bool local_5 = local_18.opCall();
     if (local_5)
     {
-        if (local_10.opCall())
+        FC_CharacterMovement& local_12_2 = local_10.opCall();
+        if (local_12_2)
         {
+            local_12_2.GetModify_AttachIgnoreCollisionEntities().Remove(SlaveEntity);
         }
     }
     Remove local_22;

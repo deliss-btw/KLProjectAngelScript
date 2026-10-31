@@ -3,7 +3,6 @@ namespace __FAnimAimPoseAllowSourceFunctions
 UFUNCTION()
 TSet<EAnimLookSource> __FAnimAimPoseAllowSource_GetAllowSources(const TDataObjectPtr<FAnimAimPoseAllowSource> &inout DataObject)
 {
-    TSet<EAnimLookSource> __r;
     if ((DataObject == nullptr))
     {
         if (!(EUIGlobals::GIsDuringPropertyConversion))
@@ -13,7 +12,7 @@ TSet<EAnimLookSource> __FAnimAimPoseAllowSource_GetAllowSources(const TDataObjec
         FAnimAimPoseAllowSource local_34;
         return local_34.AllowSources;
     }
-    return __r;
+    return DataObject.Get().AllowSources;
 }
 UFUNCTION()
 FAnimAimPoseAllowSource CastToFAnimAimPoseAllowSource(const TDataObjectPtr<FAnimAimPoseAllowSource> &inout DataObject)

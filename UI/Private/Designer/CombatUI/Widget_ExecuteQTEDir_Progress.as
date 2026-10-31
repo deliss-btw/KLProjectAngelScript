@@ -22,13 +22,13 @@ class UWidget_ExecuteQTEDir_Progress : UEUIUserWidget
     UFUNCTION()
     float32 VM_Execute_QTEDir_QTE_Progress() const
     {
-        FVM_Execute_QTEDir& local_2;
+        FVM_Execute_QTEDir& local_2 = this.VM_Execute_QTEDir.Get();
         return local_2 ? local_2.GetQTE_Progress() : 0.0f;
     }
     UFUNCTION()
     FText VM_Execute_QTEDir_HintText() const
     {
-        FVM_Execute_QTEDir& local_2;
+        FVM_Execute_QTEDir& local_2 = this.VM_Execute_QTEDir.Get();
         FText local_12 = local_2 ? local_2.GetHintText() : FText();
         return local_12;
     }

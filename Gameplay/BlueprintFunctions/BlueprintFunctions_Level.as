@@ -282,11 +282,11 @@ void GetEntityInRangeWithTypeName(TArray<FECSEntity> &inout AllEntities, const F
         Exclude(local_52).opCall();
     }
     FECSRuntimeQueryIterator local_122 = local_52.Iterator();
-    FText local_202;
     for (; local_122.CanProceed;)
     {
         const FECSEntity& local_146 = local_122.Proceed();
-        if (!((GetPrefabConfigPtr(local_146) == nullptr)) && (local_202 == FText::FromName(Name)))
+        TDataObjectPtr<FBasePrefabConfig> local_170 = GetPrefabConfigPtr(local_146);
+        if (!((local_170 == nullptr)) && (FText(local_170.Get().DisplayName) == FText::FromName(Name)))
         {
             AllEntities.Add(local_146);
         }
@@ -334,7 +334,6 @@ UFUNCTION()
 bool Level_IsTeleporterActiveForPlayer(const FECSEntity &inout TeleporterEntity, const FECSEntity &inout PlayerPawnEntity)
 {
     int local_8 = 0;
-    int local_9 = 0;
     if (!(TeleporterEntity.IsValid()) || !(PlayerPawnEntity.IsValid()))
     {
         return false;
@@ -343,7 +342,7 @@ bool Level_IsTeleporterActiveForPlayer(const FECSEntity &inout TeleporterEntity,
     {
         return false;
     }
-    return TeleporterUtils::IsTeleporterActive(PlayerPawnEntity, local_9, TeleporterEntity);
+    return TeleporterUtils::IsTeleporterActive(PlayerPawnEntity, local_8.TeleporterConfig.Get().DataId, TeleporterEntity);
 }
 UFUNCTION()
 bool CheckPlayersDistanceToEntity(const FECSEntity &inout TargetEntity, const float32 Distance, const BlueprintFunctions_Level::EDistanceCompareType CompareType = EDistanceCompareType::LessThanOrEqual, const BlueprintFunctions_Level::EPlayersFilterType PlayersFilterType = EPlayersFilterType::All)
@@ -1503,12 +1502,9 @@ FString Level_GetVengeanceVictimNames(const FECSEntityAdapter &inout Killer)
     }
     for (auto& local_30 : local_10.KillDataMap)
     {
-        local_30;
-        FECSEntityAdapter local_36;
-        FString local_40 = BlueprintFunctions_Level::GetEntityPlayerName(local_36);
-        FString local_44 = (local_40 + " ");
-        FString local_44_2 = (local_40 + "000\n");
-        local_4 += local_44_2;
+        FString local_40 = ((BlueprintFunctions_Level::GetEntityPlayerName(FECSEntityAdapter(local_30.GetValue().VictimPlayer)) + " ") + local_30.GetValue().KillTimes);
+        FString local_44 = (local_40 + "000\n");
+        local_4 += local_44;
     }
     return local_4;
 }
@@ -1860,15 +1856,12 @@ void Level_UnloadAllRandomEvents()
 UFUNCTION()
 TSet<EKLDataLayerFilterTags> Level_GetCurrentLoadFilterTags()
 {
-    TSet<EKLDataLayerFilterTags> __return;
-    if (FLevelUtils::GetCurrentLevelInfoConfig(nullptr))
+    TDataObjectPtr<FLevelInfoConfig> local_24 = FLevelUtils::GetCurrentLevelInfoConfig(nullptr);
+    if (local_24)
     {
+        return local_24.Get().LoadFilterTags;
     }
-    else
-    {
-        __return = TSet<EKLDataLayerFilterTags>();
-    }
-    return __return;
+    return TSet<EKLDataLayerFilterTags>();
 }
 UFUNCTION()
 void Level_SendCustomLevelValueEvent(const FName &inout CustomName, const int Count)
@@ -1954,7 +1947,6 @@ FLevelUnitReference Level_GetUnitReferenceFromPrefab(const AIdentifiableECSPrefa
 UFUNCTION()
 void Level_DisableSystemControl(const FECSEntity &inout PlayerEntity, const TDataObjectPtr<FSystemControlConfig> &inout SystemControlConfig)
 {
-    int local_13 = 0;
     if (!(PlayerEntity.IsValid()))
     {
         XError(ELog(73), "Level_DisableSystemControl: PlayerEntity is invalid!");
@@ -1967,16 +1959,14 @@ void Level_DisableSystemControl(const FECSEntity &inout PlayerEntity, const TDat
     }
     FFPTime local_8 = FFPTime(-1);
     FCE_LBPDisableSystemControl local_12;
-    local_12.SystemDataId = local_13;
-    FString local_18;
-    local_12.ForbiddenTips = local_18;
-    XLog(ELog(73), local_18.Append("Level_DisableSystemControl: Sent disable event for SystemDataId=").Append(local_12.SystemDataId).Append(" to Player=").Append(PlayerEntity.GetIdValue()));
+    local_12.SystemDataId = SystemControlConfig.Get().DataId;
+    local_12.ForbiddenTips = SystemControlConfig.Get().ForbiddenTips.ToString();
+    XLog(ELog(73), FString().Append("Level_DisableSystemControl: Sent disable event for SystemDataId=").Append(local_12.SystemDataId).Append(" to Player=").Append(PlayerEntity.GetIdValue()));
     return;
 }
 UFUNCTION()
 void Level_EnableSystemControl(const FECSEntity &inout PlayerEntity, const TDataObjectPtr<FSystemControlConfig> &inout SystemControlConfig)
 {
-    int local_13 = 0;
     if (!(PlayerEntity.IsValid()))
     {
         XError(ELog(73), "Level_EnableSystemControl: PlayerEntity is invalid!");
@@ -1989,7 +1979,7 @@ void Level_EnableSystemControl(const FECSEntity &inout PlayerEntity, const TData
     }
     FFPTime local_8 = FFPTime(-1);
     FCE_LBPEnableSystemControl local_12;
-    local_12.SystemDataId = local_13;
+    local_12.SystemDataId = SystemControlConfig.Get().DataId;
     XLog(ELog(73), FString().Append("Level_EnableSystemControl: Sent enable event for SystemDataId=").Append(local_12.SystemDataId).Append(" to Player=").Append(PlayerEntity.GetIdValue()));
     return;
 }
@@ -2015,6 +2005,7 @@ UFUNCTION()
 TSubclassOf<AKLLevelScriptActor> Level_GetTrainingLBPClass()
 {
     bool local_5;
+    int local_18 = 0;
     if (!(ECS::GetECSWorld().IsValid()))
     {
         local_5 = false;
@@ -2026,10 +2017,10 @@ TSubclassOf<AKLLevelScriptActor> Level_GetTrainingLBPClass()
     }
     if (local_5)
     {
-        return TSubclassOf<AKLLevelScriptActor>();
+        return local_18.TrainingInfo.Get().LBPClass.Get();
     }
     XError(ELog(22), "Level_GetTrainingLBPClass: FCS_TrainingInfo is not found!");
-    return (TSubclassOf<AKLLevelScriptActor>(nullptr));
+    return TSubclassOf<AKLLevelScriptActor>(nullptr);
 }
 UFUNCTION()
 void Level_FinishTraining()

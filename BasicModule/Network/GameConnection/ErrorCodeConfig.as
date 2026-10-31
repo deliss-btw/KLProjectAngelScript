@@ -82,22 +82,12 @@ class UErrorCodeSettings : UGameplaySettingsBase
     }
     bool GetNetErrorCodeText(const ENetReason NetReason, FText &inout OutNetErrorCodeText) const
     {
-        bool local_1;
-        bool local_5 = false;
         if (this.NetReasonMessages.Contains(NetReason))
         {
             const TDataObjectPtr<FKLTextData>& local_4 = this.NetReasonMessages[NetReason];
-            if (!(local_4.IsSet()))
+            if (local_4.IsSet() && !(local_4.Get().Text.IsEmpty()))
             {
-                local_1 = false;
-            }
-            else
-            {
-                local_5 = !local_5;
-                local_1 = local_5;
-            }
-            if (local_1)
-            {
+                OutNetErrorCodeText = local_4.Get().Text;
             }
             return true;
         }

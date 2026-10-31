@@ -38,8 +38,8 @@ class UWidget_ExitLevel : UEUIActivatableWidget
     }
     void HandleObservedModelChanges(FEUIReactiveSubscriberIterator &inout It)
     {
-        FVMS_ExitLevel& local_6;
         TEUIModelRef<FVMS_ExitLevel> local_2 = this.ExitLevel.AsRef();
+        FVMS_ExitLevel& local_6 = local_2.Get();
         for (; It; )
         {
             FEUIReactiveSubscriberTrackScope local_56 = FEUIReactiveSubscriberTrackScope(It);

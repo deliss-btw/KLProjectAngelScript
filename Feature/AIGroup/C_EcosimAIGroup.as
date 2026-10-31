@@ -151,6 +151,7 @@ struct FC_AIGroupData : FECSComponent
                     {
                         local_16.SlotStates[local_17] = 0;
                     }
+                    local_16.MemberSlotMap.Remove(InMemberEntity);
                 }
             }
         }

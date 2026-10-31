@@ -18,7 +18,6 @@ float32 __FThrowPredictPathConfig_GetMaxPredictTime(const TDataObjectPtr<FThrowP
 UFUNCTION()
 FFXConfig __FThrowPredictPathConfig_GetPredictPathFXConfig(const TDataObjectPtr<FThrowPredictPathConfig> &inout DataObject)
 {
-    FFXConfig __r;
     if ((DataObject == nullptr))
     {
         if (!(EUIGlobals::GIsDuringPropertyConversion))
@@ -28,12 +27,11 @@ FFXConfig __FThrowPredictPathConfig_GetPredictPathFXConfig(const TDataObjectPtr<
         FThrowPredictPathConfig local_166;
         return local_166.PredictPathFXConfig;
     }
-    return __r;
+    return DataObject.Get().PredictPathFXConfig;
 }
 UFUNCTION()
 FRuntimeFloatCurve __FThrowPredictPathConfig_GetThrowPitchMappingCurve(const TDataObjectPtr<FThrowPredictPathConfig> &inout DataObject)
 {
-    FRuntimeFloatCurve __r;
     if ((DataObject == nullptr))
     {
         if (!(EUIGlobals::GIsDuringPropertyConversion))
@@ -43,7 +41,7 @@ FRuntimeFloatCurve __FThrowPredictPathConfig_GetThrowPitchMappingCurve(const TDa
         FThrowPredictPathConfig local_166;
         return local_166.ThrowPitchMappingCurve;
     }
-    return __r;
+    return DataObject.Get().ThrowPitchMappingCurve;
 }
 UFUNCTION()
 FThrowPredictPathConfig CastToFThrowPredictPathConfig(const TDataObjectPtr<FThrowPredictPathConfig> &inout DataObject)

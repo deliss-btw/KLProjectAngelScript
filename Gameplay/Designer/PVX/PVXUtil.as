@@ -156,13 +156,14 @@ FGameplayTag GetEntityTeamTag(const FECSEntity &inout Entity)
 }
 FDataObjectPtr GetPVPAttributeDataByLevel(const FECSEntity &inout Entity, const int Level)
 {
-    const FAvatarPrefabConfig& local_76;
     FPVPGameAttributeByLevelConfig local_104;
-    bool local_49 = !(GetAvatarConfig(Entity));
+    TDataObjectPtr<FAvatarPrefabConfig> local_24 = GetAvatarConfig(Entity);
+    bool local_49 = !(local_24);
     if (local_49)
     {
         return FDataObjectPtr();
     }
+    const FAvatarPrefabConfig& local_76 = local_24.Get();
     TDataObjectPtr<FGameModeOverrideAvatarConfig> local_100;
     if (!(local_76.GetGameModeOverride().Find(EGameModeType(2), local_100)))
     {
@@ -184,8 +185,7 @@ FDataObjectPtr GetPVPAttributeDataByLevel(const FECSEntity &inout Entity, const 
     {
         return FDataObjectPtr();
     }
-    FPVPOverrideAvatarConfig local_130;
-    local_104 = local_130.GameAttributeConfig;
+    local_104 = local_76.GetPVPOverride().Get().GameAttributeConfig;
     if (!(local_104.IsValid()))
     {
         return FDataObjectPtr();
@@ -211,14 +211,15 @@ FDataObjectPtr GetPVXAttributeDataByLevel(const FECSEntity &inout Entity, const 
     {
         FPVPGameAttributeByLevelConfig local_110;
         bool local_108;
-        bool local_8 = !(GetAvatarConfig(Entity));
+        TDataObjectPtr<FAvatarPrefabConfig> local_32 = GetAvatarConfig(Entity);
+        bool local_8 = !(local_32);
         if (local_8)
         {
             return FDataObjectPtr();
         }
         else
         {
-            const FAvatarPrefabConfig& local_82;
+            const FAvatarPrefabConfig& local_82 = local_32.Get();
             TDataObjectPtr<FGameModeOverrideAvatarConfig> local_106;
             if (!(local_82.GetGameModeOverride().Find(EGameModeType(1), local_106)))
             {
@@ -246,8 +247,7 @@ FDataObjectPtr GetPVXAttributeDataByLevel(const FECSEntity &inout Entity, const 
             }
             else
             {
-                FPVPOverrideAvatarConfig local_136;
-                local_110 = local_136.GameAttributeConfig;
+                local_110 = local_82.GetPVPOverride().Get().GameAttributeConfig;
                 if (!(local_110.IsValid()))
                 {
                     return FDataObjectPtr();
@@ -264,13 +264,14 @@ FDataObjectPtr GetPVXAttributeDataByLevel(const FECSEntity &inout Entity, const 
     {
         FPVPGameAttributeByLevelConfig local_110;
         bool local_108;
-        if (!(GetMonsterConfig(Entity)))
+        TDataObjectPtr<FMonsterPrefabConfig> local_160 = GetMonsterConfig(Entity);
+        if (!(local_160))
         {
             return FDataObjectPtr();
         }
         else
         {
-            const FMonsterPrefabConfig& local_186;
+            const FMonsterPrefabConfig& local_186 = local_160.Get();
             TDataObjectPtr<FGameModeOverrideMonsterConfig> local_210;
             if (!(local_186.GetGameModeOverride().Find(EGameModeType(1), local_210)))
             {
@@ -297,8 +298,7 @@ FDataObjectPtr GetPVXAttributeDataByLevel(const FECSEntity &inout Entity, const 
             }
             else
             {
-                FPVPOverrideMonsterConfig local_212;
-                local_110 = local_212.GameAttributeConfig;
+                local_110 = local_186.GetPVPOverride().Get().GameAttributeConfig;
                 if (!(local_110.IsValid()))
                 {
                     return FDataObjectPtr();

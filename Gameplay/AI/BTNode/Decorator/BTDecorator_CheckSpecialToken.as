@@ -43,9 +43,9 @@ class UBTDecorator_CheckSpecialToken : UBTDecorator_ECSScriptBase
             }
             if (this.StorageParams.Num() > 0)
             {
+                const FAISpecialCombatTokenConfig& local_14 = this.SpecialToken.Get();
                 for (auto& local_28 : this.StorageParams)
                 {
-                    FAISpecialCombatTokenConfig local_14;
                     int local_12 = local_14.GetParamIndex(local_28.Name);
                     if (local_12 != INDEX_NONE)
                     {

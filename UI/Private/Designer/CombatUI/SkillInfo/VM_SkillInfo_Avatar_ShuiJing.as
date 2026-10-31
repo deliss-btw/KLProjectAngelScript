@@ -86,9 +86,7 @@ struct FVMS_SkillInfo_Avatar_ShuiJing : FEUIViewModelSingleton
         this.SetVM_UltraSkillButton(FEUIModelRef(::FVM_SkillButton::Create(this.GetContext().Manager)));
         local_10.opCall().SetSkillProgressType(ESkillProgressType(2));
         local_10.opCall().SetSkillButtonType(ESkillButtonType(2));
-        UCombatGlobalSettings local_14 = ::UCombatGlobalSettings::Get();
-        UClass local_16;
-        this.SetIdentifyName_ShuiJing_PowerArrow(FName(local_16.GetPathName(nullptr)));
+        this.SetIdentifyName_ShuiJing_PowerArrow(FName(::UCombatGlobalSettings::Get().Prefab_ShuiJing_PowerArrow.Get().GetPathName(nullptr)));
         return;
     }
     void Tick()
@@ -171,7 +169,6 @@ struct FVMS_SkillInfo_Avatar_ShuiJing : FEUIViewModelSingleton
     void OnPlayerPawnEntityChanged()
     {
         int local_14 = 0;
-        const USkillConfig local_26;
         if (UICommonUtil::CVar_UI_DebugEnableNewSkillBtns.GetBool())
         {
             return;
@@ -181,8 +178,7 @@ struct FVMS_SkillInfo_Avatar_ShuiJing : FEUIViewModelSingleton
         const FC_SkillInstance& local_8 = FSkillUtils::GetSkillInstance(this.GetPlayerPawnEntity(), local_4, local_5);
         if (local_5)
         {
-            TSoftObjectPtr<USkillConfig> local_24 = local_8.GetSkillConfig();
-            local_14.SetSkillConfig(local_26);
+            local_14.SetSkillConfig(local_8.GetSkillConfig().Get());
             local_14.SetSkillProgressAttribute(Attribute::SimpleSkillEnergy);
             local_14.SetSkillProgressAttributeMax(Attribute::SimpleSkillEnergyMax);
         }
@@ -190,8 +186,7 @@ struct FVMS_SkillInfo_Avatar_ShuiJing : FEUIViewModelSingleton
         const FC_SkillInstance& local_28 = FSkillUtils::GetSkillInstance(this.GetPlayerPawnEntity(), local_4, local_5);
         if (local_5)
         {
-            TSoftObjectPtr<USkillConfig> local_24_2 = local_28.GetSkillConfig();
-            local_14.SetSkillConfig(local_26);
+            local_14.SetSkillConfig(local_28.GetSkillConfig().Get());
             local_14.SetSkillProgressAttribute(Attribute::ExtraSkillEnergy);
             local_14.SetSkillProgressAttributeMax(Attribute::ExtraSkillEnergyMax);
         }
@@ -199,8 +194,7 @@ struct FVMS_SkillInfo_Avatar_ShuiJing : FEUIViewModelSingleton
         const FC_SkillInstance& local_30 = FSkillUtils::GetSkillInstance(this.GetPlayerPawnEntity(), local_4, local_5);
         if (local_5)
         {
-            TSoftObjectPtr<USkillConfig> local_24_3 = local_30.GetSkillConfig();
-            local_14.SetSkillConfig(local_26);
+            local_14.SetSkillConfig(local_30.GetSkillConfig().Get());
             local_14.SetSkillProgressAttribute(Attribute::UltraSkillEnergy);
             local_14.SetSkillProgressAttributeMax(Attribute::UltraSkillEnergyMax);
         }
@@ -208,8 +202,7 @@ struct FVMS_SkillInfo_Avatar_ShuiJing : FEUIViewModelSingleton
         const FC_SkillInstance& local_32 = FSkillUtils::GetSkillInstance(this.GetPlayerPawnEntity(), local_4, local_5);
         if (local_5)
         {
-            TSoftObjectPtr<USkillConfig> local_24_4 = local_32.GetSkillConfig();
-            local_14.SetSkillConfig(local_26);
+            local_14.SetSkillConfig(local_32.GetSkillConfig().Get());
         }
         return;
     }
@@ -465,11 +458,9 @@ FVMS_SkillInfo_Avatar_ShuiJing& Get(const UObject ContextObject)
 {
     return FVMS_SkillInfo_Avatar_ShuiJing::GetByManager(EUIInternal::GetContextManager(ContextObject));
 }
-FVMS_SkillInfo_Avatar_ShuiJing GetByManager(const UEUIManagerSubsystem Manager)
+FVMS_SkillInfo_Avatar_ShuiJing& GetByManager(const UEUIManagerSubsystem Manager)
 {
-    FVMS_SkillInfo_Avatar_ShuiJing __r;
-    TEUIModelRef<FVMS_SkillInfo_Avatar_ShuiJing> local_6 = TEUIModelRef<FVMS_SkillInfo_Avatar_ShuiJing>(EUIInternal::MakeModelWithManager(Manager, FVMS_SkillInfo_Avatar_ShuiJing::ModelId));
-    return __r;
+    return TEUIModelRef<FVMS_SkillInfo_Avatar_ShuiJing>(EUIInternal::MakeModelWithManager(Manager, FVMS_SkillInfo_Avatar_ShuiJing::ModelId)).Get();
 }
 void GetModelInfo(FEUIViewModelMetaInfo &inout Result)
 {
@@ -616,7 +607,6 @@ namespace __GeneratedProperties_FVMS_SkillInfo_Avatar_ShuiJing
 {
 UScriptStruct StaticStruct()
 {
-    UScriptStruct local_2;
-    return local_2;
+    return __GeneratedProperties_FVMS_SkillInfo_Avatar_ShuiJing.Get();
 }
 }

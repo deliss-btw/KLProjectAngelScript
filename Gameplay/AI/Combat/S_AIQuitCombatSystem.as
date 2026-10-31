@@ -156,8 +156,7 @@ class US_AIQuitCombatSystem : UECSScriptSystem
             {
                 if (local_58.RegionVolume.IsValid())
                 {
-                    AActor local_60;
-                    local_64 = (Cast<AECSVolumeBase>(local_60));
+                    local_64 = (Cast<AECSVolumeBase>(local_58.RegionVolume.Get()));
                     if (local_64 != nullptr)
                     {
                         if (float32(Transform.GetPosition().Distance(local_64.GetBounds().GetBox().GetClosestPointTo(Transform.GetPosition()))) > local_18.QuitCombatDistance)

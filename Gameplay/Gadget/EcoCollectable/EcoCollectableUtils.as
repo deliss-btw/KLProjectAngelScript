@@ -19,7 +19,6 @@ bool CalculateVisibilityState(const FECSEntity &inout NonSyncedEntity, EEcoColle
     int local_8;
     int local_9;
     int local_10;
-    float32 local_40 = 0.0f;
     FC_EcoCollectableNonSyncedVisualStatus& local_48;
     bool local_49;
     FDataObjectPtr local_98;
@@ -70,12 +69,10 @@ bool CalculateVisibilityState(const FECSEntity &inout NonSyncedEntity, EEcoColle
                     if (local_42)
                     {
                         local_39 = local_48.CachedBundleSpawnRatio;
-                        local_40 = local_48.CachedCreatureSpawnRatio;
-                        local_41 = local_40;
+                        local_41 = local_48.CachedCreatureSpawnRatio;
                     }
                 }
-                local_49 = !(local_42);
-                if (local_49)
+                if (!(local_42))
                 {
                     if (local_20.LayoutInfo.BundleDef.IsSet())
                     {
@@ -84,7 +81,7 @@ bool CalculateVisibilityState(const FECSEntity &inout NonSyncedEntity, EEcoColle
                         local_98;
                         if (local_146.IsSet())
                         {
-                            local_39 = local_40;
+                            local_39 = local_146.Get().CreatureCountSpawnRatio;
                         }
                     }
                     if (local_20.LayoutInfo.CreatureDef.IsSet())
@@ -94,7 +91,7 @@ bool CalculateVisibilityState(const FECSEntity &inout NonSyncedEntity, EEcoColle
                         local_98;
                         if (local_170.IsSet())
                         {
-                            local_41 = local_40;
+                            local_41 = local_170.Get().CreatureCountSpawnRatio;
                         }
                     }
                     if (ECS::GetRuntimeInfo().IsClient)
@@ -107,8 +104,7 @@ bool CalculateVisibilityState(const FECSEntity &inout NonSyncedEntity, EEcoColle
                             local_48.CachedTimeSegments = local_11;
                             local_48.CachedBundleSpawnRatio = local_39;
                             local_48.CachedCreatureSpawnRatio = local_41;
-                            local_49 = true;
-                            local_48.bSpawnRatioCacheValid = local_49;
+                            local_48.bSpawnRatioCacheValid = true;
                         }
                     }
                 }
@@ -117,17 +113,7 @@ bool CalculateVisibilityState(const FECSEntity &inout NonSyncedEntity, EEcoColle
                     if (local_38.CreatureDefToCountMap.Contains(local_20.LayoutInfo.BundleDef))
                     {
                         local_175 = local_38.CreatureDefToCountMap[local_20.LayoutInfo.BundleDef];
-                        if (local_20.LayoutInfo.BakedOrderIndex == -1)
-                        {
-                            local_49 = false;
-                        }
-                        else
-                        {
-                            local_40 = local_175;
-                            local_40 = local_40 * local_39;
-                            local_49 = (local_20.LayoutInfo.BakedOrderIndex >= local_40);
-                        }
-                        if (local_49)
+                        if (local_20.LayoutInfo.BakedOrderIndex != -1 && (local_20.LayoutInfo.BakedOrderIndex >= (local_175 * local_39)))
                         {
                             OutVisibilityStatus = EEcoCollectableNonSyncedVisibilityStatus(1);
                             return true;

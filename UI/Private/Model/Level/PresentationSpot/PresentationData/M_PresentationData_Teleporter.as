@@ -90,11 +90,9 @@ FM_PresentationData_Teleporter& Create(const UObject ContextObject, const TDataO
 {
     return FM_PresentationData_Teleporter::CreateByManager(EUIInternal::GetContextManager(ContextObject), TeleporterConfig);
 }
-FM_PresentationData_Teleporter CreateByManager(const UEUIManagerSubsystem Manager, const TDataObjectPtr<FTeleporterConfig> &inout TeleporterConfig)
+FM_PresentationData_Teleporter& CreateByManager(const UEUIManagerSubsystem Manager, const TDataObjectPtr<FTeleporterConfig> &inout TeleporterConfig)
 {
-    FM_PresentationData_Teleporter __r;
-    TEUIModelRef<FM_PresentationData_Teleporter> local_6 = TEUIModelRef<FM_PresentationData_Teleporter>(EUIInternal::MakeModelWithManager_Generic(Manager, FM_PresentationData_Teleporter::ModelId, 0, TeleporterConfig));
-    return __r;
+    return TEUIModelRef<FM_PresentationData_Teleporter>(EUIInternal::MakeModelWithManager_Generic(Manager, FM_PresentationData_Teleporter::ModelId, 0, TeleporterConfig)).Get();
 }
 void GetModelInfo(FEUIModelOnlyMetaInfo &inout Result)
 {

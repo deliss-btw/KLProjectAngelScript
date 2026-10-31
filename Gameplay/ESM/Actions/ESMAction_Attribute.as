@@ -22,7 +22,6 @@ class UESMAction_ConsumeAttributeInstantly : UESMBPBaseSpanAction
     UFUNCTION()
     void Enter_Implementation(const FESMContext &inout Context, const FESMActionTime &inout Time) const
     {
-        float32 local_25 = 0.0f;
         if (!(this.bOnEnter))
         {
             return;
@@ -34,13 +33,12 @@ class UESMAction_ConsumeAttributeInstantly : UESMBPBaseSpanAction
         }
         FECSWorldPtr local_20 = Context.GetECSWorld();
         Get local_24;
-        FGameAttributeUtils::QueueConsume(Context.GetEntity(), this.Attribute, FFPTime(local_24.opCall().LastTime), local_25);
+        FGameAttributeUtils::QueueConsume(Context.GetEntity(), this.Attribute, FFPTime(local_24.opCall().LastTime), this.ConsumeValue.GetValue(Context.GetEntityBB()));
         return;
     }
     UFUNCTION()
     void Exit_Implementation(const FESMContext &inout Context, const FESMActionTime &inout Time) const
     {
-        float32 local_25 = 0.0f;
         if (!(this.bOnExit))
         {
             return;
@@ -52,7 +50,7 @@ class UESMAction_ConsumeAttributeInstantly : UESMBPBaseSpanAction
         }
         FECSWorldPtr local_20 = Context.GetECSWorld();
         Get local_24;
-        FGameAttributeUtils::QueueConsume(Context.GetEntity(), this.Attribute, FFPTime(local_24.opCall().LastTime), local_25);
+        FGameAttributeUtils::QueueConsume(Context.GetEntity(), this.Attribute, FFPTime(local_24.opCall().LastTime), this.ConsumeValue.GetValue(Context.GetEntityBB()));
         return;
     }
     UFUNCTION()
@@ -87,7 +85,6 @@ class UESMAction_RecoverAttributeInstantly : UESMBPBaseSpanAction
     UFUNCTION()
     void Enter_Implementation(const FESMContext &inout Context, const FESMActionTime &inout Time) const
     {
-        float32 local_25 = 0.0f;
         if (!(this.bOnEnter))
         {
             return;
@@ -99,13 +96,12 @@ class UESMAction_RecoverAttributeInstantly : UESMBPBaseSpanAction
         }
         FECSWorldPtr local_20 = Context.GetECSWorld();
         Get local_24;
-        FGameAttributeUtils::QueueRecover(Context.GetEntity(), this.Attribute, FFPTime(local_24.opCall().LastTime), local_25);
+        FGameAttributeUtils::QueueRecover(Context.GetEntity(), this.Attribute, FFPTime(local_24.opCall().LastTime), this.RecoverValue.GetValue(Context.GetEntityBB()));
         return;
     }
     UFUNCTION()
     void Exit_Implementation(const FESMContext &inout Context, const FESMActionTime &inout Time) const
     {
-        float32 local_25 = 0.0f;
         if (!(this.bOnExit))
         {
             return;
@@ -117,7 +113,7 @@ class UESMAction_RecoverAttributeInstantly : UESMBPBaseSpanAction
         }
         FECSWorldPtr local_20 = Context.GetECSWorld();
         Get local_24;
-        FGameAttributeUtils::QueueRecover(Context.GetEntity(), this.Attribute, FFPTime(local_24.opCall().LastTime), local_25);
+        FGameAttributeUtils::QueueRecover(Context.GetEntity(), this.Attribute, FFPTime(local_24.opCall().LastTime), this.RecoverValue.GetValue(Context.GetEntityBB()));
         return;
     }
     UFUNCTION()
@@ -204,7 +200,6 @@ class UESMAction_ConsumeAttributeContinously : UESMBPBaseSpanTickAction
     UFUNCTION()
     void Tick_Implementation(const FESMContext &inout Context, const FESMActionTime &inout Time) const
     {
-        float32 local_27 = 0.0f;
         int local_34 = 0;
         if (!(this.Attribute.IsValid()))
         {
@@ -223,13 +218,12 @@ class UESMAction_ConsumeAttributeContinously : UESMBPBaseSpanTickAction
             int local_26 = Time.GetActionRealTimeIntervalNum(this.Interval);
             if (local_26 > 0)
             {
-                local_27 = local_27 * local_26;
-                FGameAttributeUtils::QueueConsume(Context.GetEntity(), this.Attribute, local_18, local_27);
+                FGameAttributeUtils::QueueConsume(Context.GetEntity(), this.Attribute, local_18, (this.ConsumeValue.GetValue(Context.GetEntityBB()) * local_26));
             }
         }
         else
         {
-            const FConsumeAttributeContinouslyMoveInstanceData& local_36;
+            const FConsumeAttributeContinouslyMoveInstanceData& local_36 = this.GetInstanceData(Context);
             float32 local_28_2 = local_36.CompareValue.Evaluate(local_18);
             if ((local_34.GetAttributeValue(this.Attribute, local_18) != local_28_2 || (local_34.GetAttributeValue(local_34.GetAttributeMeta(this.Attribute).ConsumeCoefficient, local_18) != local_36.CachedConsumeCoefficient)))
             {
@@ -251,13 +245,11 @@ class UESMAction_ConsumeAttributeContinously : UESMBPBaseSpanTickAction
     void EnableSmoothConsume(const FESMContext &inout Context, const FESMActionTime &inout Time) const
     {
         int local_14 = 0;
-        float32 local_27 = 0.0f;
         FFPTime local_2 = FFPTime(FECSWorldPtr::Get<FCS_FixedTime>(Context.GetECSWorld()).opCall().Time);
         FGameAttributeConstPtr local_18 = local_14.GetAttribute(this.Attribute);
         float32 local_24 = local_14.GetAttributeValue(this.Attribute, local_2);
         float32 local_23 = local_14.GetAttributeValue(local_14.GetAttributeMeta(this.Attribute).ConsumeCoefficient, local_2);
-        local_27 = local_27 * local_23;
-        local_27 = local_27 / float32(this.Interval.ToSeconds());
+        float32 local_27 = (this.ConsumeValue.GetValue(Context.GetEntityBB()) * local_23) / float32(this.Interval.ToSeconds());
         if (local_27 == 0.0f)
         {
             return;
@@ -294,7 +286,6 @@ class UESMAction_RecoverAttributeContinously : UESMBPBaseSpanTickAction
     UFUNCTION()
     void Tick_Implementation(const FESMContext &inout Context, const FESMActionTime &inout Time) const
     {
-        float32 local_27 = 0.0f;
         if (!(this.Attribute.IsValid()))
         {
             XError(ELog(5), FString().Append("Invalid Attribute in ESMAction: '").Append(this.GetPathName(nullptr)).Append("', Entity: '").Append(Context.GetEntity().ToString()).Append("'"));
@@ -306,8 +297,7 @@ class UESMAction_RecoverAttributeContinously : UESMBPBaseSpanTickAction
             FECSWorldPtr local_22 = Context.GetECSWorld();
             Get local_26;
             FFPTime local_20 = FFPTime(local_26.opCall().LastTime);
-            local_27 = local_27 * local_17;
-            FGameAttributeUtils::QueueRecover(Context.GetEntity(), this.Attribute, local_20, local_27);
+            FGameAttributeUtils::QueueRecover(Context.GetEntity(), this.Attribute, local_20, (this.RecoverValue.GetValue(Context.GetEntityBB()) * local_17));
         }
         return;
     }
@@ -382,7 +372,6 @@ class UESMAction_ModifyAttributeSpan : UESMBPBaseSpanAction
     UFUNCTION()
     void Enter_Implementation(const FESMContext &inout Context, const FESMActionTime &inout Time) const
     {
-        float32 local_25 = 0.0f;
         if (!(this.Attribute.IsValid()))
         {
             XError(ELog(5), FString().Append("Invalid Attribute in ESMAction: '").Append(this.GetPathName(nullptr)).Append("', Entity: '").Append(Context.GetEntity().ToString()).Append("'"));
@@ -391,13 +380,12 @@ class UESMAction_ModifyAttributeSpan : UESMBPBaseSpanAction
         FECSWorldPtr local_20 = Context.GetECSWorld();
         Get local_24;
         FFPTime local_18 = FFPTime(local_24.opCall().LastTime);
-        FGameAttributeUtils::AddModify(Context.GetEntity(), this.Attribute, this.ModifyType, local_25, local_18, false, false);
+        FGameAttributeUtils::AddModify(Context.GetEntity(), this.Attribute, this.ModifyType, this.ModifyValue.GetValue(Context.GetEntityBB()), local_18, false, false);
         return;
     }
     UFUNCTION()
     void Exit_Implementation(const FESMContext &inout Context, const FESMActionTime &inout Time) const
     {
-        float32 local_25 = 0.0f;
         if (!(this.Attribute.IsValid()))
         {
             XError(ELog(5), FString().Append("Invalid Attribute in ESMAction: '").Append(this.GetPathName(nullptr)).Append("', Entity: '").Append(Context.GetEntity().ToString()).Append("'"));
@@ -406,7 +394,7 @@ class UESMAction_ModifyAttributeSpan : UESMBPBaseSpanAction
         FECSWorldPtr local_20 = Context.GetECSWorld();
         Get local_24;
         FFPTime local_18 = FFPTime(local_24.opCall().LastTime);
-        FGameAttributeUtils::RemoveModify(Context.GetEntity(), this.Attribute, this.ModifyType, local_25, local_18, false, false);
+        FGameAttributeUtils::RemoveModify(Context.GetEntity(), this.Attribute, this.ModifyType, this.ModifyValue.GetValue(Context.GetEntityBB()), local_18, false, false);
         return;
     }
 }

@@ -109,15 +109,14 @@ struct FVMS_Crosshair : FEUIViewModelSingleton
     }
     void RefreshChargeEnergyState()
     {
-        this.SetChargeEnergy(0.0f);
+        this.SetChargeEnergy(this.GetChargeEnergySource().GetValue());
         this.SetChargeEnergyMax(this.GetChargeEnergySource().GetMaxValue());
         this.SetIsCharging((this.GetChargeEnergy() != 0.0f));
         return;
     }
     void RefreshMarkHintBaseState()
     {
-        bool local_10 = false;
-        if (!(FECSEntity(this.GetContext().GetLocalPlayerPawn()).IsValid()) || this.TrackConsoleBool(UICommonUtil::CVar_UI_DebugEnableNewSkillCastHint) || local_10)
+        if (!(FECSEntity(this.GetContext().GetLocalPlayerPawn()).IsValid()) || this.TrackConsoleBool(UICommonUtil::CVar_UI_DebugEnableNewSkillCastHint) || this.GetCrossbowTagSource().GetValue())
         {
             this.SetbShowAddMarkHint(false);
             this.SetbShowRemoveMarkHint(false);
@@ -147,19 +146,7 @@ struct FVMS_Crosshair : FEUIViewModelSingleton
     }
     bool CanRefreshRemoveMarkHint() const
     {
-        bool local_6 = false;
-        bool local_5 = this.GetContext().GetLocalPlayerPawn().IsValid() && !(UICommonUtil::CVar_UI_DebugEnableNewSkillCastHint.GetBool());
-        if (!(local_5))
-        {
-            local_5 = false;
-        }
-        else
-        {
-            local_6 = !local_6;
-            local_5 = local_6;
-        }
-        local_5 = local_5 && this.GetIsPlayerAiming();
-        return local_5;
+        return this.GetContext().GetLocalPlayerPawn().IsValid() && !(UICommonUtil::CVar_UI_DebugEnableNewSkillCastHint.GetBool()) && !(this.GetCrossbowTagSource().GetValue()) && this.GetIsPlayerAiming();
     }
     ESlateVisibility bShowRemoveMarkHintAsSlateVisibility() const
     {
@@ -412,11 +399,9 @@ FVMS_Crosshair& Get(const UObject ContextObject)
 {
     return FVMS_Crosshair::GetByManager(EUIInternal::GetContextManager(ContextObject));
 }
-FVMS_Crosshair GetByManager(const UEUIManagerSubsystem Manager)
+FVMS_Crosshair& GetByManager(const UEUIManagerSubsystem Manager)
 {
-    FVMS_Crosshair __r;
-    TEUIModelRef<FVMS_Crosshair> local_6 = TEUIModelRef<FVMS_Crosshair>(EUIInternal::MakeModelWithManager(Manager, FVMS_Crosshair::ModelId));
-    return __r;
+    return TEUIModelRef<FVMS_Crosshair>(EUIInternal::MakeModelWithManager(Manager, FVMS_Crosshair::ModelId)).Get();
 }
 void GetModelInfo(FEUIViewModelMetaInfo &inout Result)
 {
@@ -519,7 +504,6 @@ namespace __GeneratedProperties_FVMS_Crosshair
 {
 UScriptStruct StaticStruct()
 {
-    UScriptStruct local_2;
-    return local_2;
+    return __GeneratedProperties_FVMS_Crosshair.Get();
 }
 }

@@ -54,12 +54,12 @@ class UWidget_CommonActionEntry : UEUIUserWidget
         {
             return;
         }
-        if (HasClickAction())
+        if (this.ActionEntry.Get().HasClickAction())
         {
             this.ExecuteClickAction();
             return;
         }
-        if (HasHoverContent())
+        if (this.ActionEntry.Get().HasHoverContent())
         {
             this.OpenHoverByClick();
         }
@@ -77,7 +77,7 @@ class UWidget_CommonActionEntry : UEUIUserWidget
     {
         if (this.ActionEntry.IsValid())
         {
-            InHoverAnchor.SetSharedHoverAnchor();
+            this.ActionEntry.Get().SetSharedHoverAnchor(InHoverAnchor);
         }
         if (this.UI_Common_HoverProvider != nullptr)
         {
@@ -89,12 +89,11 @@ class UWidget_CommonActionEntry : UEUIUserWidget
     {
         this.ActionBinding.SetCollapsed(true);
         this.ActionBinding.UnRegister();
-        if (!(this.ActionEntry.IsValid()) || !(IsActionableOrHoverable()))
+        if (!(this.ActionEntry.IsValid()) || !(this.ActionEntry.Get().IsActionableOrHoverable()))
         {
             return;
         }
-        FEUIInputAction local_14;
-        local_14.UIGetDisplayedInputAction();
+        FEUIInputAction local_14 = this.ActionEntry.Get().UIGetDisplayedInputAction();
         if (local_14.IsNull())
         {
             return;
@@ -106,7 +105,7 @@ class UWidget_CommonActionEntry : UEUIUserWidget
     }
     void ExecuteClickAction()
     {
-        if (!(this.ActionEntry.IsValid()) || !(HasClickAction()))
+        if (!(this.ActionEntry.IsValid()) || !(this.ActionEntry.Get().HasClickAction()))
         {
             return;
         }
@@ -122,20 +121,18 @@ class UWidget_CommonActionEntry : UEUIUserWidget
         {
             return;
         }
-        TSoftClassPtr<UUserWidget> local_14;
-        local_14.GetHoverWidgetClass();
-        this.UI_Common_HoverProvider.HoverWidgetClass = local_14;
-        this.UI_Common_HoverProvider.SetHoverModels(GetHoverModels());
-        this.UI_Common_HoverProvider.SetHoverForWidgetOverride(ResolveSharedHoverAnchorWidget());
+        this.UI_Common_HoverProvider.HoverWidgetClass = this.ActionEntry.Get().GetHoverWidgetClass();
+        this.UI_Common_HoverProvider.SetHoverModels(this.ActionEntry.Get().GetHoverModels());
+        this.UI_Common_HoverProvider.SetHoverForWidgetOverride(this.ActionEntry.Get().ResolveSharedHoverAnchorWidget());
         if (!(this.UI_Common_HoverProvider.HoverProvider.IsValid()))
         {
             return;
         }
-        if (!(GetbResponsibleForClick()))
+        if (!(this.UI_Common_HoverProvider.HoverProvider.Get().GetbResponsibleForClick()))
         {
             return;
         }
-        this.UI_Common_HoverProvider.HoverWidgetClass.SetHoverWidgetClass();
+        this.UI_Common_HoverProvider.HoverProvider.Get().SetHoverWidgetClass(this.UI_Common_HoverProvider.HoverWidgetClass);
         FEUIModelRef local_18;
         local_18;
         FEUIWidgetModelCallbackBuilder local_36;
@@ -148,7 +145,7 @@ class UWidget_CommonActionEntry : UEUIUserWidget
         {
             return;
         }
-        this.ApplySharedHoverAnchor(ResolveSharedHoverAnchorWidget());
+        this.ApplySharedHoverAnchor(this.ActionEntry.Get().ResolveSharedHoverAnchorWidget());
         return;
     }
     UFUNCTION()
@@ -162,8 +159,8 @@ class UWidget_CommonActionEntry : UEUIUserWidget
     }
     void HandleObservedModelChanges(FEUIReactiveSubscriberIterator &inout It)
     {
-        FVM_CommonActionEntry& local_6;
         TEUIModelRef<FVM_CommonActionEntry> local_2 = this.ActionEntry.AsRef();
+        FVM_CommonActionEntry& local_6 = local_2.Get();
         for (; It; )
         {
             FEUIReactiveSubscriberTrackScope local_56 = FEUIReactiveSubscriberTrackScope(It);

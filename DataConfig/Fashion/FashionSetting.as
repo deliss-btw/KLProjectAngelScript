@@ -79,39 +79,38 @@ namespace FashionSettings
 {
 FSoftBrush GetSlotIcon(const EFashionSlotType SlotType)
 {
-    if (FashionSettings::Get().SlotConfigMap.Find(SlotType))
+    TRawPtr<TDataObjectPtr<FFashionSlotConfig>> local_6 = FashionSettings::Get().SlotConfigMap.Find(SlotType);
+    if (local_6)
     {
-        TDataObjectPtr<FFashionSlotConfig> local_56;
-        if (local_56.IsSet())
+        TDataObjectPtr<FFashionSlotConfig> local_32 = local_6.Get();
+        if (local_32.IsSet())
         {
-        }
-        else
-        {
+            return local_32.Get().SlotIcon;
         }
     }
     return FSoftBrush();
 }
 FText GetFashionSlotName(const EFashionSlotType SlotType)
 {
-    if (FashionSettings::Get().SlotConfigMap.Find(SlotType))
+    TRawPtr<TDataObjectPtr<FFashionSlotConfig>> local_6 = FashionSettings::Get().SlotConfigMap.Find(SlotType);
+    if (local_6)
     {
-        TDataObjectPtr<FFashionSlotConfig> local_56;
-        if (local_56.IsSet())
+        TDataObjectPtr<FFashionSlotConfig> local_32 = local_6.Get();
+        if (local_32.IsSet())
         {
-        }
-        else
-        {
+            return local_32.Get().SlotName;
         }
     }
     return FText();
 }
 TDataObjectPtr<FFashionSlotConfig> GetSlotConfig(const EFashionSlotType SlotType)
 {
-    if (FashionSettings::Get().SlotConfigMap.Find(SlotType))
+    TRawPtr<TDataObjectPtr<FFashionSlotConfig>> local_6 = FashionSettings::Get().SlotConfigMap.Find(SlotType);
+    if (local_6)
     {
-        return TDataObjectPtr<FFashionSlotConfig>();
+        return local_6.Get();
     }
-    return local_32;
+    return TDataObjectPtr<FFashionSlotConfig>();
 }
 FText GetSystemName()
 {

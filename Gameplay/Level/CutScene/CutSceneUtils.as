@@ -4,13 +4,11 @@ void PlayCutScene(const FECSEntity &inout PlayerPawnEntity, const FName &inout P
 {
     int local_24 = 0;
     int local_34 = 0;
-    FQuat local_120;
-    FVector local_126;
     if (!(CutSceneData))
     {
         return;
     }
-    FCutSceneData local_4;
+    const FCutSceneData& local_4 = CutSceneData.Get();
     ULevelSequence local_18 = (Cast<ULevelSequence>(local_4.LevelSequence.ToSoftObjectPath().TryLoad()));
     if (local_18 == nullptr)
     {
@@ -38,17 +36,15 @@ void PlayCutScene(const FECSEntity &inout PlayerPawnEntity, const FName &inout P
     TConstRawPtr<FCutSceneEntityInfo> local_52 = local_4.EntityInfos.Find(PlayerTag);
     if (local_52)
     {
-        if (UTagTargetPointManager::Get().GetTagTransform(local_52.opArrow().StartLocationTag).IsSet())
+        TOptional<FTransform> local_84 = UTagTargetPointManager::Get().GetTagTransform(local_52.opArrow().StartLocationTag);
+        if (local_84.IsSet())
         {
-            FFPTime local_36 = FFPTime(-1);
-            local_120.GetRotation();
-            local_126.GetLocation();
-            PlayerPawnEntity.MoveTo(CutSceneUtils::GetOffsetFloorLocation(PlayerPawnEntity, local_126), local_120, local_36);
+            PlayerPawnEntity.MoveTo(CutSceneUtils::GetOffsetFloorLocation(PlayerPawnEntity, local_84.GetValue().GetLocation()), local_84.GetValue().GetRotation(), FFPTime(-1));
         }
     }
-    FECSEntity local_156;
     for (auto& local_152 : Entities)
     {
+        FECSEntity local_156 = local_152.GetValue();
         TConstRawPtr<FCutSceneEntityInfo> local_54 = local_4.EntityInfos.Find(local_152.GetKey());
         if (!(local_54))
         {
@@ -60,12 +56,10 @@ void PlayCutScene(const FECSEntity &inout PlayerPawnEntity, const FName &inout P
         }
         if (local_1)
         {
-            if (UTagTargetPointManager::Get().GetTagTransform(local_54.opArrow().StartLocationTag).IsSet())
+            TOptional<FTransform> local_112 = UTagTargetPointManager::Get().GetTagTransform(local_54.opArrow().StartLocationTag);
+            if (local_112.IsSet())
             {
-                FFPTime local_36_2 = FFPTime(-1);
-                local_120.GetRotation();
-                local_126.GetLocation();
-                local_156.MoveTo(CutSceneUtils::GetOffsetFloorLocation(local_156, local_126), local_120, local_36_2);
+                local_156.MoveTo(CutSceneUtils::GetOffsetFloorLocation(local_156, local_112.GetValue().GetLocation()), local_112.GetValue().GetRotation(), FFPTime(-1));
             }
         }
     }

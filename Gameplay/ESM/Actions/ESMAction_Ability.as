@@ -21,8 +21,7 @@ class UESMAction_AbilityLifespanByAbilityConfig : UESMBPBaseSpanAction
     {
         if ((!((this.AbilityClass == nullptr))))
         {
-            UClass local_10;
-            return FString().Append("Ability LifeSpan : ").Append(local_10.GetName());
+            return FString().Append("Ability LifeSpan : ").Append(this.AbilityClass.Get().GetName());
         }
         return "Ability LifeSpan";
     }
@@ -44,8 +43,7 @@ class UESMAction_AbilityLifespanByAbilityConfig : UESMBPBaseSpanAction
             return;
         }
         const FECSEntity& local_8 = Context.GetEntity();
-        UClass local_16;
-        int local_19 = FAbilityUtils::GetAbilityIndexByClass(local_8, TSubclassOf<UEASAbility>(local_16));
+        int local_19 = FAbilityUtils::GetAbilityIndexByClass(local_8, TSubclassOf<UEASAbility>(this.AbilityClass.Get()));
         if (local_19 == -1)
         {
             return;
@@ -58,7 +56,7 @@ class UESMAction_AbilityLifespanByAbilityConfig : UESMBPBaseSpanAction
                 FAbilityUtils::ActivateAbility(local_24, local_14, local_8, Time.WorldTime);
                 return;
             }
-            XError(ELog(0), FString().Append("Ability ").Append(local_16.GetFullName(nullptr)).Append(", already activated -- ").Append(this.DebugGetPath()));
+            XError(ELog(0), FString().Append("Ability ").Append(this.AbilityClass.Get().GetFullName(nullptr)).Append(", already activated -- ").Append(this.DebugGetPath()));
         }
         return;
     }
@@ -73,8 +71,7 @@ class UESMAction_AbilityLifespanByAbilityConfig : UESMBPBaseSpanAction
             return;
         }
         const FECSEntity& local_4 = Context.GetEntity();
-        UClass local_12;
-        int local_15 = FAbilityUtils::GetAbilityIndexByClass(local_4, TSubclassOf<UEASAbility>(local_12));
+        int local_15 = FAbilityUtils::GetAbilityIndexByClass(local_4, TSubclassOf<UEASAbility>(this.AbilityClass.Get()));
         if (local_15 == -1)
         {
             return;
@@ -192,8 +189,7 @@ class UESMAction_AbilitySignalToAbilityInstance : UESMBPBaseInstantAction
         {
             return;
         }
-        UClass local_12;
-        int local_15 = FAbilityUtils::GetAbilityIndexByClass(local_2, TSubclassOf<UEASAbility>(local_12));
+        int local_15 = FAbilityUtils::GetAbilityIndexByClass(local_2, TSubclassOf<UEASAbility>(this.AbilityClass.Get()));
         if (local_15 == -1)
         {
             return;
@@ -257,8 +253,7 @@ class UESMAction_AbilitySignalsToAbilityInstanceSpan : UESMBPBaseSpanAction
         {
             return;
         }
-        UClass local_12;
-        int local_15 = FAbilityUtils::GetAbilityIndexByClass(local_2, TSubclassOf<UEASAbility>(local_12));
+        int local_15 = FAbilityUtils::GetAbilityIndexByClass(local_2, TSubclassOf<UEASAbility>(this.EnterAbilityClass.Get()));
         if (local_15 == -1)
         {
             return;
@@ -280,8 +275,7 @@ class UESMAction_AbilitySignalsToAbilityInstanceSpan : UESMBPBaseSpanAction
         {
             return;
         }
-        UClass local_12;
-        int local_15 = FAbilityUtils::GetAbilityIndexByClass(local_2, TSubclassOf<UEASAbility>(local_12));
+        int local_15 = FAbilityUtils::GetAbilityIndexByClass(local_2, TSubclassOf<UEASAbility>(this.ExitAbilityClass.Get()));
         if (local_15 == -1)
         {
             return;

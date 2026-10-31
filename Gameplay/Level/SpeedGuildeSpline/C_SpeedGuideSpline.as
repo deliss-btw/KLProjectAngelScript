@@ -32,14 +32,11 @@ struct FC_SpeedGuideSpline : FECSComponent
     }
     ASpeedGuideSplinePrefab GetSplinePrefabActor()
     {
-        ASpeedGuideSplinePrefab local_6;
         if (!(this.PrefabActor.IsValid()))
         {
-            AECSPrefab local_4;
-            local_6 = Cast<ASpeedGuideSplinePrefab>(local_4);
-            this.PrefabActor = local_6;
+            this.PrefabActor = (Cast<ASpeedGuideSplinePrefab>(this.PrefabPath.Get()));
         }
-        return local_6;
+        return this.PrefabActor.Get();
     }
 }
 

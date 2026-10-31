@@ -90,8 +90,17 @@ struct FVM_CommissionInfo : FEUIViewModel
     }
     bool CanMatchmakingEntry() const
     {
-        bool local_50 = false;
-        return this.GetCommissionConfig().IsSet() && local_50;
+        bool local_49;
+        TDataObjectPtr<FCommissionConfig> local_24 = this.GetCommissionConfig();
+        if (!(local_24.IsSet()))
+        {
+            local_49 = false;
+        }
+        else
+        {
+            local_49 = local_24.Get().bAllowMatchmakingEntry;
+        }
+        return local_49;
     }
     bool GetIsCurrentCommissionMatching() const
     {
@@ -100,17 +109,18 @@ struct FVM_CommissionInfo : FEUIViewModel
     }
     TDataObjectPtr<FPveCommissionMatchConfig> GetCommissionMatchConfig() const
     {
-        if (!(this.GetCommissionConfig().IsSet()))
+        TDataObjectPtr<FCommissionConfig> local_24 = this.GetCommissionConfig();
+        if (!(local_24.IsSet()))
         {
             return TDataObjectPtr<FPveCommissionMatchConfig>();
         }
-        if (GetOverrideMatchConfig().IsSet())
+        if (local_24.Get().GetOverrideMatchConfig().IsSet())
         {
-            return GetOverrideMatchConfig();
+            return local_24.Get().GetOverrideMatchConfig();
         }
         UCommissionSettings local_100 = ::CommissionUtils::GetCommissionSettings();
         TDataObjectPtr<FPveCommissionMatchConfig> local_126;
-        if (local_100.DefaultMatchConfigs.Find(unresolved.CommissionType, local_126))
+        if (local_100.DefaultMatchConfigs.Find(local_24.Get().CommissionType, local_126))
         {
             return local_126;
         }
@@ -118,8 +128,16 @@ struct FVM_CommissionInfo : FEUIViewModel
     }
     uint GetCommissionId() const
     {
-        int local_51 = 0;
-        int local_50 = this.GetCommissionConfig().IsSet() ? local_51 : 0;
+        int local_50;
+        TDataObjectPtr<FCommissionConfig> local_24 = this.GetCommissionConfig();
+        if (local_24.IsSet())
+        {
+            local_50 = local_24.Get().DataId;
+        }
+        else
+        {
+            local_50 = 0;
+        }
         return local_50;
     }
     TDataObjectPtr<FObjectiveConfig> GetCommissionTargetObjectiveConfig() const property
@@ -147,26 +165,24 @@ struct FVM_CommissionInfo : FEUIViewModel
     }
     FText GetPlayerNumLimitText() const
     {
-        int local_78 = 0;
-        int local_79 = 0;
         TDataObjectPtr<FCommissionConfig> local_48 = this.GetCommissionConfig();
         CastTo local_52;
-        if (local_52.opCall())
+        TDataObjectPtr<FRaceCommissionConfig> local_76 = local_52.opCall();
+        if (local_76)
         {
-            local_79 = local_78;
-            if (local_79 == 2)
+            if (int(local_76.Get().RaceMode) == 2)
             {
                 return NSLOCTEXT("RaceMultiPlayerNumLimitText", "1~4人");
             }
-            if (local_78 == 1)
+            if (int(local_76.Get().RaceMode) == 1)
             {
                 return NSLOCTEXT("RaceSinglePlayerNumLimitText", "1人");
             }
         }
-        if (this.GetCommissionMatchConfig().IsSet() && (local_79 > 1))
+        TDataObjectPtr<FPveCommissionMatchConfig> local_108 = this.GetCommissionMatchConfig();
+        if (local_108.IsSet() && (local_108.Get().MaxPlayerNum > 1))
         {
-            NSLOCTEXT("PlayerNumLimitText", "1~{0}人");
-            return FText();
+            return FText::Format(NSLOCTEXT("PlayerNumLimitText", "1~{0}人"), local_108.Get().MaxPlayerNum);
         }
         return NSLOCTEXT("PlayerNumLimitMinText", "1人");
     }
@@ -693,11 +709,9 @@ FVM_CommissionInfo& Create(const UObject ContextObject, const TEUIModelRef<FM_Co
 {
     return FVM_CommissionInfo::CreateByManager(EUIInternal::GetContextManager(ContextObject), CommissionModel);
 }
-FVM_CommissionInfo CreateByManager(const UEUIManagerSubsystem Manager, const TEUIModelRef<FM_Commission> &inout CommissionModel)
+FVM_CommissionInfo& CreateByManager(const UEUIManagerSubsystem Manager, const TEUIModelRef<FM_Commission> &inout CommissionModel)
 {
-    FVM_CommissionInfo __r;
-    TEUIModelRef<FVM_CommissionInfo> local_6 = TEUIModelRef<FVM_CommissionInfo>(EUIInternal::MakeModelWithManager_Generic(Manager, FVM_CommissionInfo::ModelId, 0, CommissionModel));
-    return __r;
+    return TEUIModelRef<FVM_CommissionInfo>(EUIInternal::MakeModelWithManager_Generic(Manager, FVM_CommissionInfo::ModelId, 0, CommissionModel)).Get();
 }
 void GetModelInfo(FEUIViewModelMetaInfo &inout Result)
 {
@@ -1236,7 +1250,6 @@ namespace __GeneratedProperties_FVM_CommissionInfo
 {
 UScriptStruct StaticStruct()
 {
-    UScriptStruct local_2;
-    return local_2;
+    return __GeneratedProperties_FVM_CommissionInfo.Get();
 }
 }

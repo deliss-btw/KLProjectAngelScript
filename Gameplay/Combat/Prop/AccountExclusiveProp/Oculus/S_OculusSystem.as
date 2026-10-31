@@ -8,7 +8,6 @@ class US_OculusSystem : UECSScriptSystem
     void ClientJob_InitAccountExclusiveOculusState(const FECSEntity &inout Entity, const FC_LevelObjectStatConfig &inout LevelObjectStatConfig, const FC_OculusConfig &inout OculusConfig) const
     {
         int local_14 = 0;
-        int local_23 = 0;
         ModifyOrAdd local_42;
         Remove local_4;
         local_4.opCall();
@@ -24,9 +23,10 @@ class US_OculusSystem : UECSScriptSystem
         FECSEntity local_22 = ::FASCommonUtils::GetLocalPlayerPawnEntity();
         if (local_22.IsValid())
         {
+            int local_23 = LevelObjectStatConfig.LevelObjectStatConfig.Get().DataId;
             if (local_14.LevelObjectStatIdToEntityMap.Contains(local_23))
             {
-                if (FECSEntity(local_14.LevelObjectStatIdToEntityMap[local_23]).IsValid())
+                if (FECSEntity(local_14.LevelObjectStatIdToEntityMap[LevelObjectStatConfig.LevelObjectStatConfig.Get().DataId]).IsValid())
                 {
                     Get local_32;
                     const FC_DefaultToLocal& local_34 = local_32.opCall();

@@ -135,12 +135,12 @@ struct FAnimatedCameraPresentation
     }
     void SetBlendPhaseByConfig(const ECameraBlendPhase Phase, const FFPTime &inout WorldTime)
     {
-        const FAnimCameraData& local_4;
         float32 local_8;
         if (!(this.Params.CameraConfig))
         {
             return;
         }
+        const FAnimCameraData& local_4 = this.Params.CameraConfig.Get();
         if (local_4.FadeInDuration >= 0.0f)
         {
             local_8 = local_4.FadeInDuration;
@@ -160,7 +160,7 @@ struct FAnimatedCameraPresentation
     FCameraBlendConfig GetBlendConfig() const
     {
         FCameraBlendConfig local_76;
-        FAnimCameraData local_78;
+        const FAnimCameraData& local_78 = this.Params.CameraConfig.Get();
         local_76.BlendInEasing = local_78.FadeInType;
         local_76.BlendOutEasing = local_78.FadeOutType;
         return local_76;

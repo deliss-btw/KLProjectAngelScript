@@ -28,7 +28,7 @@ TArray<TDataObjectPtr<FMissionCommissionConfig>> __FGlobalSettingsConfig_GetTuto
         FGlobalSettingsConfig local_66;
         return local_66.GetTutorialMissionConfigs();
     }
-    return GetTutorialMissionConfigs();
+    return DataObject.Get().GetTutorialMissionConfigs();
 }
 UFUNCTION()
 int __FGlobalSettingsConfig_GetNicknameChangeCDHours(const TDataObjectPtr<FGlobalSettingsConfig> &inout DataObject)

@@ -82,9 +82,10 @@ namespace FEcologySpawnerUtils
 {
 float32 CalFlockSpawnCost(FCS_EcologyScriptGlobalContext &inout Context, const FECSEntity &inout Entity, const FC_EcologyFlockComponent &inout FlockComponent)
 {
-    if (FEcologySceneInfoUtils::FindSpawnRatioDataByFlock(Context, Entity, FlockComponent))
+    TDataObjectPtr<FSpawnerCountRatioDefinitionRow> local_24 = FEcologySceneInfoUtils::FindSpawnRatioDataByFlock(Context, Entity, FlockComponent);
+    if (local_24)
     {
-        return 1.0f / 0.0f;
+        return 1.0f / local_24.Get().BatchCountSpawnRatio;
     }
     return 1.0f;
 }
@@ -103,14 +104,14 @@ void SpawnEcologyTeamEntityBySpawner(const FCS_FixedTime &inout FixedTime, const
 float32 GetFlockInfoBatchRatio(FCS_EcologyScriptGlobalContext &inout GlobalContext, const FECSEntity &inout SpawnerEntity, FC_EcologyRuntimeClassicFlockSpawner &inout SpawnerComponent, const int SpawnerInfoIndex)
 {
     float32 local_155;
-    float32 local_156 = 0.0f;
     FFlockSpawnerData& local_2 = SpawnerComponent.SpawnerData[SpawnerInfoIndex];
     FName local_4 = FEcologySceneInfoUtils::GetWeatherByVolume(SpawnerComponent.WeatherSource);
     TDataObjectPtr<FEcologyResourceDefinitionRow> local_104 = TDataObjectPtr<FEcologyResourceDefinitionRow>(nullptr);
     TDataObjectPtr<FCreatureDefinitionRow> local_56 = TDataObjectPtr<FCreatureDefinitionRow>(local_2.CreatureType.GetCreatureType().opImplConv());
-    if (FEcologySceneInfoUtils::FindSpawnRatioData(local_56, local_104, local_4, FEcologySceneInfoUtils::GetCurrentTimeSegments(GlobalContext)))
+    TDataObjectPtr<FSpawnerCountRatioDefinitionRow> local_128 = FEcologySceneInfoUtils::FindSpawnRatioData(local_56, local_104, local_4, FEcologySceneInfoUtils::GetCurrentTimeSegments(GlobalContext));
+    if (local_128)
     {
-        local_155 = local_156;
+        local_155 = local_128.Get().BatchCountSpawnRatio;
     }
     else
     {
@@ -136,7 +137,6 @@ void SpawnFlockEntityByFlockSpawner(const FCS_FixedTime &inout FixedTime, const 
 }
 int InternalSpawnFlockWithResource(FC_EcologyRuntimeClassicFlockSpawner &inout Spawner, FFlockSpawnerData &inout FlockInfo, const FRuntimeSpawnerReference &inout SpawnDataRef, TArray<FResourceSummaryForFlockSpawner> &inout SpwanableResource, FRandomGenerator &inout RandomGenerator, const int MatchBatches)
 {
-    AECSRegionVolume local_146;
     if (SpwanableResource.Num() <= 0)
     {
         return 0;
@@ -153,15 +153,12 @@ int InternalSpawnFlockWithResource(FC_EcologyRuntimeClassicFlockSpawner &inout S
         local_16.MainTargetResource = local_12.Resource.GetId();
         FEcologyFlockSpawnParam local_114;
         local_114.SpawnNum = RandomGenerator.NextRangeInt(local_4, local_5);
-        TDataObjectPtr<FEcologyCreatureDefinitionRow> local_138 = FlockInfo.CreatureType.GetCreatureType();
-        UBaseEcologyPlanerDefine local_140;
-        local_114.PlanerDefine = local_140;
+        local_114.PlanerDefine = FlockInfo.CreatureType.GetCreatureType().Get().DefaultPlanerDefine;
         local_114.bAcceptSpawnRatio = FlockInfo.bAcceptSpawnRatio;
         TArray<TSoftObjectPtr<AECSRegionVolume>> local_144;
-        if (local_146 != nullptr)
+        if (Spawner.Region.Get() != nullptr)
         {
-            AECSRegionVolume local_148;
-            local_144.Add(TSoftObjectPtr<AECSRegionVolume>(local_148));
+            local_144.Add(TSoftObjectPtr<AECSRegionVolume>(Spawner.Region.Get()));
         }
         FECSEntity local_162 = FEcologySpawnerUtils::SpawnEcologyFlockEntity(local_114, SpawnDataRef, local_144);
         ++local_8;
@@ -259,31 +256,31 @@ void SetupEntityAsRuntimeUnit(const FECSEntity &inout Entity, const EEcologyVoxe
 }
 void SetupFlockPlaner(const FECSEntity &inout FlockEntity, const TSoftObjectPtr<UBaseEcologyPlanerDefine> &inout Config)
 {
-    UBaseEcologyPlanerDefine local_10;
     int local_540 = 0;
     Ecology::SyncLoadObject(Config.ToSoftObjectPath());
-    if ((!((local_10 != nullptr))))
+    if ((!((Config.Get() != nullptr))))
     {
         return;
     }
-    UBaseEcologyPlanerDefine local_542;
-    local_540.SlotAllocator.AllocatorType = local_542.SlotAllocatorType;
-    local_540.SlotAllocator.bLazyAllocate = local_542.bLazyAllocateSlot;
-    local_540.ChangeAreaData.bNeedPathConnectedCheckBeforeChangeArea = local_542.bNeedPathConnectedCheckBeforeChangeArea;
-    local_540.NoResourceData.bAllowAutoSearchResource = local_542.bAllowAutoSearchResource;
-    local_540.NoResourceData.bAllowNoResourceWanderMove = local_542.bAllowNoResourceWanderMove;
-    local_540.NoResourceData.PivotPolicy = local_542.NoResourceActivityPivotPolicy;
-    local_540.NoResourceData.FlockUpdatePolicy = local_542.NoResourceFlockUpdatePolicy;
+    local_540.SlotAllocator.AllocatorType = Config.Get().SlotAllocatorType;
+    local_540.SlotAllocator.bLazyAllocate = Config.Get().bLazyAllocateSlot;
+    local_540.ChangeAreaData.bNeedPathConnectedCheckBeforeChangeArea = Config.Get().bNeedPathConnectedCheckBeforeChangeArea;
+    local_540.NoResourceData.bAllowAutoSearchResource = Config.Get().bAllowAutoSearchResource;
+    local_540.NoResourceData.bAllowNoResourceWanderMove = Config.Get().bAllowNoResourceWanderMove;
+    local_540.NoResourceData.PivotPolicy = Config.Get().NoResourceActivityPivotPolicy;
+    local_540.NoResourceData.FlockUpdatePolicy = Config.Get().NoResourceFlockUpdatePolicy;
     FC_EcologyPlaner local_556;
-    local_556.PlanerDefine = local_542;
+    local_556.PlanerDefine = Config.Get();
     local_556.PlanerType = EEcologyTargetPlanerType(1);
-    local_542.SetupEcologyPlanerEntity(FlockEntity, local_556);
+    local_556.PlanerDefine.Get().SetupEcologyPlanerEntity(FlockEntity, local_556);
     return;
 }
 void SetupChangeAreaTrigger(const FECSEntity &inout FlockEntity, const FEcologyFlockSpawnParam &inout BaseContext)
 {
-    if (BaseContext.CreatureConfig.GetCreatureType())
+    TDataObjectPtr<FEcologyCreatureDefinitionRow> local_24 = BaseContext.CreatureConfig.GetCreatureType();
+    if (local_24)
     {
+        FEcologyBehaviorUtils::AddChangeAreaTirggers(FlockEntity, local_24.Get().CommonChangeAreaTriggerDefinitionCollection);
     }
     return;
 }
@@ -313,7 +310,7 @@ FECSEntity SpawnEcologyFlockEntity(const FEcologyFlockSpawnParam &inout BaseCont
     }
     if (local_32.FlockMainCreature)
     {
-        const FEcologyCreatureDefinitionRow& local_118;
+        const FEcologyCreatureDefinitionRow& local_118 = local_32.FlockMainCreature.Get();
         if (!(local_118.FlockTags.IsEmpty()))
         {
             local_124.Append(local_118.FlockTags);
@@ -357,6 +354,7 @@ FECSEntity SpawnEcologyFlockEntity(const FEcologyFlockSpawnParam &inout BaseCont
 }
 void SpawnCreatureEntityByFlockEntity(const FECSEntity &inout FlockEntity, const FC_EcologyFlockComponent &inout FlockComponent, const FC_EcologyFlockChildSpawnComponent &inout ChildManagerComp, const TSoftClassPtr<AECSPrefab> &inout SpawnClass, const int PosOffsetIndex)
 {
+    int local_194 = 0;
     FECSEntity local_10 = FECSEntity(FlockComponent.ActivityTarget.MainTargetResource);
     FVector local_16;
     FQuat local_24;
@@ -410,11 +408,10 @@ void SpawnCreatureEntityByFlockEntity(const FECSEntity &inout FlockEntity, const
         local_196.TargetEntity = local_6.GetId();
         FAIEQSProxyCustomDataHandle::SetAs local_206;
         local_206.opCall(local_196, EAIEQSProxyEventDataType(3));
-        TSoftObjectPtr<UEnvQuery> local_218;
+        TSoftObjectPtr<UEnvQuery> local_218 = TSoftObjectPtr<UEnvQuery>(local_194.EcologyLevelConfig.Get().SpawnEntityEnvQueryTemplate);
         Ecology::SyncLoadObject(local_218.ToSoftObjectPath());
-        UEnvQuery local_230;
         FAIEQSProxyCustomDataHandle local_202;
-        int local_56 = FAIEQSUtils::ExecuteWorldEQSExt(local_230, EEnvQueryRunMode(1), local_202, false);
+        int local_56 = FAIEQSUtils::ExecuteWorldEQSExt(local_218.Get(), EEnvQueryRunMode(1), local_202, false);
         FAIEQSUtils::SetIntParam(local_56, n"SelfEntity", FlockEntity.GetIdValue());
         FAIEQSUtils::SetFloatParam(local_56, n"Donut.InnerRadius", float32(local_26));
         FAIEQSUtils::SetFloatParam(local_56, n"Donut.OuterRadius", float32(local_30));
@@ -476,13 +473,13 @@ void RemoveChildFromFlock(const FECSEntity &inout FlockEntity, FC_EcologyFlockCo
 void InitEcologyAIKnowledge(const FECSEntity &inout CreatureEntity, const FECSEntity &inout FlockEntity, const TDataObjectPtr<FEcologyCreatureDefinitionRow> &inout CreatureType)
 {
     int local_534 = 0;
-    const FEcologyCreatureDefinitionRow& local_536;
     if (!(CreatureType))
     {
         return;
     }
     Assign local_6;
     local_6.opCall(FC_EcologyKnowledge());
+    const FEcologyCreatureDefinitionRow& local_536 = CreatureType.Get();
     if (!(local_536.CreatureTags.IsEmpty()))
     {
         local_534.Append(local_536.CreatureTags);
@@ -504,8 +501,6 @@ void InitEcologyAIKnowledge(const FECSEntity &inout CreatureEntity, const FECSEn
 }
 FC_CreatureMeta& SetupCreatureMeta(const FECSEntity &inout NewCreatureEntity, const FEcologyCreatureSpawnerContext &inout Context)
 {
-    int local_181 = 0;
-    int local_182 = 0;
     int local_252 = 0;
     FC_CreatureMeta local_66;
     local_66.CreatureType = Context.GetCreatureType();
@@ -521,17 +516,19 @@ FC_CreatureMeta& SetupCreatureMeta(const FECSEntity &inout NewCreatureEntity, co
         }
     }
     TDataObjectPtr<FLevelInfoConfig> local_156 = FLevelUtils::GetCurrentLevelInfoConfig(nullptr);
-    if (local_156 && (local_181 == 2))
+    if (local_156 && (int(local_156.Get().LevelType) == 2))
     {
         FECSWorldPtr local_184 = NewCreatureEntity.GetWorld();
-        if (FEcologySceneInfoUtils::GetWorldAreaConfigByPosition(local_184, Context.TargetLocation))
+        TDataObjectPtr<FWorldAreaConfig> local_208 = FEcologySceneInfoUtils::GetWorldAreaConfigByPosition(local_184, Context.TargetLocation);
+        if (local_208)
         {
-            local_66.Level = local_182;
+            local_66.DifficultyLevelConfig = local_208.Get().DifficultyLevelConfig;
+            local_66.Level = local_208.Get().MonsterDifficultyLevel;
         }
     }
     else
     {
-        if (local_156 && (local_181 == 3))
+        if (local_156 && (int(local_156.Get().LevelType) == 3))
         {
             FECSWorldPtr local_184_2 = NewCreatureEntity.GetWorld();
             Get local_236;
@@ -540,6 +537,7 @@ FC_CreatureMeta& SetupCreatureMeta(const FECSEntity &inout NewCreatureEntity, co
             {
                 if (local_238.CommissionConfig)
                 {
+                    local_66.DifficultyLevelConfig = local_238.CommissionConfig.Get().DifficultyLevelConfig;
                 }
             }
         }
@@ -621,20 +619,18 @@ FECSEntity SpawnCreatureByContext(const FEcologyCreatureSpawnerContext &inout Co
 void RefreshFlockChildCount(const FECSEntity &inout FlockEntity, const FC_EcologyFlockChildSpawnComponent &inout ChildManager)
 {
     int local_6 = 0;
-    float32 local_11 = 0.0f;
     int local_82 = 0;
     int local_7 = ChildManager.DefaultSpawnNum;
     if (ChildManager.bAcceptSpawnRatio)
     {
         float32 local_10;
         local_10 = 1.0f;
-        if (FEcologySceneInfoUtils::FindSpawnRatioDataByFlock(FEcologyUtils::ModifyGlobalContext(ECS::GetECSWorld()), FlockEntity, local_6))
+        TDataObjectPtr<FSpawnerCountRatioDefinitionRow> local_38 = FEcologySceneInfoUtils::FindSpawnRatioDataByFlock(FEcologyUtils::ModifyGlobalContext(ECS::GetECSWorld()), FlockEntity, local_6);
+        if (local_38)
         {
-            local_10 = local_11;
+            local_10 = local_38.Get().CreatureCountSpawnRatio;
         }
-        local_11 = local_7;
-        local_11 = local_11 * local_10;
-        local_7 = FMath::CeilToInt(local_11);
+        local_7 = FMath::CeilToInt((local_7 * local_10));
     }
     if (FECSEntity(local_6.ActivityTarget.MainTargetResource))
     {
@@ -680,8 +676,7 @@ void EcologyInitNavAgent(const FECSEntity &inout CreatureEntity)
         {
             if (local_14.CreatureType)
             {
-                const FEcologyCreatureDefinitionRow& local_16;
-                if (local_16.NavFilter.IsValid())
+                if (local_14.CreatureType.Get().NavFilter.IsValid())
                 {
                 }
             }
@@ -734,8 +729,7 @@ AEcologySpawnerPrefabBase GetSpawnerPrefabByRuntimeEntity(const FECSEntity &inou
         const FLevelUnitConfig& local_36 = local_34.GetLevelUnitConfig();
         if (local_36.ActorPath.IsValid())
         {
-            AActor local_38;
-            return Cast<AEcologySpawnerPrefabBase>(local_38);
+            return Cast<AEcologySpawnerPrefabBase>(local_36.ActorPath.Get());
         }
     }
     return Cast<AEcologySpawnerPrefabBase>(ULevelActorManager::Get().GetInLevelPrefabByEntity(local_20));
@@ -838,23 +832,24 @@ void MarkAndNotirySpawnerReady(const FECSEntity &inout SpawnerEntity, FC_Spawner
 }
 int GetSpawnerExpectedConfiguredEntityCount(const FECSEntity &inout SpawnerEntity)
 {
-    int local_2 = 0;
     int local_1 = -1;
     Get local_6;
     const FC_EcologyConfigReference& local_8 = local_6.opCall();
     if (local_8)
     {
-        if (local_8.ReadSpawnerConfig())
+        TConstRawPtr<FVirtualConfigData> local_12 = local_8.ReadSpawnerConfig();
+        if (local_12)
         {
-            const FInstancedStruct& local_16 = GetConfigData();
-            if (FInstancedStruct::GetPtr(local_16).opCall())
+            const FInstancedStruct& local_16 = local_12.Get().GetConfigData();
+            TConstRawPtr<FConstFlockSpawnerConfig> local_22 = FInstancedStruct::GetPtr(local_16).opCall();
+            if (local_22)
             {
-                return local_2;
+                return local_22.Get().CreatureList.Num();
             }
-            if (FInstancedStruct::GetPtr(local_16).opCall())
+            TConstRawPtr<FConstNPCSpawnerConfig> local_30 = FInstancedStruct::GetPtr(local_16).opCall();
+            if (local_30)
             {
-                local_2 = unresolved.NPCConfig ? 1 : 0;
-                return local_2;
+                return local_30.Get().NPCConfig ? 1 : 0;
             }
             if (FInstancedStruct::GetPtr(local_16).opCall())
             {

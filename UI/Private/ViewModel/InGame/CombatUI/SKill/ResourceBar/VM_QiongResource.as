@@ -618,10 +618,10 @@ struct FVM_QiongSkillResource : FEUIViewModel
     }
     void RefreshResouceItems()
     {
-        FVM_QiongSkillResourceItem& local_6;
         int local_1 = 0;
         for (; local_1 < this.GetRightResourceItems().Num(); )
         {
+            FVM_QiongSkillResourceItem& local_6 = this.GetModify_RightResourceItems()[local_1].Get();
             local_6.SetLastPercent(local_6.GetPercent());
             float32 local_8 = (this.GetCustomSkillEnergy_2() - (local_1 * this.ENERGY_INTERVAL)) / this.ENERGY_INTERVAL;
             local_6.SetPercent(FMath::Clamp(local_8, 0.0f, 1.0f));
@@ -631,17 +631,18 @@ struct FVM_QiongSkillResource : FEUIViewModel
         }
         if (this.GetRightResourceItems().Num() > 4)
         {
-            (this.GetCustomSkillEnergyMax_2() > 200.0f).SetbItemVisible();
-            this.SetbFifthItemShow(GetbItemVisible());
+            this.GetModify_RightResourceItems()[4].Get().SetbItemVisible((this.GetCustomSkillEnergyMax_2() > 200.0f));
+            this.SetbFifthItemShow(this.GetModify_RightResourceItems()[4].Get().GetbItemVisible());
         }
         int local_1_2 = 0;
         for (; local_1_2 < this.GetLeftResourceItems().Num(); )
         {
-            local_6.SetLastPercent(local_6.GetPercent());
+            FVM_QiongSkillResourceItem& local_6_2 = this.GetModify_LeftResourceItems()[local_1_2].Get();
+            local_6_2.SetLastPercent(local_6_2.GetPercent());
             float32 local_9_2 = -this.GetCustomSkillEnergy_2() - local_1_2 * this.ENERGY_INTERVAL;
-            local_6.SetPercent(FMath::Clamp(local_9_2 / this.ENERGY_INTERVAL, 0.0f, 1.0f));
-            local_6.SetbStopAllAnim(this.GetbBanProgress());
-            local_6.SetbOverload(this.GetbBanProgress());
+            local_6_2.SetPercent(FMath::Clamp(local_9_2 / this.ENERGY_INTERVAL, 0.0f, 1.0f));
+            local_6_2.SetbStopAllAnim(this.GetbBanProgress());
+            local_6_2.SetbOverload(this.GetbBanProgress());
             ++local_1_2;
         }
         return;
@@ -687,16 +688,15 @@ struct FVM_QiongSkillResource : FEUIViewModel
         }
         this.SetLastChargeEnhanceCount(this.GetChargeEnhanceCount());
         local_40;
-        bool local_34 = this.GetContext().GetLocalPlayerPawn().HasEntityBB(local_40);
-        if (local_34)
+        if (this.GetContext().GetLocalPlayerPawn().HasEntityBB(local_40))
         {
             FNameHandle_EntityBBVarInt local_48;
             local_48;
             this.SetChargeEnhanceCount(this.GetContext().GetLocalPlayerPawn().GetBB_Int(local_48));
         }
         FECSEntity local_4_2 = this.GetContext().GetLocalPlayerPawn();
-        bool local_5_2 = local_22.opCall().HasAttribute(Attribute::CustomSkillEnergy_2);
-        if (local_5_2)
+        local_5 = local_22.opCall().HasAttribute(Attribute::CustomSkillEnergy_2);
+        if (local_5)
         {
             FGameAttributeModificationValue local_32;
             this.SetCustomSkillEnergy_2(FGameAttributeUtils::GetAttributeValue(this.GetContext().GetLocalPlayerPawn(), Attribute::CustomSkillEnergy_2, this.GetContext().Time, false, 0.0f, false, local_32));
@@ -705,42 +705,12 @@ struct FVM_QiongSkillResource : FEUIViewModel
             {
                 this.SetCustomSkillEnergyRatio_2((this.GetCustomSkillEnergy_2() / this.GetCustomSkillEnergyMax_2()));
             }
-            TEUIModelRef<FVM_SwordSkillResourcePoint> local_50 = this.GetLeftResourcePointer();
-            TEUIModelRef<FVM_SwordSkillResourcePoint> local_52 = this.GetLeftResourcePointer();
-            GetResourcePointPercent().SetLastResourcePointPercent();
-            float32 local_33_2 = this.GetLeftProgress();
-            TEUIModelRef<FVM_SwordSkillResourcePoint> local_50_2 = this.GetLeftResourcePointer();
-            local_33_2.SetResourcePointPercent();
-            TEUIModelRef<FVM_SwordSkillResourcePoint> local_52_2 = this.GetLeftResourcePointer();
-            if (GetResourcePointPercent() >= 1.0f)
-            {
-                local_5_2 = false;
-            }
-            else
-            {
-                TEUIModelRef<FVM_SwordSkillResourcePoint> local_52_3 = this.GetLeftResourcePointer();
-                local_5_2 = (GetResourcePointPercent() > 0.0f);
-            }
-            TEUIModelRef<FVM_SwordSkillResourcePoint> local_50_3 = this.GetLeftResourcePointer();
-            local_5_2.SetbPointVisible();
-            TEUIModelRef<FVM_SwordSkillResourcePoint> local_52_4 = this.GetRightResourcePointer();
-            TEUIModelRef<FVM_SwordSkillResourcePoint> local_50_4 = this.GetRightResourcePointer();
-            GetResourcePointPercent().SetLastResourcePointPercent();
-            float32 local_35_2 = this.GetRightProgress();
-            TEUIModelRef<FVM_SwordSkillResourcePoint> local_52_5 = this.GetRightResourcePointer();
-            local_35_2.SetResourcePointPercent();
-            TEUIModelRef<FVM_SwordSkillResourcePoint> local_50_5 = this.GetRightResourcePointer();
-            if (GetResourcePointPercent() >= 1.0f)
-            {
-                local_34 = false;
-            }
-            else
-            {
-                TEUIModelRef<FVM_SwordSkillResourcePoint> local_50_6 = this.GetRightResourcePointer();
-                local_34 = (GetResourcePointPercent() > 0.0f);
-            }
-            TEUIModelRef<FVM_SwordSkillResourcePoint> local_52_6 = this.GetRightResourcePointer();
-            local_34.SetbPointVisible();
+            this.GetLeftResourcePointer().Get().SetLastResourcePointPercent(this.GetLeftResourcePointer().Get().GetResourcePointPercent());
+            this.GetLeftResourcePointer().Get().SetResourcePointPercent(this.GetLeftProgress());
+            this.GetLeftResourcePointer().Get().SetbPointVisible(this.GetLeftResourcePointer().Get().GetResourcePointPercent() < 1.0f && (this.GetLeftResourcePointer().Get().GetResourcePointPercent() > 0.0f));
+            this.GetRightResourcePointer().Get().SetLastResourcePointPercent(this.GetRightResourcePointer().Get().GetResourcePointPercent());
+            this.GetRightResourcePointer().Get().SetResourcePointPercent(this.GetRightProgress());
+            this.GetRightResourcePointer().Get().SetbPointVisible(this.GetRightResourcePointer().Get().GetResourcePointPercent() < 1.0f && (this.GetRightResourcePointer().Get().GetResourcePointPercent() > 0.0f));
         }
         this.RefreshResouceItems();
         return;
@@ -1096,11 +1066,9 @@ FVM_QiongSkillResourceItem& Create(const UObject ContextObject, const float32 In
 {
     return FVM_QiongSkillResourceItem::CreateByManager(EUIInternal::GetContextManager(ContextObject), Index, bReverseItem);
 }
-FVM_QiongSkillResourceItem CreateByManager(const UEUIManagerSubsystem Manager, const float32 Index, const bool bReverseItem)
+FVM_QiongSkillResourceItem& CreateByManager(const UEUIManagerSubsystem Manager, const float32 Index, const bool bReverseItem)
 {
-    FVM_QiongSkillResourceItem __r;
-    TEUIModelRef<FVM_QiongSkillResourceItem> local_6 = TEUIModelRef<FVM_QiongSkillResourceItem>(EUIInternal::MakeModelWithManager_Generic(Manager, FVM_QiongSkillResourceItem::ModelId, 0, Index, bReverseItem));
-    return __r;
+    return TEUIModelRef<FVM_QiongSkillResourceItem>(EUIInternal::MakeModelWithManager_Generic(Manager, FVM_QiongSkillResourceItem::ModelId, 0, Index, bReverseItem)).Get();
 }
 void GetModelInfo(FEUIViewModelMetaInfo &inout Result)
 {
@@ -1184,8 +1152,7 @@ namespace __GeneratedProperties_FVM_QiongSkillResourceItem
 {
 UScriptStruct StaticStruct()
 {
-    UScriptStruct local_2;
-    return local_2;
+    return __GeneratedProperties_FVM_QiongSkillResourceItem.Get();
 }
 }
 namespace FVM_QiongSkillResource
@@ -1194,11 +1161,9 @@ FVM_QiongSkillResource& Create(const UObject ContextObject)
 {
     return FVM_QiongSkillResource::CreateByManager(EUIInternal::GetContextManager(ContextObject));
 }
-FVM_QiongSkillResource CreateByManager(const UEUIManagerSubsystem Manager)
+FVM_QiongSkillResource& CreateByManager(const UEUIManagerSubsystem Manager)
 {
-    FVM_QiongSkillResource __r;
-    TEUIModelRef<FVM_QiongSkillResource> local_6 = TEUIModelRef<FVM_QiongSkillResource>(EUIInternal::MakeModelWithManager(Manager, FVM_QiongSkillResource::ModelId));
-    return __r;
+    return TEUIModelRef<FVM_QiongSkillResource>(EUIInternal::MakeModelWithManager(Manager, FVM_QiongSkillResource::ModelId)).Get();
 }
 void GetModelInfo(FEUIViewModelMetaInfo &inout Result)
 {
@@ -1465,7 +1430,6 @@ namespace __GeneratedProperties_FVM_QiongSkillResource
 {
 UScriptStruct StaticStruct()
 {
-    UScriptStruct local_2;
-    return local_2;
+    return __GeneratedProperties_FVM_QiongSkillResource.Get();
 }
 }

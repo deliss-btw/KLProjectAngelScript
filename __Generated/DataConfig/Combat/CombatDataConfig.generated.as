@@ -27,7 +27,7 @@ TDataObjectPtr<FMessageHintConfig> __FExecutionConfigDataObject_GetMessageHintCo
         FExecutionConfigDataObject local_146;
         return local_146.GetMessageHintConfig();
     }
-    return GetMessageHintConfig();
+    return DataObject.Get().GetMessageHintConfig();
 }
 UFUNCTION()
 float32 __FExecutionConfigDataObject_GetExecutedDamageHPRatio(const TDataObjectPtr<FExecutionConfigDataObject> &inout DataObject)
@@ -47,7 +47,6 @@ float32 __FExecutionConfigDataObject_GetExecutedDamageHPRatio(const TDataObjectP
 UFUNCTION()
 FBuffConfigRef __FExecutionConfigDataObject_GetExecuteMonsterDebuff(const TDataObjectPtr<FExecutionConfigDataObject> &inout DataObject)
 {
-    FBuffConfigRef __r;
     if ((DataObject == nullptr))
     {
         if (!(EUIGlobals::GIsDuringPropertyConversion))
@@ -57,12 +56,11 @@ FBuffConfigRef __FExecutionConfigDataObject_GetExecuteMonsterDebuff(const TDataO
         FExecutionConfigDataObject local_146;
         return local_146.ExecuteMonsterDebuff;
     }
-    return __r;
+    return DataObject.Get().ExecuteMonsterDebuff;
 }
 UFUNCTION()
 FName __FExecutionConfigDataObject_GetExecutedMonsterState(const TDataObjectPtr<FExecutionConfigDataObject> &inout DataObject)
 {
-    FName __r;
     if ((DataObject == nullptr))
     {
         if (!(EUIGlobals::GIsDuringPropertyConversion))
@@ -72,12 +70,11 @@ FName __FExecutionConfigDataObject_GetExecutedMonsterState(const TDataObjectPtr<
         FExecutionConfigDataObject local_146;
         return local_146.ExecutedMonsterState;
     }
-    return __r;
+    return DataObject.Get().ExecutedMonsterState;
 }
 UFUNCTION()
 EExecutedPreType __FExecutionConfigDataObject_GetExecutedPreType(const TDataObjectPtr<FExecutionConfigDataObject> &inout DataObject)
 {
-    int local_147 = 0;
     if ((DataObject == nullptr))
     {
         if (!(EUIGlobals::GIsDuringPropertyConversion))
@@ -85,15 +82,13 @@ EExecutedPreType __FExecutionConfigDataObject_GetExecutedPreType(const TDataObje
             FBlueprintDebugFunctions::ThrowScriptException("Get 'ExecutedPreType' from a null 'FExecutionConfigDataObject' DataObject!");
         }
         FExecutionConfigDataObject local_146;
-        local_147 = int(local_146.ExecutedPreType);
-        return EExecutedPreType(local_147);
+        return local_146.ExecutedPreType;
     }
-    return EExecutedPreType(local_147);
+    return DataObject.Get().ExecutedPreType;
 }
 UFUNCTION()
 FName __FExecutionConfigDataObject_GetExecuterAnimKey(const TDataObjectPtr<FExecutionConfigDataObject> &inout DataObject)
 {
-    FName __r;
     if ((DataObject == nullptr))
     {
         if (!(EUIGlobals::GIsDuringPropertyConversion))
@@ -103,12 +98,11 @@ FName __FExecutionConfigDataObject_GetExecuterAnimKey(const TDataObjectPtr<FExec
         FExecutionConfigDataObject local_146;
         return local_146.ExecuterAnimKey;
     }
-    return __r;
+    return DataObject.Get().ExecuterAnimKey;
 }
 UFUNCTION()
 FBuffConfigRef __FExecutionConfigDataObject_GetExecuteBuff(const TDataObjectPtr<FExecutionConfigDataObject> &inout DataObject)
 {
-    FBuffConfigRef __r;
     if ((DataObject == nullptr))
     {
         if (!(EUIGlobals::GIsDuringPropertyConversion))
@@ -118,7 +112,7 @@ FBuffConfigRef __FExecutionConfigDataObject_GetExecuteBuff(const TDataObjectPtr<
         FExecutionConfigDataObject local_146;
         return local_146.ExecuteBuff;
     }
-    return __r;
+    return DataObject.Get().ExecuteBuff;
 }
 UFUNCTION()
 float32 __FExecutionConfigDataObject_GetExecuteBuffDelayAddTime(const TDataObjectPtr<FExecutionConfigDataObject> &inout DataObject)
@@ -153,7 +147,6 @@ float32 __FExecutionConfigDataObject_GetExecuteBuffDistanceXY(const TDataObjectP
 UFUNCTION()
 FName __FExecutionConfigDataObject_GetExecuteInterruptAvatarTrigger(const TDataObjectPtr<FExecutionConfigDataObject> &inout DataObject)
 {
-    FName __r;
     if ((DataObject == nullptr))
     {
         if (!(EUIGlobals::GIsDuringPropertyConversion))
@@ -163,12 +156,11 @@ FName __FExecutionConfigDataObject_GetExecuteInterruptAvatarTrigger(const TDataO
         FExecutionConfigDataObject local_146;
         return local_146.ExecuteInterruptAvatarTrigger;
     }
-    return __r;
+    return DataObject.Get().ExecuteInterruptAvatarTrigger;
 }
 UFUNCTION()
 TSoftClassPtr<AFXActor> __FExecutionConfigDataObject_GetChaosKnotFX(const TDataObjectPtr<FExecutionConfigDataObject> &inout DataObject)
 {
-    TSoftClassPtr<AFXActor> __r;
     if ((DataObject == nullptr))
     {
         if (!(EUIGlobals::GIsDuringPropertyConversion))
@@ -178,12 +170,11 @@ TSoftClassPtr<AFXActor> __FExecutionConfigDataObject_GetChaosKnotFX(const TDataO
         FExecutionConfigDataObject local_146;
         return local_146.ChaosKnotFX;
     }
-    return __r;
+    return DataObject.Get().ChaosKnotFX;
 }
 UFUNCTION()
 TSoftClassPtr<AFXActor> __FExecutionConfigDataObject_GetChaosKnotBreakFX(const TDataObjectPtr<FExecutionConfigDataObject> &inout DataObject)
 {
-    TSoftClassPtr<AFXActor> __r;
     if ((DataObject == nullptr))
     {
         if (!(EUIGlobals::GIsDuringPropertyConversion))
@@ -193,12 +184,11 @@ TSoftClassPtr<AFXActor> __FExecutionConfigDataObject_GetChaosKnotBreakFX(const T
         FExecutionConfigDataObject local_146;
         return local_146.ChaosKnotBreakFX;
     }
-    return __r;
+    return DataObject.Get().ChaosKnotBreakFX;
 }
 UFUNCTION()
 FName __FExecutionConfigDataObject_GetChaosKnotSocket(const TDataObjectPtr<FExecutionConfigDataObject> &inout DataObject)
 {
-    FName __r;
     if ((DataObject == nullptr))
     {
         if (!(EUIGlobals::GIsDuringPropertyConversion))
@@ -208,12 +198,11 @@ FName __FExecutionConfigDataObject_GetChaosKnotSocket(const TDataObjectPtr<FExec
         FExecutionConfigDataObject local_146;
         return local_146.ChaosKnotSocket;
     }
-    return __r;
+    return DataObject.Get().ChaosKnotSocket;
 }
 UFUNCTION()
 FVector __FExecutionConfigDataObject_GetChaosKnotOffset(const TDataObjectPtr<FExecutionConfigDataObject> &inout DataObject)
 {
-    FVector __r;
     if ((DataObject == nullptr))
     {
         if (!(EUIGlobals::GIsDuringPropertyConversion))
@@ -223,12 +212,11 @@ FVector __FExecutionConfigDataObject_GetChaosKnotOffset(const TDataObjectPtr<FEx
         FExecutionConfigDataObject local_146;
         return local_146.ChaosKnotOffset;
     }
-    return __r;
+    return DataObject.Get().ChaosKnotOffset;
 }
 UFUNCTION()
 FRotator __FExecutionConfigDataObject_GetChaosKnotRotationOffset(const TDataObjectPtr<FExecutionConfigDataObject> &inout DataObject)
 {
-    FRotator __r;
     if ((DataObject == nullptr))
     {
         if (!(EUIGlobals::GIsDuringPropertyConversion))
@@ -238,12 +226,11 @@ FRotator __FExecutionConfigDataObject_GetChaosKnotRotationOffset(const TDataObje
         FExecutionConfigDataObject local_146;
         return local_146.ChaosKnotRotationOffset;
     }
-    return __r;
+    return DataObject.Get().ChaosKnotRotationOffset;
 }
 UFUNCTION()
 TSoftClassPtr<AEnergyBallPrefab> __FExecutionConfigDataObject_GetBuffBallPrefab(const TDataObjectPtr<FExecutionConfigDataObject> &inout DataObject)
 {
-    TSoftClassPtr<AEnergyBallPrefab> __r;
     if ((DataObject == nullptr))
     {
         if (!(EUIGlobals::GIsDuringPropertyConversion))
@@ -253,7 +240,7 @@ TSoftClassPtr<AEnergyBallPrefab> __FExecutionConfigDataObject_GetBuffBallPrefab(
         FExecutionConfigDataObject local_146;
         return local_146.BuffBallPrefab;
     }
-    return __r;
+    return DataObject.Get().BuffBallPrefab;
 }
 UFUNCTION()
 int __FExecutionConfigDataObject_GetBuffBallNum(const TDataObjectPtr<FExecutionConfigDataObject> &inout DataObject)

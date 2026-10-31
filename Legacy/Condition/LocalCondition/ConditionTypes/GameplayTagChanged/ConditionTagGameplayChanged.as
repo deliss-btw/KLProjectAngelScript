@@ -14,7 +14,7 @@ class UConditionGameplayTagChanged : ULocalConditionTypeDefineBase
     }
     void OnConditionRegistered(const FLocalConditionInstance &inout ConditionInstance) const
     {
-        FGameplayTag local_2 = this.GetGameplayTag(GetConditionConfig());
+        FGameplayTag local_2 = this.GetGameplayTag(ConditionInstance.GetInstanceData().GetConditionConfig());
         FConditionInstanceHandle local_36 = ConditionInstance.GetHandle();
         FECSWorldPtr local_6 = ECS::GetECSWorld();
         ModifyOrAdd local_10;
@@ -23,7 +23,7 @@ class UConditionGameplayTagChanged : ULocalConditionTypeDefineBase
     }
     void OnConditionUnregistered(const FLocalConditionInstance &inout ConditionInstance) const
     {
-        FGameplayTag local_2 = this.GetGameplayTag(GetConditionConfig());
+        FGameplayTag local_2 = this.GetGameplayTag(ConditionInstance.GetInstanceData().GetConditionConfig());
         FECSWorldPtr local_6 = ECS::GetECSWorld();
         Modify local_10;
         FCS_GameplayTagChangedConditionManager& local_12 = local_10.opCall();
@@ -33,9 +33,10 @@ class UConditionGameplayTagChanged : ULocalConditionTypeDefineBase
             if (local_16.Contains(local_2))
             {
                 TArray<FConditionInstanceHandle> local_18;
-                FConditionInstanceHandle local_44 = ConditionInstance.GetHandle();
+                local_18.Remove(ConditionInstance.GetHandle());
                 if (local_18.IsEmpty())
                 {
+                    local_16.Remove(local_2);
                     if (local_16.IsEmpty())
                     {
                         FECSWorldPtr local_48 = ECS::GetECSWorld();

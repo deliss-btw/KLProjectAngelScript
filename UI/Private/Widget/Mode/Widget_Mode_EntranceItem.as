@@ -43,8 +43,7 @@ class UWidget_Mode_EntranceItem : UEUIUserWidget
     {
         int local_2 = 0;
         FEUIMessageBus::PublishWithWidgetReferencedModels(EUIMessageBus);
-        TEUIModelWeakRef<FVM_Mode_EntranceItem> local_8;
-        local_2.HoveredModeItem = local_8;
+        local_2.HoveredModeItem = TEUIModelWeakRef<FVM_Mode_EntranceItem>(this.Mode_EntranceItem.Get());
         return;
     }
     UFUNCTION()
@@ -52,8 +51,7 @@ class UWidget_Mode_EntranceItem : UEUIUserWidget
     {
         int local_2 = 0;
         FEUIMessageBus::PublishWithWidgetReferencedModels(EUIMessageBus);
-        TEUIModelWeakRef<FVM_Mode_EntranceItem> local_8;
-        local_2.ClickedModeItem = local_8;
+        local_2.ClickedModeItem = TEUIModelWeakRef<FVM_Mode_EntranceItem>(this.Mode_EntranceItem.Get());
         return;
     }
     UFUNCTION()

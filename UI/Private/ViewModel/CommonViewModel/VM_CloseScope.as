@@ -38,6 +38,8 @@ struct FVM_CloseScope : FEUIViewModel
     UPROPERTY()
     bool bHandlingCloseRequest;
 
+    default m_ScriptOverrideMeta = Cast<UASStruct>(FVM_CloseScope.Get());
+
     FVM_CloseScope()
     {
         this.m_bEnabled = true;
@@ -319,11 +321,9 @@ FVM_CloseScope& Create(const UObject ContextObject)
 {
     return FVM_CloseScope::CreateByManager(EUIInternal::GetContextManager(ContextObject));
 }
-FVM_CloseScope CreateByManager(const UEUIManagerSubsystem Manager)
+FVM_CloseScope& CreateByManager(const UEUIManagerSubsystem Manager)
 {
-    FVM_CloseScope __r;
-    TEUIModelRef<FVM_CloseScope> local_6 = TEUIModelRef<FVM_CloseScope>(EUIInternal::MakeModelWithManager(Manager, FVM_CloseScope::ModelId));
-    return __r;
+    return TEUIModelRef<FVM_CloseScope>(EUIInternal::MakeModelWithManager(Manager, FVM_CloseScope::ModelId)).Get();
 }
 void GetModelInfo(FEUIViewModelMetaInfo &inout Result)
 {
@@ -383,7 +383,6 @@ namespace __GeneratedProperties_FVM_CloseScope
 {
 UScriptStruct StaticStruct()
 {
-    UScriptStruct local_2;
-    return local_2;
+    return __GeneratedProperties_FVM_CloseScope.Get();
 }
 }

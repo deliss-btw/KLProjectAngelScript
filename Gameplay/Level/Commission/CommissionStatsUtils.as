@@ -6,7 +6,7 @@ struct __Lambda_Gameplay_Level_Commission_CommissionStatsUtils_342
     }
     bool opCall(const FCommissionBadgeRewardResurlt &inout A, const FCommissionBadgeRewardResurlt &inout B)
     {
-        return (0 > 0);
+        return (A.GetConfig().Get().Score > B.GetConfig().Get().Score);
     }
 }
 
@@ -25,7 +25,7 @@ bool CheckInMissionCommission()
     const FCS_CommissionInfo& local_8 = local_6.opCall();
     if (local_8)
     {
-        if (local_8.CommissionConfig.IsSet() && (0 == 3))
+        if (local_8.CommissionConfig.IsSet() && (int(local_8.CommissionConfig.Get().CommissionType) == 3))
         {
             return true;
         }
@@ -237,8 +237,6 @@ int GetStateValue(const FECSEntity &inout Pawn, const ECommissionPlayerStatsType
 }
 bool HasRewardBadge(const TDataObjectPtr<FCommissionBadgeConfig> &inout Config, const FECSEntity &inout Pawn, const TArray<FECSEntity> &inout OtherTeamer, FCommissionBadgeRewardResurlt &inout OutResurlt)
 {
-    int local_10 = 0;
-    int local_14 = 0;
     FECSEntity local_4 = CommissionStatsUtils::CheckAndGetPlayerEntity(Pawn);
     if ((local_4 == ENTITY_NULL))
     {
@@ -246,14 +244,15 @@ bool HasRewardBadge(const TDataObjectPtr<FCommissionBadgeConfig> &inout Config, 
         local_9 = 0;
         return false;
     }
-    int local_11 = local_10;
+    int local_11 = int(Config.Get().CountType);
     switch (local_11)
     {
         int local_9;
     case 0:
     {
-        int local_12 = CommissionStatsUtils::GetStateValue(Pawn, ECommissionPlayerStatsType(local_14));
-        if (local_12 >= local_11)
+        int local_12 = CommissionStatsUtils::GetStateValue(Pawn, ECommissionPlayerStatsType(Config.Get().CountState));
+        int local_11_2 = Config.Get().Target;
+        if (local_12 >= local_11_2)
         {
             OutResurlt.SetConfig(Config);
             OutResurlt.SetValue(local_12);
@@ -265,11 +264,11 @@ bool HasRewardBadge(const TDataObjectPtr<FCommissionBadgeConfig> &inout Config, 
     }
     case 1:
     {
-        int local_11_2 = CommissionStatsUtils::GetStateValue(Pawn, ECommissionPlayerStatsType(local_14));
-        if (local_11_2 <= 0)
+        int local_11_3 = CommissionStatsUtils::GetStateValue(Pawn, ECommissionPlayerStatsType(Config.Get().CountState));
+        if (local_11_3 <= Config.Get().Target)
         {
             OutResurlt.SetConfig(Config);
-            OutResurlt.SetValue(local_11_2);
+            OutResurlt.SetValue(local_11_3);
             OutResurlt.SetbPercent(false);
             return true;
         }
@@ -283,17 +282,18 @@ bool HasRewardBadge(const TDataObjectPtr<FCommissionBadgeConfig> &inout Config, 
             local_9 = 0;
             return false;
         }
-        int local_12_2 = CommissionStatsUtils::GetStateValue(Pawn, ECommissionPlayerStatsType(local_14));
+        int local_12_2 = CommissionStatsUtils::GetStateValue(Pawn, ECommissionPlayerStatsType(Config.Get().CountState));
         int local_15 = 0;
         int local_16 = local_12_2;
-        for (auto& local_30 : OtherTeamer)
+        auto local_22 = OtherTeamer.Iterator();
+        for (; local_22.CanProceed;)
         {
-            int local_11_3 = CommissionStatsUtils::GetStateValue(local_30, ECommissionPlayerStatsType(local_14));
-            if (local_12_2 < local_11_3)
+            int local_11_4 = CommissionStatsUtils::GetStateValue(local_22.Proceed(), ECommissionPlayerStatsType(Config.Get().CountState));
+            if (local_12_2 < local_11_4)
             {
                 ++local_15;
             }
-            local_16 = local_16 + local_11_3;
+            local_16 = local_16 + local_11_4;
         }
         if (local_12_2 <= 0)
         {
@@ -329,17 +329,18 @@ bool HasRewardBadge(const TDataObjectPtr<FCommissionBadgeConfig> &inout Config, 
         {
             return false;
         }
-        int local_31 = CommissionStatsUtils::GetStateValue(Pawn, ECommissionPlayerStatsType(local_14));
+        int local_31 = CommissionStatsUtils::GetStateValue(Pawn, ECommissionPlayerStatsType(Config.Get().CountState));
         int local_16_2 = 0;
-        int local_11_4 = local_31;
-        for (auto& local_30 : OtherTeamer)
+        int local_11_5 = local_31;
+        auto local_28 = OtherTeamer.Iterator();
+        for (; local_28.CanProceed;)
         {
-            int local_12_3 = CommissionStatsUtils::GetStateValue(local_30, ECommissionPlayerStatsType(local_14));
+            int local_12_3 = CommissionStatsUtils::GetStateValue(local_28.Proceed(), ECommissionPlayerStatsType(Config.Get().CountState));
             if (local_31 < local_12_3)
             {
                 ++local_16_2;
             }
-            local_11_4 = local_11_4 + local_12_3;
+            local_11_5 = local_11_5 + local_12_3;
         }
         if (local_31 <= 0)
         {
@@ -347,7 +348,7 @@ bool HasRewardBadge(const TDataObjectPtr<FCommissionBadgeConfig> &inout Config, 
         }
         else
         {
-            local_9 = (local_11_4 > 0);
+            local_9 = (local_11_5 > 0);
         }
         if (local_9 == 0)
         {
@@ -360,7 +361,7 @@ bool HasRewardBadge(const TDataObjectPtr<FCommissionBadgeConfig> &inout Config, 
         if (local_9 != 0)
         {
             OutResurlt.SetConfig(Config);
-            OutResurlt.SetPercent((local_31 / local_11_4));
+            OutResurlt.SetPercent((local_31 / local_11_5));
             OutResurlt.SetbPercent(true);
             return true;
         }
@@ -403,6 +404,8 @@ TArray<FCommissionBadgeRewardResurlt> GetAllRewardBadge(const FECSEntity &inout 
             local_60.Add(local_104);
         }
     }
+    __Lambda_Gameplay_Level_Commission_CommissionStatsUtils_342 local_106;
+    local_60.Sort(local_106);
     return local_60;
 }
 }

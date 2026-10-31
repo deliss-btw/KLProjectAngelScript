@@ -37,16 +37,14 @@ class US_LevelVengeanceAS : UECSScriptSystem
             local_28.Killer = DeathEvent.Sender;
             local_28.KilledByEntity = local_16;
             local_28.bIsSenderKill = true;
-            bool local_7 = false;
-            local_28.SetbPredictable(local_7);
+            local_28.SetbPredictable(false);
             for (auto& local_46 : local_6.KillDataMap)
             {
-                local_46;
-                ::FASCommonUtils::GetUniquePlayerEntity(local_16);
-                if (local_7)
+                if ((::FASCommonUtils::GetUniquePlayerEntity(local_16) == local_46.GetValue().VictimPlayer))
                 {
                     continue;
                 }
+                ::FASCommonUtils::GetUniqueAvatarPawnEntity(local_46.GetValue().VictimPlayer);
                 ECS::GetContextTime();
                 local_52.Killer = DeathEvent.Sender;
                 local_52.KilledByEntity = local_16;

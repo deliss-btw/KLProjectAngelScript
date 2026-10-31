@@ -22,13 +22,13 @@ ESwitchPlayerBlockReason GetSwitchPlayerBlockReason(const FECSEntity &inout Enti
     US_SwitchPlayerSystem local_6 = Cast<US_SwitchPlayerSystem>(AECSGameManagerActor::GetSystem(ECS::GetUEWorld(), US_SwitchPlayerSystem));
     if (local_6 == nullptr)
     {
-        return ESwitchPlayerBlockReason(1);
+        return ESwitchPlayerBlockReason::SystemNull;
     }
     Has local_12;
     bool local_7 = local_12.opCall();
     if (local_7)
     {
-        return ESwitchPlayerBlockReason(2);
+        return ESwitchPlayerBlockReason::AICombat;
     }
     FECSEntity local_16 = FASCommonUtils::GetUniqueAvatarPawnEntity(Entity);
     if (!(local_16.IsValid()))
@@ -42,7 +42,7 @@ ESwitchPlayerBlockReason GetSwitchPlayerBlockReason(const FECSEntity &inout Enti
     }
     if (local_7)
     {
-        return ESwitchPlayerBlockReason(3);
+        return ESwitchPlayerBlockReason::InFakeControl;
     }
     return local_6.GetSwitchPlayerConditionsReason(local_16, Time);
 }

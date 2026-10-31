@@ -365,11 +365,9 @@ FVM_GammaSlider& Create(const UObject ContextObject)
 {
     return FVM_GammaSlider::CreateByManager(EUIInternal::GetContextManager(ContextObject));
 }
-FVM_GammaSlider CreateByManager(const UEUIManagerSubsystem Manager)
+FVM_GammaSlider& CreateByManager(const UEUIManagerSubsystem Manager)
 {
-    FVM_GammaSlider __r;
-    TEUIModelRef<FVM_GammaSlider> local_6 = TEUIModelRef<FVM_GammaSlider>(EUIInternal::MakeModelWithManager(Manager, FVM_GammaSlider::ModelId));
-    return __r;
+    return TEUIModelRef<FVM_GammaSlider>(EUIInternal::MakeModelWithManager(Manager, FVM_GammaSlider::ModelId)).Get();
 }
 void GetModelInfo(FEUIViewModelMetaInfo &inout Result)
 {
@@ -477,7 +475,6 @@ namespace __GeneratedProperties_FVM_GammaSlider
 {
 UScriptStruct StaticStruct()
 {
-    UScriptStruct local_2;
-    return local_2;
+    return __GeneratedProperties_FVM_GammaSlider.Get();
 }
 }

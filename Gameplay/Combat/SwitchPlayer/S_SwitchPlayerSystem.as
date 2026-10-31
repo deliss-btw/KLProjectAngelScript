@@ -22,7 +22,8 @@ class US_SwitchPlayerSystem : UECSScriptSystem
         {
             return false;
         }
-        if (::FLevelUtils::GetCurrentLevelInfoConfig(nullptr).IsSet() && GetGameRuleConfig().IsSet() && (0 < 2))
+        TDataObjectPtr<FLevelInfoConfig> local_36 = ::FLevelUtils::GetCurrentLevelInfoConfig(nullptr);
+        if (local_36.IsSet() && local_36.Get().GetGameRuleConfig().IsSet() && (local_36.Get().GetGameRuleConfig().Get().SquadNum < 2))
         {
             return false;
         }
@@ -31,22 +32,18 @@ class US_SwitchPlayerSystem : UECSScriptSystem
     UFUNCTION()
     void Job_HandleSwitchPlayerInput(const FECSEntity &inout Entity, FC_ControlledByPlayer &inout PlayerComp, const FC_Input &inout Input, const FCS_FixedTime &inout FixedTime, FC_ESMTrigger &inout ESMTrigger) const
     {
-        UESMInputTriggerAsset local_12;
-        UESMInputTriggerAsset local_14;
         if ((!((this.SwitchPlayerInput == nullptr))))
         {
-            local_14 = this.SwitchPlayerInput;
-            UESMInputTriggerAsset::TickCommonTriggers(local_14, local_12.OutputTrigger, Input.State, FixedTime.LastTime, FixedTime.Time, ESMTrigger.Storage);
+            UESMInputTriggerAsset::TickCommonTriggers(this.SwitchPlayerInput, this.SwitchPlayerInput.Get().OutputTrigger, Input.State, FixedTime.LastTime, FixedTime.Time, ESMTrigger.Storage);
         }
         if ((!((this.SwitchPlayerNormalInput == nullptr))))
         {
-            local_14 = this.SwitchPlayerNormalInput;
-            UESMInputTriggerAsset::TickCommonTriggers(local_14, local_12.OutputTrigger, Input.State, FixedTime.LastTime, FixedTime.Time, ESMTrigger.Storage);
+            UESMInputTriggerAsset::TickCommonTriggers(this.SwitchPlayerNormalInput, this.SwitchPlayerNormalInput.Get().OutputTrigger, Input.State, FixedTime.LastTime, FixedTime.Time, ESMTrigger.Storage);
         }
         if ((!((this.SwitchPlayerInput == nullptr))))
         {
             SendEvent local_32;
-            FESMSimpleTrigger local_20 = ESMTrigger.Storage.GetTriggerByName(local_12.OutputTrigger);
+            FESMSimpleTrigger local_20 = ESMTrigger.Storage.GetTriggerByName(this.SwitchPlayerInput.Get().OutputTrigger);
             FFPTime local_22 = local_20.IsTriggered(FixedTime.LastTime, FixedTime.Time);
             if (local_22.opCmp(0.0) > 0 && ((FFPTime(local_20.TriggerTime).opCmp(FixedTime.LastTime) >= 0)))
             {
@@ -67,7 +64,7 @@ class US_SwitchPlayerSystem : UECSScriptSystem
         if ((!((this.SwitchPlayerNormalInput == nullptr))))
         {
             SendEvent local_32;
-            FESMSimpleTrigger local_20_2 = ESMTrigger.Storage.GetTriggerByName(local_14.OutputTrigger);
+            FESMSimpleTrigger local_20_2 = ESMTrigger.Storage.GetTriggerByName(this.SwitchPlayerNormalInput.Get().OutputTrigger);
             FFPTime local_22_2 = local_20_2.IsTriggered(FixedTime.LastTime, FixedTime.Time);
             if (local_22_2.opCmp(0.0) > 0 && ((FFPTime(local_20_2.TriggerTime).opCmp(FixedTime.LastTime) >= 0)))
             {
@@ -282,21 +279,22 @@ class US_SwitchPlayerSystem : UECSScriptSystem
     UFUNCTION()
     void ServerJob_DataTrackerPlayerSwitchSuccess(const FCE_PlayerSwitchSuccess &inout Event) const
     {
-        int local_2 = 0;
         int local_1 = 0;
         if (Event.SwitchOutPawn.IsValid())
         {
-            if (::GetAvatarConfig(Event.SwitchOutPawn))
+            TDataObjectPtr<FAvatarPrefabConfig> local_28 = ::GetAvatarConfig(Event.SwitchOutPawn);
+            if (local_28)
             {
-                local_1 = local_2;
+                local_1 = local_28.Get().DataId;
             }
         }
         int local_53 = 0;
         if (Event.SwitchInPawn.IsValid())
         {
-            if (::GetAvatarConfig(Event.SwitchInPawn))
+            TDataObjectPtr<FAvatarPrefabConfig> local_52 = ::GetAvatarConfig(Event.SwitchInPawn);
+            if (local_52)
             {
-                local_53 = local_2;
+                local_53 = local_52.Get().DataId;
             }
         }
         FPbPlayerLogDsAvatarSwitch local_64;

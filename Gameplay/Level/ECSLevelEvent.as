@@ -2,6 +2,8 @@ struct FASWaitForEvent : FECSAsyncEventAction
 {
     FECSAsyncEventAction _base_FECSAsyncEventAction;
 
+    default m_ScriptOverrideMeta = Cast<UASStruct>(FASWaitForEvent.Get());
+
     FASWaitForEvent()
     {
         this.__InitDefaults();

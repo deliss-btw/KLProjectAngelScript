@@ -60,6 +60,7 @@ class UESMBlackboard_ClearTrigger : UESMBPBaseSpanAction
         }
         if ((!((FName(this.Trigger.Name) == local_2))))
         {
+            this.Modify(true);
             this.Trigger.Name = local_2;
         }
         return;

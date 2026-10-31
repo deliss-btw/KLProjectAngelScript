@@ -71,25 +71,25 @@ struct FPostProcessAnim
 
     void UpdateAnim(const UMaterialInstanceDynamic Material, const FVector &inout AttachLocation, const FECSEntity &inout Entity, const float Time, const float Duration, const FFPTime &inout WorldTime) const
     {
-        const FPostProcessAnimFloatCurve& local_54;
         float local_56;
-        const FPostProcessAnimVectorCurve& local_82;
         if (!((this.AttachLocationSlotName == NAME_None)))
         {
             Material.SetVectorParameterValue(this.AttachLocationSlotName, FLinearColor(AttachLocation, 1.0f));
         }
         for (auto& local_26 : this.EntityBBVectorSlotNames)
         {
-            Material.SetVectorParameterValue(local_26.GetKey(), FLinearColor(Entity.GetBB_Vector(), 1.0f));
+            Material.SetVectorParameterValue(local_26.GetKey(), FLinearColor(Entity.GetBB_Vector(local_26.GetValue()), 1.0f));
         }
         for (auto& local_50 : this.FloatAnimCurves)
         {
             const FName& local_52 = local_50.GetKey();
+            const FPostProcessAnimFloatCurve& local_54 = local_50.GetValue();
             Material.SetScalarParameterValue(local_52, local_54.Curve.GetFloatValue(float32((this.GetSampleTime(local_54.Source, Entity, Time, local_54.BBVarName, local_54.Attribute.AttributeClass, WorldTime))), 0.0f));
         }
         for (auto& local_80 : this.VectorAnimCurves)
         {
             const FName& local_52_2 = local_80.GetKey();
+            const FPostProcessAnimVectorCurve& local_82 = local_80.GetValue();
             local_56 = this.GetSampleTime(local_82.Source, Entity, Time, local_82.BBVarName, local_82.Attribute.AttributeClass, WorldTime);
             Material.SetVectorParameterValue(local_52_2, FLinearColor(local_82.Curve.GetValue(float32(local_56)), 1.0f));
         }

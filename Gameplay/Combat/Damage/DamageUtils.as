@@ -44,6 +44,7 @@ FAttackBaseDamageValue CalcAttackBaseDamageValue(const FECSEntity &inout Attacke
     int local_80 = 0;
     int local_90 = 0;
     float32 local_8 = 0.0f;
+    float32 local_10 = 0.0f;
     float32 local_11 = 0.0f;
     float32 local_12 = 0.0f;
     if ((int(AttackData.DamageCalculationType) == 0 || (int(AttackData.DamageCalculationType) == 2)))
@@ -53,37 +54,36 @@ FAttackBaseDamageValue CalcAttackBaseDamageValue(const FECSEntity &inout Attacke
         if (local_24)
         {
             local_8 = AttackData.DamageRatio.GetFloatValue(bToAvatar, local_24.Storage, CapabilityInstanceId);
-            float32 local_9 = AttackData.DamageConstVal.GetFloatValue(bToAvatar, local_24.Storage, CapabilityInstanceId);
+            local_10 = AttackData.DamageConstVal.GetFloatValue(bToAvatar, local_24.Storage, CapabilityInstanceId);
             FGameAttributeCompositeCoefficient local_28 = AttackData.DamageAttributeCoefficient;
             for (auto& local_42 : local_28.AccumulateElements)
             {
-                local_42.Multiple.DefaultValue = local_9;
+                local_42.Multiple.DefaultValue = local_42.Multiple.GetValue(AttackerEntity, CapabilityInstanceId);
             }
             local_11 = AttackData.PostureDamageRatio.GetFloatValue(bToAvatar, local_24.Storage, CapabilityInstanceId);
             local_12 = AttackData.PostureDamageConstVal.GetFloatValue(bToAvatar, local_24.Storage, CapabilityInstanceId);
-            local_7.SetHPDamage(FDamageUtils::CalcBaseDamage(AttackerEntity, local_8, local_9, local_28, Time));
+            local_7.SetHPDamage(FDamageUtils::CalcBaseDamage(AttackerEntity, local_8, local_10, local_28, Time));
             local_7.SetHPDamage_MaxPercent(AttackData.PercentDamage.GetFloatValue(bToAvatar, local_24.Storage, CapabilityInstanceId));
-            local_9 = FDamageUtils::CalcBasePostureDamage(AttackerEntity, local_11, local_12, Time);
-            local_7.SetPostureDamage(local_9);
-            local_7.SetAbnormalStateAccumulation(local_9);
+            local_7.SetPostureDamage(FDamageUtils::CalcBasePostureDamage(AttackerEntity, local_11, local_12, Time));
+            local_7.SetAbnormalStateAccumulation(AttackData.AbnormalStateAccumulation.GetValue(local_24.Storage, CapabilityInstanceId));
         }
         else
         {
             FCapability_Float local_70 = AttackData.DamageRatio.GetValue(bToAvatar);
             local_8 = local_70.DefaultValue;
             FCapability_Float local_70_2 = AttackData.DamageConstVal.GetValue(bToAvatar);
-            float32 local_10_2 = local_70_2.DefaultValue;
+            local_10 = local_70_2.DefaultValue;
             FCapability_Float local_70_3 = AttackData.PostureDamageRatio.GetValue(bToAvatar);
             local_11 = local_70_3.DefaultValue;
             FCapability_Float local_70_4 = AttackData.PostureDamageConstVal.GetValue(bToAvatar);
             local_12 = local_70_4.DefaultValue;
-            local_7.SetHPDamage(FDamageUtils::CalcBaseDamage(AttackerEntity, local_8, local_10_2, AttackData.DamageAttributeCoefficient, Time));
+            local_7.SetHPDamage(FDamageUtils::CalcBaseDamage(AttackerEntity, local_8, local_10, AttackData.DamageAttributeCoefficient, Time));
             FCapability_Float local_70_5 = AttackData.PercentDamage.GetValue(bToAvatar);
-            float32 local_9_2 = local_70_5.DefaultValue;
-            local_7.SetHPDamage_MaxPercent(local_9_2);
+            float32 local_9 = local_70_5.DefaultValue;
+            local_7.SetHPDamage_MaxPercent(local_9);
             local_7.SetPostureDamage(FDamageUtils::CalcBasePostureDamage(AttackerEntity, local_11, local_12, Time));
-            local_9_2 = AttackData.AbnormalStateAccumulation.DefaultValue;
-            local_7.SetAbnormalStateAccumulation(local_9_2);
+            local_9 = AttackData.AbnormalStateAccumulation.DefaultValue;
+            local_7.SetAbnormalStateAccumulation(local_9);
         }
         local_71 = AttackData.EcologyPostureDamageConstVal;
         local_72 = 0.0f;
@@ -122,8 +122,7 @@ FAttackBaseDamageValue CalcAttackBaseDamageValue(const FECSEntity &inout Attacke
             {
                 if (local_90.CommissionConfig)
                 {
-                    FCommissionConfig local_92;
-                    local_81 = int(local_92.MonsterBaseLevel);
+                    local_81 = int(local_90.CommissionConfig.Get().MonsterBaseLevel);
                 }
             }
             TDataObjectIterator<FCommissionLevelAttackConfig> local_108;
@@ -135,11 +134,10 @@ FAttackBaseDamageValue CalcAttackBaseDamageValue(const FECSEntity &inout Attacke
                     local_8 = local_70_8.DefaultValue;
                     local_70_8 = AttackData.PostureDamageRatio.GetValue(bToAvatar);
                     local_11 = local_70_8.DefaultValue;
-                    float32 local_9_4 = local_108.GetData().Attack * local_8;
-                    local_71 = local_71 + local_9_4;
-                    local_9_4 = local_108.GetData().PostureAttack;
-                    local_9_4 = local_9_4 * local_11;
-                    local_72 = local_72 + local_9_4;
+                    local_71 = local_71 + (local_108.GetData().Attack * local_8);
+                    float32 local_9_3 = local_108.GetData().PostureAttack;
+                    local_9_3 = local_9_3 * local_11;
+                    local_72 = local_72 + local_9_3;
                     local_7.SetAttackRatio(local_8);
                     break;
                 }
@@ -148,10 +146,10 @@ FAttackBaseDamageValue CalcAttackBaseDamageValue(const FECSEntity &inout Attacke
             local_7.SetHPDamage(local_71);
             local_7.SetPostureDamage(local_72);
             FCapability_Float local_70_9 = AttackData.PercentDamage.GetValue(bToAvatar);
-            float32 local_9_5 = local_70_9.DefaultValue;
-            local_7.SetHPDamage_MaxPercent(local_9_5);
-            local_9_5 = AttackData.AbnormalStateAccumulation.DefaultValue;
-            local_7.SetAbnormalStateAccumulation(local_9_5);
+            float32 local_9_4 = local_70_9.DefaultValue;
+            local_7.SetHPDamage_MaxPercent(local_9_4);
+            local_9_4 = AttackData.AbnormalStateAccumulation.DefaultValue;
+            local_7.SetAbnormalStateAccumulation(local_9_4);
         }
     }
     return local_7;
@@ -187,29 +185,29 @@ float32 CalcBasePostureDamage(const FECSEntity &inout AttackerEntity, const floa
 void ModifyBaseDamage(FAttackBaseDamageValue &inout BaseDamageValue, const EBaseDamagePartType BaseDamagePart, const EDamageValueModifyType ModifyType, const float32 Value)
 {
     float32 local_1 = 0.0f;
-    switch (int(BaseDamagePart))
+    switch (BaseDamagePart)
     {
-    case 0:
+    case EBaseDamagePartType::HPDamage:
     {
         local_1 = BaseDamageValue.GetHPDamage();
         break;
     }
-    case 1:
+    case EBaseDamagePartType::HPDamage_MaxPercent:
     {
         local_1 = BaseDamageValue.GetHPDamage_MaxPercent();
         break;
     }
-    case 2:
+    case EBaseDamagePartType::PostureDamage:
     {
         local_1 = BaseDamageValue.GetPostureDamage();
         break;
     }
-    case 3:
+    case EBaseDamagePartType::EcologyPostureDamage:
     {
         local_1 = BaseDamageValue.GetEcologyPostureDamage();
         break;
     }
-    case 4:
+    case EBaseDamagePartType::AbnormalStateAccumulation:
     {
         local_1 = BaseDamageValue.GetAbnormalStateAccumulation();
         break;
@@ -233,35 +231,34 @@ void ModifyBaseDamage(FAttackBaseDamageValue &inout BaseDamageValue, const EBase
             }
         }
     }
-    switch (int(BaseDamagePart))
+    switch (BaseDamagePart)
     {
-    case 0:
+    case EBaseDamagePartType::HPDamage:
     {
         BaseDamageValue.SetHPDamage(local_1);
         return;
     }
-    case 1:
+    case EBaseDamagePartType::HPDamage_MaxPercent:
     {
         BaseDamageValue.SetHPDamage_MaxPercent(local_1);
         return;
     }
-    case 2:
+    case EBaseDamagePartType::PostureDamage:
     {
         BaseDamageValue.SetPostureDamage(local_1);
         return;
     }
-    case 3:
+    case EBaseDamagePartType::EcologyPostureDamage:
     {
         BaseDamageValue.SetEcologyPostureDamage(local_1);
         return;
     }
-    case 4:
+    case EBaseDamagePartType::AbnormalStateAccumulation:
     {
         BaseDamageValue.SetAbnormalStateAccumulation(local_1);
         return;
     }
     }
-    return;
 }
 void SetBaseDamageZero(FAttackBaseDamageValue &inout BaseDamage)
 {
@@ -346,16 +343,14 @@ FAttackRecoverEnergyValue CalcAttackRecoverEnergyValue(const FECSEntity &inout A
 {
     FAttackRecoverEnergyValue local_8;
     int local_14 = 0;
-    float32 local_16 = 0.0f;
     if (local_14)
     {
-        local_8.SetHitRecoverCustomSkillEnergy(local_16);
-        local_8.SetHitRecoverCustomSkillEnergy_2(local_16);
-        local_8.SetHitRecoverCustomSkillEnergy_3(local_16);
-        local_8.SetHitRecoverCustomSkillEnergy_4(local_16);
-        local_16 = AttackData.HitRecoverSwitchPlayerEnergy;
-        local_8.SetHitRecoverSwitchPlayerEnergy(local_16);
-        local_8.SetHitRecoverUltraSkillEnergy(local_16);
+        local_8.SetHitRecoverCustomSkillEnergy(AttackData.HitRecoverCustomSkillEnergy.GetValue(local_14.Storage, CapabilityInstanceId));
+        local_8.SetHitRecoverCustomSkillEnergy_2(AttackData.HitRecoverCustomSkillEnergy_2.GetValue(local_14.Storage, CapabilityInstanceId));
+        local_8.SetHitRecoverCustomSkillEnergy_3(AttackData.HitRecoverCustomSkillEnergy_3.GetValue(local_14.Storage, CapabilityInstanceId));
+        local_8.SetHitRecoverCustomSkillEnergy_4(AttackData.HitRecoverCustomSkillEnergy_4.GetValue(local_14.Storage, CapabilityInstanceId));
+        local_8.SetHitRecoverSwitchPlayerEnergy(AttackData.HitRecoverSwitchPlayerEnergy);
+        local_8.SetHitRecoverUltraSkillEnergy(AttackData.HitRecoverUltraSkillEnergy.GetValue(local_14.Storage, CapabilityInstanceId));
     }
     else
     {
@@ -461,8 +456,8 @@ bool FilterPropEnvBreakableDamage(const FECSEntity &inout Target, const FECSEnti
     {
         return false;
     }
-    float32 local_16 = GetEnvBreakDamageValue();
-    FDamageUtils::DirectDamagePropEnvBreakable(Target, FinalDamageSource, local_12, Time, local_16, FinalDamageSource.GetDestructibleClassLevelFromDamage());
+    float32 local_16 = AttackData.GetValue().GetEnvBreakDamageValue();
+    FDamageUtils::DirectDamagePropEnvBreakable(Target, FinalDamageSource, local_12, Time, local_16, AttackData.GetValue().GetDestructibleClassLevelFromDamage(FinalDamageSource));
     return true;
 }
 void DirectDamagePropEnvBreakable(const FECSEntity &inout Target, const FECSEntity &inout FinalDamageSource, const FC_PropEnvBreakableConfig &inout EnvBreakableConfig, const FFPTime &inout Time, const float32 EnvBreakDamage, const EDestructibleClassLevel DestructibleDamageLevel)
@@ -549,8 +544,7 @@ int AddDamage(FDamageBeforeCalculationData &inout Data)
 }
 void AddHitDamage(const FECSEntity &inout FinalDamageSource, const FECSEntity &inout DirectDamageCauser, const FECSEntity &inout AttackerAttributeProvider, const FECSEntity &inout Target, const FAttackInfo &inout AttackInfo, const FName &inout StrikeKey, const FAttackBaseDamageValue &inout BaseDamage, const FAttackRecoverEnergyValue &inout RecoverEnergyValue, const float32 AttenuationRatio, const FName &inout BodyPart, const bool bForceHitWeakness, const bool bAttenuation, const FVector &inout AttackFromPosition, const FVector &inout Position, const FVector &inout Direction, const int HitEventId, const FFPTime &inout Time, const bool bLatencyCompensation = false)
 {
-    const FAttackData& local_50;
-    TDataObjectPtr<FAttackData> local_24 = TDataObjectPtr<FAttackData>(AttackInfo.AttackData);
+    const FAttackData& local_50 = TDataObjectPtr<FAttackData>(AttackInfo.AttackData).Get();
     if (FDamageUtils::FilterPropEnvBreakableDamage(Target, FinalDamageSource, Time, TOptional<FAttackData>(local_50)))
     {
         return;

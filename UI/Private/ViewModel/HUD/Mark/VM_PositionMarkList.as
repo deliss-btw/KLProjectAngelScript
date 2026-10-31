@@ -68,6 +68,8 @@ struct FVM_PositionMarkList : FEUIViewModel
     void SortPositionMarks(TArray<TEUIModelRef<FVM_MarkSpotIcon>> &inout Marks) const
     {
         FVector local_6(FCameraUtils::GetCameraParam(this.GetContext().GetLocalPlayerPawn()).FinalPosition);
+        __Lambda_UI_Private_ViewModel_HUD_Mark_VM_PositionMarkList_54 local_16;
+        Marks.Sort(local_16);
         return;
     }
     void CommitPositionMarksIfChanged(const TArray<TEUIModelRef<FVM_MarkSpotIcon>> &inout NextMarks)
@@ -165,11 +167,9 @@ FVM_PositionMarkList& Create(const UObject ContextObject)
 {
     return FVM_PositionMarkList::CreateByManager(EUIInternal::GetContextManager(ContextObject));
 }
-FVM_PositionMarkList CreateByManager(const UEUIManagerSubsystem Manager)
+FVM_PositionMarkList& CreateByManager(const UEUIManagerSubsystem Manager)
 {
-    FVM_PositionMarkList __r;
-    TEUIModelRef<FVM_PositionMarkList> local_6 = TEUIModelRef<FVM_PositionMarkList>(EUIInternal::MakeModelWithManager(Manager, FVM_PositionMarkList::ModelId));
-    return __r;
+    return TEUIModelRef<FVM_PositionMarkList>(EUIInternal::MakeModelWithManager(Manager, FVM_PositionMarkList::ModelId)).Get();
 }
 void GetModelInfo(FEUIViewModelMetaInfo &inout Result)
 {
@@ -241,7 +241,6 @@ namespace __GeneratedProperties_FVM_PositionMarkList
 {
 UScriptStruct StaticStruct()
 {
-    UScriptStruct local_2;
-    return local_2;
+    return __GeneratedProperties_FVM_PositionMarkList.Get();
 }
 }

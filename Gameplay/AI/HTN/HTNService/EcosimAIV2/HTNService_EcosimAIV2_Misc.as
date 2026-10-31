@@ -112,18 +112,14 @@ class UHTNService_EcosimAIV2_LevelControlLookatTarget : UHTNService_ECSScriptBas
     UFUNCTION()
     void ExecutionStart_Implementation(const FHTNContext &inout Context)
     {
-        bool local_3 = false;
         GetDefaulted local_24;
-        FAISmartValueContext local_2 = Context.opImplConv();
-        local_3 = !local_3;
-        if (local_3)
+        if (!(this.bEnableLookAtTarget.GetValue(Context.opImplConv())))
         {
             FAIInputUtils::SimulateViewInput(FECSEntity(Context.PawnEntity), FRotator::ZeroRotator);
             return;
         }
         FVector local_14;
-        FAISmartValueContext local_2_2 = Context.opImplConv();
-        if (local_3)
+        if (this.bLookAtEntity.GetValue(Context.opImplConv()))
         {
             FECSEntity local_20 = FECSEntity(this.LookatTargetEntityID.GetValue(Context.opImplConv()));
             local_14 = local_24.opCall().GetPosition();
@@ -139,18 +135,14 @@ class UHTNService_EcosimAIV2_LevelControlLookatTarget : UHTNService_ECSScriptBas
     UFUNCTION()
     void Tick_Implementation(const FHTNContext &inout Context, const float32 DeltaTime)
     {
-        bool local_3 = false;
         GetDefaulted local_24;
-        FAISmartValueContext local_2 = Context.opImplConv();
-        local_3 = !local_3;
-        if (local_3)
+        if (!(this.bEnableLookAtTarget.GetValue(Context.opImplConv())))
         {
             FAIInputUtils::SimulateViewInput(FECSEntity(Context.PawnEntity), FRotator::ZeroRotator);
             return;
         }
         FVector local_14;
-        FAISmartValueContext local_2_2 = Context.opImplConv();
-        if (local_3)
+        if (this.bLookAtEntity.GetValue(Context.opImplConv()))
         {
             FECSEntity local_20 = FECSEntity(this.LookatTargetEntityID.GetValue(Context.opImplConv()));
             local_14 = local_24.opCall().GetPosition();
@@ -248,26 +240,25 @@ class UHTNService_EcosimAIV2_PlanRelationWithTarget : UHTNService_ECSScriptBase
     }
     bool ResolveRelation(const FHTNContext &inout Context, FECSEntity &inout OutSource, FECSEntity &inout OutTarget, EEcosimAIV2EntityRelation &inout OutRelation, int &inout OutPointIndex, int &inout OutBehaviorIndex)
     {
-        FECSEntityId local_3;
         UInteractionBehaviorBase local_18;
         FAISmartValueContext local_2 = Context.opImplConv();
+        FECSEntityId local_3;
+        this.InteractSourceEntityID.GetValue(local_3);
         OutSource = FECSEntity();
         FAISmartValueContext local_2_2 = Context.opImplConv();
+        this.InteractTargetEntityID.GetValue(local_3);
         OutTarget = FECSEntity();
         OutRelation = EEcosimAIV2EntityRelation(0);
         OutPointIndex = -1;
-        int local_10 = -1;
-        OutBehaviorIndex = local_10;
+        OutBehaviorIndex = -1;
         if (!(OutSource.IsValid()) || !(OutTarget.IsValid()))
         {
             return false;
         }
         if (this.bByIndex)
         {
-            FAISmartValueContext local_2_3 = Context.opImplConv();
-            OutPointIndex = local_10;
-            FAISmartValueContext local_2_4 = Context.opImplConv();
-            OutBehaviorIndex = local_10;
+            OutPointIndex = this.InteractPointIndex.GetValue(Context.opImplConv());
+            OutBehaviorIndex = this.InteractBehaviorIndex.GetValue(Context.opImplConv());
         }
         else
         {
@@ -397,14 +388,12 @@ class UHTNService_EcosimAIV2_GetEntityInteractTransform : UHTNService_ECSScriptB
     UFUNCTION()
     void ExecutionStart_Implementation(const FHTNContext &inout Context)
     {
-        int local_3 = -1;
-        FHTNService_GetTargetEntityInteractTransformInstanceData local_2;
-        local_2.InteractPointIndex = local_3;
+        FHTNService_GetTargetEntityInteractTransformInstanceData& local_2 = this.GetInstanceData(Context);
+        local_2.InteractPointIndex = -1;
         FECSEntity local_12 = FECSEntity(this.EntityID.GetValue(Context.opImplConv()));
         if (this.bByIndex)
         {
-            FAISmartValueContext local_6 = Context.opImplConv();
-            local_2.InteractPointIndex = local_3;
+            local_2.InteractPointIndex = this.InteractPointIndex.GetValue(Context.opImplConv());
         }
         else
         {
@@ -434,7 +423,7 @@ class UHTNService_EcosimAIV2_GetEntityInteractTransform : UHTNService_ECSScriptB
     }
     void GetLocation(const FHTNContext &inout Context)
     {
-        FHTNService_GetTargetEntityInteractTransformInstanceData& local_2;
+        FHTNService_GetTargetEntityInteractTransformInstanceData& local_2 = this.GetInstanceData(Context);
         FECSEntity local_10 = FECSEntity(this.EntityID.GetValue(Context.opImplConv()));
         if (int(local_2.InteractPointIndex) >= 0)
         {
@@ -531,12 +520,10 @@ class UHTNService_EcosimAIV2_PlanInteractRelationWithTarget : UHTNService_ECSScr
     UFUNCTION()
     void OnPlanExecutionStarted_Implementation(const FHTNContext &inout Context)
     {
-        int local_17 = 0;
-        int local_18 = 0;
         FECSEntity local_12 = FECSEntity(this.EntityID.GetValue(Context.opImplConv()));
         FECSEntity local_4 = FECSEntity(this.TargetEntityID.GetValue(Context.opImplConv()));
-        FAISmartValueContext local_6 = Context.opImplConv();
-        FAISmartValueContext local_6_2 = Context.opImplConv();
+        int local_18 = this.InteractPointIndex.GetValue(Context.opImplConv());
+        int local_17 = this.InteractBehaviorIndex.GetValue(Context.opImplConv());
         if (!(local_12.IsValid()) || !(local_4.IsValid()))
         {
             return;
@@ -547,12 +534,10 @@ class UHTNService_EcosimAIV2_PlanInteractRelationWithTarget : UHTNService_ECSScr
     UFUNCTION()
     void ExecutionFinish_Implementation(const FHTNContext &inout Context, const EHTNNodeResult NodeResult)
     {
-        int local_17 = 0;
-        int local_18 = 0;
         FECSEntity local_12 = FECSEntity(this.EntityID.GetValue(Context.opImplConv()));
         FECSEntity local_4 = FECSEntity(this.TargetEntityID.GetValue(Context.opImplConv()));
-        FAISmartValueContext local_6 = Context.opImplConv();
-        FAISmartValueContext local_6_2 = Context.opImplConv();
+        int local_18 = this.InteractPointIndex.GetValue(Context.opImplConv());
+        int local_17 = this.InteractBehaviorIndex.GetValue(Context.opImplConv());
         if (!(local_12.IsValid()) || !(local_4.IsValid()))
         {
             return;
@@ -563,12 +548,10 @@ class UHTNService_EcosimAIV2_PlanInteractRelationWithTarget : UHTNService_ECSScr
     UFUNCTION()
     void OnPlanExecutionFinished_Implementation(const FHTNContext &inout Context, const EHTNPlanExecutionFinishedResult Result)
     {
-        int local_17 = 0;
-        int local_18 = 0;
         FECSEntity local_12 = FECSEntity(this.EntityID.GetValue(Context.opImplConv()));
         FECSEntity local_4 = FECSEntity(this.TargetEntityID.GetValue(Context.opImplConv()));
-        FAISmartValueContext local_6 = Context.opImplConv();
-        FAISmartValueContext local_6_2 = Context.opImplConv();
+        int local_18 = this.InteractPointIndex.GetValue(Context.opImplConv());
+        int local_17 = this.InteractBehaviorIndex.GetValue(Context.opImplConv());
         if (!(local_12.IsValid()) || !(local_4.IsValid()))
         {
             return;

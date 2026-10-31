@@ -80,8 +80,16 @@ class UESMAction_CameraState : UESMBPBaseSpanTickAction
     UFUNCTION()
     void Exit_Implementation(const FESMContext &inout Context, const FESMActionTime &inout Time) const
     {
-        bool local_3 = false;
-        if ((this.ActiveCondition.IsEmpty() || local_3))
+        bool local_2 = this.ActiveCondition.IsEmpty();
+        if (local_2)
+        {
+            local_2 = true;
+        }
+        else
+        {
+            local_2 = this.GetInstanceData(Context).bConditionActive;
+        }
+        if (local_2)
         {
             this.UpdateToDefault(Context, Time.WorldTime);
         }

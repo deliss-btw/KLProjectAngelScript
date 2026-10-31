@@ -174,9 +174,8 @@ struct FVM_ItemQuickSlot : FEUIViewModel
     }
     void ChangeItemNumStyle(const EItemViewModelNumStyle InStyle)
     {
-        FVM_Item& local_4;
         this.SetItemNumStyle(EItemViewModelNumStyle(InStyle));
-        TEUIModelRef<FVM_Item> local_2 = this.GetItem();
+        FVM_Item& local_4 = this.GetItem().Get();
         if (local_4)
         {
             local_4.SetNumStyle(EItemViewModelNumStyle(InStyle));
@@ -225,7 +224,6 @@ struct FVM_ItemQuickSlot : FEUIViewModel
     }
     void RefreshDisplayingItem()
     {
-        FVM_Item& local_70;
         if (this.IsMountQuickSlot())
         {
             this.RefreshDisplayingMount();
@@ -234,15 +232,15 @@ struct FVM_ItemQuickSlot : FEUIViewModel
         this.SetDisplayItem(TEUIModelRef<FVM_DisplayItem>());
         this.SetCommonItem(TEUIModelRef<FVM_CommonItem>());
         TDataObjectPtr<FItemConfig> local_36 = ::InventoryUtils::GetQuickSlotItem(this.GetContext().GetLocalPlayer(), this.GetQuickSlot());
-        TEUIModelRef<FVM_Item> local_62;
         if (!(local_36))
         {
-            this.SetItem(local_62);
+            this.SetItem(TEUIModelRef<FVM_Item>());
+            this.GetModify_TipHoverModels().Clear();
             return;
         }
         TEUIModelRef<FM_ItemData> local_66 = ::FMS_PlayerInventory::Get(this.GetContext().Manager).GetSumItem(local_36);
         this.SetItem(FItemModelFactory(local_66).Product_FVM_Item(this.GetContext().Manager));
-        local_62 = this.GetItem();
+        FVM_Item& local_70 = this.GetItem().Get();
         if (local_70)
         {
             local_70.SetNumStyle(this.GetItemNumStyle());
@@ -257,10 +255,9 @@ struct FVM_ItemQuickSlot : FEUIViewModel
     void RefreshDisplayingMount()
     {
         this.SetItem(TEUIModelRef<FVM_Item>(FEUIModelRef()));
-        TEUIModelRef<FVM_DisplayItem> local_6;
-        this.SetDisplayItem(local_6);
-        TEUIModelRef<FVM_CommonItem> local_8;
-        this.SetCommonItem(local_8);
+        this.SetDisplayItem(TEUIModelRef<FVM_DisplayItem>());
+        this.SetCommonItem(TEUIModelRef<FVM_CommonItem>());
+        this.GetModify_TipHoverModels().Clear();
         if (!(::FMS_FashionModel::Get(this.GetContext().Manager).GetCurrentMountFashionConfig()))
         {
             return;
@@ -272,13 +269,8 @@ struct FVM_ItemQuickSlot : FEUIViewModel
         this.SetDisplayItem(::DisplayItemAdapter_Fashion::CreateDisplayItem(this.GetContext().Manager, local_68.opCall(), local_64, EItemDisplayScenario(0), EBodyType(0)));
         if (this.GetDisplayItem().IsValid())
         {
-            TEUIModelRef<FM_DisplayItemData> local_96;
-            local_6 = this.GetDisplayItem();
-            local_8.GetCommonItemVM();
-            this.SetCommonItem(local_8);
-            local_6 = this.GetDisplayItem();
-            local_96.GetDisplayData();
-            this.RebuildMountTipHoverModels(local_96);
+            this.SetCommonItem(this.GetDisplayItem().Get().GetCommonItemVM());
+            this.RebuildMountTipHoverModels(this.GetDisplayItem().Get().GetDisplayData());
         }
         return;
     }
@@ -477,11 +469,9 @@ FMS_ItemQuickSlotHoverCache& Get(const UObject ContextObject)
 {
     return FMS_ItemQuickSlotHoverCache::GetByManager(EUIInternal::GetContextManager(ContextObject));
 }
-FMS_ItemQuickSlotHoverCache GetByManager(const UEUIManagerSubsystem Manager)
+FMS_ItemQuickSlotHoverCache& GetByManager(const UEUIManagerSubsystem Manager)
 {
-    FMS_ItemQuickSlotHoverCache __r;
-    TEUIModelRef<FMS_ItemQuickSlotHoverCache> local_6 = TEUIModelRef<FMS_ItemQuickSlotHoverCache>(EUIInternal::MakeModelWithManager(Manager, FMS_ItemQuickSlotHoverCache::ModelId));
-    return __r;
+    return TEUIModelRef<FMS_ItemQuickSlotHoverCache>(EUIInternal::MakeModelWithManager(Manager, FMS_ItemQuickSlotHoverCache::ModelId)).Get();
 }
 void GetModelInfo(FEUIModelOnlyMetaInfo &inout Result)
 {
@@ -504,11 +494,9 @@ FVM_ItemQuickSlot& Create(const UObject ContextObject, const TDataObjectPtr<FIte
 {
     return FVM_ItemQuickSlot::CreateByManager(EUIInternal::GetContextManager(ContextObject), QuickSlot, HoverLimitationWidget);
 }
-FVM_ItemQuickSlot CreateByManager(const UEUIManagerSubsystem Manager, const TDataObjectPtr<FItemQuickSlotConfig> &inout QuickSlot, const UWidget HoverLimitationWidget)
+FVM_ItemQuickSlot& CreateByManager(const UEUIManagerSubsystem Manager, const TDataObjectPtr<FItemQuickSlotConfig> &inout QuickSlot, const UWidget HoverLimitationWidget)
 {
-    FVM_ItemQuickSlot __r;
-    TEUIModelRef<FVM_ItemQuickSlot> local_6 = TEUIModelRef<FVM_ItemQuickSlot>(EUIInternal::MakeModelWithManager_Generic(Manager, FVM_ItemQuickSlot::ModelId, 0, QuickSlot, HoverLimitationWidget));
-    return __r;
+    return TEUIModelRef<FVM_ItemQuickSlot>(EUIInternal::MakeModelWithManager_Generic(Manager, FVM_ItemQuickSlot::ModelId, 0, QuickSlot, HoverLimitationWidget)).Get();
 }
 void GetModelInfo(FEUIViewModelMetaInfo &inout Result)
 {
@@ -664,7 +652,6 @@ namespace __GeneratedProperties_FVM_ItemQuickSlot
 {
 UScriptStruct StaticStruct()
 {
-    UScriptStruct local_2;
-    return local_2;
+    return __GeneratedProperties_FVM_ItemQuickSlot.Get();
 }
 }

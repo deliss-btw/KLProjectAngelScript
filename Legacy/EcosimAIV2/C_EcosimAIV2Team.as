@@ -517,8 +517,10 @@ struct FC_EcosimAIV2Team : FECSComponent
     }
     void QuitMove(const FECSEntity &inout EntityMember)
     {
-        if (this.EntityMemberMoveContextMap.Contains(FECSEntity(EntityMember)))
+        FECSEntity local_4 = EntityMember;
+        if (this.EntityMemberMoveContextMap.Contains(local_4))
         {
+            this.EntityMemberMoveContextMap.Remove(local_4);
             this.UpdateTeamMoveContext();
         }
         return;
@@ -1135,10 +1137,13 @@ struct FC_EcosimAIV2Team : FECSComponent
             }
             local_66.Add(local_70);
         }
+        local_62.Remove(local_24_3);
+        local_66.Remove(local_24_3);
         FEcosimAIV2TeamMemberInfo local_80;
         local_80.Entity = local_24_3;
         local_80.OffsetFromLeader = FVector::ZeroVector;
         this.EntityTeamMemberInfoMap.Add(local_24_3, local_80);
+        this.Centerline.Clear();
         int64 local_82 = 0;
         if (local_62.Num() > 0)
         {

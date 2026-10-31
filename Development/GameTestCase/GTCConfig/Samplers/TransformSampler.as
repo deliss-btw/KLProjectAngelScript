@@ -52,6 +52,8 @@ struct FGTCTransformSampler : FGTCSampler
     UPROPERTY()
     TMap<FString, FGTCTransformSampleResult> SampleResultMap;
 
+    default m_ScriptOverrideMeta = Cast<UASStruct>(FGTCTransformSampler.Get());
+
     FGTCTransformSampler()
     {
         this.bIsRelative = true;
@@ -72,6 +74,7 @@ struct FGTCTransformSampler : FGTCSampler
     {
         int local_8 = 0;
         FGTCTransformSampleResult& local_2 = this.GetSampleResult();
+        local_2.Clear();
         local_2.BeginTransform = local_8.ToFTransform();
         local_2.EntityName = TargetEntity.GetEntityName().ToString();
         return;

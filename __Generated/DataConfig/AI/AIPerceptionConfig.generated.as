@@ -19,7 +19,6 @@ FSightPerceptionConfig __FAIPerceptionConfig_GetDefaultSightConfig(const TDataOb
 UFUNCTION()
 TMap<FName, FSightPerceptionConfig> __FAIPerceptionConfig_GetOverrideSightConfigMap(const TDataObjectPtr<FAIPerceptionConfig> &inout DataObject)
 {
-    TMap<FName, FSightPerceptionConfig> __r;
     if ((DataObject == nullptr))
     {
         if (!(EUIGlobals::GIsDuringPropertyConversion))
@@ -29,7 +28,7 @@ TMap<FName, FSightPerceptionConfig> __FAIPerceptionConfig_GetOverrideSightConfig
         FAIPerceptionConfig local_70;
         return local_70.OverrideSightConfigMap;
     }
-    return __r;
+    return DataObject.Get().OverrideSightConfigMap;
 }
 UFUNCTION()
 float32 __FAIPerceptionConfig_GetOutOfCombatDelay(const TDataObjectPtr<FAIPerceptionConfig> &inout DataObject)
@@ -94,7 +93,6 @@ UAIAlertnessConfigDataAsset __FAIPerceptionConfig_GetAIAlertnessConfigOverride(c
 UFUNCTION()
 TMap<FName, UAIAlertnessConfigDataAsset> __FAIPerceptionConfig_GetOverrideAlertConfigMap(const TDataObjectPtr<FAIPerceptionConfig> &inout DataObject)
 {
-    TMap<FName, UAIAlertnessConfigDataAsset> __r;
     if ((DataObject == nullptr))
     {
         if (!(EUIGlobals::GIsDuringPropertyConversion))
@@ -104,7 +102,7 @@ TMap<FName, UAIAlertnessConfigDataAsset> __FAIPerceptionConfig_GetOverrideAlertC
         FAIPerceptionConfig local_70;
         return local_70.OverrideAlertConfigMap;
     }
-    return __r;
+    return DataObject.Get().OverrideAlertConfigMap;
 }
 UFUNCTION()
 float32 __FAIPerceptionConfig_GetMeleeRange(const TDataObjectPtr<FAIPerceptionConfig> &inout DataObject)

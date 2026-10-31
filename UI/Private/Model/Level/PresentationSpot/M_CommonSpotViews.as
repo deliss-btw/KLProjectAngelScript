@@ -147,11 +147,9 @@ FMS_CommonSpotViews& Get(const UObject ContextObject)
 {
     return FMS_CommonSpotViews::GetByManager(EUIInternal::GetContextManager(ContextObject));
 }
-FMS_CommonSpotViews GetByManager(const UEUIManagerSubsystem Manager)
+FMS_CommonSpotViews& GetByManager(const UEUIManagerSubsystem Manager)
 {
-    FMS_CommonSpotViews __r;
-    TEUIModelRef<FMS_CommonSpotViews> local_6 = TEUIModelRef<FMS_CommonSpotViews>(EUIInternal::MakeModelWithManager(Manager, FMS_CommonSpotViews::ModelId));
-    return __r;
+    return TEUIModelRef<FMS_CommonSpotViews>(EUIInternal::MakeModelWithManager(Manager, FMS_CommonSpotViews::ModelId)).Get();
 }
 void GetModelInfo(FEUIModelOnlyMetaInfo &inout Result)
 {

@@ -24,7 +24,7 @@ class UWidget_SubmitRechargeTier : UEUIUserWidget
         }
         FKLPayResultDelegate local_5;
         local_5.BindUFunction(this, n"OnKLPayResult");
-        UMiHoYoSDKHelper::KLPay(FString().Append(GetTierId()), GetPriceAmount(), local_5);
+        UMiHoYoSDKHelper::KLPay(FString().Append(this.RechargeTier.Get().GetTierId()), this.RechargeTier.Get().GetPriceAmount(), local_5);
         return;
     }
     UFUNCTION()
@@ -38,7 +38,7 @@ class UWidget_SubmitRechargeTier : UEUIUserWidget
         {
             if (KLPayResult.bSuccess)
             {
-                GrantVoucherReward();
+                this.RechargeTier.Get().GrantVoucherReward();
                 return;
             }
         }

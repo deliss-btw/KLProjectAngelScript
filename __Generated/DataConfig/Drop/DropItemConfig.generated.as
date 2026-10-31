@@ -3,7 +3,6 @@ namespace __FDropItemConfigBaseFunctions
 UFUNCTION()
 FString __FDropItemConfigBase_GetComments(const TDataObjectPtr<FDropItemConfigBase> &inout DataObject)
 {
-    FString __r;
     if ((DataObject == nullptr))
     {
         if (!(EUIGlobals::GIsDuringPropertyConversion))
@@ -13,7 +12,7 @@ FString __FDropItemConfigBase_GetComments(const TDataObjectPtr<FDropItemConfigBa
         FDropItemConfigBase local_18;
         return local_18.Comments;
     }
-    return __r;
+    return DataObject.Get().Comments;
 }
 UFUNCTION()
 FDropItemConfigBase CastToFDropItemConfigBase(const TDataObjectPtr<FDropItemConfigBase> &inout DataObject)
@@ -27,7 +26,6 @@ namespace __FDropItemGroundBagConfigFunctions
 UFUNCTION()
 TSoftClassPtr<ACollectionPrefab> __FDropItemGroundBagConfig_GetGroundBagPrefab(const TDataObjectPtr<FDropItemGroundBagConfig> &inout DataObject)
 {
-    TSoftClassPtr<ACollectionPrefab> __r;
     if ((DataObject == nullptr))
     {
         if (!(EUIGlobals::GIsDuringPropertyConversion))
@@ -37,12 +35,11 @@ TSoftClassPtr<ACollectionPrefab> __FDropItemGroundBagConfig_GetGroundBagPrefab(c
         FDropItemGroundBagConfig local_30;
         return local_30.GroundBagPrefab;
     }
-    return __r;
+    return DataObject.Get().GroundBagPrefab;
 }
 UFUNCTION()
 FText __FDropItemGroundBagConfig_GetGroundBagInteractText(const TDataObjectPtr<FDropItemGroundBagConfig> &inout DataObject)
 {
-    FText __r;
     if ((DataObject == nullptr))
     {
         if (!(EUIGlobals::GIsDuringPropertyConversion))
@@ -52,23 +49,21 @@ FText __FDropItemGroundBagConfig_GetGroundBagInteractText(const TDataObjectPtr<F
         FDropItemGroundBagConfig local_30;
         return local_30.GroundBagInteractText;
     }
-    return __r;
+    return DataObject.Get().GroundBagInteractText;
 }
 UFUNCTION()
 bool __FDropItemGroundBagConfig_GetbShowRewardPopup(const TDataObjectPtr<FDropItemGroundBagConfig> &inout DataObject)
 {
-    bool local_1 = false;
     if ((DataObject == nullptr))
     {
-        local_1 = !(EUIGlobals::GIsDuringPropertyConversion);
-        if (local_1)
+        if (!(EUIGlobals::GIsDuringPropertyConversion))
         {
             FBlueprintDebugFunctions::ThrowScriptException("Get 'bShowRewardPopup' from a null 'FDropItemGroundBagConfig' DataObject!");
         }
         FDropItemGroundBagConfig local_30;
         return local_30.bShowRewardPopup;
     }
-    return local_1;
+    return DataObject.Get().bShowRewardPopup;
 }
 UFUNCTION()
 FDropItemGroundBagConfig CastToFDropItemGroundBagConfig(const TDataObjectPtr<FDropItemGroundBagConfig> &inout DataObject)
@@ -82,7 +77,6 @@ namespace __FDropItemConfigFunctions
 UFUNCTION()
 TArray<FDropItemData> __FDropItemConfig_GetDrops(const TDataObjectPtr<FDropItemConfig> &inout DataObject)
 {
-    TArray<FDropItemData> __r;
     if ((DataObject == nullptr))
     {
         if (!(EUIGlobals::GIsDuringPropertyConversion))
@@ -92,12 +86,11 @@ TArray<FDropItemData> __FDropItemConfig_GetDrops(const TDataObjectPtr<FDropItemC
         FDropItemConfig local_50;
         return local_50.Drops;
     }
-    return __r;
+    return DataObject.Get().Drops;
 }
 UFUNCTION()
 EDropItemAllocation __FDropItemConfig_GetDropAllocation(const TDataObjectPtr<FDropItemConfig> &inout DataObject)
 {
-    int local_51 = 0;
     if ((DataObject == nullptr))
     {
         if (!(EUIGlobals::GIsDuringPropertyConversion))
@@ -105,15 +98,13 @@ EDropItemAllocation __FDropItemConfig_GetDropAllocation(const TDataObjectPtr<FDr
             FBlueprintDebugFunctions::ThrowScriptException("Get 'DropAllocation' from a null 'FDropItemConfig' DataObject!");
         }
         FDropItemConfig local_50;
-        local_51 = int(local_50.DropAllocation);
-        return EDropItemAllocation(local_51);
+        return local_50.DropAllocation;
     }
-    return EDropItemAllocation(local_51);
+    return DataObject.Get().DropAllocation;
 }
 UFUNCTION()
 EDSDropType __FDropItemConfig_GetDropType(const TDataObjectPtr<FDropItemConfig> &inout DataObject)
 {
-    int local_51 = 0;
     if ((DataObject == nullptr))
     {
         if (!(EUIGlobals::GIsDuringPropertyConversion))
@@ -121,10 +112,9 @@ EDSDropType __FDropItemConfig_GetDropType(const TDataObjectPtr<FDropItemConfig> 
             FBlueprintDebugFunctions::ThrowScriptException("Get 'DropType' from a null 'FDropItemConfig' DataObject!");
         }
         FDropItemConfig local_50;
-        local_51 = int(local_50.DropType);
-        return EDSDropType(local_51);
+        return local_50.DropType;
     }
-    return EDSDropType(local_51);
+    return DataObject.Get().DropType;
 }
 UFUNCTION()
 TDataObjectPtr<FDropItemGroundBagConfig> __FDropItemConfig_GetGroundBagConfig(const TDataObjectPtr<FDropItemConfig> &inout DataObject)
@@ -138,7 +128,7 @@ TDataObjectPtr<FDropItemGroundBagConfig> __FDropItemConfig_GetGroundBagConfig(co
         FDropItemConfig local_50;
         return local_50.GetGroundBagConfig();
     }
-    return GetGroundBagConfig();
+    return DataObject.Get().GetGroundBagConfig();
 }
 UFUNCTION()
 FDropItemConfig CastToFDropItemConfig(const TDataObjectPtr<FDropItemConfig> &inout DataObject)
@@ -152,7 +142,6 @@ namespace __FDropItemGroupConfigFunctions
 UFUNCTION()
 TArray<FDropGroupItemData> __FDropItemGroupConfig_GetDrops(const TDataObjectPtr<FDropItemGroupConfig> &inout DataObject)
 {
-    TArray<FDropGroupItemData> __r;
     if ((DataObject == nullptr))
     {
         if (!(EUIGlobals::GIsDuringPropertyConversion))
@@ -162,12 +151,11 @@ TArray<FDropGroupItemData> __FDropItemGroupConfig_GetDrops(const TDataObjectPtr<
         FDropItemGroupConfig local_50;
         return local_50.Drops;
     }
-    return __r;
+    return DataObject.Get().Drops;
 }
 UFUNCTION()
 EDropItemAllocation __FDropItemGroupConfig_GetDropAllocation(const TDataObjectPtr<FDropItemGroupConfig> &inout DataObject)
 {
-    int local_51 = 0;
     if ((DataObject == nullptr))
     {
         if (!(EUIGlobals::GIsDuringPropertyConversion))
@@ -175,15 +163,13 @@ EDropItemAllocation __FDropItemGroupConfig_GetDropAllocation(const TDataObjectPt
             FBlueprintDebugFunctions::ThrowScriptException("Get 'DropAllocation' from a null 'FDropItemGroupConfig' DataObject!");
         }
         FDropItemGroupConfig local_50;
-        local_51 = int(local_50.DropAllocation);
-        return EDropItemAllocation(local_51);
+        return local_50.DropAllocation;
     }
-    return EDropItemAllocation(local_51);
+    return DataObject.Get().DropAllocation;
 }
 UFUNCTION()
 EDropTriggerType __FDropItemGroupConfig_GetTriggerType(const TDataObjectPtr<FDropItemGroupConfig> &inout DataObject)
 {
-    int local_51 = 0;
     if ((DataObject == nullptr))
     {
         if (!(EUIGlobals::GIsDuringPropertyConversion))
@@ -191,15 +177,13 @@ EDropTriggerType __FDropItemGroupConfig_GetTriggerType(const TDataObjectPtr<FDro
             FBlueprintDebugFunctions::ThrowScriptException("Get 'TriggerType' from a null 'FDropItemGroupConfig' DataObject!");
         }
         FDropItemGroupConfig local_50;
-        local_51 = int(local_50.TriggerType);
-        return EDropTriggerType(local_51);
+        return local_50.TriggerType;
     }
-    return EDropTriggerType(local_51);
+    return DataObject.Get().TriggerType;
 }
 UFUNCTION()
 EDSDropType __FDropItemGroupConfig_GetDropType(const TDataObjectPtr<FDropItemGroupConfig> &inout DataObject)
 {
-    int local_51 = 0;
     if ((DataObject == nullptr))
     {
         if (!(EUIGlobals::GIsDuringPropertyConversion))
@@ -207,10 +191,9 @@ EDSDropType __FDropItemGroupConfig_GetDropType(const TDataObjectPtr<FDropItemGro
             FBlueprintDebugFunctions::ThrowScriptException("Get 'DropType' from a null 'FDropItemGroupConfig' DataObject!");
         }
         FDropItemGroupConfig local_50;
-        local_51 = int(local_50.DropType);
-        return EDSDropType(local_51);
+        return local_50.DropType;
     }
-    return EDSDropType(local_51);
+    return DataObject.Get().DropType;
 }
 UFUNCTION()
 TDataObjectPtr<FDropItemGroundBagConfig> __FDropItemGroupConfig_GetGroundBagConfig(const TDataObjectPtr<FDropItemGroupConfig> &inout DataObject)
@@ -224,7 +207,7 @@ TDataObjectPtr<FDropItemGroundBagConfig> __FDropItemGroupConfig_GetGroundBagConf
         FDropItemGroupConfig local_50;
         return local_50.GetGroundBagConfig();
     }
-    return GetGroundBagConfig();
+    return DataObject.Get().GetGroundBagConfig();
 }
 UFUNCTION()
 FDropItemGroupConfig CastToFDropItemGroupConfig(const TDataObjectPtr<FDropItemGroupConfig> &inout DataObject)

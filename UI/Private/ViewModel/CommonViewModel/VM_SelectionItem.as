@@ -193,11 +193,9 @@ FVM_SelectableItem& Create(const UObject ContextObject)
 {
     return FVM_SelectableItem::CreateByManager(EUIInternal::GetContextManager(ContextObject));
 }
-FVM_SelectableItem CreateByManager(const UEUIManagerSubsystem Manager)
+FVM_SelectableItem& CreateByManager(const UEUIManagerSubsystem Manager)
 {
-    FVM_SelectableItem __r;
-    TEUIModelRef<FVM_SelectableItem> local_6 = TEUIModelRef<FVM_SelectableItem>(EUIInternal::MakeModelWithManager(Manager, FVM_SelectableItem::ModelId));
-    return __r;
+    return TEUIModelRef<FVM_SelectableItem>(EUIInternal::MakeModelWithManager(Manager, FVM_SelectableItem::ModelId)).Get();
 }
 void GetModelInfo(FEUIViewModelMetaInfo &inout Result)
 {
@@ -249,8 +247,7 @@ namespace __GeneratedProperties_FVM_SelectableItem
 {
 UScriptStruct StaticStruct()
 {
-    UScriptStruct local_2;
-    return local_2;
+    return __GeneratedProperties_FVM_SelectableItem.Get();
 }
 }
 namespace FVM_CommonTabItem
@@ -259,11 +256,9 @@ FVM_CommonTabItem& Create(const UObject ContextObject)
 {
     return FVM_CommonTabItem::CreateByManager(EUIInternal::GetContextManager(ContextObject));
 }
-FVM_CommonTabItem CreateByManager(const UEUIManagerSubsystem Manager)
+FVM_CommonTabItem& CreateByManager(const UEUIManagerSubsystem Manager)
 {
-    FVM_CommonTabItem __r;
-    TEUIModelRef<FVM_CommonTabItem> local_6 = TEUIModelRef<FVM_CommonTabItem>(EUIInternal::MakeModelWithManager(Manager, FVM_CommonTabItem::ModelId));
-    return __r;
+    return TEUIModelRef<FVM_CommonTabItem>(EUIInternal::MakeModelWithManager(Manager, FVM_CommonTabItem::ModelId)).Get();
 }
 void GetModelInfo(FEUIViewModelMetaInfo &inout Result)
 {
@@ -349,7 +344,6 @@ namespace __GeneratedProperties_FVM_CommonTabItem
 {
 UScriptStruct StaticStruct()
 {
-    UScriptStruct local_2;
-    return local_2;
+    return __GeneratedProperties_FVM_CommonTabItem.Get();
 }
 }

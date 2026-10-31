@@ -121,7 +121,7 @@ struct FVM_ComposableItem : FEUIViewModel
             this.SetCommonItemVM(local_12);
             TEUIModelRef<FM_DisplayItemData> local_14 = ::DisplayItemAdapter_Item::MakeDisplayData(this.GetContext().Manager, this.GetItemDataModel());
             TEUIModelRef<FVM_CommonItem> local_12_2 = this.GetCommonItemVM();
-            local_14.SetupDisplayData();
+            local_12_2.Get().SetupDisplayData(local_14);
         }
         else
         {
@@ -558,11 +558,9 @@ FVM_ComposableItem& Create(const UObject ContextObject, const TEUIModelRef<FM_It
 {
     return FVM_ComposableItem::CreateByManager(EUIInternal::GetContextManager(ContextObject), ItemDataModel, EItemDisplayScenario(Scenario));
 }
-FVM_ComposableItem CreateByManager(const UEUIManagerSubsystem Manager, const TEUIModelRef<FM_ItemData> &inout ItemDataModel, const EItemDisplayScenario Scenario)
+FVM_ComposableItem& CreateByManager(const UEUIManagerSubsystem Manager, const TEUIModelRef<FM_ItemData> &inout ItemDataModel, const EItemDisplayScenario Scenario)
 {
-    FVM_ComposableItem __r;
-    TEUIModelRef<FVM_ComposableItem> local_6 = TEUIModelRef<FVM_ComposableItem>(EUIInternal::MakeModelWithManager_Generic(Manager, FVM_ComposableItem::ModelId, 0, ItemDataModel, Scenario));
-    return __r;
+    return TEUIModelRef<FVM_ComposableItem>(EUIInternal::MakeModelWithManager_Generic(Manager, FVM_ComposableItem::ModelId, 0, ItemDataModel, Scenario)).Get();
 }
 void GetModelInfo(FEUIViewModelMetaInfo &inout Result)
 {
@@ -751,7 +749,6 @@ namespace __GeneratedProperties_FVM_ComposableItem
 {
 UScriptStruct StaticStruct()
 {
-    UScriptStruct local_2;
-    return local_2;
+    return __GeneratedProperties_FVM_ComposableItem.Get();
 }
 }

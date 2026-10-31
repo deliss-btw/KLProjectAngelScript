@@ -260,8 +260,7 @@ FString GetPatternDebugInfo(const FSFXPatternsBase &inout Pattern, const int Ind
     FString local_16;
     if (Pattern.EnterEvent.IsValid())
     {
-        UAkAudioEvent local_8;
-        local_16 = local_8.GetName();
+        local_16 = Pattern.EnterEvent.Get().GetName();
     }
     else
     {
@@ -272,7 +271,20 @@ FString GetPatternDebugInfo(const FSFXPatternsBase &inout Pattern, const int Ind
 UFUNCTION()
 void ProcessEntityBreathSFX(const FECSEntity &inout Entity, const EBreathSFXTriggerType TriggerType, const FName &inout AudioComponentName, const bool bAllowStacking)
 {
-    // body not fully recovered — stub [opcode-uncovered]
+    if (!(Entity.IsValid()))
+    {
+        return;
+    }
+    switch (TriggerType)
+    {
+        case EBreathSFXTriggerType::Enable:
+            BreathSFXUtils::EnableBreathSFXByName(Entity, AudioComponentName, bAllowStacking);
+            return;
+        case EBreathSFXTriggerType::Disable:
+            BreathSFXUtils::DisableBreathSFXByName(Entity, AudioComponentName, bAllowStacking);
+            return;
+    }
+    return;
 }
 int FindAudioComponentIndex(const FC_SFXStateConfig &inout Config, const FName &inout AudioComponentName)
 {

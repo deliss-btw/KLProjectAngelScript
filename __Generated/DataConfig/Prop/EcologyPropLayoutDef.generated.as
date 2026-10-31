@@ -3,7 +3,6 @@ namespace __FEcologyPropLayoutDefFunctions
 UFUNCTION()
 TSoftClassPtr<APropPrefabScriptBase> __FEcologyPropLayoutDef_GetPropPrefabDef(const TDataObjectPtr<FEcologyPropLayoutDef> &inout DataObject)
 {
-    TSoftClassPtr<APropPrefabScriptBase> __r;
     if ((DataObject == nullptr))
     {
         if (!(EUIGlobals::GIsDuringPropertyConversion))
@@ -13,44 +12,39 @@ TSoftClassPtr<APropPrefabScriptBase> __FEcologyPropLayoutDef_GetPropPrefabDef(co
         FEcologyPropLayoutDef local_64;
         return local_64.PropPrefabDef;
     }
-    return __r;
+    return DataObject.Get().PropPrefabDef;
 }
 UFUNCTION()
 bool __FEcologyPropLayoutDef_GetbRandomizeLocalRotationZOnSpawn(const TDataObjectPtr<FEcologyPropLayoutDef> &inout DataObject)
 {
-    bool local_1 = false;
     if ((DataObject == nullptr))
     {
-        local_1 = !(EUIGlobals::GIsDuringPropertyConversion);
-        if (local_1)
+        if (!(EUIGlobals::GIsDuringPropertyConversion))
         {
             FBlueprintDebugFunctions::ThrowScriptException("Get 'bRandomizeLocalRotationZOnSpawn' from a null 'FEcologyPropLayoutDef' DataObject!");
         }
         FEcologyPropLayoutDef local_64;
         return local_64.bRandomizeLocalRotationZOnSpawn;
     }
-    return local_1;
+    return DataObject.Get().bRandomizeLocalRotationZOnSpawn;
 }
 UFUNCTION()
 bool __FEcologyPropLayoutDef_GetbSnapPerpendicularlyToGround(const TDataObjectPtr<FEcologyPropLayoutDef> &inout DataObject)
 {
-    bool local_1 = false;
     if ((DataObject == nullptr))
     {
-        local_1 = !(EUIGlobals::GIsDuringPropertyConversion);
-        if (local_1)
+        if (!(EUIGlobals::GIsDuringPropertyConversion))
         {
             FBlueprintDebugFunctions::ThrowScriptException("Get 'bSnapPerpendicularlyToGround' from a null 'FEcologyPropLayoutDef' DataObject!");
         }
         FEcologyPropLayoutDef local_64;
         return local_64.bSnapPerpendicularlyToGround;
     }
-    return local_1;
+    return DataObject.Get().bSnapPerpendicularlyToGround;
 }
 UFUNCTION()
 FVector __FEcologyPropLayoutDef_GetPrefabSpawnLocationOffset(const TDataObjectPtr<FEcologyPropLayoutDef> &inout DataObject)
 {
-    FVector __r;
     if ((DataObject == nullptr))
     {
         if (!(EUIGlobals::GIsDuringPropertyConversion))
@@ -60,28 +54,25 @@ FVector __FEcologyPropLayoutDef_GetPrefabSpawnLocationOffset(const TDataObjectPt
         FEcologyPropLayoutDef local_64;
         return local_64.PrefabSpawnLocationOffset;
     }
-    return __r;
+    return DataObject.Get().PrefabSpawnLocationOffset;
 }
 UFUNCTION()
 bool __FEcologyPropLayoutDef_GetbApplyRandomSpawnScaleUniformFactor(const TDataObjectPtr<FEcologyPropLayoutDef> &inout DataObject)
 {
-    bool local_1 = false;
     if ((DataObject == nullptr))
     {
-        local_1 = !(EUIGlobals::GIsDuringPropertyConversion);
-        if (local_1)
+        if (!(EUIGlobals::GIsDuringPropertyConversion))
         {
             FBlueprintDebugFunctions::ThrowScriptException("Get 'bApplyRandomSpawnScaleUniformFactor' from a null 'FEcologyPropLayoutDef' DataObject!");
         }
         FEcologyPropLayoutDef local_64;
         return local_64.bApplyRandomSpawnScaleUniformFactor;
     }
-    return local_1;
+    return DataObject.Get().bApplyRandomSpawnScaleUniformFactor;
 }
 UFUNCTION()
 FVector2D __FEcologyPropLayoutDef_GetSpawnScaleUniformFactorRandomRange(const TDataObjectPtr<FEcologyPropLayoutDef> &inout DataObject)
 {
-    FVector2D __r;
     if ((DataObject == nullptr))
     {
         if (!(EUIGlobals::GIsDuringPropertyConversion))
@@ -91,7 +82,7 @@ FVector2D __FEcologyPropLayoutDef_GetSpawnScaleUniformFactorRandomRange(const TD
         FEcologyPropLayoutDef local_64;
         return local_64.SpawnScaleUniformFactorRandomRange;
     }
-    return __r;
+    return DataObject.Get().SpawnScaleUniformFactorRandomRange;
 }
 UFUNCTION()
 FEcologyPropLayoutDef CastToFEcologyPropLayoutDef(const TDataObjectPtr<FEcologyPropLayoutDef> &inout DataObject)

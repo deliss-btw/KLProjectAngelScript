@@ -111,8 +111,8 @@ class UWidget_PlayerRename : UEUIActivatableWidget
     }
     void HandleObservedModelChanges(FEUIReactiveSubscriberIterator &inout It)
     {
-        FVM_PlayerRename& local_6;
         TEUIModelRef<FVM_PlayerRename> local_2 = this.PlayerRename.AsRef();
+        FVM_PlayerRename& local_6 = local_2.Get();
         for (; It; )
         {
             FEUIReactiveSubscriberTrackScope local_56 = FEUIReactiveSubscriberTrackScope(It);

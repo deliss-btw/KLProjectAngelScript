@@ -3,7 +3,6 @@ namespace __FMailConfigFunctions
 UFUNCTION()
 FText __FMailConfig_GetMailTitle(const TDataObjectPtr<FMailConfig> &inout DataObject)
 {
-    FText __r;
     if ((DataObject == nullptr))
     {
         if (!(EUIGlobals::GIsDuringPropertyConversion))
@@ -13,12 +12,11 @@ FText __FMailConfig_GetMailTitle(const TDataObjectPtr<FMailConfig> &inout DataOb
         FMailConfig local_80;
         return local_80.MailTitle;
     }
-    return __r;
+    return DataObject.Get().MailTitle;
 }
 UFUNCTION()
 FText __FMailConfig_GetMailContent(const TDataObjectPtr<FMailConfig> &inout DataObject)
 {
-    FText __r;
     if ((DataObject == nullptr))
     {
         if (!(EUIGlobals::GIsDuringPropertyConversion))
@@ -28,12 +26,11 @@ FText __FMailConfig_GetMailContent(const TDataObjectPtr<FMailConfig> &inout Data
         FMailConfig local_80;
         return local_80.MailContent;
     }
-    return __r;
+    return DataObject.Get().MailContent;
 }
 UFUNCTION()
 FText __FMailConfig_GetMailSender(const TDataObjectPtr<FMailConfig> &inout DataObject)
 {
-    FText __r;
     if ((DataObject == nullptr))
     {
         if (!(EUIGlobals::GIsDuringPropertyConversion))
@@ -43,7 +40,7 @@ FText __FMailConfig_GetMailSender(const TDataObjectPtr<FMailConfig> &inout DataO
         FMailConfig local_80;
         return local_80.MailSender;
     }
-    return __r;
+    return DataObject.Get().MailSender;
 }
 UFUNCTION()
 int __FMailConfig_GetExpireDay(const TDataObjectPtr<FMailConfig> &inout DataObject)
@@ -72,7 +69,7 @@ TDataObjectPtr<FRewardConfig> __FMailConfig_GetAttachmentRewardConfig(const TDat
         FMailConfig local_80;
         return local_80.GetAttachmentRewardConfig();
     }
-    return GetAttachmentRewardConfig();
+    return DataObject.Get().GetAttachmentRewardConfig();
 }
 UFUNCTION()
 TDataObjectPtr<FServerConditionConfigBase> __FMailConfig_GetCondition(const TDataObjectPtr<FMailConfig> &inout DataObject)
@@ -86,23 +83,21 @@ TDataObjectPtr<FServerConditionConfigBase> __FMailConfig_GetCondition(const TDat
         FMailConfig local_80;
         return local_80.GetCondition();
     }
-    return GetCondition();
+    return DataObject.Get().GetCondition();
 }
 UFUNCTION()
 bool __FMailConfig_GetIsRepeatable(const TDataObjectPtr<FMailConfig> &inout DataObject)
 {
-    bool local_1 = false;
     if ((DataObject == nullptr))
     {
-        local_1 = !(EUIGlobals::GIsDuringPropertyConversion);
-        if (local_1)
+        if (!(EUIGlobals::GIsDuringPropertyConversion))
         {
             FBlueprintDebugFunctions::ThrowScriptException("Get 'IsRepeatable' from a null 'FMailConfig' DataObject!");
         }
         FMailConfig local_80;
         return local_80.IsRepeatable;
     }
-    return local_1;
+    return DataObject.Get().IsRepeatable;
 }
 UFUNCTION()
 FMailConfig CastToFMailConfig(const TDataObjectPtr<FMailConfig> &inout DataObject)

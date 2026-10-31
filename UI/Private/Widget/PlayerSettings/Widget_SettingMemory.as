@@ -33,13 +33,13 @@ class UWidget_SettingMemory : UEUIActivatableWidget
     UFUNCTION()
     void OnSlowTick()
     {
-        RefreshVideoMemory();
+        this.Memory.Get().RefreshVideoMemory();
         return;
     }
     UFUNCTION()
     void OnIsFullChanged()
     {
-        this.w_pBar_self.SetFillColorAndOpacity(GetSelfColor());
+        this.w_pBar_self.SetFillColorAndOpacity(this.Memory.Get().GetSelfColor());
         return;
     }
     UFUNCTION()
@@ -53,8 +53,8 @@ class UWidget_SettingMemory : UEUIActivatableWidget
     }
     void HandleObservedModelChanges(FEUIReactiveSubscriberIterator &inout It)
     {
-        FVM_SettingMemory& local_6;
         TEUIModelRef<FVM_SettingMemory> local_2 = this.Memory.AsRef();
+        FVM_SettingMemory& local_6 = local_2.Get();
         for (; It; )
         {
             FEUIReactiveSubscriberTrackScope local_56 = FEUIReactiveSubscriberTrackScope(It);

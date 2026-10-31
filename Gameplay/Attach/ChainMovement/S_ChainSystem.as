@@ -188,6 +188,7 @@ class US_ChainSystem : UECSScriptSystem
             this.TryPopChildExtraShape(ChildEntity, local_10);
             if (local_20)
             {
+                local_20.GetModify_Children().Remove(ChildEntity);
                 if (local_20.GetChildren().Num() == 0)
                 {
                     Remove local_26;
@@ -286,7 +287,6 @@ class US_ChainSystem : UECSScriptSystem
     }
     void SetSyncNetTime(const FECSEntity &inout Entity, const FCS_FixedTime &inout FixedTime) const
     {
-        float32 local_8 = 0.0f;
         bool local_1 = !(CVar_Chain_ForceSyncNetTime.GetBool());
         if (local_1)
         {
@@ -310,12 +310,10 @@ class US_ChainSystem : UECSScriptSystem
         if (local_16)
         {
             FFPTime local_18 = FFPTime(FixedTime.Time);
-            float32 local_19 = 1.0f - local_8;
-            float32 local_21 = 0.5f;
-            local_19 = local_19 / local_21;
+            float32 local_8 = local_16.GetValue(local_18);
+            float32 local_19 = (1.0f - local_8) / 0.5f;
             float32 local_22 = FMath::Max(0.1f, local_19);
-            FFPTime local_28 = (local_18 + FFPTime(local_22));
-            if (local_19 < 1.0f)
+            if (local_16.GetValue((local_18 + FFPTime(local_22))) < 1.0f)
             {
                 FInterpoBlendData local_38;
                 local_38.SetLastBlendScale(local_8);
@@ -325,9 +323,9 @@ class US_ChainSystem : UECSScriptSystem
                 local_16.SetInterpoBlendData(local_38, FFPTime(-1));
             }
             FFPTime local_24 = ((FFPTime(FixedTime.Time) + FFPTime(local_22)) + FFPTime(0.5));
+            float32 local_21 = local_16.GetValue(local_24);
             local_19 = FMath::Max(0.1f, local_21 / 0.3f);
-            FFPTime local_28_2 = (local_24 + FFPTime(local_19));
-            if (0.0f > 0.0f)
+            if (local_16.GetValue((local_24 + FFPTime(local_19))) > 0.0f)
             {
                 FInterpoBlendData local_38;
                 local_38.SetLastBlendScale(local_21);

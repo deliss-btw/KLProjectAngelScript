@@ -38,13 +38,13 @@ class UWidget_StaminaBar : UEUIUserWidget
     UFUNCTION()
     float32 StaminaBar_CurrentStaminaRatio() const
     {
-        FVM_StaminaBar& local_2;
+        FVM_StaminaBar& local_2 = this.StaminaBar.Get();
         return local_2 ? local_2.GetCurrentStaminaRatio() : 0.0f;
     }
     void HandleObservedModelChanges(FEUIReactiveSubscriberIterator &inout It)
     {
-        FVM_StaminaBar& local_6;
         TEUIModelRef<FVM_StaminaBar> local_2 = this.StaminaBar.AsRef();
+        FVM_StaminaBar& local_6 = local_2.Get();
         for (; It; )
         {
             FEUIReactiveSubscriberTrackScope local_56 = FEUIReactiveSubscriberTrackScope(It);

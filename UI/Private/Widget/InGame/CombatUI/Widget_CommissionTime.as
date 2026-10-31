@@ -44,9 +44,7 @@ class UWidget_CommissionTime : UEUIUserWidget
         {
             return;
         }
-        FEUIModelContainer local_18;
-        local_18.MakeHoverModels();
-        this.UI_Common_HoverProvider.SetHoverModels(local_18);
+        this.UI_Common_HoverProvider.SetHoverModels(this.CommissionTime.Get().MakeHoverModels());
         return;
     }
     UFUNCTION()

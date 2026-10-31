@@ -12,7 +12,7 @@ TDataObjectPtr<FServerConditionConfigBase> __FShopGoodsConfig_GetUnlockCondition
         FShopGoodsConfig local_116;
         return local_116.GetUnlockCondition();
     }
-    return GetUnlockCondition();
+    return DataObject.Get().GetUnlockCondition();
 }
 UFUNCTION()
 TDataObjectPtr<FItemConfig> __FShopGoodsConfig_GetItem(const TDataObjectPtr<FShopGoodsConfig> &inout DataObject)
@@ -26,7 +26,7 @@ TDataObjectPtr<FItemConfig> __FShopGoodsConfig_GetItem(const TDataObjectPtr<FSho
         FShopGoodsConfig local_116;
         return local_116.GetItem();
     }
-    return GetItem();
+    return DataObject.Get().GetItem();
 }
 UFUNCTION()
 TDataObjectPtr<FRefreshRuleConfig> __FShopGoodsConfig_GetRefreshRuleConfig(const TDataObjectPtr<FShopGoodsConfig> &inout DataObject)
@@ -40,7 +40,7 @@ TDataObjectPtr<FRefreshRuleConfig> __FShopGoodsConfig_GetRefreshRuleConfig(const
         FShopGoodsConfig local_116;
         return local_116.GetRefreshRuleConfig();
     }
-    return GetRefreshRuleConfig();
+    return DataObject.Get().GetRefreshRuleConfig();
 }
 UFUNCTION()
 TDataObjectPtr<FItemConfig> __FShopGoodsConfig_GetCostItem(const TDataObjectPtr<FShopGoodsConfig> &inout DataObject)
@@ -54,7 +54,7 @@ TDataObjectPtr<FItemConfig> __FShopGoodsConfig_GetCostItem(const TDataObjectPtr<
         FShopGoodsConfig local_116;
         return local_116.GetCostItem();
     }
-    return GetCostItem();
+    return DataObject.Get().GetCostItem();
 }
 UFUNCTION()
 FShopGoodsConfig CastToFShopGoodsConfig(const TDataObjectPtr<FShopGoodsConfig> &inout DataObject)

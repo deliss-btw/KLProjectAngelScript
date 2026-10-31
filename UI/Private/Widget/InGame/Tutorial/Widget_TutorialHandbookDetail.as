@@ -146,8 +146,8 @@ class UWidget_TutorialHandbookDetail : UEUIActivatableWidget
     }
     void HandleObservedModelChanges(FEUIReactiveSubscriberIterator &inout It)
     {
-        FVM_TutorialHandbookDetail& local_6;
         TEUIModelRef<FVM_TutorialHandbookDetail> local_2 = this.DetailVM.AsRef();
+        FVM_TutorialHandbookDetail& local_6 = local_2.Get();
         for (; It; )
         {
             FEUIReactiveSubscriberTrackScope local_56 = FEUIReactiveSubscriberTrackScope(It);

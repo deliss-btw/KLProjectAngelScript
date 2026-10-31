@@ -309,11 +309,9 @@ FVM_BuffSideHintDesc& Create(const UObject ContextObject, const FSoftBrush &inou
 {
     return FVM_BuffSideHintDesc::CreateByManager(EUIInternal::GetContextManager(ContextObject), Icon, Desc);
 }
-FVM_BuffSideHintDesc CreateByManager(const UEUIManagerSubsystem Manager, const FSoftBrush &inout Icon, const FText &inout Desc)
+FVM_BuffSideHintDesc& CreateByManager(const UEUIManagerSubsystem Manager, const FSoftBrush &inout Icon, const FText &inout Desc)
 {
-    FVM_BuffSideHintDesc __r;
-    TEUIModelRef<FVM_BuffSideHintDesc> local_6 = TEUIModelRef<FVM_BuffSideHintDesc>(EUIInternal::MakeModelWithManager_Generic(Manager, FVM_BuffSideHintDesc::ModelId, 0, Icon, Desc));
-    return __r;
+    return TEUIModelRef<FVM_BuffSideHintDesc>(EUIInternal::MakeModelWithManager_Generic(Manager, FVM_BuffSideHintDesc::ModelId, 0, Icon, Desc)).Get();
 }
 void GetModelInfo(FEUIViewModelMetaInfo &inout Result)
 {
@@ -368,8 +366,7 @@ namespace __GeneratedProperties_FVM_BuffSideHintDesc
 {
 UScriptStruct StaticStruct()
 {
-    UScriptStruct local_2;
-    return local_2;
+    return __GeneratedProperties_FVM_BuffSideHintDesc.Get();
 }
 }
 namespace FVM_BuffSideHintDescList
@@ -378,11 +375,9 @@ FVM_BuffSideHintDescList& Create(const UObject ContextObject, const FBuffHintDes
 {
     return FVM_BuffSideHintDescList::CreateByManager(EUIInternal::GetContextManager(ContextObject), DescList);
 }
-FVM_BuffSideHintDescList CreateByManager(const UEUIManagerSubsystem Manager, const FBuffHintDescParamItemList &inout DescList)
+FVM_BuffSideHintDescList& CreateByManager(const UEUIManagerSubsystem Manager, const FBuffHintDescParamItemList &inout DescList)
 {
-    FVM_BuffSideHintDescList __r;
-    TEUIModelRef<FVM_BuffSideHintDescList> local_6 = TEUIModelRef<FVM_BuffSideHintDescList>(EUIInternal::MakeModelWithManager_Generic(Manager, FVM_BuffSideHintDescList::ModelId, 0, DescList));
-    return __r;
+    return TEUIModelRef<FVM_BuffSideHintDescList>(EUIInternal::MakeModelWithManager_Generic(Manager, FVM_BuffSideHintDescList::ModelId, 0, DescList)).Get();
 }
 void GetModelInfo(FEUIViewModelMetaInfo &inout Result)
 {
@@ -463,7 +458,6 @@ namespace __GeneratedProperties_FVM_BuffSideHintDescList
 {
 UScriptStruct StaticStruct()
 {
-    UScriptStruct local_2;
-    return local_2;
+    return __GeneratedProperties_FVM_BuffSideHintDescList.Get();
 }
 }

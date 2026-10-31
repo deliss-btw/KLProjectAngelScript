@@ -172,8 +172,8 @@ class AKLLevelScriptTutorialCombatDouble : AKLLevelScriptTutorialActor
             FTutorialInfo& local_110 = this.GetStepInfo(local_105 + 1);
             if (local_20.Contains(this.StepConfigKeys[local_105]))
             {
-                const FTutorialInfoConfig& local_112;
                 local_110.SetTutorialInfoId(local_20[this.StepConfigKeys[local_105]]);
+                const FTutorialInfoConfig& local_112 = local_110.GetTutorialInfoId().Get();
                 local_110.GetModify_StepProgress().SetNum(local_112.Steps.Num());
                 int local_113 = 0;
                 for (; local_113 < local_112.Steps.Num(); )
@@ -440,11 +440,11 @@ class AKLLevelScriptTutorialCombatDouble : AKLLevelScriptTutorialActor
     UFUNCTION()
     void OnHitEvent(const FCE_HitEvent &inout HitEvent)
     {
-        int local_3 = 0;
         if (!(HitEvent.AttackData.IsSet()))
         {
             return;
         }
+        int local_3 = HitEvent.AttackData.Get().AttackCategory;
         int local_2 = local_3;
         if (this.CurrentStep == 4 && ::BlueprintFunctions_Ability::MatchAttackCategory(local_2, EAttackCategory(4)))
         {

@@ -2,6 +2,8 @@ struct FAICommand_DisableStrafe : FAICommandScript
 {
     FAICommandScript _base_FAICommandScript;
 
+    default m_ScriptOverrideMeta = Cast<UASStruct>(FAICommand_DisableStrafe.Get());
+
     FAICommand_DisableStrafe()
     {
         this.__InitDefaults();
@@ -37,6 +39,8 @@ class UBTService_DisableStrafe : UBTService_AICommandScript
 {
     UPROPERTY()
     FAICommand_DisableStrafe AICommand;
+
+    default SetNodeName("期间退出Strafe状态");
 
     UBTService_DisableStrafe()
     {

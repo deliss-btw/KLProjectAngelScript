@@ -7,7 +7,7 @@ class UConditionBodyPartDestroy : ULocalConditionTypeDefineBase
     }
     void OnConditionRegistered(const FLocalConditionInstance &inout ConditionInstance) const
     {
-        FName local_2 = this.GetBodyPartName(GetConditionConfig());
+        FName local_2 = this.GetBodyPartName(ConditionInstance.GetInstanceData().GetConditionConfig());
         FConditionInstanceHandle local_36 = ConditionInstance.GetHandle();
         FECSWorldPtr local_6 = ECS::GetECSWorld();
         ModifyOrAdd local_10;
@@ -16,7 +16,7 @@ class UConditionBodyPartDestroy : ULocalConditionTypeDefineBase
     }
     void OnConditionUnregistered(const FLocalConditionInstance &inout ConditionInstance) const
     {
-        FName local_2 = this.GetBodyPartName(GetConditionConfig());
+        FName local_2 = this.GetBodyPartName(ConditionInstance.GetInstanceData().GetConditionConfig());
         FECSWorldPtr local_6 = ECS::GetECSWorld();
         Modify local_10;
         FCS_BodyPartDestroyConditionManager& local_12 = local_10.opCall();
@@ -26,9 +26,10 @@ class UConditionBodyPartDestroy : ULocalConditionTypeDefineBase
             if (local_16.Contains(local_2))
             {
                 TArray<FConditionInstanceHandle> local_18;
-                FConditionInstanceHandle local_44 = ConditionInstance.GetHandle();
+                local_18.Remove(ConditionInstance.GetHandle());
                 if (local_18.IsEmpty())
                 {
+                    local_16.Remove(local_2);
                     if (local_16.IsEmpty())
                     {
                         FECSWorldPtr local_48 = ECS::GetECSWorld();

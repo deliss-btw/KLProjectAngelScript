@@ -57,11 +57,9 @@ FVM_WorldMapUtils& Get(const UObject ContextObject)
 {
     return FVM_WorldMapUtils::GetByManager(EUIInternal::GetContextManager(ContextObject));
 }
-FVM_WorldMapUtils GetByManager(const UEUIManagerSubsystem Manager)
+FVM_WorldMapUtils& GetByManager(const UEUIManagerSubsystem Manager)
 {
-    FVM_WorldMapUtils __r;
-    TEUIModelRef<FVM_WorldMapUtils> local_6 = TEUIModelRef<FVM_WorldMapUtils>(EUIInternal::MakeModelWithManager(Manager, FVM_WorldMapUtils::ModelId));
-    return __r;
+    return TEUIModelRef<FVM_WorldMapUtils>(EUIInternal::MakeModelWithManager(Manager, FVM_WorldMapUtils::ModelId)).Get();
 }
 void GetModelInfo(FEUIViewModelMetaInfo &inout Result)
 {
@@ -90,7 +88,6 @@ namespace __GeneratedProperties_FVM_WorldMapUtils
 {
 UScriptStruct StaticStruct()
 {
-    UScriptStruct local_2;
-    return local_2;
+    return __GeneratedProperties_FVM_WorldMapUtils.Get();
 }
 }

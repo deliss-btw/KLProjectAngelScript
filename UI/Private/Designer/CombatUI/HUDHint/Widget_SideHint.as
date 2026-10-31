@@ -15,7 +15,7 @@ class UWidget_SideHint : UEUIUserWidget
     UFUNCTION()
     TArray<FEUIModelWeakRef> SideHint_SideHintArray() const
     {
-        FVMS_SideHint& local_2;
+        FVMS_SideHint& local_2 = this.SideHint.Get();
         TArray<FEUIModelWeakRef> local_16;
         if (local_2)
         {
@@ -30,7 +30,7 @@ class UWidget_SideHint : UEUIUserWidget
     UFUNCTION()
     TArray<FEUIModelWeakRef> SideHint_ImportantSideHintArray() const
     {
-        FVMS_SideHint& local_2;
+        FVMS_SideHint& local_2 = this.SideHint.Get();
         TArray<FEUIModelWeakRef> local_16;
         if (local_2)
         {

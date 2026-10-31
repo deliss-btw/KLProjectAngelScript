@@ -70,13 +70,15 @@ struct FVM_MissionDecoractor : FEUIViewModel
     }
     void PostConstruct()
     {
-        TEUIModelRef<FM_Spot> local_2 = this.GetSpot();
-        FMissionPresentationData local_108;
+        FSpotViewAdapter local_10;
+        FMissionPresentationData local_108 = ::GetMissionData(this.GetSpot().Get(), local_10);
         this.SetGuideIcon(local_108.GuideIcon);
         TDataObjectPtr<FMissionConfig> local_228 = local_108.MissionConfig;
         this.SetbShowBackground(::MissionUtils::IsMissionTracking(this.GetContext().GetLocalPlayer(), local_228));
-        if (::MissionUtils::GetMissionPresentationRuleConfig(local_228).IsSet() && GetGuidePresentation().IsSet())
+        TDataObjectPtr<FMissionPresentationRuleConfig> local_282 = ::MissionUtils::GetMissionPresentationRuleConfig(local_228);
+        if (local_282.IsSet() && local_282.Get().GetGuidePresentation().IsSet())
         {
+            this.SetGuideColor(local_282.Get().GetGuidePresentation().Get().GuideColor);
         }
         return;
     }
@@ -213,11 +215,9 @@ FVM_MissionDecoractor& Create(const UObject ContextObject, const TEUIModelRef<FM
 {
     return FVM_MissionDecoractor::CreateByManager(EUIInternal::GetContextManager(ContextObject), Spot, EPresentationSpotUsage(SpotUsage));
 }
-FVM_MissionDecoractor CreateByManager(const UEUIManagerSubsystem Manager, const TEUIModelRef<FM_Spot> &inout Spot, const EPresentationSpotUsage SpotUsage)
+FVM_MissionDecoractor& CreateByManager(const UEUIManagerSubsystem Manager, const TEUIModelRef<FM_Spot> &inout Spot, const EPresentationSpotUsage SpotUsage)
 {
-    FVM_MissionDecoractor __r;
-    TEUIModelRef<FVM_MissionDecoractor> local_6 = TEUIModelRef<FVM_MissionDecoractor>(EUIInternal::MakeModelWithManager_Generic(Manager, FVM_MissionDecoractor::ModelId, 0, Spot, SpotUsage));
-    return __r;
+    return TEUIModelRef<FVM_MissionDecoractor>(EUIInternal::MakeModelWithManager_Generic(Manager, FVM_MissionDecoractor::ModelId, 0, Spot, SpotUsage)).Get();
 }
 void GetModelInfo(FEUIViewModelMetaInfo &inout Result)
 {
@@ -301,7 +301,6 @@ namespace __GeneratedProperties_FVM_MissionDecoractor
 {
 UScriptStruct StaticStruct()
 {
-    UScriptStruct local_2;
-    return local_2;
+    return __GeneratedProperties_FVM_MissionDecoractor.Get();
 }
 }

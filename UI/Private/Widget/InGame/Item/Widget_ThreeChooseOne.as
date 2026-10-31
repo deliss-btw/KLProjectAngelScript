@@ -38,8 +38,8 @@ class UWidget_ThreeChooseOne : UEUIActivatableWidget
     }
     void HandleObservedModelChanges(FEUIReactiveSubscriberIterator &inout It)
     {
-        FVM_ThreeChooseOne& local_6;
         TEUIModelRef<FVM_ThreeChooseOne> local_2 = this.VM_ThreeChooseOne.AsRef();
+        FVM_ThreeChooseOne& local_6 = local_2.Get();
         for (; It; )
         {
             FEUIReactiveSubscriberTrackScope local_56 = FEUIReactiveSubscriberTrackScope(It);

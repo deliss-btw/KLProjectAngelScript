@@ -25,7 +25,7 @@ class UWidget_Qiong_BuffTip : UEUIUserWidget
         if (local_4 != nullptr)
         {
             FVector2D local_10;
-            const USceneComponent local_14 = GetAttachEntity().GetActorVisualSceneRoot();
+            const USceneComponent local_14 = this.BuffTipVM.Get().GetAttachEntity().GetActorVisualSceneRoot();
             if (local_14 != nullptr)
             {
                 if (!(WidgetLayout::ProjectWorldLocationToWidgetPosition(local_4, local_14.GetSocketTransform(FName("DefaultLockSocket"), ERelativeTransformSpace(0)).GetLocation(), local_10, false)))

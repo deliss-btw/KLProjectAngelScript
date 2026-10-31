@@ -153,8 +153,7 @@ class UWidget_SkillButton : UEUIUserWidget
         {
             if (ConsumableItem)
             {
-                FSlateBrush local_48;
-                this.SkillButton_Icon.SetBrush(local_48);
+                this.SkillButton_Icon.SetBrush(ConsumableItem.Get().ItemIcon.LoadBrush());
                 this.SkillButton_Icon.SetVisibility(ESlateVisibility(3));
                 return;
             }
@@ -316,31 +315,31 @@ class UWidget_SkillButton : UEUIUserWidget
     UFUNCTION()
     float32 SkillButton_SkillCDRatio() const
     {
-        FVM_SkillButton& local_2;
+        FVM_SkillButton& local_2 = this.SkillButton.Get();
         return local_2 ? local_2.GetSkillCDRatio() : 0.0f;
     }
     UFUNCTION()
     int SkillButton_SkillCDRemainTimer() const
     {
-        FVM_SkillButton& local_2;
+        FVM_SkillButton& local_2 = this.SkillButton.Get();
         return local_2 ? local_2.GetSkillCDRemainTimer() : 0;
     }
     UFUNCTION()
     int SkillButton_UsableTime() const
     {
-        FVM_SkillButton& local_2;
+        FVM_SkillButton& local_2 = this.SkillButton.Get();
         return local_2 ? local_2.GetUsableTime() : 0;
     }
     UFUNCTION()
     int SkillButton_EnergyCost() const
     {
-        FVM_SkillButton& local_2;
+        FVM_SkillButton& local_2 = this.SkillButton.Get();
         return local_2 ? local_2.GetEnergyCost() : 0;
     }
     void HandleObservedModelChanges(FEUIReactiveSubscriberIterator &inout It)
     {
-        FVM_SkillButton& local_6;
         TEUIModelRef<FVM_SkillButton> local_2 = this.SkillButton.AsRef();
+        FVM_SkillButton& local_6 = local_2.Get();
         for (; It; )
         {
             FEUIReactiveSubscriberTrackScope local_56 = FEUIReactiveSubscriberTrackScope(It);

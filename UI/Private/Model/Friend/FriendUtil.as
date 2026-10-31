@@ -23,7 +23,6 @@ FText GetFriendSystemOpenTips()
 {
     const UChatSettings local_2;
     GetGameplaySettings<UChatSettings> local_4;
-    int local_14 = 0;
     local_2 = local_4;
     FText local_12;
     if ((!((local_2 != nullptr))))
@@ -34,7 +33,7 @@ FText GetFriendSystemOpenTips()
     TDataObjectPtr<FSystemControlConfig> local_16 = local_2.FriendSystemControlConfig;
     if (local_16.IsSet())
     {
-        local_13 = local_14;
+        local_13 = local_16.Get().UnlockLevel;
     }
     local_12 = ChatSystemUtil::ResolveKLTextData(local_2.FriendSystemOpenTipsTextData);
     return FText::Format(local_12, local_13);
@@ -65,14 +64,13 @@ int GetFriendNumMax()
 {
     const UChatSettings local_2;
     GetGameplaySettings<UChatSettings> local_4;
-    int local_11 = 0;
     local_2 = local_4;
     if (local_2 != nullptr)
     {
         TDataObjectPtr<FFriendSettingsConfig> local_10 = local_2.FriendSettingsConfig;
         if (local_10.IsSet())
         {
-            return local_11;
+            return local_10.Get().FriendMaxCount;
         }
     }
     return 200;
@@ -161,8 +159,7 @@ bool TryGetFriendBrief(const uint PlayerUid, FPlayerBriefInfo &inout OutBrief)
     {
         return false;
     }
-    int local_8 = local_6.GetFriendUidToIndex()[PlayerUid];
-    OutBrief = GetBrief();
+    OutBrief = local_6.GetFriendList()[local_6.GetFriendUidToIndex()[PlayerUid]].Get().GetBrief();
     return true;
 }
 bool TryGetPendingApplyApplicantBrief(const uint ApplicantUid, FPlayerBriefInfo &inout OutApplicantBrief)
@@ -176,8 +173,7 @@ bool TryGetPendingApplyApplicantBrief(const uint ApplicantUid, FPlayerBriefInfo 
     {
         return false;
     }
-    int local_8 = local_6.GetApplyUidToIndex()[ApplicantUid];
-    OutApplicantBrief = GetBrief();
+    OutApplicantBrief = local_6.GetApplyList()[local_6.GetApplyUidToIndex()[ApplicantUid]].Get().GetBrief();
     return true;
 }
 bool IsInLastSearchResults(const uint PlayerUid)
@@ -190,7 +186,7 @@ bool IsInLastSearchResults(const uint PlayerUid)
     int local_7 = 0;
     for (; local_7 < local_6.Num(); ++local_7)
     {
-        if (GetBrief().GetUid() == PlayerUid)
+        if (local_6[local_7].Get().GetBrief().GetUid() == PlayerUid)
         {
             return true;
         }
@@ -206,10 +202,9 @@ TArray<uint> GetAllOnlineFriend()
     TArray<uint> local_4;
     for (auto& local_22 : FMS_FriendDataModel::Get(FASCommonUtils::GetLocalPlayerController()).GetFriendList())
     {
-        local_22;
-        if (GetBrief().GetbIsOnline())
+        if (local_22.Get().GetBrief().GetbIsOnline())
         {
-            local_4.Add(GetFriendUid());
+            local_4.Add(local_22.Get().GetFriendUid());
         }
     }
     return local_4;

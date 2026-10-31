@@ -38,7 +38,7 @@ class UWidget_ChatInput : UEUIUserWidget
         }
         this.RefreshChatCharNumLimitCache();
         this.bCharNumOverLimitWeakTipIssued = false;
-        this.EditInput.SetText(FText::FromString(GetTempInputText()));
+        this.EditInput.SetText(FText::FromString(this.ChatInputPanel.Get().GetTempInputText()));
         return;
     }
     UFUNCTION()
@@ -74,7 +74,7 @@ class UWidget_ChatInput : UEUIUserWidget
         {
             return;
         }
-        this.EditInput.SetText(FText::FromString(GetTempInputText()));
+        this.EditInput.SetText(FText::FromString(this.ChatInputPanel.Get().GetTempInputText()));
         return;
     }
     UFUNCTION()
@@ -190,7 +190,7 @@ class UWidget_ChatInput : UEUIUserWidget
     }
     void InputCommitThenFocusInput()
     {
-        if (this.ChatInputPanel.IsValid() && (GetInputStateIndex() == 0))
+        if (this.ChatInputPanel.IsValid() && (this.ChatInputPanel.Get().GetInputStateIndex() == 0))
         {
             if (this.EditInput != nullptr && (int(::UICommonUtil::GetCurrentInputType(this.GetOwningLocalPlayer())) != 1))
             {
@@ -282,7 +282,7 @@ class UWidget_ChatInput : UEUIUserWidget
     }
     void SetInputFocus()
     {
-        if (this.ChatInputPanel.IsValid() && (GetInputStateIndex() == 0))
+        if (this.ChatInputPanel.IsValid() && (this.ChatInputPanel.Get().GetInputStateIndex() == 0))
         {
             if (this.EditInput != nullptr && (int(::UICommonUtil::GetCurrentInputType(this.GetOwningLocalPlayer())) != 1))
             {
@@ -293,8 +293,8 @@ class UWidget_ChatInput : UEUIUserWidget
     }
     void HandleObservedModelChanges(FEUIReactiveSubscriberIterator &inout It)
     {
-        FVM_ChatInputPanel& local_6;
         TEUIModelRef<FVM_ChatInputPanel> local_2 = this.ChatInputPanel.AsRef();
+        FVM_ChatInputPanel& local_6 = local_2.Get();
         for (; It; )
         {
             FEUIReactiveSubscriberTrackScope local_56 = FEUIReactiveSubscriberTrackScope(It);

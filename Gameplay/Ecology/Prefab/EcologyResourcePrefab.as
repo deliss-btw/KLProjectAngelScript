@@ -46,6 +46,7 @@ class AEcologyResourcePrefab : AEcologyUnitECSPrefab
             local_8 = (Cast<AAS_ECSWorldSettings>(this.GetWorld().GetWorldSettings()));
             if (local_8 != nullptr)
             {
+                local_8.EcologyResources.Remove(this);
             }
         }
         return;

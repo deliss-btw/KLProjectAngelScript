@@ -3,7 +3,6 @@ namespace __FSettingCategoryConfigFunctions
 UFUNCTION()
 FText __FSettingCategoryConfig_GetName(const TDataObjectPtr<FSettingCategoryConfig> &inout DataObject)
 {
-    FText __r;
     if ((DataObject == nullptr))
     {
         if (!(EUIGlobals::GIsDuringPropertyConversion))
@@ -13,12 +12,11 @@ FText __FSettingCategoryConfig_GetName(const TDataObjectPtr<FSettingCategoryConf
         FSettingCategoryConfig local_72;
         return local_72.Name;
     }
-    return __r;
+    return DataObject.Get().Name;
 }
 UFUNCTION()
 FText __FSettingCategoryConfig_GetDesc(const TDataObjectPtr<FSettingCategoryConfig> &inout DataObject)
 {
-    FText __r;
     if ((DataObject == nullptr))
     {
         if (!(EUIGlobals::GIsDuringPropertyConversion))
@@ -28,12 +26,11 @@ FText __FSettingCategoryConfig_GetDesc(const TDataObjectPtr<FSettingCategoryConf
         FSettingCategoryConfig local_72;
         return local_72.Desc;
     }
-    return __r;
+    return DataObject.Get().Desc;
 }
 UFUNCTION()
 FFilteredGameplayTag __FSettingCategoryConfig_GetCategoryTag(const TDataObjectPtr<FSettingCategoryConfig> &inout DataObject)
 {
-    FFilteredGameplayTag __r;
     if ((DataObject == nullptr))
     {
         if (!(EUIGlobals::GIsDuringPropertyConversion))
@@ -43,12 +40,11 @@ FFilteredGameplayTag __FSettingCategoryConfig_GetCategoryTag(const TDataObjectPt
         FSettingCategoryConfig local_72;
         return local_72.CategoryTag;
     }
-    return __r;
+    return DataObject.Get().CategoryTag;
 }
 UFUNCTION()
 FSoftBrush __FSettingCategoryConfig_GetItemIcon(const TDataObjectPtr<FSettingCategoryConfig> &inout DataObject)
 {
-    FSoftBrush __r;
     if ((DataObject == nullptr))
     {
         if (!(EUIGlobals::GIsDuringPropertyConversion))
@@ -58,7 +54,7 @@ FSoftBrush __FSettingCategoryConfig_GetItemIcon(const TDataObjectPtr<FSettingCat
         FSettingCategoryConfig local_72;
         return local_72.ItemIcon;
     }
-    return __r;
+    return DataObject.Get().ItemIcon;
 }
 UFUNCTION()
 FSettingCategoryConfig CastToFSettingCategoryConfig(const TDataObjectPtr<FSettingCategoryConfig> &inout DataObject)
@@ -72,7 +68,6 @@ namespace __FSettingComponentWidgetClassFunctions
 UFUNCTION()
 TSoftClassPtr<UEUIUserWidget> __FSettingComponentWidgetClass_GetSettingSubTitleWidgetClass(const TDataObjectPtr<FSettingComponentWidgetClass> &inout DataObject)
 {
-    TSoftClassPtr<UEUIUserWidget> __r;
     if ((DataObject == nullptr))
     {
         if (!(EUIGlobals::GIsDuringPropertyConversion))
@@ -82,12 +77,11 @@ TSoftClassPtr<UEUIUserWidget> __FSettingComponentWidgetClass_GetSettingSubTitleW
         FSettingComponentWidgetClass local_94;
         return local_94.SettingSubTitleWidgetClass;
     }
-    return __r;
+    return DataObject.Get().SettingSubTitleWidgetClass;
 }
 UFUNCTION()
 TSoftClassPtr<UEUIUserWidget> __FSettingComponentWidgetClass_GetSettingItemWidgetClass(const TDataObjectPtr<FSettingComponentWidgetClass> &inout DataObject)
 {
-    TSoftClassPtr<UEUIUserWidget> __r;
     if ((DataObject == nullptr))
     {
         if (!(EUIGlobals::GIsDuringPropertyConversion))
@@ -97,12 +91,11 @@ TSoftClassPtr<UEUIUserWidget> __FSettingComponentWidgetClass_GetSettingItemWidge
         FSettingComponentWidgetClass local_94;
         return local_94.SettingItemWidgetClass;
     }
-    return __r;
+    return DataObject.Get().SettingItemWidgetClass;
 }
 UFUNCTION()
 TSoftClassPtr<UEUIUserWidget> __FSettingComponentWidgetClass_GetDropDownWidgetClass(const TDataObjectPtr<FSettingComponentWidgetClass> &inout DataObject)
 {
-    TSoftClassPtr<UEUIUserWidget> __r;
     if ((DataObject == nullptr))
     {
         if (!(EUIGlobals::GIsDuringPropertyConversion))
@@ -112,12 +105,11 @@ TSoftClassPtr<UEUIUserWidget> __FSettingComponentWidgetClass_GetDropDownWidgetCl
         FSettingComponentWidgetClass local_94;
         return local_94.DropDownWidgetClass;
     }
-    return __r;
+    return DataObject.Get().DropDownWidgetClass;
 }
 UFUNCTION()
 TSoftClassPtr<UEUIUserWidget> __FSettingComponentWidgetClass_GetSliderWidgetClass(const TDataObjectPtr<FSettingComponentWidgetClass> &inout DataObject)
 {
-    TSoftClassPtr<UEUIUserWidget> __r;
     if ((DataObject == nullptr))
     {
         if (!(EUIGlobals::GIsDuringPropertyConversion))
@@ -127,12 +119,11 @@ TSoftClassPtr<UEUIUserWidget> __FSettingComponentWidgetClass_GetSliderWidgetClas
         FSettingComponentWidgetClass local_94;
         return local_94.SliderWidgetClass;
     }
-    return __r;
+    return DataObject.Get().SliderWidgetClass;
 }
 UFUNCTION()
 TSoftClassPtr<UEUIUserWidget> __FSettingComponentWidgetClass_GetLinkWidgetClass(const TDataObjectPtr<FSettingComponentWidgetClass> &inout DataObject)
 {
-    TSoftClassPtr<UEUIUserWidget> __r;
     if ((DataObject == nullptr))
     {
         if (!(EUIGlobals::GIsDuringPropertyConversion))
@@ -142,12 +133,11 @@ TSoftClassPtr<UEUIUserWidget> __FSettingComponentWidgetClass_GetLinkWidgetClass(
         FSettingComponentWidgetClass local_94;
         return local_94.LinkWidgetClass;
     }
-    return __r;
+    return DataObject.Get().LinkWidgetClass;
 }
 UFUNCTION()
 TSoftClassPtr<UEUIUserWidget> __FSettingComponentWidgetClass_GetToggleWidgetClass(const TDataObjectPtr<FSettingComponentWidgetClass> &inout DataObject)
 {
-    TSoftClassPtr<UEUIUserWidget> __r;
     if ((DataObject == nullptr))
     {
         if (!(EUIGlobals::GIsDuringPropertyConversion))
@@ -157,12 +147,11 @@ TSoftClassPtr<UEUIUserWidget> __FSettingComponentWidgetClass_GetToggleWidgetClas
         FSettingComponentWidgetClass local_94;
         return local_94.ToggleWidgetClass;
     }
-    return __r;
+    return DataObject.Get().ToggleWidgetClass;
 }
 UFUNCTION()
 TSoftClassPtr<UEUIUserWidget> __FSettingComponentWidgetClass_GetKeyboardWidgetClass(const TDataObjectPtr<FSettingComponentWidgetClass> &inout DataObject)
 {
-    TSoftClassPtr<UEUIUserWidget> __r;
     if ((DataObject == nullptr))
     {
         if (!(EUIGlobals::GIsDuringPropertyConversion))
@@ -172,12 +161,11 @@ TSoftClassPtr<UEUIUserWidget> __FSettingComponentWidgetClass_GetKeyboardWidgetCl
         FSettingComponentWidgetClass local_94;
         return local_94.KeyboardWidgetClass;
     }
-    return __r;
+    return DataObject.Get().KeyboardWidgetClass;
 }
 UFUNCTION()
 TSoftClassPtr<UEUIUserWidget> __FSettingComponentWidgetClass_GetGamepadWidgetClass(const TDataObjectPtr<FSettingComponentWidgetClass> &inout DataObject)
 {
-    TSoftClassPtr<UEUIUserWidget> __r;
     if ((DataObject == nullptr))
     {
         if (!(EUIGlobals::GIsDuringPropertyConversion))
@@ -187,7 +175,7 @@ TSoftClassPtr<UEUIUserWidget> __FSettingComponentWidgetClass_GetGamepadWidgetCla
         FSettingComponentWidgetClass local_94;
         return local_94.GamepadWidgetClass;
     }
-    return __r;
+    return DataObject.Get().GamepadWidgetClass;
 }
 UFUNCTION()
 FSettingComponentWidgetClass CastToFSettingComponentWidgetClass(const TDataObjectPtr<FSettingComponentWidgetClass> &inout DataObject)
@@ -201,7 +189,6 @@ namespace __FSettingSubTitleConfigFunctions
 UFUNCTION()
 FText __FSettingSubTitleConfig_GetName(const TDataObjectPtr<FSettingSubTitleConfig> &inout DataObject)
 {
-    FText __r;
     if ((DataObject == nullptr))
     {
         if (!(EUIGlobals::GIsDuringPropertyConversion))
@@ -211,12 +198,11 @@ FText __FSettingSubTitleConfig_GetName(const TDataObjectPtr<FSettingSubTitleConf
         FSettingSubTitleConfig local_24;
         return local_24.Name;
     }
-    return __r;
+    return DataObject.Get().Name;
 }
 UFUNCTION()
 FText __FSettingSubTitleConfig_GetDesc(const TDataObjectPtr<FSettingSubTitleConfig> &inout DataObject)
 {
-    FText __r;
     if ((DataObject == nullptr))
     {
         if (!(EUIGlobals::GIsDuringPropertyConversion))
@@ -226,12 +212,11 @@ FText __FSettingSubTitleConfig_GetDesc(const TDataObjectPtr<FSettingSubTitleConf
         FSettingSubTitleConfig local_24;
         return local_24.Desc;
     }
-    return __r;
+    return DataObject.Get().Desc;
 }
 UFUNCTION()
 FFilteredGameplayTag __FSettingSubTitleConfig_GetSubTitleTag(const TDataObjectPtr<FSettingSubTitleConfig> &inout DataObject)
 {
-    FFilteredGameplayTag __r;
     if ((DataObject == nullptr))
     {
         if (!(EUIGlobals::GIsDuringPropertyConversion))
@@ -241,7 +226,7 @@ FFilteredGameplayTag __FSettingSubTitleConfig_GetSubTitleTag(const TDataObjectPt
         FSettingSubTitleConfig local_24;
         return local_24.SubTitleTag;
     }
-    return __r;
+    return DataObject.Get().SubTitleTag;
 }
 UFUNCTION()
 FSettingSubTitleConfig CastToFSettingSubTitleConfig(const TDataObjectPtr<FSettingSubTitleConfig> &inout DataObject)
@@ -255,7 +240,6 @@ namespace __FSettingItemConfigFunctions
 UFUNCTION()
 FText __FSettingItemConfig_GetName(const TDataObjectPtr<FSettingItemConfig> &inout DataObject)
 {
-    FText __r;
     if ((DataObject == nullptr))
     {
         if (!(EUIGlobals::GIsDuringPropertyConversion))
@@ -265,12 +249,11 @@ FText __FSettingItemConfig_GetName(const TDataObjectPtr<FSettingItemConfig> &ino
         FSettingItemConfig local_36;
         return local_36.Name;
     }
-    return __r;
+    return DataObject.Get().Name;
 }
 UFUNCTION()
 FText __FSettingItemConfig_GetDesc(const TDataObjectPtr<FSettingItemConfig> &inout DataObject)
 {
-    FText __r;
     if ((DataObject == nullptr))
     {
         if (!(EUIGlobals::GIsDuringPropertyConversion))
@@ -280,12 +263,11 @@ FText __FSettingItemConfig_GetDesc(const TDataObjectPtr<FSettingItemConfig> &ino
         FSettingItemConfig local_36;
         return local_36.Desc;
     }
-    return __r;
+    return DataObject.Get().Desc;
 }
 UFUNCTION()
 FFilteredGameplayTag __FSettingItemConfig_GetItemTag(const TDataObjectPtr<FSettingItemConfig> &inout DataObject)
 {
-    FFilteredGameplayTag __r;
     if ((DataObject == nullptr))
     {
         if (!(EUIGlobals::GIsDuringPropertyConversion))
@@ -295,7 +277,7 @@ FFilteredGameplayTag __FSettingItemConfig_GetItemTag(const TDataObjectPtr<FSetti
         FSettingItemConfig local_36;
         return local_36.ItemTag;
     }
-    return __r;
+    return DataObject.Get().ItemTag;
 }
 UFUNCTION()
 float32 __FSettingItemConfig_GetDefaultValue(const TDataObjectPtr<FSettingItemConfig> &inout DataObject)
@@ -315,7 +297,6 @@ float32 __FSettingItemConfig_GetDefaultValue(const TDataObjectPtr<FSettingItemCo
 UFUNCTION()
 ESettingApplyType __FSettingItemConfig_GetApplyType(const TDataObjectPtr<FSettingItemConfig> &inout DataObject)
 {
-    int local_37 = 0;
     if ((DataObject == nullptr))
     {
         if (!(EUIGlobals::GIsDuringPropertyConversion))
@@ -323,15 +304,13 @@ ESettingApplyType __FSettingItemConfig_GetApplyType(const TDataObjectPtr<FSettin
             FBlueprintDebugFunctions::ThrowScriptException("Get 'ApplyType' from a null 'FSettingItemConfig' DataObject!");
         }
         FSettingItemConfig local_36;
-        local_37 = int(local_36.ApplyType);
-        return ESettingApplyType(local_37);
+        return local_36.ApplyType;
     }
-    return ESettingApplyType(local_37);
+    return DataObject.Get().ApplyType;
 }
 UFUNCTION()
 FInstancedStruct __FSettingItemConfig_GetVisualConfig(const TDataObjectPtr<FSettingItemConfig> &inout DataObject)
 {
-    FInstancedStruct __r;
     if ((DataObject == nullptr))
     {
         if (!(EUIGlobals::GIsDuringPropertyConversion))
@@ -341,12 +320,11 @@ FInstancedStruct __FSettingItemConfig_GetVisualConfig(const TDataObjectPtr<FSett
         FSettingItemConfig local_36;
         return local_36.VisualConfig;
     }
-    return __r;
+    return DataObject.Get().VisualConfig;
 }
 UFUNCTION()
 FInstancedStruct __FSettingItemConfig_GetApplyEffect(const TDataObjectPtr<FSettingItemConfig> &inout DataObject)
 {
-    FInstancedStruct __r;
     if ((DataObject == nullptr))
     {
         if (!(EUIGlobals::GIsDuringPropertyConversion))
@@ -356,39 +334,35 @@ FInstancedStruct __FSettingItemConfig_GetApplyEffect(const TDataObjectPtr<FSetti
         FSettingItemConfig local_36;
         return local_36.ApplyEffect;
     }
-    return __r;
+    return DataObject.Get().ApplyEffect;
 }
 UFUNCTION()
 bool __FSettingItemConfig_GetbIsResolutionOption(const TDataObjectPtr<FSettingItemConfig> &inout DataObject)
 {
-    bool local_1 = false;
     if ((DataObject == nullptr))
     {
-        local_1 = !(EUIGlobals::GIsDuringPropertyConversion);
-        if (local_1)
+        if (!(EUIGlobals::GIsDuringPropertyConversion))
         {
             FBlueprintDebugFunctions::ThrowScriptException("Get 'bIsResolutionOption' from a null 'FSettingItemConfig' DataObject!");
         }
         FSettingItemConfig local_36;
         return local_36.bIsResolutionOption;
     }
-    return local_1;
+    return DataObject.Get().bIsResolutionOption;
 }
 UFUNCTION()
 bool __FSettingItemConfig_GetbToHide(const TDataObjectPtr<FSettingItemConfig> &inout DataObject)
 {
-    bool local_1 = false;
     if ((DataObject == nullptr))
     {
-        local_1 = !(EUIGlobals::GIsDuringPropertyConversion);
-        if (local_1)
+        if (!(EUIGlobals::GIsDuringPropertyConversion))
         {
             FBlueprintDebugFunctions::ThrowScriptException("Get 'bToHide' from a null 'FSettingItemConfig' DataObject!");
         }
         FSettingItemConfig local_36;
         return local_36.bToHide;
     }
-    return local_1;
+    return DataObject.Get().bToHide;
 }
 UFUNCTION()
 FSettingItemConfig CastToFSettingItemConfig(const TDataObjectPtr<FSettingItemConfig> &inout DataObject)

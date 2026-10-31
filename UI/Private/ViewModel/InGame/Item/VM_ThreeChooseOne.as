@@ -94,7 +94,6 @@ struct FVM_ThreeChooseOne : FEUIViewModel
     }
     void SetupThreeChooseOneInfo(const FECSEntity &inout ChooseItemEntity)
     {
-        const FTraitConfig& local_16;
         FTraitModifiers local_28;
         this.SetCheckDistanceEntity(ChooseItemEntity);
         this.GetModify_ChooseEntries().Reset(0);
@@ -106,20 +105,21 @@ struct FVM_ThreeChooseOne : FEUIViewModel
             for (; local_10 < local_8.GetInfos().Num(); )
             {
                 const FTraitParam& local_14 = local_8.GetInfos()[local_10];
+                const FTraitConfig& local_16 = local_14.GetTrait().Get();
                 FText local_20;
                 if (local_16.ModifiersByLevel.Find(local_14.GetLevel(), local_28))
                 {
                     local_20 = local_28.Description;
                 }
                 TEUIModelRef<FVM_ThreeChooseOneEntry> local_32 = TEUIModelRef<FVM_ThreeChooseOneEntry>(::FVM_ThreeChooseOneEntry::Create(this.GetContext().Manager, local_10));
-                ChooseItemEntity.SetChooseItemEntity();
-                TEUIModelRef<FVM_ThreeChooseOne>(this).SetVM_Page();
-                local_16.TraitName.SetEntryName();
-                local_20.SetEntryDesc();
-                FSlateBrush local_80 = local_16.TraitIcon.LoadBrush();
-                local_80.SetEntryIcon();
+                local_32.Get().SetChooseItemEntity(ChooseItemEntity);
+                local_32.Get().SetVM_Page(TEUIModelRef<FVM_ThreeChooseOne>(this));
+                local_32.Get().SetEntryName(local_16.TraitName);
+                local_32.Get().SetEntryDesc(local_20);
+                local_32.Get().SetEntryIcon(local_16.TraitIcon.LoadBrush());
                 TDataObjectPtr<FItemRarityConfig> local_108 = ::UGlobalItemSettings::Get().GetRarityConfig(EItemRarity(local_16.Rarity));
-                local_80.SetEntryTipRarityImage();
+                local_32.Get().SetEntryColor(local_108.Get().DefaultColor);
+                local_32.Get().SetEntryTipRarityImage(local_108.Get().TipRarityImage.LoadBrush());
                 this.GetModify_ChooseEntries().Add(local_32);
                 ++local_10;
             }
@@ -257,11 +257,9 @@ FVM_ThreeChooseOne& Create(const UObject ContextObject)
 {
     return FVM_ThreeChooseOne::CreateByManager(EUIInternal::GetContextManager(ContextObject));
 }
-FVM_ThreeChooseOne CreateByManager(const UEUIManagerSubsystem Manager)
+FVM_ThreeChooseOne& CreateByManager(const UEUIManagerSubsystem Manager)
 {
-    FVM_ThreeChooseOne __r;
-    TEUIModelRef<FVM_ThreeChooseOne> local_6 = TEUIModelRef<FVM_ThreeChooseOne>(EUIInternal::MakeModelWithManager(Manager, FVM_ThreeChooseOne::ModelId));
-    return __r;
+    return TEUIModelRef<FVM_ThreeChooseOne>(EUIInternal::MakeModelWithManager(Manager, FVM_ThreeChooseOne::ModelId)).Get();
 }
 void GetModelInfo(FEUIViewModelMetaInfo &inout Result)
 {
@@ -330,7 +328,6 @@ namespace __GeneratedProperties_FVM_ThreeChooseOne
 {
 UScriptStruct StaticStruct()
 {
-    UScriptStruct local_2;
-    return local_2;
+    return __GeneratedProperties_FVM_ThreeChooseOne.Get();
 }
 }

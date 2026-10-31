@@ -110,10 +110,10 @@ class UWidget_SwordExclusiveSkill : UEUIUserWidget
     UFUNCTION()
     void OnCustomSkillEnergyRatioChanged(const float32 CustomSkillEnergyRatio, const int iFoundationIndex)
     {
-        if (GetiFoundationIndex() == 2)
+        if (this.ExclusiveSkill.Get().GetiFoundationIndex() == 2)
         {
             int local_4;
-            local_4 = GetFullGridCount();
+            local_4 = this.ExclusiveSkill.Get().GetFullGridCount();
             FLinearColor local_8;
             if (local_4 == 0)
             {
@@ -137,7 +137,7 @@ class UWidget_SwordExclusiveSkill : UEUIUserWidget
             this.Progress_5.SetFillColorAndOpacity(local_8);
             return;
         }
-        if (GetProgressRatio_1() >= 1.0f)
+        if (this.ExclusiveSkill.Get().GetProgressRatio_1() >= 1.0f)
         {
             this.Progress_1.SetFillColorAndOpacity(this.ProgressFullColor);
         }
@@ -145,7 +145,7 @@ class UWidget_SwordExclusiveSkill : UEUIUserWidget
         {
             this.Progress_1.SetFillColorAndOpacity(this.ProgressNoFullColor);
         }
-        if (GetProgressRatio_2() >= 1.0f)
+        if (this.ExclusiveSkill.Get().GetProgressRatio_2() >= 1.0f)
         {
             this.Progress_2.SetFillColorAndOpacity(this.ProgressFullColor);
         }
@@ -153,7 +153,7 @@ class UWidget_SwordExclusiveSkill : UEUIUserWidget
         {
             this.Progress_2.SetFillColorAndOpacity(this.ProgressNoFullColor);
         }
-        if (GetProgressRatio_3() >= 1.0f)
+        if (this.ExclusiveSkill.Get().GetProgressRatio_3() >= 1.0f)
         {
             this.Progress_3.SetFillColorAndOpacity(this.ProgressFullColor);
         }
@@ -161,7 +161,7 @@ class UWidget_SwordExclusiveSkill : UEUIUserWidget
         {
             this.Progress_3.SetFillColorAndOpacity(this.ProgressNoFullColor);
         }
-        if (GetProgressRatio_4() >= 1.0f)
+        if (this.ExclusiveSkill.Get().GetProgressRatio_4() >= 1.0f)
         {
             this.Progress_4.SetFillColorAndOpacity(this.ProgressFullColor);
         }
@@ -169,7 +169,7 @@ class UWidget_SwordExclusiveSkill : UEUIUserWidget
         {
             this.Progress_4.SetFillColorAndOpacity(this.ProgressNoFullColor);
         }
-        if (GetProgressRatio_5() >= 1.0f)
+        if (this.ExclusiveSkill.Get().GetProgressRatio_5() >= 1.0f)
         {
             this.Progress_5.SetFillColorAndOpacity(this.ProgressFullColor);
             return;
@@ -180,7 +180,7 @@ class UWidget_SwordExclusiveSkill : UEUIUserWidget
     UFUNCTION()
     void OnbMarkAChanged(const bool bMarkA)
     {
-        if (GetiFoundationIndex() == 2)
+        if (this.ExclusiveSkill.Get().GetiFoundationIndex() == 2)
         {
             return;
         }
@@ -193,7 +193,7 @@ class UWidget_SwordExclusiveSkill : UEUIUserWidget
     UFUNCTION()
     void OnbMarkBChanged(const bool bMarkB)
     {
-        if (GetiFoundationIndex() == 2)
+        if (this.ExclusiveSkill.Get().GetiFoundationIndex() == 2)
         {
             return;
         }
@@ -206,7 +206,7 @@ class UWidget_SwordExclusiveSkill : UEUIUserWidget
     UFUNCTION()
     void OnbMarkCChanged(const bool bMarkC)
     {
-        if (GetiFoundationIndex() == 2)
+        if (this.ExclusiveSkill.Get().GetiFoundationIndex() == 2)
         {
             return;
         }
@@ -219,7 +219,7 @@ class UWidget_SwordExclusiveSkill : UEUIUserWidget
     UFUNCTION()
     void OnbMarkDChanged(const bool bMarkD)
     {
-        if (GetiFoundationIndex() == 2)
+        if (this.ExclusiveSkill.Get().GetiFoundationIndex() == 2)
         {
             return;
         }
@@ -232,7 +232,7 @@ class UWidget_SwordExclusiveSkill : UEUIUserWidget
     UFUNCTION()
     void OnbMarkEChanged(const bool bMarkE)
     {
-        if (GetiFoundationIndex() == 2)
+        if (this.ExclusiveSkill.Get().GetiFoundationIndex() == 2)
         {
             return;
         }
@@ -255,8 +255,8 @@ class UWidget_SwordExclusiveSkill : UEUIUserWidget
     }
     void HandleObservedModelChanges(FEUIReactiveSubscriberIterator &inout It)
     {
-        FVM_SwordExclusiveSkill& local_6;
         TEUIModelRef<FVM_SwordExclusiveSkill> local_2 = this.ExclusiveSkill.AsRef();
+        FVM_SwordExclusiveSkill& local_6 = local_2.Get();
         for (; It; )
         {
             FEUIReactiveSubscriberTrackScope local_56 = FEUIReactiveSubscriberTrackScope(It);
@@ -524,8 +524,8 @@ class UWidget_WizardExclusiveSkill : UEUIUserWidget
     }
     void HandleObservedModelChanges(FEUIReactiveSubscriberIterator &inout It)
     {
-        FVM_WizardExclusiveSkill& local_6;
         TEUIModelRef<FVM_WizardExclusiveSkill> local_2 = this.ExclusiveSkill.AsRef();
+        FVM_WizardExclusiveSkill& local_6 = local_2.Get();
         for (; It; )
         {
             FEUIReactiveSubscriberTrackScope local_56 = FEUIReactiveSubscriberTrackScope(It);
@@ -660,8 +660,8 @@ class UWidget_ShuijingExclusiveSkill : UEUIUserWidget
     }
     void HandleObservedModelChanges(FEUIReactiveSubscriberIterator &inout It)
     {
-        FVM_ShuijingExclusiveSkill& local_6;
         TEUIModelRef<FVM_ShuijingExclusiveSkill> local_2 = this.ExclusiveSkill.AsRef();
+        FVM_ShuijingExclusiveSkill& local_6 = local_2.Get();
         for (; It; )
         {
             FEUIReactiveSubscriberTrackScope local_56 = FEUIReactiveSubscriberTrackScope(It);
@@ -745,7 +745,7 @@ class UWidget_QiongExclusiveSkill : UEUIUserWidget
     {
         int local_5;
         int local_6;
-        bool local_4 = (GetCustomSkillEnergyMax_2() > 100.0f);
+        bool local_4 = (this.ExclusiveSkill.Get().GetCustomSkillEnergyMax_2() > 100.0f);
         if (local_4)
         {
             local_5 = 0;
@@ -764,12 +764,12 @@ class UWidget_QiongExclusiveSkill : UEUIUserWidget
             local_6 = 1;
         }
         this.Right4.SetVisibility(ESlateVisibility(local_6));
-        this.Right1.SetPercent(GetRight1Ratio());
-        this.Right2.SetPercent(GetRight2Ratio());
-        this.Right3.SetPercent(GetRight3Ratio());
-        this.Right4.SetPercent(GetRight4Ratio());
-        this.Left1.SetPercent(GetLeft1Ratio());
-        this.Left2.SetPercent(GetLeft2Ratio());
+        this.Right1.SetPercent(this.ExclusiveSkill.Get().GetRight1Ratio());
+        this.Right2.SetPercent(this.ExclusiveSkill.Get().GetRight2Ratio());
+        this.Right3.SetPercent(this.ExclusiveSkill.Get().GetRight3Ratio());
+        this.Right4.SetPercent(this.ExclusiveSkill.Get().GetRight4Ratio());
+        this.Left1.SetPercent(this.ExclusiveSkill.Get().GetLeft1Ratio());
+        this.Left2.SetPercent(this.ExclusiveSkill.Get().GetLeft2Ratio());
         return;
     }
     UFUNCTION()

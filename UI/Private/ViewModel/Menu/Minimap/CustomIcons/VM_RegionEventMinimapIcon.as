@@ -78,8 +78,8 @@ struct FVM_RegionEventMinimapIcon : FEUIViewModel
             {
                 this.SetRewardBuffDesc(local_114.opArrow().EventRewardBuffDesc);
             }
-            this.SetRewardList(TEUIModelRef<FVM_CommonRewardList>(::FVM_CommonRewardList::Create(this.GetContext().Manager, ::FCommonRewardListBuilder::BuildFromDropConfig(GetDropRewardView()))));
-            if (GetPresentationConfig())
+            this.SetRewardList(TEUIModelRef<FVM_CommonRewardList>(::FVM_CommonRewardList::Create(this.GetContext().Manager, ::FCommonRewardListBuilder::BuildFromDropConfig(local_36.Get().GetDropRewardView()))));
+            if (local_36.Get().GetPresentationConfig())
             {
                 if (local_36.opArrow().EventTargetTitle.IsEmpty())
                 {
@@ -151,14 +151,11 @@ struct FVM_RegionEventMinimapIcon : FEUIViewModel
     }
     bool HasAnyReward() const
     {
-        bool local_1 = false;
         if (this.GetRewardBuffDesc().IsEmpty())
         {
-            TEUIModelRef<FVM_CommonRewardList> local_4 = this.GetRewardList();
-            if (local_1)
+            if (this.GetRewardList().Get())
             {
-                TEUIModelRef<FVM_CommonRewardList> local_4_2 = this.GetRewardList();
-                if (GetRewards().Num() <= 0)
+                if (this.GetRewardList().Get().GetRewards().Num() <= 0)
                 {
                     return false;
                 }
@@ -336,11 +333,9 @@ FVM_RegionEventMinimapIcon& Create(const UObject ContextObject, const TEUIModelR
 {
     return FVM_RegionEventMinimapIcon::CreateByManager(EUIInternal::GetContextManager(ContextObject), Spot);
 }
-FVM_RegionEventMinimapIcon CreateByManager(const UEUIManagerSubsystem Manager, const TEUIModelRef<FM_Spot> &inout Spot)
+FVM_RegionEventMinimapIcon& CreateByManager(const UEUIManagerSubsystem Manager, const TEUIModelRef<FM_Spot> &inout Spot)
 {
-    FVM_RegionEventMinimapIcon __r;
-    TEUIModelRef<FVM_RegionEventMinimapIcon> local_6 = TEUIModelRef<FVM_RegionEventMinimapIcon>(EUIInternal::MakeModelWithManager_Generic(Manager, FVM_RegionEventMinimapIcon::ModelId, 0, Spot));
-    return __r;
+    return TEUIModelRef<FVM_RegionEventMinimapIcon>(EUIInternal::MakeModelWithManager_Generic(Manager, FVM_RegionEventMinimapIcon::ModelId, 0, Spot)).Get();
 }
 void GetModelInfo(FEUIViewModelMetaInfo &inout Result)
 {
@@ -488,7 +483,6 @@ namespace __GeneratedProperties_FVM_RegionEventMinimapIcon
 {
 UScriptStruct StaticStruct()
 {
-    UScriptStruct local_2;
-    return local_2;
+    return __GeneratedProperties_FVM_RegionEventMinimapIcon.Get();
 }
 }

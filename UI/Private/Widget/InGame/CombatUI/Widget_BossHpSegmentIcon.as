@@ -27,8 +27,8 @@ class UWidget_BossHpSegmentIcon : UEUIUserWidget
         {
             return;
         }
-        this.bLastIconActive = GetbInitIconActive();
-        if (GetbInitIconActive())
+        this.bLastIconActive = this.SegmentIcon.Get().GetbInitIconActive();
+        if (this.SegmentIcon.Get().GetbInitIconActive())
         {
             this.PlayAnimation(this.Anim_IconDeactive, this.Anim_IconDeactive.GetEndTime(), 1, EUMGSequencePlayMode(1), 1.0f, false);
             return;
@@ -54,8 +54,8 @@ class UWidget_BossHpSegmentIcon : UEUIUserWidget
     }
     void HandleObservedModelChanges(FEUIReactiveSubscriberIterator &inout It)
     {
-        FVM_BossHpSegmentIcon& local_6;
         TEUIModelRef<FVM_BossHpSegmentIcon> local_2 = this.SegmentIcon.AsRef();
+        FVM_BossHpSegmentIcon& local_6 = local_2.Get();
         for (; It; )
         {
             FEUIReactiveSubscriberTrackScope local_56 = FEUIReactiveSubscriberTrackScope(It);

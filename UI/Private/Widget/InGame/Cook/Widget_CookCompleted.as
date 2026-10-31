@@ -84,9 +84,9 @@ class UWidget_CookCompleted : UEUIActivatableWidget
     {
         int local_14 = 0;
         FFPTime local_10 = FFPTime(-1);
-        FECSEntity local_4 = GetContext().GetLocalPlayerPawn();
-        local_14.CookPropEntity = GetCookPropEntity();
-        local_14.GetProductFood = GetProductFood();
+        FECSEntity local_4 = this.CookReady.Get().GetContext().GetLocalPlayerPawn();
+        local_14.CookPropEntity = this.CookReady.Get().GetCookPropEntity();
+        local_14.GetProductFood = this.CookReady.Get().GetProductFood();
         this.ClosePage(false);
         return;
     }
@@ -94,15 +94,15 @@ class UWidget_CookCompleted : UEUIActivatableWidget
     void OnCancel()
     {
         FFPTime local_10 = FFPTime(-1);
-        FECSEntity local_4 = GetContext().GetLocalPlayerPawn();
-        0.CookPropEntity = GetCookPropEntity();
+        FECSEntity local_4 = this.CookReady.Get().GetContext().GetLocalPlayerPawn();
+        0.CookPropEntity = this.CookReady.Get().GetCookPropEntity();
         this.ClosePage(false);
         return;
     }
     UFUNCTION()
     TArray<FEUIModelWeakRef> CookReady_CurCookBuffInfos() const
     {
-        FVM_CookCompleted& local_2;
+        FVM_CookCompleted& local_2 = this.CookReady.Get();
         TArray<FEUIModelWeakRef> local_16;
         if (local_2)
         {

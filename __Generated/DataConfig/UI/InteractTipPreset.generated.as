@@ -3,7 +3,6 @@ namespace __FInteractTipPresetFunctions
 UFUNCTION()
 FSoftBrush __FInteractTipPreset_GetInteractTipHUDIcon(const TDataObjectPtr<FInteractTipPreset> &inout DataObject)
 {
-    FSoftBrush __r;
     if ((DataObject == nullptr))
     {
         if (!(EUIGlobals::GIsDuringPropertyConversion))
@@ -13,12 +12,11 @@ FSoftBrush __FInteractTipPreset_GetInteractTipHUDIcon(const TDataObjectPtr<FInte
         FInteractTipPreset local_68;
         return local_68.InteractTipHUDIcon;
     }
-    return __r;
+    return DataObject.Get().InteractTipHUDIcon;
 }
 UFUNCTION()
 FVector2D __FInteractTipPreset_GetInteractTipHUDIconUIOffset(const TDataObjectPtr<FInteractTipPreset> &inout DataObject)
 {
-    FVector2D __r;
     if ((DataObject == nullptr))
     {
         if (!(EUIGlobals::GIsDuringPropertyConversion))
@@ -28,12 +26,11 @@ FVector2D __FInteractTipPreset_GetInteractTipHUDIconUIOffset(const TDataObjectPt
         FInteractTipPreset local_68;
         return local_68.InteractTipHUDIconUIOffset;
     }
-    return __r;
+    return DataObject.Get().InteractTipHUDIconUIOffset;
 }
 UFUNCTION()
 FInteractTipParam __FInteractTipPreset_GetInteractTipParam(const TDataObjectPtr<FInteractTipPreset> &inout DataObject)
 {
-    FInteractTipParam __r;
     if ((DataObject == nullptr))
     {
         if (!(EUIGlobals::GIsDuringPropertyConversion))
@@ -43,7 +40,7 @@ FInteractTipParam __FInteractTipPreset_GetInteractTipParam(const TDataObjectPtr<
         FInteractTipPreset local_68;
         return local_68.InteractTipParam;
     }
-    return __r;
+    return DataObject.Get().InteractTipParam;
 }
 UFUNCTION()
 FInteractTipPreset CastToFInteractTipPreset(const TDataObjectPtr<FInteractTipPreset> &inout DataObject)

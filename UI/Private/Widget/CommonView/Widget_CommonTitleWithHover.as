@@ -22,9 +22,8 @@ class UWidget_CommonTitleWithHover : UEUIUserWidget
     {
         if (this.bClickForExecute && this.SubPageTag.IsValid())
         {
-            this.SubPageTag.SetSubPageConfig();
-            bool local_1 = true;
-            local_1.SetbClickForExecute();
+            this.w_tips.HoverProvider.Get().SetSubPageConfig(this.SubPageTag);
+            this.w_tips.HoverProvider.Get().SetbClickForExecute(true);
         }
         return;
     }

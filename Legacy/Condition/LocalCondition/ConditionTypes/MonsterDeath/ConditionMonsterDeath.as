@@ -35,9 +35,10 @@ class UConditionMonsterDeath : ULocalConditionTypeDefineBase
                 if (local_40.MonitoredMonsters.Contains(local_30))
                 {
                     TArray<FConditionInstanceHandle> local_42;
-                    FConditionInstanceHandle local_68 = ConditionInstance.GetHandle();
+                    local_42.Remove(ConditionInstance.GetHandle());
                     if (local_42.IsEmpty())
                     {
+                        local_40.MonitoredMonsters.Remove(local_30);
                         if (local_40.MonitoredMonsters.IsEmpty())
                         {
                             FECSWorldPtr local_72 = ECS::GetECSWorld();
@@ -66,9 +67,10 @@ class UConditionMonsterDeath : ULocalConditionTypeDefineBase
     }
     TConstRawPtr<FConditionMonsterDeathConfig> GetConditionMonsterDeathConfig(const TDataObjectPtr<FLocalConditionConfig> &inout ConditionConfig) const
     {
-        if (FInstancedStruct::GetPtr(ConditionConfig.opArrow().ConditionTypeDefineConfig).opCall())
+        TConstRawPtr<FConditionMonsterDeathConfig> local_6 = FInstancedStruct::GetPtr(ConditionConfig.opArrow().ConditionTypeDefineConfig).opCall();
+        if (local_6)
         {
-            return TConstRawPtr<FConditionMonsterDeathConfig>();
+            return TConstRawPtr<FConditionMonsterDeathConfig>(local_6.Get());
         }
         return TConstRawPtr<FConditionMonsterDeathConfig>(nullptr);
     }

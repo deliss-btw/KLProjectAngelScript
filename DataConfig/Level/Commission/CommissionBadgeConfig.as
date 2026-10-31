@@ -73,11 +73,10 @@ struct FCommissionBadgeRewardResurlt
     }
     FCommissionBadgeRewardResurlt opAssign(const FCommissionBadgeRewardResurlt &inout Other)
     {
-        int local_2 = 0;
         FCommissionBadgeRewardResurlt __r;
         this.SetConfig(Other.GetConfig());
         this.SetbPercent(Other.GetbPercent());
-        this.SetValue(local_2);
+        this.SetValue(Other.GetValue());
         this.SetPercent(Other.GetPercent());
         return __r;
     }

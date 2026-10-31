@@ -48,6 +48,7 @@ class UESMAction_SubMeshAnim : UESMBPBaseSpanTickAction
     UFUNCTION()
     void ViewExit_Implementation(const FESMViewContext &inout Context, const FESMActionTime &inout Time) const
     {
+        int local_10 = 0;
         USkeletalMeshComponent local_20;
         if (this.SubMeshAnim == nullptr)
         {
@@ -55,6 +56,7 @@ class UESMAction_SubMeshAnim : UESMBPBaseSpanTickAction
         }
         if (this.bSlotMode)
         {
+            local_10.SubMeshSlotAnims.Remove(this.SlotName);
             return;
         }
         AActor local_14 = Context.GetEntity().GetMutableActor();

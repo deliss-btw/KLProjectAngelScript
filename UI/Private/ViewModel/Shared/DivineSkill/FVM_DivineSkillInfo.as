@@ -208,35 +208,25 @@ struct FVM_DivineSkillInfo : FEUIViewModel
     }
     EAvatarIllustrate GetMainAvatarIllustrate() const
     {
-        int local_104 = 0;
         FMS_PvpModeState& local_2 = ::FMS_PvpModeState::Get(this.GetContext().Manager);
         if (local_2.GetbIsPvpMode())
         {
             int local_53 = local_2.GetCurrentPvpAvatarId();
             GetDataObjectByGSDataId<FAvatarPrefabConfig> local_52;
-            if (local_52.opImplConv().IsSet() && GetDefaultFoundation().IsSet())
+            TDataObjectPtr<FAvatarPrefabConfig> local_28 = local_52.opImplConv();
+            if (local_28.IsSet() && local_28.Get().GetDefaultFoundation().IsSet())
             {
-                return ::FASCommonUtils::TalentDivisionToIllustrate(ETalentDivision(local_104));
+                return ::FASCommonUtils::TalentDivisionToIllustrate(local_28.Get().GetDefaultFoundation().Get().TalentDivision);
             }
-            return EAvatarIllustrate(3);
+            return EAvatarIllustrate::MaxCount;
         }
         return ::DivineSkillUtils::GetPlayerMainAvatarIllustrate(this.GetContext().GetLocalPlayer());
     }
     bool OpenDivineSkill(const FEUIModelRef &inout DivineSkillInfo)
     {
-        bool local_3 = this.GetHoverTipsVM().IsValid();
-        if (!(local_3))
+        if (this.GetHoverTipsVM().IsValid() && this.GetHoverTipsVM().Get().GetOverrideClickWidgetConfig().IsSet())
         {
-            local_3 = false;
-        }
-        else
-        {
-            TEUIModelRef<FVM_EquipHoverTips> local_2 = this.GetHoverTipsVM();
-            local_3 = GetOverrideClickWidgetConfig().IsSet();
-        }
-        if (local_3)
-        {
-            TEUIModelRef<FVM_EquipHoverTips> local_2_2 = this.GetHoverTipsVM();
+            FEUIWidget::AddWidget(this.GetContext().UELocalPlayer, this.GetHoverTipsVM().Get().GetOverrideClickWidgetConfig().Get().WidgetTag);
         }
         else
         {
@@ -354,11 +344,9 @@ FVM_DivineSkillInfo& Create(const UObject ContextObject, const TEUIModelRef<FM_D
 {
     return FVM_DivineSkillInfo::CreateByManager(EUIInternal::GetContextManager(ContextObject), EquipableSkill);
 }
-FVM_DivineSkillInfo CreateByManager(const UEUIManagerSubsystem Manager, const TEUIModelRef<FM_DivineSkill> &inout EquipableSkill)
+FVM_DivineSkillInfo& CreateByManager(const UEUIManagerSubsystem Manager, const TEUIModelRef<FM_DivineSkill> &inout EquipableSkill)
 {
-    FVM_DivineSkillInfo __r;
-    TEUIModelRef<FVM_DivineSkillInfo> local_6 = TEUIModelRef<FVM_DivineSkillInfo>(EUIInternal::MakeModelWithManager_Generic(Manager, FVM_DivineSkillInfo::ModelId, 0, EquipableSkill));
-    return __r;
+    return TEUIModelRef<FVM_DivineSkillInfo>(EUIInternal::MakeModelWithManager_Generic(Manager, FVM_DivineSkillInfo::ModelId, 0, EquipableSkill)).Get();
 }
 void GetModelInfo(FEUIViewModelMetaInfo &inout Result)
 {
@@ -521,7 +509,6 @@ namespace __GeneratedProperties_FVM_DivineSkillInfo
 {
 UScriptStruct StaticStruct()
 {
-    UScriptStruct local_2;
-    return local_2;
+    return __GeneratedProperties_FVM_DivineSkillInfo.Get();
 }
 }

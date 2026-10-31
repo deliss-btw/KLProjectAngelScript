@@ -106,8 +106,7 @@ struct FDamageFactionRelationConfig
 
     TArray<EFactionRelation> ToRelationArray()
     {
-        // body not fully recovered — stub [opcode-uncovered]
-        TArray<EFactionRelation> __r; return __r;
+        return {EFactionRelation(1), this.Player, this.Invader, this.SimpleProp, this.SimpleAnimal, this.Monster, this.Boss, this.Shadow, this.QiongQi, this.Wolf, this.Lili, this.Dani, this.Qinyuan, this.NPCHuman, this.NPCVillageHuman, this.NPCBandit, this.NPCRefugee, this.Weather, this.HarbingerOfDoom, this.PlayerFriendlyProp, this.Mount, this.TheLostBeast, this.YingLong, this.BanditSui, this.EnchantedSui, this.TombRobber, this.Revenant, this.JinWu, this.PVX_Common_Enemy, this.PVX_Common_FinalBoss, this.PVX_Common_MonsterPlayerControl, this.RandomEchoBoss, this.RevenantBoss};
     }
 }
 

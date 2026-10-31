@@ -27,7 +27,6 @@ const USkillConfig __FCombatItemConfig_GetItemSkillConfig(const TDataObjectPtr<F
 UFUNCTION()
 FBuffConfigRef __FCombatItemConfig_GetItemBuffConfig(const TDataObjectPtr<FCombatItemConfig> &inout DataObject)
 {
-    FBuffConfigRef __r;
     if ((DataObject == nullptr))
     {
         if (!(EUIGlobals::GIsDuringPropertyConversion))
@@ -37,7 +36,7 @@ FBuffConfigRef __FCombatItemConfig_GetItemBuffConfig(const TDataObjectPtr<FComba
         FCombatItemConfig local_216;
         return local_216.ItemBuffConfig;
     }
-    return __r;
+    return DataObject.Get().ItemBuffConfig;
 }
 UFUNCTION()
 FCombatItemConfig CastToFCombatItemConfig(const TDataObjectPtr<FCombatItemConfig> &inout DataObject)

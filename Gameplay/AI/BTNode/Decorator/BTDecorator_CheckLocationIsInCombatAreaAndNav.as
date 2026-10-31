@@ -86,8 +86,8 @@ class UBTDecorator_CheckLocationIsInCombatAreaAndNav : UBTDecorator_ECSScriptBas
             for (; local_154.CanProceed;)
             {
                 local_154.Proceed();
-                AActor local_184;
-                local_188 = Cast<AECSRegionVolume>(local_184);
+                GetDefaulted local_182;
+                local_188 = Cast<AECSRegionVolume>(local_182.opCall().RegionVolume.Get());
                 if (local_188 != nullptr && local_188.bAffectCombat)
                 {
                     bool local_189;

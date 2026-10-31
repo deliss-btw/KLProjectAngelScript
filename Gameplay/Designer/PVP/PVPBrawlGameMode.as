@@ -258,7 +258,7 @@ class UPVPBrawlGameModeFlow : UPVPGameModeFlowBase
         Has local_58;
         for (auto& local_46 : local_8.GetBotPlayerEntities())
         {
-            FECSEntity local_50;
+            FECSEntity local_50 = local_46.GetValue();
             if (!(local_50.IsValid()))
             {
                 continue;

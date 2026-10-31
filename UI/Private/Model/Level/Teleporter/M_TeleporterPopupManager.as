@@ -85,6 +85,7 @@ struct FMS_TeleporterPopupManager : FEUIModelSingleton
             }
             for (auto local_15 : Event.RemovedPopupIds)
             {
+                this.GetModify_PendingTeleporterActivePopups().Remove(local_15);
                 if (this.GetDisplayingPopupId() == local_15)
                 {
                     if (this.GetDisplayingWidget())
@@ -186,11 +187,9 @@ FMS_TeleporterPopupManager& Get(const UObject ContextObject)
 {
     return FMS_TeleporterPopupManager::GetByManager(EUIInternal::GetContextManager(ContextObject));
 }
-FMS_TeleporterPopupManager GetByManager(const UEUIManagerSubsystem Manager)
+FMS_TeleporterPopupManager& GetByManager(const UEUIManagerSubsystem Manager)
 {
-    FMS_TeleporterPopupManager __r;
-    TEUIModelRef<FMS_TeleporterPopupManager> local_6 = TEUIModelRef<FMS_TeleporterPopupManager>(EUIInternal::MakeModelWithManager(Manager, FMS_TeleporterPopupManager::ModelId));
-    return __r;
+    return TEUIModelRef<FMS_TeleporterPopupManager>(EUIInternal::MakeModelWithManager(Manager, FMS_TeleporterPopupManager::ModelId)).Get();
 }
 void GetModelInfo(FEUIModelOnlyMetaInfo &inout Result)
 {

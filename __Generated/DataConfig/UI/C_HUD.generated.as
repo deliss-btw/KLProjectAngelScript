@@ -3,7 +3,6 @@ namespace __FEmojiDataFunctions
 UFUNCTION()
 EEmojiType __FEmojiData_GetEmojiType(const TDataObjectPtr<FEmojiData> &inout DataObject)
 {
-    int local_69 = 0;
     if ((DataObject == nullptr))
     {
         if (!(EUIGlobals::GIsDuringPropertyConversion))
@@ -11,15 +10,13 @@ EEmojiType __FEmojiData_GetEmojiType(const TDataObjectPtr<FEmojiData> &inout Dat
             FBlueprintDebugFunctions::ThrowScriptException("Get 'EmojiType' from a null 'FEmojiData' DataObject!");
         }
         FEmojiData local_68;
-        local_69 = int(local_68.EmojiType);
-        return EEmojiType(local_69);
+        return local_68.EmojiType;
     }
-    return EEmojiType(local_69);
+    return DataObject.Get().EmojiType;
 }
 UFUNCTION()
 FText __FEmojiData_GetName(const TDataObjectPtr<FEmojiData> &inout DataObject)
 {
-    FText __r;
     if ((DataObject == nullptr))
     {
         if (!(EUIGlobals::GIsDuringPropertyConversion))
@@ -29,7 +26,7 @@ FText __FEmojiData_GetName(const TDataObjectPtr<FEmojiData> &inout DataObject)
         FEmojiData local_68;
         return local_68.Name;
     }
-    return __r;
+    return DataObject.Get().Name;
 }
 UFUNCTION()
 UTexture2D __FEmojiData_GetEmojiIcon(const TDataObjectPtr<FEmojiData> &inout DataObject)
@@ -49,7 +46,6 @@ UTexture2D __FEmojiData_GetEmojiIcon(const TDataObjectPtr<FEmojiData> &inout Dat
 UFUNCTION()
 FSoftBrush __FEmojiData_GetEmojiIconObject(const TDataObjectPtr<FEmojiData> &inout DataObject)
 {
-    FSoftBrush __r;
     if ((DataObject == nullptr))
     {
         if (!(EUIGlobals::GIsDuringPropertyConversion))
@@ -59,7 +55,7 @@ FSoftBrush __FEmojiData_GetEmojiIconObject(const TDataObjectPtr<FEmojiData> &ino
         FEmojiData local_68;
         return local_68.EmojiIconObject;
     }
-    return __r;
+    return DataObject.Get().EmojiIconObject;
 }
 UFUNCTION()
 FEmojiData CastToFEmojiData(const TDataObjectPtr<FEmojiData> &inout DataObject)
@@ -73,7 +69,6 @@ namespace __FSimpleSpawnPropDataFunctions
 UFUNCTION()
 TSubclassOf<AECSPrefab> __FSimpleSpawnPropData_GetPrefab(const TDataObjectPtr<FSimpleSpawnPropData> &inout DataObject)
 {
-    TSubclassOf<AECSPrefab> __r;
     if ((DataObject == nullptr))
     {
         if (!(EUIGlobals::GIsDuringPropertyConversion))
@@ -83,7 +78,7 @@ TSubclassOf<AECSPrefab> __FSimpleSpawnPropData_GetPrefab(const TDataObjectPtr<FS
         FSimpleSpawnPropData local_16;
         return local_16.Prefab;
     }
-    return __r;
+    return DataObject.Get().Prefab;
 }
 UFUNCTION()
 FSimpleSpawnPropData CastToFSimpleSpawnPropData(const TDataObjectPtr<FSimpleSpawnPropData> &inout DataObject)
@@ -97,7 +92,6 @@ namespace __FMotionDataFunctions
 UFUNCTION()
 EMotionType __FMotionData_GetMotionType(const TDataObjectPtr<FMotionData> &inout DataObject)
 {
-    int local_121 = 0;
     if ((DataObject == nullptr))
     {
         if (!(EUIGlobals::GIsDuringPropertyConversion))
@@ -105,15 +99,13 @@ EMotionType __FMotionData_GetMotionType(const TDataObjectPtr<FMotionData> &inout
             FBlueprintDebugFunctions::ThrowScriptException("Get 'MotionType' from a null 'FMotionData' DataObject!");
         }
         FMotionData local_120;
-        local_121 = int(local_120.MotionType);
-        return EMotionType(local_121);
+        return local_120.MotionType;
     }
-    return EMotionType(local_121);
+    return DataObject.Get().MotionType;
 }
 UFUNCTION()
 FText __FMotionData_GetName(const TDataObjectPtr<FMotionData> &inout DataObject)
 {
-    FText __r;
     if ((DataObject == nullptr))
     {
         if (!(EUIGlobals::GIsDuringPropertyConversion))
@@ -123,12 +115,11 @@ FText __FMotionData_GetName(const TDataObjectPtr<FMotionData> &inout DataObject)
         FMotionData local_120;
         return local_120.Name;
     }
-    return __r;
+    return DataObject.Get().Name;
 }
 UFUNCTION()
 FSoftBrush __FMotionData_GetIcon(const TDataObjectPtr<FMotionData> &inout DataObject)
 {
-    FSoftBrush __r;
     if ((DataObject == nullptr))
     {
         if (!(EUIGlobals::GIsDuringPropertyConversion))
@@ -138,12 +129,11 @@ FSoftBrush __FMotionData_GetIcon(const TDataObjectPtr<FMotionData> &inout DataOb
         FMotionData local_120;
         return local_120.Icon;
     }
-    return __r;
+    return DataObject.Get().Icon;
 }
 UFUNCTION()
 FText __FMotionData_GetLockSource(const TDataObjectPtr<FMotionData> &inout DataObject)
 {
-    FText __r;
     if ((DataObject == nullptr))
     {
         if (!(EUIGlobals::GIsDuringPropertyConversion))
@@ -153,12 +143,11 @@ FText __FMotionData_GetLockSource(const TDataObjectPtr<FMotionData> &inout DataO
         FMotionData local_120;
         return local_120.LockSource;
     }
-    return __r;
+    return DataObject.Get().LockSource;
 }
 UFUNCTION()
 bool __FMotionData_GetIsLock(const TDataObjectPtr<FMotionData> &inout DataObject)
 {
-    bool local_1 = false;
     if ((DataObject == nullptr))
     {
         if (!(EUIGlobals::GIsDuringPropertyConversion))
@@ -168,12 +157,11 @@ bool __FMotionData_GetIsLock(const TDataObjectPtr<FMotionData> &inout DataObject
         FMotionData local_120;
         return local_120.IsLock;
     }
-    return local_1;
+    return DataObject.Get().IsLock;
 }
 UFUNCTION()
 EMotionShowType __FMotionData_GetShowType(const TDataObjectPtr<FMotionData> &inout DataObject)
 {
-    int local_121 = 0;
     if ((DataObject == nullptr))
     {
         if (!(EUIGlobals::GIsDuringPropertyConversion))
@@ -181,10 +169,9 @@ EMotionShowType __FMotionData_GetShowType(const TDataObjectPtr<FMotionData> &ino
             FBlueprintDebugFunctions::ThrowScriptException("Get 'ShowType' from a null 'FMotionData' DataObject!");
         }
         FMotionData local_120;
-        local_121 = int(local_120.ShowType);
-        return EMotionShowType(local_121);
+        return local_120.ShowType;
     }
-    return EMotionShowType(local_121);
+    return DataObject.Get().ShowType;
 }
 UFUNCTION()
 int __FMotionData_GetAnimIndex(const TDataObjectPtr<FMotionData> &inout DataObject)
@@ -204,7 +191,6 @@ int __FMotionData_GetAnimIndex(const TDataObjectPtr<FMotionData> &inout DataObje
 UFUNCTION()
 EInteractionSocialTypeForESM __FMotionData_GetAnimName(const TDataObjectPtr<FMotionData> &inout DataObject)
 {
-    int local_121 = 0;
     if ((DataObject == nullptr))
     {
         if (!(EUIGlobals::GIsDuringPropertyConversion))
@@ -212,15 +198,13 @@ EInteractionSocialTypeForESM __FMotionData_GetAnimName(const TDataObjectPtr<FMot
             FBlueprintDebugFunctions::ThrowScriptException("Get 'AnimName' from a null 'FMotionData' DataObject!");
         }
         FMotionData local_120;
-        local_121 = int(local_120.AnimName);
-        return EInteractionSocialTypeForESM(local_121);
+        return local_120.AnimName;
     }
-    return EInteractionSocialTypeForESM(local_121);
+    return DataObject.Get().AnimName;
 }
 UFUNCTION()
 TSoftClassPtr<APropPrefabScriptBase> __FMotionData_GetPrefab(const TDataObjectPtr<FMotionData> &inout DataObject)
 {
-    TSoftClassPtr<APropPrefabScriptBase> __r;
     if ((DataObject == nullptr))
     {
         if (!(EUIGlobals::GIsDuringPropertyConversion))
@@ -230,12 +214,11 @@ TSoftClassPtr<APropPrefabScriptBase> __FMotionData_GetPrefab(const TDataObjectPt
         FMotionData local_120;
         return local_120.Prefab;
     }
-    return __r;
+    return DataObject.Get().Prefab;
 }
 UFUNCTION()
 FNameHandle_EntityBBVarInt __FMotionData_GetPropNum(const TDataObjectPtr<FMotionData> &inout DataObject)
 {
-    FNameHandle_EntityBBVarInt __r;
     if ((DataObject == nullptr))
     {
         if (!(EUIGlobals::GIsDuringPropertyConversion))
@@ -245,7 +228,7 @@ FNameHandle_EntityBBVarInt __FMotionData_GetPropNum(const TDataObjectPtr<FMotion
         FMotionData local_120;
         return local_120.PropNum;
     }
-    return __r;
+    return DataObject.Get().PropNum;
 }
 UFUNCTION()
 int __FMotionData_GetMaxCount(const TDataObjectPtr<FMotionData> &inout DataObject)
@@ -274,12 +257,11 @@ TDataObjectPtr<FSkillTargetPositionSelectParams> __FMotionData_GetSelectParams(c
         FMotionData local_120;
         return local_120.GetSelectParams();
     }
-    return GetSelectParams();
+    return DataObject.Get().GetSelectParams();
 }
 UFUNCTION()
 EEcosimAIV2ActionExpressionMeaning __FMotionData_GetActionExpressionMeaning(const TDataObjectPtr<FMotionData> &inout DataObject)
 {
-    int local_121 = 0;
     if ((DataObject == nullptr))
     {
         if (!(EUIGlobals::GIsDuringPropertyConversion))
@@ -287,10 +269,9 @@ EEcosimAIV2ActionExpressionMeaning __FMotionData_GetActionExpressionMeaning(cons
             FBlueprintDebugFunctions::ThrowScriptException("Get 'ActionExpressionMeaning' from a null 'FMotionData' DataObject!");
         }
         FMotionData local_120;
-        local_121 = int(local_120.ActionExpressionMeaning);
-        return EEcosimAIV2ActionExpressionMeaning(local_121);
+        return local_120.ActionExpressionMeaning;
     }
-    return EEcosimAIV2ActionExpressionMeaning(local_121);
+    return DataObject.Get().ActionExpressionMeaning;
 }
 UFUNCTION()
 FMotionData CastToFMotionData(const TDataObjectPtr<FMotionData> &inout DataObject)

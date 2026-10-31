@@ -31,11 +31,11 @@ class US_HintMessageSystemAS : UECSScriptSystem
     }
     void ReportWheelEmojiUse(const FECSEntity &inout PawnEntity, const TDataObjectPtr<FCustomWheelOptionConfig> &inout OptionConfig) const
     {
-        const FCustomWheelOptionConfig& local_4;
         if (!(OptionConfig.IsSet()))
         {
             return;
         }
+        const FCustomWheelOptionConfig& local_4 = OptionConfig.Get();
         if (int(local_4.OptionType) != 0)
         {
             return;
@@ -44,8 +44,8 @@ class US_HintMessageSystemAS : UECSScriptSystem
         {
             return;
         }
+        const FEmojiData& local_10 = local_4.GetDefaultEmojiData().Get();
         FPbPlayerLogDsWheelEmojiUse local_20;
-        FEmojiData local_10;
         local_20.SetEmojiId(local_10.GetUniqueID());
         local_20.SetEmojiType(int(local_10.EmojiType));
         XLog(ELog(22), FString().Append("PLAYER_ACTION_DS_WHEEL_EMOJI_USE Wheel Emoji Use: ").Append(local_10.GetUniqueID()).Append(" ").Append(local_10.EmojiType));
@@ -65,12 +65,11 @@ class US_HintMessageSystemAS : UECSScriptSystem
         AAS_ECSPlayerController local_24 = ::FASCommonUtils::GetASECSProxyPlayerController();
         if (local_24 != nullptr)
         {
-            const FCustomWheelOptionConfig& local_28;
             if (!(Event.OptionConfig.IsSet()))
             {
                 return;
             }
-            if (int(local_28.OptionType) != 0)
+            if (int(Event.OptionConfig.Get().OptionType) != 0)
             {
                 local_24.ShowCustomWheelOption.Execute(Event);
             }

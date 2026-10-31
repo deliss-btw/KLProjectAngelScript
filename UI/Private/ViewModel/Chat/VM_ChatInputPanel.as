@@ -97,8 +97,7 @@ struct FVM_ChatInputPanel : FEUIViewModel
         {
             this.SetTempInputText(Text.ToString());
             XLog(ELog(74), FString().Append("xxxxxx ModelChanged [OnInputTextChanged] TempInputText: ").Append(this.GetTempInputText()));
-            TEUIModelRef<FMS_ChatRuntimeData> local_2 = this.GetChatRuntimeData();
-            this.GetTempInputText().CacheCurrentChannelInputText();
+            this.GetChatRuntimeData().Get().CacheCurrentChannelInputText(this.GetTempInputText());
         }
         return;
     }
@@ -160,8 +159,7 @@ struct FVM_ChatInputPanel : FEUIViewModel
         this.GetChatMain().opArrow().SubmitChatText(local_16);
         this.SetTempInputText("");
         this.SetAlreadyInputText("");
-        TEUIModelRef<FMS_ChatRuntimeData> local_18 = this.GetChatRuntimeData();
-        this.GetTempInputText().CacheCurrentChannelInputText();
+        this.GetChatRuntimeData().Get().CacheCurrentChannelInputText(this.GetTempInputText());
         return true;
     }
     void RefreshInputState()
@@ -264,12 +262,9 @@ struct FVM_ChatInputPanel : FEUIViewModel
     {
         if (this.GetChatRuntimeData().IsValid())
         {
-            TEUIModelRef<FMS_ChatRuntimeData> local_2 = this.GetChatRuntimeData();
-            FString local_8;
-            local_8.GetCachedInputTextForCurrentSelection();
-            this.SetTempInputText(local_8);
+            this.SetTempInputText(this.GetChatRuntimeData().Get().GetCachedInputTextForCurrentSelection());
             this.SetAlreadyInputText(this.GetTempInputText());
-            XLog(ELog(74), local_8.Append("xxxxxx SyncInputTextFromRuntimeCache [SyncInputTextFromRuntimeCache] AlreadyInputText: ").Append(this.GetAlreadyInputText()));
+            XLog(ELog(74), FString().Append("xxxxxx SyncInputTextFromRuntimeCache [SyncInputTextFromRuntimeCache] AlreadyInputText: ").Append(this.GetAlreadyInputText()));
         }
         return;
     }
@@ -491,11 +486,9 @@ FVM_ChatInputPanel& Create(const UObject ContextObject)
 {
     return FVM_ChatInputPanel::CreateByManager(EUIInternal::GetContextManager(ContextObject));
 }
-FVM_ChatInputPanel CreateByManager(const UEUIManagerSubsystem Manager)
+FVM_ChatInputPanel& CreateByManager(const UEUIManagerSubsystem Manager)
 {
-    FVM_ChatInputPanel __r;
-    TEUIModelRef<FVM_ChatInputPanel> local_6 = TEUIModelRef<FVM_ChatInputPanel>(EUIInternal::MakeModelWithManager(Manager, FVM_ChatInputPanel::ModelId));
-    return __r;
+    return TEUIModelRef<FVM_ChatInputPanel>(EUIInternal::MakeModelWithManager(Manager, FVM_ChatInputPanel::ModelId)).Get();
 }
 void GetModelInfo(FEUIViewModelMetaInfo &inout Result)
 {
@@ -648,7 +641,6 @@ namespace __GeneratedProperties_FVM_ChatInputPanel
 {
 UScriptStruct StaticStruct()
 {
-    UScriptStruct local_2;
-    return local_2;
+    return __GeneratedProperties_FVM_ChatInputPanel.Get();
 }
 }

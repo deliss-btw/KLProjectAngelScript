@@ -5,8 +5,8 @@ namespace FMapUtils
 UFUNCTION()
 FMapConfig GetMapConfig(const FName &inout WorldPathName)
 {
-    UDataTable local_4;
     FMapConfig __r;
+    UDataTable local_4 = UGameplayConfigsManager::GetMapConfigTable().Get();
     if (local_4 == nullptr)
     {
         XWarning(ELog(0), "GetMapConfigByRefrence can not find datatable: MapConfig Table");
@@ -28,13 +28,13 @@ FMapConfig GetMapConfig(const FName &inout WorldPathName)
 UFUNCTION()
 FMapConfig GetMapConfigByRefrence(const TSoftObjectPtr<UWorld> &inout WorldWeakPtr)
 {
-    UDataTable local_6;
     FMapConfig __r;
     if (WorldWeakPtr.IsNull())
     {
     }
     else
     {
+        UDataTable local_6 = UGameplayConfigsManager::GetMapConfigTable().Get();
         if (local_6 == nullptr)
         {
             XWarning(ELog(0), "GetMapConfigByRefrence can not find datatable: MapConfig Table");

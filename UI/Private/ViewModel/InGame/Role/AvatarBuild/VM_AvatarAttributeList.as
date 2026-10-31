@@ -152,11 +152,9 @@ FVM_AvatarAttributeList& Create(const UObject ContextObject, const TDataObjectPt
 {
     return FVM_AvatarAttributeList::CreateByManager(EUIInternal::GetContextManager(ContextObject), Avatar);
 }
-FVM_AvatarAttributeList CreateByManager(const UEUIManagerSubsystem Manager, const TDataObjectPtr<FAvatarPrefabConfig> &inout Avatar)
+FVM_AvatarAttributeList& CreateByManager(const UEUIManagerSubsystem Manager, const TDataObjectPtr<FAvatarPrefabConfig> &inout Avatar)
 {
-    FVM_AvatarAttributeList __r;
-    TEUIModelRef<FVM_AvatarAttributeList> local_6 = TEUIModelRef<FVM_AvatarAttributeList>(EUIInternal::MakeModelWithManager_Generic(Manager, FVM_AvatarAttributeList::ModelId, 0, Avatar));
-    return __r;
+    return TEUIModelRef<FVM_AvatarAttributeList>(EUIInternal::MakeModelWithManager_Generic(Manager, FVM_AvatarAttributeList::ModelId, 0, Avatar)).Get();
 }
 void GetModelInfo(FEUIViewModelMetaInfo &inout Result)
 {
@@ -216,7 +214,6 @@ namespace __GeneratedProperties_FVM_AvatarAttributeList
 {
 UScriptStruct StaticStruct()
 {
-    UScriptStruct local_2;
-    return local_2;
+    return __GeneratedProperties_FVM_AvatarAttributeList.Get();
 }
 }

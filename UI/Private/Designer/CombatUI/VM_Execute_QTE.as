@@ -50,9 +50,7 @@ struct FVM_Execute_QTE : FEUIViewModel
     {
         FECSEntity local_6 = this.GetContext().GetLocalPlayer();
         GetDefaulted local_10;
-        TWeakObjectPtr<AECSPlayerController> local_12 = local_10.opCall().GetUEPlayerController();
-        AECSPlayerController local_14;
-        APlayerController local_2 = local_14;
+        APlayerController local_2 = local_10.opCall().GetUEPlayerController().Get();
         if (local_2 == nullptr)
         {
             return;
@@ -174,11 +172,9 @@ FVM_Execute_QTE& Create(const UObject ContextObject)
 {
     return FVM_Execute_QTE::CreateByManager(EUIInternal::GetContextManager(ContextObject));
 }
-FVM_Execute_QTE CreateByManager(const UEUIManagerSubsystem Manager)
+FVM_Execute_QTE& CreateByManager(const UEUIManagerSubsystem Manager)
 {
-    FVM_Execute_QTE __r;
-    TEUIModelRef<FVM_Execute_QTE> local_6 = TEUIModelRef<FVM_Execute_QTE>(EUIInternal::MakeModelWithManager(Manager, FVM_Execute_QTE::ModelId));
-    return __r;
+    return TEUIModelRef<FVM_Execute_QTE>(EUIInternal::MakeModelWithManager(Manager, FVM_Execute_QTE::ModelId)).Get();
 }
 void GetModelInfo(FEUIViewModelMetaInfo &inout Result)
 {
@@ -256,7 +252,6 @@ namespace __GeneratedProperties_FVM_Execute_QTE
 {
 UScriptStruct StaticStruct()
 {
-    UScriptStruct local_2;
-    return local_2;
+    return __GeneratedProperties_FVM_Execute_QTE.Get();
 }
 }

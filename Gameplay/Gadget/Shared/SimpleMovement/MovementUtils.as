@@ -566,7 +566,6 @@ void TickTrackMovement(const FECSEntity &inout Entity, FC_MovementInfo &inout Mo
     int local_26 = 0;
     bool local_53;
     int local_130 = 0;
-    UProjectileTimelineAsset local_250;
     float local_6 = (FFPTime(MovementInfo.GetMoveTime()) - MovementInfo.GetLastMoveTime()).ToSeconds();
     if (local_6 <= 0.0)
     {
@@ -784,8 +783,10 @@ void TickTrackMovement(const FECSEntity &inout Entity, FC_MovementInfo &inout Mo
             if (local_240)
             {
                 Get local_244;
-                if (local_244.opCall())
+                const FC_ProjectileTimelineData& local_246 = local_244.opCall();
+                if (local_246)
                 {
+                    UProjectileTimelineAsset local_250 = local_246.GetTimelineAsset().Get();
                     if (local_250 != nullptr)
                     {
                         FProjectileTimelineUtils::TriggerTrackReachEventReaction(local_240.TriggerReactions, Entity, local_250.TimelineConfigData, Transform.GetPosition(), FQuat4f(Transform.GetRotation()), Entity, FixedTime.Time);
@@ -877,7 +878,6 @@ void TickGroundMovement(const FECSEntity &inout Entity, FC_LifeTime &inout LifeT
 {
     int local_6 = 0;
     float32 local_21;
-    UProjectileTimelineAsset local_180;
     if (!(local_6) || local_6.GetDeltaMovement().IsZero())
     {
         return;
@@ -969,8 +969,10 @@ void TickGroundMovement(const FECSEntity &inout Entity, FC_LifeTime &inout LifeT
             if (local_170)
             {
                 Get local_174;
-                if (local_174.opCall())
+                const FC_ProjectileTimelineData& local_176 = local_174.opCall();
+                if (local_176)
                 {
+                    UProjectileTimelineAsset local_180 = local_176.GetTimelineAsset().Get();
                     if (local_180 != nullptr)
                     {
                         FProjectileTimelineUtils::TriggerMoveBlockedDestroyEventReaction(local_170.TriggerReactions, Entity, local_180.TimelineConfigData, Transform.GetPosition(), FQuat4f(Transform.GetRotation()), Entity, FixedTime.Time);

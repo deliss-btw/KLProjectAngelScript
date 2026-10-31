@@ -179,8 +179,7 @@ struct FVM_TeamInfo : FEUIViewModel
         if (this.GetTargetEntity().IsValid())
         {
             this.SetVM_BuffInfo(FEUIModelRef(::FVM_BuffInfo::Create(this.GetContext().Manager, this.GetTargetEntity())));
-            TEUIModelRef<FVM_PlayerHpBar> local_76 = this.GetPlayerHpBar();
-            this.GetTargetEntity().SetEntity();
+            this.GetPlayerHpBar().Get().SetEntity(this.GetTargetEntity());
         }
         return;
     }
@@ -226,6 +225,7 @@ struct FVM_TeamInfo : FEUIViewModel
                 }
                 if (local_5_2)
                 {
+                    this.SetPlayerName(this.GetCambatTeamMemberInfo().GetAvatarConfig().Get().DisplayName);
                 }
                 else
                 {
@@ -235,17 +235,14 @@ struct FVM_TeamInfo : FEUIViewModel
         }
         if (this.GetTargetEntity().IsValid())
         {
-            FSlateBrush local_76;
-            local_76 = ::GetDefaultedAvatarConfig(this.GetTargetEntity()).AvatarIcon.LoadBrush();
-            local_78 = local_76.ResourceObject;
+            local_78 = ::GetDefaultedAvatarConfig(this.GetTargetEntity()).AvatarIcon.LoadBrush().ResourceObject;
             this.SetPlayerIcon(Cast<UTexture2D>(local_78));
         }
         else
         {
-            FSlateBrush local_76;
             if (this.GetCambatTeamMemberInfo().GetAvatarConfig())
             {
-                local_82 = local_76.ResourceObject;
+                local_82 = this.GetCambatTeamMemberInfo().GetAvatarConfig().Get().AvatarIcon.LoadBrush().ResourceObject;
                 this.SetPlayerIcon(Cast<UTexture2D>(local_82));
             }
             else
@@ -258,9 +255,10 @@ struct FVM_TeamInfo : FEUIViewModel
                         int local_83;
                         int local_84 = local_24_2.Members[this.GetSocialTeamMemberIdx()].CharacterKey;
                         local_83 = local_84;
-                        if (::FAvatarPrefabConfig::GetByDataId(local_83))
+                        TDataObjectPtr<FAvatarPrefabConfig> local_108 = ::FAvatarPrefabConfig::GetByDataId(local_83);
+                        if (local_108)
                         {
-                            local_134 = local_76.ResourceObject;
+                            local_134 = local_108.Get().AvatarIcon.LoadBrush().ResourceObject;
                             this.SetPlayerIcon(Cast<UTexture2D>(local_134));
                         }
                     }
@@ -329,10 +327,10 @@ struct FVM_TeamInfo : FEUIViewModel
         this.UpdateCombatTeamMember();
         this.UpdatePlayerInfo();
         this.UpdateOfflineOrOtherMap();
-        if (::DivineSkillUtils::GetDivineSkill(::FASCommonUtils::GetUniquePlayerEntity(this.GetTargetEntity())))
+        TDataObjectPtr<FDivineSkillConfig> local_58 = ::DivineSkillUtils::GetDivineSkill(::FASCommonUtils::GetUniquePlayerEntity(this.GetTargetEntity()));
+        if (local_58)
         {
-            FSlateBrush local_104;
-            local_106 = local_104.ResourceObject;
+            local_106 = local_58.Get().DisplayIcon.LoadBrush().ResourceObject;
             this.SetLinkSkillIcon(Cast<UTexture2D>(local_106));
         }
         if ((!((FECSEntity(this.GetTargetEntity()) == ENTITY_NULL))))
@@ -703,11 +701,9 @@ FVM_TeamInfo& Create(const UObject ContextObject, const FECSEntity &inout Target
 {
     return FVM_TeamInfo::CreateByManager(EUIInternal::GetContextManager(ContextObject), TargetPlayerProxy, TargetPlayerUid);
 }
-FVM_TeamInfo CreateByManager(const UEUIManagerSubsystem Manager, const FECSEntity &inout TargetPlayerProxy, const int TargetPlayerUid)
+FVM_TeamInfo& CreateByManager(const UEUIManagerSubsystem Manager, const FECSEntity &inout TargetPlayerProxy, const int TargetPlayerUid)
 {
-    FVM_TeamInfo __r;
-    TEUIModelRef<FVM_TeamInfo> local_6 = TEUIModelRef<FVM_TeamInfo>(EUIInternal::MakeModelWithManager_Generic(Manager, FVM_TeamInfo::ModelId, 0, TargetPlayerProxy, TargetPlayerUid));
-    return __r;
+    return TEUIModelRef<FVM_TeamInfo>(EUIInternal::MakeModelWithManager_Generic(Manager, FVM_TeamInfo::ModelId, 0, TargetPlayerProxy, TargetPlayerUid)).Get();
 }
 void GetModelInfo(FEUIViewModelMetaInfo &inout Result)
 {
@@ -949,7 +945,6 @@ namespace __GeneratedProperties_FVM_TeamInfo
 {
 UScriptStruct StaticStruct()
 {
-    UScriptStruct local_2;
-    return local_2;
+    return __GeneratedProperties_FVM_TeamInfo.Get();
 }
 }

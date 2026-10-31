@@ -65,9 +65,10 @@ struct FMS_PlayerDSData : FEUIModelSingleton
         const FCS_PlayerEntitySummary& local_8 = local_6.opCall();
         if (local_8)
         {
-            if (local_8.GetPlayerEntities().Find(PlayerId))
+            TConstRawPtr<FECSEntity> local_10 = local_8.GetPlayerEntities().Find(PlayerId);
+            if (local_10)
             {
-                this.CachePlayerDSInfo();
+                this.CachePlayerDSInfo(local_10.Get());
             }
         }
         return;
@@ -84,7 +85,7 @@ struct FMS_PlayerDSData : FEUIModelSingleton
         {
             for (auto& local_26 : local_8.GetPlayerEntities())
             {
-                this.CachePlayerDSInfoIfNeed(local_26.GetKey());
+                this.CachePlayerDSInfoIfNeed(local_26.GetKey(), local_26.GetValue());
             }
         }
         return;
@@ -95,9 +96,10 @@ struct FMS_PlayerDSData : FEUIModelSingleton
         {
             for (auto& local_20 : this.GetPlayerDSInfoMap())
             {
-                if (::FMS_PlayerData::Get(this.GetContext().Manager).GetCachedPlayerData(local_20.GetKey()))
+                TEUIModelRef<FM_Player> local_24 = ::FMS_PlayerData::Get(this.GetContext().Manager).GetCachedPlayerData(local_20.GetKey());
+                if (local_24)
                 {
-                    ::FMS_PlayerData::Get(this.GetContext().Manager).GetCachedPlayerInfo(local_20.GetKey()).InvalidateRealtimePlayerInfo();
+                    local_24.Get().InvalidateRealtimePlayerInfo(::FMS_PlayerData::Get(this.GetContext().Manager).GetCachedPlayerInfo(local_20.GetKey()));
                 }
             }
             this.GetModify_PlayerDSInfoMap().Reset();
@@ -113,21 +115,24 @@ struct FMS_PlayerDSData : FEUIModelSingleton
         }
         for (auto local_83 : local_68)
         {
-            if (::FMS_PlayerData::Get(this.GetContext().Manager).GetCachedPlayerData(local_83))
+            TEUIModelRef<FM_Player> local_26 = ::FMS_PlayerData::Get(this.GetContext().Manager).GetCachedPlayerData(local_83);
+            if (local_26)
             {
-                ::FMS_PlayerData::Get(this.GetContext().Manager).GetCachedPlayerInfo(local_83).InvalidateRealtimePlayerInfo();
+                local_26.Get().InvalidateRealtimePlayerInfo(::FMS_PlayerData::Get(this.GetContext().Manager).GetCachedPlayerInfo(local_83));
             }
+            this.GetModify_PlayerDSInfoMap().Remove(local_83);
         }
         for (auto& local_102 : C_PlayerEntitySummary.GetPlayerEntities())
         {
-            if (this.GetPlayerDSInfoMap().Find(local_102.GetKey()))
+            TConstRawPtr<TEUIModelRef<FM_PlayerDSInfo>> local_104 = this.GetPlayerDSInfoMap().Find(local_102.GetKey());
+            if (local_104)
             {
-                if (FECSEntity(opArrow().GetPlayerEntity()).opEquals())
+                if ((FECSEntity(local_104.Get().opArrow().GetPlayerEntity()) == local_102.GetValue()))
                 {
                     continue;
                 }
             }
-            this.CachePlayerDSInfoIfNeed(local_102.GetKey());
+            this.CachePlayerDSInfoIfNeed(local_102.GetKey(), local_102.GetValue());
         }
         return;
     }
@@ -135,9 +140,10 @@ struct FMS_PlayerDSData : FEUIModelSingleton
     {
         for (auto& local_20 : this.GetPlayerDSInfoMap())
         {
-            if (::FMS_PlayerData::Get(this.GetContext().Manager).GetCachedPlayerData(local_20.GetKey()))
+            TEUIModelRef<FM_Player> local_24 = ::FMS_PlayerData::Get(this.GetContext().Manager).GetCachedPlayerData(local_20.GetKey());
+            if (local_24)
             {
-                ::FMS_PlayerData::Get(this.GetContext().Manager).GetCachedPlayerInfo(local_20.GetKey()).InvalidateRealtimePlayerInfo();
+                local_24.Get().InvalidateRealtimePlayerInfo(::FMS_PlayerData::Get(this.GetContext().Manager).GetCachedPlayerInfo(local_20.GetKey()));
             }
         }
         this.GetModify_PlayerDSInfoMap().Empty(0);
@@ -145,13 +151,14 @@ struct FMS_PlayerDSData : FEUIModelSingleton
     }
     void CachePlayerDSInfoIfNeed(const uint PlayerId, const FECSEntity &inout PlayerEntity)
     {
-        if (::FMS_PlayerData::Get(this.GetContext().Manager).GetCachedPlayerData(PlayerId))
+        TEUIModelRef<FM_Player> local_2 = ::FMS_PlayerData::Get(this.GetContext().Manager).GetCachedPlayerData(PlayerId);
+        if (local_2)
         {
             FM_PlayerDSInfo& local_8 = ::FM_PlayerDSInfo::Create(this.GetContext().Manager, PlayerEntity);
-            local_8.SetOwnerPlayer(TEUIModelWeakRef<FM_Player>());
+            local_8.SetOwnerPlayer(TEUIModelWeakRef<FM_Player>(local_2.Get()));
             this.GetModify_PlayerDSInfoMap().Add(PlayerId, TEUIModelRef<FM_PlayerDSInfo>(local_8));
             bool local_5 = true;
-            GetModify_IsOnlineAttr().Set(EPlayerInfoTrust(3), local_5);
+            local_2.Get().GetModify_IsOnlineAttr().Set(EPlayerInfoTrust(3), local_5);
         }
         return;
     }
@@ -258,7 +265,7 @@ struct FMS_PlayerData : FEUIModelSingleton
     TEUIModelRef<FM_Player> UpdateOrCreatePlayerByGSData(const FPbOnlinePlayerInfo &inout OnlinePlayerInfo)
     {
         TEUIModelRef<FM_Player> local_4 = this.GetOrCreatePlayerData(OnlinePlayerInfo.GetUid());
-        FM_Player local_8;
+        FM_Player& local_8 = local_4.Get();
         local_8.GetModify_NickNameAttr().Set(EPlayerInfoTrust(2), OnlinePlayerInfo.GetNickname());
         local_8.GetModify_GenderAttr().Set(EPlayerInfoTrust(2), EGenderType(1));
         int local_1 = OnlinePlayerInfo.GetCurAvatarId();
@@ -285,10 +292,10 @@ struct FMS_PlayerData : FEUIModelSingleton
     }
     TEUIModelRef<FM_Player> UpdateOrCreateByBriefInfo(const FPbPlayerBriefInfo &inout PbPlayerInfo)
     {
-        FM_Player& local_10;
         int local_2 = 2;
         int local_1 = local_2;
         TEUIModelRef<FM_Player> local_6 = this.GetOrCreatePlayerData(PbPlayerInfo.GetUid());
+        FM_Player& local_10 = local_6.Get();
         if (!(PbPlayerInfo.GetNickname().IsEmpty()))
         {
             local_10.GetModify_NickNameAttr().Set(EPlayerInfoTrust(2), PbPlayerInfo.GetNickname());
@@ -315,8 +322,8 @@ struct FMS_PlayerData : FEUIModelSingleton
     }
     TEUIModelRef<FM_Player> UpdateOrCreateByBriefInfo(const FPlayerBriefInfo &inout BriefInfo, const EPlayerInfoTrust Trust = EPlayerInfoTrust::Reliable)
     {
-        FM_Player& local_8;
         TEUIModelRef<FM_Player> local_4 = this.GetOrCreatePlayerData(BriefInfo.GetUid());
+        FM_Player& local_8 = local_4.Get();
         if (BriefInfo.IsNicknameSet())
         {
             local_8.GetModify_NickNameAttr().Set(EPlayerInfoTrust(Trust), BriefInfo.GetNickname());
@@ -350,15 +357,12 @@ struct FMS_PlayerData : FEUIModelSingleton
     }
     FPlayerFullInfo GetCachedPlayerInfo(const uint Uid) const
     {
-        FPlayerFullInfo __return;
-        if (this.GetPlayerGSInfoCache().Find(Uid))
+        TConstRawPtr<FPlayerFullInfo> local_2 = this.GetPlayerGSInfoCache().Find(Uid);
+        if (local_2)
         {
+            return local_2.Get();
         }
-        else
-        {
-            __return = ::FMS_PlayerLocalCache::Get(this.GetManager()).LoadPlayerFromCache(Uid);
-        }
-        return __return;
+        return ::FMS_PlayerLocalCache::Get(this.GetManager()).LoadPlayerFromCache(Uid);
     }
     void UpdateGSInfoCache(const uint Uid, const FString &inout InNickName, const EGenderType InGender, const uint InAvatarId, const uint InDivineSkillId, const int InLevel, const bool InIsOnline)
     {
@@ -614,11 +618,9 @@ FMS_PlayerDSData& Get(const UObject ContextObject)
 {
     return FMS_PlayerDSData::GetByManager(EUIInternal::GetContextManager(ContextObject));
 }
-FMS_PlayerDSData GetByManager(const UEUIManagerSubsystem Manager)
+FMS_PlayerDSData& GetByManager(const UEUIManagerSubsystem Manager)
 {
-    FMS_PlayerDSData __r;
-    TEUIModelRef<FMS_PlayerDSData> local_6 = TEUIModelRef<FMS_PlayerDSData>(EUIInternal::MakeModelWithManager(Manager, FMS_PlayerDSData::ModelId));
-    return __r;
+    return TEUIModelRef<FMS_PlayerDSData>(EUIInternal::MakeModelWithManager(Manager, FMS_PlayerDSData::ModelId)).Get();
 }
 void GetModelInfo(FEUIModelOnlyMetaInfo &inout Result)
 {
@@ -659,11 +661,9 @@ FMS_PlayerData& Get(const UObject ContextObject)
 {
     return FMS_PlayerData::GetByManager(EUIInternal::GetContextManager(ContextObject));
 }
-FMS_PlayerData GetByManager(const UEUIManagerSubsystem Manager)
+FMS_PlayerData& GetByManager(const UEUIManagerSubsystem Manager)
 {
-    FMS_PlayerData __r;
-    TEUIModelRef<FMS_PlayerData> local_6 = TEUIModelRef<FMS_PlayerData>(EUIInternal::MakeModelWithManager(Manager, FMS_PlayerData::ModelId));
-    return __r;
+    return TEUIModelRef<FMS_PlayerData>(EUIInternal::MakeModelWithManager(Manager, FMS_PlayerData::ModelId)).Get();
 }
 void GetModelInfo(FEUIModelOnlyMetaInfo &inout Result)
 {

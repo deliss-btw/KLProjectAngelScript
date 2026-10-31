@@ -17,7 +17,7 @@ class UWidget_PVX_LeaderboardListEntry : UEUIUserListItemWidget
     UFUNCTION()
     FText Entry_PlayerDisplayName() const
     {
-        FVM_PVX_LeaderboardListEntry& local_2;
+        FVM_PVX_LeaderboardListEntry& local_2 = this.Entry.Get();
         FText local_12;
         if (local_2)
         {
@@ -32,7 +32,7 @@ class UWidget_PVX_LeaderboardListEntry : UEUIUserListItemWidget
     UFUNCTION()
     FText Entry_PlayerIdText() const
     {
-        FVM_PVX_LeaderboardListEntry& local_2;
+        FVM_PVX_LeaderboardListEntry& local_2 = this.Entry.Get();
         FText local_12;
         if (local_2)
         {
@@ -47,33 +47,33 @@ class UWidget_PVX_LeaderboardListEntry : UEUIUserListItemWidget
     UFUNCTION()
     int Entry_Kills() const
     {
-        FVM_PVX_LeaderboardListEntry& local_2;
+        FVM_PVX_LeaderboardListEntry& local_2 = this.Entry.Get();
         return local_2 ? local_2.GetKills() : 0;
     }
     UFUNCTION()
     int Entry_Deaths() const
     {
-        FVM_PVX_LeaderboardListEntry& local_2;
+        FVM_PVX_LeaderboardListEntry& local_2 = this.Entry.Get();
         return local_2 ? local_2.GetDeaths() : 0;
     }
     UFUNCTION()
     int Entry_Assists() const
     {
-        FVM_PVX_LeaderboardListEntry& local_2;
+        FVM_PVX_LeaderboardListEntry& local_2 = this.Entry.Get();
         return local_2 ? local_2.GetAssists() : 0;
     }
     UFUNCTION()
     FText Entry_KDAText() const
     {
-        FVM_PVX_LeaderboardListEntry& local_2;
+        FVM_PVX_LeaderboardListEntry& local_2 = this.Entry.Get();
         FText local_12 = local_2 ? local_2.GetKDAText() : FText();
         return local_12;
     }
     UFUNCTION()
     int Entry_TeamId() const
     {
-        FVM_PVX_LeaderboardListEntry& local_2;
         int local_5;
+        FVM_PVX_LeaderboardListEntry& local_2 = this.Entry.Get();
         if (local_2)
         {
             local_5 = local_2.GetTeamId();
@@ -87,13 +87,13 @@ class UWidget_PVX_LeaderboardListEntry : UEUIUserListItemWidget
     UFUNCTION()
     int Entry_CurrencyAmount() const
     {
-        FVM_PVX_LeaderboardListEntry& local_2;
+        FVM_PVX_LeaderboardListEntry& local_2 = this.Entry.Get();
         return local_2 ? local_2.GetCurrencyAmount() : 0;
     }
     UFUNCTION()
     FSoftBrush Entry_AvatarIcon() const
     {
-        FVM_PVX_LeaderboardListEntry& local_2;
+        FVM_PVX_LeaderboardListEntry& local_2 = this.Entry.Get();
         FSoftBrush local_92;
         if (local_2)
         {
@@ -108,8 +108,8 @@ class UWidget_PVX_LeaderboardListEntry : UEUIUserListItemWidget
     UFUNCTION()
     bool Entry_bIsLocalPlayer() const
     {
-        FVM_PVX_LeaderboardListEntry& local_2;
         bool local_5;
+        FVM_PVX_LeaderboardListEntry& local_2 = this.Entry.Get();
         if (local_2)
         {
             local_5 = local_2.GetbIsLocalPlayer();

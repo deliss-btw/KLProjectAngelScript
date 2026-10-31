@@ -202,8 +202,7 @@ bool ShouldSkipNonCommissionBoss(const FEcologyLoadPolicy &inout Policy, const T
     bool local_21 = false;
     for (auto& local_36 : local_14)
     {
-        local_36;
-        if (GetCombatConfig() && (0 == 2))
+        if (local_36.Get().GetCombatConfig() && (int(local_36.Get().GetCombatConfig().Get().Rank) == 2))
         {
             local_21 = true;
             break;

@@ -123,14 +123,9 @@ struct FVM_PVX_Settlement_PlayerInfo : FEUIViewModel
         }
         this.SetAvatar(TEUIModelRef<FVM_ChatCommonAvatar>(::FVM_ChatCommonAvatar::Create(this.GetContext().Manager, local_42)));
         this.SetPlayerBasicItemExtend(TEUIModelRef<FVM_PlayerBasicItemExtend>(::FVM_PlayerBasicItemExtend::Create(this.GetManager())));
-        TEUIModelRef<FVM_PlayerBasicItemExtend> local_120 = this.GetPlayerBasicItemExtend();
-        false.SetbShowLevelText();
-        int local_11 = this.GetPlayerData().GetPlayerAvatarID();
-        TEUIModelRef<FVM_PlayerBasicItemExtend> local_120_2 = this.GetPlayerBasicItemExtend();
-        local_11.SetOverrideAvatarID();
-        int local_11_2 = this.GetPlayerData().GetPlayerDivineSkillID();
-        TEUIModelRef<FVM_PlayerBasicItemExtend> local_120_3 = this.GetPlayerBasicItemExtend();
-        local_11_2.SetOverrideDivineSkillID();
+        this.GetPlayerBasicItemExtend().Get().SetbShowLevelText(false);
+        this.GetPlayerBasicItemExtend().Get().SetOverrideAvatarID(this.GetPlayerData().GetPlayerAvatarID());
+        this.GetPlayerBasicItemExtend().Get().SetOverrideDivineSkillID(this.GetPlayerData().GetPlayerDivineSkillID());
         int local_121 = this.GetPlayerData().GetPlayerUID();
         if (local_121 == 0)
         {
@@ -149,21 +144,16 @@ struct FVM_PVX_Settlement_PlayerInfo : FEUIViewModel
         }
         if (local_126.IsValid())
         {
-            TEUIModelRef<FVM_PlayerBasicItem> local_170;
-            TEUIModelRef<FM_SocialTeam> local_154 = TEUIModelRef<FM_SocialTeam>(::FM_SocialTeam::Create(this.GetContext().Manager, this.GetPlayerData().GetTeamId()));
-            FEUIModelWeakRef local_160 = FEUIModelWeakRef(FEUIModelRef());
+            FEUIModelWeakRef local_160 = FEUIModelWeakRef(FEUIModelRef((TEUIModelRef<FM_SocialTeam>(::FM_SocialTeam::Create(this.GetContext().Manager, this.GetPlayerData().GetTeamId()))).Get()));
             local_164.SetPlayer(local_126);
             local_164.SetMemberIndex(this.GetPlayerData().GetPlayerInTeamIndex());
             TEUIModelRef<FVM_TeammateInfo> local_168 = TEUIModelRef<FVM_TeammateInfo>(::FVM_TeammateInfo::Create(this.GetContext().Manager, (TEUIModelRef<FM_TeamMember>(local_164))));
             this.SetTeammateInfo(local_168);
             TEUIModelRef<FVM_TeammateInfo> local_168_2 = this.GetTeammateInfo();
-            local_170.GetPlayerBasicItem();
-            this.SetPlayerBasicItem(local_170);
+            this.SetPlayerBasicItem(local_168_2.Get().GetPlayerBasicItem());
             if (this.GetPlayerBasicItem().IsValid())
             {
-                TEUIModelRef<FVM_PlayerBasicItemExtend> local_120_4 = this.GetPlayerBasicItemExtend();
-                local_170 = this.GetPlayerBasicItem();
-                local_120_4.SetOverrideSource();
+                this.GetPlayerBasicItem().Get().SetOverrideSource(this.GetPlayerBasicItemExtend());
             }
         }
         FECSWorldPtr local_174 = ECS::GetECSWorld();
@@ -224,14 +214,10 @@ struct FVM_PVX_Settlement_PlayerInfo : FEUIViewModel
     {
         if (this.GetTeammateInfo().IsValid())
         {
-            TEUIModelRef<FVM_PlayerBasicItem> local_6;
-            TEUIModelRef<FVM_TeammateInfo> local_2 = this.GetTeammateInfo();
-            local_6.GetPlayerBasicItem();
-            this.SetPlayerBasicItem(local_6);
+            this.SetPlayerBasicItem(this.GetTeammateInfo().Get().GetPlayerBasicItem());
             if (this.GetPlayerBasicItem().IsValid() && this.GetPlayerBasicItemExtend().IsValid())
             {
-                local_6 = this.GetPlayerBasicItem();
-                this.GetPlayerBasicItemExtend().SetOverrideSource();
+                this.GetPlayerBasicItem().Get().SetOverrideSource(this.GetPlayerBasicItemExtend());
             }
         }
         return;
@@ -529,11 +515,9 @@ FVM_PVX_Settlement_PlayerInfo& Create(const UObject ContextObject, const FECSEnt
 {
     return FVM_PVX_Settlement_PlayerInfo::CreateByManager(EUIInternal::GetContextManager(ContextObject), PlayerEntity, PlayerData);
 }
-FVM_PVX_Settlement_PlayerInfo CreateByManager(const UEUIManagerSubsystem Manager, const FECSEntity &inout PlayerEntity, const FPVX_PlayerData &inout PlayerData)
+FVM_PVX_Settlement_PlayerInfo& CreateByManager(const UEUIManagerSubsystem Manager, const FECSEntity &inout PlayerEntity, const FPVX_PlayerData &inout PlayerData)
 {
-    FVM_PVX_Settlement_PlayerInfo __r;
-    TEUIModelRef<FVM_PVX_Settlement_PlayerInfo> local_6 = TEUIModelRef<FVM_PVX_Settlement_PlayerInfo>(EUIInternal::MakeModelWithManager_Generic(Manager, FVM_PVX_Settlement_PlayerInfo::ModelId, 0, PlayerEntity, PlayerData));
-    return __r;
+    return TEUIModelRef<FVM_PVX_Settlement_PlayerInfo>(EUIInternal::MakeModelWithManager_Generic(Manager, FVM_PVX_Settlement_PlayerInfo::ModelId, 0, PlayerEntity, PlayerData)).Get();
 }
 void GetModelInfo(FEUIViewModelMetaInfo &inout Result)
 {
@@ -737,7 +721,6 @@ namespace __GeneratedProperties_FVM_PVX_Settlement_PlayerInfo
 {
 UScriptStruct StaticStruct()
 {
-    UScriptStruct local_2;
-    return local_2;
+    return __GeneratedProperties_FVM_PVX_Settlement_PlayerInfo.Get();
 }
 }

@@ -134,11 +134,9 @@ FMS_WeatherData& Get(const UObject ContextObject)
 {
     return FMS_WeatherData::GetByManager(EUIInternal::GetContextManager(ContextObject));
 }
-FMS_WeatherData GetByManager(const UEUIManagerSubsystem Manager)
+FMS_WeatherData& GetByManager(const UEUIManagerSubsystem Manager)
 {
-    FMS_WeatherData __r;
-    TEUIModelRef<FMS_WeatherData> local_6 = TEUIModelRef<FMS_WeatherData>(EUIInternal::MakeModelWithManager(Manager, FMS_WeatherData::ModelId));
-    return __r;
+    return TEUIModelRef<FMS_WeatherData>(EUIInternal::MakeModelWithManager(Manager, FMS_WeatherData::ModelId)).Get();
 }
 void GetModelInfo(FEUIModelOnlyMetaInfo &inout Result)
 {

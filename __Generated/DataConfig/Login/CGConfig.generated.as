@@ -3,7 +3,6 @@ namespace __FCGConfigFunctions
 UFUNCTION()
 TArray<FCGContextConfig> __FCGConfig_GetPages(const TDataObjectPtr<FCGConfig> &inout DataObject)
 {
-    TArray<FCGContextConfig> __r;
     if ((DataObject == nullptr))
     {
         if (!(EUIGlobals::GIsDuringPropertyConversion))
@@ -13,7 +12,7 @@ TArray<FCGContextConfig> __FCGConfig_GetPages(const TDataObjectPtr<FCGConfig> &i
         FCGConfig local_18;
         return local_18.Pages;
     }
-    return __r;
+    return DataObject.Get().Pages;
 }
 UFUNCTION()
 FCGConfig CastToFCGConfig(const TDataObjectPtr<FCGConfig> &inout DataObject)

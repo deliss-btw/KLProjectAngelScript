@@ -152,7 +152,6 @@ struct FVM_TeammateMessageBubbleManager : FEUIViewModel
     void HandleShowCustomWheelOption(const FCE_ShowCustomWheelOption &inout Event)
     {
         UTexture2D local_322;
-        UObject local_324;
         if ((!((FECSEntity(Event.Sender) == ::FASCommonUtils::GetControlledPawnEntity(this.GetPlayerEntity())))))
         {
             return;
@@ -171,7 +170,7 @@ struct FVM_TeammateMessageBubbleManager : FEUIViewModel
             FEmojiData local_256;
             if (!(local_256.EmojiIconObject.GetResourceObject().IsNull()))
             {
-                local_322 = (Cast<UTexture2D>(local_324));
+                local_322 = (Cast<UTexture2D>(local_256.EmojiIconObject.GetResourceObject().Get()));
                 if (local_322 == nullptr)
                 {
                     return;
@@ -191,7 +190,7 @@ struct FVM_TeammateMessageBubbleManager : FEUIViewModel
                 FSignalConfig local_404;
                 if (!(local_404.SignalIconObject.GetResourceObject().IsNull()))
                 {
-                    local_322 = (Cast<UTexture2D>(local_324));
+                    local_322 = (Cast<UTexture2D>(local_404.SignalIconObject.GetResourceObject().Get()));
                     if (local_322 == nullptr)
                     {
                         return;
@@ -336,11 +335,9 @@ FVM_TeammateMessageBubble& Create(const UObject ContextObject, const FText &inou
 {
     return FVM_TeammateMessageBubble::CreateByManager(EUIInternal::GetContextManager(ContextObject), Message, EmojiBrush);
 }
-FVM_TeammateMessageBubble CreateByManager(const UEUIManagerSubsystem Manager, const FText &inout Message, const UTexture2D EmojiBrush)
+FVM_TeammateMessageBubble& CreateByManager(const UEUIManagerSubsystem Manager, const FText &inout Message, const UTexture2D EmojiBrush)
 {
-    FVM_TeammateMessageBubble __r;
-    TEUIModelRef<FVM_TeammateMessageBubble> local_6 = TEUIModelRef<FVM_TeammateMessageBubble>(EUIInternal::MakeModelWithManager_Generic(Manager, FVM_TeammateMessageBubble::ModelId, 0, Message, EmojiBrush));
-    return __r;
+    return TEUIModelRef<FVM_TeammateMessageBubble>(EUIInternal::MakeModelWithManager_Generic(Manager, FVM_TeammateMessageBubble::ModelId, 0, Message, EmojiBrush)).Get();
 }
 void GetModelInfo(FEUIViewModelMetaInfo &inout Result)
 {
@@ -395,8 +392,7 @@ namespace __GeneratedProperties_FVM_TeammateMessageBubble
 {
 UScriptStruct StaticStruct()
 {
-    UScriptStruct local_2;
-    return local_2;
+    return __GeneratedProperties_FVM_TeammateMessageBubble.Get();
 }
 }
 namespace FVM_TeammateMessageBubbleManager
@@ -405,11 +401,9 @@ FVM_TeammateMessageBubbleManager& Create(const UObject ContextObject, const FECS
 {
     return FVM_TeammateMessageBubbleManager::CreateByManager(EUIInternal::GetContextManager(ContextObject), PlayerEntity);
 }
-FVM_TeammateMessageBubbleManager CreateByManager(const UEUIManagerSubsystem Manager, const FECSEntity &inout PlayerEntity)
+FVM_TeammateMessageBubbleManager& CreateByManager(const UEUIManagerSubsystem Manager, const FECSEntity &inout PlayerEntity)
 {
-    FVM_TeammateMessageBubbleManager __r;
-    TEUIModelRef<FVM_TeammateMessageBubbleManager> local_6 = TEUIModelRef<FVM_TeammateMessageBubbleManager>(EUIInternal::MakeModelWithManager_Generic(Manager, FVM_TeammateMessageBubbleManager::ModelId, 0, PlayerEntity));
-    return __r;
+    return TEUIModelRef<FVM_TeammateMessageBubbleManager>(EUIInternal::MakeModelWithManager_Generic(Manager, FVM_TeammateMessageBubbleManager::ModelId, 0, PlayerEntity)).Get();
 }
 void GetModelInfo(FEUIViewModelMetaInfo &inout Result)
 {
@@ -490,7 +484,6 @@ namespace __GeneratedProperties_FVM_TeammateMessageBubbleManager
 {
 UScriptStruct StaticStruct()
 {
-    UScriptStruct local_2;
-    return local_2;
+    return __GeneratedProperties_FVM_TeammateMessageBubbleManager.Get();
 }
 }

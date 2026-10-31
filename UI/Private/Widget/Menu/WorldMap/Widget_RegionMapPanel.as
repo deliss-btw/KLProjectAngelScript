@@ -95,8 +95,8 @@ class UWidget_RegionMapPanel : UEUIActivatableWidget
     }
     void HandleObservedModelChanges(FEUIReactiveSubscriberIterator &inout It)
     {
-        FVM_RegionMap& local_6;
         TEUIModelRef<FVM_RegionMap> local_2 = this.RegionMap.AsRef();
+        FVM_RegionMap& local_6 = local_2.Get();
         for (; It; )
         {
             FEUIReactiveSubscriberTrackScope local_56 = FEUIReactiveSubscriberTrackScope(It);

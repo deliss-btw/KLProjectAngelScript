@@ -9,14 +9,11 @@ class US_MissionSystem : UECSScriptSystem
     {
         bool local_9;
         int local_16 = 0;
-        int local_40 = 0;
         TDataObjectPtr<FMissionConfig> local_88;
         int local_210 = 0;
         bool local_259;
-        int local_260 = 0;
         int local_268 = 0;
         int local_286;
-        EMissionType local_360 = EMissionType(0);
         FECSEntity local_4 = FECSEntity(Event.PlayerEntityId);
         if (!(local_4.IsValid()))
         {
@@ -29,8 +26,7 @@ class US_MissionSystem : UECSScriptSystem
             if (!(local_16.GetActiveMissionStatus().Contains(local_34.MissionId)))
             {
                 XLog(ELog(63), FString().Append("[Mission] Try add new MissionDetail for missionId: ").Append(local_34.MissionId));
-                local_40 = int(local_34.MissionId);
-                local_64 = ::MissionUtils::FindMissionConfig(local_40);
+                local_64 = ::MissionUtils::FindMissionConfig(int(local_34.MissionId));
                 if (!(local_64))
                 {
                     XError(ELog(63), FString().Append("[Mission] Add MissionDetail failed, MissionConfig not found for MissionId: ").Append(local_34.MissionId));
@@ -41,7 +37,8 @@ class US_MissionSystem : UECSScriptSystem
                 local_16.GetModify_ActiveMissionStatus().Add(local_34.MissionId, local_200);
                 FFPTime local_206 = FFPTime(-1);
                 local_210.MissionConfig = local_64;
-                if (!(::MissionUtils::GetMissionPresentationRuleConfig(local_64).IsSet() && (local_260 == 1)))
+                TDataObjectPtr<FMissionPresentationRuleConfig> local_234 = ::MissionUtils::GetMissionPresentationRuleConfig(local_64);
+                if (!(local_234.IsSet() && (int(local_234.Get().MissionHideType) == 1)))
                 {
                     FFPTime local_206_2 = FFPTime(-1);
                     local_268.MissionConfig = local_64;
@@ -55,7 +52,14 @@ class US_MissionSystem : UECSScriptSystem
                 local_274.SetMissionStatus(local_34.CurMissionStatus);
                 local_272.Add(FStatusTransitionInfo(int(local_34.MissionId), 0, EMissionStatus(0), EMissionStatus(1)));
             }
-            local_286 = GetFirstPhase().IsSet() ? local_40 : 0;
+            if (local_274.GetMissionConfig().Get().GetFirstPhase().IsSet())
+            {
+                local_286 = local_274.GetMissionConfig().Get().GetFirstPhase().Get().DataId;
+            }
+            else
+            {
+                local_286 = 0;
+            }
             local_9 = false;
             for (auto& local_302 : local_34.PhaseTransitionInfos)
             {
@@ -74,14 +78,15 @@ class US_MissionSystem : UECSScriptSystem
             }
             if (local_9 && (int(local_34.CurMissionStatus) == 1) && local_274.GetActivePhaseConfig().IsSet())
             {
-                local_259 = ::MissionUtils::GetMissionPresentationRuleConfig(local_274.GetMissionConfig()).IsSet() && (local_260 == 1);
-                if (local_259)
+                TDataObjectPtr<FMissionPresentationRuleConfig> local_258 = ::MissionUtils::GetMissionPresentationRuleConfig(local_274.GetMissionConfig());
+                if (local_258.IsSet() && (int(local_258.Get().MissionHideType) == 1))
                 {
                     FFPTime local_206_3 = FFPTime(-1);
                     local_268.MissionConfig = local_274.GetMissionConfig();
+                    local_259 = local_258.Get().bAutoPinHUD;
                     if (local_259)
                     {
-                        if (!(::MissionUtils::GetCurrentTrackingMission(local_4, EMissionType(local_360)).IsSet()))
+                        if (!(::MissionUtils::GetCurrentTrackingMission(local_4, EMissionType(local_274.GetMissionConfig().Get().MissionType)).IsSet()))
                         {
                             ::MissionUtils::StartMissionTrackingWithGuide(local_4, local_274.GetMissionConfig(), false);
                         }
@@ -97,6 +102,7 @@ class US_MissionSystem : UECSScriptSystem
                 XLog(ELog(63), FString().Append("[Mission] Move MissionDetail ").Append(local_274.GetMissionName()).Append(" to FinishedList."));
                 local_64 = local_274.GetMissionConfig();
                 local_16.GetModify_FinishedMissionStatus().Add(local_64, local_274);
+                local_16.GetModify_ActiveMissionStatus().Remove(local_34.MissionId);
                 local_272.Add(FStatusTransitionInfo(int(local_34.MissionId), 0, EMissionStatus(1), local_34.CurMissionStatus));
                 if (local_351 == 1)
                 {
@@ -201,7 +207,6 @@ class US_MissionSystem : UECSScriptSystem
     UFUNCTION()
     void ServerJob_HandleMissionStarted(const FCE_OnMissionStarted &inout Event) const
     {
-        int local_125 = 0;
         FECSEntity local_4 = FECSEntity(Event.Sender);
         if (!(local_4.IsValid()) || !(Event.MissionConfig.IsSet()))
         {
@@ -209,7 +214,7 @@ class US_MissionSystem : UECSScriptSystem
             return;
         }
         FMissionDetail local_124;
-        if (!(::MissionUtils::TryFindMissionDetail(local_4, local_125, local_124, false)))
+        if (!(::MissionUtils::TryFindMissionDetail(local_4, Event.MissionConfig.Get().DataId, local_124, false)))
         {
             XError(ELog(63), FString().Append("HandleMissionStarted Failed, MissionDetail not found for MissionConfig: ").Append(Event.MissionConfig.GetDataName()));
             return;
@@ -240,7 +245,7 @@ class US_MissionSystem : UECSScriptSystem
         {
             if (!(::MissionUtils::StopMissionTrackingWithGuide(local_4, Event.MissionConfig)))
             {
-                FString local_16 = FString();
+                XError(ELog(63), FString().Append("[Mission] HandleMissionRequestToggleTrack Failed to stop mission tracking: ").Append(Event.MissionConfig.Get().DataId));
             }
         }
         return;
@@ -259,14 +264,13 @@ class US_MissionSystem : UECSScriptSystem
         {
             XLog(ELog(63), FString().Append("[Mission] Add PerformEntry: ").Append(local_30.GetMissionId()).Append(" ").Append(local_30.GetMissionPhaseId()).Append(" ").Append(local_30.GetOldStatus()).Append(" => ").Append(int(local_30.GetNewStatus())));
             local_16.TransitionInfos.Add(local_30);
-            if (::MissionUtils::FindMissionPhaseConfig(local_30.GetMissionPhaseId()).IsSet() && (local_30.GetExecutionEntryId() > 0))
+            TDataObjectPtr<FMissionPhaseConfig> local_64 = ::MissionUtils::FindMissionPhaseConfig(local_30.GetMissionPhaseId());
+            if (local_64.IsSet() && (local_30.GetExecutionEntryId() > 0))
             {
-                TArrayConstIterator<FMissionActionConfig> local_110;
                 EMissionTriggerType local_91 = this.GetMissionTriggerType(local_30.GetNewStatus());
                 FMissionExecutionEntry local_104 = ::MissionExecUtils::CreateExecutionEntry(local_30.GetExecutionEntryId());
-                for (; local_110.CanProceed;)
+                for (auto& local_118 : local_64.Get().ActionList)
                 {
-                    const FMissionActionConfig& local_118 = local_110.Proceed();
                     if (int(local_118.TriggerType) != int(local_91))
                     {
                         continue;
@@ -309,7 +313,6 @@ class US_MissionSystem : UECSScriptSystem
     }
     int TriggerMissionPhaseActions(const FECSEntity &inout PlayerEntity, const TDataObjectPtr<FMissionConfig> &inout MissionConfig, const TDataObjectPtr<FMissionPhaseConfig> &inout MissionPhaseConfig, const EMissionStatus NewStatus) const
     {
-        TArrayConstIterator<FMissionActionConfig> local_24;
         if (!(MissionConfig.IsSet()) || !(MissionPhaseConfig.IsSet()))
         {
             return 0;
@@ -320,9 +323,8 @@ class US_MissionSystem : UECSScriptSystem
             return 0;
         }
         FMissionExecutionEntry local_18 = ::MissionExecUtils::CreateExecutionEntry();
-        for (; local_24.CanProceed;)
+        for (auto& local_32 : MissionPhaseConfig.Get().ActionList)
         {
-            const FMissionActionConfig& local_32 = local_24.Proceed();
             if (int(local_32.TriggerType) != int(local_4))
             {
                 continue;
@@ -394,7 +396,8 @@ class US_MissionSystem : UECSScriptSystem
         }
         if (local_16.GetActivePhaseConfig().IsSet())
         {
-            if (GetObjective().IsSet() && (0 == ObjectiveId))
+            TDataObjectPtr<FObjectiveConfig> local_42 = local_16.GetActivePhaseConfig().Get().GetObjective();
+            if (local_42.IsSet() && (local_42.Get().DataId == ObjectiveId))
             {
                 int local_18 = int(ObjectiveStatus);
                 if (local_18 <= 3)

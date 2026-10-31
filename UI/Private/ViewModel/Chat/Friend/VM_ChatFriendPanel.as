@@ -258,11 +258,13 @@ struct FVM_ChatFriendPanel : FEUIViewModel
         {
             if ((this.GetFriendDataModel().opArrow().GetFriendList().Num()) > 0)
             {
-                local_9 = EFriendContextStateIndex(1);
+                EFriendContextStateIndex local_10 = EFriendContextStateIndex::FriendOrApplyList;
+                local_9 = local_10;
             }
             else
             {
-                local_9 = EFriendContextStateIndex(0);
+                EFriendContextStateIndex local_10_2 = EFriendContextStateIndex::NoFriend;
+                local_9 = local_10_2;
             }
             this.SetFriendContextState(EFriendContextStateIndex(local_9));
             this.SetbIsShowFriendNum(true);
@@ -281,8 +283,7 @@ struct FVM_ChatFriendPanel : FEUIViewModel
                 }
             }
         }
-        EFriendContextStateIndex local_10 = this.GetFriendContextState();
-        this.SetFriendContextStateIndex(int(local_10));
+        this.SetFriendContextStateIndex(int(this.GetFriendContextState()));
         return;
     }
     void RefreshSearchFriendList()
@@ -525,11 +526,9 @@ FVM_ChatFriendPanel& Create(const UObject ContextObject)
 {
     return FVM_ChatFriendPanel::CreateByManager(EUIInternal::GetContextManager(ContextObject));
 }
-FVM_ChatFriendPanel CreateByManager(const UEUIManagerSubsystem Manager)
+FVM_ChatFriendPanel& CreateByManager(const UEUIManagerSubsystem Manager)
 {
-    FVM_ChatFriendPanel __r;
-    TEUIModelRef<FVM_ChatFriendPanel> local_6 = TEUIModelRef<FVM_ChatFriendPanel>(EUIInternal::MakeModelWithManager(Manager, FVM_ChatFriendPanel::ModelId));
-    return __r;
+    return TEUIModelRef<FVM_ChatFriendPanel>(EUIInternal::MakeModelWithManager(Manager, FVM_ChatFriendPanel::ModelId)).Get();
 }
 void GetModelInfo(FEUIViewModelMetaInfo &inout Result)
 {
@@ -698,7 +697,6 @@ namespace __GeneratedProperties_FVM_ChatFriendPanel
 {
 UScriptStruct StaticStruct()
 {
-    UScriptStruct local_2;
-    return local_2;
+    return __GeneratedProperties_FVM_ChatFriendPanel.Get();
 }
 }

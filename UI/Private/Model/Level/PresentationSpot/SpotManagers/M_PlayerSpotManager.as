@@ -252,30 +252,30 @@ struct FM_PlayerSpotUpdater : FEUIModel
         ::SetPresentationConfig(this.GetSpot().opArrow(), local_10.PlayerPresentationConfig, TEUIModelRef<FM_SpotRegistry>());
         if (local_6.opArrow().IsLocalPlayer())
         {
-            TEUIModelRef<FM_Spot> local_2 = this.GetSpot();
+            ::PresentationDataUtils::SetupSpotPresentationRuleConfigs(this.GetSpot().Get(), local_10.LocalPlayerConfig, TEUIModelRef<FM_SpotRegistry>());
         }
         else
         {
             if (::FTeamUtils::IsInSameTeam(this.GetContext().GetLocalPlayer(), this.GetPlayerEntity()))
             {
-                TEUIModelRef<FM_Spot> local_2_2 = this.GetSpot();
+                ::PresentationDataUtils::SetupSpotPresentationRuleConfigs(this.GetSpot().Get(), local_10.TeammateConfig, TEUIModelRef<FM_SpotRegistry>());
             }
             else
             {
                 GetDefaulted local_26;
                 if ((int(local_26.opCall().GetGameModeType())) != 0)
                 {
-                    TEUIModelRef<FM_Spot> local_2_3 = this.GetSpot();
+                    ::PresentationDataUtils::SetupSpotPresentationRuleConfigs(this.GetSpot().Get(), local_10.EnemyPlayerConfig, TEUIModelRef<FM_SpotRegistry>());
                 }
                 else
                 {
                     if (local_6.opArrow().IsFriendWithLocalPlayer())
                     {
-                        TEUIModelRef<FM_Spot> local_2_4 = this.GetSpot();
+                        ::PresentationDataUtils::SetupSpotPresentationRuleConfigs(this.GetSpot().Get(), local_10.FriendPlayerConfig, TEUIModelRef<FM_SpotRegistry>());
                     }
                     else
                     {
-                        TEUIModelRef<FM_Spot> local_2_5 = this.GetSpot();
+                        ::PresentationDataUtils::SetupSpotPresentationRuleConfigs(this.GetSpot().Get(), local_10.OtherPlayerConfig, TEUIModelRef<FM_SpotRegistry>());
                     }
                 }
             }
@@ -487,8 +487,7 @@ struct FMS_PlayerSpotManager : FEUIModelSingleton
     {
         for (auto& local_20 : this.GetPlayerUpdaters())
         {
-            local_20;
-            opArrow().RemoveSpotFromRegistry();
+            local_20.GetValue().opArrow().RemoveSpotFromRegistry();
         }
         this.GetModify_PlayerUpdaters().Empty(0);
         return;
@@ -541,11 +540,9 @@ FM_PlayerSpotUpdater& Create(const UObject ContextObject, const TEUIModelRef<FM_
 {
     return FM_PlayerSpotUpdater::CreateByManager(EUIInternal::GetContextManager(ContextObject), SpotRegistry, PlayerEntity);
 }
-FM_PlayerSpotUpdater CreateByManager(const UEUIManagerSubsystem Manager, const TEUIModelRef<FM_SpotRegistry> &inout SpotRegistry, const FECSEntity &inout PlayerEntity)
+FM_PlayerSpotUpdater& CreateByManager(const UEUIManagerSubsystem Manager, const TEUIModelRef<FM_SpotRegistry> &inout SpotRegistry, const FECSEntity &inout PlayerEntity)
 {
-    FM_PlayerSpotUpdater __r;
-    TEUIModelRef<FM_PlayerSpotUpdater> local_6 = TEUIModelRef<FM_PlayerSpotUpdater>(EUIInternal::MakeModelWithManager_Generic(Manager, FM_PlayerSpotUpdater::ModelId, 0, SpotRegistry, PlayerEntity));
-    return __r;
+    return TEUIModelRef<FM_PlayerSpotUpdater>(EUIInternal::MakeModelWithManager_Generic(Manager, FM_PlayerSpotUpdater::ModelId, 0, SpotRegistry, PlayerEntity)).Get();
 }
 void GetModelInfo(FEUIModelOnlyMetaInfo &inout Result)
 {
@@ -680,11 +677,9 @@ FMS_PlayerSpotManager& Get(const UObject ContextObject)
 {
     return FMS_PlayerSpotManager::GetByManager(EUIInternal::GetContextManager(ContextObject));
 }
-FMS_PlayerSpotManager GetByManager(const UEUIManagerSubsystem Manager)
+FMS_PlayerSpotManager& GetByManager(const UEUIManagerSubsystem Manager)
 {
-    FMS_PlayerSpotManager __r;
-    TEUIModelRef<FMS_PlayerSpotManager> local_6 = TEUIModelRef<FMS_PlayerSpotManager>(EUIInternal::MakeModelWithManager(Manager, FMS_PlayerSpotManager::ModelId));
-    return __r;
+    return TEUIModelRef<FMS_PlayerSpotManager>(EUIInternal::MakeModelWithManager(Manager, FMS_PlayerSpotManager::ModelId)).Get();
 }
 void GetModelInfo(FEUIModelOnlyMetaInfo &inout Result)
 {

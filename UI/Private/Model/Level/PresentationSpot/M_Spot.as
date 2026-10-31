@@ -184,8 +184,7 @@ struct FM_Spot : FEUIModel
     }
     bool VisibleInRegistry(const TEUIModelRef<FM_SpotRegistry> &inout Registry) const
     {
-        TEUIModelWeakRef<FM_SpotRegistry> local_2;
-        return Registry && this.GetBelongingRegistries().Contains(local_2);
+        return Registry && this.GetBelongingRegistries().Contains(TEUIModelWeakRef<FM_SpotRegistry>(Registry.Get()));
     }
     bool VisibleInAnyRegistry(const TSet<TEUIModelRef<FM_SpotRegistry>> &inout Registries) const
     {
@@ -290,6 +289,7 @@ struct FM_Spot : FEUIModel
         local_1.SetBit(int(Source), false);
         if (local_1.IsEmpty())
         {
+            this.GetModify_DisplayScopeSources().Remove(Scope);
         }
         else
         {
@@ -365,7 +365,6 @@ struct FM_Spot : FEUIModel
     }
     bool IsInAuthoritativeLiveRegistryInternal() const
     {
-        FEUIModelRef local_24;
         FMS_SpotRegistries& local_2 = ::FMS_SpotRegistries::Get(this.GetContext().Manager);
         for (auto& local_18 : this.GetBelongingRegistries())
         {
@@ -374,31 +373,11 @@ struct FM_Spot : FEUIModel
                 continue;
             }
             TEUIModelRef<FM_SpotRegistry> local_20 = local_18.AsRef();
-            bool local_27 = local_2.GetDefaultRegistry();
-            if (!(local_27))
-            {
-                local_27 = false;
-            }
-            else
-            {
-                TEUIModelRef<FM_SpotRegistry> local_26 = local_2.GetDefaultRegistry();
-                local_27 = (local_20 == local_24);
-            }
-            if (local_27)
+            if (local_2.GetDefaultRegistry() && ((local_20 == FEUIModelRef(local_2.GetDefaultRegistry().Get()))))
             {
                 return true;
             }
-            bool local_15 = local_2.GetLevelSpotRegistry();
-            if (!(local_15))
-            {
-                local_15 = false;
-            }
-            else
-            {
-                TEUIModelRef<FM_SpotRegistry> local_22 = local_2.GetLevelSpotRegistry();
-                local_15 = (local_20 == local_24);
-            }
-            if (local_15)
+            if (local_2.GetLevelSpotRegistry() && ((local_20 == FEUIModelRef(local_2.GetLevelSpotRegistry().Get()))))
             {
                 return true;
             }
@@ -685,11 +664,9 @@ FM_Spot& Create(const UObject ContextObject)
 {
     return FM_Spot::CreateByManager(EUIInternal::GetContextManager(ContextObject));
 }
-FM_Spot CreateByManager(const UEUIManagerSubsystem Manager)
+FM_Spot& CreateByManager(const UEUIManagerSubsystem Manager)
 {
-    FM_Spot __r;
-    TEUIModelRef<FM_Spot> local_6 = TEUIModelRef<FM_Spot>(EUIInternal::MakeModelWithManager(Manager, FM_Spot::ModelId));
-    return __r;
+    return TEUIModelRef<FM_Spot>(EUIInternal::MakeModelWithManager(Manager, FM_Spot::ModelId)).Get();
 }
 void GetModelInfo(FEUIModelOnlyMetaInfo &inout Result)
 {

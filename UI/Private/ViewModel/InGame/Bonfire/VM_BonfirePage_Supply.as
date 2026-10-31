@@ -263,9 +263,9 @@ struct FVM_BonfirePage_Supply : FEUIViewModel
     }
     void RefreshRefillStatus()
     {
-        int local_1 = 0;
-        int local_2 = 0;
         int local_4;
+        int local_1 = this.GetRefillTimesSource().GetValue();
+        int local_2 = this.GetRefillTimesMaxSource().GetValue();
         if (this.GetGameModeSettings() != nullptr)
         {
             FNameHandle_EntityBBVarInt local_12;
@@ -1093,11 +1093,9 @@ FVM_BonfirePage_Supply& Create(const UObject ContextObject)
 {
     return FVM_BonfirePage_Supply::CreateByManager(EUIInternal::GetContextManager(ContextObject));
 }
-FVM_BonfirePage_Supply CreateByManager(const UEUIManagerSubsystem Manager)
+FVM_BonfirePage_Supply& CreateByManager(const UEUIManagerSubsystem Manager)
 {
-    FVM_BonfirePage_Supply __r;
-    TEUIModelRef<FVM_BonfirePage_Supply> local_6 = TEUIModelRef<FVM_BonfirePage_Supply>(EUIInternal::MakeModelWithManager(Manager, FVM_BonfirePage_Supply::ModelId));
-    return __r;
+    return TEUIModelRef<FVM_BonfirePage_Supply>(EUIInternal::MakeModelWithManager(Manager, FVM_BonfirePage_Supply::ModelId)).Get();
 }
 void GetModelInfo(FEUIViewModelMetaInfo &inout Result)
 {
@@ -1487,7 +1485,6 @@ namespace __GeneratedProperties_FVM_BonfirePage_Supply
 {
 UScriptStruct StaticStruct()
 {
-    UScriptStruct local_2;
-    return local_2;
+    return __GeneratedProperties_FVM_BonfirePage_Supply.Get();
 }
 }

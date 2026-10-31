@@ -90,7 +90,7 @@ class UESMAction_PerfectDodgeDummyHitBox : UESMBPBaseSpanAction
     void Exit_Implementation(const FESMContext &inout Context, const FESMActionTime &inout Time) const
     {
         Remove local_10;
-        FECSEntity local_4;
+        FECSEntity local_4 = FECSEntity(this.GetInstanceData(Context).DodgeDummyEntity);
         if (local_4.IsValid())
         {
             local_10.opCall();
@@ -114,21 +114,21 @@ class UESMAction_PerfectDodgeDummyHitBox : UESMBPBaseSpanAction
     FCollisionShapeInfo BuildShapeInfo() const
     {
         FCollisionShapeInfo local_7;
-        switch (int(this.ShapeType))
+        switch (this.ShapeType)
         {
-        case 0:
+        case EPerfectDodgePhantomShape::Box:
         {
             local_7.SetShapeType(EECSCollisionShapeType(3));
             local_7.SetHalfExtend(FVector3f(this.BoxHalfExtend));
             break;
         }
-        case 1:
+        case EPerfectDodgePhantomShape::Sphere:
         {
             local_7.SetShapeType(EECSCollisionShapeType(1));
             local_7.SetRadius(this.Radius);
             break;
         }
-        case 2:
+        case EPerfectDodgePhantomShape::Capsule:
         {
             local_7.SetShapeType(EECSCollisionShapeType(2));
             local_7.SetRadius(this.Radius);

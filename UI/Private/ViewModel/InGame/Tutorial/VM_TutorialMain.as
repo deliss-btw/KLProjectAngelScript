@@ -115,11 +115,9 @@ FVM_TutorialMain& Create(const UObject ContextObject, const uint GuideDataId)
 {
     return FVM_TutorialMain::CreateByManager(EUIInternal::GetContextManager(ContextObject), GuideDataId);
 }
-FVM_TutorialMain CreateByManager(const UEUIManagerSubsystem Manager, const uint GuideDataId)
+FVM_TutorialMain& CreateByManager(const UEUIManagerSubsystem Manager, const uint GuideDataId)
 {
-    FVM_TutorialMain __r;
-    TEUIModelRef<FVM_TutorialMain> local_6 = TEUIModelRef<FVM_TutorialMain>(EUIInternal::MakeModelWithManager_Generic(Manager, FVM_TutorialMain::ModelId, 0, GuideDataId));
-    return __r;
+    return TEUIModelRef<FVM_TutorialMain>(EUIInternal::MakeModelWithManager_Generic(Manager, FVM_TutorialMain::ModelId, 0, GuideDataId)).Get();
 }
 void GetModelInfo(FEUIViewModelMetaInfo &inout Result)
 {
@@ -166,7 +164,6 @@ namespace __GeneratedProperties_FVM_TutorialMain
 {
 UScriptStruct StaticStruct()
 {
-    UScriptStruct local_2;
-    return local_2;
+    return __GeneratedProperties_FVM_TutorialMain.Get();
 }
 }

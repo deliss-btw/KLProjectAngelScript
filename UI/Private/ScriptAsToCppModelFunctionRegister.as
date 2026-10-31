@@ -241,14 +241,13 @@ FGameplayTag GetTipsPopupType(const ECommonTipsType Type)
 bool IsSameTipsContentPendingOrDisplaying(FCS_CommonTipsManager &inout Manager, const ECommonTipsType Type, const FText &inout Content)
 {
     FDisplayingCommonTipsInfo local_12;
-    if (Manager.DisplayingTips.Find(Type, local_12) && ((local_12.Content == Content)))
+    if (Manager.DisplayingTips.Find(Type, local_12) && (local_12.Content == Content))
     {
         return true;
     }
     for (auto& local_38 : Manager.PendingTips)
     {
-        local_38;
-        if (0 == int(Type) && (FText() == Content))
+        if (int(local_38.GetValue().Type) == int(Type) && (FText(local_38.GetValue().Content) == Content))
         {
             return true;
         }

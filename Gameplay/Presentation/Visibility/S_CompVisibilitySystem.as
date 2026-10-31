@@ -8,8 +8,7 @@ class US_CompVisibilitySystem : UECSScriptSystem
     void Monitor_UpdateHiddenLogic(const FECSEntity &inout Entity, const FC_CompHidden &inout CompHidden) const
     {
         int local_6 = 0;
-        int local_8 = local_6.HiddenCompName.Num();
-        int local_10 = local_8 - 1;
+        int local_10 = local_6.HiddenCompName.Num() - 1;
         for (; local_10 >= 0; --local_10)
         {
             FName& local_14 = local_6.HiddenCompName[local_10];
@@ -29,7 +28,7 @@ class US_CompVisibilitySystem : UECSScriptSystem
         }
         for (auto& local_32 : CompHidden.GetHiddenCountByName())
         {
-            if (local_10 > 0)
+            if (local_32.GetValue() > 0)
             {
                 if (!(local_6.HiddenCompName.Contains(local_32.GetKey())))
                 {
@@ -37,7 +36,7 @@ class US_CompVisibilitySystem : UECSScriptSystem
                 }
                 continue;
             }
-            if (local_8 < 0)
+            if (local_32.GetValue() < 0)
             {
                 if (!(local_6.UnHiddenCompName.Contains(local_32.GetKey())))
                 {
@@ -120,6 +119,7 @@ class US_CompVisibilitySystem : UECSScriptSystem
             {
                 local_30.SetVisible(false);
             }
+            CompHidden.UnHiddenCompName.Remove(local_26);
             CompHidden.HiddenCompName.Add(local_26);
         }
         CompHidden.NewHiddenCompName.Reset(0);
@@ -130,6 +130,7 @@ class US_CompVisibilitySystem : UECSScriptSystem
             {
                 local_34.SetVisible(true);
             }
+            CompHidden.HiddenCompName.Remove(local_26);
             CompHidden.UnHiddenCompName.Add(local_26);
         }
         CompHidden.NewUnHiddenCompName.Reset(0);
@@ -148,6 +149,8 @@ class US_CompVisibilitySystem : UECSScriptSystem
                 }
                 local_30_2.SetVisible(local_35);
             }
+            CompHidden.HiddenCompName.Remove(local_26);
+            CompHidden.UnHiddenCompName.Remove(local_26);
         }
         CompHidden.NewResetDefaultCompName.Reset(0);
         Remove local_46;

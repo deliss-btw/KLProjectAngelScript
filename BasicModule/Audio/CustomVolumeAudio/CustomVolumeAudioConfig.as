@@ -34,8 +34,8 @@ namespace FCustomVolumeAudioConfigUtils
 UFUNCTION()
 TArray<FCustomVolumeAudioConfig> GetAllConfigs()
 {
-    UDataTable local_8;
     TArray<FCustomVolumeAudioConfig> local_4;
+    UDataTable local_8 = UGameplayConfigsManager::GetCustomVolumeAudioTable().Get();
     if (local_8 == nullptr)
     {
         XWarning(ELog(1), "CustomVolumeAudioConfig DataTable not found!");

@@ -170,11 +170,9 @@ FMS_MainMenuCache& Get(const UObject ContextObject)
 {
     return FMS_MainMenuCache::GetByManager(EUIInternal::GetContextManager(ContextObject));
 }
-FMS_MainMenuCache GetByManager(const UEUIManagerSubsystem Manager)
+FMS_MainMenuCache& GetByManager(const UEUIManagerSubsystem Manager)
 {
-    FMS_MainMenuCache __r;
-    TEUIModelRef<FMS_MainMenuCache> local_6 = TEUIModelRef<FMS_MainMenuCache>(EUIInternal::MakeModelWithManager(Manager, FMS_MainMenuCache::ModelId));
-    return __r;
+    return TEUIModelRef<FMS_MainMenuCache>(EUIInternal::MakeModelWithManager(Manager, FMS_MainMenuCache::ModelId)).Get();
 }
 void GetModelInfo(FEUIModelOnlyMetaInfo &inout Result)
 {
@@ -197,11 +195,9 @@ FVM_MainMenu& Create(const UObject ContextObject)
 {
     return FVM_MainMenu::CreateByManager(EUIInternal::GetContextManager(ContextObject));
 }
-FVM_MainMenu CreateByManager(const UEUIManagerSubsystem Manager)
+FVM_MainMenu& CreateByManager(const UEUIManagerSubsystem Manager)
 {
-    FVM_MainMenu __r;
-    TEUIModelRef<FVM_MainMenu> local_6 = TEUIModelRef<FVM_MainMenu>(EUIInternal::MakeModelWithManager(Manager, FVM_MainMenu::ModelId));
-    return __r;
+    return TEUIModelRef<FVM_MainMenu>(EUIInternal::MakeModelWithManager(Manager, FVM_MainMenu::ModelId)).Get();
 }
 void GetModelInfo(FEUIViewModelMetaInfo &inout Result)
 {
@@ -257,7 +253,6 @@ namespace __GeneratedProperties_FVM_MainMenu
 {
 UScriptStruct StaticStruct()
 {
-    UScriptStruct local_2;
-    return local_2;
+    return __GeneratedProperties_FVM_MainMenu.Get();
 }
 }

@@ -46,20 +46,10 @@ struct FVM_MailBriefItem : FEUIViewModel
     }
     void PostConstruct()
     {
-        bool local_13;
         this.RefreshExpireText();
         FRedDotNodeData local_4 = FRedDotNodeData(GameplayTags::RedDotSystem_Mail_NewMail, this.GetMailData().opArrow().GetMailId());
         this.SetRedDotVM(TEUIModelRef<FVM_RedDot>(::FVM_RedDot::Create(this.GetContext().Manager, local_4)));
-        if (!(this.GetIsUnread()))
-        {
-            local_13 = false;
-        }
-        else
-        {
-            TEUIModelRef<FVM_RedDot> local_12 = this.GetRedDotVM();
-            local_13 = !(HasRedDot());
-        }
-        if (local_13)
+        if (this.GetIsUnread() && !(this.GetRedDotVM().Get().HasRedDot()))
         {
             ::FMS_RedDotSystem::Get(this.GetContext().Manager).GenerateSpecificRedDot(local_4, 1, false);
         }
@@ -194,11 +184,9 @@ FVM_MailBriefItem& Create(const UObject ContextObject, const TEUIModelRef<FM_Mai
 {
     return FVM_MailBriefItem::CreateByManager(EUIInternal::GetContextManager(ContextObject), MailData);
 }
-FVM_MailBriefItem CreateByManager(const UEUIManagerSubsystem Manager, const TEUIModelRef<FM_MailData> &inout MailData)
+FVM_MailBriefItem& CreateByManager(const UEUIManagerSubsystem Manager, const TEUIModelRef<FM_MailData> &inout MailData)
 {
-    FVM_MailBriefItem __r;
-    TEUIModelRef<FVM_MailBriefItem> local_6 = TEUIModelRef<FVM_MailBriefItem>(EUIInternal::MakeModelWithManager_Generic(Manager, FVM_MailBriefItem::ModelId, 0, MailData));
-    return __r;
+    return TEUIModelRef<FVM_MailBriefItem>(EUIInternal::MakeModelWithManager_Generic(Manager, FVM_MailBriefItem::ModelId, 0, MailData)).Get();
 }
 void GetModelInfo(FEUIViewModelMetaInfo &inout Result)
 {
@@ -322,7 +310,6 @@ namespace __GeneratedProperties_FVM_MailBriefItem
 {
 UScriptStruct StaticStruct()
 {
-    UScriptStruct local_2;
-    return local_2;
+    return __GeneratedProperties_FVM_MailBriefItem.Get();
 }
 }

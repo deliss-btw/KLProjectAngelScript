@@ -272,11 +272,9 @@ FVM_NavSampleListItem& Create(const UObject ContextObject, const int Index, cons
 {
     return FVM_NavSampleListItem::CreateByManager(EUIInternal::GetContextManager(ContextObject), Index, Title, Description);
 }
-FVM_NavSampleListItem CreateByManager(const UEUIManagerSubsystem Manager, const int Index, const FText &inout Title, const FText &inout Description)
+FVM_NavSampleListItem& CreateByManager(const UEUIManagerSubsystem Manager, const int Index, const FText &inout Title, const FText &inout Description)
 {
-    FVM_NavSampleListItem __r;
-    TEUIModelRef<FVM_NavSampleListItem> local_6 = TEUIModelRef<FVM_NavSampleListItem>(EUIInternal::MakeModelWithManager_Generic(Manager, FVM_NavSampleListItem::ModelId, 0, Index, Title, Description));
-    return __r;
+    return TEUIModelRef<FVM_NavSampleListItem>(EUIInternal::MakeModelWithManager_Generic(Manager, FVM_NavSampleListItem::ModelId, 0, Index, Title, Description)).Get();
 }
 void GetModelInfo(FEUIViewModelMetaInfo &inout Result)
 {
@@ -353,8 +351,7 @@ namespace __GeneratedProperties_FVM_NavSampleListItem
 {
 UScriptStruct StaticStruct()
 {
-    UScriptStruct local_2;
-    return local_2;
+    return __GeneratedProperties_FVM_NavSampleListItem.Get();
 }
 }
 namespace FVM_NavSampleList
@@ -363,11 +360,9 @@ FVM_NavSampleList& Create(const UObject ContextObject)
 {
     return FVM_NavSampleList::CreateByManager(EUIInternal::GetContextManager(ContextObject));
 }
-FVM_NavSampleList CreateByManager(const UEUIManagerSubsystem Manager)
+FVM_NavSampleList& CreateByManager(const UEUIManagerSubsystem Manager)
 {
-    FVM_NavSampleList __r;
-    TEUIModelRef<FVM_NavSampleList> local_6 = TEUIModelRef<FVM_NavSampleList>(EUIInternal::MakeModelWithManager(Manager, FVM_NavSampleList::ModelId));
-    return __r;
+    return TEUIModelRef<FVM_NavSampleList>(EUIInternal::MakeModelWithManager(Manager, FVM_NavSampleList::ModelId)).Get();
 }
 void GetModelInfo(FEUIViewModelMetaInfo &inout Result)
 {
@@ -418,7 +413,6 @@ namespace __GeneratedProperties_FVM_NavSampleList
 {
 UScriptStruct StaticStruct()
 {
-    UScriptStruct local_2;
-    return local_2;
+    return __GeneratedProperties_FVM_NavSampleList.Get();
 }
 }

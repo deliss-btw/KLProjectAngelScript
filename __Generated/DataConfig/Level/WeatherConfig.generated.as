@@ -3,7 +3,6 @@ namespace __FTODStageConfigFunctions
 UFUNCTION()
 FText __FTODStageConfig_GetDisplayName(const TDataObjectPtr<FTODStageConfig> &inout DataObject)
 {
-    FText __r;
     if ((DataObject == nullptr))
     {
         if (!(EUIGlobals::GIsDuringPropertyConversion))
@@ -13,12 +12,11 @@ FText __FTODStageConfig_GetDisplayName(const TDataObjectPtr<FTODStageConfig> &in
         FTODStageConfig local_68;
         return local_68.DisplayName;
     }
-    return __r;
+    return DataObject.Get().DisplayName;
 }
 UFUNCTION()
 FSoftBrush __FTODStageConfig_GetDisplayIcon(const TDataObjectPtr<FTODStageConfig> &inout DataObject)
 {
-    FSoftBrush __r;
     if ((DataObject == nullptr))
     {
         if (!(EUIGlobals::GIsDuringPropertyConversion))
@@ -28,12 +26,11 @@ FSoftBrush __FTODStageConfig_GetDisplayIcon(const TDataObjectPtr<FTODStageConfig
         FTODStageConfig local_68;
         return local_68.DisplayIcon;
     }
-    return __r;
+    return DataObject.Get().DisplayIcon;
 }
 UFUNCTION()
 FText __FTODStageConfig_GetDisplayHintText(const TDataObjectPtr<FTODStageConfig> &inout DataObject)
 {
-    FText __r;
     if ((DataObject == nullptr))
     {
         if (!(EUIGlobals::GIsDuringPropertyConversion))
@@ -43,7 +40,7 @@ FText __FTODStageConfig_GetDisplayHintText(const TDataObjectPtr<FTODStageConfig>
         FTODStageConfig local_68;
         return local_68.DisplayHintText;
     }
-    return __r;
+    return DataObject.Get().DisplayHintText;
 }
 UFUNCTION()
 FTODStageConfig CastToFTODStageConfig(const TDataObjectPtr<FTODStageConfig> &inout DataObject)
@@ -82,7 +79,7 @@ TMap<TDataObjectPtr<FWorldAreaConfig>, FArtWeatherConfig> __FArtWeatherRegionCon
         FArtWeatherRegionConfig local_38;
         return local_38.GetArtWeatherByRegion();
     }
-    return GetArtWeatherByRegion();
+    return DataObject.Get().GetArtWeatherByRegion();
 }
 UFUNCTION()
 FArtWeatherRegionConfig CastToFArtWeatherRegionConfig(const TDataObjectPtr<FArtWeatherRegionConfig> &inout DataObject)
@@ -150,7 +147,7 @@ TArray<TDataObjectPtr<FItemConfig>> __FBadWeatherDropItemRateUpRule_GetBaseDropI
         FBadWeatherDropItemRateUpRule local_22;
         return local_22.GetBaseDropItems();
     }
-    return GetBaseDropItems();
+    return DataObject.Get().GetBaseDropItems();
 }
 UFUNCTION()
 FBadWeatherDropItemRateUpRule CastToFBadWeatherDropItemRateUpRule(const TDataObjectPtr<FBadWeatherDropItemRateUpRule> &inout DataObject)
@@ -164,7 +161,6 @@ namespace __FWeatherConfigFunctions
 UFUNCTION()
 TSoftClassPtr<AECSPrefab> __FWeatherConfig_GetPrefab(const TDataObjectPtr<FWeatherConfig> &inout DataObject)
 {
-    TSoftClassPtr<AECSPrefab> __r;
     if ((DataObject == nullptr))
     {
         if (!(EUIGlobals::GIsDuringPropertyConversion))
@@ -174,12 +170,11 @@ TSoftClassPtr<AECSPrefab> __FWeatherConfig_GetPrefab(const TDataObjectPtr<FWeath
         FWeatherConfig local_276;
         return local_276.Prefab;
     }
-    return __r;
+    return DataObject.Get().Prefab;
 }
 UFUNCTION()
 TSoftClassPtr<UEASAbility> __FWeatherConfig_GetAbility(const TDataObjectPtr<FWeatherConfig> &inout DataObject)
 {
-    TSoftClassPtr<UEASAbility> __r;
     if ((DataObject == nullptr))
     {
         if (!(EUIGlobals::GIsDuringPropertyConversion))
@@ -189,12 +184,11 @@ TSoftClassPtr<UEASAbility> __FWeatherConfig_GetAbility(const TDataObjectPtr<FWea
         FWeatherConfig local_276;
         return local_276.Ability;
     }
-    return __r;
+    return DataObject.Get().Ability;
 }
 UFUNCTION()
 FBuffConfigRef __FWeatherConfig_GetBuffConfig(const TDataObjectPtr<FWeatherConfig> &inout DataObject)
 {
-    FBuffConfigRef __r;
     if ((DataObject == nullptr))
     {
         if (!(EUIGlobals::GIsDuringPropertyConversion))
@@ -204,7 +198,7 @@ FBuffConfigRef __FWeatherConfig_GetBuffConfig(const TDataObjectPtr<FWeatherConfi
         FWeatherConfig local_276;
         return local_276.BuffConfig;
     }
-    return __r;
+    return DataObject.Get().BuffConfig;
 }
 UFUNCTION()
 TDataObjectPtr<FMessageHintConfig> __FWeatherConfig_GetBuffMessageHintConfig(const TDataObjectPtr<FWeatherConfig> &inout DataObject)
@@ -218,7 +212,7 @@ TDataObjectPtr<FMessageHintConfig> __FWeatherConfig_GetBuffMessageHintConfig(con
         FWeatherConfig local_276;
         return local_276.GetBuffMessageHintConfig();
     }
-    return GetBuffMessageHintConfig();
+    return DataObject.Get().GetBuffMessageHintConfig();
 }
 UFUNCTION()
 float32 __FWeatherConfig_GetBuffConfigAddDelay(const TDataObjectPtr<FWeatherConfig> &inout DataObject)
@@ -238,7 +232,6 @@ float32 __FWeatherConfig_GetBuffConfigAddDelay(const TDataObjectPtr<FWeatherConf
 UFUNCTION()
 FText __FWeatherConfig_GetDisplayName(const TDataObjectPtr<FWeatherConfig> &inout DataObject)
 {
-    FText __r;
     if ((DataObject == nullptr))
     {
         if (!(EUIGlobals::GIsDuringPropertyConversion))
@@ -248,12 +241,11 @@ FText __FWeatherConfig_GetDisplayName(const TDataObjectPtr<FWeatherConfig> &inou
         FWeatherConfig local_276;
         return local_276.DisplayName;
     }
-    return __r;
+    return DataObject.Get().DisplayName;
 }
 UFUNCTION()
 FSoftBrush __FWeatherConfig_GetDisplayIcon(const TDataObjectPtr<FWeatherConfig> &inout DataObject)
 {
-    FSoftBrush __r;
     if ((DataObject == nullptr))
     {
         if (!(EUIGlobals::GIsDuringPropertyConversion))
@@ -263,12 +255,11 @@ FSoftBrush __FWeatherConfig_GetDisplayIcon(const TDataObjectPtr<FWeatherConfig> 
         FWeatherConfig local_276;
         return local_276.DisplayIcon;
     }
-    return __r;
+    return DataObject.Get().DisplayIcon;
 }
 UFUNCTION()
 FSoftBrush __FWeatherConfig_GetLargeIcon(const TDataObjectPtr<FWeatherConfig> &inout DataObject)
 {
-    FSoftBrush __r;
     if ((DataObject == nullptr))
     {
         if (!(EUIGlobals::GIsDuringPropertyConversion))
@@ -278,12 +269,11 @@ FSoftBrush __FWeatherConfig_GetLargeIcon(const TDataObjectPtr<FWeatherConfig> &i
         FWeatherConfig local_276;
         return local_276.LargeIcon;
     }
-    return __r;
+    return DataObject.Get().LargeIcon;
 }
 UFUNCTION()
 FText __FWeatherConfig_GetDisplayHintContent(const TDataObjectPtr<FWeatherConfig> &inout DataObject)
 {
-    FText __r;
     if ((DataObject == nullptr))
     {
         if (!(EUIGlobals::GIsDuringPropertyConversion))
@@ -293,12 +283,11 @@ FText __FWeatherConfig_GetDisplayHintContent(const TDataObjectPtr<FWeatherConfig
         FWeatherConfig local_276;
         return local_276.DisplayHintContent;
     }
-    return __r;
+    return DataObject.Get().DisplayHintContent;
 }
 UFUNCTION()
 FText __FWeatherConfig_GetWeatherAbilityDescription(const TDataObjectPtr<FWeatherConfig> &inout DataObject)
 {
-    FText __r;
     if ((DataObject == nullptr))
     {
         if (!(EUIGlobals::GIsDuringPropertyConversion))
@@ -308,12 +297,11 @@ FText __FWeatherConfig_GetWeatherAbilityDescription(const TDataObjectPtr<FWeathe
         FWeatherConfig local_276;
         return local_276.WeatherAbilityDescription;
     }
-    return __r;
+    return DataObject.Get().WeatherAbilityDescription;
 }
 UFUNCTION()
 FText __FWeatherConfig_GetWeatherChangeText(const TDataObjectPtr<FWeatherConfig> &inout DataObject)
 {
-    FText __r;
     if ((DataObject == nullptr))
     {
         if (!(EUIGlobals::GIsDuringPropertyConversion))
@@ -323,39 +311,35 @@ FText __FWeatherConfig_GetWeatherChangeText(const TDataObjectPtr<FWeatherConfig>
         FWeatherConfig local_276;
         return local_276.WeatherChangeText;
     }
-    return __r;
+    return DataObject.Get().WeatherChangeText;
 }
 UFUNCTION()
 bool __FWeatherConfig_GetbBadWeather(const TDataObjectPtr<FWeatherConfig> &inout DataObject)
 {
-    bool local_1 = false;
     if ((DataObject == nullptr))
     {
-        local_1 = !(EUIGlobals::GIsDuringPropertyConversion);
-        if (local_1)
+        if (!(EUIGlobals::GIsDuringPropertyConversion))
         {
             FBlueprintDebugFunctions::ThrowScriptException("Get 'bBadWeather' from a null 'FWeatherConfig' DataObject!");
         }
         FWeatherConfig local_276;
         return local_276.bBadWeather;
     }
-    return local_1;
+    return DataObject.Get().bBadWeather;
 }
 UFUNCTION()
 bool __FWeatherConfig_GetbCommissionRewardUp(const TDataObjectPtr<FWeatherConfig> &inout DataObject)
 {
-    bool local_1 = false;
     if ((DataObject == nullptr))
     {
-        local_1 = !(EUIGlobals::GIsDuringPropertyConversion);
-        if (local_1)
+        if (!(EUIGlobals::GIsDuringPropertyConversion))
         {
             FBlueprintDebugFunctions::ThrowScriptException("Get 'bCommissionRewardUp' from a null 'FWeatherConfig' DataObject!");
         }
         FWeatherConfig local_276;
         return local_276.bCommissionRewardUp;
     }
-    return local_1;
+    return DataObject.Get().bCommissionRewardUp;
 }
 UFUNCTION()
 TDataObjectPtr<FBadWeatherDropItemRateUpRule> __FWeatherConfig_GetBadWeatherUpRule(const TDataObjectPtr<FWeatherConfig> &inout DataObject)
@@ -369,12 +353,11 @@ TDataObjectPtr<FBadWeatherDropItemRateUpRule> __FWeatherConfig_GetBadWeatherUpRu
         FWeatherConfig local_276;
         return local_276.GetBadWeatherUpRule();
     }
-    return GetBadWeatherUpRule();
+    return DataObject.Get().GetBadWeatherUpRule();
 }
 UFUNCTION()
 TMap<EGlobalEnvEffectWeatherType, FGlobalEnvEffectWeatherConfig> __FWeatherConfig_GetWeatherEffect(const TDataObjectPtr<FWeatherConfig> &inout DataObject)
 {
-    TMap<EGlobalEnvEffectWeatherType, FGlobalEnvEffectWeatherConfig> __r;
     if ((DataObject == nullptr))
     {
         if (!(EUIGlobals::GIsDuringPropertyConversion))
@@ -384,12 +367,11 @@ TMap<EGlobalEnvEffectWeatherType, FGlobalEnvEffectWeatherConfig> __FWeatherConfi
         FWeatherConfig local_276;
         return local_276.WeatherEffect;
     }
-    return __r;
+    return DataObject.Get().WeatherEffect;
 }
 UFUNCTION()
 FGameplayTagContainer __FWeatherConfig_GetWeatherElements(const TDataObjectPtr<FWeatherConfig> &inout DataObject)
 {
-    FGameplayTagContainer __r;
     if ((DataObject == nullptr))
     {
         if (!(EUIGlobals::GIsDuringPropertyConversion))
@@ -399,7 +381,7 @@ FGameplayTagContainer __FWeatherConfig_GetWeatherElements(const TDataObjectPtr<F
         FWeatherConfig local_276;
         return local_276.WeatherElements;
     }
-    return __r;
+    return DataObject.Get().WeatherElements;
 }
 UFUNCTION()
 TDataObjectPtr<FArtWeatherRegionConfig> __FWeatherConfig_GetArtWeatherConfig(const TDataObjectPtr<FWeatherConfig> &inout DataObject)
@@ -413,7 +395,7 @@ TDataObjectPtr<FArtWeatherRegionConfig> __FWeatherConfig_GetArtWeatherConfig(con
         FWeatherConfig local_276;
         return local_276.GetArtWeatherConfig();
     }
-    return GetArtWeatherConfig();
+    return DataObject.Get().GetArtWeatherConfig();
 }
 UFUNCTION()
 FWeatherConfig CastToFWeatherConfig(const TDataObjectPtr<FWeatherConfig> &inout DataObject)
@@ -427,7 +409,6 @@ namespace __FWeatherGenerateTemplateFunctions
 UFUNCTION()
 TArray<FWeatherChanceConfig> __FWeatherGenerateTemplate_GetWeatherChances(const TDataObjectPtr<FWeatherGenerateTemplate> &inout DataObject)
 {
-    TArray<FWeatherChanceConfig> __r;
     if ((DataObject == nullptr))
     {
         if (!(EUIGlobals::GIsDuringPropertyConversion))
@@ -437,7 +418,7 @@ TArray<FWeatherChanceConfig> __FWeatherGenerateTemplate_GetWeatherChances(const 
         FWeatherGenerateTemplate local_20;
         return local_20.WeatherChances;
     }
-    return __r;
+    return DataObject.Get().WeatherChances;
 }
 UFUNCTION()
 FWeatherGenerateTemplate CastToFWeatherGenerateTemplate(const TDataObjectPtr<FWeatherGenerateTemplate> &inout DataObject)
@@ -460,7 +441,7 @@ TMap<TDataObjectPtr<FWorldAreaConfig>, FWeatherGenerateTemplateWrapper> __FAreaW
         FAreaWeatherTemplateConfig local_34;
         return local_34.GetWeatherTemplateByRegion();
     }
-    return GetWeatherTemplateByRegion();
+    return DataObject.Get().GetWeatherTemplateByRegion();
 }
 UFUNCTION()
 FAreaWeatherTemplateConfig CastToFAreaWeatherTemplateConfig(const TDataObjectPtr<FAreaWeatherTemplateConfig> &inout DataObject)

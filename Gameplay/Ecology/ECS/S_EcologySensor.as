@@ -53,13 +53,12 @@ class US_EcologySensor : UECSScriptSystem
         int local_1 = true;
         FScopeCycleCounter local_3 = FScopeCycleCounter(FStatID(n"Sensor_HandleWeatherChanged"), false);
         FName local_7 = ::FWeatherUtils::GetWeatherNameFromRegionEntity(Event.Sender);
-        AActor local_18;
-        bool local_2 = !(local_16) || (local_18 == nullptr);
+        bool local_2 = !(local_16) || (local_16.RegionVolume.Get() == nullptr);
         if (local_2)
         {
             return;
         }
-        AECSRegionVolume local_24 = (Cast<AECSRegionVolume>(local_18));
+        AECSRegionVolume local_24 = (Cast<AECSRegionVolume>(local_16.RegionVolume.Get()));
         FECSWorldPtr local_28 = ECS::GetECSWorld();
         FECSWorldPtr local_28_2 = ECS::GetECSWorld();
         FEcologyConditionWorldContext local_62 = FEcologyConditionWorldContext(::FEcologySceneInfoUtils::GetCurrentTimeSegments(local_30), local_7, ECS::GetECSWorld());

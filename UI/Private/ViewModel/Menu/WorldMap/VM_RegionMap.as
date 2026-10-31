@@ -358,6 +358,8 @@ struct FVM_RegionMap : FEUIViewModel
                 continue;
             }
             TEUIModelRef<FM_SpotView> local_32 = this.GetSpotView();
+            FRegionMapSpotDisplayPrioritySorter local_62;
+            local_30[EWorldMapSpotCategory(local_53_2)].Spots.Sort(local_62);
             FText local_66;
             if (local_2.SpotCategoryNames.Find(EWorldMapSpotCategory(local_53_2), local_66))
             {
@@ -820,21 +822,17 @@ FVM_RegionMap& Create(const UObject ContextObject, const TDataObjectPtr<FLevelIn
 {
     return FVM_RegionMap::CreateByManager(EUIInternal::GetContextManager(ContextObject), LevelInfoConfig);
 }
-FVM_RegionMap CreateByManager(const UEUIManagerSubsystem Manager, const TDataObjectPtr<FLevelInfoConfig> &inout LevelInfoConfig)
+FVM_RegionMap& CreateByManager(const UEUIManagerSubsystem Manager, const TDataObjectPtr<FLevelInfoConfig> &inout LevelInfoConfig)
 {
-    FVM_RegionMap __r;
-    TEUIModelRef<FVM_RegionMap> local_6 = TEUIModelRef<FVM_RegionMap>(EUIInternal::MakeModelWithManager_Generic(Manager, FVM_RegionMap::ModelId, 0, LevelInfoConfig));
-    return __r;
+    return TEUIModelRef<FVM_RegionMap>(EUIInternal::MakeModelWithManager_Generic(Manager, FVM_RegionMap::ModelId, 0, LevelInfoConfig)).Get();
 }
 FVM_RegionMap& Create(const UObject ContextObject, const TEUIModelRef<FM_Spot> &inout Spot, const TDataObjectPtr<FLevelInfoConfig> &inout SpotLevel)
 {
     return FVM_RegionMap::CreateByManager(EUIInternal::GetContextManager(ContextObject), Spot, SpotLevel);
 }
-FVM_RegionMap CreateByManager(const UEUIManagerSubsystem Manager, const TEUIModelRef<FM_Spot> &inout Spot, const TDataObjectPtr<FLevelInfoConfig> &inout SpotLevel)
+FVM_RegionMap& CreateByManager(const UEUIManagerSubsystem Manager, const TEUIModelRef<FM_Spot> &inout Spot, const TDataObjectPtr<FLevelInfoConfig> &inout SpotLevel)
 {
-    FVM_RegionMap __r;
-    TEUIModelRef<FVM_RegionMap> local_6 = TEUIModelRef<FVM_RegionMap>(EUIInternal::MakeModelWithManager_Generic(Manager, FVM_RegionMap::ModelId, 1, Spot, SpotLevel));
-    return __r;
+    return TEUIModelRef<FVM_RegionMap>(EUIInternal::MakeModelWithManager_Generic(Manager, FVM_RegionMap::ModelId, 1, Spot, SpotLevel)).Get();
 }
 void GetModelInfo(FEUIViewModelMetaInfo &inout Result)
 {
@@ -993,7 +991,6 @@ namespace __GeneratedProperties_FVM_RegionMap
 {
 UScriptStruct StaticStruct()
 {
-    UScriptStruct local_2;
-    return local_2;
+    return __GeneratedProperties_FVM_RegionMap.Get();
 }
 }

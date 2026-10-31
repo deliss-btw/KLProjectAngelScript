@@ -8,6 +8,8 @@ struct FASWaitForESMActionEvent : FECSAsyncAction
     UPROPERTY()
     FECSAsyncActionDelegate OnActionEvent;
 
+    default m_ScriptOverrideMeta = Cast<UASStruct>(FASWaitForESMActionEvent.Get());
+
     FASWaitForESMActionEvent()
     {
         this.__InitDefaults();

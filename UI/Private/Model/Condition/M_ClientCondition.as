@@ -81,6 +81,7 @@ struct FMS_ClientCondition : FEUIModelSingleton
         }
         else
         {
+            this.GetModify_ActiveWidgetTags().Remove(WidgetTag);
         }
         FEUIModelRef local_8 = FEUIModelRef(this);
         FEUIMessageBus::Publish(EUIMessageBus).opCall(local_8).ChangedWidgetTag = WidgetTag;
@@ -147,10 +148,11 @@ struct FMS_ClientCondition : FEUIModelSingleton
             local_18 = false;
             for (auto& local_32 : local_16.Conditions)
             {
-                if (FInstancedStruct::GetPtr(local_32).opCall())
+                TConstRawPtr<FClientCond_InputType> local_38 = FInstancedStruct::GetPtr(local_32).opCall();
+                if (local_38)
                 {
                     local_17 = true;
-                    local_18 = local_18 || this.IsInputTypeMet();
+                    local_18 = local_18 || this.IsInputTypeMet(local_38.Get());
                 }
             }
             if (local_17 && !(local_18))
@@ -188,32 +190,36 @@ struct FMS_ClientCondition : FEUIModelSingleton
     }
     bool IsConditionMet(const FInstancedStruct &inout Cond, const EClientConditionTriggerReason Reason) const
     {
-        int local_54 = 0;
         if (FInstancedStruct::GetPtr(Cond).opCall())
         {
             FGameplayTag local_11;
             return !(local_11.IsValid()) || this.GetActiveWidgetTags().Contains(local_11);
         }
-        if (FInstancedStruct::GetPtr(Cond).opCall())
+        TConstRawPtr<FClientCond_CommissionInMap> local_18 = FInstancedStruct::GetPtr(Cond).opCall();
+        if (local_18)
         {
-            return this.IsCommissionInMapMet();
+            return this.IsCommissionInMapMet(local_18.Get());
         }
-        if (FInstancedStruct::GetPtr(Cond).opCall())
+        TConstRawPtr<FClientCond_LevelType> local_26 = FInstancedStruct::GetPtr(Cond).opCall();
+        if (local_26)
         {
-            return this.IsLevelTypeMet();
+            return this.IsLevelTypeMet(local_26.Get());
         }
-        if (FInstancedStruct::GetPtr(Cond).opCall())
+        TConstRawPtr<FClientCond_InputType> local_34 = FInstancedStruct::GetPtr(Cond).opCall();
+        if (local_34)
         {
-            return this.IsInputTypeMet();
+            return this.IsInputTypeMet(local_34.Get());
         }
-        if (FInstancedStruct::GetPtr(Cond).opCall())
+        TConstRawPtr<FClientCond_InTeam> local_42 = FInstancedStruct::GetPtr(Cond).opCall();
+        if (local_42)
         {
-            return this.IsInTeamMet();
+            return this.IsInTeamMet(local_42.Get());
         }
-        if (FInstancedStruct::GetPtr(Cond).opCall())
+        TConstRawPtr<FClientCond_TriggerReason> local_50 = FInstancedStruct::GetPtr(Cond).opCall();
+        if (local_50)
         {
             int local_53;
-            local_53 = local_54;
+            local_53 = int(local_50.Get()._base_FClientConditionBase);
             int local_55 = local_53;
             return (local_55 != 0 && (local_53 == int(Reason)));
         }
@@ -246,16 +252,18 @@ struct FMS_ClientCondition : FEUIModelSingleton
     }
     bool IsCommissionInMapMet(const FClientCond_CommissionInMap &inout Cond) const
     {
+        TDataObjectPtr<FCommissionConfig> local_24;
         if ((!(TDataObjectPtr<FCommissionConfig>())))
         {
             return false;
         }
-        if (!(::CommissionUtils::GetCurrentCommissionConfig()) || (0 != 0))
+        TDataObjectPtr<FCommissionConfig> local_48 = ::CommissionUtils::GetCurrentCommissionConfig();
+        if (!(local_48) || (local_48.Get().DataId != local_24.Get().DataId))
         {
             return false;
         }
         TDataObjectPtr<FLevelInfoConfig> local_102 = ::FLevelUtils::GetCurrentLevelInfoConfig(nullptr);
-        TDataObjectPtr<FLevelInfoConfig> local_150 = GetLevelInfoConfig();
+        TDataObjectPtr<FLevelInfoConfig> local_150 = local_24.Get().GetLevelInfoConfig();
         if ((!(local_102) || !(local_150)))
         {
             return false;
@@ -308,11 +316,9 @@ FMS_ClientCondition& Get(const UObject ContextObject)
 {
     return FMS_ClientCondition::GetByManager(EUIInternal::GetContextManager(ContextObject));
 }
-FMS_ClientCondition GetByManager(const UEUIManagerSubsystem Manager)
+FMS_ClientCondition& GetByManager(const UEUIManagerSubsystem Manager)
 {
-    FMS_ClientCondition __r;
-    TEUIModelRef<FMS_ClientCondition> local_6 = TEUIModelRef<FMS_ClientCondition>(EUIInternal::MakeModelWithManager(Manager, FMS_ClientCondition::ModelId));
-    return __r;
+    return TEUIModelRef<FMS_ClientCondition>(EUIInternal::MakeModelWithManager(Manager, FMS_ClientCondition::ModelId)).Get();
 }
 void GetModelInfo(FEUIModelOnlyMetaInfo &inout Result)
 {

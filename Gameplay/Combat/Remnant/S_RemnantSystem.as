@@ -401,7 +401,6 @@ void EquipRemnantSkillForNewPawnEntity(const FECSEntity &inout OldPawnEntity, co
 bool CheckCanChangeRemnantSkill(const FECSEntity &inout PlayerEntity, const FECSEntity &inout PawnEntity)
 {
     int local_8 = 0;
-    USkillConfig local_10;
     if (!(PlayerEntity))
     {
         return false;
@@ -410,6 +409,7 @@ bool CheckCanChangeRemnantSkill(const FECSEntity &inout PlayerEntity, const FECS
     {
         return true;
     }
+    USkillConfig local_10 = local_8.GetRemnantItemConfig().Get().ItemSkillConfig;
     if (local_10 != nullptr)
     {
         int local_12 = FSkillUtils::GetSkillIndex(PawnEntity, local_10);

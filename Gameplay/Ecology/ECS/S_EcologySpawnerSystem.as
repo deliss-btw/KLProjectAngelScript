@@ -63,16 +63,42 @@ class US_EcologySpawnerSystem : UECSScriptSystem
         if (local_5_2)
         {
             const FLevelConfigInstance& local_28 = local_26.GetLevelUnitConfigInstance();
-            if (FInstancedStruct::GetPtr(local_28.GetConfigData()).opCall())
+            TConstRawPtr<FCommonEcologyUnitConfig> local_34 = FInstancedStruct::GetPtr(local_28.GetConfigData()).opCall();
+            if (local_34)
             {
-                return TConstRawPtr<FVirtualConfigData>();
+                return TConstRawPtr<FVirtualConfigData>(local_34.Get().ConfigData);
             }
         }
-        return local_16;
+        return TConstRawPtr<FVirtualConfigData>();
     }
     void SpawnBossByMixBossSpawner(const FECSEntity &inout SpawnerEntity, FC_EcologyMixRandomBossSpawner &inout ModifiabSpawnerComponent, const FC_EcologyConfigReference &inout ConfigRef) const
     {
-        // body not fully recovered — stub [argmismatch:argint]
+        int local_28 = 0;
+        FECSEntity local_4 = FECSEntity(ConfigRef.ConfigRef);
+        if (!(local_4))
+        {
+            return;
+        }
+        TConstRawPtr<FVirtualConfigData> local_12 = this.ReadSpawnerConfig(local_4);
+        if (!(local_12))
+        {
+            XError(ELog(30), "无法获取MixBossSpawnerConfig，刷怪器配置无效");
+            return;
+        }
+        TConstRawPtr<FMixedRandomBossSpawnerConfig> local_22 = FInstancedStruct::GetPtr(local_12.Get().GetConfigData()).opCall();
+        if (!(local_22))
+        {
+            XError(ELog(30), "无法获取混合Boss刷怪器配置，ConfigData无效");
+            return;
+        }
+        FECSWorldPtr local_26 = ECS::GetECSWorld();
+        int local_29 = 0;
+        for (; local_29 < local_22.Get().SpawnPool.Num(); )
+        {
+            this.SpawnBossBySpawnPool(SpawnerEntity, local_28, ModifiabSpawnerComponent, local_22.Get(), local_29);
+            ++local_29;
+        }
+        return;
     }
     void SpawnBossBySpawnPool(const FECSEntity &inout SpawnerEntity, FCS_EcologyScriptGlobalContext &inout EcologyContext, FC_EcologyMixRandomBossSpawner &inout ModifiabSpawnerComponent, const FMixedRandomBossSpawnerConfig &inout ConfigData, const int PoolIndex) const
     {
@@ -247,9 +273,7 @@ class US_EcologySpawnerSystem : UECSScriptSystem
         FEcologyFlockSpawnParam local_426;
         FCreatureConfigProxy local_452 = local_16.GetCreatureProxy();
         local_426.SpawnNum = 1;
-        TDataObjectPtr<FEcologyCreatureDefinitionRow> local_54 = local_16.GetCreatureType();
-        UBaseEcologyPlanerDefine local_454;
-        local_426.PlanerDefine = local_454;
+        local_426.PlanerDefine = local_16.GetCreatureType().Get().DefaultPlanerDefine;
         FRuntimeSpawnerReference local_456;
         local_456.SpawnerEntity = SpawnerEntity.GetId();
         FECSEntity local_460 = ::FEcologySpawnerUtils::SpawnEcologyFlockEntity(local_426, local_456, local_16.ActivityVolumes);
@@ -435,17 +459,19 @@ class US_EcologySpawnerSystem : UECSScriptSystem
     UFUNCTION()
     void Job_RefreshConstNPCSpawner(const FECSEntity &inout SpawnerEntity, FC_EcologyRuntimeConstNPCSpawner &inout NPCSpawner, const FC_EcologyConfigReference &inout ConfigRef) const
     {
-        const FConstNPCSpawnerConfig& local_16;
         int local_26 = 0;
         int local_138 = 0;
-        if (!(ConfigRef.ReadSpawnerConfig()))
+        TConstRawPtr<FVirtualConfigData> local_2 = ConfigRef.ReadSpawnerConfig();
+        if (!(local_2))
         {
             return;
         }
-        if (!(FInstancedStruct::GetPtr(GetConfigData()).opCall()))
+        TConstRawPtr<FConstNPCSpawnerConfig> local_12 = FInstancedStruct::GetPtr(local_2.Get().GetConfigData()).opCall();
+        if (!(local_12))
         {
             return;
         }
+        const FConstNPCSpawnerConfig& local_16 = local_12.Get();
         if (!(local_16.NPCConfig))
         {
             return;

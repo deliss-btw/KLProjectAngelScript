@@ -3,7 +3,6 @@ namespace __FCutSceneDataFunctions
 UFUNCTION()
 TSoftObjectPtr<ULevelSequence> __FCutSceneData_GetLevelSequence(const TDataObjectPtr<FCutSceneData> &inout DataObject)
 {
-    TSoftObjectPtr<ULevelSequence> __r;
     if ((DataObject == nullptr))
     {
         if (!(EUIGlobals::GIsDuringPropertyConversion))
@@ -13,12 +12,11 @@ TSoftObjectPtr<ULevelSequence> __FCutSceneData_GetLevelSequence(const TDataObjec
         FCutSceneData local_46;
         return local_46.LevelSequence;
     }
-    return __r;
+    return DataObject.Get().LevelSequence;
 }
 UFUNCTION()
 TMap<FName, FCutSceneEntityInfo> __FCutSceneData_GetEntityInfos(const TDataObjectPtr<FCutSceneData> &inout DataObject)
 {
-    TMap<FName, FCutSceneEntityInfo> __r;
     if ((DataObject == nullptr))
     {
         if (!(EUIGlobals::GIsDuringPropertyConversion))
@@ -28,7 +26,7 @@ TMap<FName, FCutSceneEntityInfo> __FCutSceneData_GetEntityInfos(const TDataObjec
         FCutSceneData local_46;
         return local_46.EntityInfos;
     }
-    return __r;
+    return DataObject.Get().EntityInfos;
 }
 UFUNCTION()
 FCutSceneData CastToFCutSceneData(const TDataObjectPtr<FCutSceneData> &inout DataObject)

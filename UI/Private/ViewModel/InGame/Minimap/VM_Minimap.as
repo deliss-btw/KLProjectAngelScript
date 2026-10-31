@@ -371,21 +371,17 @@ FVM_Minimap& Create(const UObject ContextObject, const FVector2D &inout MinimapC
 {
     return FVM_Minimap::CreateByManager(EUIInternal::GetContextManager(ContextObject), MinimapCenter);
 }
-FVM_Minimap CreateByManager(const UEUIManagerSubsystem Manager, const FVector2D &inout MinimapCenter)
+FVM_Minimap& CreateByManager(const UEUIManagerSubsystem Manager, const FVector2D &inout MinimapCenter)
 {
-    FVM_Minimap __r;
-    TEUIModelRef<FVM_Minimap> local_6 = TEUIModelRef<FVM_Minimap>(EUIInternal::MakeModelWithManager_Generic(Manager, FVM_Minimap::ModelId, 0, MinimapCenter));
-    return __r;
+    return TEUIModelRef<FVM_Minimap>(EUIInternal::MakeModelWithManager_Generic(Manager, FVM_Minimap::ModelId, 0, MinimapCenter)).Get();
 }
 FVM_Minimap& Create(const UObject ContextObject)
 {
     return FVM_Minimap::CreateByManager(EUIInternal::GetContextManager(ContextObject));
 }
-FVM_Minimap CreateByManager(const UEUIManagerSubsystem Manager)
+FVM_Minimap& CreateByManager(const UEUIManagerSubsystem Manager)
 {
-    FVM_Minimap __r;
-    TEUIModelRef<FVM_Minimap> local_6 = TEUIModelRef<FVM_Minimap>(EUIInternal::MakeModelWithManager(Manager, FVM_Minimap::ModelId));
-    return __r;
+    return TEUIModelRef<FVM_Minimap>(EUIInternal::MakeModelWithManager(Manager, FVM_Minimap::ModelId)).Get();
 }
 void GetModelInfo(FEUIViewModelMetaInfo &inout Result)
 {
@@ -533,7 +529,6 @@ namespace __GeneratedProperties_FVM_Minimap
 {
 UScriptStruct StaticStruct()
 {
-    UScriptStruct local_2;
-    return local_2;
+    return __GeneratedProperties_FVM_Minimap.Get();
 }
 }

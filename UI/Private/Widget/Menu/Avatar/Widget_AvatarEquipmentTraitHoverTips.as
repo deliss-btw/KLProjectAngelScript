@@ -17,7 +17,7 @@ class UWidget_AvatarEquipmentTraitHoverTips : UEUIUserWidget
     UFUNCTION()
     TArray<FEUIModelWeakRef> TraitHoverTips_ListItems() const
     {
-        FVM_AvatarEquipmentTraitHoverTips& local_2;
+        FVM_AvatarEquipmentTraitHoverTips& local_2 = this.TraitHoverTips.Get();
         TArray<FEUIModelWeakRef> local_16;
         if (local_2)
         {

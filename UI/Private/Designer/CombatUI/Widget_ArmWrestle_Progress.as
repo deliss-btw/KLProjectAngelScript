@@ -24,9 +24,9 @@ class UWidget_ArmWrestle_Progress : UEUIUserWidget
     void Tick_Implementation(const FGeometry &inout MyGeometry, const float32 InDeltaTime)
     {
         this.timer -= InDeltaTime;
+        FVMS_ProgressOperation& local_4 = this.VMS_ProgressOperation.Get();
         if (this.timer <= 0.0f)
         {
-            FVMS_ProgressOperation local_4;
             FEUIWidget::RemoveWidget(local_4.GetPageHandle());
             this.timer = 9999.0f;
         }
@@ -35,7 +35,7 @@ class UWidget_ArmWrestle_Progress : UEUIUserWidget
     UFUNCTION()
     void OnStateChanged(const EProgressOperationState State)
     {
-        FVMS_ProgressOperation& local_2;
+        FVMS_ProgressOperation& local_2 = this.VMS_ProgressOperation.Get();
         if (int(State) > 3)
         {
             FEUIWidget::RemoveWidget(local_2.GetPageHandle());
@@ -49,14 +49,14 @@ class UWidget_ArmWrestle_Progress : UEUIUserWidget
     UFUNCTION()
     float32 VMS_ProgressOperation_ValueProgress() const
     {
-        FVMS_ProgressOperation& local_2;
+        FVMS_ProgressOperation& local_2 = this.VMS_ProgressOperation.Get();
         return local_2 ? local_2.GetValueProgress() : 0.0f;
     }
     UFUNCTION()
     float32 VMS_ProgressOperation_TimeProgress() const
     {
-        FVMS_ProgressOperation& local_2;
         float32 local_4;
+        FVMS_ProgressOperation& local_2 = this.VMS_ProgressOperation.Get();
         if (local_2)
         {
             local_4 = local_2.GetTimeProgress();
@@ -70,14 +70,14 @@ class UWidget_ArmWrestle_Progress : UEUIUserWidget
     UFUNCTION()
     FWidgetTransform VMS_ProgressOperation_PointerTrans() const
     {
-        FVMS_ProgressOperation& local_2;
+        FVMS_ProgressOperation& local_2 = this.VMS_ProgressOperation.Get();
         FWidgetTransform local_32 = local_2 ? local_2.GetPointerTrans() : FWidgetTransform();
         return local_32;
     }
     UFUNCTION()
     TArray<FEUIModelWeakRef> VM_ArmWrestle_Progress_DisplaySelfResults() const
     {
-        FVM_ArmWrestle_Progress& local_2;
+        FVM_ArmWrestle_Progress& local_2 = this.VM_ArmWrestle_Progress.Get();
         TArray<FEUIModelWeakRef> local_16;
         if (local_2)
         {
@@ -92,7 +92,7 @@ class UWidget_ArmWrestle_Progress : UEUIUserWidget
     UFUNCTION()
     TArray<FEUIModelWeakRef> VM_ArmWrestle_Progress_DisplayOpponentResults() const
     {
-        FVM_ArmWrestle_Progress& local_2;
+        FVM_ArmWrestle_Progress& local_2 = this.VM_ArmWrestle_Progress.Get();
         TArray<FEUIModelWeakRef> local_16;
         if (local_2)
         {
@@ -107,31 +107,31 @@ class UWidget_ArmWrestle_Progress : UEUIUserWidget
     UFUNCTION()
     int VM_ArmWrestle_Progress_SelfWinTimes() const
     {
-        FVM_ArmWrestle_Progress& local_2;
+        FVM_ArmWrestle_Progress& local_2 = this.VM_ArmWrestle_Progress.Get();
         return local_2 ? local_2.GetSelfWinTimes() : 0;
     }
     UFUNCTION()
     int VM_ArmWrestle_Progress_OpponentWinTimes() const
     {
-        FVM_ArmWrestle_Progress& local_2;
+        FVM_ArmWrestle_Progress& local_2 = this.VM_ArmWrestle_Progress.Get();
         return local_2 ? local_2.GetOpponentWinTimes() : 0;
     }
     UFUNCTION()
     float32 VM_ArmWrestle_Progress_WrestleProgress() const
     {
-        FVM_ArmWrestle_Progress& local_2;
+        FVM_ArmWrestle_Progress& local_2 = this.VM_ArmWrestle_Progress.Get();
         return local_2 ? local_2.GetWrestleProgress() : 0.0f;
     }
     UFUNCTION()
     int VM_ArmWrestle_Progress_CountDownTime() const
     {
-        FVM_ArmWrestle_Progress& local_2;
+        FVM_ArmWrestle_Progress& local_2 = this.VM_ArmWrestle_Progress.Get();
         return local_2 ? local_2.GetCountDownTime() : 0;
     }
     void HandleObservedModelChanges(FEUIReactiveSubscriberIterator &inout It)
     {
-        FVMS_ProgressOperation& local_6;
         TEUIModelRef<FVMS_ProgressOperation> local_2 = this.VMS_ProgressOperation.AsRef();
+        FVMS_ProgressOperation& local_6 = local_2.Get();
         for (; It; )
         {
             FEUIReactiveSubscriberTrackScope local_56 = FEUIReactiveSubscriberTrackScope(It);

@@ -475,7 +475,7 @@ void LoadInstrumentMidiSwitches(const FInstrumentAudioConfig &inout Config)
 UFUNCTION()
 void PreloadInstrumentAudioFromTable()
 {
-    UDataTable local_2;
+    UDataTable local_2 = UGameplayConfigsManager::GetInstrumentAudioTable().Get();
     if (local_2 == nullptr)
     {
         XWarning(ELog(0), "Cannot found InstrumentAudioConfig datatable!");
@@ -515,10 +515,7 @@ void PreloadRegionAudioFromTable(const UDataTable RegionAudioTable)
 UFUNCTION()
 void PreloadAudioFromTables()
 {
-    UDataTable local_4;
-    UDataTable local_44;
-    UDataTable local_64;
-    UDataTable local_102;
+    UDataTable local_4 = UGameplayConfigsManager::GetMapConfigTable().Get();
     if (local_4 == nullptr)
     {
         XWarning(ELog(0), "Cannot found MapConfig datatable!");
@@ -533,11 +530,11 @@ void PreloadAudioFromTables()
             FPreloadAssetUtils::PreloadSimpleAudioSet(local_24.UnLoadMapAudioSet);
             for (auto& local_42 : local_24.DefaultCombatBGM)
             {
-                local_42;
-                FPreloadAssetUtils::PreloadDefaultCombatBGMConfig();
+                FPreloadAssetUtils::PreloadDefaultCombatBGMConfig(local_42.GetValue());
             }
         }
     }
+    UDataTable local_44 = UGameplayConfigsManager::GetImpactSFXTable().Get();
     if (local_44 == nullptr)
     {
         XWarning(ELog(0), "Cannot found ImpactSFXConfig datatable!");
@@ -553,6 +550,7 @@ void PreloadAudioFromTables()
             FPreloadAssetUtils::LoadAkEvent(local_62.Stab.Event);
         }
     }
+    UDataTable local_64 = UGameplayConfigsManager::GetCustomVolumeAudioTable().Get();
     if (local_64 == nullptr)
     {
         XWarning(ELog(0), "Cannot found CustomVolumeAudioConfig datatable!");
@@ -572,6 +570,7 @@ void PreloadAudioFromTables()
             }
         }
     }
+    UDataTable local_102 = UGameplayConfigsManager::GetLandedImpactSFXTable().Get();
     if (local_102 == nullptr)
     {
         XWarning(ELog(0), "Cannot found LandedImpactSFXConfig datatable!");
@@ -600,8 +599,7 @@ void PreloadAudioFromTables()
 UFUNCTION()
 void PreloadVfxFromTables()
 {
-    UDataTable local_4;
-    UDataTable local_26;
+    UDataTable local_4 = UGameplayConfigsManager::GetImpactVFXTable().Get();
     if (local_4 == nullptr)
     {
         XWarning(ELog(0), "Cannot found ImpactVFXConfig datatable!");
@@ -626,6 +624,7 @@ void PreloadVfxFromTables()
             FPreloadAssetUtils::LoadFXActor(local_24.Smash.High.FXActor);
         }
     }
+    UDataTable local_26 = UGameplayConfigsManager::GetLandedImpactVFXTable().Get();
     if (local_26 == nullptr)
     {
         XWarning(ELog(0), "Cannot found LandedImpactVFXConfig datatable!");

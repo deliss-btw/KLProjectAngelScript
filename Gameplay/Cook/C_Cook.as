@@ -404,7 +404,7 @@ struct FC_CookProp : FECSComponent
                 {
                     continue;
                 }
-                if (0 == 0)
+                if (local_34.GetCookCostItem().Get().DataId == CostItem.Get().DataId)
                 {
                     local_19 = local_19 + 1;
                 }

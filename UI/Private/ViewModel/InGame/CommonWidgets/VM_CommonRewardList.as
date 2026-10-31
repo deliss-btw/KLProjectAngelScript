@@ -66,29 +66,19 @@ struct FVM_CommonRewardItem : FEUIViewModel
     }
     void PostConstruct()
     {
-        bool local_9;
-        if (!(TEUIModelRef<FVM_Item>(FEUIModelContainer::GetModel(this.GetItemModels()).opCall()).IsValid()))
+        this.GetModify_TipHoverModels().Clear();
+        TEUIModelRef<FVM_Item> local_2 = TEUIModelRef<FVM_Item>(FEUIModelContainer::GetModel(this.GetItemModels()).opCall());
+        if (local_2.IsValid() && local_2.Get().GetItemDataModel().IsValid())
         {
-            local_9 = false;
-        }
-        else
-        {
-            TEUIModelRef<FM_ItemData> local_12;
-            local_12.GetItemDataModel();
-            local_9 = local_12.IsValid();
-        }
-        if (local_9)
-        {
-            TEUIModelRef<FM_ItemData> local_12;
-            local_12.GetItemDataModel();
-            TEUIModelRef<FM_ItemData> local_16;
+            TEUIModelRef<FM_ItemData> local_16 = TEUIModelRef<FM_ItemData>(local_2.Get().GetItemDataModel().Get());
             TEUIModelRef<FVM_ComposableItem> local_18 = TEUIModelRef<FVM_ComposableItem>(::FVM_ComposableItem::Create(this.GetContext().Manager, local_16, EItemDisplayScenario(3)));
             this.SetComposableItemVM(local_18);
             FText local_22 = this.GetItemNum();
             TEUIModelRef<FVM_ComposableItem> local_18_2 = this.GetComposableItemVM();
+            ::ComposableItemUtility::SetItemCountText(local_18_2.Get(), local_22);
             TEUIModelRef<FVM_ComposableItem> local_18_3 = this.GetComposableItemVM();
-            local_12.GetItemDataModel();
-            this.SetTipHoverModels(::CommonItemTip::MakeModels(this.GetContext().Manager, ::CommonItemTip::MakeSimpleFromItemData(local_12)));
+            ::ComposableItemUtility::SetItemMaskType(local_18_3.Get(), 3);
+            this.SetTipHoverModels(::CommonItemTip::MakeModels(this.GetContext().Manager, ::CommonItemTip::MakeSimpleFromItemData(local_2.Get().GetItemDataModel())));
         }
         return;
     }
@@ -97,8 +87,7 @@ struct FVM_CommonRewardItem : FEUIViewModel
         this.SetbClaimed(InIsClaimed);
         if (this.GetComposableItemVM().IsValid())
         {
-            TEUIModelRef<FVM_ComposableItem> local_2 = this.GetComposableItemVM();
-            ::ComposableItemUtility::SetItemMaskEnable(this.GetbClaimed());
+            ::ComposableItemUtility::SetItemMaskEnable(this.GetComposableItemVM().Get(), this.GetbClaimed());
         }
         return;
     }
@@ -106,11 +95,11 @@ struct FVM_CommonRewardItem : FEUIViewModel
     {
         if (this.GetComposableItemVM().IsValid())
         {
-            if (!(::RewardSortUtils::ResolveTagDisplayText(InTagKey, InTagText).IsEmpty()))
+            FText local_12 = ::RewardSortUtils::ResolveTagDisplayText(InTagKey, InTagText);
+            if (!(local_12.IsEmpty()))
             {
-                TEUIModelRef<FVM_ComposableItem> local_2 = this.GetComposableItemVM();
-                ::ComposableItemUtility::SetIsShowTag(true);
-                TEUIModelRef<FVM_ComposableItem> local_2_2 = this.GetComposableItemVM();
+                ::ComposableItemUtility::SetIsShowTag(this.GetComposableItemVM().Get(), true);
+                ::ComposableItemUtility::SetDisplayTagText(this.GetComposableItemVM().Get(), local_12);
             }
         }
         if (bInClaimed)
@@ -138,10 +127,8 @@ struct FVM_CommonRewardItem : FEUIViewModel
             else
             {
                 FString local_20;
-                TEUIModelRef<FVM_Item> local_4 = this.GetItem();
-                int local_10 = GetItemOwnNum();
-                TEUIModelRef<FVM_Item> local_4_2 = this.GetItem();
-                int local_11 = GetNum();
+                int local_10 = this.GetItem().Get().GetItemOwnNum();
+                int local_11 = this.GetItem().Get().GetNum();
                 String::Conv_IntToString(local_20);
                 FString local_16 = String::Conv_IntToString(local_11);
                 if (local_10 < local_11)
@@ -178,10 +165,7 @@ struct FVM_CommonRewardItem : FEUIViewModel
     {
         if (!(this.GetItem().IsNull()))
         {
-            FLinearColor local_7;
-            TEUIModelRef<FVM_Item> local_2 = this.GetItem();
-            local_7.GetRarityColor();
-            return local_7;
+            return this.GetItem().Get().GetRarityColor();
         }
         return FLinearColor::White;
     }
@@ -787,11 +771,9 @@ FVM_CommonRewardItem& Create(const UObject ContextObject, const FEUIModelContain
 {
     return FVM_CommonRewardItem::CreateByManager(EUIInternal::GetContextManager(ContextObject), ItemModels, bRequest);
 }
-FVM_CommonRewardItem CreateByManager(const UEUIManagerSubsystem Manager, const FEUIModelContainer &inout ItemModels, const bool bRequest)
+FVM_CommonRewardItem& CreateByManager(const UEUIManagerSubsystem Manager, const FEUIModelContainer &inout ItemModels, const bool bRequest)
 {
-    FVM_CommonRewardItem __r;
-    TEUIModelRef<FVM_CommonRewardItem> local_6 = TEUIModelRef<FVM_CommonRewardItem>(EUIInternal::MakeModelWithManager_Generic(Manager, FVM_CommonRewardItem::ModelId, 0, ItemModels, bRequest));
-    return __r;
+    return TEUIModelRef<FVM_CommonRewardItem>(EUIInternal::MakeModelWithManager_Generic(Manager, FVM_CommonRewardItem::ModelId, 0, ItemModels, bRequest)).Get();
 }
 void GetModelInfo(FEUIViewModelMetaInfo &inout Result)
 {
@@ -913,8 +895,7 @@ namespace __GeneratedProperties_FVM_CommonRewardItem
 {
 UScriptStruct StaticStruct()
 {
-    UScriptStruct local_2;
-    return local_2;
+    return __GeneratedProperties_FVM_CommonRewardItem.Get();
 }
 }
 namespace FVM_CommonRewardList
@@ -923,11 +904,9 @@ FVM_CommonRewardList& Create(const UObject ContextObject, const TArray<FRewardIt
 {
     return FVM_CommonRewardList::CreateByManager(EUIInternal::GetContextManager(ContextObject), ItemEntries);
 }
-FVM_CommonRewardList CreateByManager(const UEUIManagerSubsystem Manager, const TArray<FRewardItemEntry> &inout ItemEntries)
+FVM_CommonRewardList& CreateByManager(const UEUIManagerSubsystem Manager, const TArray<FRewardItemEntry> &inout ItemEntries)
 {
-    FVM_CommonRewardList __r;
-    TEUIModelRef<FVM_CommonRewardList> local_6 = TEUIModelRef<FVM_CommonRewardList>(EUIInternal::MakeModelWithManager_Generic(Manager, FVM_CommonRewardList::ModelId, 0, ItemEntries));
-    return __r;
+    return TEUIModelRef<FVM_CommonRewardList>(EUIInternal::MakeModelWithManager_Generic(Manager, FVM_CommonRewardList::ModelId, 0, ItemEntries)).Get();
 }
 void GetModelInfo(FEUIViewModelMetaInfo &inout Result)
 {
@@ -1102,7 +1081,6 @@ namespace __GeneratedProperties_FVM_CommonRewardList
 {
 UScriptStruct StaticStruct()
 {
-    UScriptStruct local_2;
-    return local_2;
+    return __GeneratedProperties_FVM_CommonRewardList.Get();
 }
 }

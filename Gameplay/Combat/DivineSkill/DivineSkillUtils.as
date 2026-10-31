@@ -32,7 +32,7 @@ void AddDivineSkillModifier(const FECSEntity &inout PawnEntity, FC_DivineSkill &
     bool local_2 = local_6.opCall();
     if (local_2)
     {
-        const FDivineSkillConfig& local_8;
+        const FDivineSkillConfig& local_8 = DivineSkill.GetDivineSkillData().GetSkillConfig().Get();
         FECSEntityId local_9 = PawnEntity.GetId();
         local_12.GetModifierIds().Reset(0);
         for (auto& local_28 : local_8.Modifiers)
@@ -70,8 +70,8 @@ void RemoveDivineSkillModifier(const FECSEntity &inout PawnEntity, FC_DivineSkil
             }
         }
     }
-    FECSEntityId local_11 = PawnEntity.GetId();
-    FECSEntityId local_11_2 = PawnEntity.GetId();
+    DivineSkill.GetModify_ModifierIdByPawnEntityId().Remove(PawnEntity.GetId());
+    DivineSkill.GetModify_CapabilityIdByPawnEntityId().Remove(PawnEntity.GetId());
     return;
 }
 bool SuitForPlayerCurrentAvatars(const TDataObjectPtr<FDivineSkillConfig> &inout DivineSkill, const FECSEntity &inout PlayerEntity)
@@ -105,17 +105,16 @@ bool SuitForPlayerCurrentAvatarByPlayerController(const TDataObjectPtr<FDivineSk
 }
 bool SuitForAvatar(const TDataObjectPtr<FDivineSkillConfig> &inout DivineSkill, const TDataObjectPtr<FAvatarPrefabConfig> &inout AvatarConfig)
 {
-    int local_3 = 0;
     if (!(DivineSkill) || !(DivineSkill.opArrow().GetTypeConfig()))
     {
         return false;
     }
     if (AvatarConfig.IsSet())
     {
-        if (GetDefaultFoundation().IsSet())
+        if (AvatarConfig.Get().GetDefaultFoundation().IsSet())
         {
             int local_6 = int(DivineSkill.opArrow().GetTypeConfig().opArrow().TargetIllustrate);
-            int local_7 = int(FASCommonUtils::TalentDivisionToIllustrate(ETalentDivision(local_3)));
+            int local_7 = int(FASCommonUtils::TalentDivisionToIllustrate(ETalentDivision(AvatarConfig.Get().GetDefaultFoundation().Get().TalentDivision)));
             return (local_6 == local_7);
         }
     }
@@ -131,7 +130,6 @@ bool SuitForAvatar(const TDataObjectPtr<FDivineSkillConfig> &inout DivineSkill, 
 }
 bool SuitForAvatar(const TDataObjectPtr<FDivineSkillTypeConfig> &inout TypeConfig, const FECSEntity &inout PawnEntity)
 {
-    int local_63 = 0;
     if (!(TypeConfig.IsSet()))
     {
         return false;
@@ -145,12 +143,13 @@ bool SuitForAvatar(const TDataObjectPtr<FDivineSkillTypeConfig> &inout TypeConfi
         int local_14 = int(local_10.opCall().GetFoundationTalentIllustrate());
         return (local_13 == local_14);
     }
-    if (GetAvatarConfig(PawnEntity).IsSet())
+    TDataObjectPtr<FAvatarPrefabConfig> local_38 = GetAvatarConfig(PawnEntity);
+    if (local_38.IsSet())
     {
-        if (GetDefaultFoundation().IsSet())
+        if (local_38.Get().GetDefaultFoundation().IsSet())
         {
             int local_14_2 = int(TypeConfig.opArrow().TargetIllustrate);
-            int local_13_2 = int(FASCommonUtils::TalentDivisionToIllustrate(ETalentDivision(local_63)));
+            int local_13_2 = int(FASCommonUtils::TalentDivisionToIllustrate(ETalentDivision(local_38.Get().GetDefaultFoundation().Get().TalentDivision)));
             return (local_14_2 == local_13_2);
         }
     }
@@ -158,7 +157,6 @@ bool SuitForAvatar(const TDataObjectPtr<FDivineSkillTypeConfig> &inout TypeConfi
 }
 EAvatarIllustrate GetAvatarIllustrate(const FECSEntity &inout PawnEntity)
 {
-    int local_62 = 0;
     Has local_4;
     bool local_5 = local_4.opCall();
     if (local_5)
@@ -166,11 +164,12 @@ EAvatarIllustrate GetAvatarIllustrate(const FECSEntity &inout PawnEntity)
         Get local_10;
         return local_10.opCall().GetFoundationTalentIllustrate();
     }
-    if (GetAvatarConfig(PawnEntity).IsSet() && GetDefaultFoundation().IsSet())
+    TDataObjectPtr<FAvatarPrefabConfig> local_36 = GetAvatarConfig(PawnEntity);
+    if (local_36.IsSet() && local_36.Get().GetDefaultFoundation().IsSet())
     {
-        return FASCommonUtils::TalentDivisionToIllustrate(ETalentDivision(local_62));
+        return FASCommonUtils::TalentDivisionToIllustrate(local_36.Get().GetDefaultFoundation().Get().TalentDivision);
     }
-    return EAvatarIllustrate(3);
+    return EAvatarIllustrate::MaxCount;
 }
 EAvatarIllustrate GetPlayerMainAvatarIllustrate(const FECSEntity &inout PlayerEntity)
 {
@@ -183,7 +182,7 @@ EAvatarIllustrate GetPlayerMainAvatarIllustrate(const FECSEntity &inout PlayerEn
             return DivineSkillUtils::GetAvatarIllustrate(local_6.GetAllPlayerPawnEntities()[0]);
         }
     }
-    return EAvatarIllustrate(3);
+    return EAvatarIllustrate::MaxCount;
 }
 TDataObjectPtr<FDivineSkillTypeConfig> FindTypeConfigByIllustrate(const EAvatarIllustrate Illustrate)
 {
@@ -213,11 +212,11 @@ void SaveDivineSkillInfo(const FECSEntity &inout PrevEntity, const FFPTime &inou
     Get local_8;
     if (local_8.opCall())
     {
-        const FDivineSkillConfig& local_22;
         if (!(local_20.GetDivineSkillData().GetSkillConfig()))
         {
             return;
         }
+        const FDivineSkillConfig& local_22 = local_20.GetDivineSkillData().GetSkillConfig().Get();
         local_24 = local_22.SkillConfig;
         if (!((local_24 != nullptr)))
         {

@@ -35,7 +35,6 @@ FPresentationIcon __FNavigationBarIconConfig_GetIcon(const TDataObjectPtr<FNavig
 UFUNCTION()
 TSoftClassPtr<UEUIUserWidget> __FNavigationBarIconConfig_GetCustomIconWidget(const TDataObjectPtr<FNavigationBarIconConfig> &inout DataObject)
 {
-    TSoftClassPtr<UEUIUserWidget> __r;
     if ((DataObject == nullptr))
     {
         if (!(EUIGlobals::GIsDuringPropertyConversion))
@@ -45,23 +44,21 @@ TSoftClassPtr<UEUIUserWidget> __FNavigationBarIconConfig_GetCustomIconWidget(con
         FNavigationBarIconConfig local_88;
         return local_88.CustomIconWidget;
     }
-    return __r;
+    return DataObject.Get().CustomIconWidget;
 }
 UFUNCTION()
 bool __FNavigationBarIconConfig_GetbResident(const TDataObjectPtr<FNavigationBarIconConfig> &inout DataObject)
 {
-    bool local_1 = false;
     if ((DataObject == nullptr))
     {
-        local_1 = !(EUIGlobals::GIsDuringPropertyConversion);
-        if (local_1)
+        if (!(EUIGlobals::GIsDuringPropertyConversion))
         {
             FBlueprintDebugFunctions::ThrowScriptException("Get 'bResident' from a null 'FNavigationBarIconConfig' DataObject!");
         }
         FNavigationBarIconConfig local_88;
         return local_88.bResident;
     }
-    return local_1;
+    return DataObject.Get().bResident;
 }
 UFUNCTION()
 FNavigationBarIconConfig CastToFNavigationBarIconConfig(const TDataObjectPtr<FNavigationBarIconConfig> &inout DataObject)

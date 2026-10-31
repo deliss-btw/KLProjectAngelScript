@@ -208,11 +208,9 @@ FVM_GamepadTips& Create(const UObject ContextObject)
 {
     return FVM_GamepadTips::CreateByManager(EUIInternal::GetContextManager(ContextObject));
 }
-FVM_GamepadTips CreateByManager(const UEUIManagerSubsystem Manager)
+FVM_GamepadTips& CreateByManager(const UEUIManagerSubsystem Manager)
 {
-    FVM_GamepadTips __r;
-    TEUIModelRef<FVM_GamepadTips> local_6 = TEUIModelRef<FVM_GamepadTips>(EUIInternal::MakeModelWithManager(Manager, FVM_GamepadTips::ModelId));
-    return __r;
+    return TEUIModelRef<FVM_GamepadTips>(EUIInternal::MakeModelWithManager(Manager, FVM_GamepadTips::ModelId)).Get();
 }
 void GetModelInfo(FEUIViewModelMetaInfo &inout Result)
 {
@@ -311,7 +309,6 @@ namespace __GeneratedProperties_FVM_GamepadTips
 {
 UScriptStruct StaticStruct()
 {
-    UScriptStruct local_2;
-    return local_2;
+    return __GeneratedProperties_FVM_GamepadTips.Get();
 }
 }

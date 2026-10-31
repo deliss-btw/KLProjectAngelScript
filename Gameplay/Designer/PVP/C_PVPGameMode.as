@@ -164,7 +164,7 @@ struct FCS_PVP_SessionData : FECSSingleton
         int local_1 = 0;
         for (auto& local_22 : this.GetPlayerExtras())
         {
-            if (GetbIsBot() && MatchData.GetPlayerMatchDatas().Contains(local_22.GetKey()) && (MatchData.GetPlayerMatchDatas()[local_22.GetKey()].GetTeamID() == TeamID))
+            if (local_22.GetValue().GetbIsBot() && MatchData.GetPlayerMatchDatas().Contains(local_22.GetKey()) && (MatchData.GetPlayerMatchDatas()[local_22.GetKey()].GetTeamID() == TeamID))
             {
                 if (local_1 == 0 || (local_22.GetKey() > local_1))
                 {
@@ -174,6 +174,8 @@ struct FCS_PVP_SessionData : FECSSingleton
         }
         if (local_1 > 0)
         {
+            MatchData.GetModify_PlayerMatchDatas().Remove(local_1);
+            this.GetModify_PlayerExtras().Remove(local_1);
             MatchData.RefreshTeamCounts();
         }
         return;
@@ -187,7 +189,7 @@ struct FCS_PVP_SessionData : FECSSingleton
         int local_1 = 0;
         for (auto& local_22 : this.GetPlayerExtras())
         {
-            if (GetbIsBot() && MatchData.GetPlayerMatchDatas().Contains(local_22.GetKey()) && (MatchData.GetPlayerMatchDatas()[local_22.GetKey()].GetTeamID() == TeamID))
+            if (local_22.GetValue().GetbIsBot() && MatchData.GetPlayerMatchDatas().Contains(local_22.GetKey()) && (MatchData.GetPlayerMatchDatas()[local_22.GetKey()].GetTeamID() == TeamID))
             {
                 local_1 = local_1 + 1;
             }
@@ -200,6 +202,8 @@ struct FCS_PVP_SessionData : FECSSingleton
         {
             return;
         }
+        MatchData.GetModify_PlayerMatchDatas().Remove(PlayerUID);
+        this.GetModify_PlayerExtras().Remove(PlayerUID);
         MatchData.RefreshTeamCounts();
         if (this.GetHostPlayerUID() == PlayerUID)
         {

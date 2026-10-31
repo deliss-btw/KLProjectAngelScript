@@ -61,10 +61,7 @@ class US_Destructible : UECSScriptSystem
             if (!(local_208.IsValid()))
             {
                 FSimpleDestructibleBreakResult local_246;
-                int local_247 = int(local_110.ImpactStrength);
-                int local_248 = int(local_110.ImpactType);
-                UPrimitiveComponent local_250;
-                bool local_5 = ::SimpleDestructibleUtils::ServerTryBreakFromHitResult(Entity, local_250, int(local_204.Item), EDestructibleClassLevel(local_2), false, EImpactType(local_248), EImpactStrength(local_247), Rigidbody.GetVelocity().GetSafeNormal(9.99999993922529e-9, FVector::ZeroVector), local_246);
+                bool local_5 = ::SimpleDestructibleUtils::ServerTryBreakFromHitResult(Entity, local_204.GetComponent(), int(local_204.Item), EDestructibleClassLevel(local_2), false, EImpactType(local_110.ImpactType), EImpactStrength(local_110.ImpactStrength), Rigidbody.GetVelocity().GetSafeNormal(9.99999993922529e-9, FVector::ZeroVector), local_246);
                 if (local_5)
                 {
                     if (local_246.bWasAlreadyDestroyed)

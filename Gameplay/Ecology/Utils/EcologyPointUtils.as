@@ -229,7 +229,6 @@ namespace FEcologyPointUtils
 {
 FEcologyPointQueryResult QueryPoints(const FVector &inout EntityCenter, FCS_EcologyScriptGlobalContext &inout ECSWorldContext, const FEcologyPointQuery &inout PointQuery)
 {
-    TMapIterator<FECSEntityId, FEcologyVoxelSceneUnitSummary> local_142;
     FEcologyPointQueryResult local_20;
     int local_162 = 0;
     FEcologyPointQueryResult __r;
@@ -242,10 +241,8 @@ FEcologyPointQueryResult QueryPoints(const FVector &inout EntityCenter, FCS_Ecol
         FEcologyVoxelSceneRegion& local_114 = ECSWorldContext.VoxelScene.FindOrAddRegion(local_98.Proceed().Current);
         for (auto& local_134 : local_114.GetCellSlotDataRef(EEcologyVoxelUnitSlot(3)))
         {
-            local_134;
-            for (; local_142.CanProceed;)
+            for (auto& local_152 : local_134.GetValue().SlotData)
             {
-                auto local_152 = local_142.Proceed();
                 if (local_80.Contains(local_152.GetKey()))
                 {
                     continue;

@@ -51,12 +51,8 @@ struct FVM_NearDeath : FEUIViewModel
     }
     void Tick()
     {
-        float32 local_1 = this.GetKonkHpBarHpProgress();
-        TEUIModelRef<FVM_RevivalTimeProgressBar> local_4 = this.GetNearDeathProgressModel();
-        local_1.SetProgress();
-        float32 local_1_2 = this.GetRescuedProgress();
-        TEUIModelRef<FVM_RevivalTimeProgressBar> local_4_2 = this.GetRescuedProgressModel();
-        local_1_2.SetProgress();
+        this.GetNearDeathProgressModel().Get().SetProgress(this.GetKonkHpBarHpProgress());
+        this.GetRescuedProgressModel().Get().SetProgress(this.GetRescuedProgress());
         return;
     }
     void BeginDestroy()
@@ -235,11 +231,10 @@ struct FVM_NearDeath : FEUIViewModel
                     if (local_9)
                     {
                         Get local_44;
-                        if (::FMS_PlayerData::Get(this.GetContext().Manager).GetOrCreatePlayerByEntity(local_44.opCall().GetPlayerEntity()).IsValid())
+                        TEUIModelRef<FM_Player> local_46 = ::FMS_PlayerData::Get(this.GetContext().Manager).GetOrCreatePlayerByEntity(local_44.opCall().GetPlayerEntity());
+                        if (local_46.IsValid())
                         {
-                            FString local_50;
-                            local_50.GetNickName();
-                            return FText::FromString(local_50);
+                            return FText::FromString(local_46.Get().GetNickName());
                         }
                     }
                 }
@@ -384,11 +379,9 @@ FVM_NearDeath& Create(const UObject ContextObject)
 {
     return FVM_NearDeath::CreateByManager(EUIInternal::GetContextManager(ContextObject));
 }
-FVM_NearDeath CreateByManager(const UEUIManagerSubsystem Manager)
+FVM_NearDeath& CreateByManager(const UEUIManagerSubsystem Manager)
 {
-    FVM_NearDeath __r;
-    TEUIModelRef<FVM_NearDeath> local_6 = TEUIModelRef<FVM_NearDeath>(EUIInternal::MakeModelWithManager(Manager, FVM_NearDeath::ModelId));
-    return __r;
+    return TEUIModelRef<FVM_NearDeath>(EUIInternal::MakeModelWithManager(Manager, FVM_NearDeath::ModelId)).Get();
 }
 void GetModelInfo(FEUIViewModelMetaInfo &inout Result)
 {
@@ -504,7 +497,6 @@ namespace __GeneratedProperties_FVM_NearDeath
 {
 UScriptStruct StaticStruct()
 {
-    UScriptStruct local_2;
-    return local_2;
+    return __GeneratedProperties_FVM_NearDeath.Get();
 }
 }

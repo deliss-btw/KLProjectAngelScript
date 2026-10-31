@@ -74,6 +74,8 @@ void SortItems(TArray<TEUIModelRef<FM_ItemData>> &inout InOutItems, const UItemS
     local_14.ItemDataCache = TEUIModelRef<FMS_ItemDataCache>(FMS_ItemDataCache::Get(local_24.Manager));
     local_14.CategoryLastSortTimestamp = CategoryLastSortTimestamp;
     local_14.bAscending = bAscending;
+    __Lambda_UI_Private_Model_Item_ItemDataUtils_60 local_40;
+    InOutItems.Sort(local_40);
     return;
 }
 }

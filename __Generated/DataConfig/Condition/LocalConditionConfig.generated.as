@@ -3,7 +3,6 @@ namespace __FLocalConditionConfigBaseFunctions
 UFUNCTION()
 ELocalConditionConfigType __FLocalConditionConfigBase_GetLocalConditionType(const TDataObjectPtr<FLocalConditionConfigBase> &inout DataObject)
 {
-    int local_19 = 0;
     if ((DataObject == nullptr))
     {
         if (!(EUIGlobals::GIsDuringPropertyConversion))
@@ -11,10 +10,9 @@ ELocalConditionConfigType __FLocalConditionConfigBase_GetLocalConditionType(cons
             FBlueprintDebugFunctions::ThrowScriptException("Get 'LocalConditionType' from a null 'FLocalConditionConfigBase' DataObject!");
         }
         FLocalConditionConfigBase local_18;
-        local_19 = int(local_18.LocalConditionType);
-        return ELocalConditionConfigType(local_19);
+        return local_18.LocalConditionType;
     }
-    return ELocalConditionConfigType(local_19);
+    return DataObject.Get().LocalConditionType;
 }
 UFUNCTION()
 FLocalConditionConfigBase CastToFLocalConditionConfigBase(const TDataObjectPtr<FLocalConditionConfigBase> &inout DataObject)
@@ -28,7 +26,6 @@ namespace __FLocalConditionConfigFunctions
 UFUNCTION()
 FInstancedStruct __FLocalConditionConfig_GetConditionTypeDefineConfig(const TDataObjectPtr<FLocalConditionConfig> &inout DataObject)
 {
-    FInstancedStruct __r;
     if ((DataObject == nullptr))
     {
         if (!(EUIGlobals::GIsDuringPropertyConversion))
@@ -38,12 +35,11 @@ FInstancedStruct __FLocalConditionConfig_GetConditionTypeDefineConfig(const TDat
         FLocalConditionConfig local_24;
         return local_24.ConditionTypeDefineConfig;
     }
-    return __r;
+    return DataObject.Get().ConditionTypeDefineConfig;
 }
 UFUNCTION()
 ECondCmpType __FLocalConditionConfig_GetCompareType(const TDataObjectPtr<FLocalConditionConfig> &inout DataObject)
 {
-    int local_25 = 0;
     if ((DataObject == nullptr))
     {
         if (!(EUIGlobals::GIsDuringPropertyConversion))
@@ -51,10 +47,9 @@ ECondCmpType __FLocalConditionConfig_GetCompareType(const TDataObjectPtr<FLocalC
             FBlueprintDebugFunctions::ThrowScriptException("Get 'CompareType' from a null 'FLocalConditionConfig' DataObject!");
         }
         FLocalConditionConfig local_24;
-        local_25 = int(local_24.CompareType);
-        return ECondCmpType(local_25);
+        return local_24.CompareType;
     }
-    return ECondCmpType(local_25);
+    return DataObject.Get().CompareType;
 }
 UFUNCTION()
 int __FLocalConditionConfig_GetTargetValue(const TDataObjectPtr<FLocalConditionConfig> &inout DataObject)

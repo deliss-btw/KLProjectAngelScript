@@ -198,8 +198,10 @@ class UESMAction_LayeredBlend : UESMBPBaseSpanTickAction
     void Exit_Implementation(const FESMContext &inout Context, const FESMActionTime &inout Time) const
     {
         Modify local_4;
-        if (local_4.opCall())
+        FC_LayeredBlendMask& local_6 = local_4.opCall();
+        if (local_6)
         {
+            local_6.Clear();
         }
         return;
     }
@@ -214,8 +216,7 @@ class UESMAction_LayeredBlend : UESMBPBaseSpanTickAction
     }
     UESMAnimInstance_Base GetPreviewAnimInstance(const FESMPreviewContext &inout Context) const
     {
-        AActor local_10;
-        return Cast<UESMAnimInstance_Base>(Cast<USkeletalMeshComponent>(local_10.GetComponentByClass(USkeletalMeshComponent)).GetAnimInstance());
+        return Cast<UESMAnimInstance_Base>(Cast<USkeletalMeshComponent>(0.Actor.Get().GetComponentByClass(USkeletalMeshComponent)).GetAnimInstance());
     }
     void ApplyToMask(FC_LayeredBlendMask &inout Mask) const
     {

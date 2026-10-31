@@ -82,11 +82,11 @@ struct FMS_PendingConfirmMessage : FEUIModelSingleton
         {
             return;
         }
+        const FPendingConfirmHintConfig& local_54 = local_26.Get();
         FPendingConfirmEntry local_106;
         local_106.MessageId = Data.GetMessageId();
         local_106.Feature = Data.GetFeature();
         local_106.Player = ::FMS_PlayerData::Get(this.GetManager()).UpdateOrCreateByBriefInfo(Data.GetSenderPlayerInfo(), EPlayerInfoTrust(2));
-        FPendingConfirmHintConfig local_54;
         local_106.Title = local_54.Title;
         local_106.Content = local_54.Content;
         local_106.Priority = int(local_54.Priority);
@@ -140,6 +140,7 @@ struct FMS_PendingConfirmMessage : FEUIModelSingleton
         }
         for (auto local_20 : Event.RemovedPopupIds)
         {
+            this.GetModify_PendingPopups().Remove(local_20);
         }
         for (auto local_21 : Event.NewDisplayingPopupIds)
         {
@@ -186,9 +187,7 @@ struct FMS_PendingConfirmMessage : FEUIModelSingleton
         {
             return;
         }
-        FFPTime local_8 = FFPTime(this.GetContext().Time);
-        TEUIModelRef<FVM_PendingConfirmItem> local_6 = this.GetCurrentBubbleVM();
-        if (local_8.opCmp(GetEndTime()) >= 0)
+        if (FFPTime(this.GetContext().Time).opCmp(this.GetCurrentBubbleVM().Get().GetEndTime()) >= 0)
         {
             this.ExecuteTimeOutAction(this.GetCurrentDisplayingPopupId());
             this.DequeueAndRemoveBubble();
@@ -230,9 +229,9 @@ struct FMS_PendingConfirmMessage : FEUIModelSingleton
     void ExecuteTimeOutActionForEntry(const FPendingConfirmEntry &inout Entry)
     {
         FCE_PendingTimeoutResult local_16;
-        switch (int(Entry.DurationTimeOutAutoAction))
+        switch (Entry.DurationTimeOutAutoAction)
         {
-        case 0:
+        case EPendingConfirmTimeOutAction::AutoRefuse:
         {
             FFPTime local_14 = FFPTime(-1);
             FECSEntity local_8 = this.GetContext().GetLocalPlayer();
@@ -240,7 +239,7 @@ struct FMS_PendingConfirmMessage : FEUIModelSingleton
             local_16.Result = EPendingConfirmAction(0);
             return;
         }
-        case 1:
+        case EPendingConfirmTimeOutAction::AutoAccept:
         {
             FFPTime local_14_2 = FFPTime(-1);
             FECSEntity local_8_2 = this.GetContext().GetLocalPlayer();
@@ -248,12 +247,11 @@ struct FMS_PendingConfirmMessage : FEUIModelSingleton
             local_16.Result = EPendingConfirmAction(1);
             return;
         }
-        case 2:
+        case EPendingConfirmTimeOutAction::AutoHold:
         {
             return;
         }
         }
-        return;
     }
     void OnSceneChanged()
     {
@@ -299,7 +297,7 @@ struct FMS_PendingConfirmMessage : FEUIModelSingleton
         if (this.GetCurrentDisplayingPopupId() != INDEX_NONE)
         {
             ::CommonPopupUtils::DequeuePopupInternal(this.GetCurrentDisplayingPopupId());
-            int local_2 = this.GetCurrentDisplayingPopupId();
+            this.GetModify_PendingPopups().Remove(this.GetCurrentDisplayingPopupId());
         }
         if (this.GetCurrentBubbleWidget().IsValid())
         {
@@ -411,6 +409,7 @@ struct FMS_PendingConfirmMessage : FEUIModelSingleton
         int local_1 = CommonPopupId;
         ::CommonPopupUtils::DequeuePopupInternal(local_1);
         int local_1_2 = CommonPopupId;
+        this.GetModify_PendingPopups().Remove(local_1_2);
         return;
     }
     void InsertEntryByPriority(const FPendingConfirmEntry &inout Entry)
@@ -559,11 +558,9 @@ FMS_PendingConfirmMessage& Get(const UObject ContextObject)
 {
     return FMS_PendingConfirmMessage::GetByManager(EUIInternal::GetContextManager(ContextObject));
 }
-FMS_PendingConfirmMessage GetByManager(const UEUIManagerSubsystem Manager)
+FMS_PendingConfirmMessage& GetByManager(const UEUIManagerSubsystem Manager)
 {
-    FMS_PendingConfirmMessage __r;
-    TEUIModelRef<FMS_PendingConfirmMessage> local_6 = TEUIModelRef<FMS_PendingConfirmMessage>(EUIInternal::MakeModelWithManager(Manager, FMS_PendingConfirmMessage::ModelId));
-    return __r;
+    return TEUIModelRef<FMS_PendingConfirmMessage>(EUIInternal::MakeModelWithManager(Manager, FMS_PendingConfirmMessage::ModelId)).Get();
 }
 void GetModelInfo(FEUIModelOnlyMetaInfo &inout Result)
 {

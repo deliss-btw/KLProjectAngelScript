@@ -2,7 +2,7 @@ namespace FNPCComponentSwitchUtils
 {
 ENPCComponentSwitchAction ResolveAction(const FNPCMainConfig &inout NPCConfig, const ENPCRuntimeComponentFeature Feature)
 {
-    ENPCComponentSwitchAction local_1 = ENPCComponentSwitchAction(0);
+    ENPCComponentSwitchAction local_1 = ENPCComponentSwitchAction::UsePrefabDefault;
     for (auto& local_18 : NPCConfig.ComponentSwitchOverrides)
     {
         if ((int(local_18.Feature)) == (int(Feature)))

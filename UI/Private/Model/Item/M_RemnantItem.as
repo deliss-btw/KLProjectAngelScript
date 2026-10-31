@@ -65,8 +65,7 @@ struct FMS_RemnantItemModel : FEUIModelSingleton
     {
         if (this.GetRemnantItemData().IsValid())
         {
-            TEUIModelRef<FM_ItemData> local_2 = this.GetRemnantItemData();
-            return GetNum();
+            return this.GetRemnantItemData().Get().GetNum();
         }
         return 0;
     }
@@ -103,9 +102,7 @@ struct FMS_RemnantItemModel : FEUIModelSingleton
             }
             else
             {
-                int local_85 = RemnantInfo.GetRemainUsableCount();
-                TEUIModelRef<FM_ItemData> local_4 = this.GetRemnantItemData();
-                local_85.SetNum();
+                this.GetRemnantItemData().Get().SetNum(RemnantInfo.GetRemainUsableCount());
             }
             return;
         }
@@ -158,11 +155,9 @@ FMS_RemnantItemModel& Get(const UObject ContextObject)
 {
     return FMS_RemnantItemModel::GetByManager(EUIInternal::GetContextManager(ContextObject));
 }
-FMS_RemnantItemModel GetByManager(const UEUIManagerSubsystem Manager)
+FMS_RemnantItemModel& GetByManager(const UEUIManagerSubsystem Manager)
 {
-    FMS_RemnantItemModel __r;
-    TEUIModelRef<FMS_RemnantItemModel> local_6 = TEUIModelRef<FMS_RemnantItemModel>(EUIInternal::MakeModelWithManager(Manager, FMS_RemnantItemModel::ModelId));
-    return __r;
+    return TEUIModelRef<FMS_RemnantItemModel>(EUIInternal::MakeModelWithManager(Manager, FMS_RemnantItemModel::ModelId)).Get();
 }
 void GetModelInfo(FEUIModelOnlyMetaInfo &inout Result)
 {

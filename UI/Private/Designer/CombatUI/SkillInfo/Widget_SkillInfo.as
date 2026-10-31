@@ -35,14 +35,14 @@ class UWidget_SkillInfo : UEUIUserWidget
     UFUNCTION()
     FEUIModelRef SkillInfo_VM_BasePrefab_CustomSkillInfo() const
     {
-        FVMS_SkillInfo& local_2;
+        FVMS_SkillInfo& local_2 = this.SkillInfo.Get();
         FEUIModelRef local_8 = local_2 ? local_2.GetVM_BasePrefab_CustomSkillInfo() : FEUIModelRef();
         return local_8;
     }
     void HandleObservedModelChanges(FEUIReactiveSubscriberIterator &inout It)
     {
-        FVMS_SkillInfo& local_6;
         TEUIModelRef<FVMS_SkillInfo> local_2 = this.SkillInfo.AsRef();
+        FVMS_SkillInfo& local_6 = local_2.Get();
         for (; It; )
         {
             FEUIReactiveSubscriberTrackScope local_56 = FEUIReactiveSubscriberTrackScope(It);

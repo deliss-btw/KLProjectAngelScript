@@ -33,6 +33,7 @@ struct FC_RiderOffsetParamasHistory : FECSComponent
     }
     void Clear()
     {
+        this.History.Clear();
         return;
     }
     bool GetInterpoValue(const FFPTime &inout WorldTime, FC_RiderOffsetParamas &inout OutValue) const

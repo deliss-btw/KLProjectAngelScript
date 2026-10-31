@@ -113,11 +113,9 @@ FVM_CurrencyBar& Create(const UObject ContextObject)
 {
     return FVM_CurrencyBar::CreateByManager(EUIInternal::GetContextManager(ContextObject));
 }
-FVM_CurrencyBar CreateByManager(const UEUIManagerSubsystem Manager)
+FVM_CurrencyBar& CreateByManager(const UEUIManagerSubsystem Manager)
 {
-    FVM_CurrencyBar __r;
-    TEUIModelRef<FVM_CurrencyBar> local_6 = TEUIModelRef<FVM_CurrencyBar>(EUIInternal::MakeModelWithManager(Manager, FVM_CurrencyBar::ModelId));
-    return __r;
+    return TEUIModelRef<FVM_CurrencyBar>(EUIInternal::MakeModelWithManager(Manager, FVM_CurrencyBar::ModelId)).Get();
 }
 void GetModelInfo(FEUIViewModelMetaInfo &inout Result)
 {
@@ -164,7 +162,6 @@ namespace __GeneratedProperties_FVM_CurrencyBar
 {
 UScriptStruct StaticStruct()
 {
-    UScriptStruct local_2;
-    return local_2;
+    return __GeneratedProperties_FVM_CurrencyBar.Get();
 }
 }

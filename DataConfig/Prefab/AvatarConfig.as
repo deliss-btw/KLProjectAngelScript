@@ -344,11 +344,10 @@ TDataObjectPtr<FAvatarPrefabConfig> GetAvatarConfig(const FECSEntity &inout Enti
 const FAvatarPrefabConfig GetDefaultedAvatarConfig(const FECSEntity &inout Entity)
 {
     const FAvatarPrefabConfig __r;
-    if (GetAvatarConfig(Entity))
+    TDataObjectPtr<FAvatarPrefabConfig> local_24 = GetAvatarConfig(Entity);
+    if (local_24)
     {
-    }
-    else
-    {
+        return local_24.Get();
     }
     return __r;
 }
@@ -356,7 +355,7 @@ namespace FAvatarPrefabConfig
 {
 TArray<FAvatarPrefabConfig> GetAll()
 {
-    UDataTable local_2;
+    UDataTable local_2 = UGameplayConfigsManager::GetAvatarDataTable().Get();
     if (local_2 == nullptr)
     {
         XWarning(ELog(0), "can not find datatable: FAvatarPrefabConfig");
@@ -372,10 +371,8 @@ TDataObjectPtr<FAvatarPrefabConfig> GetByDataId(const uint DataId)
 }
 TSoftClassPtr<ACharacterPrefab> GetEffectiveCharacterPrefab(const FECSWorldPtr &inout World, const TDataObjectPtr<FAvatarPrefabConfig> &inout AvatarConfig)
 {
-    bool local_17 = false;
     int local_24 = 0;
     bool local_53;
-    TSoftClassPtr<ACharacterPrefab> __r;
     bool local_1 = !(AvatarConfig);
     if (local_1)
     {
@@ -387,23 +384,24 @@ TSoftClassPtr<ACharacterPrefab> GetEffectiveCharacterPrefab(const FECSWorldPtr &
     }
     else
     {
+        bool local_17;
         Has local_16;
         local_17 = local_16.opCall();
         local_1 = local_17;
     }
     if (local_1)
     {
+        bool local_17;
         if ((int(local_24.GetGameModeType())) != 0)
         {
             TDataObjectPtr<FGameModeOverrideAvatarConfig> local_52;
-            if (!(GetGameModeOverride().Find(local_24.GetGameModeType(), local_52)))
+            if (!(AvatarConfig.Get().GetGameModeOverride().Find(local_24.GetGameModeType(), local_52)))
             {
                 local_1 = false;
             }
             else
             {
-                local_17 = local_52;
-                local_1 = local_17;
+                local_1 = local_52;
             }
             if (!(local_1))
             {
@@ -411,37 +409,32 @@ TSoftClassPtr<ACharacterPrefab> GetEffectiveCharacterPrefab(const FECSWorldPtr &
             }
             else
             {
-                local_17 = !local_17;
+                local_17 = !(local_52.Get().CharacterPrefab.IsNull());
                 local_53 = !(false);
                 local_17 = (local_17 == local_53);
                 local_53 = local_17;
             }
             if (local_53)
             {
+                return local_52.Get().CharacterPrefab;
+            }
+            TDataObjectPtr<FPVPOverrideAvatarConfig> local_78 = AvatarConfig.Get().GetPVPOverride();
+            if (!(local_78))
+            {
+                local_17 = false;
             }
             else
             {
-                TDataObjectPtr<FPVPOverrideAvatarConfig> local_78 = GetPVPOverride();
-                if (!(local_78))
-                {
-                    local_17 = false;
-                }
-                else
-                {
-                    local_1 = !local_1;
-                    local_17 = !(false);
-                    local_17 = (local_1 == local_17);
-                }
-                if (local_17)
-                {
-                }
-                else
-                {
-                }
+                local_17 = !(false);
+                local_17 = (!(local_78.Get().CharacterPrefab.IsNull()) == local_17);
+            }
+            if (local_17)
+            {
+                return local_78.Get().CharacterPrefab;
             }
         }
     }
-    return __r;
+    return AvatarConfig.Get().CharacterPrefab;
 }
 TArray<TDataObjectPtr<FSkillInitConfig>> GetEffectiveSkills(const FECSWorldPtr &inout World, const TDataObjectPtr<FAvatarPrefabConfig> &inout AvatarConfig)
 {
@@ -465,7 +458,7 @@ TArray<TDataObjectPtr<FSkillInitConfig>> GetEffectiveSkills(const FECSWorldPtr &
         if (int(local_18.GetGameModeType()) != 0)
         {
             TDataObjectPtr<FGameModeOverrideAvatarConfig> local_46;
-            if (!(GetGameModeOverride().Find(local_18.GetGameModeType(), local_46)))
+            if (!(AvatarConfig.Get().GetGameModeOverride().Find(local_18.GetGameModeType(), local_46)))
             {
                 local_1 = false;
             }
@@ -473,19 +466,19 @@ TArray<TDataObjectPtr<FSkillInitConfig>> GetEffectiveSkills(const FECSWorldPtr &
             {
                 local_1 = local_46;
             }
-            local_1 = local_1 && (GetSkills().Num() > 0);
+            local_1 = local_1 && (local_46.Get().GetSkills().Num() > 0);
             if (local_1)
             {
-                return GetSkills();
+                return local_46.Get().GetSkills();
             }
-            TDataObjectPtr<FPVPOverrideAvatarConfig> local_70 = GetPVPOverride();
-            if (local_70 && (GetSkills().Num() > 0))
+            TDataObjectPtr<FPVPOverrideAvatarConfig> local_70 = AvatarConfig.Get().GetPVPOverride();
+            if (local_70 && (local_70.Get().GetSkills().Num() > 0))
             {
-                return GetSkills();
+                return local_70.Get().GetSkills();
             }
         }
     }
-    return GetSkills();
+    return AvatarConfig.Get().GetSkills();
 }
 TArray<TDataObjectPtr<FSkillInitConfig>> GetEffectiveSkills(const EGameModeType GameModeType, const TDataObjectPtr<FAvatarPrefabConfig> &inout AvatarConfig)
 {
@@ -497,7 +490,7 @@ TArray<TDataObjectPtr<FSkillInitConfig>> GetEffectiveSkills(const EGameModeType 
     if (int(GameModeType) != 0)
     {
         TDataObjectPtr<FGameModeOverrideAvatarConfig> local_32;
-        if (!(GetGameModeOverride().Find(GameModeType, local_32)))
+        if (!(AvatarConfig.Get().GetGameModeOverride().Find(GameModeType, local_32)))
         {
             local_1 = false;
         }
@@ -505,12 +498,12 @@ TArray<TDataObjectPtr<FSkillInitConfig>> GetEffectiveSkills(const EGameModeType 
         {
             local_1 = local_32;
         }
-        local_1 = local_1 && (GetSkills().Num() > 0);
+        local_1 = local_1 && (local_32.Get().GetSkills().Num() > 0);
         if (local_1)
         {
-            return GetSkills();
+            return local_32.Get().GetSkills();
         }
     }
-    return GetSkills();
+    return AvatarConfig.Get().GetSkills();
 }
 }

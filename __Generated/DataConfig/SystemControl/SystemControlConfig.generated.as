@@ -3,7 +3,6 @@ namespace __FSystemControlConfigFunctions
 UFUNCTION()
 ESystemModule __FSystemControlConfig_GetSystemModule(const TDataObjectPtr<FSystemControlConfig> &inout DataObject)
 {
-    int local_221 = 0;
     if ((DataObject == nullptr))
     {
         if (!(EUIGlobals::GIsDuringPropertyConversion))
@@ -11,10 +10,9 @@ ESystemModule __FSystemControlConfig_GetSystemModule(const TDataObjectPtr<FSyste
             FBlueprintDebugFunctions::ThrowScriptException("Get 'SystemModule' from a null 'FSystemControlConfig' DataObject!");
         }
         FSystemControlConfig local_220;
-        local_221 = int(local_220.SystemModule);
-        return ESystemModule(local_221);
+        return local_220.SystemModule;
     }
-    return ESystemModule(local_221);
+    return DataObject.Get().SystemModule;
 }
 UFUNCTION()
 TDataObjectPtr<FServerConditionConfigBase> __FSystemControlConfig_GetCondition(const TDataObjectPtr<FSystemControlConfig> &inout DataObject)
@@ -28,7 +26,7 @@ TDataObjectPtr<FServerConditionConfigBase> __FSystemControlConfig_GetCondition(c
         FSystemControlConfig local_220;
         return local_220.GetCondition();
     }
-    return GetCondition();
+    return DataObject.Get().GetCondition();
 }
 UFUNCTION()
 TArray<TDataObjectPtr<FEUIWidgetConfig>> __FSystemControlConfig_GetLockWidgetConfigList(const TDataObjectPtr<FSystemControlConfig> &inout DataObject)
@@ -42,28 +40,25 @@ TArray<TDataObjectPtr<FEUIWidgetConfig>> __FSystemControlConfig_GetLockWidgetCon
         FSystemControlConfig local_220;
         return local_220.GetLockWidgetConfigList();
     }
-    return GetLockWidgetConfigList();
+    return DataObject.Get().GetLockWidgetConfigList();
 }
 UFUNCTION()
 bool __FSystemControlConfig_GetbShowUnlockMessageHint(const TDataObjectPtr<FSystemControlConfig> &inout DataObject)
 {
-    bool local_1 = false;
     if ((DataObject == nullptr))
     {
-        local_1 = !(EUIGlobals::GIsDuringPropertyConversion);
-        if (local_1)
+        if (!(EUIGlobals::GIsDuringPropertyConversion))
         {
             FBlueprintDebugFunctions::ThrowScriptException("Get 'bShowUnlockMessageHint' from a null 'FSystemControlConfig' DataObject!");
         }
         FSystemControlConfig local_220;
         return local_220.bShowUnlockMessageHint;
     }
-    return local_1;
+    return DataObject.Get().bShowUnlockMessageHint;
 }
 UFUNCTION()
 FText __FSystemControlConfig_GetForbiddenTips(const TDataObjectPtr<FSystemControlConfig> &inout DataObject)
 {
-    FText __r;
     if ((DataObject == nullptr))
     {
         if (!(EUIGlobals::GIsDuringPropertyConversion))
@@ -73,12 +68,11 @@ FText __FSystemControlConfig_GetForbiddenTips(const TDataObjectPtr<FSystemContro
         FSystemControlConfig local_220;
         return local_220.ForbiddenTips;
     }
-    return __r;
+    return DataObject.Get().ForbiddenTips;
 }
 UFUNCTION()
 FText __FSystemControlConfig_GetTitle(const TDataObjectPtr<FSystemControlConfig> &inout DataObject)
 {
-    FText __r;
     if ((DataObject == nullptr))
     {
         if (!(EUIGlobals::GIsDuringPropertyConversion))
@@ -88,12 +82,11 @@ FText __FSystemControlConfig_GetTitle(const TDataObjectPtr<FSystemControlConfig>
         FSystemControlConfig local_220;
         return local_220.Title;
     }
-    return __r;
+    return DataObject.Get().Title;
 }
 UFUNCTION()
 FSoftBrush __FSystemControlConfig_GetIcon(const TDataObjectPtr<FSystemControlConfig> &inout DataObject)
 {
-    FSoftBrush __r;
     if ((DataObject == nullptr))
     {
         if (!(EUIGlobals::GIsDuringPropertyConversion))
@@ -103,12 +96,11 @@ FSoftBrush __FSystemControlConfig_GetIcon(const TDataObjectPtr<FSystemControlCon
         FSystemControlConfig local_220;
         return local_220.Icon;
     }
-    return __r;
+    return DataObject.Get().Icon;
 }
 UFUNCTION()
 FSoftBrush __FSystemControlConfig_GetUnlockIcon(const TDataObjectPtr<FSystemControlConfig> &inout DataObject)
 {
-    FSoftBrush __r;
     if ((DataObject == nullptr))
     {
         if (!(EUIGlobals::GIsDuringPropertyConversion))
@@ -118,12 +110,11 @@ FSoftBrush __FSystemControlConfig_GetUnlockIcon(const TDataObjectPtr<FSystemCont
         FSystemControlConfig local_220;
         return local_220.UnlockIcon;
     }
-    return __r;
+    return DataObject.Get().UnlockIcon;
 }
 UFUNCTION()
 FText __FSystemControlConfig_GetContent(const TDataObjectPtr<FSystemControlConfig> &inout DataObject)
 {
-    FText __r;
     if ((DataObject == nullptr))
     {
         if (!(EUIGlobals::GIsDuringPropertyConversion))
@@ -133,12 +124,11 @@ FText __FSystemControlConfig_GetContent(const TDataObjectPtr<FSystemControlConfi
         FSystemControlConfig local_220;
         return local_220.Content;
     }
-    return __r;
+    return DataObject.Get().Content;
 }
 UFUNCTION()
 FEUIWidgetTag __FSystemControlConfig_GetEntranceWidget(const TDataObjectPtr<FSystemControlConfig> &inout DataObject)
 {
-    FEUIWidgetTag __r;
     if ((DataObject == nullptr))
     {
         if (!(EUIGlobals::GIsDuringPropertyConversion))
@@ -148,12 +138,11 @@ FEUIWidgetTag __FSystemControlConfig_GetEntranceWidget(const TDataObjectPtr<FSys
         FSystemControlConfig local_220;
         return local_220.EntranceWidget;
     }
-    return __r;
+    return DataObject.Get().EntranceWidget;
 }
 UFUNCTION()
 FEUIInputAction __FSystemControlConfig_GetEntranceInput(const TDataObjectPtr<FSystemControlConfig> &inout DataObject)
 {
-    FEUIInputAction __r;
     if ((DataObject == nullptr))
     {
         if (!(EUIGlobals::GIsDuringPropertyConversion))
@@ -163,23 +152,21 @@ FEUIInputAction __FSystemControlConfig_GetEntranceInput(const TDataObjectPtr<FSy
         FSystemControlConfig local_220;
         return local_220.EntranceInput;
     }
-    return __r;
+    return DataObject.Get().EntranceInput;
 }
 UFUNCTION()
 bool __FSystemControlConfig_GetbHasHUDEntrance(const TDataObjectPtr<FSystemControlConfig> &inout DataObject)
 {
-    bool local_1 = false;
     if ((DataObject == nullptr))
     {
-        local_1 = !(EUIGlobals::GIsDuringPropertyConversion);
-        if (local_1)
+        if (!(EUIGlobals::GIsDuringPropertyConversion))
         {
             FBlueprintDebugFunctions::ThrowScriptException("Get 'bHasHUDEntrance' from a null 'FSystemControlConfig' DataObject!");
         }
         FSystemControlConfig local_220;
         return local_220.bHasHUDEntrance;
     }
-    return local_1;
+    return DataObject.Get().bHasHUDEntrance;
 }
 UFUNCTION()
 TDataObjectPtr<FRedPointConfig> __FSystemControlConfig_GetRedPointCfg(const TDataObjectPtr<FSystemControlConfig> &inout DataObject)
@@ -193,12 +180,11 @@ TDataObjectPtr<FRedPointConfig> __FSystemControlConfig_GetRedPointCfg(const TDat
         FSystemControlConfig local_220;
         return local_220.GetRedPointCfg();
     }
-    return GetRedPointCfg();
+    return DataObject.Get().GetRedPointCfg();
 }
 UFUNCTION()
 TArray<int64> __FSystemControlConfig_GetExtraArgs(const TDataObjectPtr<FSystemControlConfig> &inout DataObject)
 {
-    TArray<int64> __r;
     if ((DataObject == nullptr))
     {
         if (!(EUIGlobals::GIsDuringPropertyConversion))
@@ -208,12 +194,11 @@ TArray<int64> __FSystemControlConfig_GetExtraArgs(const TDataObjectPtr<FSystemCo
         FSystemControlConfig local_220;
         return local_220.ExtraArgs;
     }
-    return __r;
+    return DataObject.Get().ExtraArgs;
 }
 UFUNCTION()
 TArray<ELevelType> __FSystemControlConfig_GetAllowedScenes(const TDataObjectPtr<FSystemControlConfig> &inout DataObject)
 {
-    TArray<ELevelType> __r;
     if ((DataObject == nullptr))
     {
         if (!(EUIGlobals::GIsDuringPropertyConversion))
@@ -223,7 +208,7 @@ TArray<ELevelType> __FSystemControlConfig_GetAllowedScenes(const TDataObjectPtr<
         FSystemControlConfig local_220;
         return local_220.AllowedScenes;
     }
-    return __r;
+    return DataObject.Get().AllowedScenes;
 }
 UFUNCTION()
 TDataObjectPtr<FRefreshRuleConfig> __FSystemControlConfig_GetRefreshRuleConfig(const TDataObjectPtr<FSystemControlConfig> &inout DataObject)
@@ -237,7 +222,7 @@ TDataObjectPtr<FRefreshRuleConfig> __FSystemControlConfig_GetRefreshRuleConfig(c
         FSystemControlConfig local_220;
         return local_220.GetRefreshRuleConfig();
     }
-    return GetRefreshRuleConfig();
+    return DataObject.Get().GetRefreshRuleConfig();
 }
 UFUNCTION()
 FSystemControlConfig CastToFSystemControlConfig(const TDataObjectPtr<FSystemControlConfig> &inout DataObject)

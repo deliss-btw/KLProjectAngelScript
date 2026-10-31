@@ -123,11 +123,9 @@ FVM_ExecuteAvatarIcon& Create(const UObject ContextObject, const FECSEntity &ino
 {
     return FVM_ExecuteAvatarIcon::CreateByManager(EUIInternal::GetContextManager(ContextObject), Entity);
 }
-FVM_ExecuteAvatarIcon CreateByManager(const UEUIManagerSubsystem Manager, const FECSEntity &inout Entity)
+FVM_ExecuteAvatarIcon& CreateByManager(const UEUIManagerSubsystem Manager, const FECSEntity &inout Entity)
 {
-    FVM_ExecuteAvatarIcon __r;
-    TEUIModelRef<FVM_ExecuteAvatarIcon> local_6 = TEUIModelRef<FVM_ExecuteAvatarIcon>(EUIInternal::MakeModelWithManager_Generic(Manager, FVM_ExecuteAvatarIcon::ModelId, 0, Entity));
-    return __r;
+    return TEUIModelRef<FVM_ExecuteAvatarIcon>(EUIInternal::MakeModelWithManager_Generic(Manager, FVM_ExecuteAvatarIcon::ModelId, 0, Entity)).Get();
 }
 void GetModelInfo(FEUIViewModelMetaInfo &inout Result)
 {
@@ -174,7 +172,6 @@ namespace __GeneratedProperties_FVM_ExecuteAvatarIcon
 {
 UScriptStruct StaticStruct()
 {
-    UScriptStruct local_2;
-    return local_2;
+    return __GeneratedProperties_FVM_ExecuteAvatarIcon.Get();
 }
 }

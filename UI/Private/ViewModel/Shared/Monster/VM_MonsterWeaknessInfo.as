@@ -50,9 +50,9 @@ struct FVM_MonsterWeaknessInfo : FEUIViewModel
         TEUIModelRef<FVM_CommonRewardList> local_8 = TEUIModelRef<FVM_CommonRewardList>(::FVM_CommonRewardList::Create(this.GetContext().Manager, ::FCommonRewardListBuilder::BuildFromDropConfig(this.GetWeaknessPartConfig().opArrow().GetDestroyDropItemConfig())));
         this.SetRewardList(local_8);
         TEUIModelRef<FVM_CommonRewardList> local_8_2 = this.GetRewardList();
-        this.GetRewardTitleText().OverrideRewardTitleText();
+        local_8_2.Get().OverrideRewardTitleText(this.GetRewardTitleText());
         TEUIModelRef<FVM_CommonRewardList> local_8_3 = this.GetRewardList();
-        this.GetWeaknessPartConfig().opArrow().PartName.OverrideRewardDescriptionText();
+        local_8_3.Get().OverrideRewardDescriptionText(this.GetWeaknessPartConfig().opArrow().PartName);
         return;
     }
     void GotoCommissionRewardDetail()
@@ -146,11 +146,9 @@ FVM_MonsterWeaknessInfo& Create(const UObject ContextObject)
 {
     return FVM_MonsterWeaknessInfo::CreateByManager(EUIInternal::GetContextManager(ContextObject));
 }
-FVM_MonsterWeaknessInfo CreateByManager(const UEUIManagerSubsystem Manager)
+FVM_MonsterWeaknessInfo& CreateByManager(const UEUIManagerSubsystem Manager)
 {
-    FVM_MonsterWeaknessInfo __r;
-    TEUIModelRef<FVM_MonsterWeaknessInfo> local_6 = TEUIModelRef<FVM_MonsterWeaknessInfo>(EUIInternal::MakeModelWithManager(Manager, FVM_MonsterWeaknessInfo::ModelId));
-    return __r;
+    return TEUIModelRef<FVM_MonsterWeaknessInfo>(EUIInternal::MakeModelWithManager(Manager, FVM_MonsterWeaknessInfo::ModelId)).Get();
 }
 void GetModelInfo(FEUIViewModelMetaInfo &inout Result)
 {
@@ -227,7 +225,6 @@ namespace __GeneratedProperties_FVM_MonsterWeaknessInfo
 {
 UScriptStruct StaticStruct()
 {
-    UScriptStruct local_2;
-    return local_2;
+    return __GeneratedProperties_FVM_MonsterWeaknessInfo.Get();
 }
 }

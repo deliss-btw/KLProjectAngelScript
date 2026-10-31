@@ -68,17 +68,7 @@ struct FVM_AvatarAttributeItem : FEUIViewModel
     }
     void OnPlayerAttributeChanged(const FC_GameAttributeView &inout C_AttributeView)
     {
-        bool local_1 = !(this.GetbIsCategory());
-        if (!(local_1))
-        {
-            local_1 = false;
-        }
-        else
-        {
-            TEUIModelRef<FM_Attribute> local_4 = this.GetAttribute();
-            local_1 = C_AttributeView.HasAttribute(GetAttribute());
-        }
-        if (local_1)
+        if (!(this.GetbIsCategory()) && C_AttributeView.HasAttribute(this.GetAttribute().Get().GetAttribute()))
         {
             this.UpdateAvatarAttribute();
         }
@@ -86,8 +76,7 @@ struct FVM_AvatarAttributeItem : FEUIViewModel
     }
     void UpdateAvatarAttribute()
     {
-        FM_Attribute& local_4;
-        TEUIModelRef<FM_Attribute> local_2 = this.GetAttribute();
+        FM_Attribute& local_4 = this.GetAttribute().Get();
         if (local_4)
         {
             float32 local_23 = FGameAttributeUtils::GetAttributeValue(this.GetContext().GetLocalPlayerPawn(), local_4.GetAttribute(), this.GetContext().Time, false, 0.0f, false, FGameAttributeModificationValue());
@@ -179,11 +168,9 @@ FVM_AvatarAttributeItem& Create(const UObject ContextObject, const bool bIsCateg
 {
     return FVM_AvatarAttributeItem::CreateByManager(EUIInternal::GetContextManager(ContextObject), bIsCategory, CategoryName, Attribute);
 }
-FVM_AvatarAttributeItem CreateByManager(const UEUIManagerSubsystem Manager, const bool bIsCategory, const FText &inout CategoryName, const TEUIModelRef<FM_Attribute> &inout Attribute)
+FVM_AvatarAttributeItem& CreateByManager(const UEUIManagerSubsystem Manager, const bool bIsCategory, const FText &inout CategoryName, const TEUIModelRef<FM_Attribute> &inout Attribute)
 {
-    FVM_AvatarAttributeItem __r;
-    TEUIModelRef<FVM_AvatarAttributeItem> local_6 = TEUIModelRef<FVM_AvatarAttributeItem>(EUIInternal::MakeModelWithManager_Generic(Manager, FVM_AvatarAttributeItem::ModelId, 0, bIsCategory, CategoryName, Attribute));
-    return __r;
+    return TEUIModelRef<FVM_AvatarAttributeItem>(EUIInternal::MakeModelWithManager_Generic(Manager, FVM_AvatarAttributeItem::ModelId, 0, bIsCategory, CategoryName, Attribute)).Get();
 }
 void GetModelInfo(FEUIViewModelMetaInfo &inout Result)
 {
@@ -257,7 +244,6 @@ namespace __GeneratedProperties_FVM_AvatarAttributeItem
 {
 UScriptStruct StaticStruct()
 {
-    UScriptStruct local_2;
-    return local_2;
+    return __GeneratedProperties_FVM_AvatarAttributeItem.Get();
 }
 }

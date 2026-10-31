@@ -137,33 +137,33 @@ struct FMS_Condition : FEUIModelSingleton
             return false;
         }
         CastTo local_30;
-        if (local_30.opCall())
+        TDataObjectPtr<FConditionConfig> local_54 = local_30.opCall();
+        if (local_54)
         {
-            return this.IsConditionFinish();
+            return this.IsConditionFinish(local_54.Get());
         }
         CastTo local_82;
-        if (local_82.opCall())
+        TDataObjectPtr<FGsConditionGroupConfig> local_106 = local_82.opCall();
+        if (local_106)
         {
-            if (GetCondVec().Num() == 0)
+            if (local_106.Get().GetCondVec().Num() == 0)
             {
                 return false;
             }
-            if (0 == 2)
+            if (int(local_106.Get().LogicType) == 2)
             {
-                for (auto& local_124 : GetCondVec())
+                for (auto& local_124 : local_106.Get().GetCondVec())
                 {
-                    local_124;
-                    if (!(this.IsConditionFinish()))
+                    if (!(this.IsConditionFinish(local_124.Get())))
                     {
                         return false;
                     }
                 }
                 return true;
             }
-            for (auto& local_124 : GetCondVec())
+            for (auto& local_124 : local_106.Get().GetCondVec())
             {
-                local_124;
-                if (this.IsConditionFinish())
+                if (this.IsConditionFinish(local_124.Get()))
                 {
                     return true;
                 }
@@ -190,16 +190,19 @@ struct FMS_Condition : FEUIModelSingleton
             return;
         }
         CastTo local_30;
-        if (local_30.opCall())
+        TDataObjectPtr<FConditionConfig> local_54 = local_30.opCall();
+        if (local_54)
         {
+            OutIds.Add(local_54.Get().DataId);
             return;
         }
         CastTo local_82;
-        if (local_82.opCall())
+        TDataObjectPtr<FGsConditionGroupConfig> local_106 = local_82.opCall();
+        if (local_106)
         {
-            for (auto& local_120 : GetCondVec())
+            for (auto& local_120 : local_106.Get().GetCondVec())
             {
-                local_120;
+                OutIds.Add(local_120.Get().DataId);
             }
         }
         return;
@@ -235,11 +238,9 @@ FMS_Condition& Get(const UObject ContextObject)
 {
     return FMS_Condition::GetByManager(EUIInternal::GetContextManager(ContextObject));
 }
-FMS_Condition GetByManager(const UEUIManagerSubsystem Manager)
+FMS_Condition& GetByManager(const UEUIManagerSubsystem Manager)
 {
-    FMS_Condition __r;
-    TEUIModelRef<FMS_Condition> local_6 = TEUIModelRef<FMS_Condition>(EUIInternal::MakeModelWithManager(Manager, FMS_Condition::ModelId));
-    return __r;
+    return TEUIModelRef<FMS_Condition>(EUIInternal::MakeModelWithManager(Manager, FMS_Condition::ModelId)).Get();
 }
 void GetModelInfo(FEUIModelOnlyMetaInfo &inout Result)
 {

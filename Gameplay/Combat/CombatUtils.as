@@ -96,7 +96,8 @@ bool HitCheckCondition(const EFactionRelationSplitSelf FactionRelation, const ui
     {
         if (!(HittableCondition.AttackTags.IsEmpty()) && !((AttackData == nullptr)))
         {
-            if ((local_2 && !(HittableCondition.bInverseCheckTags)) || (!(local_2) && HittableCondition.bInverseCheckTags))
+            bool local_2_2 = HittableCondition.AttackTags.Contains(AttackData.Get().AttackTag);
+            if ((local_2_2 && !(HittableCondition.bInverseCheckTags)) || (!(local_2_2) && HittableCondition.bInverseCheckTags))
             {
                 return true;
             }
@@ -293,10 +294,9 @@ FHitTestCheckResult CheckHitTestResult(const FECSEntity &inout HitCaster, const 
         {
             if (!((local_126 == nullptr)))
             {
-                TArrayConstIterator<FBuffConfigRef> local_132;
-                for (; local_132.CanProceed;)
+                for (auto& local_140 : local_126.Get().IgnoreByBuff)
                 {
-                    if (FBuffUtils::HasBuff(local_8, local_132.Proceed()))
+                    if (FBuffUtils::HasBuff(local_8, local_140))
                     {
                         local_2.CheckResult = EHitTestCheckResult(4);
                         return local_2;
@@ -480,11 +480,11 @@ FCE_HitEvent& MakeHitEvent(const FECSEntity &inout EventSender, const FECSEntity
     local_6.bClientWaitForServerOnHit = HitEventParam.bClientWaitForServerOnHit;
     local_6.bNeedHitMeshPresentation = HitEventParam.bNeedHitMeshPresentation;
     local_6.bAttackHitFXSpawnToStrikeCenterLine = HitEventParam.bAttackHitFXSpawnToStrikeCenterLine;
+    const FAttackData& local_10 = HitEventParam.AttackData.Get();
     Get local_14;
     const FC_DefenseHit& local_16 = local_14.opCall();
     if (local_16)
     {
-        FAttackData local_10;
         local_6.bBanPresentation = FDamageUtils::BanPresentationWhenDefense(local_10, local_16.GetDefenseHitDatas());
     }
     local_6.Attacker = AttackerEntity;
@@ -599,14 +599,14 @@ void TriggerEntityPhaseChange(const FECSEntity &inout Entity, const int PhaseInd
 }
 bool IsTargetWeakDamageType(const FECSEntity &inout Entity, const EDamageType DamageType)
 {
-    int local_54 = 0;
     if ((!((Entity == ENTITY_NULL))))
     {
         if (int(GetPrefabType(Entity)) == 2)
         {
-            if ((!((GetMonsterConfig(Entity) == nullptr))))
+            TDataObjectPtr<FMonsterPrefabConfig> local_28 = GetMonsterConfig(Entity);
+            if ((!((local_28 == nullptr))))
             {
-                if ((local_54 & (1 << int(DamageType))) != 0)
+                if ((local_28.Get().WeakDamageType & (1 << int(DamageType))) != 0)
                 {
                     return true;
                 }
@@ -669,7 +669,7 @@ int AddPotentialDamage(const FECSEntity &inout Casuer, const FECSEntity &inout T
         XError(ELog(0), "AddPotentialDamage but casuer or target invalid");
         return -1;
     }
-    if ((AttackDataPtr == nullptr) || (0 != 4))
+    if ((AttackDataPtr == nullptr) || (int(AttackDataPtr.Get().AttackType) != 4))
     {
         XError(ELog(0), "AddPotentialDamage but AttackData is invalid or AttackType is NOT DOT!");
         return -1;
@@ -680,8 +680,8 @@ int AddPotentialDamage(const FECSEntity &inout Casuer, const FECSEntity &inout T
     local_54.SetAttackData(AttackDataPtr);
     local_54.SetDamagerCasuer(Casuer);
     local_54.SetExpireTime(ExpireTime);
+    const FAttackData& local_56 = AttackDataPtr.Get();
     bool local_2 = FDamageUtils::IsDamageToAvatar(Target);
-    FAttackData local_56;
     local_54.SetBaseDamage(FDamageUtils::CalcAttackBaseDamageValue(Casuer, local_56, Time, local_2, ContextCapabilityId));
     local_54.SetDamageProcedureType(EDamageProcedureType(1));
     local_12.GetModify_DataByIndex().Add(local_12.GetIndexAcc(), local_54);
@@ -690,8 +690,10 @@ int AddPotentialDamage(const FECSEntity &inout Casuer, const FECSEntity &inout T
 void RemovePotentialDamage(const FECSEntity &inout TargetEntity, const int DamageIndex)
 {
     Modify local_4;
-    if (local_4.opCall())
+    FC_PotentialDamage& local_6 = local_4.opCall();
+    if (local_6)
     {
+        local_6.GetModify_DataByIndex().Remove(DamageIndex);
     }
     return;
 }
@@ -709,7 +711,7 @@ void ApplyPotentialDamage(const FECSEntity &inout TargetEntity, const int Damage
         if (local_8.GetDataByIndex().Find(DamageIndex, local_50))
         {
             FDataObjectPtr local_110;
-            const FAttackData& local_52;
+            const FAttackData& local_52 = local_50.GetAttackData().Get();
             FECSEntity local_60;
             if (local_50.GetDamagerCasuer().IsValid())
             {
@@ -780,7 +782,6 @@ FECSEntity GetAttackSourceEntity(const FECSEntity &inout InstigatorEntity)
 int CombineTargetCreatureToOneTeamOfSelfEntityByRangeNewEcology(const FECSEntity &inout SelfEntity, const TDataObjectPtr<FMonsterMainConfig> &inout MonsterRowData, const float32 Range, const int MaxEntityNum = -1)
 {
     int local_62 = 0;
-    TMapIterator<FECSEntityId, FEcologyVoxelSceneUnitSummary> local_124;
     int local_144 = 0;
     FTargetEntity local_4 = FTargetEntity(SelfEntity);
     Get local_8;
@@ -799,10 +800,9 @@ int CombineTargetCreatureToOneTeamOfSelfEntityByRangeNewEcology(const FECSEntity
         FEcologyVoxelSceneRegion& local_96 = local_62.VoxelScene.FindOrAddRegion(local_82.Proceed().Current);
         for (auto& local_116 : local_96.GetCellSlotDataRef(EEcologyVoxelUnitSlot(1)))
         {
-            local_116;
-            for (; local_124.CanProceed;)
+            for (auto& local_134 : local_116.GetValue().SlotData)
             {
-                FECSEntity local_138 = FECSEntity(local_124.Proceed().GetKey());
+                FECSEntity local_138 = FECSEntity(local_134.GetKey());
                 if (!(local_138.IsValid()))
                 {
                     continue;
@@ -834,6 +834,8 @@ int CombineTargetCreatureToOneTeamOfSelfEntityByRangeNewEcology(const FECSEntity
     {
         return 0;
     }
+    __Lambda_Gameplay_Combat_CombatUtils_783 local_232;
+    local_72.Sort(local_232);
     TArray<FTargetEntity> local_236;
     if (MaxEntityNum > 0)
     {
@@ -936,6 +938,7 @@ void DissolveEntityFromItsTeamInternal(const FTargetEntity &inout Entity, const 
         TSet<FTargetEntity> local_60 = local_40.TeamMemberSet;
         if ((local_40.TeamLeader == Entity))
         {
+            local_34.RelationShipTeamDetailMap.Remove(local_37);
             for (auto& local_80 : local_60)
             {
                 if ((!((local_80 == Entity))))
@@ -946,6 +949,7 @@ void DissolveEntityFromItsTeamInternal(const FTargetEntity &inout Entity, const 
         }
         else
         {
+            local_40.TeamMemberSet.Remove(Entity);
         }
         FECSEntity local_12_6 = Entity.GetEntity();
         local_26.opCall();

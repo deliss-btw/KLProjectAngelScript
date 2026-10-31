@@ -55,7 +55,6 @@ struct FVM_TalentUpgradeInfo : FEUIViewModel
     void PostConstruct()
     {
         FDataObjectPtr local_130;
-        FText local_236;
         int local_238 = 0;
         int local_328 = 0;
         if (!(this.GetNode().IsValid()))
@@ -65,21 +64,17 @@ struct FVM_TalentUpgradeInfo : FEUIViewModel
         FItemParamConfig local_30;
         TArray<TEUIModelRef<FVM_ForgeWeaponItemMaterialItem>> local_34;
         TArray<FItemParamConfig> local_38;
-        TEUIModelWeakRef<FM_ForgeNode> local_2 = this.GetNode();
-        if (int(GetStateType()) == 1)
+        if (int(this.GetNode().Get().GetStateType()) == 1)
         {
-            TEUIModelWeakRef<FM_ForgeNode> local_2_2 = this.GetNode();
-            local_38 = GetConfig().Cost;
+            local_38 = this.GetNode().Get().GetConfig().Cost;
         }
         else
         {
-            TEUIModelWeakRef<FM_ForgeNode> local_2_3 = this.GetNode();
-            if (int(GetStateType()) == 0)
+            if (int(this.GetNode().Get().GetStateType()) == 0)
             {
-                TEUIModelWeakRef<FM_ForgeNode> local_2_4 = this.GetNode();
-                if (GetConfig().GetCraft())
+                if (this.GetNode().Get().GetConfig().GetCraft())
                 {
-                    TEUIModelWeakRef<FM_ForgeNode> local_2_5 = this.GetNode();
+                    local_38 = this.GetNode().Get().GetConfig().GetCraft().Get().Cost;
                 }
             }
         }
@@ -95,29 +90,25 @@ struct FVM_TalentUpgradeInfo : FEUIViewModel
             }
             if (local_56.Item)
             {
-                ::FMS_PlayerInventory::Get(this.GetContext().Manager).GetSumItem(local_56.Item);
-                int local_135 = int(local_56.Count);
-                FVM_ForgeWeaponItemMaterialItem local_138;
-                local_34.Add(TEUIModelRef<FVM_ForgeWeaponItemMaterialItem>(local_138));
+                local_34.Add(TEUIModelRef<FVM_ForgeWeaponItemMaterialItem>(::FVM_ForgeWeaponItemMaterialItem::Create(this.GetContext().Manager, ::FMS_PlayerInventory::Get(this.GetContext().Manager).GetSumItem(local_56.Item), local_56.Item.Get().ItemIcon, int(local_56.Count))));
             }
         }
+        FForgeItemMaterialSorter local_142;
+        local_34.Sort(local_142);
         this.SetItemMaterial(TEUIModelRef<FVM_ForgeWeaponItemMaterial>(::FVM_ForgeWeaponItemMaterial::Create(this.GetContext().Manager, this.GetIsUnlock(), local_34, local_30)));
         TArray<TDataObjectPtr<FConditionConfig>> local_148;
-        TEUIModelWeakRef<FM_ForgeNode> local_2_6 = this.GetNode();
-        if (int(GetStateType()) == 2)
+        if (int(this.GetNode().Get().GetStateType()) == 2)
         {
-            TEUIModelWeakRef<FM_ForgeNode> local_2_7 = this.GetNode();
-            local_148 = GetConfig().GetUnlockCondition();
+            local_148 = this.GetNode().Get().GetConfig().GetUnlockCondition();
         }
         else
         {
-            TEUIModelWeakRef<FM_ForgeNode> local_2_8 = this.GetNode();
-            if (int(GetStateType()) == 3)
+            if (int(this.GetNode().Get().GetStateType()) == 3)
             {
-                TEUIModelWeakRef<FM_ForgeNode> local_2_9 = this.GetNode();
-                if (::FMS_Forge::Get(this.GetContext().Manager).GetTree(GetTreeId()).IsValid())
+                TEUIModelWeakRef<FM_ForgeTree> local_152 = ::FMS_Forge::Get(this.GetContext().Manager).GetTree(this.GetNode().Get().GetTreeId());
+                if (local_152.IsValid())
                 {
-                    local_148 = GetConfig().GetUnlockCondition();
+                    local_148 = local_152.Get().GetConfig().GetUnlockCondition();
                 }
             }
         }
@@ -127,34 +118,26 @@ struct FVM_TalentUpgradeInfo : FEUIViewModel
             TDataObjectPtr<FConditionConfig> local_178 = local_148[local_153];
             if (local_178)
             {
-                FVM_ForgeWeaponItemUnlockCondItem local_204;
-                this.GetModify_CurrentWeaponItemUnlockCondList().Add(TEUIModelRef<FVM_ForgeWeaponItemUnlockCondItem>(local_204));
+                this.GetModify_CurrentWeaponItemUnlockCondList().Add(TEUIModelRef<FVM_ForgeWeaponItemUnlockCondItem>(::FVM_ForgeWeaponItemUnlockCondItem::Create(this.GetContext().Manager, local_178.Get().ConditionTips)));
             }
         }
-        TEUIModelWeakRef<FM_ForgeNode> local_2_10 = this.GetNode();
-        TEUIModelRef<FVM_EquipmentInfo> local_208;
-        local_208.GetEquipmentInfo();
+        TEUIModelRef<FVM_EquipmentInfo> local_208 = this.GetNode().Get().GetEquipmentInfo();
         if (local_208)
         {
-            for (auto& local_224 : GetEquipmentAttributes())
+            for (auto& local_224 : local_208.Get().GetEquipmentAttributes())
             {
                 TEUIModelRef<FVM_AttributeDisplay> local_226 = TEUIModelRef<FVM_AttributeDisplay>(local_224);
-                FText local_232;
-                local_232.GetAttributeValue();
-                local_236.GetAttributeName();
+                FText local_232 = local_226.Get().GetAttributeValue();
+                FText local_236 = local_226.Get().GetAttributeName();
                 this.GetModify_CurrentAttributeList().Add(TEUIModelRef<FVM_ForgeWeaponItemAttribute>(local_238));
             }
-            for (auto& local_254 : GetEquipmentTraits())
+            for (auto& local_254 : local_208.Get().GetEquipmentTraits())
             {
-                local_254;
-                local_236.GetTraitLevelText();
-                TDataObjectPtr<FTraitConfig> local_278;
-                local_278.GetTraitConfig();
-                FSoftBrush local_324;
-                local_324.GetTraitIcon();
+                FText local_236_2 = local_254.Get().GetTraitLevelText();
+                TDataObjectPtr<FTraitConfig> local_278 = local_254.Get().GetTraitConfig();
+                FSoftBrush local_324 = local_254.Get().GetTraitIcon();
                 TEUIModelRef<FVM_ForgeWeaponItemAttribute> local_240 = TEUIModelRef<FVM_ForgeWeaponItemAttribute>(local_238);
-                TEUIModelRef<FM_Trait> local_326;
-                local_326.GetTrait();
+                TEUIModelRef<FM_Trait> local_326 = local_254.Get().GetTrait();
                 this.GetModify_CurrentTraitList().Add(TEUIModelRef<FVM_ForgeWeaponItemPassiveSkill>(local_328));
             }
         }
@@ -164,14 +147,10 @@ struct FVM_TalentUpgradeInfo : FEUIViewModel
     {
         if (this.GetNode().IsValid())
         {
-            TEUIModelRef<FVM_EquipmentInfo> local_6;
-            TEUIModelWeakRef<FM_ForgeNode> local_2 = this.GetNode();
-            local_6.GetEquipmentInfo();
+            TEUIModelRef<FVM_EquipmentInfo> local_6 = this.GetNode().Get().GetEquipmentInfo();
             if (local_6)
             {
-                TDataObjectPtr<FEquipmentConfig> local_32;
-                local_32.GetEquipmentConfig();
-                return local_32;
+                return local_6.Get().GetEquipmentConfig();
             }
         }
         return TDataObjectPtr<FEquipmentConfig>(nullptr);
@@ -198,12 +177,12 @@ struct FVM_TalentUpgradeInfo : FEUIViewModel
     }
     FText GetRandomTraitText() const
     {
-        int local_50 = 0;
+        TDataObjectPtr<FEquipmentConfig> local_24 = this.GetEquipmentConfig();
         FText local_54;
-        if (this.GetEquipmentConfig())
+        if (local_24)
         {
             local_54 = NSLOCTEXT("RandomTraitText", "随机{0}个被动技能");
-            return FText::Format(local_54, local_50);
+            return FText::Format(local_54, local_24.Get().TrailDepot.Num());
         }
         return local_54;
     }
@@ -218,41 +197,26 @@ struct FVM_TalentUpgradeInfo : FEUIViewModel
     }
     FSoftBrush GetWeaponPreivewImage() const
     {
-        FSoftBrush __return;
-        if (this.GetEquipmentConfig())
+        TDataObjectPtr<FEquipmentConfig> local_24 = this.GetEquipmentConfig();
+        if (local_24)
         {
+            return local_24.Get().ItemIcon;
         }
-        else
-        {
-            __return = FSoftBrush();
-        }
-        return __return;
+        return FSoftBrush();
     }
     bool GetIsUnlock() const
     {
-        bool local_3 = !(this.GetNode().IsValid());
-        if (local_3)
-        {
-            local_3 = true;
-        }
-        else
-        {
-            TEUIModelWeakRef<FM_ForgeNode> local_2 = this.GetNode();
-            local_3 = (int(GetStateType()) == 1);
-        }
-        return local_3;
+        return !(this.GetNode().IsValid()) || (int(this.GetNode().Get().GetStateType()) == 1);
     }
     FText GetLockDisplayText() const
     {
         if (this.GetNode().IsValid())
         {
-            TEUIModelWeakRef<FM_ForgeNode> local_2 = this.GetNode();
-            if ((int(GetStateType())) == 3)
+            if ((int(this.GetNode().Get().GetStateType())) == 3)
             {
                 return NSLOCTEXT("HideForgeDisplayText", "暂未解锁该系列武器");
             }
-            TEUIModelWeakRef<FM_ForgeNode> local_2_2 = this.GetNode();
-            if ((int(GetStateType())) == 2)
+            if ((int(this.GetNode().Get().GetStateType())) == 2)
             {
                 return NSLOCTEXT("LockForgeDisplayText", "暂未解锁配方");
             }
@@ -391,11 +355,9 @@ FVM_TalentUpgradeInfo& Create(const UObject ContextObject, const TEUIModelWeakRe
 {
     return FVM_TalentUpgradeInfo::CreateByManager(EUIInternal::GetContextManager(ContextObject), Node);
 }
-FVM_TalentUpgradeInfo CreateByManager(const UEUIManagerSubsystem Manager, const TEUIModelWeakRef<FM_ForgeNode> &inout Node)
+FVM_TalentUpgradeInfo& CreateByManager(const UEUIManagerSubsystem Manager, const TEUIModelWeakRef<FM_ForgeNode> &inout Node)
 {
-    FVM_TalentUpgradeInfo __r;
-    TEUIModelRef<FVM_TalentUpgradeInfo> local_6 = TEUIModelRef<FVM_TalentUpgradeInfo>(EUIInternal::MakeModelWithManager_Generic(Manager, FVM_TalentUpgradeInfo::ModelId, 0, Node));
-    return __r;
+    return TEUIModelRef<FVM_TalentUpgradeInfo>(EUIInternal::MakeModelWithManager_Generic(Manager, FVM_TalentUpgradeInfo::ModelId, 0, Node)).Get();
 }
 void GetModelInfo(FEUIViewModelMetaInfo &inout Result)
 {
@@ -544,7 +506,6 @@ namespace __GeneratedProperties_FVM_TalentUpgradeInfo
 {
 UScriptStruct StaticStruct()
 {
-    UScriptStruct local_2;
-    return local_2;
+    return __GeneratedProperties_FVM_TalentUpgradeInfo.Get();
 }
 }

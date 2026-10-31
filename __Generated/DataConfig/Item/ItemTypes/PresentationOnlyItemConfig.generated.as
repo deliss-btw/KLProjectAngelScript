@@ -27,7 +27,6 @@ USkillConfig __FRemnantItemConfig_GetItemSkillConfig(const TDataObjectPtr<FRemna
 UFUNCTION()
 FBuffConfigRef __FRemnantItemConfig_GetItemBuffConfig(const TDataObjectPtr<FRemnantItemConfig> &inout DataObject)
 {
-    FBuffConfigRef __r;
     if ((DataObject == nullptr))
     {
         if (!(EUIGlobals::GIsDuringPropertyConversion))
@@ -37,7 +36,7 @@ FBuffConfigRef __FRemnantItemConfig_GetItemBuffConfig(const TDataObjectPtr<FRemn
         FRemnantItemConfig local_236;
         return local_236.ItemBuffConfig;
     }
-    return __r;
+    return DataObject.Get().ItemBuffConfig;
 }
 UFUNCTION()
 int __FRemnantItemConfig_GetUsableCount(const TDataObjectPtr<FRemnantItemConfig> &inout DataObject)
@@ -66,7 +65,7 @@ TDataObjectPtr<FMessageHintConfig_LargeHint> __FRemnantItemConfig_GetHint(const 
         FRemnantItemConfig local_236;
         return local_236.GetHint();
     }
-    return GetHint();
+    return DataObject.Get().GetHint();
 }
 UFUNCTION()
 FRemnantItemConfig CastToFRemnantItemConfig(const TDataObjectPtr<FRemnantItemConfig> &inout DataObject)

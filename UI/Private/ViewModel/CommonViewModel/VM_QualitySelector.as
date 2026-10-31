@@ -107,8 +107,7 @@ struct FVM_QualitySelector : FEUIViewModel
             {
                 local_10 = 1.0f;
             }
-            TEUIModelRef<FVM_CommonSlider> local_6 = this.GetCommonSliderVM();
-            local_10.SetCurrentStep();
+            this.GetCommonSliderVM().Get().SetCurrentStep(local_10);
         }
         return;
     }
@@ -181,8 +180,7 @@ struct FVM_QualitySelector : FEUIViewModel
         }
         if (this.GetCommonSliderVM().IsValid())
         {
-            TEUIModelRef<FVM_CommonSlider> local_12 = this.GetCommonSliderVM();
-            local_1.SetCurrentRatio();
+            this.GetCommonSliderVM().Get().SetCurrentRatio(local_1);
         }
         return;
     }
@@ -392,11 +390,9 @@ FVM_QualitySelector& Create(const UObject ContextObject)
 {
     return FVM_QualitySelector::CreateByManager(EUIInternal::GetContextManager(ContextObject));
 }
-FVM_QualitySelector CreateByManager(const UEUIManagerSubsystem Manager)
+FVM_QualitySelector& CreateByManager(const UEUIManagerSubsystem Manager)
 {
-    FVM_QualitySelector __r;
-    TEUIModelRef<FVM_QualitySelector> local_6 = TEUIModelRef<FVM_QualitySelector>(EUIInternal::MakeModelWithManager(Manager, FVM_QualitySelector::ModelId));
-    return __r;
+    return TEUIModelRef<FVM_QualitySelector>(EUIInternal::MakeModelWithManager(Manager, FVM_QualitySelector::ModelId)).Get();
 }
 void GetModelInfo(FEUIViewModelMetaInfo &inout Result)
 {
@@ -533,7 +529,6 @@ namespace __GeneratedProperties_FVM_QualitySelector
 {
 UScriptStruct StaticStruct()
 {
-    UScriptStruct local_2;
-    return local_2;
+    return __GeneratedProperties_FVM_QualitySelector.Get();
 }
 }

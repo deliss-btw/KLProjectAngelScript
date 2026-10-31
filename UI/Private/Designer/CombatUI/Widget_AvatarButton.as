@@ -61,8 +61,8 @@ class UWidget_AvatarButton : UEUIUserWidget
     UFUNCTION()
     UTexture2D AvatarButton_AvatarIcon() const
     {
-        FVM_AvatarButton& local_2;
         UTexture2D local_8;
+        FVM_AvatarButton& local_2 = this.AvatarButton.Get();
         if (local_2)
         {
             local_8 = local_2.GetAvatarIcon();
@@ -75,15 +75,15 @@ class UWidget_AvatarButton : UEUIUserWidget
     UFUNCTION()
     FText AvatarButton_TextCDRemained() const
     {
-        FVM_AvatarButton& local_2;
+        FVM_AvatarButton& local_2 = this.AvatarButton.Get();
         FText local_16 = local_2 ? local_2.CDRemainedAsText() : FText();
         return local_16;
     }
     UFUNCTION()
     bool AvatarButton_BoolCDRemained() const
     {
-        FVM_AvatarButton& local_2;
         bool local_5;
+        FVM_AvatarButton& local_2 = this.AvatarButton.Get();
         if (local_2)
         {
             local_5 = local_2.CDRemainedAsBool();
@@ -97,8 +97,8 @@ class UWidget_AvatarButton : UEUIUserWidget
     UFUNCTION()
     ESlateVisibility AvatarButton_SlateVisibilityCDRemained() const
     {
-        FVM_AvatarButton& local_2;
         int local_5;
+        FVM_AvatarButton& local_2 = this.AvatarButton.Get();
         if (local_2)
         {
             local_5 = int(local_2.CDRemainedAsSlateVisibility());
@@ -112,14 +112,14 @@ class UWidget_AvatarButton : UEUIUserWidget
     UFUNCTION()
     float32 AvatarButton_CDRemainedRadio() const
     {
-        FVM_AvatarButton& local_2;
+        FVM_AvatarButton& local_2 = this.AvatarButton.Get();
         return local_2 ? local_2.GetCDRemainedRadio() : 0.0f;
     }
     UFUNCTION()
     bool AvatarButton_bSwitchAvatarInCD() const
     {
-        FVM_AvatarButton& local_2;
         bool local_5;
+        FVM_AvatarButton& local_2 = this.AvatarButton.Get();
         if (local_2)
         {
             local_5 = local_2.GetbSwitchAvatarInCD();
@@ -132,8 +132,8 @@ class UWidget_AvatarButton : UEUIUserWidget
     }
     void HandleObservedModelChanges(FEUIReactiveSubscriberIterator &inout It)
     {
-        FVM_AvatarButton& local_6;
         TEUIModelRef<FVM_AvatarButton> local_2 = this.AvatarButton.AsRef();
+        FVM_AvatarButton& local_6 = local_2.Get();
         for (; It; )
         {
             FEUIReactiveSubscriberTrackScope local_56 = FEUIReactiveSubscriberTrackScope(It);

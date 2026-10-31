@@ -30,8 +30,7 @@ class UWidget_TutorialHandbookEntry : UEUIUserListItemWidget
     {
         FEUIMessageBus::PublishWithWidgetReferencedModels(EUIMessageBus);
         FMsg_TutorialHandbookEntryHovered local_2;
-        TEUIModelWeakRef<FVM_TutorialHandbookEntry> local_8;
-        local_2.HoveredEntry = local_8;
+        local_2.HoveredEntry = TEUIModelWeakRef<FVM_TutorialHandbookEntry>(this.EntryVM.Get());
         local_2.bHovered = true;
         return;
     }

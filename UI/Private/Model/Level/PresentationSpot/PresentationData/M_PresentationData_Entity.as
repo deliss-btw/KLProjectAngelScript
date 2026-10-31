@@ -64,7 +64,7 @@ struct FMS_SpotByEntityId : FEUIModelSingleton
     {
         if ((OwnerEntityID == ENTITY_ID_NULL))
         {
-            TEUIModelWeakRef<FM_Spot> local_4 = TEUIModelWeakRef<FM_Spot>(Spot);
+            this.GetModify_SpotOwnerEntityIdMap().Remove(TEUIModelWeakRef<FM_Spot>(Spot));
             return;
         }
         this.GetModify_SpotOwnerEntityIdMap().Add(TEUIModelWeakRef<FM_Spot>(Spot), OwnerEntityID);
@@ -103,10 +103,8 @@ struct FMS_SpotByEntityId : FEUIModelSingleton
     }
     void CleanupInvalidSpots()
     {
-        bool local_21;
         TArray<TEUIModelWeakRef<FM_Spot>> local_26;
         TArray<FECSEntityId> local_4;
-        bool local_31 = false;
         for (auto& local_24 : this.GetModify_EntityIdToSpotsMap())
         {
             int local_30 = local_26.Num() - 1;
@@ -117,23 +115,14 @@ struct FMS_SpotByEntityId : FEUIModelSingleton
                     local_26.RemoveAtSwap(local_30);
                 }
             }
-            if (!(local_26.IsEmpty()))
-            {
-                local_21 = false;
-            }
-            else
-            {
-                local_31 = !local_31;
-                local_21 = local_31;
-            }
-            if (local_21)
+            if (local_26.IsEmpty() && !(local_24.GetValue().EntitySpot))
             {
                 local_4.Add(local_24.GetKey());
             }
         }
         for (auto& local_46 : local_4)
         {
-            local_46;
+            this.GetModify_EntityIdToSpotsMap().Remove(local_46);
         }
         TArray<TEUIModelWeakRef<FM_Spot>> local_50;
         for (auto& local_68 : this.GetSpotOwnerEntityIdMap())
@@ -145,7 +134,7 @@ struct FMS_SpotByEntityId : FEUIModelSingleton
         }
         for (auto& local_82 : local_50)
         {
-            local_82;
+            this.GetModify_SpotOwnerEntityIdMap().Remove(local_82);
         }
         return;
     }
@@ -290,11 +279,9 @@ FMS_SpotByEntityId& Get(const UObject ContextObject)
 {
     return FMS_SpotByEntityId::GetByManager(EUIInternal::GetContextManager(ContextObject));
 }
-FMS_SpotByEntityId GetByManager(const UEUIManagerSubsystem Manager)
+FMS_SpotByEntityId& GetByManager(const UEUIManagerSubsystem Manager)
 {
-    FMS_SpotByEntityId __r;
-    TEUIModelRef<FMS_SpotByEntityId> local_6 = TEUIModelRef<FMS_SpotByEntityId>(EUIInternal::MakeModelWithManager(Manager, FMS_SpotByEntityId::ModelId));
-    return __r;
+    return TEUIModelRef<FMS_SpotByEntityId>(EUIInternal::MakeModelWithManager(Manager, FMS_SpotByEntityId::ModelId)).Get();
 }
 void GetModelInfo(FEUIModelOnlyMetaInfo &inout Result)
 {

@@ -406,11 +406,9 @@ FMS_ChatRuntimeData& Get(const UObject ContextObject)
 {
     return FMS_ChatRuntimeData::GetByManager(EUIInternal::GetContextManager(ContextObject));
 }
-FMS_ChatRuntimeData GetByManager(const UEUIManagerSubsystem Manager)
+FMS_ChatRuntimeData& GetByManager(const UEUIManagerSubsystem Manager)
 {
-    FMS_ChatRuntimeData __r;
-    TEUIModelRef<FMS_ChatRuntimeData> local_6 = TEUIModelRef<FMS_ChatRuntimeData>(EUIInternal::MakeModelWithManager(Manager, FMS_ChatRuntimeData::ModelId));
-    return __r;
+    return TEUIModelRef<FMS_ChatRuntimeData>(EUIInternal::MakeModelWithManager(Manager, FMS_ChatRuntimeData::ModelId)).Get();
 }
 void GetModelInfo(FEUIModelOnlyMetaInfo &inout Result)
 {

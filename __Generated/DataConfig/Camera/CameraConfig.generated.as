@@ -3,7 +3,6 @@ namespace __FFixedCameraConfigFunctions
 UFUNCTION()
 FVector __FFixedCameraConfig_GetOffsetPosition(const TDataObjectPtr<FFixedCameraConfig> &inout DataObject)
 {
-    FVector __r;
     if ((DataObject == nullptr))
     {
         if (!(EUIGlobals::GIsDuringPropertyConversion))
@@ -13,12 +12,11 @@ FVector __FFixedCameraConfig_GetOffsetPosition(const TDataObjectPtr<FFixedCamera
         FFixedCameraConfig local_104;
         return local_104.OffsetPosition;
     }
-    return __r;
+    return DataObject.Get().OffsetPosition;
 }
 UFUNCTION()
 FRotator __FFixedCameraConfig_GetRotation(const TDataObjectPtr<FFixedCameraConfig> &inout DataObject)
 {
-    FRotator __r;
     if ((DataObject == nullptr))
     {
         if (!(EUIGlobals::GIsDuringPropertyConversion))
@@ -28,12 +26,11 @@ FRotator __FFixedCameraConfig_GetRotation(const TDataObjectPtr<FFixedCameraConfi
         FFixedCameraConfig local_104;
         return local_104.Rotation;
     }
-    return __r;
+    return DataObject.Get().Rotation;
 }
 UFUNCTION()
 bool __FFixedCameraConfig_GetbAbsoluteRotation(const TDataObjectPtr<FFixedCameraConfig> &inout DataObject)
 {
-    bool local_1 = false;
     if ((DataObject == nullptr))
     {
         if (!(EUIGlobals::GIsDuringPropertyConversion))
@@ -43,7 +40,7 @@ bool __FFixedCameraConfig_GetbAbsoluteRotation(const TDataObjectPtr<FFixedCamera
         FFixedCameraConfig local_104;
         return local_104.bAbsoluteRotation;
     }
-    return local_1;
+    return DataObject.Get().bAbsoluteRotation;
 }
 UFUNCTION()
 float32 __FFixedCameraConfig_GetFOV(const TDataObjectPtr<FFixedCameraConfig> &inout DataObject)
@@ -63,7 +60,6 @@ float32 __FFixedCameraConfig_GetFOV(const TDataObjectPtr<FFixedCameraConfig> &in
 UFUNCTION()
 FCameraBlendConfig __FFixedCameraConfig_GetBlendConfig(const TDataObjectPtr<FFixedCameraConfig> &inout DataObject)
 {
-    FCameraBlendConfig __r;
     if ((DataObject == nullptr))
     {
         if (!(EUIGlobals::GIsDuringPropertyConversion))
@@ -73,7 +69,7 @@ FCameraBlendConfig __FFixedCameraConfig_GetBlendConfig(const TDataObjectPtr<FFix
         FFixedCameraConfig local_104;
         return local_104.BlendConfig;
     }
-    return __r;
+    return DataObject.Get().BlendConfig;
 }
 UFUNCTION()
 FFixedCameraConfig CastToFFixedCameraConfig(const TDataObjectPtr<FFixedCameraConfig> &inout DataObject)

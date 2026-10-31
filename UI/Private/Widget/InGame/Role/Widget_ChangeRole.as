@@ -22,7 +22,7 @@ class UWidget_ChangeRole : UEUIActivatableWidget
     UFUNCTION()
     void OnViewBind_Implementation()
     {
-        this.RoleList.SetSelectedIndex(GetCurrentSelectedRoleIndex());
+        this.RoleList.SetSelectedIndex(this.ChangeRole.Get().GetCurrentSelectedRoleIndex());
         return;
     }
     UFUNCTION()
@@ -61,7 +61,7 @@ class UWidget_ChangeRole : UEUIActivatableWidget
     UFUNCTION()
     TArray<FEUIModelWeakRef> ChangeRole_AllRoles() const
     {
-        FVMS_ChangeRole& local_2;
+        FVMS_ChangeRole& local_2 = this.ChangeRole.Get();
         TArray<FEUIModelWeakRef> local_16;
         if (local_2)
         {
@@ -76,7 +76,7 @@ class UWidget_ChangeRole : UEUIActivatableWidget
     UFUNCTION()
     FEUIModelRef ChangeRole_SelectedAvatar() const
     {
-        FVMS_ChangeRole& local_2;
+        FVMS_ChangeRole& local_2 = this.ChangeRole.Get();
         FEUIModelRef local_8;
         if (local_2)
         {
@@ -91,7 +91,7 @@ class UWidget_ChangeRole : UEUIActivatableWidget
     UFUNCTION()
     FEUIModelRef ChangeRole_AvatarEquipment() const
     {
-        FVMS_ChangeRole& local_2;
+        FVMS_ChangeRole& local_2 = this.ChangeRole.Get();
         FEUIModelRef local_8;
         if (local_2)
         {
@@ -106,42 +106,42 @@ class UWidget_ChangeRole : UEUIActivatableWidget
     UFUNCTION()
     FSlateBrush ChangeRole_SelectAvatarBrush() const
     {
-        FVMS_ChangeRole& local_2;
+        FVMS_ChangeRole& local_2 = this.ChangeRole.Get();
         FSlateBrush local_92 = local_2 ? local_2.GetSelectAvatarBrush() : FSlateBrush();
         return local_92;
     }
     UFUNCTION()
     FText ChangeRole_SelectAvatarClass() const
     {
-        FVMS_ChangeRole& local_2;
+        FVMS_ChangeRole& local_2 = this.ChangeRole.Get();
         FText local_12 = local_2 ? local_2.GetSelectAvatarClass() : FText();
         return local_12;
     }
     UFUNCTION()
     FText ChangeRole_SelectAvatarIllustrate() const
     {
-        FVMS_ChangeRole& local_2;
+        FVMS_ChangeRole& local_2 = this.ChangeRole.Get();
         FText local_12 = local_2 ? local_2.GetSelectAvatarIllustrate() : FText();
         return local_12;
     }
     UFUNCTION()
     FText ChangeRole_SelectAvatarAttack() const
     {
-        FVMS_ChangeRole& local_2;
+        FVMS_ChangeRole& local_2 = this.ChangeRole.Get();
         FText local_12 = local_2 ? local_2.GetSelectAvatarAttack() : FText();
         return local_12;
     }
     UFUNCTION()
     FText ChangeRole_SelectAvatarPostureAttack() const
     {
-        FVMS_ChangeRole& local_2;
+        FVMS_ChangeRole& local_2 = this.ChangeRole.Get();
         FText local_12 = local_2 ? local_2.GetSelectAvatarPostureAttack() : FText();
         return local_12;
     }
     UFUNCTION()
     FSlateBrush ChangeRole_OtherAvatarBrush() const
     {
-        FVMS_ChangeRole& local_2;
+        FVMS_ChangeRole& local_2 = this.ChangeRole.Get();
         FSlateBrush local_92 = local_2 ? local_2.GetOtherAvatarBrush() : FSlateBrush();
         return local_92;
     }
@@ -174,8 +174,8 @@ class UWidget_ChangeRole : UEUIActivatableWidget
     }
     void HandleObservedModelChanges(FEUIReactiveSubscriberIterator &inout It)
     {
-        FVMS_ChangeRole& local_6;
         TEUIModelRef<FVMS_ChangeRole> local_2 = this.ChangeRole.AsRef();
+        FVMS_ChangeRole& local_6 = local_2.Get();
         for (; It; )
         {
             FEUIReactiveSubscriberTrackScope local_56 = FEUIReactiveSubscriberTrackScope(It);

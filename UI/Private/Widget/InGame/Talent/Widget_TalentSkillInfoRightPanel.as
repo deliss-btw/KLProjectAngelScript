@@ -93,7 +93,7 @@ class UWidget_TalentSkillInfoRightPanel : UEUIActivatableWidget
     UFUNCTION()
     void OnSkillChanged()
     {
-        UMediaSource local_4 = GetSkillPreviewMovie();
+        UMediaSource local_4 = this.TalentSkillInfo.Get().GetSkillPreviewMovie();
         if (local_4 != nullptr)
         {
             this.VideoPlayer.SetVideo(local_4);
@@ -120,7 +120,7 @@ class UWidget_TalentSkillInfoRightPanel : UEUIActivatableWidget
     void RefreshUpgradeBtn()
     {
         bool local_8;
-        if (GetIsUnlocked())
+        if (this.TalentSkillInfo.Get().GetIsUnlocked())
         {
             this.UpgradeActionBinding.SetOverrideDisplayText(NSLOCTEXT("Talent", "TalentUpgradeBtn", "长按升级技能"));
         }
@@ -128,16 +128,16 @@ class UWidget_TalentSkillInfoRightPanel : UEUIActivatableWidget
         {
             this.UpgradeActionBinding.SetOverrideDisplayText(NSLOCTEXT("Talent", "TalentUnlockBtn", "长按解锁技能"));
         }
-        bool local_1 = GetShowUpgradeBtn();
+        bool local_1 = this.TalentSkillInfo.Get().GetShowUpgradeBtn();
         this.UpgradeActionBinding.SetCollapsed(!(local_1));
         if (local_1)
         {
             bool local_7;
-            local_7 = GetUpgradeBtnCostEnough();
+            local_7 = this.TalentSkillInfo.Get().GetUpgradeBtnCostEnough();
             local_8 = !(local_7);
             this.UpgradeActionBinding.SetDisabled(local_8);
         }
-        local_8 = GetIsUnlockedAndChoice() && GetIsUnequippedChoice();
+        local_8 = this.TalentSkillInfo.Get().GetIsUnlockedAndChoice() && this.TalentSkillInfo.Get().GetIsUnequippedChoice();
         this.ChangeChooseActionBinding.SetCollapsed(!(local_8));
         return;
     }
@@ -215,8 +215,8 @@ class UWidget_TalentSkillInfoRightPanel : UEUIActivatableWidget
     }
     void HandleObservedModelChanges(FEUIReactiveSubscriberIterator &inout It)
     {
-        FVM_TalentSkillInfoItem& local_6;
         TEUIModelRef<FVM_TalentSkillInfoItem> local_2 = this.TalentSkillInfo.AsRef();
+        FVM_TalentSkillInfoItem& local_6 = local_2.Get();
         for (; It; )
         {
             FEUIReactiveSubscriberTrackScope local_56 = FEUIReactiveSubscriberTrackScope(It);

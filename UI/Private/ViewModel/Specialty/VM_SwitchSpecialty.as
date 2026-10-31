@@ -93,32 +93,30 @@ struct FVM_SwitchSpecialty : FEUIViewModel
         this.SetCurrentSpecialtyId(0);
         if (this.GetPlayerModel().IsValid())
         {
-            TEUIModelRef<FM_Player> local_4 = this.GetPlayerModel();
-            this.SetCurrentSpecialtyId(GetPlayerSpecialtyID());
+            this.SetCurrentSpecialtyId(this.GetPlayerModel().Get().GetPlayerSpecialtyID());
         }
         return;
     }
     void GenerateSpecialtyAvatarList()
     {
-        bool local_25 = false;
         this.GetModify_SpecialtyAvatarList().Empty(0);
         this.GetModify_SpecialtyItems().Empty(0);
         TArray<TEUIModelRef<FVM_AvatarInfo>> local_6 = ::FVMS_PlayerOwnedAvatarInfo::Get(this.GetManager()).GetAllConfigAvatars();
         for (auto& local_24 : local_6)
         {
-            if (!(local_24.IsValid()) || !(GetAvatarConfig().IsSet()))
+            if (!(local_24.IsValid()) || !(local_24.Get().GetAvatarConfig().IsSet()))
             {
                 continue;
             }
+            bool local_25 = local_24.Get().GetAvatarConfig().Get().bIsMainPlayer;
             if (local_25)
             {
                 this.GetModify_SpecialtyAvatarList().Add(local_24);
                 TEUIModelRef<FVM_SpecialtyItem> local_28 = TEUIModelRef<FVM_SpecialtyItem>(::FVM_SpecialtyItem::Create(this.GetManager(), local_24));
-                if (0 == this.GetCurrentSpecialtyId())
+                if (local_24.Get().GetAvatarConfig().Get().DataId == this.GetCurrentSpecialtyId())
                 {
                     this.SetSelectedAvatarId(this.GetCurrentSpecialtyId());
-                    local_25 = true;
-                    local_25.SetbSelected();
+                    local_28.Get().SetbSelected(true);
                 }
                 this.GetModify_SpecialtyItems().Add(local_28);
             }
@@ -127,7 +125,6 @@ struct FVM_SwitchSpecialty : FEUIViewModel
     }
     void AB_ConfirmSpecialty()
     {
-        int local_2 = 0;
         int local_1 = this.GetSelectedAvatarId();
         if (local_1 == 0)
         {
@@ -137,18 +134,7 @@ struct FVM_SwitchSpecialty : FEUIViewModel
         {
             return;
         }
-        bool local_3 = this.GetPlayerModel().IsValid();
-        if (!(local_3))
-        {
-            local_3 = false;
-        }
-        else
-        {
-            TEUIModelRef<FM_Player> local_6 = this.GetPlayerModel();
-            local_2 = this.GetSelectedAvatarId();
-            local_3 = (GetPlayerSpecialtyID() == local_2);
-        }
-        if (local_3)
+        if (this.GetPlayerModel().IsValid() && (this.GetPlayerModel().Get().GetPlayerSpecialtyID() == this.GetSelectedAvatarId()))
         {
             FCommonTipsParam local_16;
             ::CommonPopup::Tips(NSLOCTEXT("Specialty", "AlreadyCurrentSpecialty", "当前已是该专长"), local_16);
@@ -156,13 +142,13 @@ struct FVM_SwitchSpecialty : FEUIViewModel
         }
         for (auto& local_30 : this.GetSpecialtyAvatarList())
         {
-            if (!(local_30.IsValid()) || !(GetAvatarConfig().IsSet()))
+            if (!(local_30.IsValid()) || !(local_30.Get().GetAvatarConfig().IsSet()))
             {
                 continue;
             }
-            if (local_2 == this.GetSelectedAvatarId())
+            if (local_30.Get().GetAvatarConfig().Get().DataId == this.GetSelectedAvatarId())
             {
-                true.ChangeToSpecialty();
+                local_30.Get().ChangeToSpecialty(true);
                 if (::UGameClientConnectionSubsystem::Get() != nullptr && ::UGameClientConnectionSubsystem::Get().IsConnectedToGameServer())
                 {
                     this.SetbIsInChangingSpecialty(true);
@@ -178,67 +164,28 @@ struct FVM_SwitchSpecialty : FEUIViewModel
     }
     void OnSelectIndexChanged(const int Index)
     {
-        TEUIModelRef<FVM_AvatarInfo> local_4;
-        int local_6 = 0;
-        bool local_1 = !(this.GetSpecialtyItems().IsValidIndex(Index)) || !(this.GetSpecialtyItems()[Index].IsValid());
-        if (local_1)
-        {
-            local_1 = true;
-        }
-        else
-        {
-            local_4.GetAvatarInfo();
-            local_1 = !(local_4.IsValid());
-        }
-        if (local_1)
-        {
-            local_1 = true;
-        }
-        else
-        {
-            local_4.GetAvatarInfo();
-            local_1 = !(GetAvatarConfig().IsSet());
-        }
-        if (local_1)
+        if (!(this.GetSpecialtyItems().IsValidIndex(Index)) || !(this.GetSpecialtyItems()[Index].IsValid()) || !(this.GetSpecialtyItems()[Index].Get().GetAvatarInfo().IsValid()) || !(this.GetSpecialtyItems()[Index].Get().GetAvatarInfo().Get().GetAvatarConfig().IsSet()))
         {
             return;
         }
-        local_4.GetAvatarInfo();
+        TEUIModelRef<FVM_AvatarInfo> local_4 = this.GetSpecialtyItems()[Index].Get().GetAvatarInfo();
+        int local_6 = local_4.Get().GetAvatarConfig().Get().DataId;
         int local_5 = local_6;
         this.RefreshSelectedAvatar(local_5);
         return;
     }
     void RefreshSelectedAvatar(const uint InSelectedAvatarId)
     {
-        TEUIModelRef<FVM_AvatarInfo> local_18;
-        int local_21 = 0;
         this.SetSelectedAvatarId(InSelectedAvatarId);
         for (auto& local_16 : this.GetSpecialtyItems())
         {
-            bool local_13 = !(local_16.IsValid());
-            if (local_13)
-            {
-                local_13 = true;
-            }
-            else
-            {
-                local_18.GetAvatarInfo();
-                local_13 = !(local_18.IsValid());
-            }
-            if (local_13)
-            {
-                local_13 = true;
-            }
-            else
-            {
-                local_18.GetAvatarInfo();
-                local_13 = !(GetAvatarConfig().IsSet());
-            }
+            bool local_13 = !(local_16.IsValid()) || !(local_16.Get().GetAvatarInfo().IsValid()) || !(local_16.Get().GetAvatarInfo().Get().GetAvatarConfig().IsSet());
             if (local_13)
             {
                 continue;
             }
-            local_18.GetAvatarInfo();
+            TEUIModelRef<FVM_AvatarInfo> local_18 = local_16.Get().GetAvatarInfo();
+            int local_21 = local_18.Get().GetAvatarConfig().Get().DataId;
             if (local_21 != this.GetSelectedAvatarId())
             {
                 local_13 = false;
@@ -248,7 +195,7 @@ struct FVM_SwitchSpecialty : FEUIViewModel
                 local_21 = this.GetSelectedAvatarId();
                 local_13 = (local_21 != 0);
             }
-            local_13.SetbSelected();
+            local_16.Get().SetbSelected(local_13);
         }
         return;
     }
@@ -394,11 +341,9 @@ FVM_SwitchSpecialty& Create(const UObject ContextObject)
 {
     return FVM_SwitchSpecialty::CreateByManager(EUIInternal::GetContextManager(ContextObject));
 }
-FVM_SwitchSpecialty CreateByManager(const UEUIManagerSubsystem Manager)
+FVM_SwitchSpecialty& CreateByManager(const UEUIManagerSubsystem Manager)
 {
-    FVM_SwitchSpecialty __r;
-    TEUIModelRef<FVM_SwitchSpecialty> local_6 = TEUIModelRef<FVM_SwitchSpecialty>(EUIInternal::MakeModelWithManager(Manager, FVM_SwitchSpecialty::ModelId));
-    return __r;
+    return TEUIModelRef<FVM_SwitchSpecialty>(EUIInternal::MakeModelWithManager(Manager, FVM_SwitchSpecialty::ModelId)).Get();
 }
 void GetModelInfo(FEUIViewModelMetaInfo &inout Result)
 {
@@ -480,7 +425,6 @@ namespace __GeneratedProperties_FVM_SwitchSpecialty
 {
 UScriptStruct StaticStruct()
 {
-    UScriptStruct local_2;
-    return local_2;
+    return __GeneratedProperties_FVM_SwitchSpecialty.Get();
 }
 }

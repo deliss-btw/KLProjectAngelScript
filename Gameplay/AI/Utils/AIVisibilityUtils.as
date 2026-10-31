@@ -150,6 +150,7 @@ void UpdateVisibilityCache(FC_AIVisibilityCache &inout VisCache, const FTargetEn
 }
 void InvalidateVisibilityCache(FC_AIVisibilityCache &inout VisCache, const FTargetEntity &inout TargetKey)
 {
+    VisCache.Cache.Remove(TargetKey);
     return;
 }
 bool DoVisibilityLineTrace(const FECSEntity &inout Source, const FVector &inout SourcePos, const FVector &inout TargetPos, const uint TargetEntityId)

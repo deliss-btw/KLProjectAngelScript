@@ -84,8 +84,7 @@ class UESMAction_BrokenDestructible : UESMBPBaseSpanTickAction
                 if (int(ECS::GetRuntimeInfo().IsServer) != 0)
                 {
                     FSimpleDestructibleBreakResult local_200;
-                    UPrimitiveComponent local_204;
-                    bool local_9_2 = ::SimpleDestructibleUtils::ServerTryBreakFromHitResult(Context.GetEntity(), local_204, int(local_140.Item), this.DestructibleDamageLevel, false, this.ImpactType, this.ImpactStrength, local_6.GetVelocity().GetSafeNormal(9.99999993922529e-9, FVector::ZeroVector), local_200);
+                    bool local_9_2 = ::SimpleDestructibleUtils::ServerTryBreakFromHitResult(Context.GetEntity(), local_140.GetComponent(), int(local_140.Item), this.DestructibleDamageLevel, false, this.ImpactType, this.ImpactStrength, local_6.GetVelocity().GetSafeNormal(9.99999993922529e-9, FVector::ZeroVector), local_200);
                     if (local_9_2)
                     {
                         if local_200.bWasAlreadyDestroyed

@@ -50,8 +50,7 @@ struct FC_TreasureBoxConfig : FECSComponent
         if (local_8)
         {
             FECSWorldPtr local_10 = ECS::GetECSWorld();
-            TDataObjectPtr<FLevelObjectStatConfig> local_40;
-            local_16.GetModify_TreasureBoxes().Add(Entity, local_40);
+            local_16.GetModify_TreasureBoxes().Add(Entity, TDataObjectPtr<FLevelObjectStatConfig>(local_6.LevelObjectStatConfig.Get()));
             local_16.GetModify_TreasureBoxStateConfigs().Add(Entity, this.StateConfig);
             ::AttributeSampleUtils::AddAttributeSample(Entity, EAttributeSampleType(3), EAttributeSampleRequester(0), ENTITY_NULL);
             ::AttributeSampleUtils::AddAttributeSample(Entity, EAttributeSampleType(12), EAttributeSampleRequester(0), ENTITY_NULL);
@@ -137,8 +136,7 @@ struct FCS_TreasureBoxes : FECSSingleton
         for (auto& local_20 : this.GetTreasureBoxes())
         {
             TDataObjectPtr<FLevelObjectStatConfig> local_44;
-            TDataObjectPtr<FLevelObjectStatConfig> local_68;
-            local_44 = local_68;
+            local_44 = local_20.GetValue();
             if ((local_44 == TreasureBoxConfig.opImplConv()))
             {
                 return local_20.GetKey();

@@ -13,9 +13,6 @@ class UBTTask_SyncDynamicBehaviorFromActivityDefine : UBTTask_ECSScriptBase
     EBTNodeResult ExecuteTask_Implementation(const FAIBehaviorTreeContext &inout Context, const FBTNodeMemory &inout NodeMemory) const
     {
         int local_10 = 0;
-        UEcologyBehaviorDefine local_16;
-        UBehaviorTree local_26;
-        UBehaviorTree local_30;
         FECSEntity local_4 = FECSEntity(Context.PawnEntity);
         if (!(local_10))
         {
@@ -24,19 +21,20 @@ class UBTTask_SyncDynamicBehaviorFromActivityDefine : UBTTask_ECSScriptBase
         else
         {
             TObjectPtr<UEcologyBehaviorDefine> local_14 = TObjectPtr<UEcologyBehaviorDefine>(local_10.ActivityData.BehaviorDefine);
-            if (!(local_16.bHasBehaviorTreeAsset))
+            if (!(local_14.Get().bHasBehaviorTreeAsset))
             {
                 return EBTNodeResult(1);
             }
             else
             {
-                Ecology::SyncLoadObject(local_16.BehaviorTreeAsset.ToSoftObjectPath());
-                if ((!((local_26 != nullptr))))
+                Ecology::SyncLoadObject(local_14.Get().BehaviorTreeAsset.ToSoftObjectPath());
+                if ((!((local_14.Get().BehaviorTreeAsset.Get() != nullptr))))
                 {
                     return EBTNodeResult(1);
                 }
                 else
                 {
+                    UBehaviorTree local_30 = local_14.Get().BehaviorTreeAsset.Get();
                     FGameplayTag local_34 = this.DynamicBehaviorTreeInjectTag.GetValue(Context.opImplConv());
                     FECSWorldPtr local_38 = ECS::GetECSWorld();
                     ModifyOrAdd local_42;

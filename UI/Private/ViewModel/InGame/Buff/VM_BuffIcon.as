@@ -242,7 +242,6 @@ struct FVM_BuffIcon : FEUIViewModel
     void UpdateMeatBuff()
     {
         bool local_9;
-        int local_19 = 0;
         if (!(::FASCommonUtils::GetUniquePlayerEntity(this.GetTargetEntity()).IsValid()))
         {
             local_9 = false;
@@ -261,17 +260,15 @@ struct FVM_BuffIcon : FEUIViewModel
             local_18 = 0;
             for (auto& local_40 : local_22.GetMetaBuffs())
             {
-                if (0 == this.GetBuffEntityData().ConfigRef.GetUniqueID())
+                if (local_40.GetMetaBuffConfig().Get().BuffConfig.GetUniqueID() == this.GetBuffEntityData().ConfigRef.GetUniqueID())
                 {
                     local_16 = local_40.GetStartTime();
-                    local_18 = local_19;
+                    local_18 = local_40.GetMetaBuffConfig().Get().Duration;
                     this.SetMeatBuffModifiersDataIDs(local_40.GetModifiersDataIDs());
                 }
             }
             int64 local_50 = FDateTime::UtcNow().ToUnixTimestamp();
-            local_19 = (local_16 - local_50);
-            local_19 = local_19 + local_18;
-            this.SetEndTime(FFPTime((this.GetContext().Time.ToSeconds() + local_19)));
+            this.SetEndTime(FFPTime((this.GetContext().Time.ToSeconds() + float(((local_16 - local_50) + local_18)))));
             this.SetDurationTime(FFPTime(local_18));
             this.SetIconProgressBar(TEUIModelRef<FVM_CommonAnnularProgressBar>(::FVM_CommonAnnularProgressBar::Create(this.GetContext().Manager, this.GetEndTime(), FFPTime(local_18))));
         }
@@ -308,7 +305,6 @@ struct FVM_BuffIcon : FEUIViewModel
     void OnQuickSlotChanged(const FC_PlayerMetaBuffList &inout C_PlayerMetaBuffList)
     {
         bool local_1;
-        int local_40 = 0;
         if (!(this.GetTargetEntity().IsValid()))
         {
             local_1 = false;
@@ -325,18 +321,16 @@ struct FVM_BuffIcon : FEUIViewModel
             FFPTime local_12;
             for (auto& local_32 : local_14.GetMetaBuffs())
             {
-                if (0 == this.GetBuffEntityData().ConfigRef.GetUniqueID())
+                if (local_32.GetMetaBuffConfig().Get().BuffConfig.GetUniqueID() == this.GetBuffEntityData().ConfigRef.GetUniqueID())
                 {
                     local_10 = FFPTime(local_32.GetStartTime());
-                    local_12 = local_40;
+                    local_12 = local_32.GetMetaBuffConfig().Get().Duration;
                 }
             }
             this.SetEndTime((local_10 + local_12));
             this.SetDurationTime(local_12);
-            TEUIModelRef<FVM_CommonAnnularProgressBar> local_42 = this.GetIconProgressBar();
-            this.GetEndTime().SetEndTime();
-            TEUIModelRef<FVM_CommonAnnularProgressBar> local_42_2 = this.GetIconProgressBar();
-            this.GetDurationTime().SetDuration();
+            this.GetIconProgressBar().Get().SetEndTime(this.GetEndTime());
+            this.GetIconProgressBar().Get().SetDuration(this.GetDurationTime());
         }
         return;
     }
@@ -344,6 +338,7 @@ struct FVM_BuffIcon : FEUIViewModel
     {
         if (this.GetbIsPlaceholder() || (this.GetDurationTime().ToSeconds() <= 0.0))
         {
+            this.GetModify_BuffTimeProgress().Clear();
             return;
         }
         this.GetModify_BuffTimeProgress().EndAtSmooth(this.GetEndTime(), this.GetDurationTime());
@@ -405,10 +400,9 @@ struct FVM_BuffIcon : FEUIViewModel
             {
                 TArray<FBuffHoverDialogItemData> local_10;
                 this.SetHoverModel(TEUIModelRef<FVM_BuffHoverDialog>(::FVM_BuffHoverDialog::Create(this.GetContext().Manager, local_10)));
-                TEUIModelRef<FVM_BuffHoverDialog> local_12 = this.GetHoverModel();
-                1.SetIsEmptyFood();
-                TEUIModelRef<FVM_BuffHoverDialog> local_12_2 = this.GetHoverModel();
-                local_2 = ::CommonPopup::HoverCustom(Widget, ::UICommonUtil::EUIWidgetPathFromString("/Game/MoleRes/Dev/UI/UMG/MainHud/UI_BuffHoverDialog.UI_BuffHoverDialog"), FEUIModelContainer(), false, true, ECommonHoverLayout(0), EEUILayoutLayer(0), false);
+                this.GetHoverModel().Get().SetIsEmptyFood(1);
+                FEUIModelContainer local_40 = FEUIModelContainer(this.GetHoverModel().Get());
+                local_2 = ::CommonPopup::HoverCustom(Widget, ::UICommonUtil::EUIWidgetPathFromString("/Game/MoleRes/Dev/UI/UMG/MainHud/UI_BuffHoverDialog.UI_BuffHoverDialog"), local_40, false, true, ECommonHoverLayout(0), EEUILayoutLayer(0), false);
                 this.SetHoverHandle(local_2);
                 return;
             }
@@ -444,8 +438,8 @@ struct FVM_BuffIcon : FEUIViewModel
                 if (local_10.Num() > 0)
                 {
                     this.SetHoverModel(TEUIModelRef<FVM_BuffHoverDialog>(::FVM_BuffHoverDialog::Create(this.GetContext().Manager, local_10)));
-                    TEUIModelRef<FVM_BuffHoverDialog> local_12_3 = this.GetHoverModel();
-                    local_2 = ::CommonPopup::HoverCustom(Widget, ::UICommonUtil::EUIWidgetPathFromString("/Game/MoleRes/Dev/UI/UMG/MainHud/UI_BuffHoverDialog.UI_BuffHoverDialog"), FEUIModelContainer(), false, true, ECommonHoverLayout(0), EEUILayoutLayer(0), false);
+                    FEUIModelContainer local_40_2 = FEUIModelContainer(this.GetHoverModel().Get());
+                    local_2 = ::CommonPopup::HoverCustom(Widget, ::UICommonUtil::EUIWidgetPathFromString("/Game/MoleRes/Dev/UI/UMG/MainHud/UI_BuffHoverDialog.UI_BuffHoverDialog"), local_40_2, false, true, ECommonHoverLayout(0), EEUILayoutLayer(0), false);
                     this.SetHoverHandle(local_2);
                 }
                 return;
@@ -467,8 +461,8 @@ struct FVM_BuffIcon : FEUIViewModel
                 local_102.AppendModifiersDataIDs = this.GetMeatBuffModifiersDataIDs();
                 local_10.Add(local_102);
                 this.SetHoverModel(TEUIModelRef<FVM_BuffHoverDialog>(::FVM_BuffHoverDialog::Create(this.GetContext().Manager, local_10)));
-                TEUIModelRef<FVM_BuffHoverDialog> local_12_4 = this.GetHoverModel();
-                local_2 = ::CommonPopup::HoverCustom(Widget, ::UICommonUtil::EUIWidgetPathFromString("/Game/MoleRes/Dev/UI/UMG/MainHud/UI_BuffHoverDialog.UI_BuffHoverDialog"), FEUIModelContainer(), false, true, ECommonHoverLayout(0), EEUILayoutLayer(0), false);
+                FEUIModelContainer local_40_3 = FEUIModelContainer(this.GetHoverModel().Get());
+                local_2 = ::CommonPopup::HoverCustom(Widget, ::UICommonUtil::EUIWidgetPathFromString("/Game/MoleRes/Dev/UI/UMG/MainHud/UI_BuffHoverDialog.UI_BuffHoverDialog"), local_40_3, false, true, ECommonHoverLayout(0), EEUILayoutLayer(0), false);
                 this.SetHoverHandle(local_2);
             }
         }
@@ -492,7 +486,6 @@ struct FVM_BuffIcon : FEUIViewModel
     void OnMeatBuffStateChange(const FC_PlayerMetaBuffList &inout MeatBuffComponent)
     {
         bool local_1;
-        int local_19 = 0;
         if (this.GetbMeatBuff())
         {
             if (!(::FASCommonUtils::GetUniquePlayerEntity(this.GetTargetEntity()).IsValid()))
@@ -513,16 +506,14 @@ struct FVM_BuffIcon : FEUIViewModel
                 local_18 = 0;
                 for (auto& local_40 : local_22.GetMetaBuffs())
                 {
-                    if (0 == this.GetBuffEntityData().ConfigRef.GetUniqueID())
+                    if (local_40.GetMetaBuffConfig().Get().BuffConfig.GetUniqueID() == this.GetBuffEntityData().ConfigRef.GetUniqueID())
                     {
                         local_16 = local_40.GetStartTime();
-                        local_18 = local_19;
+                        local_18 = local_40.GetMetaBuffConfig().Get().Duration;
                     }
                 }
                 int64 local_50 = FDateTime::UtcNow().ToUnixTimestamp();
-                local_19 = (local_16 - local_50);
-                local_19 = local_19 + local_18;
-                this.SetEndTime(FFPTime((this.GetContext().Time.ToSeconds() + local_19)));
+                this.SetEndTime(FFPTime((this.GetContext().Time.ToSeconds() + float(((local_16 - local_50) + local_18)))));
                 this.SetDurationTime(FFPTime(local_18));
                 this.SetIconProgressBar(TEUIModelRef<FVM_CommonAnnularProgressBar>(::FVM_CommonAnnularProgressBar::Create(this.GetContext().Manager, this.GetEndTime(), FFPTime(local_18))));
             }
@@ -962,11 +953,9 @@ FVM_BuffIcon& Create(const UObject ContextObject, const FECSEntity &inout Target
 {
     return FVM_BuffIcon::CreateByManager(EUIInternal::GetContextManager(ContextObject), TargetEntity, BuffEntityData, SubBuffEntityData);
 }
-FVM_BuffIcon CreateByManager(const UEUIManagerSubsystem Manager, const FECSEntity &inout TargetEntity, const FBuffEntityData &inout BuffEntityData, const TArray<FBuffEntityData> &inout SubBuffEntityData)
+FVM_BuffIcon& CreateByManager(const UEUIManagerSubsystem Manager, const FECSEntity &inout TargetEntity, const FBuffEntityData &inout BuffEntityData, const TArray<FBuffEntityData> &inout SubBuffEntityData)
 {
-    FVM_BuffIcon __r;
-    TEUIModelRef<FVM_BuffIcon> local_6 = TEUIModelRef<FVM_BuffIcon>(EUIInternal::MakeModelWithManager_Generic(Manager, FVM_BuffIcon::ModelId, 0, TargetEntity, BuffEntityData, SubBuffEntityData));
-    return __r;
+    return TEUIModelRef<FVM_BuffIcon>(EUIInternal::MakeModelWithManager_Generic(Manager, FVM_BuffIcon::ModelId, 0, TargetEntity, BuffEntityData, SubBuffEntityData)).Get();
 }
 void GetModelInfo(FEUIViewModelMetaInfo &inout Result)
 {
@@ -1259,7 +1248,6 @@ namespace __GeneratedProperties_FVM_BuffIcon
 {
 UScriptStruct StaticStruct()
 {
-    UScriptStruct local_2;
-    return local_2;
+    return __GeneratedProperties_FVM_BuffIcon.Get();
 }
 }

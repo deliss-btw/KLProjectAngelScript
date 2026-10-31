@@ -8,6 +8,8 @@ struct FASWaitForESMState : FECSAsyncAction
     UPROPERTY()
     FESMStateEnteredEvent OnStateEntered;
 
+    default m_ScriptOverrideMeta = Cast<UASStruct>(FASWaitForESMState.Get());
+
     FASWaitForESMState()
     {
         this.__InitDefaults();

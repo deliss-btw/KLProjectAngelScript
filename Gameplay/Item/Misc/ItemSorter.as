@@ -221,7 +221,7 @@ EItemSortCompareResult Compare(const UItemSorterBase Sorter, const FItemSortCont
 {
     if ((!((Sorter != nullptr))))
     {
-        return EItemSortCompareResult(1);
+        return EItemSortCompareResult::Equal;
     }
     return Sorter.Compare(A, B);
 }

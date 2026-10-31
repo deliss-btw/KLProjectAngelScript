@@ -127,11 +127,9 @@ FVM_FriendNumInfo& Create(const UObject ContextObject)
 {
     return FVM_FriendNumInfo::CreateByManager(EUIInternal::GetContextManager(ContextObject));
 }
-FVM_FriendNumInfo CreateByManager(const UEUIManagerSubsystem Manager)
+FVM_FriendNumInfo& CreateByManager(const UEUIManagerSubsystem Manager)
 {
-    FVM_FriendNumInfo __r;
-    TEUIModelRef<FVM_FriendNumInfo> local_6 = TEUIModelRef<FVM_FriendNumInfo>(EUIInternal::MakeModelWithManager(Manager, FVM_FriendNumInfo::ModelId));
-    return __r;
+    return TEUIModelRef<FVM_FriendNumInfo>(EUIInternal::MakeModelWithManager(Manager, FVM_FriendNumInfo::ModelId)).Get();
 }
 void GetModelInfo(FEUIViewModelMetaInfo &inout Result)
 {
@@ -210,7 +208,6 @@ namespace __GeneratedProperties_FVM_FriendNumInfo
 {
 UScriptStruct StaticStruct()
 {
-    UScriptStruct local_2;
-    return local_2;
+    return __GeneratedProperties_FVM_FriendNumInfo.Get();
 }
 }

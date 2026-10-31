@@ -220,11 +220,9 @@ FVM_CommonSlider& Create(const UObject ContextObject)
 {
     return FVM_CommonSlider::CreateByManager(EUIInternal::GetContextManager(ContextObject));
 }
-FVM_CommonSlider CreateByManager(const UEUIManagerSubsystem Manager)
+FVM_CommonSlider& CreateByManager(const UEUIManagerSubsystem Manager)
 {
-    FVM_CommonSlider __r;
-    TEUIModelRef<FVM_CommonSlider> local_6 = TEUIModelRef<FVM_CommonSlider>(EUIInternal::MakeModelWithManager(Manager, FVM_CommonSlider::ModelId));
-    return __r;
+    return TEUIModelRef<FVM_CommonSlider>(EUIInternal::MakeModelWithManager(Manager, FVM_CommonSlider::ModelId)).Get();
 }
 void GetModelInfo(FEUIViewModelMetaInfo &inout Result)
 {
@@ -318,7 +316,6 @@ namespace __GeneratedProperties_FVM_CommonSlider
 {
 UScriptStruct StaticStruct()
 {
-    UScriptStruct local_2;
-    return local_2;
+    return __GeneratedProperties_FVM_CommonSlider.Get();
 }
 }

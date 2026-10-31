@@ -65,9 +65,9 @@ class UESMAction_SyncNetTime : UESMSyncNetTimeAction
         FFPTime local_12 = 0.0;
         FFPTime local_16 = 0.0;
         bool local_17 = false;
-        switch (int(this.Preset))
+        switch (this.Preset)
         {
-        case 0:
+        case ESyncNetTimePreset::Default:
         {
             local_3 = true;
             local_4 = true;
@@ -77,7 +77,7 @@ class UESMAction_SyncNetTime : UESMSyncNetTimeAction
             local_16 = (FFPTime(this.GetDuration()) - this.SimpleExitTime);
             break;
         }
-        case 1:
+        case ESyncNetTimePreset::BeHit:
         {
             local_1 = true;
             local_3 = false;
@@ -88,12 +88,12 @@ class UESMAction_SyncNetTime : UESMSyncNetTimeAction
             local_16 = (FFPTime(this.GetDuration()) - this.SimpleExitTime);
             break;
         }
-        case 2:
+        case ESyncNetTimePreset::Connect:
         {
             local_6 = true;
             break;
         }
-        case 3:
+        case ESyncNetTimePreset::Interaction:
         {
             local_3 = false;
             local_4 = false;
@@ -103,7 +103,7 @@ class UESMAction_SyncNetTime : UESMSyncNetTimeAction
             local_16 = (FFPTime(this.GetDuration()) - this.SimpleExitTime);
             break;
         }
-        case 4:
+        case ESyncNetTimePreset::SyncAfterHit:
         {
             local_7 = true;
             local_4 = true;
@@ -111,7 +111,7 @@ class UESMAction_SyncNetTime : UESMSyncNetTimeAction
             local_16 = (FFPTime(this.GetDuration()) - this.SimpleExitTime);
             break;
         }
-        case 5:
+        case ESyncNetTimePreset::RefreshSync:
         {
             local_3 = true;
             local_4 = true;
@@ -212,7 +212,7 @@ class UESMAction_SyncNetTime : UESMSyncNetTimeAction
         local_2 = local_28 || !((FFPTime(this.SyncEnterDuration) == local_12));
         if (local_2 || !((FFPTime(this.SyncExitDuration) == local_16)))
         {
-            local_2 = true;
+            this.Modify(true);
             this.SetbForBeHit(local_1);
             this.SetbShrinkEntryOnServer(local_3);
             this.SetbExtendExitOnServer(local_4);

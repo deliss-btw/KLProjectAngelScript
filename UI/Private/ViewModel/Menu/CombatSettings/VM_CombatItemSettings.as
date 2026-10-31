@@ -137,11 +137,9 @@ FVM_CombatItemSettings& Create(const UObject ContextObject)
 {
     return FVM_CombatItemSettings::CreateByManager(EUIInternal::GetContextManager(ContextObject));
 }
-FVM_CombatItemSettings CreateByManager(const UEUIManagerSubsystem Manager)
+FVM_CombatItemSettings& CreateByManager(const UEUIManagerSubsystem Manager)
 {
-    FVM_CombatItemSettings __r;
-    TEUIModelRef<FVM_CombatItemSettings> local_6 = TEUIModelRef<FVM_CombatItemSettings>(EUIInternal::MakeModelWithManager(Manager, FVM_CombatItemSettings::ModelId));
-    return __r;
+    return TEUIModelRef<FVM_CombatItemSettings>(EUIInternal::MakeModelWithManager(Manager, FVM_CombatItemSettings::ModelId)).Get();
 }
 void GetModelInfo(FEUIViewModelMetaInfo &inout Result)
 {
@@ -201,7 +199,6 @@ namespace __GeneratedProperties_FVM_CombatItemSettings
 {
 UScriptStruct StaticStruct()
 {
-    UScriptStruct local_2;
-    return local_2;
+    return __GeneratedProperties_FVM_CombatItemSettings.Get();
 }
 }

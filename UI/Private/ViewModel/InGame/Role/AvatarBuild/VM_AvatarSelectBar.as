@@ -180,7 +180,7 @@ void ReleaseAvatarSelectBar(const FEUIModelRef &inout OwnerModel)
     FEUIWidgetRef local_12 = FEUIWidget::FindWidgetByClass(local_8, local_2.AvatarSelectBarClass);
     if (local_12)
     {
-        FEUIModelWeakRef local_22 = FEUIModelWeakRef(OwnerModel);
+        local_20.GetModify_OwnerModels().Remove(FEUIModelWeakRef(OwnerModel));
         if (local_20.GetOwnerModels().IsEmpty())
         {
             FEUIWidget::RemoveWidget(local_12);
@@ -192,11 +192,9 @@ FVM_AvatarSelectBar& Create(const UObject ContextObject)
 {
     return FVM_AvatarSelectBar::CreateByManager(EUIInternal::GetContextManager(ContextObject));
 }
-FVM_AvatarSelectBar CreateByManager(const UEUIManagerSubsystem Manager)
+FVM_AvatarSelectBar& CreateByManager(const UEUIManagerSubsystem Manager)
 {
-    FVM_AvatarSelectBar __r;
-    TEUIModelRef<FVM_AvatarSelectBar> local_6 = TEUIModelRef<FVM_AvatarSelectBar>(EUIInternal::MakeModelWithManager(Manager, FVM_AvatarSelectBar::ModelId));
-    return __r;
+    return TEUIModelRef<FVM_AvatarSelectBar>(EUIInternal::MakeModelWithManager(Manager, FVM_AvatarSelectBar::ModelId)).Get();
 }
 void GetModelInfo(FEUIViewModelMetaInfo &inout Result)
 {
@@ -247,7 +245,6 @@ namespace __GeneratedProperties_FVM_AvatarSelectBar
 {
 UScriptStruct StaticStruct()
 {
-    UScriptStruct local_2;
-    return local_2;
+    return __GeneratedProperties_FVM_AvatarSelectBar.Get();
 }
 }

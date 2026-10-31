@@ -437,11 +437,9 @@ FVM_MinimapIconDecoratorTooltip& Create(const UObject ContextObject, const FMini
 {
     return FVM_MinimapIconDecoratorTooltip::CreateByManager(EUIInternal::GetContextManager(ContextObject), Tooltip);
 }
-FVM_MinimapIconDecoratorTooltip CreateByManager(const UEUIManagerSubsystem Manager, const FMinimapIconDecoratorTooltip &inout Tooltip)
+FVM_MinimapIconDecoratorTooltip& CreateByManager(const UEUIManagerSubsystem Manager, const FMinimapIconDecoratorTooltip &inout Tooltip)
 {
-    FVM_MinimapIconDecoratorTooltip __r;
-    TEUIModelRef<FVM_MinimapIconDecoratorTooltip> local_6 = TEUIModelRef<FVM_MinimapIconDecoratorTooltip>(EUIInternal::MakeModelWithManager_Generic(Manager, FVM_MinimapIconDecoratorTooltip::ModelId, 0, Tooltip));
-    return __r;
+    return TEUIModelRef<FVM_MinimapIconDecoratorTooltip>(EUIInternal::MakeModelWithManager_Generic(Manager, FVM_MinimapIconDecoratorTooltip::ModelId, 0, Tooltip)).Get();
 }
 void GetModelInfo(FEUIViewModelMetaInfo &inout Result)
 {
@@ -527,8 +525,7 @@ namespace __GeneratedProperties_FVM_MinimapIconDecoratorTooltip
 {
 UScriptStruct StaticStruct()
 {
-    UScriptStruct local_2;
-    return local_2;
+    return __GeneratedProperties_FVM_MinimapIconDecoratorTooltip.Get();
 }
 }
 namespace FVM_MinimapIconDecoratorExtraModel
@@ -537,11 +534,9 @@ FVM_MinimapIconDecoratorExtraModel& Create(const UObject ContextObject, const FE
 {
     return FVM_MinimapIconDecoratorExtraModel::CreateByManager(EUIInternal::GetContextManager(ContextObject), ExtraModel);
 }
-FVM_MinimapIconDecoratorExtraModel CreateByManager(const UEUIManagerSubsystem Manager, const FEUIModelRef &inout ExtraModel)
+FVM_MinimapIconDecoratorExtraModel& CreateByManager(const UEUIManagerSubsystem Manager, const FEUIModelRef &inout ExtraModel)
 {
-    FVM_MinimapIconDecoratorExtraModel __r;
-    TEUIModelRef<FVM_MinimapIconDecoratorExtraModel> local_6 = TEUIModelRef<FVM_MinimapIconDecoratorExtraModel>(EUIInternal::MakeModelWithManager_Generic(Manager, FVM_MinimapIconDecoratorExtraModel::ModelId, 0, ExtraModel));
-    return __r;
+    return TEUIModelRef<FVM_MinimapIconDecoratorExtraModel>(EUIInternal::MakeModelWithManager_Generic(Manager, FVM_MinimapIconDecoratorExtraModel::ModelId, 0, ExtraModel)).Get();
 }
 void GetModelInfo(FEUIViewModelMetaInfo &inout Result)
 {
@@ -574,8 +569,7 @@ namespace __GeneratedProperties_FVM_MinimapIconDecoratorExtraModel
 {
 UScriptStruct StaticStruct()
 {
-    UScriptStruct local_2;
-    return local_2;
+    return __GeneratedProperties_FVM_MinimapIconDecoratorExtraModel.Get();
 }
 }
 namespace FVM_MinimapIconDecoratorTooltipPanel
@@ -584,11 +578,9 @@ FVM_MinimapIconDecoratorTooltipPanel& Create(const UObject ContextObject)
 {
     return FVM_MinimapIconDecoratorTooltipPanel::CreateByManager(EUIInternal::GetContextManager(ContextObject));
 }
-FVM_MinimapIconDecoratorTooltipPanel CreateByManager(const UEUIManagerSubsystem Manager)
+FVM_MinimapIconDecoratorTooltipPanel& CreateByManager(const UEUIManagerSubsystem Manager)
 {
-    FVM_MinimapIconDecoratorTooltipPanel __r;
-    TEUIModelRef<FVM_MinimapIconDecoratorTooltipPanel> local_6 = TEUIModelRef<FVM_MinimapIconDecoratorTooltipPanel>(EUIInternal::MakeModelWithManager(Manager, FVM_MinimapIconDecoratorTooltipPanel::ModelId));
-    return __r;
+    return TEUIModelRef<FVM_MinimapIconDecoratorTooltipPanel>(EUIInternal::MakeModelWithManager(Manager, FVM_MinimapIconDecoratorTooltipPanel::ModelId)).Get();
 }
 void GetModelInfo(FEUIViewModelMetaInfo &inout Result)
 {
@@ -678,7 +670,6 @@ namespace __GeneratedProperties_FVM_MinimapIconDecoratorTooltipPanel
 {
 UScriptStruct StaticStruct()
 {
-    UScriptStruct local_2;
-    return local_2;
+    return __GeneratedProperties_FVM_MinimapIconDecoratorTooltipPanel.Get();
 }
 }

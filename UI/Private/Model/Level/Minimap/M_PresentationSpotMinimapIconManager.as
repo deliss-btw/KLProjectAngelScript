@@ -106,6 +106,7 @@ struct FMS_PresentationSpotMinimapIconManager : FEUIModelSingleton
             if ((local_105 && (local_104 > 1.0)))
             {
                 ::MinimapUtils::UnregisterIcon(local_5);
+                this.GetModify_SpotIconHandles().Remove(Message.Spot);
                 this.SyncSpotToMinimap(Message.Spot);
                 return;
             }
@@ -163,6 +164,7 @@ struct FMS_PresentationSpotMinimapIconManager : FEUIModelSingleton
                 if ((local_157 && (local_156 > 1.0)))
                 {
                     ::MinimapUtils::UnregisterIcon(local_60);
+                    this.GetModify_SpotIconHandles().Remove(Spot);
                     FMinimapIconInfo local_222;
                     this.SyncSpotDataToIconInfo(Spot, local_222);
                     this.GetModify_SpotIconHandles().Add(Spot, this.GetIconRegistry().AddIcon(local_222));
@@ -271,11 +273,9 @@ FMS_PresentationSpotMinimapIconManager& Get(const UObject ContextObject)
 {
     return FMS_PresentationSpotMinimapIconManager::GetByManager(EUIInternal::GetContextManager(ContextObject));
 }
-FMS_PresentationSpotMinimapIconManager GetByManager(const UEUIManagerSubsystem Manager)
+FMS_PresentationSpotMinimapIconManager& GetByManager(const UEUIManagerSubsystem Manager)
 {
-    FMS_PresentationSpotMinimapIconManager __r;
-    TEUIModelRef<FMS_PresentationSpotMinimapIconManager> local_6 = TEUIModelRef<FMS_PresentationSpotMinimapIconManager>(EUIInternal::MakeModelWithManager(Manager, FMS_PresentationSpotMinimapIconManager::ModelId));
-    return __r;
+    return TEUIModelRef<FMS_PresentationSpotMinimapIconManager>(EUIInternal::MakeModelWithManager(Manager, FMS_PresentationSpotMinimapIconManager::ModelId)).Get();
 }
 void GetModelInfo(FEUIModelOnlyMetaInfo &inout Result)
 {

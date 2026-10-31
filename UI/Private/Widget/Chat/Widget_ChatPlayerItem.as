@@ -90,8 +90,8 @@ class UWidget_ChatPlayerItem : UEUIUserListItemWidget
     }
     void HandleObservedModelChanges(FEUIReactiveSubscriberIterator &inout It)
     {
-        FVM_SelectableItem& local_6;
         TEUIModelRef<FVM_SelectableItem> local_2 = this.Selectable.AsRef();
+        FVM_SelectableItem& local_6 = local_2.Get();
         for (; It; )
         {
             FEUIReactiveSubscriberTrackScope local_56 = FEUIReactiveSubscriberTrackScope(It);

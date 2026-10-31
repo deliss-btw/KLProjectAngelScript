@@ -3,7 +3,6 @@ namespace __FRewardSortTagPriorityConfigFunctions
 UFUNCTION()
 FName __FRewardSortTagPriorityConfig_GetTagKey(const TDataObjectPtr<FRewardSortTagPriorityConfig> &inout DataObject)
 {
-    FName __r;
     if ((DataObject == nullptr))
     {
         if (!(EUIGlobals::GIsDuringPropertyConversion))
@@ -13,7 +12,7 @@ FName __FRewardSortTagPriorityConfig_GetTagKey(const TDataObjectPtr<FRewardSortT
         FRewardSortTagPriorityConfig local_22;
         return local_22.TagKey;
     }
-    return __r;
+    return DataObject.Get().TagKey;
 }
 UFUNCTION()
 int __FRewardSortTagPriorityConfig_GetPriority(const TDataObjectPtr<FRewardSortTagPriorityConfig> &inout DataObject)
@@ -33,7 +32,6 @@ int __FRewardSortTagPriorityConfig_GetPriority(const TDataObjectPtr<FRewardSortT
 UFUNCTION()
 FText __FRewardSortTagPriorityConfig_GetDisplayText(const TDataObjectPtr<FRewardSortTagPriorityConfig> &inout DataObject)
 {
-    FText __r;
     if ((DataObject == nullptr))
     {
         if (!(EUIGlobals::GIsDuringPropertyConversion))
@@ -43,7 +41,7 @@ FText __FRewardSortTagPriorityConfig_GetDisplayText(const TDataObjectPtr<FReward
         FRewardSortTagPriorityConfig local_22;
         return local_22.DisplayText;
     }
-    return __r;
+    return DataObject.Get().DisplayText;
 }
 UFUNCTION()
 FRewardSortTagPriorityConfig CastToFRewardSortTagPriorityConfig(const TDataObjectPtr<FRewardSortTagPriorityConfig> &inout DataObject)
@@ -66,7 +64,7 @@ TDataObjectPtr<FItemConfig> __FRewardSortItemOverrideConfig_GetItemId(const TDat
         FRewardSortItemOverrideConfig local_40;
         return local_40.GetItemId();
     }
-    return GetItemId();
+    return DataObject.Get().GetItemId();
 }
 UFUNCTION()
 float32 __FRewardSortItemOverrideConfig_GetSortOrder(const TDataObjectPtr<FRewardSortItemOverrideConfig> &inout DataObject)

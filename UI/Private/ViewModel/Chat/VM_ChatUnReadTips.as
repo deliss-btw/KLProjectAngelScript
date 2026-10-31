@@ -93,8 +93,7 @@ struct FVM_ChatUnReadTips : FEUIViewModel
         int local_1 = 0;
         for (auto& local_20 : this.GetChatDataModel().opArrow().GetRecentMessages())
         {
-            local_20;
-            if (!(GetbIsRead()))
+            if (!(local_20.Get().GetbIsRead()))
             {
                 ++local_1;
             }
@@ -232,11 +231,9 @@ FVM_ChatUnReadTips& Create(const UObject ContextObject)
 {
     return FVM_ChatUnReadTips::CreateByManager(EUIInternal::GetContextManager(ContextObject));
 }
-FVM_ChatUnReadTips CreateByManager(const UEUIManagerSubsystem Manager)
+FVM_ChatUnReadTips& CreateByManager(const UEUIManagerSubsystem Manager)
 {
-    FVM_ChatUnReadTips __r;
-    TEUIModelRef<FVM_ChatUnReadTips> local_6 = TEUIModelRef<FVM_ChatUnReadTips>(EUIInternal::MakeModelWithManager(Manager, FVM_ChatUnReadTips::ModelId));
-    return __r;
+    return TEUIModelRef<FVM_ChatUnReadTips>(EUIInternal::MakeModelWithManager(Manager, FVM_ChatUnReadTips::ModelId)).Get();
 }
 void GetModelInfo(FEUIViewModelMetaInfo &inout Result)
 {
@@ -342,7 +339,6 @@ namespace __GeneratedProperties_FVM_ChatUnReadTips
 {
 UScriptStruct StaticStruct()
 {
-    UScriptStruct local_2;
-    return local_2;
+    return __GeneratedProperties_FVM_ChatUnReadTips.Get();
 }
 }

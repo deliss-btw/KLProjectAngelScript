@@ -55,8 +55,8 @@ class UWidget_WorldEventMinimapIconTooltip : UEUIActivatableWidget
     UFUNCTION()
     UWidget DecoratorTooltip_TipsFromWidget() const
     {
-        FVM_MinimapIconDecoratorTooltip& local_2;
         UWidget local_8;
+        FVM_MinimapIconDecoratorTooltip& local_2 = this.DecoratorTooltip.Get();
         if (local_2)
         {
             local_8 = local_2.GetTipsFromWidget();
@@ -69,21 +69,21 @@ class UWidget_WorldEventMinimapIconTooltip : UEUIActivatableWidget
     UFUNCTION()
     FText DecoratorTooltip_TooltipText() const
     {
-        FVM_MinimapIconDecoratorTooltip& local_2;
+        FVM_MinimapIconDecoratorTooltip& local_2 = this.DecoratorTooltip.Get();
         FText local_12 = local_2 ? local_2.GetTooltipText() : FText();
         return local_12;
     }
     UFUNCTION()
     FText DecoratorTooltip_DetailText() const
     {
-        FVM_MinimapIconDecoratorTooltip& local_2;
+        FVM_MinimapIconDecoratorTooltip& local_2 = this.DecoratorTooltip.Get();
         FText local_12 = local_2 ? local_2.GetDetailText() : FText();
         return local_12;
     }
     UFUNCTION()
     TArray<FEUIModelWeakRef> DecoratorTooltip_Actions() const
     {
-        FVM_MinimapIconDecoratorTooltip& local_2;
+        FVM_MinimapIconDecoratorTooltip& local_2 = this.DecoratorTooltip.Get();
         TArray<FEUIModelWeakRef> local_16;
         if (local_2)
         {

@@ -106,11 +106,9 @@ FVM_ForgeWeaponItemAttribute& Create(const UObject ContextObject, const FText &i
 {
     return FVM_ForgeWeaponItemAttribute::CreateByManager(EUIInternal::GetContextManager(ContextObject), Name, Value);
 }
-FVM_ForgeWeaponItemAttribute CreateByManager(const UEUIManagerSubsystem Manager, const FText &inout Name, const FText &inout Value)
+FVM_ForgeWeaponItemAttribute& CreateByManager(const UEUIManagerSubsystem Manager, const FText &inout Name, const FText &inout Value)
 {
-    FVM_ForgeWeaponItemAttribute __r;
-    TEUIModelRef<FVM_ForgeWeaponItemAttribute> local_6 = TEUIModelRef<FVM_ForgeWeaponItemAttribute>(EUIInternal::MakeModelWithManager_Generic(Manager, FVM_ForgeWeaponItemAttribute::ModelId, 0, Name, Value));
-    return __r;
+    return TEUIModelRef<FVM_ForgeWeaponItemAttribute>(EUIInternal::MakeModelWithManager_Generic(Manager, FVM_ForgeWeaponItemAttribute::ModelId, 0, Name, Value)).Get();
 }
 void GetModelInfo(FEUIViewModelMetaInfo &inout Result)
 {
@@ -146,8 +144,7 @@ FText __UIGetter_Name(const FVM_ForgeWeaponItemAttribute &inout Model)
 }
 FText __UIGetter_Value(const FVM_ForgeWeaponItemAttribute &inout Model)
 {
-    FText __r;
-    return __r;
+    return Model.GetValue();
 }
 TEUIModelRef<FVM_ForgeWeaponItemAttribute> __UIGetter_Self(const FVM_ForgeWeaponItemAttribute &inout Model)
 {
@@ -166,7 +163,6 @@ namespace __GeneratedProperties_FVM_ForgeWeaponItemAttribute
 {
 UScriptStruct StaticStruct()
 {
-    UScriptStruct local_2;
-    return local_2;
+    return __GeneratedProperties_FVM_ForgeWeaponItemAttribute.Get();
 }
 }

@@ -98,11 +98,9 @@ FVM_StoryDialogOption& Create(const UObject ContextObject)
 {
     return FVM_StoryDialogOption::CreateByManager(EUIInternal::GetContextManager(ContextObject));
 }
-FVM_StoryDialogOption CreateByManager(const UEUIManagerSubsystem Manager)
+FVM_StoryDialogOption& CreateByManager(const UEUIManagerSubsystem Manager)
 {
-    FVM_StoryDialogOption __r;
-    TEUIModelRef<FVM_StoryDialogOption> local_6 = TEUIModelRef<FVM_StoryDialogOption>(EUIInternal::MakeModelWithManager(Manager, FVM_StoryDialogOption::ModelId));
-    return __r;
+    return TEUIModelRef<FVM_StoryDialogOption>(EUIInternal::MakeModelWithManager(Manager, FVM_StoryDialogOption::ModelId)).Get();
 }
 void GetModelInfo(FEUIViewModelMetaInfo &inout Result)
 {
@@ -148,7 +146,6 @@ namespace __GeneratedProperties_FVM_StoryDialogOption
 {
 UScriptStruct StaticStruct()
 {
-    UScriptStruct local_2;
-    return local_2;
+    return __GeneratedProperties_FVM_StoryDialogOption.Get();
 }
 }

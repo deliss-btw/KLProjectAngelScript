@@ -56,8 +56,10 @@ class US_LevelSpotSystem : UECSScriptSystem
     {
         FECSWorldPtr local_2 = this.GetECSWorld();
         Modify local_6;
-        if (local_6.opCall())
+        FCS_LevelSpotViewerSummary& local_8 = local_6.opCall();
+        if (local_8)
         {
+            local_8.AllViewers.Remove(Entity);
         }
         return;
     }
@@ -66,8 +68,10 @@ class US_LevelSpotSystem : UECSScriptSystem
     {
         FECSWorldPtr local_2 = this.GetECSWorld();
         Modify local_6;
-        if (local_6.opCall())
+        FCS_LevelSpotViewerSummary& local_8 = local_6.opCall();
+        if (local_8)
         {
+            local_8.AllViewers.Remove(Entity);
         }
         return;
     }
@@ -205,7 +209,7 @@ class US_LevelSpotSystem : UECSScriptSystem
         {
             if (C_GameplayTags.Match(local_26.GetKey()))
             {
-                FLevelSpotData local_152;
+                FLevelSpotData local_152 = FLevelSpotData(local_26.GetValue());
                 if (local_152)
                 {
                     ::EntityLevelSpotUtils::AddSpotData(Entity, ELevelSpotDataSource(0), local_152);

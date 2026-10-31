@@ -28,7 +28,6 @@ namespace __FCombatArealEffectConfigData_HitTestFunctions
 UFUNCTION()
 FCombatArealEffectData __FCombatArealEffectConfigData_HitTest_GetAreaData(const TDataObjectPtr<FCombatArealEffectConfigData_HitTest> &inout DataObject)
 {
-    FCombatArealEffectData __r;
     if ((DataObject == nullptr))
     {
         if (!(EUIGlobals::GIsDuringPropertyConversion))
@@ -38,12 +37,11 @@ FCombatArealEffectData __FCombatArealEffectConfigData_HitTest_GetAreaData(const 
         FCombatArealEffectConfigData_HitTest local_78;
         return local_78.AreaData;
     }
-    return __r;
+    return DataObject.Get().AreaData;
 }
 UFUNCTION()
 FDataObjectPtr __FCombatArealEffectConfigData_HitTest_GetAttackData(const TDataObjectPtr<FCombatArealEffectConfigData_HitTest> &inout DataObject)
 {
-    FDataObjectPtr __r;
     if ((DataObject == nullptr))
     {
         if (!(EUIGlobals::GIsDuringPropertyConversion))
@@ -53,12 +51,11 @@ FDataObjectPtr __FCombatArealEffectConfigData_HitTest_GetAttackData(const TDataO
         FCombatArealEffectConfigData_HitTest local_78;
         return local_78.AttackData;
     }
-    return __r;
+    return DataObject.Get().AttackData;
 }
 UFUNCTION()
 FName __FCombatArealEffectConfigData_HitTest_GetStrikeKey(const TDataObjectPtr<FCombatArealEffectConfigData_HitTest> &inout DataObject)
 {
-    FName __r;
     if ((DataObject == nullptr))
     {
         if (!(EUIGlobals::GIsDuringPropertyConversion))
@@ -68,12 +65,11 @@ FName __FCombatArealEffectConfigData_HitTest_GetStrikeKey(const TDataObjectPtr<F
         FCombatArealEffectConfigData_HitTest local_78;
         return local_78.StrikeKey;
     }
-    return __r;
+    return DataObject.Get().StrikeKey;
 }
 UFUNCTION()
 FFPTime __FCombatArealEffectConfigData_HitTest_GetHitInterval(const TDataObjectPtr<FCombatArealEffectConfigData_HitTest> &inout DataObject)
 {
-    FFPTime __r;
     if ((DataObject == nullptr))
     {
         if (!(EUIGlobals::GIsDuringPropertyConversion))
@@ -83,12 +79,11 @@ FFPTime __FCombatArealEffectConfigData_HitTest_GetHitInterval(const TDataObjectP
         FCombatArealEffectConfigData_HitTest local_78;
         return local_78.HitInterval;
     }
-    return __r;
+    return DataObject.Get().HitInterval;
 }
 UFUNCTION()
 FDataObjectPtr __FCombatArealEffectConfigData_HitTest_GetHitDecalConfig(const TDataObjectPtr<FCombatArealEffectConfigData_HitTest> &inout DataObject)
 {
-    FDataObjectPtr __r;
     if ((DataObject == nullptr))
     {
         if (!(EUIGlobals::GIsDuringPropertyConversion))
@@ -98,7 +93,7 @@ FDataObjectPtr __FCombatArealEffectConfigData_HitTest_GetHitDecalConfig(const TD
         FCombatArealEffectConfigData_HitTest local_78;
         return local_78.HitDecalConfig;
     }
-    return __r;
+    return DataObject.Get().HitDecalConfig;
 }
 UFUNCTION()
 FCombatArealEffectConfigData_HitTest CastToFCombatArealEffectConfigData_HitTest(const TDataObjectPtr<FCombatArealEffectConfigData_HitTest> &inout DataObject)

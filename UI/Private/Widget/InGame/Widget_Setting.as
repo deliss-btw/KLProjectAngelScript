@@ -45,8 +45,7 @@ class UWidget_Setting : UEUIUserWidget
     UFUNCTION()
     void Tick_Implementation(const FGeometry &inout MyGeometry, const float32 InDeltaTime)
     {
-        FVMS_Setting local_2;
-        this.ShowTextContent.SetText(local_2.GetShowText());
+        this.ShowTextContent.SetText(this.Setting.Get().GetShowText());
         return;
     }
     UFUNCTION()
@@ -58,8 +57,8 @@ class UWidget_Setting : UEUIUserWidget
     UFUNCTION()
     UTexture2D Setting_ShowImage() const
     {
-        FVMS_Setting& local_2;
         UTexture2D local_8;
+        FVMS_Setting& local_2 = this.Setting.Get();
         if (local_2)
         {
             local_8 = local_2.GetShowImage();
@@ -72,7 +71,7 @@ class UWidget_Setting : UEUIUserWidget
     UFUNCTION()
     FText Setting_ShowText() const
     {
-        FVMS_Setting& local_2;
+        FVMS_Setting& local_2 = this.Setting.Get();
         FText local_12 = local_2 ? local_2.GetShowText() : FText();
         return local_12;
     }

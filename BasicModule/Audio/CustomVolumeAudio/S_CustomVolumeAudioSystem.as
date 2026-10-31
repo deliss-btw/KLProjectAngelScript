@@ -126,8 +126,7 @@ class US_CustomVolumeAudioSystem : UECSScriptSystem
         if (!((VolumeAudio.TargetVolume == nullptr)))
         {
             FVector local_28;
-            ACustomConvexVolume local_32;
-            float32 local_15 = ::FCustomVolumeAudioUtils::CalculateDistanceToCustomVolume(local_14, local_32, local_28);
+            float32 local_15 = ::FCustomVolumeAudioUtils::CalculateDistanceToCustomVolume(local_14, VolumeAudio.TargetVolume.Get(), local_28);
             if (local_15 > (::FGameAudioSettings::Get().CustomVolumeAudioSearchRadius * 1.5f))
             {
                 XLogIf(::FCustomVolumeAudioUtils::EnableLog(), ELog(1), FString().Append("Job_CleanupCustomVolumeAudio: Entity ").Append(Entity.GetEntityName()).Append(" too far from volume (distance: ").Append(FString::ApplyFormat(local_15, ".2f")).Append("), removing component"));

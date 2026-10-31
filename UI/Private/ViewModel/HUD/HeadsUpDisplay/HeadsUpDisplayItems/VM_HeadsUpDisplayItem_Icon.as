@@ -98,11 +98,9 @@ FVM_HeadsUpDisplayItem_Icon& Create(const UObject ContextObject, const TEUIModel
 {
     return FVM_HeadsUpDisplayItem_Icon::CreateByManager(EUIInternal::GetContextManager(ContextObject), Spot);
 }
-FVM_HeadsUpDisplayItem_Icon CreateByManager(const UEUIManagerSubsystem Manager, const TEUIModelRef<FM_Spot> &inout Spot)
+FVM_HeadsUpDisplayItem_Icon& CreateByManager(const UEUIManagerSubsystem Manager, const TEUIModelRef<FM_Spot> &inout Spot)
 {
-    FVM_HeadsUpDisplayItem_Icon __r;
-    TEUIModelRef<FVM_HeadsUpDisplayItem_Icon> local_6 = TEUIModelRef<FVM_HeadsUpDisplayItem_Icon>(EUIInternal::MakeModelWithManager_Generic(Manager, FVM_HeadsUpDisplayItem_Icon::ModelId, 0, Spot));
-    return __r;
+    return TEUIModelRef<FVM_HeadsUpDisplayItem_Icon>(EUIInternal::MakeModelWithManager_Generic(Manager, FVM_HeadsUpDisplayItem_Icon::ModelId, 0, Spot)).Get();
 }
 void GetModelInfo(FEUIViewModelMetaInfo &inout Result)
 {
@@ -149,7 +147,6 @@ namespace __GeneratedProperties_FVM_HeadsUpDisplayItem_Icon
 {
 UScriptStruct StaticStruct()
 {
-    UScriptStruct local_2;
-    return local_2;
+    return __GeneratedProperties_FVM_HeadsUpDisplayItem_Icon.Get();
 }
 }

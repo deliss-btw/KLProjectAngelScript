@@ -20,7 +20,7 @@ class UWidget_CommissionRewardDetail : UEUIActivatableWidget
     UFUNCTION()
     TArray<FEUIModelWeakRef> Rewards_Rewards() const
     {
-        FVM_CommonRewardList& local_2;
+        FVM_CommonRewardList& local_2 = this.Rewards.Get();
         TArray<FEUIModelWeakRef> local_16;
         if (local_2)
         {

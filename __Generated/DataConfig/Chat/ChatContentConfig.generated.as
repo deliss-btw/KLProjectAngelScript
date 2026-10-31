@@ -3,7 +3,6 @@ namespace __FChatContentConfigFunctions
 UFUNCTION()
 EChatSystemContentType __FChatContentConfig_GetContentType(const TDataObjectPtr<FChatContentConfig> &inout DataObject)
 {
-    int local_27 = 0;
     if ((DataObject == nullptr))
     {
         if (!(EUIGlobals::GIsDuringPropertyConversion))
@@ -11,15 +10,13 @@ EChatSystemContentType __FChatContentConfig_GetContentType(const TDataObjectPtr<
             FBlueprintDebugFunctions::ThrowScriptException("Get 'ContentType' from a null 'FChatContentConfig' DataObject!");
         }
         FChatContentConfig local_26;
-        local_27 = int(local_26.ContentType);
-        return EChatSystemContentType(local_27);
+        return local_26.ContentType;
     }
-    return EChatSystemContentType(local_27);
+    return DataObject.Get().ContentType;
 }
 UFUNCTION()
 FArgText __FChatContentConfig_GetContent(const TDataObjectPtr<FChatContentConfig> &inout DataObject)
 {
-    FArgText __r;
     if ((DataObject == nullptr))
     {
         if (!(EUIGlobals::GIsDuringPropertyConversion))
@@ -29,23 +26,21 @@ FArgText __FChatContentConfig_GetContent(const TDataObjectPtr<FChatContentConfig
         FChatContentConfig local_26;
         return local_26.Content;
     }
-    return __r;
+    return DataObject.Get().Content;
 }
 UFUNCTION()
 bool __FChatContentConfig_GetbIsShowInMiddle(const TDataObjectPtr<FChatContentConfig> &inout DataObject)
 {
-    bool local_1 = false;
     if ((DataObject == nullptr))
     {
-        local_1 = !(EUIGlobals::GIsDuringPropertyConversion);
-        if (local_1)
+        if (!(EUIGlobals::GIsDuringPropertyConversion))
         {
             FBlueprintDebugFunctions::ThrowScriptException("Get 'bIsShowInMiddle' from a null 'FChatContentConfig' DataObject!");
         }
         FChatContentConfig local_26;
         return local_26.bIsShowInMiddle;
     }
-    return local_1;
+    return DataObject.Get().bIsShowInMiddle;
 }
 UFUNCTION()
 FChatContentConfig CastToFChatContentConfig(const TDataObjectPtr<FChatContentConfig> &inout DataObject)

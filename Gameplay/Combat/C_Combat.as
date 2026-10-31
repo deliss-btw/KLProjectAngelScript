@@ -948,60 +948,49 @@ struct FC_ExecutedConfig : FECSComponent
     }
     int GetMaxExecutedNum() const
     {
-        int local_2 = 0;
         if (this.ExecutionConfigData)
         {
-            return local_2;
+            return this.ExecutionConfigData.Get().MaxExecutedNum;
         }
         return 0;
     }
     float32 GetExecutedDamageHPRatio() const
     {
-        float32 local_2 = 0.0f;
         if (this.ExecutionConfigData)
         {
-            return local_2;
+            return this.ExecutionConfigData.Get().ExecutedDamageHPRatio;
         }
         return 0.0f;
     }
     EExecutedPreType GetExecutedPreType() const
     {
-        int local_2 = 0;
         if (this.ExecutionConfigData)
         {
-            return EExecutedPreType(local_2);
+            return this.ExecutionConfigData.Get().ExecutedPreType;
         }
         return EExecutedPreType(1);
     }
     FName GetExecuterAnimKey() const
     {
-        FName __return;
         if (this.ExecutionConfigData)
         {
+            return this.ExecutionConfigData.Get().ExecuterAnimKey;
         }
-        else
-        {
-            __return = NAME_None;
-        }
-        return __return;
+        return NAME_None;
     }
     FBuffConfigRef GetExecuteBuff() const
     {
-        FBuffConfigRef __return;
         if (this.ExecutionConfigData)
         {
+            return this.ExecutionConfigData.Get().ExecuteBuff;
         }
-        else
-        {
-            __return = FBuffConfigRef();
-        }
-        return __return;
+        return FBuffConfigRef();
     }
     TDataObjectPtr<FMessageHintConfig> GetMessageHintConfig() const
     {
         if (this.ExecutionConfigData)
         {
-            return GetMessageHintConfig();
+            return this.ExecutionConfigData.Get().GetMessageHintConfig();
         }
         return TDataObjectPtr<FMessageHintConfig>();
     }
@@ -1265,6 +1254,7 @@ struct FC_CacheHitPresentationDatas : FECSComponent
         int local_67 = 0;
         for (; local_67 < local_44.Num(); )
         {
+            this.CacheHitPresentationDatas.Remove(local_44[local_67]);
             ++local_67;
         }
         return;

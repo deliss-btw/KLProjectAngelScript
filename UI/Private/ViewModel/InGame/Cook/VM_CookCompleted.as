@@ -197,7 +197,6 @@ struct FVM_CookCompleted : FEUIViewModel
     }
     void OnProductFoodChanged()
     {
-        TDataObjectPtr<FBuffConfig> local_350;
         const UAttributeSettingsSettings local_474;
         int local_598 = 0;
         this.GetModify_CurCookBuffInfos().Empty(0);
@@ -208,7 +207,7 @@ struct FVM_CookCompleted : FEUIViewModel
         {
             return;
         }
-        if (!(FDataObjectPtr(local_350.opArrow().PresentationConfig)))
+        if (!(FDataObjectPtr(TDataObjectPtr<FBuffConfig>(this.GetProductFood().Get().GetMetaBuffConfig().Get().BuffConfig).opArrow().PresentationConfig)))
         {
             return;
         }
@@ -218,15 +217,15 @@ struct FVM_CookCompleted : FEUIViewModel
         GetGameplaySettings<UAttributeSettingsSettings> local_476;
         local_474 = local_476;
         TArray<FBuffModifierAttributeDescriptionInfos> local_482;
-        TArray<FBuffModifierAttributeDescriptionInfos> local_486;
-        local_482 = local_486;
+        local_482 = FBuffUtils::GetBuffModifierAttributeDescriptionInfos(TDataObjectPtr<FBuffConfig>(this.GetProductFood().Get().GetMetaBuffConfig().Get().BuffConfig).Get(), 1);
         local_482.Append(FGameplayModifierUtils::GetModifierAttributeDescriptionBGameplayModifierConfig(this.GetFoodModifiers()));
         if (!(local_402.opArrow().HintDescAdditional.IsEmpty()))
         {
             FBuffHintDescParamItem local_544;
             local_544.Icon = local_472;
-            FString local_552 = local_402.opArrow().HintDescAdditional.ToString();
-            local_544.Desc = FText::FromString(FString());
+            FString local_548;
+            FBuffUtils::ParseModifierAttributeFormattedString(local_402.opArrow().HintDescAdditional.ToString(), local_548, TDataObjectPtr<FBuffConfig>(this.GetProductFood().Get().GetMetaBuffConfig().Get().BuffConfig).Get(), 1);
+            local_544.Desc = FText::FromString(local_548);
             local_378.Add(local_544);
             this.GetModify_CurCookBuffInfos().Add(TEUIModelRef<FVM_CookBuffInfo>(::FVM_CookBuffInfo::Create(this.GetContext().Manager, local_472, local_544.Desc, 0)));
         }
@@ -265,7 +264,8 @@ struct FVM_CookCompleted : FEUIViewModel
                 }
             }
         }
-        bool local_245 = !((::FMetaBuffUtils::GetMetaBuffBySlot(this.GetContext().GetLocalPlayerPawn(), EMetaBuffSlot(1)) == nullptr));
+        TDataObjectPtr<FMetaBuffConfig> local_244 = ::FMetaBuffUtils::GetMetaBuffBySlot(this.GetContext().GetLocalPlayerPawn(), EMetaBuffSlot(1));
+        bool local_245 = !((local_244 == nullptr));
         if (!(local_245))
         {
             local_245 = false;
@@ -285,8 +285,8 @@ struct FVM_CookCompleted : FEUIViewModel
             FECSEntity local_698_2 = this.GetContext().GetLocalPlayerPawn();
             for (auto& local_748 : local_734.GetBuffData())
             {
-                local_350 = TDataObjectPtr<FBuffConfig>(local_748.ConfigRef);
-                if (!(local_748.ConfigRef.IsValid() && (0 == local_748.ConfigRef.GetUniqueID())))
+                TDataObjectPtr<FBuffConfig> local_350 = TDataObjectPtr<FBuffConfig>(local_748.ConfigRef);
+                if (!(local_748.ConfigRef.IsValid() && (local_244.Get().BuffConfig.GetUniqueID() == local_748.ConfigRef.GetUniqueID())))
                 {
                     local_727 = false;
                 }
@@ -306,7 +306,6 @@ struct FVM_CookCompleted : FEUIViewModel
     FText GetMetaBuffDuration() const
     {
         TDataObjectPtr<FFoodProductConfig> local_24;
-        int local_106 = 0;
         local_24 = this.GetProductFood();
         bool local_49 = (local_24 == nullptr);
         if (local_49)
@@ -316,15 +315,16 @@ struct FVM_CookCompleted : FEUIViewModel
         else
         {
             TDataObjectPtr<FMetaBuffConfig> local_74;
-            local_74 = GetMetaBuffConfig();
+            local_74 = this.GetProductFood().Get().GetMetaBuffConfig();
             local_49 = (local_74 == nullptr);
         }
         if (local_49)
         {
             return FText::AsCultureInvariant("无效Buff");
         }
+        int local_106 = this.GetProductFood().Get().GetMetaBuffConfig().Get().Duration;
         int local_105 = local_106;
-        local_106 = FMath::FloorToInt((local_105 / 60.0f));
+        int local_106_2 = FMath::FloorToInt((local_105 / 60.0f));
         int local_107 = FMath::FloorToInt(local_105) % 60;
         FString local_134;
         if (local_107 < 10)
@@ -335,7 +335,7 @@ struct FVM_CookCompleted : FEUIViewModel
         {
             local_134 = (FString("") + local_107);
         }
-        FString local_118 = (FString("效果时间:") + local_106);
+        FString local_118 = (FString("效果时间:") + local_106_2);
         return FText::AsCultureInvariant(((local_118 + ":") + local_134));
     }
     ESlateVisibility GetNowMetaBuff() const
@@ -354,44 +354,32 @@ struct FVM_CookCompleted : FEUIViewModel
     FSoftBrush GetIcon() const
     {
         TDataObjectPtr<FFoodProductConfig> local_24;
-        FSoftBrush __return;
         local_24 = this.GetProductFood();
         if ((!((local_24 == nullptr))))
         {
+            return this.GetProductFood().Get().ProductIcon;
         }
-        else
-        {
-            __return = FSoftBrush();
-        }
-        return __return;
+        return FSoftBrush();
     }
     FText GetName() const
     {
         TDataObjectPtr<FFoodProductConfig> local_24;
-        FText __return;
         local_24 = this.GetProductFood();
         if ((!((local_24 == nullptr))))
         {
+            return this.GetProductFood().Get().ProductName;
         }
-        else
-        {
-            __return = FText();
-        }
-        return __return;
+        return FText();
     }
     FText GeDescription() const
     {
         TDataObjectPtr<FFoodProductConfig> local_24;
-        FText __return;
         local_24 = this.GetProductFood();
         if ((!((local_24 == nullptr))))
         {
+            return this.GetProductFood().Get().ProductDescription;
         }
-        else
-        {
-            __return = FText();
-        }
-        return __return;
+        return FText();
     }
     TEUIModelRef<FVM_BuffIcon> GetBuffIcon() const property
     {
@@ -544,11 +532,9 @@ FVM_CookBuffInfo& Create(const UObject ContextObject, const FSoftBrush &inout Bu
 {
     return FVM_CookBuffInfo::CreateByManager(EUIInternal::GetContextManager(ContextObject), BuffIcon, AttributeName, AttributeValue);
 }
-FVM_CookBuffInfo CreateByManager(const UEUIManagerSubsystem Manager, const FSoftBrush &inout BuffIcon, const FText &inout AttributeName, const int AttributeValue)
+FVM_CookBuffInfo& CreateByManager(const UEUIManagerSubsystem Manager, const FSoftBrush &inout BuffIcon, const FText &inout AttributeName, const int AttributeValue)
 {
-    FVM_CookBuffInfo __r;
-    TEUIModelRef<FVM_CookBuffInfo> local_6 = TEUIModelRef<FVM_CookBuffInfo>(EUIInternal::MakeModelWithManager_Generic(Manager, FVM_CookBuffInfo::ModelId, 0, BuffIcon, AttributeName, AttributeValue));
-    return __r;
+    return TEUIModelRef<FVM_CookBuffInfo>(EUIInternal::MakeModelWithManager_Generic(Manager, FVM_CookBuffInfo::ModelId, 0, BuffIcon, AttributeName, AttributeValue)).Get();
 }
 void GetModelInfo(FEUIViewModelMetaInfo &inout Result)
 {
@@ -603,7 +589,7 @@ FText __UIGetter_Name(const FVM_CookBuffInfo &inout Model)
 }
 int __UIGetter_Value(const FVM_CookBuffInfo &inout Model)
 {
-    return 0;
+    return Model.GetValue();
 }
 ESlateVisibility __UIGetter_AttributeNameVisibility(const FVM_CookBuffInfo &inout Model)
 {
@@ -634,8 +620,7 @@ namespace __GeneratedProperties_FVM_CookBuffInfo
 {
 UScriptStruct StaticStruct()
 {
-    UScriptStruct local_2;
-    return local_2;
+    return __GeneratedProperties_FVM_CookBuffInfo.Get();
 }
 }
 namespace FVM_CookCompleted
@@ -644,11 +629,9 @@ FVM_CookCompleted& Create(const UObject ContextObject)
 {
     return FVM_CookCompleted::CreateByManager(EUIInternal::GetContextManager(ContextObject));
 }
-FVM_CookCompleted CreateByManager(const UEUIManagerSubsystem Manager)
+FVM_CookCompleted& CreateByManager(const UEUIManagerSubsystem Manager)
 {
-    FVM_CookCompleted __r;
-    TEUIModelRef<FVM_CookCompleted> local_6 = TEUIModelRef<FVM_CookCompleted>(EUIInternal::MakeModelWithManager(Manager, FVM_CookCompleted::ModelId));
-    return __r;
+    return TEUIModelRef<FVM_CookCompleted>(EUIInternal::MakeModelWithManager(Manager, FVM_CookCompleted::ModelId)).Get();
 }
 void GetModelInfo(FEUIViewModelMetaInfo &inout Result)
 {
@@ -769,7 +752,6 @@ namespace __GeneratedProperties_FVM_CookCompleted
 {
 UScriptStruct StaticStruct()
 {
-    UScriptStruct local_2;
-    return local_2;
+    return __GeneratedProperties_FVM_CookCompleted.Get();
 }
 }

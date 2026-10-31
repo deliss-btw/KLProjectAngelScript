@@ -190,11 +190,9 @@ FVM_GuideTargetIcon& Create(const UObject ContextObject, const int IconIndex)
 {
     return FVM_GuideTargetIcon::CreateByManager(EUIInternal::GetContextManager(ContextObject), IconIndex);
 }
-FVM_GuideTargetIcon CreateByManager(const UEUIManagerSubsystem Manager, const int IconIndex)
+FVM_GuideTargetIcon& CreateByManager(const UEUIManagerSubsystem Manager, const int IconIndex)
 {
-    FVM_GuideTargetIcon __r;
-    TEUIModelRef<FVM_GuideTargetIcon> local_6 = TEUIModelRef<FVM_GuideTargetIcon>(EUIInternal::MakeModelWithManager_Generic(Manager, FVM_GuideTargetIcon::ModelId, 0, IconIndex));
-    return __r;
+    return TEUIModelRef<FVM_GuideTargetIcon>(EUIInternal::MakeModelWithManager_Generic(Manager, FVM_GuideTargetIcon::ModelId, 0, IconIndex)).Get();
 }
 void GetModelInfo(FEUIViewModelMetaInfo &inout Result)
 {
@@ -227,8 +225,7 @@ namespace __GeneratedProperties_FVM_GuideTargetIcon
 {
 UScriptStruct StaticStruct()
 {
-    UScriptStruct local_2;
-    return local_2;
+    return __GeneratedProperties_FVM_GuideTargetIcon.Get();
 }
 }
 namespace FVM_GuideTargetMinimapIcon
@@ -237,11 +234,9 @@ FVM_GuideTargetMinimapIcon& Create(const UObject ContextObject, const FECSEntity
 {
     return FVM_GuideTargetMinimapIcon::CreateByManager(EUIInternal::GetContextManager(ContextObject), Creater);
 }
-FVM_GuideTargetMinimapIcon CreateByManager(const UEUIManagerSubsystem Manager, const FECSEntity &inout Creater)
+FVM_GuideTargetMinimapIcon& CreateByManager(const UEUIManagerSubsystem Manager, const FECSEntity &inout Creater)
 {
-    FVM_GuideTargetMinimapIcon __r;
-    TEUIModelRef<FVM_GuideTargetMinimapIcon> local_6 = TEUIModelRef<FVM_GuideTargetMinimapIcon>(EUIInternal::MakeModelWithManager_Generic(Manager, FVM_GuideTargetMinimapIcon::ModelId, 0, Creater));
-    return __r;
+    return TEUIModelRef<FVM_GuideTargetMinimapIcon>(EUIInternal::MakeModelWithManager_Generic(Manager, FVM_GuideTargetMinimapIcon::ModelId, 0, Creater)).Get();
 }
 void GetModelInfo(FEUIViewModelMetaInfo &inout Result)
 {
@@ -288,7 +283,6 @@ namespace __GeneratedProperties_FVM_GuideTargetMinimapIcon
 {
 UScriptStruct StaticStruct()
 {
-    UScriptStruct local_2;
-    return local_2;
+    return __GeneratedProperties_FVM_GuideTargetMinimapIcon.Get();
 }
 }

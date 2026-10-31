@@ -47,8 +47,7 @@ struct FVM_ChallengeDungeonInfo : FEUIViewModel
     }
     FSoftBrush GetDungeonIcon() const
     {
-        // body not fully recovered — stub [no-return]
-        FSoftBrush __r; return __r;
+        return this.GetDungeonConfig().Get().DungeonIcon;
     }
     void StartDungeon()
     {
@@ -94,11 +93,9 @@ FVM_ChallengeDungeonInfo& Create(const UObject ContextObject, const TEUIModelRef
 {
     return FVM_ChallengeDungeonInfo::CreateByManager(EUIInternal::GetContextManager(ContextObject), DungeonModel);
 }
-FVM_ChallengeDungeonInfo CreateByManager(const UEUIManagerSubsystem Manager, const TEUIModelRef<FM_Dungeon> &inout DungeonModel)
+FVM_ChallengeDungeonInfo& CreateByManager(const UEUIManagerSubsystem Manager, const TEUIModelRef<FM_Dungeon> &inout DungeonModel)
 {
-    FVM_ChallengeDungeonInfo __r;
-    TEUIModelRef<FVM_ChallengeDungeonInfo> local_6 = TEUIModelRef<FVM_ChallengeDungeonInfo>(EUIInternal::MakeModelWithManager_Generic(Manager, FVM_ChallengeDungeonInfo::ModelId, 0, DungeonModel));
-    return __r;
+    return TEUIModelRef<FVM_ChallengeDungeonInfo>(EUIInternal::MakeModelWithManager_Generic(Manager, FVM_ChallengeDungeonInfo::ModelId, 0, DungeonModel)).Get();
 }
 void GetModelInfo(FEUIViewModelMetaInfo &inout Result)
 {
@@ -150,7 +147,6 @@ namespace __GeneratedProperties_FVM_ChallengeDungeonInfo
 {
 UScriptStruct StaticStruct()
 {
-    UScriptStruct local_2;
-    return local_2;
+    return __GeneratedProperties_FVM_ChallengeDungeonInfo.Get();
 }
 }

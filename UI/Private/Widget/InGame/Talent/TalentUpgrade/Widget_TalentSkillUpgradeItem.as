@@ -120,7 +120,7 @@ class UWidget_TalentUpgradeItem : UEUIUserWidget
     UFUNCTION()
     void OnUpgradeAnimIndexChanged()
     {
-        if (GetUpgradeAnimIndex() > 0)
+        if (this.Item.Get().GetUpgradeAnimIndex() > 0)
         {
             this.PlayAnimationForward(this.Anim_Upgrade, 1.0f, false);
         }
@@ -166,8 +166,8 @@ class UWidget_TalentUpgradeItem : UEUIUserWidget
     }
     void HandleObservedModelChanges(FEUIReactiveSubscriberIterator &inout It)
     {
-        FVM_TalentUpgradeItem& local_6;
         TEUIModelRef<FVM_TalentUpgradeItem> local_2 = this.Item.AsRef();
+        FVM_TalentUpgradeItem& local_6 = local_2.Get();
         for (; It; )
         {
             FEUIReactiveSubscriberTrackScope local_56 = FEUIReactiveSubscriberTrackScope(It);

@@ -30,7 +30,7 @@ class UWidget_CommissionObjItem : UEUIUserWidget
         {
             return;
         }
-        if ((int(GetAnimState())) == 0)
+        if ((int(this.CommissionObjItem.Get().GetAnimState())) == 0)
         {
             this.SetNormalAnimState();
             this.bCommissionObjIntroAnimHandled = true;
@@ -45,7 +45,7 @@ class UWidget_CommissionObjItem : UEUIUserWidget
         {
             return;
         }
-        if ((int(GetAnimState())) != 0)
+        if ((int(this.CommissionObjItem.Get().GetAnimState())) != 0)
         {
             return;
         }
@@ -92,8 +92,8 @@ class UWidget_CommissionObjItem : UEUIUserWidget
     }
     void HandleObservedModelChanges(FEUIReactiveSubscriberIterator &inout It)
     {
-        FVM_CommissionObjItemModel& local_6;
         TEUIModelRef<FVM_CommissionObjItemModel> local_2 = this.CommissionObjItem.AsRef();
+        FVM_CommissionObjItemModel& local_6 = local_2.Get();
         for (; It; )
         {
             FEUIReactiveSubscriberTrackScope local_56 = FEUIReactiveSubscriberTrackScope(It);

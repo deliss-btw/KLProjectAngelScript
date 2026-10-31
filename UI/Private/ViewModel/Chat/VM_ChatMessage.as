@@ -94,8 +94,7 @@ struct FVM_ChatMessage : FEUIViewModel
     {
         int local_43;
         int local_94;
-        TEUIModelRef<FM_ChatMessage> local_20 = this.GetMessage();
-        FPlayerBriefInfo local_18 = FPlayerBriefInfo(GetSenderBrief());
+        FPlayerBriefInfo local_18 = FPlayerBriefInfo(this.GetMessage().Get().GetSenderBrief());
         int local_21 = local_18.GetUid();
         if (local_21 != 0)
         {
@@ -109,51 +108,37 @@ struct FVM_ChatMessage : FEUIViewModel
         {
             this.SetMessageSenderName(local_18.GetNickname());
         }
-        TEUIModelRef<FM_ChatMessage> local_20_2 = this.GetMessage();
-        int local_22 = GetSystemContentDataId();
+        int local_22 = this.GetMessage().Get().GetSystemContentDataId();
         if (local_22 != 0)
         {
-            FText local_38;
-            TEUIModelRef<FM_ChatMessage> local_20_3 = this.GetMessage();
-            TEUIModelRef<FM_ChatMessage> local_34 = this.GetMessage();
-            local_38 = ::FMS_ChatDataModel::Get(this.GetManager()).BuildSystemBodyText(GetSystemContentDataId(), GetSystemContentArgs());
-            this.SetMessageText(local_38);
+            this.SetMessageText(::FMS_ChatDataModel::Get(this.GetManager()).BuildSystemBodyText(this.GetMessage().Get().GetSystemContentDataId(), this.GetMessage().Get().GetSystemContentArgs()));
         }
         else
         {
-            FText local_38;
-            TEUIModelRef<FM_ChatMessage> local_34_2 = this.GetMessage();
-            local_38.GetContentFinalText();
-            this.SetMessageText(local_38);
+            this.SetMessageText(this.GetMessage().Get().GetContentFinalText());
         }
         this.SetContextTypeIndex(0);
-        TEUIModelRef<FM_ChatMessage> local_20_4 = this.GetMessage();
-        this.SetSendTime(::ChatSystemUtil::FormatUnixTimestampToHHmm(::ChatSystemUtil::MsToUnixSeconds(GetSendTimeMs())));
-        TEUIModelRef<FM_ChatMessage> local_20_5 = this.GetMessage();
-        this.SetbIsPlayerSelf(IsPlayerSelf());
-        TEUIModelRef<FM_ChatMessage> local_34_3 = this.GetMessage();
-        if (GetbIsVirtualSystemMessage())
+        this.SetSendTime(::ChatSystemUtil::FormatUnixTimestampToHHmm(::ChatSystemUtil::MsToUnixSeconds(this.GetMessage().Get().GetSendTimeMs())));
+        this.SetbIsPlayerSelf(this.GetMessage().Get().IsPlayerSelf());
+        if (this.GetMessage().Get().GetbIsVirtualSystemMessage())
         {
             this.SetShowMessageType(EChatMessageShowType(2));
             this.SetContextTypeIndex(0);
         }
         else
         {
-            TEUIModelRef<FM_ChatMessage> local_20_6 = this.GetMessage();
-            if (GetSenderType() == 1)
+            if (this.GetMessage().Get().GetSenderType() == 1)
             {
                 this.SetShowMessageType(EChatMessageShowType(3));
                 this.SetContextTypeIndex(1);
-                TEUIModelRef<FM_ChatMessage> local_20_7 = this.GetMessage();
-                bool local_23 = !(GetbIsNpcDialogue());
-                if (local_23)
+                if (!(this.GetMessage().Get().GetbIsNpcDialogue()))
                 {
                     int local_44;
-                    TEUIModelRef<FM_ChatMessage> local_34_4 = this.GetMessage();
-                    local_44 = GetSystemContentDataId();
-                    if (::FChatContentConfig::GetByDataId(local_44).IsSet())
+                    local_44 = this.GetMessage().Get().GetSystemContentDataId();
+                    TDataObjectPtr<FChatContentConfig> local_92 = ::FChatContentConfig::GetByDataId(local_44);
+                    if (local_92.IsSet())
                     {
-                        if (local_23)
+                        if (local_92.Get().bIsShowInMiddle)
                         {
                             local_43 = 2;
                         }
@@ -167,8 +152,7 @@ struct FVM_ChatMessage : FEUIViewModel
             }
             else
             {
-                TEUIModelRef<FM_ChatMessage> local_20_8 = this.GetMessage();
-                if (GetChannelType() == 7)
+                if (this.GetMessage().Get().GetChannelType() == 7)
                 {
                     if (this.GetbIsPlayerSelf())
                     {
@@ -201,29 +185,12 @@ struct FVM_ChatMessage : FEUIViewModel
     {
         if (this.GetMessage())
         {
-            bool local_3 = true;
-            TEUIModelRef<FM_ChatMessage> local_2 = this.GetMessage();
-            local_3.SetbIsRead();
-            TEUIModelRef<FM_ChatMessage> local_2_2 = this.GetMessage();
-            int local_9 = GetSenderBrief().GetUid();
-            TEUIModelRef<FM_ChatMessage> local_2_3 = this.GetMessage();
-            bool local_3_2 = GetbIsRead();
-            XLog(ELog(74), FString().Append("Message Read : ").Append(local_3_2).Append(" ").Append(local_9));
-            TEUIModelRef<FM_ChatMessage> local_2_4 = this.GetMessage();
-            if ((int(::ChatSystemUtil::TryPbChannelToChannelTab(GetChannelType()))) == 6)
-            {
-                local_3_2 = true;
-            }
-            else
-            {
-                TEUIModelRef<FM_ChatMessage> local_2_5 = this.GetMessage();
-                local_3_2 = (GetSenderType() == 2);
-            }
-            if (local_3_2)
+            this.GetMessage().Get().SetbIsRead(true);
+            XLog(ELog(74), FString().Append("Message Read : ").Append(this.GetMessage().Get().GetbIsRead()).Append(" ").Append(this.GetMessage().Get().GetSenderBrief().GetUid()));
+            if ((int(::ChatSystemUtil::TryPbChannelToChannelTab(this.GetMessage().Get().GetChannelType()))) == 6 || (this.GetMessage().Get().GetSenderType() == 2))
             {
                 int local_17;
-                TEUIModelRef<FM_ChatMessage> local_2_6 = this.GetMessage();
-                local_17 = GetSenderBrief().GetUid();
+                local_17 = this.GetMessage().Get().GetSenderBrief().GetUid();
                 ::FVMS_ChatMain::Get(this.GetManager()).TryConsumeRedDot(local_17);
             }
         }
@@ -235,21 +202,9 @@ struct FVM_ChatMessage : FEUIViewModel
     }
     bool IsPlayerMsgUnRead(const uint SenderUid) const
     {
-        bool local_5;
-        TEUIModelRef<FM_ChatMessage> local_2 = this.GetMessage();
-        if (GetSenderType() != 2)
+        if (this.GetMessage().Get().GetSenderType() == 2 && (this.GetMessage().Get().GetSenderBrief().GetUid() == SenderUid))
         {
-            local_5 = false;
-        }
-        else
-        {
-            TEUIModelRef<FM_ChatMessage> local_2_2 = this.GetMessage();
-            local_5 = (GetSenderBrief().GetUid() == SenderUid);
-        }
-        if (local_5)
-        {
-            TEUIModelRef<FM_ChatMessage> local_2_3 = this.GetMessage();
-            return !(GetbIsRead());
+            return !(this.GetMessage().Get().GetbIsRead());
         }
         return true;
     }
@@ -433,11 +388,9 @@ FVM_ChatMessage& Create(const UObject ContextObject, const TEUIModelRef<FM_ChatM
 {
     return FVM_ChatMessage::CreateByManager(EUIInternal::GetContextManager(ContextObject), Message);
 }
-FVM_ChatMessage CreateByManager(const UEUIManagerSubsystem Manager, const TEUIModelRef<FM_ChatMessage> &inout Message)
+FVM_ChatMessage& CreateByManager(const UEUIManagerSubsystem Manager, const TEUIModelRef<FM_ChatMessage> &inout Message)
 {
-    FVM_ChatMessage __r;
-    TEUIModelRef<FVM_ChatMessage> local_6 = TEUIModelRef<FVM_ChatMessage>(EUIInternal::MakeModelWithManager_Generic(Manager, FVM_ChatMessage::ModelId, 0, Message));
-    return __r;
+    return TEUIModelRef<FVM_ChatMessage>(EUIInternal::MakeModelWithManager_Generic(Manager, FVM_ChatMessage::ModelId, 0, Message)).Get();
 }
 void GetModelInfo(FEUIViewModelMetaInfo &inout Result)
 {
@@ -558,7 +511,6 @@ namespace __GeneratedProperties_FVM_ChatMessage
 {
 UScriptStruct StaticStruct()
 {
-    UScriptStruct local_2;
-    return local_2;
+    return __GeneratedProperties_FVM_ChatMessage.Get();
 }
 }

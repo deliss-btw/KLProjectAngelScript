@@ -61,7 +61,6 @@ class US_MaterialParamSystem : UECSScriptSystem
     {
         float32 local_3;
         int local_6;
-        UMaterialInterface local_10;
         if (!(Mat.IsValid()))
         {
             return;
@@ -83,7 +82,7 @@ class US_MaterialParamSystem : UECSScriptSystem
             int local_7 = 2;
             local_6 = local_7;
         }
-        if (GameMaterial::GetFloatParameterDefaultValue(local_2, local_10, RequestParam.ParamName, EMaterialParameterAssociation(local_6)))
+        if (GameMaterial::GetFloatParameterDefaultValue(local_2, Mat.Get(), RequestParam.ParamName, EMaterialParameterAssociation(local_6)))
         {
             if (Request.GetbIsBlendingOut())
             {
@@ -122,7 +121,6 @@ class US_MaterialParamSystem : UECSScriptSystem
     void BuildVectorParamForBlendData(const FChangeMaterialParamRequest &inout Request, const TSoftObjectPtr<UMaterialInterface> &inout Mat, const FVectorParamRequestData &inout RequestParam, FVectorParamBlendData &inout OutVectorParam, const bool bAllowMissingParam = false) const
     {
         int local_8;
-        UMaterialInterface local_12;
         if (!(Mat.IsValid()))
         {
             return;
@@ -144,7 +142,7 @@ class US_MaterialParamSystem : UECSScriptSystem
             int local_9 = 2;
             local_8 = local_9;
         }
-        if (GameMaterial::GetVectorParameterDefaultValue(local_5, local_12, RequestParam.ParamName, EMaterialParameterAssociation(local_8)))
+        if (GameMaterial::GetVectorParameterDefaultValue(local_5, Mat.Get(), RequestParam.ParamName, EMaterialParameterAssociation(local_8)))
         {
             if (Request.GetbIsBlendingOut())
             {
@@ -185,7 +183,6 @@ class US_MaterialParamSystem : UECSScriptSystem
     {
         UTexture local_4;
         int local_7;
-        UMaterialInterface local_10;
         if (!(Mat.IsValid()))
         {
             return;
@@ -206,7 +203,7 @@ class US_MaterialParamSystem : UECSScriptSystem
             int local_8 = 2;
             local_7 = local_8;
         }
-        if (GameMaterial::GetTextureParameterDefaultValue(local_4, local_10, RequestParam.ParamName, EMaterialParameterAssociation(local_7)))
+        if (GameMaterial::GetTextureParameterDefaultValue(local_4, Mat.Get(), RequestParam.ParamName, EMaterialParameterAssociation(local_7)))
         {
             if (Request.GetbIsBlendingOut())
             {

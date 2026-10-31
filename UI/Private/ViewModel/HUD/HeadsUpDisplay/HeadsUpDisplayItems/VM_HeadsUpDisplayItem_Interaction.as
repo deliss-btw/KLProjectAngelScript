@@ -188,11 +188,9 @@ FVMS_HeadsUpDisplayItem_Interaction_InternalCache& Get(const UObject ContextObje
 {
     return FVMS_HeadsUpDisplayItem_Interaction_InternalCache::GetByManager(EUIInternal::GetContextManager(ContextObject));
 }
-FVMS_HeadsUpDisplayItem_Interaction_InternalCache GetByManager(const UEUIManagerSubsystem Manager)
+FVMS_HeadsUpDisplayItem_Interaction_InternalCache& GetByManager(const UEUIManagerSubsystem Manager)
 {
-    FVMS_HeadsUpDisplayItem_Interaction_InternalCache __r;
-    TEUIModelRef<FVMS_HeadsUpDisplayItem_Interaction_InternalCache> local_6 = TEUIModelRef<FVMS_HeadsUpDisplayItem_Interaction_InternalCache>(EUIInternal::MakeModelWithManager(Manager, FVMS_HeadsUpDisplayItem_Interaction_InternalCache::ModelId));
-    return __r;
+    return TEUIModelRef<FVMS_HeadsUpDisplayItem_Interaction_InternalCache>(EUIInternal::MakeModelWithManager(Manager, FVMS_HeadsUpDisplayItem_Interaction_InternalCache::ModelId)).Get();
 }
 void GetModelInfo(FEUIViewModelMetaInfo &inout Result)
 {
@@ -228,8 +226,7 @@ namespace __GeneratedProperties_FVMS_HeadsUpDisplayItem_Interaction_InternalCach
 {
 UScriptStruct StaticStruct()
 {
-    UScriptStruct local_2;
-    return local_2;
+    return __GeneratedProperties_FVMS_HeadsUpDisplayItem_Interaction_InternalCache.Get();
 }
 }
 namespace FVM_HeadsUpDisplayItem_Interaction
@@ -238,11 +235,9 @@ FVM_HeadsUpDisplayItem_Interaction& Create(const UObject ContextObject, const TE
 {
     return FVM_HeadsUpDisplayItem_Interaction::CreateByManager(EUIInternal::GetContextManager(ContextObject), Spot);
 }
-FVM_HeadsUpDisplayItem_Interaction CreateByManager(const UEUIManagerSubsystem Manager, const TEUIModelRef<FM_Spot> &inout Spot)
+FVM_HeadsUpDisplayItem_Interaction& CreateByManager(const UEUIManagerSubsystem Manager, const TEUIModelRef<FM_Spot> &inout Spot)
 {
-    FVM_HeadsUpDisplayItem_Interaction __r;
-    TEUIModelRef<FVM_HeadsUpDisplayItem_Interaction> local_6 = TEUIModelRef<FVM_HeadsUpDisplayItem_Interaction>(EUIInternal::MakeModelWithManager_Generic(Manager, FVM_HeadsUpDisplayItem_Interaction::ModelId, 0, Spot));
-    return __r;
+    return TEUIModelRef<FVM_HeadsUpDisplayItem_Interaction>(EUIInternal::MakeModelWithManager_Generic(Manager, FVM_HeadsUpDisplayItem_Interaction::ModelId, 0, Spot)).Get();
 }
 void GetModelInfo(FEUIViewModelMetaInfo &inout Result)
 {
@@ -289,7 +284,6 @@ namespace __GeneratedProperties_FVM_HeadsUpDisplayItem_Interaction
 {
 UScriptStruct StaticStruct()
 {
-    UScriptStruct local_2;
-    return local_2;
+    return __GeneratedProperties_FVM_HeadsUpDisplayItem_Interaction.Get();
 }
 }

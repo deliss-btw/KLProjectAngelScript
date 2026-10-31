@@ -18,8 +18,8 @@ class UWidget_EquipmentTraitInfo : UEUIUserWidget
     UFUNCTION()
     bool TraitInfo_bHighlight() const
     {
-        FVM_TraitInfo& local_2;
         bool local_5;
+        FVM_TraitInfo& local_2 = this.TraitInfo.Get();
         if (local_2)
         {
             local_5 = local_2.GetbHighlight();

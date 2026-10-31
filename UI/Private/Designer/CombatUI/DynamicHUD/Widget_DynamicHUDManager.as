@@ -20,7 +20,7 @@ class UWidget_DynamicHUDManager : UEUIUserWidget
     UFUNCTION()
     TArray<FEUIModelWeakRef> DynamicHUDManager_SelectTargetModelArray() const
     {
-        FVMS_DynamicHUDManager& local_2;
+        FVMS_DynamicHUDManager& local_2 = this.DynamicHUDManager.Get();
         TArray<FEUIModelWeakRef> local_16;
         if (local_2)
         {

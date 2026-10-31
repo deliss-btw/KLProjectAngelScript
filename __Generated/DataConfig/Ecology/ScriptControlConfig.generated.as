@@ -3,7 +3,6 @@ namespace __FScriptControlESMSkillConfigFunctions
 UFUNCTION()
 TSoftObjectPtr<UBehaviorTree> __FScriptControlESMSkillConfig_GetBehaviorTreeAsset(const TDataObjectPtr<FScriptControlESMSkillConfig> &inout DataObject)
 {
-    TSoftObjectPtr<UBehaviorTree> __r;
     if ((DataObject == nullptr))
     {
         if (!(EUIGlobals::GIsDuringPropertyConversion))
@@ -13,7 +12,7 @@ TSoftObjectPtr<UBehaviorTree> __FScriptControlESMSkillConfig_GetBehaviorTreeAsse
         FScriptControlESMSkillConfig local_24;
         return local_24.BehaviorTreeAsset;
     }
-    return __r;
+    return DataObject.Get().BehaviorTreeAsset;
 }
 UFUNCTION()
 FScriptControlESMSkillConfig CastToFScriptControlESMSkillConfig(const TDataObjectPtr<FScriptControlESMSkillConfig> &inout DataObject)

@@ -69,24 +69,19 @@ struct FVM_CustomWheelOptionButton : FEUIViewModel
     FSoftBrush GetIconBrush() const
     {
         FCustomWheelOptionConfig local_88;
-        FSoftBrush __r;
         if (int(local_88.OptionType) == 1)
         {
+            return local_88.GetDefaultSignalData().Get().SignalIconObject;
         }
-        else
+        if (int(local_88.OptionType) == 2)
         {
-            if (int(local_88.OptionType) == 2)
-            {
-            }
-            else
-            {
-            }
+            return local_88.GetDefaultMotionData().Get().Icon;
         }
-        return __r;
+        return local_88.GetDefaultEmojiData().Get().EmojiIconObject;
     }
     void OnButtonClicked()
     {
-        ::FVMS_CustomWheel::SendCustonWheelOption();
+        ::FVMS_CustomWheel::SendCustonWheelOption(this.GetOptionConfig().Get());
         FMsg_CloseCustomWheel local_8;
         local_8 = FEUIMessageBus::PublishOrPatch(EUIMessageBus).opCall(FEUIModelRef(this));
         return;
@@ -293,8 +288,7 @@ struct FVMS_CustomWheel : FEUIViewModelSingleton
         {
             return FText::FromString("");
         }
-        int local_1 = this.GetSelectedIndex();
-        return FText();
+        return FText::FromName(this.GetOptionConfigs()[this.GetSelectedIndex()].Get().OptionName);
     }
     FText GetSelectedOptionContextName() const
     {
@@ -304,21 +298,15 @@ struct FVMS_CustomWheel : FEUIViewModelSingleton
             int local_1 = this.GetSelectedIndex();
             if (int(local_92.OptionType) == 0)
             {
+                return local_92.GetDefaultEmojiData().Get().Name;
             }
-            else
+            if (int(local_92.OptionType) == 1)
             {
-                if (int(local_92.OptionType) == 1)
-                {
-                }
-                else
-                {
-                    if (int(local_92.OptionType) == 2)
-                    {
-                    }
-                    else
-                    {
-                    }
-                }
+                return local_92.GetDefaultSignalData().Get().SignalContext;
+            }
+            if (int(local_92.OptionType) == 2)
+            {
+                return local_92.GetDefaultMotionData().Get().Name;
             }
         }
         return FText::FromString("");
@@ -340,8 +328,7 @@ struct FVMS_CustomWheel : FEUIViewModelSingleton
     {
         if (this.GetSelectedIndex() != INDEX_NONE && this.GetButtons()[this.GetSelectedIndex()].IsValid())
         {
-            int local_2 = this.GetSelectedIndex();
-            OnButtonClicked();
+            this.GetButtons()[this.GetSelectedIndex()].Get().OnButtonClicked();
         }
         return;
     }
@@ -349,7 +336,7 @@ struct FVMS_CustomWheel : FEUIViewModelSingleton
     {
         if (ButtonIndex != INDEX_NONE && this.GetButtons()[ButtonIndex].IsValid())
         {
-            bSelected.ChangeSelectedState();
+            this.GetButtons()[ButtonIndex].Get().ChangeSelectedState(bSelected);
         }
         return;
     }
@@ -620,11 +607,9 @@ FVM_CustomWheelOptionButton& Create(const UObject ContextObject, const TDataObje
 {
     return FVM_CustomWheelOptionButton::CreateByManager(EUIInternal::GetContextManager(ContextObject), OptionConfig);
 }
-FVM_CustomWheelOptionButton CreateByManager(const UEUIManagerSubsystem Manager, const TDataObjectPtr<FCustomWheelOptionConfig> &inout OptionConfig)
+FVM_CustomWheelOptionButton& CreateByManager(const UEUIManagerSubsystem Manager, const TDataObjectPtr<FCustomWheelOptionConfig> &inout OptionConfig)
 {
-    FVM_CustomWheelOptionButton __r;
-    TEUIModelRef<FVM_CustomWheelOptionButton> local_6 = TEUIModelRef<FVM_CustomWheelOptionButton>(EUIInternal::MakeModelWithManager_Generic(Manager, FVM_CustomWheelOptionButton::ModelId, 0, OptionConfig));
-    return __r;
+    return TEUIModelRef<FVM_CustomWheelOptionButton>(EUIInternal::MakeModelWithManager_Generic(Manager, FVM_CustomWheelOptionButton::ModelId, 0, OptionConfig)).Get();
 }
 void GetModelInfo(FEUIViewModelMetaInfo &inout Result)
 {
@@ -679,8 +664,7 @@ namespace __GeneratedProperties_FVM_CustomWheelOptionButton
 {
 UScriptStruct StaticStruct()
 {
-    UScriptStruct local_2;
-    return local_2;
+    return __GeneratedProperties_FVM_CustomWheelOptionButton.Get();
 }
 }
 namespace FVMS_CustomWheel
@@ -689,11 +673,9 @@ FVMS_CustomWheel& Get(const UObject ContextObject)
 {
     return FVMS_CustomWheel::GetByManager(EUIInternal::GetContextManager(ContextObject));
 }
-FVMS_CustomWheel GetByManager(const UEUIManagerSubsystem Manager)
+FVMS_CustomWheel& GetByManager(const UEUIManagerSubsystem Manager)
 {
-    FVMS_CustomWheel __r;
-    TEUIModelRef<FVMS_CustomWheel> local_6 = TEUIModelRef<FVMS_CustomWheel>(EUIInternal::MakeModelWithManager(Manager, FVMS_CustomWheel::ModelId));
-    return __r;
+    return TEUIModelRef<FVMS_CustomWheel>(EUIInternal::MakeModelWithManager(Manager, FVMS_CustomWheel::ModelId)).Get();
 }
 void GetModelInfo(FEUIViewModelMetaInfo &inout Result)
 {
@@ -880,7 +862,6 @@ namespace __GeneratedProperties_FVMS_CustomWheel
 {
 UScriptStruct StaticStruct()
 {
-    UScriptStruct local_2;
-    return local_2;
+    return __GeneratedProperties_FVMS_CustomWheel.Get();
 }
 }

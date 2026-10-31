@@ -27,14 +27,9 @@ class UESMAction_RootMotionScaleTweak : UESMBPBaseSpanAction
     void UpdateExtraScale(const FESMContext &inout Context, const FESMActionTime &inout Time) const
     {
         int local_6 = 0;
-        float32 local_7 = 0.0f;
-        float32 local_8 = 0.0f;
-        local_7 = local_7 - 1.0f;
-        local_6.SetExtraHorizontalScale(local_7);
-        local_8 = local_8 - 1.0f;
-        local_6.SetExtraVerticalScale(local_8);
-        local_7 = local_7 - 1.0f;
-        local_6.SetExtraYawScale(local_7);
+        local_6.SetExtraHorizontalScale((this.HorizontalScale.GetValue(Context.GetEntityBB()) - 1.0f));
+        local_6.SetExtraVerticalScale((this.VerticalScale.GetValue(Context.GetEntityBB()) - 1.0f));
+        local_6.SetExtraYawScale((this.YawScale.GetValue(Context.GetEntityBB()) - 1.0f));
         return;
     }
 }

@@ -71,7 +71,7 @@ class UPage_Minimap : UEUIActivatableWidget
         UCanvasPanelSlot local_42;
         if (!(this.MinimapModelInit))
         {
-            FVM_Minimap& local_4;
+            FVM_Minimap& local_4 = this.Minimap.Get();
             if (local_4)
             {
                 if (local_4.GetbLocalPlayerPositionSet())
@@ -308,8 +308,8 @@ class UPage_Minimap : UEUIActivatableWidget
     UFUNCTION()
     bool Minimap_bLocalPlayerPositionSet() const
     {
-        FVM_Minimap& local_2;
         bool local_5;
+        FVM_Minimap& local_2 = this.Minimap.Get();
         if (local_2)
         {
             local_5 = local_2.GetbLocalPlayerPositionSet();
@@ -323,7 +323,7 @@ class UPage_Minimap : UEUIActivatableWidget
     UFUNCTION()
     FVector2D Minimap_LocalPlayerPosition() const
     {
-        FVM_Minimap& local_2;
+        FVM_Minimap& local_2 = this.Minimap.Get();
         FVector2D local_12 = local_2 ? local_2.GetLocalPlayerPosition() : FVector2D();
         return local_12;
     }
@@ -385,8 +385,8 @@ class UPage_Minimap : UEUIActivatableWidget
     }
     void HandleObservedModelChanges(FEUIReactiveSubscriberIterator &inout It)
     {
-        FVM_Minimap& local_6;
         TEUIModelRef<FVM_Minimap> local_2 = this.Minimap.AsRef();
+        FVM_Minimap& local_6 = local_2.Get();
         for (; It; )
         {
             FEUIReactiveSubscriberTrackScope local_56 = FEUIReactiveSubscriberTrackScope(It);

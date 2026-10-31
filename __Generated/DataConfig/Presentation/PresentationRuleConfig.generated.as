@@ -3,7 +3,6 @@ namespace __FPresentationRuleConfigFunctions
 UFUNCTION()
 bool __FPresentationRuleConfig_GetbShowMinimapIcon(const TDataObjectPtr<FPresentationRuleConfig> &inout DataObject)
 {
-    bool local_1 = false;
     if ((DataObject == nullptr))
     {
         if (!(EUIGlobals::GIsDuringPropertyConversion))
@@ -13,7 +12,7 @@ bool __FPresentationRuleConfig_GetbShowMinimapIcon(const TDataObjectPtr<FPresent
         FPresentationRuleConfig local_118;
         return local_118.bShowMinimapIcon;
     }
-    return local_1;
+    return DataObject.Get().bShowMinimapIcon;
 }
 UFUNCTION()
 TDataObjectPtr<FMinimapIconConfig> __FPresentationRuleConfig_GetMinimapIconSettings(const TDataObjectPtr<FPresentationRuleConfig> &inout DataObject)
@@ -27,12 +26,11 @@ TDataObjectPtr<FMinimapIconConfig> __FPresentationRuleConfig_GetMinimapIconSetti
         FPresentationRuleConfig local_118;
         return local_118.GetMinimapIconSettings();
     }
-    return GetMinimapIconSettings();
+    return DataObject.Get().GetMinimapIconSettings();
 }
 UFUNCTION()
 bool __FPresentationRuleConfig_GetbShowIndicator(const TDataObjectPtr<FPresentationRuleConfig> &inout DataObject)
 {
-    bool local_1 = false;
     if ((DataObject == nullptr))
     {
         if (!(EUIGlobals::GIsDuringPropertyConversion))
@@ -42,7 +40,7 @@ bool __FPresentationRuleConfig_GetbShowIndicator(const TDataObjectPtr<FPresentat
         FPresentationRuleConfig local_118;
         return local_118.bShowIndicator;
     }
-    return local_1;
+    return DataObject.Get().bShowIndicator;
 }
 UFUNCTION()
 TDataObjectPtr<FIndicatorConfig> __FPresentationRuleConfig_GetIndicatorConfig(const TDataObjectPtr<FPresentationRuleConfig> &inout DataObject)
@@ -56,12 +54,11 @@ TDataObjectPtr<FIndicatorConfig> __FPresentationRuleConfig_GetIndicatorConfig(co
         FPresentationRuleConfig local_118;
         return local_118.GetIndicatorConfig();
     }
-    return GetIndicatorConfig();
+    return DataObject.Get().GetIndicatorConfig();
 }
 UFUNCTION()
 bool __FPresentationRuleConfig_GetbShowNavigationBarIcon(const TDataObjectPtr<FPresentationRuleConfig> &inout DataObject)
 {
-    bool local_1 = false;
     if ((DataObject == nullptr))
     {
         if (!(EUIGlobals::GIsDuringPropertyConversion))
@@ -71,7 +68,7 @@ bool __FPresentationRuleConfig_GetbShowNavigationBarIcon(const TDataObjectPtr<FP
         FPresentationRuleConfig local_118;
         return local_118.bShowNavigationBarIcon;
     }
-    return local_1;
+    return DataObject.Get().bShowNavigationBarIcon;
 }
 UFUNCTION()
 TDataObjectPtr<FNavigationBarIconConfig> __FPresentationRuleConfig_GetNavigationBarIconConfig(const TDataObjectPtr<FPresentationRuleConfig> &inout DataObject)
@@ -85,12 +82,11 @@ TDataObjectPtr<FNavigationBarIconConfig> __FPresentationRuleConfig_GetNavigation
         FPresentationRuleConfig local_118;
         return local_118.GetNavigationBarIconConfig();
     }
-    return GetNavigationBarIconConfig();
+    return DataObject.Get().GetNavigationBarIconConfig();
 }
 UFUNCTION()
 bool __FPresentationRuleConfig_GetbShowHeadsUpDisplay(const TDataObjectPtr<FPresentationRuleConfig> &inout DataObject)
 {
-    bool local_1 = false;
     if ((DataObject == nullptr))
     {
         if (!(EUIGlobals::GIsDuringPropertyConversion))
@@ -100,7 +96,7 @@ bool __FPresentationRuleConfig_GetbShowHeadsUpDisplay(const TDataObjectPtr<FPres
         FPresentationRuleConfig local_118;
         return local_118.bShowHeadsUpDisplay;
     }
-    return local_1;
+    return DataObject.Get().bShowHeadsUpDisplay;
 }
 UFUNCTION()
 TDataObjectPtr<FHeadsUpDisplayConfig> __FPresentationRuleConfig_GetHeadsUpDisplayConfig(const TDataObjectPtr<FPresentationRuleConfig> &inout DataObject)
@@ -114,7 +110,7 @@ TDataObjectPtr<FHeadsUpDisplayConfig> __FPresentationRuleConfig_GetHeadsUpDispla
         FPresentationRuleConfig local_118;
         return local_118.GetHeadsUpDisplayConfig();
     }
-    return GetHeadsUpDisplayConfig();
+    return DataObject.Get().GetHeadsUpDisplayConfig();
 }
 UFUNCTION()
 FPresentationRuleConfig CastToFPresentationRuleConfig(const TDataObjectPtr<FPresentationRuleConfig> &inout DataObject)

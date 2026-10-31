@@ -387,8 +387,7 @@ struct FVM_SwordSkillResource : FEUIViewModel
     {
         this.SetResourcePoint(TEUIModelRef<FVM_SwordSkillResourcePoint>(::FVM_SwordSkillResourcePoint::Create(this.GetContext().Manager)));
         float32 local_3 = 0.05f;
-        TEUIModelRef<FVM_SwordSkillResourcePoint> local_2 = this.GetResourcePoint();
-        local_3.SetConsumeAnimChangeThreshold();
+        this.GetResourcePoint().Get().SetConsumeAnimChangeThreshold(local_3);
         this.GetModify_CurrentResourceItems().Empty(0);
         int local_5 = 0;
         for (; local_5 < this.GetCurrentMaxItems(); )
@@ -401,7 +400,6 @@ struct FVM_SwordSkillResource : FEUIViewModel
     void RefreshResouceItems()
     {
         float32 local_7;
-        FVM_SwordSkillResourceItem& local_10;
         bool local_13;
         bool local_14;
         int local_16 = 0;
@@ -416,6 +414,7 @@ struct FVM_SwordSkillResource : FEUIViewModel
         int local_8 = 0;
         for (; local_8 < this.GetCurrentResourceItems().Num(); ++local_8)
         {
+            FVM_SwordSkillResourceItem& local_10 = this.GetModify_CurrentResourceItems()[local_8].Get();
             local_10.SetLastPercent(local_10.GetPercent());
             if (local_7 <= 0.0f)
             {
@@ -429,7 +428,7 @@ struct FVM_SwordSkillResource : FEUIViewModel
         this.SetbLastFourthSlotFull(this.GetbFourthSlotFull());
         if (this.GetCurrentResourceItems().Num() > 1)
         {
-            local_14 = (GetPercent() >= 1.0f);
+            local_14 = (this.GetCurrentResourceItems()[1].Get().GetPercent() >= 1.0f);
         }
         else
         {
@@ -438,7 +437,7 @@ struct FVM_SwordSkillResource : FEUIViewModel
         this.SetbSecondSlotFull(local_14);
         if (this.GetCurrentResourceItems().Num() > 3)
         {
-            local_13 = (GetPercent() >= 1.0f);
+            local_13 = (this.GetCurrentResourceItems()[3].Get().GetPercent() >= 1.0f);
         }
         else
         {
@@ -760,11 +759,9 @@ FVM_SwordSkillResourceItem& Create(const UObject ContextObject, const float32 In
 {
     return FVM_SwordSkillResourceItem::CreateByManager(EUIInternal::GetContextManager(ContextObject), Index);
 }
-FVM_SwordSkillResourceItem CreateByManager(const UEUIManagerSubsystem Manager, const float32 Index)
+FVM_SwordSkillResourceItem& CreateByManager(const UEUIManagerSubsystem Manager, const float32 Index)
 {
-    FVM_SwordSkillResourceItem __r;
-    TEUIModelRef<FVM_SwordSkillResourceItem> local_6 = TEUIModelRef<FVM_SwordSkillResourceItem>(EUIInternal::MakeModelWithManager_Generic(Manager, FVM_SwordSkillResourceItem::ModelId, 0, Index));
-    return __r;
+    return TEUIModelRef<FVM_SwordSkillResourceItem>(EUIInternal::MakeModelWithManager_Generic(Manager, FVM_SwordSkillResourceItem::ModelId, 0, Index)).Get();
 }
 void GetModelInfo(FEUIViewModelMetaInfo &inout Result)
 {
@@ -814,8 +811,7 @@ namespace __GeneratedProperties_FVM_SwordSkillResourceItem
 {
 UScriptStruct StaticStruct()
 {
-    UScriptStruct local_2;
-    return local_2;
+    return __GeneratedProperties_FVM_SwordSkillResourceItem.Get();
 }
 }
 namespace FVM_SwordSkillResourcePoint
@@ -824,11 +820,9 @@ FVM_SwordSkillResourcePoint& Create(const UObject ContextObject)
 {
     return FVM_SwordSkillResourcePoint::CreateByManager(EUIInternal::GetContextManager(ContextObject));
 }
-FVM_SwordSkillResourcePoint CreateByManager(const UEUIManagerSubsystem Manager)
+FVM_SwordSkillResourcePoint& CreateByManager(const UEUIManagerSubsystem Manager)
 {
-    FVM_SwordSkillResourcePoint __r;
-    TEUIModelRef<FVM_SwordSkillResourcePoint> local_6 = TEUIModelRef<FVM_SwordSkillResourcePoint>(EUIInternal::MakeModelWithManager(Manager, FVM_SwordSkillResourcePoint::ModelId));
-    return __r;
+    return TEUIModelRef<FVM_SwordSkillResourcePoint>(EUIInternal::MakeModelWithManager(Manager, FVM_SwordSkillResourcePoint::ModelId)).Get();
 }
 void GetModelInfo(FEUIViewModelMetaInfo &inout Result)
 {
@@ -886,8 +880,7 @@ namespace __GeneratedProperties_FVM_SwordSkillResourcePoint
 {
 UScriptStruct StaticStruct()
 {
-    UScriptStruct local_2;
-    return local_2;
+    return __GeneratedProperties_FVM_SwordSkillResourcePoint.Get();
 }
 }
 namespace FVM_SwordSkillResource
@@ -896,11 +889,9 @@ FVM_SwordSkillResource& Create(const UObject ContextObject)
 {
     return FVM_SwordSkillResource::CreateByManager(EUIInternal::GetContextManager(ContextObject));
 }
-FVM_SwordSkillResource CreateByManager(const UEUIManagerSubsystem Manager)
+FVM_SwordSkillResource& CreateByManager(const UEUIManagerSubsystem Manager)
 {
-    FVM_SwordSkillResource __r;
-    TEUIModelRef<FVM_SwordSkillResource> local_6 = TEUIModelRef<FVM_SwordSkillResource>(EUIInternal::MakeModelWithManager(Manager, FVM_SwordSkillResource::ModelId));
-    return __r;
+    return TEUIModelRef<FVM_SwordSkillResource>(EUIInternal::MakeModelWithManager(Manager, FVM_SwordSkillResource::ModelId)).Get();
 }
 void GetModelInfo(FEUIViewModelMetaInfo &inout Result)
 {
@@ -1002,7 +993,6 @@ namespace __GeneratedProperties_FVM_SwordSkillResource
 {
 UScriptStruct StaticStruct()
 {
-    UScriptStruct local_2;
-    return local_2;
+    return __GeneratedProperties_FVM_SwordSkillResource.Get();
 }
 }

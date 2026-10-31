@@ -3,7 +3,6 @@ namespace __FEcologyLevelDataObjectFunctions
 UFUNCTION()
 TSoftObjectPtr<UEnvQuery> __FEcologyLevelDataObject_GetSpawnEntityEnvQueryTemplate(const TDataObjectPtr<FEcologyLevelDataObject> &inout DataObject)
 {
-    TSoftObjectPtr<UEnvQuery> __r;
     if ((DataObject == nullptr))
     {
         if (!(EUIGlobals::GIsDuringPropertyConversion))
@@ -13,7 +12,7 @@ TSoftObjectPtr<UEnvQuery> __FEcologyLevelDataObject_GetSpawnEntityEnvQueryTempla
         FEcologyLevelDataObject local_24;
         return local_24.SpawnEntityEnvQueryTemplate;
     }
-    return __r;
+    return DataObject.Get().SpawnEntityEnvQueryTemplate;
 }
 UFUNCTION()
 FEcologyLevelDataObject CastToFEcologyLevelDataObject(const TDataObjectPtr<FEcologyLevelDataObject> &inout DataObject)

@@ -78,11 +78,9 @@ FVM_LockHover& Create(const UObject ContextObject, const FText &inout TipText)
 {
     return FVM_LockHover::CreateByManager(EUIInternal::GetContextManager(ContextObject), TipText);
 }
-FVM_LockHover CreateByManager(const UEUIManagerSubsystem Manager, const FText &inout TipText)
+FVM_LockHover& CreateByManager(const UEUIManagerSubsystem Manager, const FText &inout TipText)
 {
-    FVM_LockHover __r;
-    TEUIModelRef<FVM_LockHover> local_6 = TEUIModelRef<FVM_LockHover>(EUIInternal::MakeModelWithManager_Generic(Manager, FVM_LockHover::ModelId, 0, TipText));
-    return __r;
+    return TEUIModelRef<FVM_LockHover>(EUIInternal::MakeModelWithManager_Generic(Manager, FVM_LockHover::ModelId, 0, TipText)).Get();
 }
 void GetModelInfo(FEUIViewModelMetaInfo &inout Result)
 {
@@ -124,7 +122,6 @@ namespace __GeneratedProperties_FVM_LockHover
 {
 UScriptStruct StaticStruct()
 {
-    UScriptStruct local_2;
-    return local_2;
+    return __GeneratedProperties_FVM_LockHover.Get();
 }
 }

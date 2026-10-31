@@ -11,13 +11,12 @@ class UESMAction_MeleeStrike : UESMMeleeStrikeAction
     UFUNCTION()
     void Enter_Implementation(const FESMContext &inout Context, const FESMActionTime &inout Time) const
     {
-        const FAttackData& local_52;
         TDataObjectPtr<FAttackData> local_24 = TDataObjectPtr<FAttackData>(this.AttackData);
         if (!(this.AttackData.IsValid()))
         {
             return;
         }
-        if (local_52.GetFreezeAttenuationCurve() != nullptr)
+        if (local_24.Get().GetFreezeAttenuationCurve() != nullptr)
         {
             ModifyOrAdd local_58;
             FC_StrikeFreezeAttenuation& local_60 = local_58.opCall();
@@ -37,34 +36,37 @@ class UESMAction_MeleeStrike : UESMMeleeStrikeAction
             return;
         }
         Modify local_74;
-        if (local_74.opCall())
+        FC_EnvSurfaceImpactFXRecord& local_70_2 = local_74.opCall();
+        if (local_70_2)
         {
-            FName local_62 = Context.GetNotifyDataPath();
+            local_70_2.AttackIdentifierSet.Remove(Context.GetNotifyDataPath());
         }
         return;
     }
     UFUNCTION()
     void Exit_Implementation(const FESMContext &inout Context, const FESMActionTime &inout Time) const
     {
-        const FAttackData& local_52;
         TDataObjectPtr<FAttackData> local_24 = TDataObjectPtr<FAttackData>(this.AttackData);
         if (!(this.AttackData.IsValid()))
         {
             return;
         }
-        if (local_52.GetFreezeAttenuationCurve() != nullptr)
+        if (local_24.Get().GetFreezeAttenuationCurve() != nullptr)
         {
             Modify local_58;
             FC_StrikeFreezeAttenuation& local_60 = local_58.opCall();
             if (local_60)
             {
-                int local_66 = local_60.GetModify_StrikeInvokeCounter().FindOrAdd(this.GetStrikeKey(Context));
+                FName local_62 = this.GetStrikeKey(Context);
+                int local_66 = local_60.GetModify_StrikeInvokeCounter().FindOrAdd(local_62);
                 if (int(local_66) > 1)
                 {
                     --local_66;
                 }
                 else
                 {
+                    local_60.GetModify_StrikeInvokeCounter().Remove(local_62);
+                    local_60.GetModify_StrikeHitCounter().Remove(local_62);
                 }
             }
         }

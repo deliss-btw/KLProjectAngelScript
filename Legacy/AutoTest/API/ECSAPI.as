@@ -161,22 +161,22 @@ uint GetNearestPropInRangeByEntity(const uint EntityId, const float32 Range, con
     int local_132 = local_133;
     if ((PropType == "Default"))
     {
-        local_133 = 0;
-        local_132 = local_133;
+        int local_133_2 = 0;
+        local_132 = local_133_2;
     }
     else
     {
         if ((PropType == "Collect"))
         {
-            local_133 = 1;
-            local_132 = local_133;
+            int local_133_3 = 1;
+            local_132 = local_133_3;
         }
         else
         {
             if ((PropType == "CombatProp"))
             {
-                local_133 = 2;
-                local_132 = local_133;
+                int local_133_4 = 2;
+                local_132 = local_133_4;
             }
             else
             {
@@ -200,15 +200,7 @@ uint GetNearestPropInRangeByEntity(const uint EntityId, const float32 Range, con
         {
             local_9 = GetPropConfig(local_188);
         }
-        if (!(local_9))
-        {
-            local_9 = false;
-        }
-        else
-        {
-            GetPropConfig(local_188);
-            local_9 = (local_133 != local_132);
-        }
+        local_9 = local_9 && (int(GetPropConfig(local_188).Get().PropType) != local_132);
         if (local_9)
         {
             continue;
@@ -221,17 +213,7 @@ uint GetNearestPropInRangeByEntity(const uint EntityId, const float32 Range, con
         {
             local_213 = GetPropConfig(local_188);
         }
-        if (!(local_213))
-        {
-            local_213 = false;
-        }
-        else
-        {
-            FName local_215;
-            GetPropConfig(local_188);
-            local_215.GetDataName();
-            local_213 = !((local_215 == DataName));
-        }
+        local_213 = local_213 && !((GetPropConfig(local_188).Get().GetDataName() == DataName));
         if (local_213)
         {
             continue;
@@ -269,22 +251,22 @@ TArray<uint> GetAllPropsInRange(const float32 Range, const FString &inout PropTy
     int local_133 = local_134;
     if ((PropType == "Default"))
     {
-        local_134 = 0;
-        local_133 = local_134;
+        int local_134_2 = 0;
+        local_133 = local_134_2;
     }
     else
     {
         if ((PropType == "Collect"))
         {
-            local_134 = 1;
-            local_133 = local_134;
+            int local_134_3 = 1;
+            local_133 = local_134_3;
         }
         else
         {
             if ((PropType == "CombatProp"))
             {
-                local_134 = 2;
-                local_133 = local_134;
+                int local_134_4 = 2;
+                local_133 = local_134_4;
             }
             else
             {
@@ -308,15 +290,7 @@ TArray<uint> GetAllPropsInRange(const float32 Range, const FString &inout PropTy
         {
             local_9 = GetPropConfig(local_188);
         }
-        if (!(local_9))
-        {
-            local_9 = false;
-        }
-        else
-        {
-            GetPropConfig(local_188);
-            local_9 = (local_134 != local_133);
-        }
+        local_9 = local_9 && (int(GetPropConfig(local_188).Get().PropType) != local_133);
         if (local_9)
         {
             continue;
@@ -329,17 +303,7 @@ TArray<uint> GetAllPropsInRange(const float32 Range, const FString &inout PropTy
         {
             local_213 = GetPropConfig(local_188);
         }
-        if (!(local_213))
-        {
-            local_213 = false;
-        }
-        else
-        {
-            FName local_215;
-            GetPropConfig(local_188);
-            local_215.GetDataName();
-            local_213 = !((local_215 == DataName));
-        }
+        local_213 = local_213 && !((GetPropConfig(local_188).Get().GetDataName() == DataName));
         if (local_213)
         {
             continue;

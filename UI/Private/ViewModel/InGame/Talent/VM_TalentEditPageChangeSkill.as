@@ -62,13 +62,9 @@ struct FVM_TalentEditPageChangeSkill : FEUIViewModel
     }
     void Setup(const TEUIModelRef<FVM_TalentEditSkillBtn> &inout SetDefaultSelect)
     {
-        TEUIModelRef<FM_TalentNode> local_18;
-        TEUIModelWeakRef<FM_TalentNode> local_20;
         for (auto& local_16 : this.GetOnSelectTypeAllSkill())
         {
-            local_18.GetTalentNode();
-            local_20.GetTalentNode();
-            if ((local_18 == local_20.opImplConv()))
+            if ((local_16.Get().GetTalentNode() == SetDefaultSelect.Get().GetTalentNode().opImplConv()))
             {
                 this.SetCurrentSkillIndex(this.GetOnSelectTypeAllSkill().IndexOfByKey(local_16));
             }
@@ -78,8 +74,7 @@ struct FVM_TalentEditPageChangeSkill : FEUIViewModel
     void PostConstruct()
     {
         this.SetEditingAvatar(TEUIModelRef<FMS_EditingAvatar>(::FMS_EditingAvatar::Get(this.GetContext().Manager)));
-        TEUIModelRef<FMS_EditingAvatar> local_2 = this.GetEditingAvatar();
-        bool local_3 = !(!(GetAvatarConfig()));
+        bool local_3 = !(!(this.GetEditingAvatar().Get().GetAvatarConfig()));
         return;
     }
     void BeginDestroy()
@@ -195,11 +190,9 @@ FVM_TalentEditPageChangeSkill& Create(const UObject ContextObject, const TArray<
 {
     return FVM_TalentEditPageChangeSkill::CreateByManager(EUIInternal::GetContextManager(ContextObject), OnSelectTypeAllSkill);
 }
-FVM_TalentEditPageChangeSkill CreateByManager(const UEUIManagerSubsystem Manager, const TArray<TEUIModelRef<FVM_TalentSkillInfoItem>> &inout OnSelectTypeAllSkill)
+FVM_TalentEditPageChangeSkill& CreateByManager(const UEUIManagerSubsystem Manager, const TArray<TEUIModelRef<FVM_TalentSkillInfoItem>> &inout OnSelectTypeAllSkill)
 {
-    FVM_TalentEditPageChangeSkill __r;
-    TEUIModelRef<FVM_TalentEditPageChangeSkill> local_6 = TEUIModelRef<FVM_TalentEditPageChangeSkill>(EUIInternal::MakeModelWithManager_Generic(Manager, FVM_TalentEditPageChangeSkill::ModelId, 0, OnSelectTypeAllSkill));
-    return __r;
+    return TEUIModelRef<FVM_TalentEditPageChangeSkill>(EUIInternal::MakeModelWithManager_Generic(Manager, FVM_TalentEditPageChangeSkill::ModelId, 0, OnSelectTypeAllSkill)).Get();
 }
 void GetModelInfo(FEUIViewModelMetaInfo &inout Result)
 {
@@ -264,7 +257,6 @@ namespace __GeneratedProperties_FVM_TalentEditPageChangeSkill
 {
 UScriptStruct StaticStruct()
 {
-    UScriptStruct local_2;
-    return local_2;
+    return __GeneratedProperties_FVM_TalentEditPageChangeSkill.Get();
 }
 }

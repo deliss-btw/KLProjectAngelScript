@@ -90,7 +90,6 @@ class UAppearanceConsoleCommand : UKLConsoleCommandLibrary
     void Fashion_Server_Implementation(const int bAdd, const int DataId, const int EntityId)
     {
         FString local_14;
-        int local_65 = 0;
         int local_72 = 0;
         int local_80 = 0;
         int local_88 = 0;
@@ -99,12 +98,13 @@ class UAppearanceConsoleCommand : UKLConsoleCommandLibrary
             Print(FString().Append("Fashion_Server: Entity ").Append(EntityId).Append(" invalid"), 5.0f, FLinearColor::LucBlue);
             return;
         }
-        if (!(::FFashionConfig::GetByDataId(DataId)))
+        TDataObjectPtr<FFashionConfig> local_64 = ::FFashionConfig::GetByDataId(DataId);
+        if (!(local_64))
         {
             Print(FString().Append("Fashion_Server: DataId ").Append(DataId).Append(" not found in FFashionConfig"), 5.0f, FLinearColor::LucBlue);
             return;
         }
-        if (::FFashionConfig::IsPlayerFashionSlot(EFashionSlotType(local_65)))
+        if (::FFashionConfig::IsPlayerFashionSlot(EFashionSlotType(local_64.Get().SlotType)))
         {
             if (!(local_72) || !(local_72.GetPlayerEntity().IsValid()))
             {
@@ -139,13 +139,14 @@ class UAppearanceConsoleCommand : UKLConsoleCommandLibrary
         {
             local_14 = "Remove";
         }
-        Print(FString().Append("Fashion_Server: ").Append(local_14).Append(" Entity=").Append(EntityId).Append(", DataId=").Append(DataId).Append(", Slot=").Append(local_65), 5.0f, FLinearColor::LucBlue);
+        Print(FString().Append("Fashion_Server: ").Append(local_14).Append(" Entity=").Append(EntityId).Append(", DataId=").Append(DataId).Append(", Slot=").Append(int(local_64.Get().SlotType)), 5.0f, FLinearColor::LucBlue);
         return;
     }
     UFUNCTION()
     void FashionLargeHint_Implementation(const int DataId)
     {
-        if (!(::FFashionConfig::GetByDataId(DataId)))
+        TDataObjectPtr<FFashionConfig> local_48 = ::FFashionConfig::GetByDataId(DataId);
+        if (!(local_48))
         {
             Print(FString().Append("FashionLargeHint: DataId ").Append(DataId).Append(" not found in FFashionConfig"), 5.0f, FLinearColor::LucBlue);
             return;
@@ -166,8 +167,7 @@ class UAppearanceConsoleCommand : UKLConsoleCommandLibrary
         Make local_122;
         local_116.Add(local_122.opImplConv());
         ::MessageHintUtils::ShowMessageHint(local_64, local_112, local_116);
-        FString local_134;
-        Print(FString().Append("FashionLargeHint: showed hint for DataId=").Append(DataId).Append(", Name=").Append(local_134), 5.0f, FLinearColor::LucBlue);
+        Print(FString().Append("FashionLargeHint: showed hint for DataId=").Append(DataId).Append(", Name=").Append(local_48.Get().Name.ToString()), 5.0f, FLinearColor::LucBlue);
         return;
     }
     int GetLocalPawnEntityId()

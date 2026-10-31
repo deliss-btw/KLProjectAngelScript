@@ -144,11 +144,9 @@ FVM_ChatMainTab& Create(const UObject ContextObject, const FChatTabInfoConfig &i
 {
     return FVM_ChatMainTab::CreateByManager(EUIInternal::GetContextManager(ContextObject), TabInfoConfig);
 }
-FVM_ChatMainTab CreateByManager(const UEUIManagerSubsystem Manager, const FChatTabInfoConfig &inout TabInfoConfig)
+FVM_ChatMainTab& CreateByManager(const UEUIManagerSubsystem Manager, const FChatTabInfoConfig &inout TabInfoConfig)
 {
-    FVM_ChatMainTab __r;
-    TEUIModelRef<FVM_ChatMainTab> local_6 = TEUIModelRef<FVM_ChatMainTab>(EUIInternal::MakeModelWithManager_Generic(Manager, FVM_ChatMainTab::ModelId, 0, TabInfoConfig));
-    return __r;
+    return TEUIModelRef<FVM_ChatMainTab>(EUIInternal::MakeModelWithManager_Generic(Manager, FVM_ChatMainTab::ModelId, 0, TabInfoConfig)).Get();
 }
 void GetModelInfo(FEUIViewModelMetaInfo &inout Result)
 {
@@ -208,7 +206,6 @@ namespace __GeneratedProperties_FVM_ChatMainTab
 {
 UScriptStruct StaticStruct()
 {
-    UScriptStruct local_2;
-    return local_2;
+    return __GeneratedProperties_FVM_ChatMainTab.Get();
 }
 }

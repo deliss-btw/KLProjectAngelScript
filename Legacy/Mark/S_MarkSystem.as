@@ -112,15 +112,15 @@ class US_MarkSystem : UECSScriptSystem
     UFUNCTION()
     void Job_HandleRemoveWhenCreaterApproachDistance(const FECSEntity &inout MarkEntity, const FC_Transform &inout C_Transform, const FC_Mark &inout C_Mark) const
     {
-        float32 local_75 = 0.0f;
         ::FASCommonUtils::GetUniqueAvatarPawnEntity(C_Mark.GetCreaterPlayer());
         Get local_8;
         const FC_Transform& local_10 = local_8.opCall();
         if (local_10)
         {
-            if (::MarkUtil::GetMarkConfig(MarkEntity))
+            TDataObjectPtr<FMarkConfig> local_36 = ::MarkUtil::GetMarkConfig(MarkEntity);
+            if (local_36)
             {
-                if ((FVector(C_Transform.GetPosition()) - local_10.GetPosition()).SizeSquared2D() < FMath::Square(local_75))
+                if ((FVector(C_Transform.GetPosition()) - local_10.GetPosition()).SizeSquared2D() < FMath::Square(local_36.Get().RemoveWhenCreaterApproachDistance))
                 {
                     ::MarkUtil_Internal::DestroyMarkEntity(MarkEntity);
                 }

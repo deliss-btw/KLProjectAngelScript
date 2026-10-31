@@ -111,8 +111,8 @@ class UESMAction_LandingPointTest : UESMBPBaseSpanTickAction
     UFUNCTION()
     void Tick_Implementation(const FESMContext &inout Context, const FESMActionTime &inout Time) const
     {
-        const FLandingPointTestActionInstanceData& local_2;
         int local_10 = 0;
+        const FLandingPointTestActionInstanceData& local_2 = this.GetInstanceData(Context);
         if (local_2.bHasLandingPoint == false)
         {
             return;

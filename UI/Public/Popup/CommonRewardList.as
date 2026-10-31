@@ -121,12 +121,11 @@ struct FCommonRewardListBuilder
     {
         TArray<TDataObjectPtr<FDropItemConfigBase>> local_4;
         int local_27 = 0;
-        const FDropItemConfig& local_32;
         local_4.Add(DropItemConfig);
         TArray<TDataObjectPtr<FDropItemConfig>> local_14 = ::DropItemsUtils::CollectDisplayDropItemConfigs(local_4);
         for (auto& local_30 : local_14)
         {
-            local_30;
+            const FDropItemConfig& local_32 = local_30.Get();
             for (auto& local_46 : local_32.Drops)
             {
                 TArray<FDropItemPackage> local_50;
@@ -145,8 +144,8 @@ struct FCommonRewardListBuilder
     }
     FCommonRewardListBuilder& FromRewardConfig(const TDataObjectPtr<FRewardConfig> &inout RewardConfig, const FName &inout TagKey = FName(), const FText &inout TagText = FText(), const int CountMultiplier = 1, const bool bClaimed = false)
     {
-        const FRewardConfig& local_2;
         int local_15 = 0;
+        const FRewardConfig& local_2 = RewardConfig.Get();
         for (auto& local_18 : local_2.RewardItems)
         {
             if (local_18.Item)
@@ -224,37 +223,25 @@ namespace RewardSortUtils
 {
 int GetEntryRarity(const uint ItemId)
 {
-    int local_50 = 0;
-    int local_52;
-    if (FItemConfig::GetByDataId(ItemId).IsSet())
-    {
-        local_52 = local_50;
-    }
-    else
-    {
-        local_52 = 0;
-    }
-    return local_52;
+    TDataObjectPtr<FItemConfig> local_48 = FItemConfig::GetByDataId(ItemId);
+    return local_48.IsSet() ? int(local_48.Get().Rarity) : 0;
 }
 void ResolveSortAxis(const FRewardItemEntry &inout Entry, float32 &inout OutOrder, int &inout OutSub)
 {
-    float32 local_2 = 0.0f;
-    int local_101 = 0;
-    float32 local_103 = 0.0f;
     float32 local_1 = 1000000.0f;
     if (!(Entry.TagKey.IsNone()))
     {
-        TDataObjectPtr<FRewardSortTagPriorityConfig> local_76 = TDataObjectPtr<FRewardSortTagPriorityConfig>(FRewardSortTagPriorityConfig::FindByKey(Entry.TagKey));
-        if (local_76.IsSet())
+        TDataObjectPtr<FRewardSortTagPriorityConfig> local_28 = TDataObjectPtr<FRewardSortTagPriorityConfig>(FRewardSortTagPriorityConfig::FindByKey(Entry.TagKey));
+        if (local_28.IsSet())
         {
-            local_1 = local_101;
+            local_1 = local_28.Get().Priority;
         }
     }
     if (Entry.bHasSortOverride)
     {
+        float32 local_103;
         float32 local_102;
-        local_2 = Entry.SortOrder;
-        if (local_2 != 0.0f)
+        if (Entry.SortOrder != 0.0f)
         {
             local_102 = Entry.SortOrder;
             local_103 = local_102;
@@ -264,27 +251,28 @@ void ResolveSortAxis(const FRewardItemEntry &inout Entry, float32 &inout OutOrde
             local_103 = local_1;
         }
         OutOrder = local_103;
-        local_101 = Entry.SubOrder;
-        OutSub = local_101;
+        OutSub = int(Entry.SubOrder);
         return;
     }
     TDataObjectPtr<FItemConfig> local_154 = FItemConfig::GetByDataId(int(Entry.ItemId));
     if (local_154.IsSet())
     {
+        float32 local_103;
         float32 local_102;
-        TDataObjectPtr<FRewardSortItemOverrideConfig> local_202 = TDataObjectPtr<FRewardSortItemOverrideConfig>(FRewardSortItemOverrideConfig::FindByKey(local_154));
-        if (local_202.IsSet())
+        TDataObjectPtr<FRewardSortItemOverrideConfig> local_178 = TDataObjectPtr<FRewardSortItemOverrideConfig>(FRewardSortItemOverrideConfig::FindByKey(local_154));
+        if (local_178.IsSet())
         {
+            local_103 = local_178.Get().SortOrder;
             if (local_103 != 0.0f)
             {
-                local_102 = local_2;
+                local_102 = local_178.Get().SortOrder;
             }
             else
             {
                 local_102 = local_1;
             }
             OutOrder = local_102;
-            OutSub = local_101;
+            OutSub = local_178.Get().SubOrder;
             return;
         }
     }
@@ -300,12 +288,10 @@ FText ResolveTagDisplayText(const FName &inout TagKey, const FText &inout Overri
     }
     if (!(TagKey.IsNone()))
     {
-        TDataObjectPtr<FRewardSortTagPriorityConfig> local_74 = TDataObjectPtr<FRewardSortTagPriorityConfig>(FRewardSortTagPriorityConfig::FindByKey(TagKey));
-        if (local_74.IsSet())
+        TDataObjectPtr<FRewardSortTagPriorityConfig> local_26 = TDataObjectPtr<FRewardSortTagPriorityConfig>(FRewardSortTagPriorityConfig::FindByKey(TagKey));
+        if (local_26.IsSet())
         {
-        }
-        else
-        {
+            return local_26.Get().DisplayText;
         }
     }
     return FText();
@@ -325,6 +311,8 @@ TArray<FRewardItemEntry> SortEntries(const TArray<FRewardItemEntry> &inout InEnt
         local_4.Add(local_26);
         ++local_6;
     }
+    FRewardSortItemComparator local_28;
+    local_4.Sort(local_28);
     TArray<FRewardItemEntry> local_32;
     local_32.Reserve(local_4.Num());
     for (auto& local_46 : local_4)

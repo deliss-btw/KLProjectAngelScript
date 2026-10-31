@@ -3,7 +3,6 @@ namespace __FCombatHUDReasonGroupConfigFunctions
 UFUNCTION()
 TArray<ECombatHUDReason> __FCombatHUDReasonGroupConfig_GetReasons(const TDataObjectPtr<FCombatHUDReasonGroupConfig> &inout DataObject)
 {
-    TArray<ECombatHUDReason> __r;
     if ((DataObject == nullptr))
     {
         if (!(EUIGlobals::GIsDuringPropertyConversion))
@@ -13,12 +12,11 @@ TArray<ECombatHUDReason> __FCombatHUDReasonGroupConfig_GetReasons(const TDataObj
         FCombatHUDReasonGroupConfig local_26;
         return local_26.Reasons;
     }
-    return __r;
+    return DataObject.Get().Reasons;
 }
 UFUNCTION()
 EWidgetHideRuleType __FCombatHUDReasonGroupConfig_GetRuleType(const TDataObjectPtr<FCombatHUDReasonGroupConfig> &inout DataObject)
 {
-    int local_27 = 0;
     if ((DataObject == nullptr))
     {
         if (!(EUIGlobals::GIsDuringPropertyConversion))
@@ -26,10 +24,9 @@ EWidgetHideRuleType __FCombatHUDReasonGroupConfig_GetRuleType(const TDataObjectP
             FBlueprintDebugFunctions::ThrowScriptException("Get 'RuleType' from a null 'FCombatHUDReasonGroupConfig' DataObject!");
         }
         FCombatHUDReasonGroupConfig local_26;
-        local_27 = int(local_26.RuleType);
-        return EWidgetHideRuleType(local_27);
+        return local_26.RuleType;
     }
-    return EWidgetHideRuleType(local_27);
+    return DataObject.Get().RuleType;
 }
 UFUNCTION()
 TArray<TDataObjectPtr<FWidgetHiddenConfig>> __FCombatHUDReasonGroupConfig_GetHideConfigs(const TDataObjectPtr<FCombatHUDReasonGroupConfig> &inout DataObject)
@@ -43,7 +40,7 @@ TArray<TDataObjectPtr<FWidgetHiddenConfig>> __FCombatHUDReasonGroupConfig_GetHid
         FCombatHUDReasonGroupConfig local_26;
         return local_26.GetHideConfigs();
     }
-    return GetHideConfigs();
+    return DataObject.Get().GetHideConfigs();
 }
 UFUNCTION()
 float32 __FCombatHUDReasonGroupConfig_GetDelaySec(const TDataObjectPtr<FCombatHUDReasonGroupConfig> &inout DataObject)

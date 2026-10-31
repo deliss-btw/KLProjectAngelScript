@@ -18,7 +18,7 @@ class UWidget_AvatarBuildPage : UEUIActivatableWidget
     UFUNCTION()
     TEUIModelRef<FVM_AvatarAttributeList> AvatarBuild_AvatarAttributeList() const
     {
-        FVM_AvatarBuildPage& local_2;
+        FVM_AvatarBuildPage& local_2 = this.AvatarBuild.Get();
         TEUIModelRef<FVM_AvatarAttributeList> local_10;
         if (local_2)
         {
@@ -33,7 +33,7 @@ class UWidget_AvatarBuildPage : UEUIActivatableWidget
     UFUNCTION()
     TArray<FEUIModelWeakRef> AvatarBuild_AvatarTraitList() const
     {
-        FVM_AvatarBuildPage& local_2;
+        FVM_AvatarBuildPage& local_2 = this.AvatarBuild.Get();
         TArray<FEUIModelWeakRef> local_16;
         if (local_2)
         {
@@ -48,14 +48,14 @@ class UWidget_AvatarBuildPage : UEUIActivatableWidget
     UFUNCTION()
     FEUIModelRef AvatarBuild_EditingPlayerAvatar() const
     {
-        FVM_AvatarBuildPage& local_2;
+        FVM_AvatarBuildPage& local_2 = this.AvatarBuild.Get();
         FEUIModelRef local_8 = local_2 ? local_2.GetEditingPlayerAvatar() : FEUIModelRef();
         return local_8;
     }
     UFUNCTION()
     FEUIModelRef AvatarBuild_AvatarEquipment() const
     {
-        FVM_AvatarBuildPage& local_2;
+        FVM_AvatarBuildPage& local_2 = this.AvatarBuild.Get();
         FEUIModelRef local_8;
         if (local_2)
         {

@@ -42,10 +42,10 @@ class UAttributeSettingsSettings : UGameplaySettingsBase
         {
             if (local_28.GetKey().GetGlobalIndex() == Attribute.GetGlobalIndex())
             {
-                return TDataObjectPtr<FAttributeConfig>();
+                return local_28.GetValue();
             }
         }
-        return (TDataObjectPtr<FAttributeConfig>(nullptr));
+        return TDataObjectPtr<FAttributeConfig>(nullptr);
     }
 }
 

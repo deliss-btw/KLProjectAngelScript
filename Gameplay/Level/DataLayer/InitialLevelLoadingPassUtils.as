@@ -48,8 +48,7 @@ void NotifyLBPPassReady(const FName &inout Pass, FCS_InitialLevelLoadingData &in
         local_82.Proceed();
         if (local_126.LevelScript.IsValid())
         {
-            AActor local_130;
-            local_128 = Cast<AKLLevelScriptActor>(local_130);
+            local_128 = Cast<AKLLevelScriptActor>(local_126.LevelScript.Get());
             if (local_128 != nullptr)
             {
                 if (local_2 && (local_2.opArrow().GetLevelGroupStatusIndex(local_128.GetClass().GetFName()) != -1))

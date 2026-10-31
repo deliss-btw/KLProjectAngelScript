@@ -88,31 +88,24 @@ struct FVM_TalentUpgradeConfirm : FEUIViewModel
         {
             return;
         }
-        TEUIModelRef<FM_TalentNode> local_2 = this.GetTalentNode();
-        TDataObjectPtr<FTalentConfig> local_52;
+        TDataObjectPtr<FTalentConfig> local_52 = TDataObjectPtr<FTalentConfig>(this.GetTalentNode().Get().GetConfig().NodeConfig.Get());
         if (!(local_52))
         {
             return;
         }
         this.CreateUpgradeDesc();
         this.CreateUpgradeCostVM();
-        bool local_3 = true;
-        TEUIModelRef<FM_TalentNode> local_2_2 = this.GetTalentNode();
-        this.SetbCanUpgrade(local_3.CanUpgrade());
+        this.SetbCanUpgrade(this.GetTalentNode().Get().CanUpgrade(true));
         return;
     }
     void CreateUpgradeDesc()
     {
-        TDataObjectPtr<FTalentConfig> local_58;
-        FString local_68;
         if (!(this.GetTalentNode().IsValid()))
         {
             return;
         }
-        TEUIModelRef<FM_TalentNode> local_2 = this.GetTalentNode();
-        int local_5 = GetMaxLevel();
-        TEUIModelRef<FM_TalentNode> local_2_2 = this.GetTalentNode();
-        int local_4 = GetCurrentLevel();
+        int local_5 = this.GetTalentNode().Get().GetMaxLevel();
+        int local_4 = this.GetTalentNode().Get().GetCurrentLevel();
         if (local_4 >= local_5)
         {
             return;
@@ -121,22 +114,20 @@ struct FVM_TalentUpgradeConfirm : FEUIViewModel
         int local_9 = local_4 + 1;
         for (; local_9 < local_5; ++local_9)
         {
-            int local_7 = this.GetChoiceIndex();
-            TEUIModelRef<FM_TalentNode> local_2_3 = this.GetTalentNode();
-            local_58.FindTalentByChoiceAndLevel(local_7, local_9);
+            TDataObjectPtr<FTalentConfig> local_58 = this.GetTalentNode().Get().FindTalentByChoiceAndLevel(this.GetChoiceIndex(), local_9);
             if (local_58)
             {
                 bool local_3 = (local_9 == (local_4 + 1));
                 TEUIModelRef<FVM_TalentUpgradeDesc> local_62 = TEUIModelRef<FVM_TalentUpgradeDesc>(::FVM_TalentUpgradeDesc::Create(this.GetContext().Manager));
                 FString local_72 = FString::Format("Lv{0} ", local_9);
                 FText local_76;
-                if (!(!(local_3)) && GetSkillConfig())
+                if (!(!(local_3)) && local_58.Get().GetSkillConfig())
                 {
-                    local_76 = GetSkillConfig().IsSet() ? FText::FromString((local_72 + local_68)) : FText::FromString((local_72 + local_68));
+                    local_76 = local_58.Get().GetSkillConfig().IsSet() ? FText::FromString((local_72 + local_58.Get().GetSkillConfig().Get().Description.ToString())) : FText::FromString((local_72 + local_58.Get().TalentDesc.ToString()));
                 }
                 else
                 {
-                    local_76 = FText::FromString((local_72 + local_68));
+                    local_76 = FText::FromString((local_72 + local_58.Get().TalentUpgradeDesc.ToString()));
                 }
                 local_62.opArrow().SetContextDesc(local_76);
                 local_62.opArrow().SetbHighLight(local_3);
@@ -159,25 +150,13 @@ struct FVM_TalentUpgradeConfirm : FEUIViewModel
     }
     void CreateUpgradeCostVM()
     {
-        TArrayConstIterator<FItemParamConfig> local_124;
         int local_361;
         this.SetUpgradeCostVM(TEUIModelRef<FVM_Common_Center_Spend>(::FVM_Common_Center_Spend::Create(this.GetContext().Manager)));
-        TEUIModelRef<FM_TalentNode> local_4 = this.GetTalentNode();
-        FText local_10;
-        local_10.GetNodeName(0);
-        TEUIModelRef<FVM_Common_Center_Spend> local_2 = this.GetUpgradeCostVM();
-        local_10.SetTitle();
-        TEUIModelRef<FVM_Common_Center_Spend> local_2_2 = this.GetUpgradeCostVM();
-        local_10.SetContent();
-        bool local_11 = true;
-        TEUIModelRef<FVM_Common_Center_Spend> local_2_3 = this.GetUpgradeCostVM();
-        local_11.SetbNeedCostCoinTitle();
-        TEUIModelRef<FM_TalentNode> local_4_2 = this.GetTalentNode();
-        int local_12 = GetCurrentLevel() + 1;
-        int local_5 = this.GetChoiceIndex();
-        TEUIModelRef<FM_TalentNode> local_4_3 = this.GetTalentNode();
-        TDataObjectPtr<FTalentConfig> local_62;
-        local_62.FindTalentByChoiceAndLevel(local_5, local_12);
+        FText local_10 = this.GetTalentNode().Get().GetNodeName(0);
+        this.GetUpgradeCostVM().Get().SetTitle(local_10);
+        this.GetUpgradeCostVM().Get().SetContent(local_10);
+        this.GetUpgradeCostVM().Get().SetbNeedCostCoinTitle(true);
+        TDataObjectPtr<FTalentConfig> local_62 = this.GetTalentNode().Get().FindTalentByChoiceAndLevel(this.GetChoiceIndex(), (this.GetTalentNode().Get().GetCurrentLevel() + 1));
         if (!(local_62))
         {
             return;
@@ -186,9 +165,8 @@ struct FVM_TalentUpgradeConfirm : FEUIViewModel
         UGlobalItemSettings local_66 = ::UGlobalItemSettings::Get();
         TDataObjectPtr<FItemConfig> local_90 = local_66.SoulsConfig;
         TArray<TEUIModelRef<FVM_CommonRewardItem>> local_118;
-        for (; local_124.CanProceed;)
+        for (auto& local_132 : local_62.Get().UnlockCost)
         {
-            const FItemParamConfig& local_132 = local_124.Proceed();
             if (!(local_132.Item))
             {
                 continue;
@@ -208,20 +186,15 @@ struct FVM_TalentUpgradeConfirm : FEUIViewModel
             TEUIModelRef<FVM_CommonRewardItem> local_358 = TEUIModelRef<FVM_CommonRewardItem>(::FVM_CommonRewardItem::Create(this.GetContext().Manager, local_352, true));
             local_118.Add(local_358);
         }
-        TEUIModelRef<FVM_Common_Center_Spend> local_2_4 = this.GetUpgradeCostVM();
-        local_118.SetCostItems();
+        this.GetUpgradeCostVM().Get().SetCostItems(local_118);
         local_361 = ::FMS_PlayerInventory::Get(this.GetContext().Manager).GetTotalItemNum(::UGlobalItemSettings::Get().SoulsConfig);
         if (local_63 > local_361)
         {
-            local_10 = FText::FromString(FString::Format("<Red18B>{0}</>/{1}", local_361, local_63));
-            TEUIModelRef<FVM_Common_Center_Spend> local_2_5 = this.GetUpgradeCostVM();
-            local_10.SetCostText();
+            this.GetUpgradeCostVM().Get().SetCostText(FText::FromString(FString::Format("<Red18B>{0}</>/{1}", local_361, local_63)));
         }
         else
         {
-            local_10 = FText::FromString(FString::Format("{0}/{1}", local_361, local_63));
-            TEUIModelRef<FVM_Common_Center_Spend> local_2_6 = this.GetUpgradeCostVM();
-            local_10.SetCostText();
+            this.GetUpgradeCostVM().Get().SetCostText(FText::FromString(FString::Format("{0}/{1}", local_361, local_63)));
         }
         this.SetbNeedSpendCoin((local_63 > 0));
         return;
@@ -231,8 +204,7 @@ struct FVM_TalentUpgradeConfirm : FEUIViewModel
         FText local_12;
         if (this.GetUpgradeCostVM().IsValid())
         {
-            TEUIModelRef<FVM_Common_Center_Spend> local_2 = this.GetUpgradeCostVM();
-            local_12 = GetTitle();
+            local_12 = this.GetUpgradeCostVM().Get().GetTitle();
         }
         else
         {
@@ -245,8 +217,7 @@ struct FVM_TalentUpgradeConfirm : FEUIViewModel
         FText local_12;
         if (this.GetUpgradeCostVM().IsValid())
         {
-            TEUIModelRef<FVM_Common_Center_Spend> local_2 = this.GetUpgradeCostVM();
-            local_12 = GetContent();
+            local_12 = this.GetUpgradeCostVM().Get().GetContent();
         }
         else
         {
@@ -256,39 +227,19 @@ struct FVM_TalentUpgradeConfirm : FEUIViewModel
     }
     FText GetCostText() const
     {
-        FText local_12;
-        if (this.GetUpgradeCostVM().IsValid())
-        {
-            TEUIModelRef<FVM_Common_Center_Spend> local_2 = this.GetUpgradeCostVM();
-            local_12 = GetCostText();
-        }
-        else
-        {
-            local_12 = FText();
-        }
+        FText local_12 = this.GetUpgradeCostVM().IsValid() ? this.GetUpgradeCostVM().Get().GetCostText() : FText();
         return local_12;
     }
     bool GetNeedCostCoinTitle() const
     {
-        bool local_3 = this.GetUpgradeCostVM().IsValid();
-        if (!(local_3))
-        {
-            local_3 = false;
-        }
-        else
-        {
-            TEUIModelRef<FVM_Common_Center_Spend> local_2 = this.GetUpgradeCostVM();
-            local_3 = GetbNeedCostCoinTitle();
-        }
-        return local_3;
+        return this.GetUpgradeCostVM().IsValid() && this.GetUpgradeCostVM().Get().GetbNeedCostCoinTitle();
     }
     TArray<TEUIModelRef<FVM_CommonRewardItem>> GetCostItems() const
     {
         TArray<TEUIModelRef<FVM_CommonRewardItem>> local_12;
         if (this.GetUpgradeCostVM().IsValid())
         {
-            TEUIModelRef<FVM_Common_Center_Spend> local_2 = this.GetUpgradeCostVM();
-            local_12 = GetCostItems();
+            local_12 = this.GetUpgradeCostVM().Get().GetCostItems();
         }
         else
         {
@@ -302,9 +253,7 @@ struct FVM_TalentUpgradeConfirm : FEUIViewModel
         {
             return false;
         }
-        bool local_3 = true;
-        TEUIModelRef<FM_TalentNode> local_2 = this.GetTalentNode();
-        return local_3.CanUpgrade();
+        return this.GetTalentNode().Get().CanUpgrade(true);
     }
     void Confirm()
     {
@@ -314,9 +263,7 @@ struct FVM_TalentUpgradeConfirm : FEUIViewModel
             ::CommonPopup::WeakTips(NSLOCTEXT("Talent", "TalentNotUnlocked", "请先解锁当前天赋"), local_12);
             return;
         }
-        bool local_3 = true;
-        TEUIModelRef<FM_TalentNode> local_2 = this.GetTalentNode();
-        if (!(local_3.CanUpgrade()))
+        if (!(this.GetTalentNode().Get().CanUpgrade(true)))
         {
             FCommonTipsParam local_12;
             ::CommonPopup::WeakTips(NSLOCTEXT("Talent", "TalentCostNotEnough", "天赋升级所需资源不足"), local_12);
@@ -330,10 +277,8 @@ struct FVM_TalentUpgradeConfirm : FEUIViewModel
         }
         FEUIModelRef local_26 = FEUIModelRef(this);
         FEUIMessageBus::Publish(EUIMessageBus);
-        TEUIModelRef<FM_TalentNode> local_2_2 = this.GetTalentNode();
         FMsg_TalentUnlockOrUpgradeRequest local_20;
-        TEUIModelWeakRef<FM_TalentNode> local_28;
-        local_20.TalentNode = local_28;
+        local_20.TalentNode = TEUIModelWeakRef<FM_TalentNode>(this.GetTalentNode().Get());
         local_20.ChoiceIndex = this.GetChoiceIndex();
         return;
     }
@@ -349,12 +294,9 @@ struct FVM_TalentUpgradeConfirm : FEUIViewModel
         ::CommonPopup::Tips(NSLOCTEXT("Talent", "TalentCannotUpgradeSuccess", "升级成功！"), local_8);
         this.CreateUpgradeDesc();
         this.CreateUpgradeCostVM();
-        TEUIModelRef<FM_TalentNode> local_10 = this.GetTalentNode();
-        this.SetbCanUpgrade(1.CanUpgrade());
+        this.SetbCanUpgrade(this.GetTalentNode().Get().CanUpgrade(true));
         this.GetModify_TalentUpgradeSuccessedTalent().Append(Msg.UnlockOrUpgradeTalentNode);
-        int local_11_2 = 1;
-        TEUIModelRef<FM_TalentNode> local_10_2 = this.GetTalentNode();
-        if (!(local_11_2.CanUpgrade()))
+        if (!(this.GetTalentNode().Get().CanUpgrade(true)))
         {
             FEUIModelRef local_20 = FEUIModelRef(this);
             FEUIMessageBus::Publish(EUIMessageBus);
@@ -553,11 +495,9 @@ FVM_TalentUpgradeConfirm& Create(const UObject ContextObject, const TEUIModelRef
 {
     return FVM_TalentUpgradeConfirm::CreateByManager(EUIInternal::GetContextManager(ContextObject), TalentNode);
 }
-FVM_TalentUpgradeConfirm CreateByManager(const UEUIManagerSubsystem Manager, const TEUIModelRef<FM_TalentNode> &inout TalentNode)
+FVM_TalentUpgradeConfirm& CreateByManager(const UEUIManagerSubsystem Manager, const TEUIModelRef<FM_TalentNode> &inout TalentNode)
 {
-    FVM_TalentUpgradeConfirm __r;
-    TEUIModelRef<FVM_TalentUpgradeConfirm> local_6 = TEUIModelRef<FVM_TalentUpgradeConfirm>(EUIInternal::MakeModelWithManager_Generic(Manager, FVM_TalentUpgradeConfirm::ModelId, 0, TalentNode));
-    return __r;
+    return TEUIModelRef<FVM_TalentUpgradeConfirm>(EUIInternal::MakeModelWithManager_Generic(Manager, FVM_TalentUpgradeConfirm::ModelId, 0, TalentNode)).Get();
 }
 void GetModelInfo(FEUIViewModelMetaInfo &inout Result)
 {
@@ -759,7 +699,6 @@ namespace __GeneratedProperties_FVM_TalentUpgradeConfirm
 {
 UScriptStruct StaticStruct()
 {
-    UScriptStruct local_2;
-    return local_2;
+    return __GeneratedProperties_FVM_TalentUpgradeConfirm.Get();
 }
 }

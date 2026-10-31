@@ -24,6 +24,8 @@ struct FSingleMonsterSpawnerConfig : FEcologyConfig
     UPROPERTY()
     TDataObjectPtr<FEcologyResourceDefinitionRow> ResourceType;
 
+    default _base_FEcologyConfig = Cast<UASStruct>(FSingleMonsterSpawnerConfig.Get());
+
     FSingleMonsterSpawnerConfig()
     {
         this.DifficultyLevelConfig = nullptr;
@@ -58,7 +60,6 @@ namespace FSingleMonsterSpawnHelper
 FECSEntity SpawnSingleMonster(const FSingleMonsterSpawnerConfig &inout Config, const FVector &inout Location, const FQuat &inout Rotation, const FECSEntityId &inout ConfigEntityId)
 {
     bool local_1;
-    UBaseEcologyPlanerDefine local_22;
     int local_340 = 0;
     int local_354 = 0;
     int local_360 = 0;
@@ -71,12 +72,12 @@ FECSEntity SpawnSingleMonster(const FSingleMonsterSpawnerConfig &inout Config, c
     if (Config.bCreateFlock)
     {
         TSoftObjectPtr<UBaseEcologyPlanerDefine> local_20 = Config.PlanerDefine;
-        if (!((local_22 != nullptr)))
+        if (!((local_20.Get() != nullptr)))
         {
-            if (FCreatureConfigProxy(Config.MonsterConfig).GetCreatureType())
+            TDataObjectPtr<FEcologyCreatureDefinitionRow> local_72 = FCreatureConfigProxy(Config.MonsterConfig).GetCreatureType();
+            if (local_72)
             {
-                UBaseEcologyPlanerDefine local_98;
-                local_20 = local_98;
+                local_20 = local_72.Get().DefaultPlanerDefine;
             }
         }
         FEcologyFlockSpawnParam local_146;

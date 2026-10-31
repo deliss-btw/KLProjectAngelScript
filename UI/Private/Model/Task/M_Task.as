@@ -317,11 +317,9 @@ FM_Task& Create(const UObject ContextObject, const ETaskDataSource DataSource, c
 {
     return FM_Task::CreateByManager(EUIInternal::GetContextManager(ContextObject), ETaskDataSource(DataSource), Commission);
 }
-FM_Task CreateByManager(const UEUIManagerSubsystem Manager, const ETaskDataSource DataSource, const TEUIModelRef<FM_Commission> &inout Commission)
+FM_Task& CreateByManager(const UEUIManagerSubsystem Manager, const ETaskDataSource DataSource, const TEUIModelRef<FM_Commission> &inout Commission)
 {
-    FM_Task __r;
-    TEUIModelRef<FM_Task> local_6 = TEUIModelRef<FM_Task>(EUIInternal::MakeModelWithManager_Generic(Manager, FM_Task::ModelId, 0, DataSource, Commission));
-    return __r;
+    return TEUIModelRef<FM_Task>(EUIInternal::MakeModelWithManager_Generic(Manager, FM_Task::ModelId, 0, DataSource, Commission)).Get();
 }
 void GetModelInfo(FEUIModelOnlyMetaInfo &inout Result)
 {

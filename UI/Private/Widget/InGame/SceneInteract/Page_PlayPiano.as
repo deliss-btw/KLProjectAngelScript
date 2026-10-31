@@ -49,7 +49,7 @@ class UPage_PlayPiano : UEUIActivatableWidget
     UFUNCTION()
     FText PlayPiano_TitleText() const
     {
-        FVM_PlayPiano& local_2;
+        FVM_PlayPiano& local_2 = this.PlayPiano.Get();
         FText local_12 = local_2 ? local_2.GetTitleText() : FText();
         return local_12;
     }

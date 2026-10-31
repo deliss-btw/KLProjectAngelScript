@@ -190,30 +190,28 @@ class UWidget_TalentUpgradeTree : UEUIUserListItemWidget
     }
     void UpdateNodeLineStyle(const TEUIModelWeakRef<FM_TalentNode> &inout NodeM)
     {
-        FName local_5;
         if (!(this.ShouldUseAutoLineCanvas()) || !(NodeM.IsValid()))
         {
             return;
         }
-        if (!(this.AutoLineNodeWidgetMap.Contains(GetDataId())))
+        if (!(this.AutoLineNodeWidgetMap.Contains(NodeM.Get().GetDataId())))
         {
             return;
         }
         if (!(this.bUseTalentPortChoiceAutoLineGraph))
         {
-            local_5 = ::TalentUpgradeRuntimeAutoLineBuilder::ResolveNodeStyleState();
-            this.AutoLineCanvas.UpdateNodeStyleState(::TalentUpgradeRuntimeAutoLineBuilder::MakeNodeId(), local_5);
+            this.AutoLineCanvas.UpdateNodeStyleState(::TalentUpgradeRuntimeAutoLineBuilder::MakeNodeId(NodeM.Get()), ::TalentUpgradeRuntimeAutoLineBuilder::ResolveNodeStyleState(NodeM.Get()));
             return;
         }
-        if (HasChoice())
+        if (NodeM.Get().HasChoice())
         {
             this.RequestRefreshAutoLineGraph();
             return;
         }
-        this.AutoLineCanvas.UpdateNodeStyleState(local_5, ::TalentUpgradeRuntimeAutoLineBuilder::ResolveNodeStyleState());
-        this.AutoLineCanvas.UpdateNodeStyleState(local_5, ::TalentUpgradeRuntimeAutoLineBuilder::ResolveNodeStyleState());
-        this.AutoLineCanvas.UpdateNodeStyleState(local_5, ::TalentUpgradeRuntimeAutoLineBuilder::ResolveNodeStyleState());
-        this.AutoLineCanvas.UpdateNodeStyleState(local_5, ::TalentUpgradeRuntimeAutoLineBuilder::ResolveNodeStyleState());
+        this.AutoLineCanvas.UpdateNodeStyleState(::TalentUpgradeRuntimeAutoLineBuilder::MakeNodePortId(NodeM.Get(), EEUIAutoLinePort(0)), ::TalentUpgradeRuntimeAutoLineBuilder::ResolveNodeStyleState(NodeM.Get()));
+        this.AutoLineCanvas.UpdateNodeStyleState(::TalentUpgradeRuntimeAutoLineBuilder::MakeNodePortId(NodeM.Get(), EEUIAutoLinePort(1)), ::TalentUpgradeRuntimeAutoLineBuilder::ResolveNodeStyleState(NodeM.Get()));
+        this.AutoLineCanvas.UpdateNodeStyleState(::TalentUpgradeRuntimeAutoLineBuilder::MakeNodePortId(NodeM.Get(), EEUIAutoLinePort(2)), ::TalentUpgradeRuntimeAutoLineBuilder::ResolveNodeStyleState(NodeM.Get()));
+        this.AutoLineCanvas.UpdateNodeStyleState(::TalentUpgradeRuntimeAutoLineBuilder::MakeNodePortId(NodeM.Get(), EEUIAutoLinePort(3)), ::TalentUpgradeRuntimeAutoLineBuilder::ResolveNodeStyleState(NodeM.Get()));
         return;
     }
     void RequestRefreshAutoLineGraph()
@@ -235,7 +233,7 @@ class UWidget_TalentUpgradeTree : UEUIUserListItemWidget
             return;
         }
         this.EnsureAutoLineLayerOrder();
-        ::TalentUpgradeRuntimeAutoLineBuilder::BuildAndApplyGraph(this, this.AutoLineCanvas, GetNodeList(), this.AutoLineNodeWidgetMap, this.AutoLineFromExtend, this.AutoLineToExtend, this.AutoLineRouteOverrides, this.bUseTalentPortChoiceAutoLineGraph, this.bAttachTalentAutoLinesAtCenter);
+        ::TalentUpgradeRuntimeAutoLineBuilder::BuildAndApplyGraph(this, this.AutoLineCanvas, this.FormulaTree.Get().GetNodeList(), this.AutoLineNodeWidgetMap, this.AutoLineFromExtend, this.AutoLineToExtend, this.AutoLineRouteOverrides, this.bUseTalentPortChoiceAutoLineGraph, this.bAttachTalentAutoLinesAtCenter);
         return;
     }
     UFUNCTION()
@@ -256,9 +254,9 @@ class UWidget_TalentUpgradeTree : UEUIUserListItemWidget
         for (; local_16.CanProceed;)
         {
             const TEUIModelWeakRef<FM_TalentNode>& local_24 = local_16.Proceed();
-            if (local_24.IsValid() && CheckValid())
+            if (local_24.IsValid() && local_24.Get().CheckValid())
             {
-                local_9 = FMath::Min(local_9, GetConfig().Column);
+                local_9 = FMath::Min(local_9, local_24.Get().GetConfig().Column);
             }
         }
         if (local_9 == 2147483647)
@@ -271,16 +269,16 @@ class UWidget_TalentUpgradeTree : UEUIUserListItemWidget
             for (; local_28 >= 0; --local_28)
             {
                 const TEUIModelWeakRef<FM_TalentNode>& local_24_2 = NodeList[local_28];
-                if (local_24_2.IsValid() && CheckValid())
+                if (local_24_2.IsValid() && local_24_2.Get().CheckValid())
                 {
                     FTalentTreeNode local_54;
                     int local_82 = FMath::Clamp((local_54.Row - 1), 0, 2147483647);
                     int local_83 = FMath::Clamp(local_54.Column - local_9, 0, 2147483647);
                     TArray<TEUIModelRef<FVM_TalentUpgradeItem>> local_90;
-                    if (HasChoice())
+                    if (local_24_2.Get().HasChoice())
                     {
                         int local_91 = 0;
-                        for (; local_91 < GetChoiceBaseIds().Num(); )
+                        for (; local_91 < local_24_2.Get().GetChoiceBaseIds().Num(); )
                         {
                             FVM_TalentUpgradeItem& local_94 = ::FVM_TalentUpgradeItem::Create(this, local_24_2, local_91);
                             local_94.SetOwnerFormulaTreeWidget(this);
@@ -295,17 +293,15 @@ class UWidget_TalentUpgradeTree : UEUIUserListItemWidget
                         local_90.Add(TEUIModelRef<FVM_TalentUpgradeItem>(local_94_2));
                     }
                     TEUIModelRef<FVM_TalentUpgradeNode> local_98 = TEUIModelRef<FVM_TalentUpgradeNode>(::FVM_TalentUpgradeNode::Create(this, local_90));
-                    HasChoice().SetbIsChoice();
-                    TEUIModelWeakRef<FM_TalentNode> local_104;
-                    TEUIModelWeakRef<FVM_TalentUpgradeNode> local_102;
-                    GetModify_ItemNodeMap().Add(local_104, local_102);
-                    FEUIWidgetRef local_122 = FEUIWidget::CreateWidget(this.GetOwningLocalPlayer(), TSoftClassPtr<UEUIUserWidget>(this.NodeItemWidgetClass), FEUIModelRef());
+                    local_98.Get().SetbIsChoice(local_24_2.Get().HasChoice());
+                    this.FormulaTree.Get().GetModify_ItemNodeMap().Add(TEUIModelWeakRef<FM_TalentNode>(local_24_2.Get()), TEUIModelWeakRef<FVM_TalentUpgradeNode>(local_98.Get()));
+                    FEUIWidgetRef local_122 = FEUIWidget::CreateWidget(this.GetOwningLocalPlayer(), TSoftClassPtr<UEUIUserWidget>(this.NodeItemWidgetClass), FEUIModelRef(local_98.Get()));
                     FEUIWidgetHolder local_106 = local_122;
                     local_124 = Cast<UWidget_TalentSkillUpgradeNode>(local_106.RequireWidget());
                     if (local_124 != nullptr)
                     {
                         this.ItemHolderList.Add(local_106);
-                        this.AutoLineNodeWidgetMap.Add(GetDataId(), local_124);
+                        this.AutoLineNodeWidgetMap.Add(local_24_2.Get().GetDataId(), local_124);
                         UUniformGridSlot local_132 = this.TreeGrid.AddChildToUniformGrid(local_124, local_82, local_83);
                         if (local_132 != nullptr)
                         {
@@ -316,8 +312,7 @@ class UWidget_TalentUpgradeTree : UEUIUserListItemWidget
                     if (local_82 < local_6)
                     {
                         local_6 = local_82;
-                        TEUIModelWeakRef<FVM_TalentUpgradeItem> local_138;
-                        local_8 = local_138;
+                        local_8 = TEUIModelWeakRef<FVM_TalentUpgradeItem>(local_90[0].Get());
                     }
                 }
             }
@@ -325,16 +320,15 @@ class UWidget_TalentUpgradeTree : UEUIUserListItemWidget
         this.RefreshAutoLineGraph();
         FEUIMessageBus::PublishWithWidgetReferencedModels(EUIMessageBus);
         FMsg_TalentTreeUpdateFinish local_140;
-        local_140.TreeIndex = GetIndex();
+        local_140.TreeIndex = this.FormulaTree.Get().GetIndex();
         local_140.FirstItemNodeM = local_8;
-        TEUIModelWeakRef<FVM_TalentUpgradeFormulaTree> local_146;
-        local_140.FormulaTreeVM = local_146;
+        local_140.FormulaTreeVM = TEUIModelWeakRef<FVM_TalentUpgradeFormulaTree>(this.FormulaTree.Get());
         return;
     }
     void HandleObservedModelChanges(FEUIReactiveSubscriberIterator &inout It)
     {
-        FVM_TalentUpgradeFormulaTree& local_6;
         TEUIModelRef<FVM_TalentUpgradeFormulaTree> local_2 = this.FormulaTree.AsRef();
+        FVM_TalentUpgradeFormulaTree& local_6 = local_2.Get();
         for (; It; )
         {
             FEUIReactiveSubscriberTrackScope local_56 = FEUIReactiveSubscriberTrackScope(It);

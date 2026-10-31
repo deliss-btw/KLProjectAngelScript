@@ -86,8 +86,7 @@ class UBTDecorator_CheckTargetAllowedBattleForArea : UBTDecorator_ECSScriptBase
         {
             return false;
         }
-        FEcologyCreatureDefinitionRow local_26;
-        bool local_27 = local_26.bEnableBossBattleForArea;
+        bool local_27 = local_24.CreatureType.Get().bEnableBossBattleForArea;
         bool local_7 = !(this.CheckNot);
         bool local_28 = !(false);
         if (local_7 == local_28)

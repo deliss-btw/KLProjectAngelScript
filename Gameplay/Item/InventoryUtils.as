@@ -81,7 +81,7 @@ int AddInventoryItem(const FECSEntity &inout Entity, const TDataObjectPtr<FItemC
     if (ECS::GetRuntimeInfo().IsServer)
     {
         FECSEntity local_12 = FASCommonUtils::GetUniquePlayerEntity(Entity);
-        int local_3 = InventoryUtils::LowLevelAddInventoryItem(true, true, Number, local_12);
+        int local_3 = InventoryUtils::LowLevelAddInventoryItem(local_12, Item.Get(), Number, true, true);
         int local_13 = Number - local_3;
         if (local_13 > 0)
         {
@@ -119,6 +119,7 @@ void RecordAddedInventoryItemToScope(const FECSEntity &inout Player, const TData
 }
 int AddInventoryItemByName(const FECSEntity &inout Entity, const FName &inout ItemName, const int Number)
 {
+    UDataTable local_4 = UGameplayConfigsManager::GetItemTable().Get();
     UDataTable::FindDataObject local_8;
     TDataObjectPtr<FItemConfig> local_32 = local_8.opCall(ItemName);
     if (local_32)
@@ -129,6 +130,7 @@ int AddInventoryItemByName(const FECSEntity &inout Entity, const FName &inout It
 }
 TDataObjectPtr<FItemConfig> GetItemConfigByName(const FName &inout ItemName)
 {
+    UDataTable local_4 = UGameplayConfigsManager::GetItemTable().Get();
     UDataTable::FindDataObject local_8;
     return local_8.opCall(ItemName);
 }
@@ -197,6 +199,7 @@ bool RemoveInventoryItem(const FECSEntity &inout Entity, const TDataObjectPtr<FI
 }
 bool RemoveInventoryItemByName(const FECSEntity &inout Entity, const FName &inout ItemName, const int Number)
 {
+    UDataTable local_4 = UGameplayConfigsManager::GetItemTable().Get();
     UDataTable::FindDataObject local_8;
     TDataObjectPtr<FItemConfig> local_32 = local_8.opCall(ItemName);
     if (local_32)
@@ -249,17 +252,20 @@ void ConsumeInventoryItem(const FECSEntity &inout Entity, const TDataObjectPtr<F
     }
     if (InventoryUtils::RemoveInventoryItem(Entity, Item, Number))
     {
+        bool local_7;
         if (Item && (int(Item.opArrow().ItemType) == 4))
         {
             CastTo local_20;
             TDataObjectPtr<FCombatItemConfig> local_44 = local_20.opCall();
             if (local_44)
             {
-                FGameplayTag local_80;
                 ECS::GetContextTime();
                 local_76.CombatItemConfig = local_44;
                 InventoryUtils::LogDataTrackCombatItemChange(Entity, Item, false, Number, InventoryUtils::GetInventoryItemNumber(Entity, Item), 1);
-                if (false || local_80.MatchesTag(GameplayTags::ItemCategory_Usable_Combat_Attack) || local_80.MatchesTag(GameplayTags::ItemCategory_Usable_Combat_Solution) || local_80.MatchesTag(GameplayTags::ItemCategory_Usable_Combat_Support))
+                local_7 = false;
+                FGameplayTag local_80 = Item.Get().ItemCategory.AsGameplayTag();
+                local_7 = local_7 || local_80.MatchesTag(GameplayTags::ItemCategory_Usable_Combat_Attack) || local_80.MatchesTag(GameplayTags::ItemCategory_Usable_Combat_Solution) || local_80.MatchesTag(GameplayTags::ItemCategory_Usable_Combat_Support);
+                if (local_7)
                 {
                     CommissionStatsUtils::AddUsePropItemCount(Entity);
                 }
@@ -270,7 +276,6 @@ void ConsumeInventoryItem(const FECSEntity &inout Entity, const TDataObjectPtr<F
 }
 void LogDataTrackCombatItemChange(const FECSEntity &inout Entity, const TDataObjectPtr<FItemConfig> &inout Item, const bool bIsAdd, const int ChangeCount, const int CurrentCount, const uint Reason)
 {
-    int local_52 = 0;
     if (!(ECS::GetRuntimeInfo().IsServer) || !(Entity.IsValid()) || !(Item))
     {
         return;
@@ -297,11 +302,11 @@ void LogDataTrackCombatItemChange(const FECSEntity &inout Entity, const TDataObj
     {
         if (local_58.bInCombat)
         {
-            local_52 = local_58.SelfCombatSession.SessionID;
-            local_51 = local_52;
+            local_51 = local_58.SelfCombatSession.SessionID;
         }
     }
     FPbPlayerLogDsCombatItemChange local_68;
+    int local_52 = Item.Get().DataId;
     local_68.SetItemId(local_52);
     local_68.SetIsAdd(bIsAdd);
     local_68.SetChangeCount(FMath::Max(0, ChangeCount));
@@ -372,6 +377,7 @@ bool HasItemInInventory(const FECSEntity &inout PlayerOrEntity, const TDataObjec
 UFUNCTION()
 bool HasItemInInventoryByName(const FECSEntity &inout PlayerOrEntity, const FName &inout ItemName)
 {
+    UDataTable local_4 = UGameplayConfigsManager::GetItemTable().Get();
     UDataTable::FindDataObject local_8;
     TDataObjectPtr<FItemConfig> local_32 = local_8.opCall(ItemName);
     if (local_32)
@@ -579,6 +585,7 @@ void SetQuickSlotItem(const FECSEntity &inout Entity, const TDataObjectPtr<FItem
         }
         else
         {
+            local_74.GetModify_QuickSlots().Remove(QuickSlot);
         }
         ModifyOrAdd local_126;
         FC_ItemQuickSlotChangeHistory& local_128 = local_126.opCall();
@@ -652,6 +659,7 @@ void ForceSetQuickSlotItem_Internal(const FECSEntity &inout PlayerEntity, const 
         }
         else
         {
+            local_6.GetModify_QuickSlots().Remove(QuickSlot);
         }
         ModifyOrAdd local_60;
         FC_ItemQuickSlotChangeHistory& local_62 = local_60.opCall();
@@ -715,8 +723,7 @@ bool CheckCanSetItemToQuickSlot(const FECSEntity &inout Entity, const TDataObjec
             else
             {
                 TDataObjectPtr<FItemConfig> local_102;
-                TDataObjectPtr<FItemConfig> local_126;
-                local_102 = local_126;
+                local_102 = local_78.GetValue();
                 local_1 = (local_102 == Item.opImplConv());
             }
             if (local_1)

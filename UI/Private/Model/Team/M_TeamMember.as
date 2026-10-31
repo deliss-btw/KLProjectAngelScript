@@ -250,11 +250,9 @@ FM_TeamMember& Create(const UObject ContextObject, const FEUIModelWeakRef &inout
 {
     return FM_TeamMember::CreateByManager(EUIInternal::GetContextManager(ContextObject), TeamRef);
 }
-FM_TeamMember CreateByManager(const UEUIManagerSubsystem Manager, const FEUIModelWeakRef &inout TeamRef)
+FM_TeamMember& CreateByManager(const UEUIManagerSubsystem Manager, const FEUIModelWeakRef &inout TeamRef)
 {
-    FM_TeamMember __r;
-    TEUIModelRef<FM_TeamMember> local_6 = TEUIModelRef<FM_TeamMember>(EUIInternal::MakeModelWithManager_Generic(Manager, FM_TeamMember::ModelId, 0, TeamRef));
-    return __r;
+    return TEUIModelRef<FM_TeamMember>(EUIInternal::MakeModelWithManager_Generic(Manager, FM_TeamMember::ModelId, 0, TeamRef)).Get();
 }
 void GetModelInfo(FEUIModelOnlyMetaInfo &inout Result)
 {

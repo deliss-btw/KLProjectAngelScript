@@ -18,11 +18,10 @@ TDataObjectPtr<FMountPrefabConfig> GetMountConfig(const FECSEntity &inout Entity
 const FMountPrefabConfig GetDefaultedMountConfig(const FECSEntity &inout Entity)
 {
     const FMountPrefabConfig __r;
-    if (GetMountConfig(Entity))
+    TDataObjectPtr<FMountPrefabConfig> local_24 = GetMountConfig(Entity);
+    if (local_24)
     {
-    }
-    else
-    {
+        return local_24.Get();
     }
     return __r;
 }

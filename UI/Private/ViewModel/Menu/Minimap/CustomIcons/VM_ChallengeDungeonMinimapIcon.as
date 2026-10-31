@@ -74,7 +74,10 @@ struct FVM_ChallengeDungeonMinimapIcon : FEUIViewModel
                 TDataObjectPtr<FDungeonConfig> local_38 = local_12.GetLeveScriptActorInfo()[local_13];
                 if (local_38)
                 {
-                    this.SetRewardList(TEUIModelRef<FVM_CommonRewardList>(::FVM_CommonRewardList::Create(this.GetContext().Manager, ::FCommonRewardListBuilder::BuildFromDropConfig(GetTempRewardView()))));
+                    this.SetRewardList(TEUIModelRef<FVM_CommonRewardList>(::FVM_CommonRewardList::Create(this.GetContext().Manager, ::FCommonRewardListBuilder::BuildFromDropConfig(local_38.Get().GetTempRewardView()))));
+                    this.SetToolTipTitle(local_38.Get().DungeonName);
+                    this.SetToolTipDesc(local_38.Get().DungeonDesc);
+                    this.SetDungeonIcon(local_38.Get().DungeonIcon);
                     this.SetbHasInit(true);
                 }
             }
@@ -243,11 +246,9 @@ FVM_ChallengeDungeonMinimapIcon& Create(const UObject ContextObject, const TEUIM
 {
     return FVM_ChallengeDungeonMinimapIcon::CreateByManager(EUIInternal::GetContextManager(ContextObject), Spot);
 }
-FVM_ChallengeDungeonMinimapIcon CreateByManager(const UEUIManagerSubsystem Manager, const TEUIModelRef<FM_Spot> &inout Spot)
+FVM_ChallengeDungeonMinimapIcon& CreateByManager(const UEUIManagerSubsystem Manager, const TEUIModelRef<FM_Spot> &inout Spot)
 {
-    FVM_ChallengeDungeonMinimapIcon __r;
-    TEUIModelRef<FVM_ChallengeDungeonMinimapIcon> local_6 = TEUIModelRef<FVM_ChallengeDungeonMinimapIcon>(EUIInternal::MakeModelWithManager_Generic(Manager, FVM_ChallengeDungeonMinimapIcon::ModelId, 0, Spot));
-    return __r;
+    return TEUIModelRef<FVM_ChallengeDungeonMinimapIcon>(EUIInternal::MakeModelWithManager_Generic(Manager, FVM_ChallengeDungeonMinimapIcon::ModelId, 0, Spot)).Get();
 }
 void GetModelInfo(FEUIViewModelMetaInfo &inout Result)
 {
@@ -364,7 +365,6 @@ namespace __GeneratedProperties_FVM_ChallengeDungeonMinimapIcon
 {
 UScriptStruct StaticStruct()
 {
-    UScriptStruct local_2;
-    return local_2;
+    return __GeneratedProperties_FVM_ChallengeDungeonMinimapIcon.Get();
 }
 }

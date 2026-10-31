@@ -24,7 +24,7 @@ class UWidget_FastEquipPage : UEUIActivatableWidget
     UFUNCTION()
     void Tick_Implementation(const FGeometry &inout MyGeometry, const float32 InDeltaTime)
     {
-        FVM_FastEquipPage& local_2;
+        FVM_FastEquipPage& local_2 = this.FastEquipPage.Get();
         if (local_2)
         {
             FEUIModelWeakRef local_6 = this.AvatarListView.GetSelectedItem();
@@ -43,14 +43,14 @@ class UWidget_FastEquipPage : UEUIActivatableWidget
     UFUNCTION()
     FEUIModelRef FastEquipPage_EquipmentSelectDetail() const
     {
-        FVM_FastEquipPage& local_2;
+        FVM_FastEquipPage& local_2 = this.FastEquipPage.Get();
         FEUIModelRef local_8 = local_2 ? local_2.GetEquipmentSelectDetail() : FEUIModelRef();
         return local_8;
     }
     UFUNCTION()
     TArray<FEUIModelWeakRef> FastEquipPage_AvatarList() const
     {
-        FVM_FastEquipPage& local_2;
+        FVM_FastEquipPage& local_2 = this.FastEquipPage.Get();
         TArray<FEUIModelWeakRef> local_16;
         if (local_2)
         {

@@ -15,7 +15,6 @@ class UBTDecorator_CheckTokenByTarget : UBTDecorator_ECSScriptBase
     bool CalculateRawConditionValue_Implementation(const FAIBehaviorTreeContext &inout Context, const FBTNodeMemory &inout NodeMemory) const
     {
         int local_38 = 0;
-        int local_83 = 0;
         FECSEntity local_12 = FECSEntity(this.TargetEntityID.GetValue(Context.opImplConv()));
         FECSEntity local_16;
         if (!(local_12.IsValid()) || !(this.TokenConfig) || !(this.TokenConfig.IsSet()))
@@ -50,16 +49,16 @@ class UBTDecorator_CheckTokenByTarget : UBTDecorator_ECSScriptBase
         {
             local_48.Config = this.TokenConfig;
         }
-        if (0.0f > 0.0f)
+        if (this.TokenConfig.Get().MinInteraval > 0.0f)
         {
-            if ((ECS::GetContextTime() - local_48.LastConsumedTime).ToSeconds() < 0.0f)
+            if (((ECS::GetContextTime() - local_48.LastConsumedTime).ToSeconds()) < this.TokenConfig.Get().MinInteraval)
             {
                 return false;
             }
         }
-        if (local_83 > 0)
+        if (this.TokenConfig.Get().MaxTokenNum > 0)
         {
-            if (int(local_48.CurrentConsumedTokenNum) >= local_83)
+            if (int(local_48.CurrentConsumedTokenNum) >= this.TokenConfig.Get().MaxTokenNum)
             {
                 return false;
             }
@@ -98,7 +97,7 @@ class UBTDecorator_CheckTokenByTarget : UBTDecorator_ECSScriptBase
         FAITokenByTarget& local_48 = local_38.DataMap.FindOrAdd(local_44);
         local_48.CurrentConsumedTokenNum = (int(local_48.CurrentConsumedTokenNum) + 1);
         local_48.LastConsumedTime = ECS::GetContextTime();
-        if (0 == 1)
+        if (int(this.TokenConfig.Get().RecoverMode) == 1)
         {
             local_48.ParallelRecoverTimers.Add(0.0);
         }

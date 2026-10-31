@@ -5,7 +5,8 @@ namespace FAIQuitCombatUtils
 FAIQuitCombatConfig GetQuitCombatConfig(const FECSEntity &inout Entity)
 {
     FAIQuitCombatConfig __r;
-    bool local_49 = !((FASCommonUtils::GetCombatUnitBaseConfig(Entity) == nullptr));
+    TDataObjectPtr<FCombatUnitBaseConfig> local_24 = FASCommonUtils::GetCombatUnitBaseConfig(Entity);
+    bool local_49 = !((local_24 == nullptr));
     if (!(local_49))
     {
         local_49 = false;
@@ -13,7 +14,7 @@ FAIQuitCombatConfig GetQuitCombatConfig(const FECSEntity &inout Entity)
     else
     {
         TDataObjectPtr<FAIQuitCombatConfig> local_74;
-        local_74 = GetQuitCombatConfig();
+        local_74 = local_24.Get().GetQuitCombatConfig();
         local_49 = !((local_74 == nullptr));
     }
     if (local_49)
@@ -203,8 +204,7 @@ bool GetHomeLocation(const FECSEntity &inout Entity, const FECSEntity &inout Com
         {
             if (local_24.RegionVolume.IsValid())
             {
-                AActor local_26;
-                local_30 = (Cast<AECSVolumeBase>(local_26));
+                local_30 = (Cast<AECSVolumeBase>(local_24.RegionVolume.Get()));
                 if (local_30 != nullptr)
                 {
                     OutHomeLocation = local_30.GetBounds().Origin;

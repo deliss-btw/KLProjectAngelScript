@@ -32,7 +32,7 @@ class UWidget_TeamInfo : UEUIUserListItemWidget
         if ((this.GetWorld().GetTimeSeconds() - this.MessageShowTimer) > this.DefaultDialogShowTime)
         {
             this.Image_Emoji.SetVisibility(ESlateVisibility(2));
-            FVM_TeamInfo local_12;
+            FVM_TeamInfo& local_12 = this.TeamInfo.Get();
             local_12.SetEmojiIcon(nullptr);
         }
         return;
@@ -52,7 +52,7 @@ class UWidget_TeamInfo : UEUIUserListItemWidget
     UFUNCTION()
     float32 TeamInfo_PlayerHPRatioTest() const
     {
-        FVM_TeamInfo& local_2;
+        FVM_TeamInfo& local_2 = this.TeamInfo.Get();
         return local_2 ? local_2.GetPlayerHPRatio() : 0.0f;
     }
     UFUNCTION()
@@ -74,8 +74,8 @@ class UWidget_TeamInfo : UEUIUserListItemWidget
     UFUNCTION()
     UTexture2D TeamInfo_PlayerIcon() const
     {
-        FVM_TeamInfo& local_2;
         UTexture2D local_8;
+        FVM_TeamInfo& local_2 = this.TeamInfo.Get();
         if (local_2)
         {
             local_8 = local_2.GetPlayerIcon();
@@ -88,8 +88,8 @@ class UWidget_TeamInfo : UEUIUserListItemWidget
     UFUNCTION()
     UTexture2D TeamInfo_NextPlayerIcon() const
     {
-        FVM_TeamInfo& local_2;
         UTexture2D local_8;
+        FVM_TeamInfo& local_2 = this.TeamInfo.Get();
         if (local_2)
         {
             local_8 = local_2.GetNextPlayerIcon();
@@ -102,8 +102,8 @@ class UWidget_TeamInfo : UEUIUserListItemWidget
     UFUNCTION()
     UTexture2D TeamInfo_LinkSkillIcon() const
     {
-        FVM_TeamInfo& local_2;
         UTexture2D local_8;
+        FVM_TeamInfo& local_2 = this.TeamInfo.Get();
         if (local_2)
         {
             local_8 = local_2.GetLinkSkillIcon();
@@ -116,7 +116,7 @@ class UWidget_TeamInfo : UEUIUserListItemWidget
     UFUNCTION()
     FText TeamInfo_PlayerName() const
     {
-        FVM_TeamInfo& local_2;
+        FVM_TeamInfo& local_2 = this.TeamInfo.Get();
         FText local_12;
         if (local_2)
         {
@@ -131,8 +131,8 @@ class UWidget_TeamInfo : UEUIUserListItemWidget
     UFUNCTION()
     bool TeamInfo_bOffline() const
     {
-        FVM_TeamInfo& local_2;
         bool local_5;
+        FVM_TeamInfo& local_2 = this.TeamInfo.Get();
         if (local_2)
         {
             local_5 = local_2.GetbOffline();
@@ -146,8 +146,8 @@ class UWidget_TeamInfo : UEUIUserListItemWidget
     UFUNCTION()
     bool TeamInfo_bOtherMap() const
     {
-        FVM_TeamInfo& local_2;
         bool local_5;
+        FVM_TeamInfo& local_2 = this.TeamInfo.Get();
         if (local_2)
         {
             local_5 = local_2.GetbOtherMap();
@@ -161,8 +161,8 @@ class UWidget_TeamInfo : UEUIUserListItemWidget
     UFUNCTION()
     bool TeamInfo_bNearDeath() const
     {
-        FVM_TeamInfo& local_2;
         bool local_5;
+        FVM_TeamInfo& local_2 = this.TeamInfo.Get();
         if (local_2)
         {
             local_5 = local_2.GetbNearDeath();
@@ -176,8 +176,8 @@ class UWidget_TeamInfo : UEUIUserListItemWidget
     UFUNCTION()
     bool TeamInfo_bDeath() const
     {
-        FVM_TeamInfo& local_2;
         bool local_5;
+        FVM_TeamInfo& local_2 = this.TeamInfo.Get();
         if (local_2)
         {
             local_5 = local_2.GetbDeath();
@@ -191,8 +191,8 @@ class UWidget_TeamInfo : UEUIUserListItemWidget
     UFUNCTION()
     ESlateVisibility TeamInfo_SlateVisibilitybTaunting() const
     {
-        FVM_TeamInfo& local_2;
         int local_5;
+        FVM_TeamInfo& local_2 = this.TeamInfo.Get();
         if (local_2)
         {
             local_5 = int(local_2.bTauntingAsSlateVisibility());
@@ -206,13 +206,13 @@ class UWidget_TeamInfo : UEUIUserListItemWidget
     UFUNCTION()
     float32 TeamInfo_PlayerHPRatio() const
     {
-        FVM_TeamInfo& local_2;
+        FVM_TeamInfo& local_2 = this.TeamInfo.Get();
         return local_2 ? local_2.GetPlayerHPRatio() : 0.0f;
     }
     UFUNCTION()
     FEUIModelRef TeamInfo_VM_BuffInfo() const
     {
-        FVM_TeamInfo& local_2;
+        FVM_TeamInfo& local_2 = this.TeamInfo.Get();
         FEUIModelRef local_8;
         if (local_2)
         {
@@ -226,8 +226,8 @@ class UWidget_TeamInfo : UEUIUserListItemWidget
     }
     void HandleObservedModelChanges(FEUIReactiveSubscriberIterator &inout It)
     {
-        FVM_TeamInfo& local_6;
         TEUIModelRef<FVM_TeamInfo> local_2 = this.TeamInfo.AsRef();
+        FVM_TeamInfo& local_6 = local_2.Get();
         for (; It; )
         {
             FEUIReactiveSubscriberTrackScope local_56 = FEUIReactiveSubscriberTrackScope(It);

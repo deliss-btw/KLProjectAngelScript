@@ -41,8 +41,7 @@ class UESMAction_LineInteractFx : UESMBPBaseSpanAction
         {
             if (!(local_4.FXParamBakedData.bLoop))
             {
-                UClass local_12;
-                Info.AddDataInvalidComment(EESMDataValidType(2), FString().Append(local_12.GetName()).Append(" loop should be true"));
+                Info.AddDataInvalidComment(EESMDataValidType(2), FString().Append(this.LineInteractFx.Get().GetName()).Append(" loop should be true"));
             }
         }
         return;

@@ -22,7 +22,7 @@ FECSEntity CreateEntityByData(const TDataObjectPtr<FEcosimAIV2UnitData> &inout D
     {
         return ENTITY_NULL;
     }
-    FEcosimAIV2UnitData local_4;
+    const FEcosimAIV2UnitData& local_4 = Data.Get();
     return FEcosimAIV2Utils::CreateEntityInternal(local_4, Location, Rotation);
 }
 FECSEntity CreateEntityInternal(const FEcosimAIV2UnitData &inout UnitData, const FVector &inout Location, const FRotator &inout Rotation)

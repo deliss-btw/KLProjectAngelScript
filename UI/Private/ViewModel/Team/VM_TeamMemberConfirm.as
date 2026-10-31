@@ -525,11 +525,9 @@ FVM_TeamMemberConfirm& Create(const UObject ContextObject, const FEUIModelRef &i
 {
     return FVM_TeamMemberConfirm::CreateByManager(EUIInternal::GetContextManager(ContextObject), BusinessData, SourceClass);
 }
-FVM_TeamMemberConfirm CreateByManager(const UEUIManagerSubsystem Manager, const FEUIModelRef &inout BusinessData, const TSubclassOf<UTeamMemberConfirmSourceBase> &inout SourceClass)
+FVM_TeamMemberConfirm& CreateByManager(const UEUIManagerSubsystem Manager, const FEUIModelRef &inout BusinessData, const TSubclassOf<UTeamMemberConfirmSourceBase> &inout SourceClass)
 {
-    FVM_TeamMemberConfirm __r;
-    TEUIModelRef<FVM_TeamMemberConfirm> local_6 = TEUIModelRef<FVM_TeamMemberConfirm>(EUIInternal::MakeModelWithManager_Generic(Manager, FVM_TeamMemberConfirm::ModelId, 0, BusinessData, SourceClass));
-    return __r;
+    return TEUIModelRef<FVM_TeamMemberConfirm>(EUIInternal::MakeModelWithManager_Generic(Manager, FVM_TeamMemberConfirm::ModelId, 0, BusinessData, SourceClass)).Get();
 }
 void GetModelInfo(FEUIViewModelMetaInfo &inout Result)
 {
@@ -706,7 +704,6 @@ namespace __GeneratedProperties_FVM_TeamMemberConfirm
 {
 UScriptStruct StaticStruct()
 {
-    UScriptStruct local_2;
-    return local_2;
+    return __GeneratedProperties_FVM_TeamMemberConfirm.Get();
 }
 }

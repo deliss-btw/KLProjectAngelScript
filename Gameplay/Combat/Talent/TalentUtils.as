@@ -45,10 +45,10 @@ TArray<TDataObjectPtr<FTalentConfig>> GetAllChildrenTalentByFoundationTalentId(c
 bool TalentIsChildOfFoundationTalent(const uint TalentId, const uint FoundationTalentId)
 {
     GetDataObjectByGSDataId<FTalentConfig> local_48;
-    TDataObjectPtr<FTalentConfig> local_72 = local_48.opImplConv();
-    if (local_72)
+    TDataObjectPtr<FTalentConfig> local_24 = local_48.opImplConv();
+    if (local_24)
     {
-        if (GetFoundationTalent())
+        if (local_24.Get().GetFoundationTalent())
         {
             FTalentConfig local_460;
             if (int(local_460.DataId) == FoundationTalentId)
@@ -61,7 +61,6 @@ bool TalentIsChildOfFoundationTalent(const uint TalentId, const uint FoundationT
 }
 TDataObjectPtr<FSkillInitConfig> GetSkillInitConfigByTalentId(const uint TalentId)
 {
-    const FTalentConfig& local_148;
     bool local_239;
     GetDataObjectByGSDataId<FTalentConfig> local_48;
     TDataObjectPtr<FTalentConfig> local_24 = local_48.opImplConv();
@@ -70,6 +69,7 @@ TDataObjectPtr<FSkillInitConfig> GetSkillInitConfigByTalentId(const uint TalentI
     {
         return TDataObjectPtr<FSkillInitConfig>();
     }
+    const FTalentConfig& local_148 = local_24.Get();
     TDataObjectPtr<FTalentConfig> local_72 = local_148.GetBaseTalent() ? local_148.GetBaseTalent() : local_24;
     TDataObjectPtr<FTalentConfig> local_220;
     int local_221 = 0;
@@ -107,24 +107,23 @@ TDataObjectPtr<FSkillInitConfig> GetSkillInitConfigByTalentId(const uint TalentI
     }
     else
     {
-        local_97 = GetSkillConfig();
+        local_97 = local_220.Get().GetSkillConfig();
     }
     if (local_97)
     {
-        return GetSkillConfig();
+        return local_220.Get().GetSkillConfig();
     }
     return TDataObjectPtr<FSkillInitConfig>();
 }
 uint GetHighestUnlockedTalentIdInChain(const uint TalentId, const TArray<TDataObjectPtr<FTalentConfig>> &inout UnlockTalentList)
 {
-    const FTalentConfig& local_100;
-    const FTalentConfig& local_168;
     GetDataObjectByGSDataId<FTalentConfig> local_48;
     TDataObjectPtr<FTalentConfig> local_24 = local_48.opImplConv();
     if (!(local_24))
     {
         return TalentId;
     }
+    const FTalentConfig& local_100 = local_24.Get();
     TDataObjectPtr<FTalentConfig> local_72 = local_100.GetBaseTalent() ? local_100.GetBaseTalent() : local_24;
     int local_149 = TalentId;
     int local_150 = int(local_100.TalentLevel);
@@ -134,6 +133,7 @@ uint GetHighestUnlockedTalentIdInChain(const uint TalentId, const TArray<TDataOb
         {
             continue;
         }
+        const FTalentConfig& local_168 = local_166.Get();
         TDataObjectPtr<FTalentConfig> local_124;
         if (local_168.GetBaseTalent())
         {

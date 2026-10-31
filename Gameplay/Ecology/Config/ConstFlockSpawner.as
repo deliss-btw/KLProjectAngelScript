@@ -40,6 +40,8 @@ struct FConstFlockSpawnerConfig : FSpawnerConfig
     UPROPERTY()
     FLevelUnitReference ExternalResourceUnitId;
 
+    default _base_FSpawnerConfig = Cast<UASStruct>(FConstFlockSpawnerConfig.Get());
+
     FConstFlockSpawnerConfig()
     {
         this.SpawnOnStart = true;
@@ -93,11 +95,12 @@ void InitConstFlockSpawner(const FECSEntity &inout SpawnerEntity, FC_EcologyRunt
     {
         return;
     }
-    if (!(local_6.ReadSpawnerConfig()))
+    TConstRawPtr<FVirtualConfigData> local_10 = local_6.ReadSpawnerConfig();
+    if (!(local_10))
     {
         return;
     }
-    bool local_7 = !(FInstancedStruct::GetPtr(GetConfigData()).opCall());
+    bool local_7 = !(FInstancedStruct::GetPtr(local_10.Get().GetConfigData()).opCall());
     if (local_7)
     {
         return;
@@ -136,16 +139,16 @@ void RefreshConstSpawnerCreatures(const FECSEntity &inout SpawnerEntity, FC_Ecol
 {
     int local_6 = 0;
     int local_126 = 0;
-    UBaseEcologyPlanerDefine local_168;
     if (!(local_6))
     {
         return;
     }
-    if (!(local_6.ReadSpawnerConfig()))
+    TConstRawPtr<FVirtualConfigData> local_10 = local_6.ReadSpawnerConfig();
+    if (!(local_10))
     {
         return;
     }
-    if (!(FInstancedStruct::GetPtr(GetConfigData()).opCall()))
+    if (!(FInstancedStruct::GetPtr(local_10.Get().GetConfigData()).opCall()))
     {
         return;
     }
@@ -177,12 +180,12 @@ void RefreshConstSpawnerCreatures(const FECSEntity &inout SpawnerEntity, FC_Ecol
         }
     }
     TSoftObjectPtr<UBaseEcologyPlanerDefine> local_166 = local_70.PlanerDefine;
-    if (!((local_168 != nullptr)) && (local_70.CreatureList.Num() > 0))
+    if (!((local_166.Get() != nullptr)) && (local_70.CreatureList.Num() > 0))
     {
-        if (FCreatureConfigProxy(local_70.CreatureList[0].MonsterConfig).GetCreatureType())
+        TDataObjectPtr<FEcologyCreatureDefinitionRow> local_222 = FCreatureConfigProxy(local_70.CreatureList[0].MonsterConfig).GetCreatureType();
+        if (local_222)
         {
-            UBaseEcologyPlanerDefine local_248;
-            local_166 = local_248;
+            local_166 = local_222.Get().DefaultPlanerDefine;
         }
     }
     FEcologyFlockSpawnParam local_296;

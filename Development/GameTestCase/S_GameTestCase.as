@@ -69,9 +69,7 @@ class US_GameTestCase : UECSScriptSystem
                     int local_50;
                     for (auto& local_70 : local_50.GetEntityMap())
                     {
-                        local_70;
-                        FECSEntity local_40;
-                        if (!(local_40.IsValid()))
+                        if (!(FECSEntity(local_70.GetValue()).IsValid()))
                         {
                             continue;
                         }
@@ -116,9 +114,7 @@ class US_GameTestCase : UECSScriptSystem
         if (!(local_3))
         {
             int64 local_30 = 4612811918334230528;
-            TWeakObjectPtr<AECSPlayerController> local_26 = local_24.opCall().GetUEPlayerController();
-            AECSPlayerController local_36;
-            float local_32 = UKLGTCTestCaseLoader::GetPlayerConnectionIdleSeconds(local_36);
+            float local_32 = UKLGTCTestCaseLoader::GetPlayerConnectionIdleSeconds(local_24.opCall().GetUEPlayerController().Get());
             local_27 = local_32 >= 0.0 && (local_32 > 2.5);
         }
         if (!(local_3) && !(local_27))
@@ -188,8 +184,7 @@ class US_GameTestCase : UECSScriptSystem
             TMap<FName, FECSEntityId> local_188;
             for (auto& local_206 : local_24.ManualPrefabs)
             {
-                AECSPrefab local_208;
-                FECSEntity local_46 = ECS::GetPrefabEntity(local_208);
+                FECSEntity local_46 = ECS::GetPrefabEntity(local_206.GetValue().Get());
                 if (local_46.IsValid())
                 {
                     local_188.Add(local_206.GetKey(), local_46.GetId());
@@ -776,11 +771,12 @@ class US_GameTestCase : UECSScriptSystem
         TArray<FString> local_24;
         for (auto& local_40 : RoundCache.ActionConfigs)
         {
-            if ((FInstancedStruct::GetPtr(local_40).opCall() == nullptr))
+            TConstRawPtr<FGTCAICommandAction> local_46 = FInstancedStruct::GetPtr(local_40).opCall();
+            if ((local_46 == nullptr))
             {
                 continue;
             }
-            FString local_52;
+            FString local_52 = FString(local_46.Get().EntityIdRemap);
             if (local_52.IsEmpty())
             {
                 continue;
@@ -840,7 +836,6 @@ class US_GameTestCase : UECSScriptSystem
     TArray<FGTCLazyBindMonster> BuildLazyBindPending(const FC_TestCaseRoundCache &inout RoundCache) const
     {
         bool local_45;
-        const FGTCAICommandAction& local_72;
         TArray<FGTCLazyBindMonster> local_4;
         for (auto& local_20 : RoundCache.EntityConfigs)
         {
@@ -863,10 +858,12 @@ class US_GameTestCase : UECSScriptSystem
             FFPTime local_48;
             for (auto& local_62 : RoundCache.ActionConfigs)
             {
-                if ((FInstancedStruct::GetPtr(local_62).opCall() == nullptr))
+                TConstRawPtr<FGTCAICommandAction> local_68 = FInstancedStruct::GetPtr(local_62).opCall();
+                if ((local_68 == nullptr))
                 {
                     continue;
                 }
+                const FGTCAICommandAction& local_72 = local_68.Get();
                 if (!((FName(local_72.TargetUniqueName) == local_20.UniqueName)))
                 {
                     continue;
@@ -899,7 +896,6 @@ class US_GameTestCase : UECSScriptSystem
         int local_140 = 0;
         FC_TestCaseServerFixedInputs local_146;
         int local_152 = 0;
-        FName local_176;
         int local_190 = 0;
         int local_206 = 0;
         int local_220 = 0;
@@ -939,7 +935,7 @@ class US_GameTestCase : UECSScriptSystem
                     local_51 = true;
                     continue;
                 }
-                local_50.Add(local_70.GetKey());
+                local_50.Add(local_70.GetKey(), local_70.GetValue());
             }
             if (local_51)
             {
@@ -997,7 +993,8 @@ class US_GameTestCase : UECSScriptSystem
             local_152.Init(Entity.GetId(), int(RoundCache.BeginFrame), RoundCache.BeginTime);
             for (auto& local_166 : RoundCache.ActionConfigs)
             {
-                if ((FInstancedStruct::GetPtr(local_166).opCall() == nullptr) || !((local_176 == local_30.UniqueName)))
+                TConstRawPtr<FGTCAction> local_172 = FInstancedStruct::GetPtr(local_166).opCall();
+                if ((local_172 == nullptr) || !((FName(local_172.Get().TargetUniqueName) == local_30.UniqueName)))
                 {
                     continue;
                 }
@@ -1008,7 +1005,8 @@ class US_GameTestCase : UECSScriptSystem
             }
             for (auto& local_166 : RoundCache.ServerFixedInputConfigs)
             {
-                if ((FInstancedStruct::GetPtr(local_166).opCall() == nullptr) || !((local_176 == local_30.UniqueName)))
+                TConstRawPtr<FGTCAction> local_174 = FInstancedStruct::GetPtr(local_166).opCall();
+                if ((local_174 == nullptr) || !((FName(local_174.Get().TargetUniqueName) == local_30.UniqueName)))
                 {
                     continue;
                 }
@@ -1017,7 +1015,8 @@ class US_GameTestCase : UECSScriptSystem
             int local_191 = 0;
             for (; local_191 < local_190.SamplerConfigs.Num(); ++local_191)
             {
-                if ((FInstancedStruct::GetPtr(local_190.SamplerConfigs[local_191]).opCall() == nullptr) || !((local_176 == local_30.UniqueName)))
+                TConstRawPtr<FGTCAction> local_172_2 = FInstancedStruct::GetPtr(local_190.SamplerConfigs[local_191]).opCall();
+                if ((local_172_2 == nullptr) || !((FName(local_172_2.Get().TargetUniqueName) == local_30.UniqueName)))
                 {
                     continue;
                 }
@@ -1107,17 +1106,18 @@ class US_GameTestCase : UECSScriptSystem
     }
     bool HasMainPlayerReplayData(const FC_TestCaseRoundCache &inout RoundCache, const FName &inout PlayerName) const
     {
-        FName local_26;
         for (auto& local_16 : RoundCache.ServerFixedInputConfigs)
         {
-            if (!((FInstancedStruct::GetPtr(local_16).opCall() == nullptr)) && (local_26 == PlayerName))
+            TConstRawPtr<FGTCAction> local_22 = FInstancedStruct::GetPtr(local_16).opCall();
+            if (!((local_22 == nullptr)) && (FName(local_22.Get().TargetUniqueName) == PlayerName))
             {
                 return true;
             }
         }
         for (auto& local_16 : RoundCache.ActionConfigs)
         {
-            if (!((FInstancedStruct::GetPtr(local_16).opCall() == nullptr)) && (local_26 == PlayerName))
+            TConstRawPtr<FGTCAction> local_24 = FInstancedStruct::GetPtr(local_16).opCall();
+            if (!((local_24 == nullptr)) && (FName(local_24.Get().TargetUniqueName) == PlayerName))
             {
                 return true;
             }
@@ -1291,7 +1291,6 @@ class US_GameTestCase : UECSScriptSystem
     {
         int local_11;
         FCE_TestCaseDispatchClientActions local_50;
-        FName local_74;
         int local_88 = 0;
         if (!(this.IsLocalGTCIssuer(TestCase.GetIssuerPawnEntityId())))
         {
@@ -1336,7 +1335,8 @@ class US_GameTestCase : UECSScriptSystem
             local_50.bTakeSampleOnClient = local_34.bTakeSampleOnClient;
             for (auto& local_64 : RoundCache.ActionConfigs)
             {
-                if ((FInstancedStruct::GetPtr(local_64).opCall() == nullptr) || !((local_74 == local_34.UniqueName)))
+                TConstRawPtr<FGTCAction> local_70 = FInstancedStruct::GetPtr(local_64).opCall();
+                if ((local_70 == nullptr) || !((FName(local_70.Get().TargetUniqueName) == local_34.UniqueName)))
                 {
                     continue;
                 }
@@ -1348,7 +1348,8 @@ class US_GameTestCase : UECSScriptSystem
             }
             for (auto& local_64 : RoundCache.ServerFixedInputConfigs)
             {
-                if ((FInstancedStruct::GetPtr(local_64).opCall() == nullptr) || !((local_74 == local_34.UniqueName)))
+                TConstRawPtr<FGTCAction> local_72 = FInstancedStruct::GetPtr(local_64).opCall();
+                if ((local_72 == nullptr) || !((FName(local_72.Get().TargetUniqueName) == local_34.UniqueName)))
                 {
                     continue;
                 }
@@ -1357,7 +1358,8 @@ class US_GameTestCase : UECSScriptSystem
             int local_89 = 0;
             for (; local_89 < local_88.SamplerConfigs.Num(); ++local_89)
             {
-                if ((FInstancedStruct::GetPtr(local_88.SamplerConfigs[local_89]).opCall() == nullptr) || !((local_74 == local_34.UniqueName)))
+                TConstRawPtr<FGTCAction> local_70_2 = FInstancedStruct::GetPtr(local_88.SamplerConfigs[local_89]).opCall();
+                if ((local_70_2 == nullptr) || !((FName(local_70_2.Get().TargetUniqueName) == local_34.UniqueName)))
                 {
                     continue;
                 }
@@ -1747,16 +1749,15 @@ class US_GameTestCase : UECSScriptSystem
         }
         TMap<FName, FECSEntityId> local_42;
         bool local_43 = false;
-        FECSEntityId local_63;
         for (auto& local_62 : local_22.GetEntityMap())
         {
-            if ((local_63 == FromId))
+            if ((FECSEntityId(local_62.GetValue()) == FromId))
             {
                 local_42.Add(local_62.GetKey(), ToId);
                 local_43 = true;
                 continue;
             }
-            local_42.Add(local_62.GetKey());
+            local_42.Add(local_62.GetKey(), local_62.GetValue());
         }
         if (local_43)
         {
@@ -1828,7 +1829,6 @@ class US_GameTestCase : UECSScriptSystem
         local_56.opCall();
         Exclude(local_48).opCall();
         FECSRuntimeViewIterator local_94 = local_48.Iterator();
-        FECSEntityId local_191;
         for (; local_94.CanProceed;)
         {
             const FECSEntity& local_132 = local_94.Proceed();
@@ -1869,8 +1869,7 @@ class US_GameTestCase : UECSScriptSystem
             local_171 = false;
             for (auto& local_190 : TestCase.GetEntityMap())
             {
-                local_190;
-                if ((local_191 == local_132.GetId()))
+                if ((FECSEntityId(local_190.GetValue()) == local_132.GetId()))
                 {
                     local_171 = true;
                     break;
@@ -1920,10 +1919,10 @@ class US_GameTestCase : UECSScriptSystem
         Remove local_52;
         local_52.opCall();
         local_58.Init(TestCaseEntity.GetId(), int(RoundCache.BeginFrame), RoundCache.BeginTime);
-        FName local_84;
         for (auto& local_74 : RoundCache.ActionConfigs)
         {
-            if ((FInstancedStruct::GetPtr(local_74).opCall() == nullptr) || !((local_84 == Pending.UniqueName)))
+            TConstRawPtr<FGTCAction> local_80 = FInstancedStruct::GetPtr(local_74).opCall();
+            if ((local_80 == nullptr) || !((FName(local_80.Get().TargetUniqueName) == Pending.UniqueName)))
             {
                 continue;
             }
@@ -1955,7 +1954,6 @@ class US_GameTestCase : UECSScriptSystem
     {
         int local_16 = 0;
         int local_24 = 0;
-        bool local_47 = false;
         if (!(FECSEntity(Event.EntityId).IsValid()))
         {
             return;
@@ -1964,7 +1962,17 @@ class US_GameTestCase : UECSScriptSystem
         local_24.Init(Event.Sender.GetId(), int(Event.BeginFrame), Event.BeginTime);
         for (auto& local_38 : Event.Actions)
         {
-            if ((!((FInstancedStruct::GetPtr(local_38).opCall() == nullptr))) && local_47)
+            TConstRawPtr<FGTCInputAction> local_44 = FInstancedStruct::GetPtr(local_38).opCall();
+            bool local_9 = !((local_44 == nullptr));
+            if (!(local_9))
+            {
+                local_9 = false;
+            }
+            else
+            {
+                local_9 = local_44.Get().bIsLocalInput;
+            }
+            if (local_9)
             {
                 local_24.Actions.Add(local_38);
             }
@@ -2134,7 +2142,7 @@ class US_GameTestCase : UECSScriptSystem
         FC_GameTest& local_20 = local_18.opCall();
         if (local_20)
         {
-            int local_7 = local_2.GetId();
+            local_20.RuntimeEntityIds.Remove(local_2.GetId());
             ::FGTCUtils::RemoveEntity(local_2);
             if (local_20.RuntimeEntityIds.Num() == 0)
             {
@@ -2275,11 +2283,11 @@ class US_GameTestCase : UECSScriptSystem
         int local_1 = -1;
         int local_3 = 0;
         int local_2 = Actions.Num() - 1;
-        FFPTime local_18;
         while (local_3 <= local_2)
         {
             int local_8 = FMath::IntegerDivisionTrunc(local_3 + local_2, 2);
-            if (!((FInstancedStruct::GetPtr(Actions[local_8]).opCall() == nullptr)) && (local_18.opCmp(CurTime) <= 0))
+            TConstRawPtr<FGTCAction> local_14 = FInstancedStruct::GetPtr(Actions[local_8]).opCall();
+            if (!((local_14 == nullptr)) && (FFPTime(local_14.Get().StartTime).opCmp(CurTime) <= 0))
             {
                 local_1 = local_8;
                 local_3 = local_8 + 1;
@@ -2293,20 +2301,62 @@ class US_GameTestCase : UECSScriptSystem
     }
     void TickFixedInputActions(const FECSEntity &inout Entity, FC_TestCaseServerFixedInputs &inout ActionComp, const FCS_FixedTime &inout FixedTime, const FCS_LocalTime &inout LocalTime) const
     {
-        // body not fully recovered — stub [argmismatch:argtype]
+        int local_1 = int(ActionComp._base_FC_GTCActionContainer);
+        FGTCActionContext local_34 = this.MakeActionContext(ActionComp.TestCaseEntityId, local_1, ActionComp.BeginTime, FixedTime, LocalTime);
+        this.ApplyCheckpointIfPresent(Entity, ActionComp, local_34.CurTime);
+        this.ApplyAutoCheckpointIfPresent(Entity, ActionComp, local_34.CurTime);
+        int local_1_2 = this.FindCurrentFixedInputIndex(ActionComp.Actions, local_34.CurTime);
+        int local_72 = FMath::Max((this.FindCurrentFixedInputIndex(ActionComp.Actions, local_34.LastTime) + 1), 0);
+        for (; local_72 <= local_1_2; ++local_72)
+        {
+            TRawPtr<FGTCAction> local_80 = FInstancedStruct::GetMutablePtr(ActionComp.Actions[local_72]).opCall();
+            if ((!((local_80 == nullptr))))
+            {
+                local_80.Get().Execute(Entity, local_34);
+            }
+        }
+        if (local_1_2 >= 0)
+        {
+            this.ApplyFixedInputCamera(Entity, ActionComp.Actions, local_1_2, local_34);
+        }
+        if ((local_1_2 >= (ActionComp.Actions.Num() - 1) && (ActionComp.Actions.Num() > 0)))
+        {
+            Remove local_88;
+            local_88.opCall();
+        }
+        return;
     }
     void TickFixedInputActions(const FECSEntity &inout Entity, FC_TestCaseClientFixedInputs &inout ActionComp, const FCS_FixedTime &inout FixedTime, const FCS_LocalTime &inout LocalTime) const
     {
-        // body not fully recovered — stub [argmismatch:argtype]
+        int local_1 = int(ActionComp._base_FC_GTCActionContainer);
+        FGTCActionContext local_34 = this.MakeActionContext(ActionComp.TestCaseEntityId, local_1, ActionComp.BeginTime, FixedTime, LocalTime);
+        int local_1_2 = this.FindCurrentFixedInputIndex(ActionComp.Actions, local_34.CurTime);
+        int local_72 = FMath::Max((this.FindCurrentFixedInputIndex(ActionComp.Actions, local_34.LastTime) + 1), 0);
+        for (; local_72 <= local_1_2; ++local_72)
+        {
+            TRawPtr<FGTCAction> local_80 = FInstancedStruct::GetMutablePtr(ActionComp.Actions[local_72]).opCall();
+            if ((!((local_80 == nullptr))))
+            {
+                local_80.Get().Execute(Entity, local_34);
+            }
+        }
+        if (local_1_2 >= 0)
+        {
+            this.ApplyFixedInputCamera(Entity, ActionComp.Actions, local_1_2, local_34);
+        }
+        if ((local_1_2 >= (ActionComp.Actions.Num() - 1) && (ActionComp.Actions.Num() > 0)))
+        {
+            Remove local_88;
+            local_88.opCall();
+        }
+        return;
     }
     void InterpolateFixedInputCamera(const FECSEntity &inout Entity, TArray<FInstancedStruct> &inout Actions, const int Idx, const FGTCActionContext &inout Context) const
     {
         int local_10 = 0;
-        float local_26 = 0.0;
         int local_40 = 0;
         bool local_51;
-        int local_2 = Actions.Num();
-        if ((Idx + 1) >= local_2)
+        if ((Idx + 1) >= Actions.Num())
         {
             return;
         }
@@ -2315,39 +2365,43 @@ class US_GameTestCase : UECSScriptSystem
         {
             return;
         }
-        if ((FInstancedStruct::GetPtr<FGTCFixedInputAction>(Actions[Idx]).opCall() == nullptr) || ((FInstancedStruct::GetPtr<FGTCFixedInputAction>(Actions[(Idx + 1)]).opCall()) == nullptr))
+        TConstRawPtr<FGTCFixedInputAction> local_18 = FInstancedStruct::GetPtr<FGTCFixedInputAction>(Actions[Idx]).opCall();
+        TConstRawPtr<FGTCFixedInputAction> local_20 = FInstancedStruct::GetPtr<FGTCFixedInputAction>(Actions[(Idx + 1)]).opCall();
+        if ((local_18 == nullptr) || (local_20 == nullptr))
         {
             return;
         }
+        float local_26 = local_18.Get().StartTime.ToSeconds();
         float32 local_27 = float32(local_26);
-        float32 local_28 = float32(local_26) - local_27;
+        float local_26_2 = local_20.Get().StartTime.ToSeconds();
+        float32 local_28 = float32(local_26_2) - local_27;
         if (local_28 <= 0.0f)
         {
             return;
         }
-        local_26 = Context.CurTime.ToSeconds();
-        float32 local_33 = FMath::Clamp(((float32(local_26) - local_27) / local_28), 0.0f, 1.0f);
+        float local_26_3 = Context.CurTime.ToSeconds();
+        float32 local_33 = FMath::Clamp(((float32(local_26_3) - local_27) / local_28), 0.0f, 1.0f);
         if (local_33 < 0.001f)
         {
             return;
         }
         int local_41 = 0;
-        FName local_43;
-        FVector local_50;
-        FName local_62;
-        for (; local_41 < local_2; ++local_41)
+        for (; local_41 < local_18.Get().InputGroup.Num(); ++local_41)
         {
+            FName local_43(local_18.Get().InputGroup[local_41].Name);
             if (!((local_43 == n"CharacterViewDirection")) && !((local_43 == n"CharacterViewOffset")) && !((local_43 == n"CharacterCorrectedViewDirection")))
             {
                 continue;
             }
+            FVector local_50(local_18.Get().InputGroup[local_41].Value);
             local_51 = false;
             FVector local_58;
             int local_59 = 0;
-            for (; local_59 < 0; ++local_59)
+            for (; local_59 < local_20.Get().InputGroup.Num(); ++local_59)
             {
-                if ((local_62 == local_43))
+                if ((FName(local_20.Get().InputGroup[local_59].Name) == local_43))
                 {
+                    local_58 = local_20.Get().InputGroup[local_59].Value;
                     local_51 = true;
                     break;
                 }
@@ -2359,20 +2413,19 @@ class US_GameTestCase : UECSScriptSystem
             FVector local_68;
             if ((local_43 == n"CharacterViewDirection") || (local_43 == n"CharacterCorrectedViewDirection"))
             {
-                local_26 = local_58.X;
-                local_26 = local_26 - local_50.X;
-                if (local_26 > 180.0)
+                float local_26_4 = local_58.X - local_50.X;
+                if (local_26_4 > 180.0)
                 {
-                    local_26 = local_26 - 360.0;
+                    local_26_4 = local_26_4 - 360.0;
                 }
                 else
                 {
-                    if (local_26 < -180.0)
+                    if (local_26_4 < -180.0)
                     {
-                        local_26 = local_26 + 360.0;
+                        local_26_4 = local_26_4 + 360.0;
                     }
                 }
-                local_68.X = (local_50.X + (local_26 * local_33));
+                local_68.X = (local_50.X + (local_26_4 * local_33));
                 local_68.Y = (local_50.Y + ((local_58.Y - local_50.Y) * local_33));
                 local_68.Z = (local_50.Z + ((local_58.Z - local_50.Z) * local_33));
             }
@@ -2399,51 +2452,52 @@ class US_GameTestCase : UECSScriptSystem
     {
         int local_6 = 0;
         int local_26 = 0;
-        float32 local_43 = 0.0f;
-        if (local_6 && local_6.GetTargetEntity().IsValid() && ((int(local_6.GetType()) == 2)))
+        if (local_6 && local_6.GetTargetEntity().IsValid() && (int(local_6.GetType()) == 2))
         {
             return;
         }
-        if ((FInstancedStruct::GetPtr(Actions[Idx]).opCall() == nullptr))
+        TConstRawPtr<FGTCFixedInputAction> local_18 = FInstancedStruct::GetPtr(Actions[Idx]).opCall();
+        if ((local_18 == nullptr))
         {
             return;
         }
         int local_27 = 0;
-        FName local_29;
-        for (; local_27 < 0; ++local_27)
+        for (; local_27 < local_18.Get().InputGroup.Num(); ++local_27)
         {
+            FName local_29(local_18.Get().InputGroup[local_27].Name);
             if (!((local_29 == n"CharacterViewDirection")) && !((local_29 == n"CharacterViewOffset")) && !((local_29 == n"CharacterCorrectedViewDirection")))
             {
                 continue;
             }
             FInputData local_40;
             local_40.Name = local_29;
-            local_40.Time = (FFPTime(Context.FixedTime.Time) + FFPTime(local_43));
+            local_40.Value = local_18.Get().InputGroup[local_27].Value;
+            local_40.Time = (FFPTime(Context.FixedTime.Time) + FFPTime(local_18.Get().InputGroup[local_27].TimeOffset));
             local_26.GetOrAddPacket(int(Context.FixedTime.Frame)).ReplaceOrAdd(local_40);
         }
         return;
     }
     FRotator SampleRecordedViewDir(const TArray<FInstancedStruct> &inout Actions, const FFPTime &inout BeginTime, const FFPTime &inout AtWorldTime) const
     {
-        FName local_33;
-        float local_52 = 0.0;
         FFPTime local_4 = (AtWorldTime - BeginTime);
         int local_6 = this.FindCurrentFixedInputIndex(Actions, local_4);
         if (local_6 < 0)
         {
             return FRotator();
         }
-        if ((FInstancedStruct::GetPtr(Actions[local_6]).opCall() == nullptr))
+        TConstRawPtr<FGTCFixedInputAction> local_20 = FInstancedStruct::GetPtr(Actions[local_6]).opCall();
+        if ((local_20 == nullptr))
         {
             return FRotator();
         }
         FVector local_28;
         bool local_29 = false;
         int local_30 = 0;
-        for (; local_30 < 0; ++local_30)
+        for (; local_30 < local_20.Get().InputGroup.Num(); ++local_30)
         {
-            if ((local_33 == n"CharacterViewDirection"))
+            if ((FName(local_20.Get().InputGroup[local_30].Name) == n"CharacterViewDirection"))
             {
+                local_28 = local_20.Get().InputGroup[local_30].Value;
                 local_29 = true;
                 break;
             }
@@ -2455,43 +2509,45 @@ class US_GameTestCase : UECSScriptSystem
         FVector local_40 = local_28;
         if ((local_6 + 1) < Actions.Num())
         {
-            int local_5 = local_6 + 1;
-            if (!((FInstancedStruct::GetPtr(Actions[local_5]).opCall() == nullptr)))
+            TConstRawPtr<FGTCFixedInputAction> local_22 = FInstancedStruct::GetPtr(Actions[(local_6 + 1)]).opCall();
+            if (!((local_22 == nullptr)))
             {
                 bool local_49;
                 FVector local_48;
                 local_49 = false;
                 int local_30_2 = 0;
-                for (; local_30_2 < local_5; ++local_30_2)
+                for (; local_30_2 < local_22.Get().InputGroup.Num(); ++local_30_2)
                 {
-                    if ((local_33 == n"CharacterViewDirection"))
+                    if ((FName(local_22.Get().InputGroup[local_30_2].Name) == n"CharacterViewDirection"))
                     {
+                        local_48 = local_22.Get().InputGroup[local_30_2].Value;
                         local_49 = true;
                         break;
                     }
                 }
                 if (local_49)
                 {
+                    float local_52 = local_20.Get().StartTime.ToSeconds();
                     float32 local_53 = float32(local_52);
-                    float32 local_54 = float32(local_52) - local_53;
+                    float local_52_2 = local_22.Get().StartTime.ToSeconds();
+                    float32 local_54 = float32(local_52_2) - local_53;
                     if (local_54 > 0.0f)
                     {
-                        local_52 = local_4.ToSeconds();
-                        float32 local_59 = FMath::Clamp(((float32(local_52) - local_53) / local_54), 0.0f, 1.0f);
-                        local_52 = local_48.X;
-                        local_52 = local_52 - local_28.X;
-                        if (local_52 > 180.0)
+                        float local_52_3 = local_4.ToSeconds();
+                        float32 local_59 = FMath::Clamp(((float32(local_52_3) - local_53) / local_54), 0.0f, 1.0f);
+                        float local_52_4 = local_48.X - local_28.X;
+                        if (local_52_4 > 180.0)
                         {
-                            local_52 = local_52 - 360.0;
+                            local_52_4 = local_52_4 - 360.0;
                         }
                         else
                         {
-                            if (local_52 < -180.0)
+                            if (local_52_4 < -180.0)
                             {
-                                local_52 = local_52 + 360.0;
+                                local_52_4 = local_52_4 + 360.0;
                             }
                         }
-                        local_40.X = (local_28.X + (local_52 * local_59));
+                        local_40.X = (local_28.X + (local_52_4 * local_59));
                         local_40.Y = (local_28.Y + ((local_48.Y - local_28.Y) * local_59));
                         local_40.Z = (local_28.Z + ((local_48.Z - local_28.Z) * local_59));
                     }
@@ -2503,7 +2559,6 @@ class US_GameTestCase : UECSScriptSystem
     void ExecuteSamplersByIndex(const FECSEntity &inout Entity, TArray<FInstancedStruct> &inout SamplerConfigs, TArray<int> &inout SamplerIndices, TArray<bool> &inout SamplerStartedFlags, const FGTCActionContext &inout Context) const
     {
         int local_5;
-        FGTCAction& local_16;
         if (SamplerStartedFlags.Num() != SamplerIndices.Num())
         {
             SamplerStartedFlags.SetNum(SamplerIndices.Num());
@@ -2522,10 +2577,12 @@ class US_GameTestCase : UECSScriptSystem
             {
                 continue;
             }
-            if ((FInstancedStruct::GetMutablePtr(SamplerConfigs[local_5]).opCall() == nullptr))
+            TRawPtr<FGTCAction> local_12 = FInstancedStruct::GetMutablePtr(SamplerConfigs[local_5]).opCall();
+            if ((local_12 == nullptr))
             {
                 continue;
             }
+            FGTCAction& local_16 = local_12.Get();
             FFPTime local_18 = FFPTime(local_16.StartTime);
             if (local_18.opCmp(Context.CurTime) > 0)
             {
@@ -2556,7 +2613,73 @@ class US_GameTestCase : UECSScriptSystem
     }
     void ExecuteAndRemoveActions(const FECSEntity &inout Entity, TArray<FInstancedStruct> &inout Actions, TArray<bool> &inout StartedFlags, const FGTCActionContext &inout Context) const
     {
-        // body not fully recovered — stub [argmismatch:argtype]
+        if (StartedFlags.Num() != Actions.Num())
+        {
+            StartedFlags.SetNum(Actions.Num());
+            int local_4 = 0;
+            for (; local_4 < StartedFlags.Num(); )
+            {
+                StartedFlags[local_4] = false;
+                ++local_4;
+            }
+        }
+        TArray<int> local_8;
+        int local_4_2 = 0;
+        for (; local_4_2 < Actions.Num(); ++local_4_2)
+        {
+            TRawPtr<FGTCAction> local_14 = FInstancedStruct::GetMutablePtr(Actions[local_4_2]).opCall();
+            if ((local_14 == nullptr))
+            {
+                continue;
+            }
+            FGTCAction& local_18 = local_14.Get();
+            FFPTime local_20 = FFPTime(local_18.StartTime);
+            if (local_20.opCmp(Context.CurTime) > 0)
+            {
+                continue;
+            }
+            if (!(StartedFlags[local_4_2]))
+            {
+                StartedFlags[local_4_2] = true;
+                local_18.OnStart(Entity, Context);
+            }
+            if (int(local_18.ActionType) == 1)
+            {
+                local_18.Execute(Entity, Context);
+                local_8.Add(local_4_2);
+                continue;
+            }
+            if (int(local_18.ActionType) == 2)
+            {
+                local_20 = FFPTime(Context.LastTime);
+                if (local_20.opCmp(local_18.EndTime) >= 0)
+                {
+                    local_8.Add(local_4_2);
+                }
+                else
+                {
+                    local_18.Execute(Entity, Context);
+                }
+                continue;
+            }
+            if (int(local_18.ActionType) == 0)
+            {
+                local_18.Execute(Entity, Context);
+            }
+        }
+        int local_2 = local_8.Num() - 1;
+        for (; local_2 >= 0; )
+        {
+            TRawPtr<FGTCAction> local_16 = FInstancedStruct::GetMutablePtr(Actions[local_8[local_2]]).opCall();
+            if ((!((local_16 == nullptr))))
+            {
+                local_16.Get().OnFinish(Entity, Context);
+            }
+            Actions.RemoveAt(local_8[local_2]);
+            StartedFlags.RemoveAt(local_8[local_2]);
+            --local_2;
+        }
+        return;
     }
     void ApplyCheckpointIfPresent(const FECSEntity &inout TargetEntity, FC_TestCaseServerFixedInputs &inout ActionComp, const FFPTime &inout CurTime) const
     {
@@ -2630,10 +2753,7 @@ class US_GameTestCase : UECSScriptSystem
         FString local_8 = InJsonString;
         for (auto& local_28 : ResultMap)
         {
-            local_28;
-            FString local_32 = local_4;
-            FString local_38;
-            local_8 = local_38;
+            local_8 = local_8.Replace(local_4.Append("\"").Append(local_28.GetKey()).Append("\""), local_28.GetValue(), ESearchCase(1));
         }
         FJsonObject local_42;
         if (!(local_42.LoadFromString(local_8)))
@@ -2657,23 +2777,26 @@ class US_GameTestCase : UECSScriptSystem
         int local_37 = 0;
         for (; local_37 < SharedSamplers.SamplerConfigs.Num(); ++local_37)
         {
-            if ((FInstancedStruct::GetMutablePtr(SharedSamplers.SamplerConfigs[local_37]).opCall() == nullptr))
+            TRawPtr<FGTCSampler> local_46 = FInstancedStruct::GetMutablePtr(SharedSamplers.SamplerConfigs[local_37]).opCall();
+            if ((local_46 == nullptr))
             {
                 continue;
             }
             FString local_52;
-            FString local_60 = FString();
+            local_56 = FString(FString().Append("SamplerID-").Append(local_46.Get().ActionID));
             int local_62 = CurrntStartTicks;
             local_63 = false;
-            if (!((FInstancedStruct::GetMutablePtr(SharedSamplers.SamplerConfigs[local_37]).opCall() == nullptr)))
+            TRawPtr<FGTCTransformSampler> local_70 = FInstancedStruct::GetMutablePtr(SharedSamplers.SamplerConfigs[local_37]).opCall();
+            if (!((local_70 == nullptr)))
             {
-                local_63 = local_62.TryCollectResult(local_52);
+                local_63 = local_70.Get().TryCollectResult(local_62, local_52);
             }
             else
             {
-                if (!((FInstancedStruct::GetMutablePtr(SharedSamplers.SamplerConfigs[local_37]).opCall() == nullptr)))
+                TRawPtr<FGTCESMStateSampler> local_78 = FInstancedStruct::GetMutablePtr(SharedSamplers.SamplerConfigs[local_37]).opCall();
+                if (!((local_78 == nullptr)))
                 {
-                    local_63 = local_62.TryCollectResult(local_52);
+                    local_63 = local_78.Get().TryCollectResult(local_62, local_52);
                 }
             }
             if (local_63)
@@ -2683,7 +2806,7 @@ class US_GameTestCase : UECSScriptSystem
             }
             else
             {
-                XError(ELog(40), FString().Append("[ERROR] Failed To Replace ").Append(local_56));
+                XError(ELog(40), local_52.Append("[ERROR] Failed To Replace ").Append(local_56));
             }
         }
         if (FJsonObjectConverter::UStructToJsonObjectString(local_16, local_56, 0, 0, 0, true))
@@ -2724,8 +2847,7 @@ class US_GameTestCase : UECSScriptSystem
         Has local_42;
         for (auto& local_30 : local_12.GetEntityMap())
         {
-            FECSEntity local_34;
-            if (!(local_34.IsValid()))
+            if (!(FECSEntity(local_30.GetValue()).IsValid()))
             {
                 continue;
             }

@@ -139,9 +139,7 @@ class US_ASGameModeSystemDSTest : US_ECSScriptGameModeSystemBase
         for (; local_102.CanProceed;)
         {
             const FECSEntity& local_140 = local_102.Proceed();
-            TWeakObjectPtr<AECSPlayerController> local_152 = local_146.GetUEPlayerController();
-            AECSPlayerController local_154;
-            local_150 = local_154;
+            local_150 = local_146.GetUEPlayerController().Get();
             if (local_150 != nullptr)
             {
                 local_147 = Gameplay::GetIntOption(local_150.LoginOptions, "Team", 1);

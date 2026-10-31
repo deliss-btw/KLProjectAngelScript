@@ -418,9 +418,8 @@ struct FM_SpotView : FEUIModel
     }
     void RemoveInterestedSpotInternal(const TEUIModelRef<FM_Spot> &inout Spot)
     {
-        bool local_1 = false;
         int local_10 = 0;
-        if ((Spot && local_1))
+        if (!(!(Spot)) && this.GetModify_InterestedSpots().Remove(Spot))
         {
             FEUIModelRef local_8 = FEUIModelRef(this);
             FEUIMessageBus::Publish(EUIMessageBus);
@@ -708,11 +707,9 @@ FM_SpotView& Create(const UObject ContextObject, const FSpotView &inout View, co
 {
     return FM_SpotView::CreateByManager(EUIInternal::GetContextManager(ContextObject), View, InterestedDataTypes);
 }
-FM_SpotView CreateByManager(const UEUIManagerSubsystem Manager, const FSpotView &inout View, const FBitSet32 &inout InterestedDataTypes)
+FM_SpotView& CreateByManager(const UEUIManagerSubsystem Manager, const FSpotView &inout View, const FBitSet32 &inout InterestedDataTypes)
 {
-    FM_SpotView __r;
-    TEUIModelRef<FM_SpotView> local_6 = TEUIModelRef<FM_SpotView>(EUIInternal::MakeModelWithManager_Generic(Manager, FM_SpotView::ModelId, 0, View, InterestedDataTypes));
-    return __r;
+    return TEUIModelRef<FM_SpotView>(EUIInternal::MakeModelWithManager_Generic(Manager, FM_SpotView::ModelId, 0, View, InterestedDataTypes)).Get();
 }
 void GetModelInfo(FEUIModelOnlyMetaInfo &inout Result)
 {

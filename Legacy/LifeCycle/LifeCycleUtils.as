@@ -28,7 +28,6 @@ void KillEntityCheckNearDeathRule(const FECSEntity &inout DeathEntity, const FEC
 }
 void EntityNearDeath(const FECSEntity &inout DeathEntity, const FECSEntityId &inout KillerEntityId, const FFPTime &inout Time)
 {
-    int local_3 = 0;
     int local_28 = 0;
     int local_50 = 0;
     int local_68 = 0;
@@ -71,13 +70,11 @@ void EntityNearDeath(const FECSEntity &inout DeathEntity, const FECSEntityId &in
     const FC_DeathResistance& local_44 = local_42.opCall();
     if (local_44)
     {
-        local_3 = local_44.GetResistanceCount();
         FString local_10 = DeathEntity.ToString();
-        XLog(ELog(0), FString().Append("EntityNearDeath: ").Append(local_10).Append(" is entering NearDeath with DeathResistance, count = ").Append(local_3).Append("."));
+        XLog(ELog(0), FString().Append("EntityNearDeath: ").Append(local_10).Append(" is entering NearDeath with DeathResistance, count = ").Append(local_44.GetResistanceCount()).Append("."));
         if (local_44.GetResistanceCount() > 0)
         {
-            local_1 = !(local_44.GetbDyingDuringResistance());
-            if (local_1)
+            if (!(local_44.GetbDyingDuringResistance()))
             {
                 local_50.SetbDyingDuringResistance(true);
                 local_50.SetKillerEntityId(KillerEntityId);
@@ -91,8 +88,8 @@ void EntityNearDeath(const FECSEntity &inout DeathEntity, const FECSEntityId &in
     }
     Assign local_54;
     local_54.opCall(FC_NearDeathTag());
-    int local_69 = local_3;
-    if (0 == 0)
+    int local_69 = local_28.GetReviveData().Get().KnockdownHp;
+    if (int(local_28.GetReviveData().Get().KnockdownHpType) == 0)
     {
         local_70 = local_69;
     }
@@ -104,6 +101,7 @@ void EntityNearDeath(const FECSEntity &inout DeathEntity, const FECSEntityId &in
     local_68.SetNearDeathHP(local_70);
     local_68.SetMaxNearDeathHP(local_70);
     local_68.SetKilledByEntity(local_37);
+    local_1 = local_28.GetReviveData().Get().bCanHitOrLockTargetWhenNearDeath;
     local_68.SetbCanHitOrLockTargetWhenNearDeath(local_1);
     if (!(local_68.GetbCanHitOrLockTargetWhenNearDeath()))
     {
@@ -121,9 +119,7 @@ void EntityNearDeath(const FECSEntity &inout DeathEntity, const FECSEntityId &in
         FBuffUtils::RemoveBuffByNearDeath(DeathEntity, Time);
     }
     FLifeCycleUtils::ClearEntityHpAndAbnormalAttribute(DeathEntity, Time);
-    local_3 = local_96.GetNearDeathCount();
-    local_3 = local_3 + 1;
-    local_96.SetNearDeathCount(local_3);
+    local_96.SetNearDeathCount((local_96.GetNearDeathCount() + 1));
     Get local_100;
     const FC_CharacterMovement& local_102 = local_100.opCall();
     if (local_102)
@@ -182,7 +178,6 @@ void ESMTransitToNearDeath(const FECSEntity &inout Entity)
 }
 void EntityRescueFromNearDeath(const FECSEntity &inout RescueEntity, const FECSEntity &inout RescueByEntity, const FFPTime &inout Time, const bool bRescueWithAnimation, const float32 OverrideHpRatio = 0)
 {
-    int local_4 = 0;
     int local_28 = 0;
     int local_66 = 0;
     if (!(ECS::GetRuntimeInfo().IsServer) && (int(RescueEntity.GetRegistryType()) != 2))
@@ -226,8 +221,7 @@ void EntityRescueFromNearDeath(const FECSEntity &inout RescueEntity, const FECSE
     local_48.opCall();
     Get local_54;
     float32 local_55 = local_54.opCall().GetAttributeValue(Attribute::HPMax, Time);
-    float32 local_49 = local_4;
-    local_49 = local_49 / 100.0f;
+    float32 local_49 = local_28.GetReviveData().Get().RescueHP / 100.0f;
     if (OverrideHpRatio > 0.0f)
     {
         local_49 = FMath::Clamp(OverrideHpRatio, 0.0f, 1.0f);
@@ -428,8 +422,10 @@ void EntityDestroyByChangeRole(const FECSEntity &inout DeadEntity, const FFPTime
         if (local_26.opCall())
         {
             Modify local_32;
-            if (local_32.opCall())
+            FC_GameAttributeSharedParent& local_34 = local_32.opCall();
+            if (local_34)
             {
+                local_34.GetModify_SharedEntities().Remove(DeadEntity);
             }
         }
         FLifeCycleUtils::EntityReadyToDestroy(DeadEntity);
@@ -446,7 +442,6 @@ void SetEntityActiveByDuration(const FECSEntity &inout Entity, const FFPTime &in
 }
 void ServerDataTrackPlayerDeath(const FECSEntity &inout Pawn, const EServerDataTrackDeathReason Reason, const FECSEntityId &inout KillerEntityId)
 {
-    int local_61 = 0;
     if (!(ECS::GetRuntimeInfo().IsServer))
     {
         return;
@@ -474,12 +469,12 @@ void ServerDataTrackPlayerDeath(const FECSEntity &inout Pawn, const EServerDataT
         if (local_60)
         {
             local_28.SetSourceEntityType(1);
-            if (GetAvatarConfig(local_14))
+            TDataObjectPtr<FAvatarPrefabConfig> local_86 = GetAvatarConfig(local_14);
+            if (local_86)
             {
-                local_28.SetSourceEntityConfigId(local_61);
+                local_28.SetSourceEntityConfigId(local_86.Get().DataId);
             }
-            local_61 = FASCommonUtils::GetPlayerUidFromPlayerEntity(local_60.GetPlayerEntity());
-            local_28.SetSourceEntityInstanceId(local_61);
+            local_28.SetSourceEntityInstanceId(FASCommonUtils::GetPlayerUidFromPlayerEntity(local_60.GetPlayerEntity()));
         }
         else
         {
@@ -490,7 +485,7 @@ void ServerDataTrackPlayerDeath(const FECSEntity &inout Pawn, const EServerDataT
                 local_28.SetSourceEntityType(2);
                 if (local_116.GetMonsterConfig())
                 {
-                    local_28.SetSourceEntityConfigId(local_61);
+                    local_28.SetSourceEntityConfigId(local_116.GetMonsterConfig().Get().DataId);
                 }
                 local_28.SetSourceEntityInstanceId(local_14.GetIdValue());
             }

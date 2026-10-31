@@ -475,7 +475,6 @@ class AKLLevelScriptTutorialCombatEasy : AKLLevelScriptTutorialActor
     UFUNCTION()
     void OnHitEvent(const FCE_HitEvent &inout HitEvent)
     {
-        int local_7 = 0;
         if ((!((HitEvent.Attacker == this.PlayerPawnEntity))))
         {
             return;
@@ -484,6 +483,7 @@ class AKLLevelScriptTutorialCombatEasy : AKLLevelScriptTutorialActor
         {
             return;
         }
+        int local_7 = HitEvent.AttackData.Get().AttackCategory;
         int local_6 = local_7;
         if (this.CurrentStep == 3)
         {
@@ -632,18 +632,7 @@ class AKLLevelScriptTutorialCombatEasy : AKLLevelScriptTutorialActor
     UFUNCTION()
     void OnCustomWheelEvent(const FCE_ShowCustomWheelOptionRequest &inout Event)
     {
-        int local_5 = 0;
-        bool local_3 = this.CurrentStep == 13 && Event.OptionConfig.IsSet();
-        if (!(local_3))
-        {
-            local_3 = false;
-        }
-        else
-        {
-            int local_1 = local_5;
-            local_3 = (local_1 == 0);
-        }
-        if (local_3)
+        if (this.CurrentStep == 13 && Event.OptionConfig.IsSet() && (int(Event.OptionConfig.Get().OptionType) == 0))
         {
             Super::AdvanceAndCheck(1);
         }

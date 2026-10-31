@@ -3,7 +3,6 @@ namespace __FEcosimAIV2UnitDataFunctions
 UFUNCTION()
 FString __FEcosimAIV2UnitData_GetComment(const TDataObjectPtr<FEcosimAIV2UnitData> &inout DataObject)
 {
-    FString __r;
     if ((DataObject == nullptr))
     {
         if (!(EUIGlobals::GIsDuringPropertyConversion))
@@ -13,12 +12,11 @@ FString __FEcosimAIV2UnitData_GetComment(const TDataObjectPtr<FEcosimAIV2UnitDat
         FEcosimAIV2UnitData local_28;
         return local_28.Comment;
     }
-    return __r;
+    return DataObject.Get().Comment;
 }
 UFUNCTION()
 TSoftClassPtr<AECSPrefab> __FEcosimAIV2UnitData_GetRealWorldEntityPrefab(const TDataObjectPtr<FEcosimAIV2UnitData> &inout DataObject)
 {
-    TSoftClassPtr<AECSPrefab> __r;
     if ((DataObject == nullptr))
     {
         if (!(EUIGlobals::GIsDuringPropertyConversion))
@@ -28,7 +26,7 @@ TSoftClassPtr<AECSPrefab> __FEcosimAIV2UnitData_GetRealWorldEntityPrefab(const T
         FEcosimAIV2UnitData local_28;
         return local_28.RealWorldEntityPrefab;
     }
-    return __r;
+    return DataObject.Get().RealWorldEntityPrefab;
 }
 UFUNCTION()
 FEcosimAIV2UnitData CastToFEcosimAIV2UnitData(const TDataObjectPtr<FEcosimAIV2UnitData> &inout DataObject)
@@ -42,7 +40,6 @@ namespace __FInteractSimpleSpeakToAndOptionFunctions
 UFUNCTION()
 TArray<FInstancedStruct> __FInteractSimpleSpeakToAndOption_GetConditionList(const TDataObjectPtr<FInteractSimpleSpeakToAndOption> &inout DataObject)
 {
-    TArray<FInstancedStruct> __r;
     if ((DataObject == nullptr))
     {
         if (!(EUIGlobals::GIsDuringPropertyConversion))
@@ -52,12 +49,11 @@ TArray<FInstancedStruct> __FInteractSimpleSpeakToAndOption_GetConditionList(cons
         FInteractSimpleSpeakToAndOption local_34;
         return local_34.ConditionList;
     }
-    return __r;
+    return DataObject.Get().ConditionList;
 }
 UFUNCTION()
 FString __FInteractSimpleSpeakToAndOption_GetSpeakToContent(const TDataObjectPtr<FInteractSimpleSpeakToAndOption> &inout DataObject)
 {
-    FString __r;
     if ((DataObject == nullptr))
     {
         if (!(EUIGlobals::GIsDuringPropertyConversion))
@@ -67,12 +63,11 @@ FString __FInteractSimpleSpeakToAndOption_GetSpeakToContent(const TDataObjectPtr
         FInteractSimpleSpeakToAndOption local_34;
         return local_34.SpeakToContent;
     }
-    return __r;
+    return DataObject.Get().SpeakToContent;
 }
 UFUNCTION()
 TArray<FString> __FInteractSimpleSpeakToAndOption_GetAdditionalSpeakToContentList(const TDataObjectPtr<FInteractSimpleSpeakToAndOption> &inout DataObject)
 {
-    TArray<FString> __r;
     if ((DataObject == nullptr))
     {
         if (!(EUIGlobals::GIsDuringPropertyConversion))
@@ -82,12 +77,11 @@ TArray<FString> __FInteractSimpleSpeakToAndOption_GetAdditionalSpeakToContentLis
         FInteractSimpleSpeakToAndOption local_34;
         return local_34.AdditionalSpeakToContentList;
     }
-    return __r;
+    return DataObject.Get().AdditionalSpeakToContentList;
 }
 UFUNCTION()
 TArray<FName> __FInteractSimpleSpeakToAndOption_GetCustomContextKeyList(const TDataObjectPtr<FInteractSimpleSpeakToAndOption> &inout DataObject)
 {
-    TArray<FName> __r;
     if ((DataObject == nullptr))
     {
         if (!(EUIGlobals::GIsDuringPropertyConversion))
@@ -97,12 +91,11 @@ TArray<FName> __FInteractSimpleSpeakToAndOption_GetCustomContextKeyList(const TD
         FInteractSimpleSpeakToAndOption local_34;
         return local_34.CustomContextKeyList;
     }
-    return __r;
+    return DataObject.Get().CustomContextKeyList;
 }
 UFUNCTION()
 TArray<FEcosimAIV2DialogueOption> __FInteractSimpleSpeakToAndOption_GetOptionList(const TDataObjectPtr<FInteractSimpleSpeakToAndOption> &inout DataObject)
 {
-    TArray<FEcosimAIV2DialogueOption> __r;
     if ((DataObject == nullptr))
     {
         if (!(EUIGlobals::GIsDuringPropertyConversion))
@@ -112,7 +105,7 @@ TArray<FEcosimAIV2DialogueOption> __FInteractSimpleSpeakToAndOption_GetOptionLis
         FInteractSimpleSpeakToAndOption local_34;
         return local_34.OptionList;
     }
-    return __r;
+    return DataObject.Get().OptionList;
 }
 UFUNCTION()
 FInteractSimpleSpeakToAndOption CastToFInteractSimpleSpeakToAndOption(const TDataObjectPtr<FInteractSimpleSpeakToAndOption> &inout DataObject)
@@ -126,7 +119,6 @@ namespace __FEcosimAIV2LLMPublicSpeakDataFunctions
 UFUNCTION()
 FString __FEcosimAIV2LLMPublicSpeakData_GetComment(const TDataObjectPtr<FEcosimAIV2LLMPublicSpeakData> &inout DataObject)
 {
-    FString __r;
     if ((DataObject == nullptr))
     {
         if (!(EUIGlobals::GIsDuringPropertyConversion))
@@ -136,12 +128,11 @@ FString __FEcosimAIV2LLMPublicSpeakData_GetComment(const TDataObjectPtr<FEcosimA
         FEcosimAIV2LLMPublicSpeakData local_36;
         return local_36.Comment;
     }
-    return __r;
+    return DataObject.Get().Comment;
 }
 UFUNCTION()
 FString __FEcosimAIV2LLMPublicSpeakData_GetConstContent(const TDataObjectPtr<FEcosimAIV2LLMPublicSpeakData> &inout DataObject)
 {
-    FString __r;
     if ((DataObject == nullptr))
     {
         if (!(EUIGlobals::GIsDuringPropertyConversion))
@@ -151,7 +142,7 @@ FString __FEcosimAIV2LLMPublicSpeakData_GetConstContent(const TDataObjectPtr<FEc
         FEcosimAIV2LLMPublicSpeakData local_36;
         return local_36.ConstContent;
     }
-    return __r;
+    return DataObject.Get().ConstContent;
 }
 UFUNCTION()
 float32 __FEcosimAIV2LLMPublicSpeakData_GetConstDuration(const TDataObjectPtr<FEcosimAIV2LLMPublicSpeakData> &inout DataObject)
@@ -171,7 +162,6 @@ float32 __FEcosimAIV2LLMPublicSpeakData_GetConstDuration(const TDataObjectPtr<FE
 UFUNCTION()
 FString __FEcosimAIV2LLMPublicSpeakData_GetPromptFileName(const TDataObjectPtr<FEcosimAIV2LLMPublicSpeakData> &inout DataObject)
 {
-    FString __r;
     if ((DataObject == nullptr))
     {
         if (!(EUIGlobals::GIsDuringPropertyConversion))
@@ -181,12 +171,11 @@ FString __FEcosimAIV2LLMPublicSpeakData_GetPromptFileName(const TDataObjectPtr<F
         FEcosimAIV2LLMPublicSpeakData local_36;
         return local_36.PromptFileName;
     }
-    return __r;
+    return DataObject.Get().PromptFileName;
 }
 UFUNCTION()
 FString __FEcosimAIV2LLMPublicSpeakData_GetAdditionalContext(const TDataObjectPtr<FEcosimAIV2LLMPublicSpeakData> &inout DataObject)
 {
-    FString __r;
     if ((DataObject == nullptr))
     {
         if (!(EUIGlobals::GIsDuringPropertyConversion))
@@ -196,12 +185,11 @@ FString __FEcosimAIV2LLMPublicSpeakData_GetAdditionalContext(const TDataObjectPt
         FEcosimAIV2LLMPublicSpeakData local_36;
         return local_36.AdditionalContext;
     }
-    return __r;
+    return DataObject.Get().AdditionalContext;
 }
 UFUNCTION()
 FGameplayTag __FEcosimAIV2LLMPublicSpeakData_GetSpeakKeyTag(const TDataObjectPtr<FEcosimAIV2LLMPublicSpeakData> &inout DataObject)
 {
-    FGameplayTag __r;
     if ((DataObject == nullptr))
     {
         if (!(EUIGlobals::GIsDuringPropertyConversion))
@@ -211,7 +199,7 @@ FGameplayTag __FEcosimAIV2LLMPublicSpeakData_GetSpeakKeyTag(const TDataObjectPtr
         FEcosimAIV2LLMPublicSpeakData local_36;
         return local_36.SpeakKeyTag;
     }
-    return __r;
+    return DataObject.Get().SpeakKeyTag;
 }
 UFUNCTION()
 float32 __FEcosimAIV2LLMPublicSpeakData_GetMinSpeakInterval(const TDataObjectPtr<FEcosimAIV2LLMPublicSpeakData> &inout DataObject)
@@ -285,7 +273,6 @@ float32 __FAITokenByTargetConfig_GetTokenRecoverTime(const TDataObjectPtr<FAITok
 UFUNCTION()
 EAITokenRecoverMode __FAITokenByTargetConfig_GetRecoverMode(const TDataObjectPtr<FAITokenByTargetConfig> &inout DataObject)
 {
-    int local_19 = 0;
     if ((DataObject == nullptr))
     {
         if (!(EUIGlobals::GIsDuringPropertyConversion))
@@ -293,10 +280,9 @@ EAITokenRecoverMode __FAITokenByTargetConfig_GetRecoverMode(const TDataObjectPtr
             FBlueprintDebugFunctions::ThrowScriptException("Get 'RecoverMode' from a null 'FAITokenByTargetConfig' DataObject!");
         }
         FAITokenByTargetConfig local_18;
-        local_19 = int(local_18.RecoverMode);
-        return EAITokenRecoverMode(local_19);
+        return local_18.RecoverMode;
     }
-    return EAITokenRecoverMode(local_19);
+    return DataObject.Get().RecoverMode;
 }
 UFUNCTION()
 FAITokenByTargetConfig CastToFAITokenByTargetConfig(const TDataObjectPtr<FAITokenByTargetConfig> &inout DataObject)

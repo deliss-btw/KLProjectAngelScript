@@ -32,7 +32,7 @@ class UWidget_EntityDialog : UEUIUserWidget
     UFUNCTION()
     FText EntityDialog_DialogText() const
     {
-        FVM_EntityDialog& local_2;
+        FVM_EntityDialog& local_2 = this.EntityDialog.Get();
         FText local_16;
         if (local_2)
         {

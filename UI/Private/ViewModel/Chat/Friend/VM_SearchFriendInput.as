@@ -90,30 +90,15 @@ struct FVM_SearchFriendInput : FEUIViewModel
     {
         if (this.GetChatRuntimeData().IsValid())
         {
-            TEUIModelRef<FMS_ChatRuntimeData> local_2 = this.GetChatRuntimeData();
-            this.GetTempInputText().CacheSearchFriendInputText();
+            this.GetChatRuntimeData().Get().CacheSearchFriendInputText(this.GetTempInputText());
         }
-        bool local_3 = this.GetChatRuntimeData().IsValid();
-        if (!(local_3))
-        {
-            local_3 = false;
-        }
-        else
-        {
-            TEUIModelRef<FMS_ChatRuntimeData> local_2_2 = this.GetChatRuntimeData();
-            local_3 = GetbShowFriendSearchResult();
-        }
-        local_3 = local_3 && this.GetTempInputText().TrimStartAndEnd().IsEmpty();
-        if (local_3)
+        if (this.GetChatRuntimeData().IsValid() && this.GetChatRuntimeData().Get().GetbShowFriendSearchResult() && this.GetTempInputText().TrimStartAndEnd().IsEmpty())
         {
             if (this.GetFriendDataModel().IsValid())
             {
-                TEUIModelRef<FMS_FriendDataModel> local_10 = this.GetFriendDataModel();
-                ClearFriendSearchResultsList();
+                this.GetFriendDataModel().Get().ClearFriendSearchResultsList();
             }
-            bool local_3_2 = false;
-            TEUIModelRef<FMS_ChatRuntimeData> local_2_3 = this.GetChatRuntimeData();
-            local_3_2.SetbShowFriendSearchResult();
+            this.GetChatRuntimeData().Get().SetbShowFriendSearchResult(false);
             this.SetbPendingFriendSearchAfterValidation(false);
             this.SetPendingFriendSearchTrimmedText("");
             this.GetModify_StringValidationHelper().StopValidation();
@@ -195,8 +180,7 @@ struct FVM_SearchFriendInput : FEUIViewModel
         this.OnInputTextChanged();
         if (this.GetChatRuntimeData().IsValid())
         {
-            TEUIModelRef<FMS_ChatRuntimeData> local_4 = this.GetChatRuntimeData();
-            false.SetbShowFriendSearchResult();
+            this.GetChatRuntimeData().Get().SetbShowFriendSearchResult(false);
         }
         this.GetModify_StringValidationHelper().StopValidation();
         this.SetbSearchInputValid(true);
@@ -256,8 +240,7 @@ struct FVM_SearchFriendInput : FEUIViewModel
     {
         if (this.GetChatRuntimeData().IsValid())
         {
-            TEUIModelRef<FMS_ChatRuntimeData> local_2 = this.GetChatRuntimeData();
-            this.SetbShowSearchResult(GetbShowFriendSearchResult());
+            this.SetbShowSearchResult(this.GetChatRuntimeData().Get().GetbShowFriendSearchResult());
         }
         return;
     }
@@ -265,8 +248,7 @@ struct FVM_SearchFriendInput : FEUIViewModel
     {
         if (this.GetChatRuntimeData().IsValid())
         {
-            TEUIModelRef<FMS_ChatRuntimeData> local_2 = this.GetChatRuntimeData();
-            this.SetAlreadyInputText(GetCachedSearchFriendInputText());
+            this.SetAlreadyInputText(this.GetChatRuntimeData().Get().GetCachedSearchFriendInputText());
         }
         return;
     }
@@ -479,11 +461,9 @@ FVM_SearchFriendInput& Create(const UObject ContextObject)
 {
     return FVM_SearchFriendInput::CreateByManager(EUIInternal::GetContextManager(ContextObject));
 }
-FVM_SearchFriendInput CreateByManager(const UEUIManagerSubsystem Manager)
+FVM_SearchFriendInput& CreateByManager(const UEUIManagerSubsystem Manager)
 {
-    FVM_SearchFriendInput __r;
-    TEUIModelRef<FVM_SearchFriendInput> local_6 = TEUIModelRef<FVM_SearchFriendInput>(EUIInternal::MakeModelWithManager(Manager, FVM_SearchFriendInput::ModelId));
-    return __r;
+    return TEUIModelRef<FVM_SearchFriendInput>(EUIInternal::MakeModelWithManager(Manager, FVM_SearchFriendInput::ModelId)).Get();
 }
 void GetModelInfo(FEUIViewModelMetaInfo &inout Result)
 {
@@ -600,7 +580,6 @@ namespace __GeneratedProperties_FVM_SearchFriendInput
 {
 UScriptStruct StaticStruct()
 {
-    UScriptStruct local_2;
-    return local_2;
+    return __GeneratedProperties_FVM_SearchFriendInput.Get();
 }
 }

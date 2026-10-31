@@ -3,7 +3,6 @@ namespace __FFacePresetConfigFunctions
 UFUNCTION()
 FText __FFacePresetConfig_GetName(const TDataObjectPtr<FFacePresetConfig> &inout DataObject)
 {
-    FText __r;
     if ((DataObject == nullptr))
     {
         if (!(EUIGlobals::GIsDuringPropertyConversion))
@@ -13,12 +12,11 @@ FText __FFacePresetConfig_GetName(const TDataObjectPtr<FFacePresetConfig> &inout
         FFacePresetConfig local_80;
         return local_80.Name;
     }
-    return __r;
+    return DataObject.Get().Name;
 }
 UFUNCTION()
 TSoftObjectPtr<USkeletalMesh> __FFacePresetConfig_GetMaleFace(const TDataObjectPtr<FFacePresetConfig> &inout DataObject)
 {
-    TSoftObjectPtr<USkeletalMesh> __r;
     if ((DataObject == nullptr))
     {
         if (!(EUIGlobals::GIsDuringPropertyConversion))
@@ -28,12 +26,11 @@ TSoftObjectPtr<USkeletalMesh> __FFacePresetConfig_GetMaleFace(const TDataObjectP
         FFacePresetConfig local_80;
         return local_80.MaleFace;
     }
-    return __r;
+    return DataObject.Get().MaleFace;
 }
 UFUNCTION()
 TSoftObjectPtr<UMaterialInterface> __FFacePresetConfig_GetMaleBodyMaterial(const TDataObjectPtr<FFacePresetConfig> &inout DataObject)
 {
-    TSoftObjectPtr<UMaterialInterface> __r;
     if ((DataObject == nullptr))
     {
         if (!(EUIGlobals::GIsDuringPropertyConversion))
@@ -43,12 +40,11 @@ TSoftObjectPtr<UMaterialInterface> __FFacePresetConfig_GetMaleBodyMaterial(const
         FFacePresetConfig local_80;
         return local_80.MaleBodyMaterial;
     }
-    return __r;
+    return DataObject.Get().MaleBodyMaterial;
 }
 UFUNCTION()
 TSoftObjectPtr<USkeletalMesh> __FFacePresetConfig_GetFemaleFace(const TDataObjectPtr<FFacePresetConfig> &inout DataObject)
 {
-    TSoftObjectPtr<USkeletalMesh> __r;
     if ((DataObject == nullptr))
     {
         if (!(EUIGlobals::GIsDuringPropertyConversion))
@@ -58,12 +54,11 @@ TSoftObjectPtr<USkeletalMesh> __FFacePresetConfig_GetFemaleFace(const TDataObjec
         FFacePresetConfig local_80;
         return local_80.FemaleFace;
     }
-    return __r;
+    return DataObject.Get().FemaleFace;
 }
 UFUNCTION()
 TSoftObjectPtr<UMaterialInterface> __FFacePresetConfig_GetFemaleBodyMaterial(const TDataObjectPtr<FFacePresetConfig> &inout DataObject)
 {
-    TSoftObjectPtr<UMaterialInterface> __r;
     if ((DataObject == nullptr))
     {
         if (!(EUIGlobals::GIsDuringPropertyConversion))
@@ -73,12 +68,11 @@ TSoftObjectPtr<UMaterialInterface> __FFacePresetConfig_GetFemaleBodyMaterial(con
         FFacePresetConfig local_80;
         return local_80.FemaleBodyMaterial;
     }
-    return __r;
+    return DataObject.Get().FemaleBodyMaterial;
 }
 UFUNCTION()
 TMap<EDisplayItemIconType, FFashionDisplayIconByBody> __FFacePresetConfig_GetDisplayIcons(const TDataObjectPtr<FFacePresetConfig> &inout DataObject)
 {
-    TMap<EDisplayItemIconType, FFashionDisplayIconByBody> __r;
     if ((DataObject == nullptr))
     {
         if (!(EUIGlobals::GIsDuringPropertyConversion))
@@ -88,7 +82,7 @@ TMap<EDisplayItemIconType, FFashionDisplayIconByBody> __FFacePresetConfig_GetDis
         FFacePresetConfig local_80;
         return local_80.DisplayIcons;
     }
-    return __r;
+    return DataObject.Get().DisplayIcons;
 }
 UFUNCTION()
 FFacePresetConfig CastToFFacePresetConfig(const TDataObjectPtr<FFacePresetConfig> &inout DataObject)

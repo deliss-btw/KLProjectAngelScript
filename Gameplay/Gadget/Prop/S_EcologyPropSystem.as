@@ -7,8 +7,7 @@ class US_EcologyPropSystem : UECSScriptSystem
     UFUNCTION()
     void ServerJob_InitEcologyPropSpawner(const FC_PrefabLoaded &inout PrefabLoaded, FC_EcoCollectableSpawnerRuntime &inout SpawnerRuntime) const
     {
-        AECSPrefab local_2;
-        AEcoCollectableSpawner local_6 = (Cast<AEcoCollectableSpawner>(local_2));
+        AEcoCollectableSpawner local_6 = (Cast<AEcoCollectableSpawner>(PrefabLoaded.Prefab.Get()));
         if (local_6 != nullptr)
         {
             if (local_6.BakedDataArrayEcologyProp.IsEmpty())

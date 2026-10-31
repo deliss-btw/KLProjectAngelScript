@@ -10,7 +10,6 @@ void SendSurfaceContactEvent(const FECSWorldPtr &inout ECSWorld, const EApplyTar
 UFUNCTION()
 void FilllSurfaceContactEventData(const EApplyTargetType ApplyTargetType, const FECSEntity &inout Entity, FSurfaceContactInfo &inout Info, const FSurfaceLineTraceConfig &inout Config, const EImpactEventType Type)
 {
-    int local_53 = 0;
     Info.SetApplyTargetType(EApplyTargetType(ApplyTargetType));
     Info.SetImpactEventType(EImpactEventType(Type));
     Info.SetTraceLength(Config.TraceLength);
@@ -23,9 +22,10 @@ void FilllSurfaceContactEventData(const EApplyTargetType ApplyTargetType, const 
     Info.SetTraceDir(Config.TraceDir);
     Info.SetbDurational(false);
     Info.SetCharacterSize(ECharacterBodySize(0));
-    if (GetPrefabConfigPtr(Entity))
+    TDataObjectPtr<FBasePrefabConfig> local_28 = GetPrefabConfigPtr(Entity);
+    if (local_28)
     {
-        Info.SetCharacterSize(ECharacterBodySize(local_53));
+        Info.SetCharacterSize(ECharacterBodySize(local_28.Get().Size));
     }
     return;
 }
@@ -48,11 +48,11 @@ void FillLandedEventData(const FECSEntity &inout Entity, FEntityLandedInfo &inou
     EntityLandedInfo.SetbUseLandedStrengthLevelDirectly(true);
     EntityLandedInfo.SetLandedStrengthLevel(Config.StepStrengthLevel);
     EntityLandedInfo.SetbDurational(false);
-    int local_39 = 0;
-    EntityLandedInfo.SetCharacterSize(EPrefabSize(local_39));
-    if (GetPrefabConfigPtr(Entity))
+    EntityLandedInfo.SetCharacterSize(EPrefabSize(0));
+    TDataObjectPtr<FBasePrefabConfig> local_64 = GetPrefabConfigPtr(Entity);
+    if (local_64)
     {
-        EntityLandedInfo.SetCharacterSize(EPrefabSize(local_39));
+        EntityLandedInfo.SetCharacterSize(local_64.Get().Size);
     }
     return;
 }
@@ -133,12 +133,486 @@ void LoadEventCallBack(const UObject ObjectLoaded)
 UFUNCTION()
 void HandleEntityLandedSound(const FECSEntity &inout EventSender, const FEntityLandedInfo &inout LandedInfo, const bool bDebug, const bool bPrintOnScreen)
 {
-    // body not fully recovered — stub [argmismatch:argint]
+    int local_24;
+    float32 local_26;
+    int local_127;
+    if (int(LandedInfo.GetImpactEventType()) != 2 && (int(LandedInfo.GetImpactEventType()) != 0))
+    {
+        return;
+    }
+    USFXSettings local_10 = UCombatGlobalSettings::Get().SFXSettings;
+    if (!(local_10 == nullptr) && UCombatGlobalSettings::Get().SFXSettings.bEnableNewFootStepSFX)
+    {
+        ImpactFXUtils::HandleEntityLandedSound(EventSender, LandedInfo);
+        return;
+    }
+    if (bDebug)
+    {
+        XLog(ELog(0), FString().Append("HandleEntityLandedSound Entity:").Append(EventSender.GetEntityName()).Append("  ImpactEventType: ").Append(LandedInfo.GetImpactEventType()));
+    }
+    FName local_21 = FImpactFXUtils::GetImpactRootBoneName(EventSender, LandedInfo.GetRootBoneName());
+    FName local_23(EventSender.GetEntityName());
+    local_24 = int(LandedInfo.GetCharacterSize());
+    local_26 = LandedInfo.GetEntityMass();
+    FVector local_34(LandedInfo.GetVelocity());
+    FVector local_40(LandedInfo.GetLandedStrength());
+    FVector local_46;
+    FVector local_52;
+    FQuat4f local_56;
+    bool local_57 = false;
+    FName local_19 = FSceneInteractUtils::GetLineTraceSurfaceName(local_57, local_46, local_52, local_56, EventSender, FImpactFXUtils::ConvertLandedInfo2SurfaceContanctInfo(LandedInfo));
+    if ((local_19 == NAME_None))
+    {
+        local_19 = FGamePhysicsUtils::GetDefaultPhysicalSurfaceName();
+    }
+    if (!(local_57))
+    {
+        if (bDebug)
+        {
+            XLog(ELog(0), FString().Append("HandleEntityLandedSound: Trace failed for ").Append(local_23).Append(" (Entity: ").Append(EventSender.GetEntityName()).Append("), skipping SFX. OutLandedPosition=").Append(local_46.ToString()).Append(", RootBoneName=").Append(local_21).Append(", AttachName=").Append(LandedInfo.GetAttachName()));
+            if (bPrintOnScreen)
+            {
+                Print(FString().Append("HandleEntityLandedSound: Trace failed for ").Append(local_23).Append(", SFX skipped"), 2.0f, FLinearColor::LucBlue);
+            }
+        }
+        return;
+    }
+    int local_126 = 0;
+    int local_125 = local_126;
+    local_127 = int(LandedInfo.GetActionImpactType());
+    if (FASCommonUtils::IsAvatarPrefab(EventSender))
+    {
+    }
+    else
+    {
+    }
+    Get local_134;
+    const FC_ImpactFXConfig& local_136 = local_134.opCall();
+    if (local_136)
+    {
+        FName local_130;
+        if (!((local_136.LandImpactConfigRowName == NAME_None)))
+        {
+            local_130 = local_136.LandImpactConfigRowName;
+        }
+    }
+    int local_3 = local_127;
+    if (local_3 != 0)
+    {
+        FName local_130;
+        if (UGameplayConfigsManager::GetActionImpactSFXTable().Get() == nullptr)
+        {
+            if (bPrintOnScreen)
+            {
+                Print(FString().Append("HandleEntityLandedSound can not find datatable: ActionImpactSFXConfig"), 5.0f, FLinearColor::LucBlue);
+            }
+            return;
+        }
+        UDataTable::FindDataObject local_168;
+        TDataObjectPtr<FActionImpactConfigSFX> local_192 = local_168.opCall(local_130);
+        if (local_192)
+        {
+            const FActionImpactSFXData& local_194 = local_192.Get().GetDataRawByName(local_19);
+            const FAICharacterSizeSFXData& local_196 = local_192.Get().GetDataRawBySecondType(local_194, EPrefabSize(local_24));
+            const FActionSFXData& local_198 = local_192.Get().GetDataRawByThirdType(local_196, EActionImpactType(local_127));
+            if (bDebug)
+            {
+                if (bPrintOnScreen)
+                {
+                    Print(FString().Append("Landed Impact ").Append(local_23).Append(": ").Append(local_19).Append(" -> ").Append(local_24).Append(" -> FActionImpactType:").Append(local_127).Append(" = -> AkEvent: ").Append(local_198.Event.GetAssetName()), 5.0f, FLinearColor::LucBlue);
+                }
+            }
+            if (local_198.Event.IsPending())
+            {
+                if (bDebug)
+                {
+                    FString local_206 = FString(FString().Append("HandleEntityLandedSound Event"));
+                    FString local_206_2 = ((local_206 + local_198.Event.GetAssetName()) + " IsPending, try AsyncLoad");
+                    XLog(ELog(0), local_206_2);
+                    if (bPrintOnScreen)
+                    {
+                        Print(local_206_2, 999.0f, FLinearColor::LucBlue);
+                    }
+                }
+            }
+            FQuat4f local_212;
+            if (int(LandedInfo.GetImpactRotationType()) == 0)
+            {
+                local_212 = FTransformUtils::GetSocketRotationInActor(EventSender, local_21);
+            }
+            else
+            {
+                local_212 = FQuat4f(local_52.ToOrientationQuat());
+            }
+            FRotator3f local_234 = local_212.Rotator();
+            if (FAsGameAudioUtils::CVar_UseNewAsynLoad.GetBool())
+            {
+                FGameAudioUtils::PlayEventAtLocation(local_198.Event, EventSender, FLoadEventCallback(), local_46, local_234.Quaternion(), FGameAudioUtils::GetCachedAudioWorld(), false, true);
+            }
+        }
+        else
+        {
+            if (bDebug)
+            {
+                FString local_202 = FString();
+                FString local_206_3 = FString(local_202.Append("Landed Impact ").Append(local_23).Append(": ").Append(local_19).Append(" -> ").Append(local_24).Append(" -> ").Append(local_127).Append(" -> Sound Event No Config!"));
+                XLog(ELog(0), local_206_3);
+                if (bPrintOnScreen)
+                {
+                    Print(local_206_3, 5.0f, FLinearColor::LucBlue);
+                }
+            }
+        }
+    }
+    else
+    {
+        FName local_130;
+        if (UGameplayConfigsManager::GetLandedImpactSFXTable().Get() == nullptr)
+        {
+            if (bPrintOnScreen)
+            {
+                FString local_202_2 = FString();
+                Print(local_202_2.Append("HandleEntityLandedSound can not find datatable: LandedImpactSFXConfig"), 5.0f, FLinearColor::LucBlue);
+            }
+            return;
+        }
+        UDataTable::FindDataObject local_268;
+        TDataObjectPtr<FLandedImpactConfigSFX> local_292 = local_268.opCall(local_130);
+        if (local_292)
+        {
+            const FLandedImpactSFXData& local_294 = local_292.Get().GetDataRawByName(local_19);
+            const FLISCharacterSizeData& local_296 = local_292.Get().GetDataRawBySecondType(local_294, EPrefabSize(local_24));
+            if (LandedInfo.GetbUseLandedStrengthLevelDirectly())
+            {
+                local_125 = int(LandedInfo.GetLandedStrengthLevel());
+            }
+            else
+            {
+                local_125 = int(FImpactFXUtils::GetSFXLandedStrengthLevel(local_40, local_296));
+            }
+            const FLISStrengthData& local_298 = local_292.Get().GetDataRawByThirdType(local_296, ELandedStrength(local_125));
+            if (bDebug)
+            {
+                if (LandedInfo.GetbUseLandedStrengthLevelDirectly())
+                {
+                    FString local_206_4 = FString(FString().Append("Landed Impact ").Append(local_23).Append(": ").Append(local_19).Append(" -> ").Append(local_24).Append(" -> StepStrengthLevel:").Append(local_125).Append(" = -> SoundEvent: ").Append(local_298.Event));
+                    XLog(ELog(0), local_206_4);
+                    if (bPrintOnScreen)
+                    {
+                        Print(local_206_4, 5.0f, FLinearColor::LucBlue);
+                    }
+                }
+                else
+                {
+                    FString local_206_5 = FString(FString().Append("Landed Impact ").Append(local_23).Append(": ").Append(local_19).Append(" -> ").Append(local_24).Append(" -> ").Append(local_125).Append(" = [").Append(local_26).Append(" * ").Append(local_34).Append(" = ").Append(local_40).Append("] -> SoundEvent: ").Append(local_298.Event));
+                    XLog(ELog(0), local_206_5);
+                    if (bPrintOnScreen)
+                    {
+                        Print(local_206_5, 5.0f, FLinearColor::LucBlue);
+                    }
+                }
+            }
+            if (local_298.Event.IsPending())
+            {
+                if (bDebug)
+                {
+                    FString local_202_3 = FString(FString().Append("HandleEntityLandedSound Event"));
+                    FString local_14_2 = (local_202_3 + local_298.Event.GetAssetName());
+                    FString local_202_4 = (local_14_2 + " IsPending, try AsyncLoad");
+                    XLog(ELog(0), local_202_4);
+                    if (bPrintOnScreen)
+                    {
+                        Print(local_202_4, 999.0f, FLinearColor::LucBlue);
+                    }
+                }
+            }
+            FQuat4f local_212;
+            if (int(LandedInfo.GetImpactRotationType()) == 0)
+            {
+                local_212 = FTransformUtils::GetSocketRotationInActor(EventSender, local_21);
+            }
+            else
+            {
+                local_212 = FQuat4f(local_52.ToOrientationQuat());
+            }
+            FRotator3f local_231 = local_212.Rotator();
+            if (FAsGameAudioUtils::CVar_UseNewAsynLoad.GetBool())
+            {
+                FGameAudioUtils::PlayEventAtLocation(local_298.Event, EventSender, FLoadEventCallback(), local_46, local_231.Quaternion(), FGameAudioUtils::GetCachedAudioWorld(), false, true);
+            }
+        }
+        else
+        {
+            if (bDebug)
+            {
+                FString local_202_5 = FString(FString().Append("Landed Impact ").Append(local_23).Append(": ").Append(local_19).Append(" -> ").Append(local_24).Append(" -> ").Append(local_125).Append(" = [").Append(local_26).Append(" * ").Append(local_34).Append(" = ").Append(local_40).Append("] -> Sound Event No Config!"));
+                XLog(ELog(0), local_202_5);
+                if (bPrintOnScreen)
+                {
+                    Print(local_202_5, 5.0f, FLinearColor::LucBlue);
+                }
+            }
+        }
+    }
+    return;
 }
 UFUNCTION()
 void HandleEntityLandedEffect(const FECSEntity &inout EventSender, const FEntityLandedInfo &inout LandedInfo, const FFPTime &inout EventTime, const bool bDebug, const bool bPrintOnScreen)
 {
-    // body not fully recovered — stub [argmismatch:argint]
+    int local_20;
+    float32 local_22;
+    int local_128 = 0;
+    int local_129;
+    if (int(LandedInfo.GetImpactEventType()) != 1 && (int(LandedInfo.GetImpactEventType()) != 0))
+    {
+        return;
+    }
+    if (bDebug)
+    {
+        XLog(ELog(0), FString().Append("HandleEntityLandedEffect ").Append(EventTime).Append("  ImpactEventType ").Append(LandedInfo.GetImpactEventType()));
+    }
+    FName local_17 = FImpactFXUtils::GetImpactRootBoneName(EventSender, LandedInfo.GetRootBoneName());
+    FName local_19(EventSender.GetEntityName());
+    local_20 = int(LandedInfo.GetCharacterSize());
+    local_22 = LandedInfo.GetEntityMass();
+    FVector local_30(LandedInfo.GetVelocity());
+    FVector local_36(LandedInfo.GetLandedStrength());
+    FVector local_42;
+    FVector local_48;
+    FQuat4f local_52;
+    bool local_53 = false;
+    FName local_13 = FSceneInteractUtils::GetLineTraceSurfaceName(local_53, local_42, local_48, local_52, EventSender, FImpactFXUtils::ConvertLandedInfo2SurfaceContanctInfo(LandedInfo));
+    if ((local_13 == NAME_None))
+    {
+        local_13 = FGamePhysicsUtils::GetDefaultPhysicalSurfaceName();
+    }
+    if (!(local_53))
+    {
+        if (bDebug)
+        {
+            XLog(ELog(0), FString().Append("HandleEntityLandedEffect: Trace failed for ").Append(local_19).Append(" (Entity: ").Append(EventSender.GetEntityName()).Append("), skipping VFX. OutLandedPosition=").Append(local_42.ToString()).Append(", RootBoneName=").Append(local_17).Append(", AttachName=").Append(LandedInfo.GetAttachName()));
+            if (bPrintOnScreen)
+            {
+                Print(FString().Append("HandleEntityLandedEffect: Trace failed for ").Append(local_19).Append(", VFX skipped"), 2.0f, FLinearColor::LucBlue);
+            }
+        }
+        return;
+    }
+    FFPTime local_126 = FFPTime(-1);
+    local_128.SurfaceName = local_13;
+    local_129 = int(LandedInfo.GetActionImpactType());
+    int local_132 = 0;
+    int local_131 = local_132;
+    if (FASCommonUtils::IsAvatarPrefab(EventSender))
+    {
+    }
+    else
+    {
+    }
+    Get local_138;
+    const FC_ImpactFXConfig& local_140 = local_138.opCall();
+    if (local_140)
+    {
+        FName local_134;
+        if (!((local_140.LandImpactConfigRowName == NAME_None)))
+        {
+            local_134 = local_140.LandImpactConfigRowName;
+        }
+    }
+    int local_3 = local_129;
+    if (local_3 != 0)
+    {
+        FTransform local_384;
+        FName local_134;
+        if (UGameplayConfigsManager::GetActionImpactVFXTable().Get() == nullptr)
+        {
+            if (bPrintOnScreen)
+            {
+                Print(FString().Append("HandleEntityLandedEffect can not find datatable: LandedImpactVFXConfig"), 5.0f, FLinearColor::LucBlue);
+            }
+            return;
+        }
+        UDataTable::FindDataObject local_172;
+        TDataObjectPtr<FActionImpactConfigVFX> local_196 = local_172.opCall(local_134);
+        if (local_196)
+        {
+            const FActionImpactVFXData& local_198 = local_196.Get().GetDataRawByName(local_13);
+            const FAICharacterSizeVFXData& local_200 = local_196.Get().GetDataRawBySecondType(local_198, EPrefabSize(local_20));
+            const FActionVFXData& local_202 = local_196.Get().GetDataRawByThirdType(local_200, EActionImpactType(local_129));
+            if (local_202.FXActor.IsNull())
+            {
+                if (bPrintOnScreen)
+                {
+                    Print(FString().Append("HandleEntityLandedEffect ").Append(local_19).Append(": ").Append(local_13).Append(" -> ").Append(local_20).Append(" -> ").Append(local_129).Append(" -> FxActor No Config!"), 5.0f, FLinearColor::LucBlue);
+                }
+                return;
+            }
+            FFXConfig local_318;
+            if (bDebug)
+            {
+                if (bPrintOnScreen)
+                {
+                    Print(FString().Append("Landed Impact ").Append(local_19).Append(": ").Append(local_13).Append(" -> ").Append(local_20).Append(" -> FActionImpactType:").Append(local_129).Append(" = -> FxActor: ").Append(local_202.FXActor), 5.0f, FLinearColor::LucBlue);
+                }
+            }
+            FQuat4f local_324;
+            if (int(LandedInfo.GetImpactRotationType()) == 0)
+            {
+                local_324 = FTransformUtils::GetSocketRotationInActor(EventSender, local_17);
+            }
+            else
+            {
+                local_324 = FQuat4f(local_48.ToOrientationQuat());
+            }
+            FRotator3f local_346 = local_324.Rotator();
+            local_318.SetAsset(FSoftClassPath(local_202.FXActor.ToString()));
+            if (!((local_202.LocationOffset == FVector3f::ZeroVector)) || !((local_202.RotationOffset == FRotator3f::ZeroRotator)))
+            {
+                FRotator local_390 = FRotator(local_346);
+                local_318.SetLocationOffset(local_384.TransformPosition(FVector(local_202.LocationOffset)));
+                local_318.SetRotationOffset(local_384.TransformRotation(FRotator(local_202.RotationOffset)));
+            }
+            else
+            {
+                local_318.SetLocationOffset(local_42);
+                local_318.SetRotationOffset(FRotator(local_346));
+            }
+            local_318.SetScale(FVector(local_202.Scale));
+            local_318.SetbUseWorldOriginAsBaseTransformSource(true);
+            local_318.SetLocationOffsetSpace(EFXOffsetSpace(2));
+            local_318.SetRotationOffsetSpace(EFXOffsetSpace(2));
+            local_318.SetbDetach(true);
+            if (FSceneInteractUtils::CVar_Enable_SceneInteract_DebugLog.GetBool())
+            {
+                DebugDraw::DrawDebugLine(ECS::GetUEWorld(), local_318.GetLocationOffset(), (FVector(local_318.GetLocationOffset()) + (local_318.GetRotationOffset().GetForwardVector() * 100.0)), FColor::Yellow, false, 8.0f, uint8(0), 0.0f);
+            }
+            if (LandedInfo.GetbDurational())
+            {
+                ECSFX::PlayFXDurational(EventSender, local_318, EventTime, 1.0f, false);
+            }
+            else
+            {
+                ECSFX::PlayFXInstant(EventSender, local_318, EventTime, 1.0f, false, true);
+            }
+        }
+        else
+        {
+            if (bDebug)
+            {
+                if (bPrintOnScreen)
+                {
+                    Print(FString().Append("Action Impact ").Append(local_19).Append(": ").Append(local_13).Append(" -> ").Append(local_20).Append(" -> [").Append(local_129).Append("]-> FxActor No Config!"), 5.0f, FLinearColor::LucBlue);
+                }
+            }
+        }
+    }
+    else
+    {
+        FTransform local_384;
+        FName local_134;
+        if (UGameplayConfigsManager::GetLandedImpactVFXTable().Get() == nullptr)
+        {
+            if (bPrintOnScreen)
+            {
+                Print(FString().Append("HandleEntityLandedEffect can not find datatable: LandedImpactVFXConfig"), 5.0f, FLinearColor::LucBlue);
+            }
+            return;
+        }
+        UDataTable::FindDataObject local_454;
+        TDataObjectPtr<FLandedImpactConfigVFX> local_478 = local_454.opCall(local_134);
+        if (local_478)
+        {
+            const FLandedImpactVFXData& local_480 = local_478.Get().GetDataRawByName(local_13);
+            const FLIVCharacterSizeData& local_482 = local_478.Get().GetDataRawBySecondType(local_480, EPrefabSize(local_20));
+            if (LandedInfo.GetbUseLandedStrengthLevelDirectly())
+            {
+                local_131 = int(LandedInfo.GetLandedStrengthLevel());
+            }
+            else
+            {
+                local_131 = int(FImpactFXUtils::GetVFXLandedStrengthLevel(local_36, local_482));
+            }
+            const FLIVStrengthData& local_484 = local_478.Get().GetDataRawByThirdType(local_482, ELandedStrength(local_131));
+            if (local_484.FXActor.IsNull())
+            {
+                if (bPrintOnScreen)
+                {
+                    Print(FString().Append("HandleEntityLandedEffect ").Append(local_19).Append(": ").Append(local_13).Append(" -> ").Append(local_20).Append(" -> ").Append(local_131).Append(" -> FxActor No Config!"), 5.0f, FLinearColor::LucBlue);
+                }
+                return;
+            }
+            FFXConfig local_318;
+            if (bDebug)
+            {
+                if (LandedInfo.GetbUseLandedStrengthLevelDirectly())
+                {
+                    if (bPrintOnScreen)
+                    {
+                        Print(FString().Append("Landed Impact ").Append(local_19).Append(": ").Append(local_13).Append(" -> ").Append(local_20).Append(" -> StepStrengthLevel:").Append(local_131).Append(" = -> FxActor: ").Append(local_484.FXActor), 5.0f, FLinearColor::LucBlue);
+                    }
+                }
+                else
+                {
+                    if (bPrintOnScreen)
+                    {
+                        FString local_120_2 = FString();
+                        Print(local_120_2.Append("Landed Impact ").Append(local_19).Append(": ").Append(local_13).Append(" -> ").Append(local_20).Append(" -> ").Append(local_131).Append(" = [").Append(local_22).Append(" * ").Append(local_30).Append(" = ").Append(local_36).Append("] -> FxActor: ").Append(local_484.FXActor), 5.0f, FLinearColor::LucBlue);
+                    }
+                }
+            }
+            FQuat4f local_324;
+            if (int(LandedInfo.GetImpactRotationType()) == 0)
+            {
+                local_324 = FTransformUtils::GetSocketRotationInActor(EventSender, local_17);
+            }
+            else
+            {
+                local_324 = FQuat4f(local_48.ToOrientationQuat());
+            }
+            FRotator3f local_343 = local_324.Rotator();
+            local_318.SetAsset(FSoftClassPath(local_484.FXActor.ToString()));
+            if (!((local_484.LocationOffset == FVector3f::ZeroVector)) || !((local_484.RotationOffset == FRotator3f::ZeroRotator)))
+            {
+                FRotator local_390_2 = FRotator(local_343);
+                local_318.SetLocationOffset(local_384.TransformPosition(FVector(local_484.LocationOffset)));
+                local_318.SetRotationOffset(local_384.TransformRotation(FRotator(local_484.RotationOffset)));
+            }
+            else
+            {
+                local_318.SetLocationOffset(local_42);
+                local_318.SetRotationOffset(FRotator(local_343));
+            }
+            local_318.SetScale(FVector(local_484.Scale));
+            local_318.SetbUseWorldOriginAsBaseTransformSource(true);
+            local_318.SetLocationOffsetSpace(EFXOffsetSpace(2));
+            local_318.SetRotationOffsetSpace(EFXOffsetSpace(2));
+            local_318.SetbDetach(true);
+            if (FSceneInteractUtils::CVar_Enable_SceneInteract_DebugLog.GetBool())
+            {
+                DebugDraw::DrawDebugLine(ECS::GetUEWorld(), local_318.GetLocationOffset(), (FVector(local_318.GetLocationOffset()) + (local_318.GetRotationOffset().GetForwardVector() * 100.0)), FColor::Yellow, false, 8.0f, uint8(0), 0.0f);
+            }
+            if (LandedInfo.GetbDurational())
+            {
+                ECSFX::PlayFXDurational(EventSender, local_318, EventTime, 1.0f, false);
+            }
+            else
+            {
+                ECSFX::PlayFXInstant(EventSender, local_318, EventTime, 1.0f, false, true);
+            }
+        }
+        else
+        {
+            if (bDebug)
+            {
+                if (bPrintOnScreen)
+                {
+                    FString local_10_2 = FString();
+                    Print(local_10_2.Append("Landed Impact ").Append(local_19).Append(": ").Append(local_13).Append(" -> ").Append(local_20).Append(" -> [").Append(local_22).Append(" * ").Append(local_30).Append(" = ").Append(local_36).Append("]-> FxActor No Config!"), 5.0f, FLinearColor::LucBlue);
+                }
+            }
+        }
+    }
+    return;
 }
 FName GetImpactRootBoneName(const FECSEntity &inout Entity, const FName &inout RootBoneName)
 {
@@ -152,7 +626,158 @@ FName GetImpactRootBoneName(const FECSEntity &inout Entity, const FName &inout R
 UFUNCTION()
 void HandleSurfaceContactEffect(const FECSEntity &inout EventSender, const FSurfaceContactInfo &inout SurfaceContanctInfo, const FFPTime &inout EventTime, const bool bDebug, const bool bPrintOnScreen)
 {
-    // body not fully recovered — stub [argmismatch:argint]
+    int local_22;
+    int local_308 = 0;
+    int local_318 = 0;
+    AActor local_332;
+    if ((int(SurfaceContanctInfo.GetImpactEventType())) != 1 && (int(SurfaceContanctInfo.GetImpactEventType()) != 0))
+    {
+        return;
+    }
+    if (bDebug)
+    {
+        XLog(ELog(0), FString().Append("HandleSurfaceContactEffect ").Append(EventTime).Append("  ImpactEventType ").Append(SurfaceContanctInfo.GetImpactEventType()));
+    }
+    if (UGameplayConfigsManager::GetSurfaceContactVFXTable().Get() == nullptr)
+    {
+        if (bPrintOnScreen)
+        {
+            Print(FString().Append("HandleSurfaceContactEffect can not find datatable: SurfaceContactVFXConfig"), 5.0f, FLinearColor::LucBlue);
+        }
+        return;
+    }
+    FName local_19(EventSender.GetEntityName());
+    local_22 = int(SurfaceContanctInfo.GetCharacterSize());
+    FVector local_30;
+    FVector local_36;
+    FQuat4f local_40;
+    bool local_41 = false;
+    FName local_21 = FSceneInteractUtils::GetLineTraceSurfaceName(local_41, local_30, local_36, local_40, EventSender, SurfaceContanctInfo);
+    if ((local_21 == NAME_None))
+    {
+        local_21 = FGamePhysicsUtils::GetDefaultPhysicalSurfaceName();
+    }
+    UDataTable::FindDataObject local_72;
+    TDataObjectPtr<FSurfaceContactConfigVFX> local_96 = local_72.opCall(n"Default");
+    if (local_96)
+    {
+        const FCharacterSizeVFXData& local_98 = local_96.Get().GetDataRawByName(local_21);
+        const FImpactFXData& local_100 = local_96.Get().GetDataRawBySecondType(local_98, ECharacterBodySize(local_22));
+        if (local_100.FXActor.IsNull())
+        {
+            return;
+        }
+        FFXConfig local_216;
+        if (bDebug)
+        {
+            if (bPrintOnScreen)
+            {
+                Print(FString().Append("Surface Contact Impact ").Append(local_19).Append(": ").Append(local_21).Append(" -> ").Append(local_22).Append(" -> FxActor: ").Append(local_100.FXActor), 5.0f, FLinearColor::LucBlue);
+            }
+        }
+        FQuat4f local_220 = local_40;
+        FRotator3f local_226 = local_220.Rotator();
+        local_216.SetAsset(FSoftClassPath(local_100.FXActor.ToString()));
+        if (!((local_100.LocationOffset == FVector3f::ZeroVector)) || !((local_100.RotationOffset == FRotator3f::ZeroRotator)))
+        {
+            FRotator local_270 = FRotator(local_226);
+            FTransform local_264;
+            local_216.SetLocationOffset(local_264.TransformPosition(FVector(local_100.LocationOffset)));
+            local_216.SetRotationOffset(local_264.TransformRotation(FRotator(local_100.RotationOffset)));
+        }
+        else
+        {
+            local_216.SetLocationOffset(local_30);
+            local_216.SetRotationOffset(FRotator(local_226));
+        }
+        local_216.SetScale(FVector(local_100.Scale));
+        local_216.SetbUseWorldOriginAsBaseTransformSource(true);
+        local_216.SetLocationOffsetSpace(EFXOffsetSpace(2));
+        local_216.SetRotationOffsetSpace(EFXOffsetSpace(2));
+        local_216.SetbDetach(true);
+        if (FSceneInteractUtils::CVar_Enable_WeaponDraggingOnGround_DebugDraw.GetBool())
+        {
+            DebugDraw::DrawDebugLine(ECS::GetUEWorld(), local_216.GetLocationOffset(), (FVector(local_216.GetLocationOffset()) + (local_216.GetRotationOffset().GetForwardVector() * 100.0)), FColor::Yellow, false, 8.0f, uint8(0), 0.0f);
+        }
+        if (local_41)
+        {
+            bool local_5;
+            local_5 = local_100.bIsLoop;
+            if (local_5)
+            {
+                if (!(SurfaceContanctInfo.GetbUseEntitySystem()))
+                {
+                    local_5 = false;
+                }
+                else
+                {
+                    Has local_312;
+                    local_5 = local_312.opCall();
+                }
+                if (local_5)
+                {
+                    if (local_318.SocketAttachedEntity.IsValid())
+                    {
+                        if (!(local_308.FxEntity.IsValid()))
+                        {
+                            local_308.FxEntity = FFXUtils::PlayFXDurationalBySoftRef(EventSender, local_100.FXActor, TArray<FFXOverrideParam>(), SurfaceContanctInfo.GetSocketName().Name, true, EFXBaseTransformResolveModeWithAttachmentOption(0), FVector(local_100.LocationOffset), EFXOffsetSpaceWithAttachmentOption(3), FRotator(local_100.RotationOffset), EFXOffsetSpaceWithAttachmentOption(3), true, local_318.SocketAttachedEntity, EAttachFXStopMethod(0));
+                        }
+                    }
+                    else
+                    {
+                        if (!(local_308.FxEntity.IsValid()))
+                        {
+                            local_308.FxEntity = FFXUtils::PlayFXDurationalBySoftRef(EventSender, local_100.FXActor, TArray<FFXOverrideParam>(), SurfaceContanctInfo.GetSocketName().Name, true, EFXBaseTransformResolveModeWithAttachmentOption(0), FVector(local_100.LocationOffset), EFXOffsetSpaceWithAttachmentOption(3), FRotator(local_100.RotationOffset), EFXOffsetSpaceWithAttachmentOption(3), true, EventSender, EAttachFXStopMethod(0));
+                        }
+                    }
+                }
+                else
+                {
+                    local_332 = local_308.FxActor;
+                    if (!((local_332 != nullptr)))
+                    {
+                        local_308.FxActor = (FImpactFXUtils::PlayWeaponDraggingFX(EventSender, local_100.FXActor, SurfaceContanctInfo, FVector(local_100.LocationOffset), FRotator(local_100.RotationOffset)));
+                    }
+                }
+            }
+            else
+            {
+                if (SurfaceContanctInfo.GetbDurational())
+                {
+                    ECSFX::PlayFXDurational(EventSender, local_216, EventTime, 1.0f, false);
+                }
+                else
+                {
+                    ECSFX::PlayFXInstant(EventSender, local_216, EventTime, 1.0f, false, true);
+                }
+            }
+        }
+        else
+        {
+            if (local_100.bIsLoop && local_308.HasValidFX())
+            {
+                if (local_308.FxEntity.IsValid())
+                {
+                    FFXUtils::StopFX(local_308.FxEntity, false);
+                }
+                if (local_308.FxActor != nullptr)
+                {
+                    local_308.FxActor.DetachFromActor(EDetachmentRule(0), EDetachmentRule(0), EDetachmentRule(0));
+                    local_308.FxActor.DestroyActor();
+                }
+                local_308.ClearAllFX();
+            }
+        }
+        return;
+    }
+    if (bDebug)
+    {
+        if (bPrintOnScreen)
+        {
+            Print(FString().Append("Surface Contact Impact ").Append(local_19).Append(": ").Append(local_21).Append(" -> ").Append(local_22).Append(" -> FxActor No Config!"), 5.0f, FLinearColor::LucBlue);
+        }
+    }
+    return;
 }
 UFUNCTION()
 AActor PlayWeaponDraggingFX(const FECSEntity &inout PawnEntity, const TSoftClassPtr<AFXActor> &inout FXActor, const FSurfaceContactInfo &inout SurfaceContactInfo, const FVector &inout LocationOffset, const FRotator &inout RotationOffset)

@@ -15,9 +15,10 @@ TDataObjectPtr<FMissionConfig> FindMissionConfig(const uint MissionId)
 }
 TDataObjectPtr<FMissionPhaseConfig> FindMissionFirstPhaseConfig(const uint MissionId)
 {
-    if (MissionUtils::FindMissionConfig(MissionId))
+    TDataObjectPtr<FMissionConfig> local_48 = MissionUtils::FindMissionConfig(MissionId);
+    if (local_48)
     {
-        TDataObjectPtr<FMissionPhaseConfig> local_74 = GetFirstPhase();
+        TDataObjectPtr<FMissionPhaseConfig> local_74 = local_48.Get().GetFirstPhase();
         return local_74;
     }
     return TDataObjectPtr<FMissionPhaseConfig>();
@@ -55,8 +56,7 @@ TArray<FMissionDetail> GetAllMissionDetails(const FECSEntity &inout PlayerEntity
     {
         for (auto& local_30 : local_10.GetActiveMissionStatus())
         {
-            local_30;
-            local_4.Add();
+            local_4.Add(local_30.GetValue());
         }
     }
     return local_4;
@@ -88,11 +88,11 @@ bool TryFindActiveMissionPhaseForObjective(const FECSEntity &inout PlayerEntity,
     MissionPhaseId = 0;
     for (auto& local_28 : local_8.GetActiveMissionStatus())
     {
-        if (!(GetActiveObjectiveStatusMap().Contains(ObjectiveInstanceId)))
+        if (!(local_28.GetValue().GetActiveObjectiveStatusMap().Contains(ObjectiveInstanceId)))
         {
             continue;
         }
-        MissionPhaseId = GetActivePhaseId();
+        MissionPhaseId = local_28.GetValue().GetActivePhaseId();
         MissionId = local_28.GetKey();
         return true;
     }
@@ -104,7 +104,7 @@ EMissionStatus GetMissionPhaseStatus(const FMissionDetail &inout MissionDetail, 
     {
         return MissionDetail.GetMissionPhaseStatusMap()[MissionPhaseId];
     }
-    return EMissionStatus(0);
+    return EMissionStatus::None;
 }
 EMissionStatus GetMissionPhaseStatus(const FECSEntity &inout PlayerEntity, const uint MissionId, const uint MissionPhaseId)
 {
@@ -113,7 +113,7 @@ EMissionStatus GetMissionPhaseStatus(const FECSEntity &inout PlayerEntity, const
     {
         return MissionUtils::GetMissionPhaseStatus(local_112, MissionPhaseId);
     }
-    return EMissionStatus(0);
+    return EMissionStatus::None;
 }
 bool CanApplyMissionPhaseStatus(const FECSEntity &inout PlayerEntity, const uint MissionId, const uint MissionPhaseId, const EMissionStatus NewStatus)
 {
@@ -155,29 +155,28 @@ bool IsMissionTracking(const FECSEntity &inout PlayerEntity, const TDataObjectPt
     {
         return false;
     }
-    if (local_12.GetTrackingMissionMap().Contains(unresolved.MissionType))
+    if (local_12.GetTrackingMissionMap().Contains(MissionConfig.Get().MissionType))
     {
-        return (0 == 0);
+        return (local_12.GetTrackingMissionMap()[MissionConfig.Get().MissionType].Get().DataId == MissionConfig.Get().DataId);
     }
     return false;
 }
 bool TryFindMissionTrackingTargetEntity(const FECSEntity &inout PlayerEntity, const TDataObjectPtr<FMissionConfig> &inout MissionConfig, FECSEntity &out TargetEntity)
 {
     FECSEntity local_4;
-    int local_119 = 0;
     TargetEntity = local_4;
     if (!(MissionConfig.IsSet()) || !(MissionUtils::IsMissionTracking(PlayerEntity, MissionConfig)))
     {
         return false;
     }
     FMissionDetail local_118;
-    if (!(MissionUtils::TryFindMissionDetail(PlayerEntity, local_119, local_118, false)))
+    if (!(MissionUtils::TryFindMissionDetail(PlayerEntity, MissionConfig.Get().DataId, local_118, false)))
     {
         return false;
     }
     for (auto& local_138 : local_118.GetActiveObjectiveStatusMap())
     {
-        if ((int(GetObjectiveStatus())) != 1)
+        if ((int(local_138.GetValue().GetObjectiveStatus())) != 1)
         {
             continue;
         }
@@ -191,33 +190,31 @@ bool TryFindMissionTrackingTargetEntity(const FECSEntity &inout PlayerEntity, co
 }
 bool TryFindMissionFirstGuidingInfo(const FECSEntity &inout PlayerEntity, const TDataObjectPtr<FMissionConfig> &inout MissionConfig, FGuideContext &out GuideContext)
 {
-    FGuideContext local_140;
-    int local_255 = 0;
     int local_278;
+    FGuideContext local_140;
     GuideContext = local_140;
     if (!(MissionConfig.IsSet()))
     {
         return false;
     }
     FMissionDetail local_254;
-    if (!(MissionUtils::TryFindMissionDetail(PlayerEntity, local_255, local_254, false)))
+    if (!(MissionUtils::TryFindMissionDetail(PlayerEntity, MissionConfig.Get().DataId, local_254, false)))
     {
         return false;
     }
     for (auto& local_274 : local_254.GetActiveObjectiveStatusMap())
     {
-        local_274;
-        if ((int(GetObjectiveStatus())) != 1)
+        if ((int(local_274.GetValue().GetObjectiveStatus())) != 1)
         {
             continue;
         }
-        local_278 = GetObjectiveId();
+        local_278 = local_274.GetValue().GetObjectiveId();
         TDataObjectPtr<FObjectiveConfig> local_302 = ObjectiveUtils::FindObjectiveConfig(local_278);
         if (!(local_302))
         {
             continue;
         }
-        TArray<uint> local_330 = ObjectiveUtils::GetObjectiveStartedGuideUniqueIds(PlayerEntity, GetInstanceId(), local_302);
+        TArray<uint> local_330 = ObjectiveUtils::GetObjectiveStartedGuideUniqueIds(PlayerEntity, local_274.GetValue().GetInstanceId(), local_302);
         if (local_330.IsEmpty())
         {
             continue;
@@ -231,16 +228,15 @@ bool TryFindMissionFirstGuidingInfo(const FECSEntity &inout PlayerEntity, const 
 }
 bool TryFindMissionNearestGuidingInfo(const FECSEntity &inout PlayerEntity, const TDataObjectPtr<FMissionConfig> &inout MissionConfig, FGuideContext &out GuideContext)
 {
-    FGuideContext local_140;
-    int local_255 = 0;
     int local_424;
+    FGuideContext local_140;
     GuideContext = local_140;
     if (!(MissionConfig.IsSet()))
     {
         return false;
     }
     FMissionDetail local_254;
-    if (!(MissionUtils::TryFindMissionDetail(PlayerEntity, local_255, local_254, false)))
+    if (!(MissionUtils::TryFindMissionDetail(PlayerEntity, MissionConfig.Get().DataId, local_254, false)))
     {
         return false;
     }
@@ -249,18 +245,17 @@ bool TryFindMissionNearestGuidingInfo(const FECSEntity &inout PlayerEntity, cons
     FGuideContext local_402;
     for (auto& local_420 : local_254.GetActiveObjectiveStatusMap())
     {
-        local_420;
-        if ((int(GetObjectiveStatus())) != 1)
+        if ((int(local_420.GetValue().GetObjectiveStatus())) != 1)
         {
             continue;
         }
-        local_424 = GetObjectiveId();
+        local_424 = local_420.GetValue().GetObjectiveId();
         TDataObjectPtr<FObjectiveConfig> local_448 = ObjectiveUtils::FindObjectiveConfig(local_424);
         if (!(local_448))
         {
             continue;
         }
-        TArray<uint> local_476 = ObjectiveUtils::GetObjectiveStartedGuideUniqueIds(PlayerEntity, GetInstanceId(), local_448);
+        TArray<uint> local_476 = ObjectiveUtils::GetObjectiveStartedGuideUniqueIds(PlayerEntity, local_420.GetValue().GetInstanceId(), local_448);
         for (auto local_493 : local_476)
         {
             FGuideContext local_634;
@@ -335,24 +330,22 @@ void RefreshMissionGuidingPathOnObjectiveChanged(const FECSEntity &inout PlayerE
 }
 bool CanStartGuideForMissionInLevel(const FECSEntity &inout PlayerEntity, const TDataObjectPtr<FMissionConfig> &inout MissionConfig, const TDataObjectPtr<FLevelInfoConfig> &inout LevelInfo = TDataObjectPtr<FLevelInfoConfig>())
 {
-    int local_115 = 0;
     if (!(MissionConfig.IsSet()))
     {
         return false;
     }
     FMissionDetail local_114;
-    if (!(MissionUtils::TryFindMissionDetail(PlayerEntity, local_115, local_114, false)))
+    if (!(MissionUtils::TryFindMissionDetail(PlayerEntity, MissionConfig.Get().DataId, local_114, false)))
     {
         return false;
     }
     for (auto& local_134 : local_114.GetActiveObjectiveStatusMap())
     {
-        local_134;
-        if ((int(GetObjectiveStatus())) != 1)
+        if ((int(local_134.GetValue().GetObjectiveStatus())) != 1)
         {
             continue;
         }
-        TDataObjectPtr<FObjectiveConfig> local_162 = ObjectiveUtils::FindObjectiveConfig(GetObjectiveId());
+        TDataObjectPtr<FObjectiveConfig> local_162 = ObjectiveUtils::FindObjectiveConfig(local_134.GetValue().GetObjectiveId());
         if (!(local_162))
         {
             continue;
@@ -367,32 +360,31 @@ bool CanStartGuideForMissionInLevel(const FECSEntity &inout PlayerEntity, const 
 void DeactivateDialogueForMission(const FECSEntity &inout PlayerEntity, const FName &inout DialogueId, FMissionDetail &inout MissionDetail)
 {
     DialogueUtils::DeactivatePlayerDialogue(MissionDetail.GetActiveDialogueMap()[DialogueId], PlayerEntity);
+    MissionDetail.GetModify_ActiveDialogueMap().Remove(DialogueId);
     return;
 }
 uint ActivateObjectiveForMission(const FECSEntity &inout PlayerEntity, const TDataObjectPtr<FObjectiveConfig> &inout ObjectiveConfig, FMissionDetail &inout MissionDetail)
 {
-    int local_1 = 0;
-    int local_191 = 0;
     FObjectiveInstance local_338;
     int local_2 = ObjectiveUtils::ActivateObjective(ObjectiveConfig, FObjectiveContext(PlayerEntity, EConditionUsage(1), MissionDetail.GetActivePhaseId()));
-    MissionDetail.GetModify_ActiveObjectiveStatusMap().Add(local_2, FMissionObjectiveInfo(local_2, local_1, EObjectiveStatus(1)));
+    MissionDetail.GetModify_ActiveObjectiveStatusMap().Add(local_2, FMissionObjectiveInfo(local_2, ObjectiveConfig.Get().DataId, EObjectiveStatus(1)));
     FObjectiveInstance local_170;
     if (ObjectiveUtils::TryFindActivetedObjectiveInstance(local_2, local_170) && !(local_170.ChildObjectiveMap.IsEmpty()))
     {
         for (auto& local_190 : local_170.ChildObjectiveMap)
         {
-            local_190;
-            if (local_1 == 0)
+            int local_1_2 = local_190.GetValue();
+            if (local_1_2 == 0)
             {
                 continue;
             }
-            if (ObjectiveUtils::TryFindActivetedObjectiveInstance(local_191, local_338))
+            if (ObjectiveUtils::TryFindActivetedObjectiveInstance(local_190.GetValue(), local_338))
             {
-                MissionDetail.GetModify_ActiveObjectiveStatusMap().Add(FMissionObjectiveInfo(local_191, int(local_338.ObjectiveId), local_338.Status));
+                MissionDetail.GetModify_ActiveObjectiveStatusMap().Add(local_190.GetValue(), FMissionObjectiveInfo(local_190.GetValue(), int(local_338.ObjectiveId), local_338.Status));
             }
             else
             {
-                XError(ELog(63), FString().Append("Failed to find activated objective instance for child objective: ").Append());
+                XError(ELog(63), FString().Append("Failed to find activated objective instance for child objective: ").Append(local_190.GetValue()));
             }
         }
     }
@@ -430,6 +422,7 @@ void DeactivateObjectiveForMission(const uint ObjectiveInstanceId, FMissionDetai
     {
         if (MissionDetail.GetActiveObjectiveStatusMap().Contains(local_22))
         {
+            MissionDetail.GetModify_ActiveObjectiveStatusMap().Remove(local_22);
             continue;
         }
         XWarning(ELog(63), FString().Append("Failed to find activated objective instance for child objective: ").Append(local_22));
@@ -469,9 +462,9 @@ void ActivatePhase(const FECSEntity &inout PlayerEntity, const TDataObjectPtr<FM
     }
     MissionDetail.SetActivePhaseConfig(PhaseCfg);
     MissionDetail.GetModify_ActiveObjectiveStatusMap().Empty(0);
-    if (GetDialogues().Num() > 0)
+    if (PhaseCfg.Get().GetDialogues().Num() > 0)
     {
-        for (auto& local_24 : GetDialogues())
+        for (auto& local_24 : PhaseCfg.Get().GetDialogues())
         {
             if (local_24.IsSet())
             {
@@ -483,26 +476,28 @@ void ActivatePhase(const FECSEntity &inout PlayerEntity, const TDataObjectPtr<FM
             XError(ELog(63), FString().Append("Failed to activate dialogue for mission phase ").Append(PhaseCfg.GetDataName()).Append(": dialogue is not set"));
         }
     }
-    if (GetObjective().IsSet())
+    if (PhaseCfg.Get().GetObjective().IsSet())
     {
-        TDataObjectPtr<FObjectiveConfig> local_52 = GetObjective();
+        TDataObjectPtr<FObjectiveConfig> local_52 = PhaseCfg.Get().GetObjective();
         MissionUtils::ActivateObjectiveForMission(PlayerEntity, local_52, MissionDetail);
     }
     return;
 }
 void InitMissionTrackingAndGuiding(const FECSEntity &inout PlayerEntity, const FMissionDetail &inout MissionDetail)
 {
-    bool local_59 = false;
-    EMissionType local_2;
-    int local_1 = local_2;
-    if (MissionUtils::GetMissionPresentationRuleConfig(MissionDetail.GetMissionConfig()).IsSet())
+    bool local_56;
+    int local_1 = MissionDetail.GetMissionConfig().Get().MissionType;
+    TDataObjectPtr<FMissionPresentationRuleConfig> local_26 = MissionUtils::GetMissionPresentationRuleConfig(MissionDetail.GetMissionConfig());
+    if (local_26.IsSet())
     {
-        bool local_51 = (0 == 1);
-        bool local_52 = MissionDetail.GetActivePhaseConfig().IsSet() && (0 == 0);
+        bool local_51 = (int(local_26.Get().MissionHideType) == 1);
+        bool local_52 = MissionDetail.GetActivePhaseConfig().IsSet() && (MissionDetail.GetActivePhaseConfig().Get().DataId == MissionDetail.GetMissionConfig().Get().GetFirstPhase().Get().DataId);
+        bool local_59 = local_26.Get().bAutoPinHUD;
         if (local_59)
         {
             if ((local_51 && local_52))
             {
+                local_59 = local_26.Get().bAutoStartFirstPhaseGuide;
                 if (local_59)
                 {
                     MissionUtils::StartMissionGuide(PlayerEntity, MissionDetail, false);
@@ -510,16 +505,22 @@ void InitMissionTrackingAndGuiding(const FECSEntity &inout PlayerEntity, const F
             }
             else
             {
-                local_59 = !(MissionUtils::GetCurrentTrackingMission(PlayerEntity, EMissionType(local_1)).IsSet());
-                if (local_59)
+                if (!(MissionUtils::GetCurrentTrackingMission(PlayerEntity, EMissionType(local_1)).IsSet()))
                 {
                     MissionUtils::StartMissionTrackingWithGuide(PlayerEntity, MissionDetail.GetMissionConfig(), false);
                 }
             }
             return;
         }
-        local_59 = (local_51 && local_59) && local_52;
-        if (local_59)
+        if (!(local_51))
+        {
+            local_56 = false;
+        }
+        else
+        {
+            local_56 = local_26.Get().bAutoStartFirstPhaseGuide;
+        }
+        if (local_56 && local_52)
         {
             MissionUtils::StartMissionGuide(PlayerEntity, MissionDetail, false);
         }
@@ -538,7 +539,7 @@ void ResetPlayerMissionInfo(const FECSEntity &inout PlayerEntity, const TMap<uin
     for (auto& local_26 : MissionInfoMap)
     {
         bool local_23 = !(local_6.GetActiveMissionStatus().Contains(local_26.GetKey()));
-        FMissionDetail& local_28_2 = local_6.GetModify_ActiveMissionStatus().FindOrAdd(local_26.GetKey());
+        FMissionDetail& local_28_2 = local_6.GetModify_ActiveMissionStatus().FindOrAdd(local_26.GetKey(), local_26.GetValue());
         if (local_28_2.GetActivePhaseConfig().IsSet())
         {
             MissionUtils::ActivatePhase(PlayerEntity, local_28_2.GetActivePhaseConfig(), local_28_2);
@@ -556,14 +557,14 @@ void ResetPlayerMissionInfo(const FECSEntity &inout PlayerEntity, const TMap<uin
         {
             continue;
         }
-        FString local_210 = FString();
+        XLog(ELog(63), FString().Append("Recover Mission Tracking: ").Append(local_68.Get().DataId));
         MissionUtils::StartMissionTrackingWithGuide(PlayerEntity, local_68, false);
     }
     if (!(bPlayerClearedAllTracking))
     {
-        for (auto& local_26_2 : local_6.GetActiveMissionStatus())
+        for (auto& local_26 : local_6.GetActiveMissionStatus())
         {
-            MissionUtils::InitMissionTrackingAndGuiding(PlayerEntity);
+            MissionUtils::InitMissionTrackingAndGuiding(PlayerEntity, local_26.GetValue());
         }
     }
     return;
@@ -612,9 +613,9 @@ void SaveMissionTrackInfo(const FECSEntity &inout PlayerEntity, FPbDsPlayerInfo 
         int local_36;
         for (auto& local_54 : local_36.GetTrackingMissionMap())
         {
-            local_54;
-            if (IsSet())
+            if (local_54.GetValue().IsSet())
             {
+                local_26.Add(local_54.GetValue().Get().DataId);
             }
         }
     }
@@ -645,8 +646,7 @@ void StartMissionTracking(const FECSEntity &inout PlayerEntity, const TDataObjec
         XError(ELog(63), FString().Append("StartMissionTracking Failed, MissionConfig is not set"));
         return;
     }
-    EMissionType local_16;
-    EMissionType local_15 = local_16;
+    EMissionType local_15 = MissionConfig.Get().MissionType;
     TDataObjectPtr<FMissionConfig> local_40;
     if (!(local_14.GetTrackingMissionMap().Find(local_15, local_40)))
     {
@@ -656,11 +656,12 @@ void StartMissionTracking(const FECSEntity &inout PlayerEntity, const TDataObjec
     {
         local_1 = local_40;
     }
-    local_1 = local_1 && (0 != 0);
+    local_1 = local_1 && (local_40.Get().DataId != MissionConfig.Get().DataId);
     if (local_1)
     {
         MissionUtils::StopMissionGuide(PlayerEntity, local_40);
     }
+    local_14.GetModify_TrackingMissionMap().Remove(local_15);
     local_14.GetModify_TrackingMissionMap().Add(local_15, MissionConfig);
     return;
 }
@@ -674,9 +675,10 @@ bool StopMissionTracking(const FECSEntity &inout PlayerEntity, const TDataObject
     }
     if (!(MissionUtils::IsMissionTracking(PlayerEntity, MissionConfig)))
     {
-        FString local_6 = FString();
+        XError(ELog(63), FString().Append("StopMissionTracking Failed, Mission ").Append(MissionConfig.Get().DataId).Append(" is not tracking"));
         return false;
     }
+    local_14.GetModify_TrackingMissionMap().Remove(MissionConfig.Get().MissionType);
     if (local_14.GetTrackingMissionMap().IsEmpty())
     {
         Remove local_18;
@@ -719,50 +721,46 @@ bool TryToggleMissionTracking(const FECSEntity &inout PlayerEntity, const TDataO
 TDataObjectPtr<FMissionPresentationRuleConfig> GetMissionPresentationRuleConfig(const TDataObjectPtr<FMissionConfig> &inout MissionConfig)
 {
     const UMissionSettings local_76;
-    TDataObjectPtr<FMissionPresentationRuleConfig> __return;
     if (!(MissionConfig.IsSet()))
     {
         return TDataObjectPtr<FMissionPresentationRuleConfig>();
     }
-    TDataObjectPtr<FMissionPresentationRuleConfig> local_74 = GetPresentationRule();
+    TDataObjectPtr<FMissionPresentationRuleConfig> local_74 = MissionConfig.Get().GetPresentationRule();
     if (local_74.IsSet())
     {
         return local_74;
     }
     GetGameplaySettings<UMissionSettings> local_78;
     local_76 = local_78;
-    if (local_76.DefaultMissionPresentationRuleConfig.Contains(unresolved.MissionType))
+    if (local_76.DefaultMissionPresentationRuleConfig.Contains(MissionConfig.Get().MissionType))
     {
+        return local_76.DefaultMissionPresentationRuleConfig[MissionConfig.Get().MissionType];
     }
-    else
-    {
-        __return = local_26;
-    }
-    return __return;
+    return local_26;
 }
 TDataObjectPtr<FGuidePresentationConfig> GetGuidePresentationConfig(const TDataObjectPtr<FMissionConfig> &inout MissionConfig, const TDataObjectPtr<FMissionPhaseConfig> &inout PhaseConfig = TDataObjectPtr<FMissionPhaseConfig>())
 {
-    if (PhaseConfig.IsSet() && GetOverrideGuidePresentation().IsSet())
+    if (PhaseConfig.IsSet() && PhaseConfig.Get().GetOverrideGuidePresentation().IsSet())
     {
-        return GetOverrideGuidePresentation();
+        return PhaseConfig.Get().GetOverrideGuidePresentation();
     }
-    if (MissionUtils::GetMissionPresentationRuleConfig(MissionConfig).IsSet() && GetGuidePresentation().IsSet())
+    TDataObjectPtr<FMissionPresentationRuleConfig> local_50 = MissionUtils::GetMissionPresentationRuleConfig(MissionConfig);
+    if (local_50.IsSet() && local_50.Get().GetGuidePresentation().IsSet())
     {
-        return GetGuidePresentation();
+        return local_50.Get().GetGuidePresentation();
     }
     return TDataObjectPtr<FGuidePresentationConfig>();
 }
 void UpdateMissionTracking(const FECSEntity &inout PlayerEntity, const TDataObjectPtr<FMissionConfig> &inout MissionConfig, const bool bOpenMapAndSelect = false)
 {
     FMissionDetail local_112;
-    bool local_119 = false;
     Get local_116;
-    if (local_116.opCall())
+    const FC_PlayerMissionInfo& local_118 = local_116.opCall();
+    if (local_118)
     {
-        local_119 = !local_119;
-        if (local_119)
+        if (!(local_118.GetActiveMissionStatus().Find(MissionConfig.Get().DataId, local_112)))
         {
-            FString local_124 = FString();
+            XError(ELog(63), FString().Append("UpdateMissionTracking Failed, Mission ").Append(MissionConfig.Get().DataId).Append(" is not active"));
             return;
         }
     }
@@ -783,7 +781,7 @@ void UpdateMissionTracking(const FECSEntity &inout PlayerEntity, const TDataObje
         TDataObjectPtr<FGuidePresentationConfig> local_170 = MissionUtils::GetGuidePresentationConfig(MissionConfig, local_112.GetActivePhaseConfig());
         for (auto& local_144_2 : local_112.GetActiveObjectiveStatusMap())
         {
-            if ((int(GetObjectiveStatus())) == 1)
+            if ((int(local_144_2.GetValue().GetObjectiveStatus())) == 1)
             {
                 FGuideDataSourceConfig local_274;
                 local_274.SetFromMission(MissionConfig);
@@ -797,27 +795,17 @@ void UpdateMissionTracking(const FECSEntity &inout PlayerEntity, const TDataObje
 }
 bool ShouldAutoShowMissionGuidingPath(const FECSEntity &inout PlayerEntity, const TDataObjectPtr<FMissionConfig> &inout MissionConfig)
 {
-    bool local_51 = false;
     if (!(MissionConfig.IsSet()))
     {
         return false;
     }
-    bool local_1 = !(GetPresentationRule().IsSet());
-    if (local_1)
-    {
-        local_1 = true;
-    }
-    else
-    {
-        local_51 = !local_51;
-        local_1 = local_51;
-    }
-    if (local_1)
+    TDataObjectPtr<FMissionPresentationRuleConfig> local_26 = MissionConfig.Get().GetPresentationRule();
+    if (!(local_26.IsSet()) || !(local_26.Get().bAutoShowGuidingPath))
     {
         return false;
     }
-    bool local_1_2 = CommissionUtils::GetCurrentCommissionConfig().IsSet();
-    if (local_1_2)
+    bool local_1 = CommissionUtils::GetCurrentCommissionConfig().IsSet();
+    if (local_1)
     {
         return false;
     }
@@ -834,7 +822,7 @@ void StartMissionGuide(const FECSEntity &inout PlayerEntity, const FMissionDetai
     TDataObjectPtr<FGuidePresentationConfig> local_80 = MissionUtils::GetGuidePresentationConfig(local_24, MissionDetail.GetActivePhaseConfig());
     for (auto& local_122 : MissionDetail.GetActiveObjectiveStatusMap())
     {
-        if ((int(GetObjectiveStatus())) == 1)
+        if ((int(local_122.GetValue().GetObjectiveStatus())) == 1)
         {
             FGuideDataSourceConfig local_202;
             local_202.SetFromMission(local_24);
@@ -846,8 +834,7 @@ void StartMissionGuide(const FECSEntity &inout PlayerEntity, const FMissionDetai
 void StartMissionGuide(const FECSEntity &inout PlayerEntity, const TDataObjectPtr<FMissionConfig> &inout MissionConfig, const bool bOpenMapAndSelect = false)
 {
     FMissionDetail local_112;
-    int local_114 = 0;
-    if (!(MissionUtils::TryFindMissionDetail(PlayerEntity, local_114, local_112, false)))
+    if (!(MissionUtils::TryFindMissionDetail(PlayerEntity, MissionConfig.Get().DataId, local_112, false)))
     {
         XError(ELog(63), FString().Append("StartMissionGuide Failed, MissionDetail not found for MissionConfig: ").Append(MissionConfig.GetDataName()));
         return;
@@ -866,8 +853,7 @@ void StopMissionGuide(const FECSEntity &inout PlayerEntity, const FMissionDetail
 void StopMissionGuide(const FECSEntity &inout PlayerEntity, const TDataObjectPtr<FMissionConfig> &inout MissionConfig)
 {
     FMissionDetail local_112;
-    int local_114 = 0;
-    if (!(MissionUtils::TryFindMissionDetail(PlayerEntity, local_114, local_112, false)))
+    if (!(MissionUtils::TryFindMissionDetail(PlayerEntity, MissionConfig.Get().DataId, local_112, false)))
     {
         XError(ELog(63), FString().Append("StopMissionGuide Failed, MissionDetail not found for MissionConfig: ").Append(MissionConfig.GetDataName()));
         return;
@@ -878,15 +864,13 @@ void StopMissionGuide(const FECSEntity &inout PlayerEntity, const TDataObjectPtr
 TDataObjectPtr<FMissionConfig> FindFollowUpMissionToTrack(const FECSEntity &inout PlayerEntity, const TDataObjectPtr<FMissionConfig> &inout CompletedMissionConfig)
 {
     int local_62 = 0;
-    const FMissionDetail& local_158;
     Has local_6;
     if (!(CompletedMissionConfig) || !(local_6.opCall()))
     {
         return TDataObjectPtr<FMissionConfig>();
     }
-    EMissionType local_64;
-    EMissionType local_63 = local_64;
-    const TArray<TDataObjectPtr<FMissionConfig>>& local_66 = GetFollowUpTrackingMissions();
+    EMissionType local_63 = CompletedMissionConfig.Get().MissionType;
+    const TArray<TDataObjectPtr<FMissionConfig>>& local_66 = CompletedMissionConfig.Get().GetFollowUpTrackingMissions();
     if (local_66.Num() > 0)
     {
         for (auto& local_82 : local_66)
@@ -895,7 +879,7 @@ TDataObjectPtr<FMissionConfig> FindFollowUpMissionToTrack(const FECSEntity &inou
             {
                 continue;
             }
-            if (local_62.GetActiveMissionStatus().Contains(unresolved.DataId))
+            if (local_62.GetActiveMissionStatus().Contains(local_82.Get().DataId))
             {
                 return local_82;
             }
@@ -904,15 +888,16 @@ TDataObjectPtr<FMissionConfig> FindFollowUpMissionToTrack(const FECSEntity &inou
     }
     TDataObjectPtr<FMissionConfig> local_106;
     TDataObjectPtr<FMissionConfig> local_130;
-    FName local_136 = GetBelongChapter() ? GetBelongChapter().GetDataName() : FName();
+    FName local_136 = CompletedMissionConfig.Get().GetBelongChapter() ? CompletedMissionConfig.Get().GetBelongChapter().GetDataName() : FName();
     for (auto& local_156 : local_62.GetActiveMissionStatus())
     {
-        local_156;
+        const FMissionDetail& local_158 = local_156.GetValue();
         bool local_1 = !(local_158.GetMissionConfig()) || (int(local_158.GetMissionStatus()) != 1);
         if (local_1)
         {
             continue;
         }
+        EMissionType local_64 = local_158.GetMissionConfig().Get().MissionType;
         if (int(local_64) != int(local_63))
         {
             continue;
@@ -927,9 +912,9 @@ TDataObjectPtr<FMissionConfig> FindFollowUpMissionToTrack(const FECSEntity &inou
         }
         else
         {
-            local_1 = GetBelongChapter();
+            local_1 = local_158.GetMissionConfig().Get().GetBelongChapter();
         }
-        if (local_1 && (GetBelongChapter().GetDataName() == local_136))
+        if (local_1 && (local_158.GetMissionConfig().Get().GetBelongChapter().GetDataName() == local_136))
         {
             local_106 = local_158.GetMissionConfig();
         }
@@ -944,13 +929,13 @@ UFUNCTION()
 bool TryActivateObjectiveForMission(const FECSEntity &inout PlayerEntity, const TDataObjectPtr<FMissionConfig> &inout MissionConfig, const TDataObjectPtr<FObjectiveConfig> &inout ObjectiveConfig)
 {
     Has local_4;
-    int local_13 = 0;
     int local_20 = 0;
     if (!(local_4.opCall()))
     {
         XError(ELog(63), FString().Append("PlayerEntity ").Append(PlayerEntity).Append(" does not have FC_PlayerMissionInfo"));
         return false;
     }
+    int local_13 = MissionConfig.Get().DataId;
     int local_12 = local_13;
     if (!(local_20.GetActiveMissionStatus().Contains(local_12)))
     {
@@ -965,13 +950,13 @@ UFUNCTION()
 bool TryDeactivateObjectiveForMission(const FECSEntity &inout PlayerEntity, const TDataObjectPtr<FMissionConfig> &inout MissionConfig, const TDataObjectPtr<FObjectiveConfig> &inout ObjectiveConfig)
 {
     Has local_4;
-    int local_13 = 0;
     int local_20 = 0;
     if (!(local_4.opCall()))
     {
         XError(ELog(63), FString().Append("PlayerEntity ").Append(PlayerEntity).Append(" does not have FC_PlayerMissionInfo"));
         return false;
     }
+    int local_13 = MissionConfig.Get().DataId;
     int local_12 = local_13;
     if (!(local_20.GetActiveMissionStatus().Contains(local_12)))
     {
@@ -981,7 +966,7 @@ bool TryDeactivateObjectiveForMission(const FECSEntity &inout PlayerEntity, cons
     FMissionDetail& local_22 = local_20.GetModify_ActiveMissionStatus()[local_12];
     for (auto& local_40 : local_22.GetActiveObjectiveStatusMap())
     {
-        if (GetObjectiveId() == 0)
+        if (local_40.GetValue().GetObjectiveId() == ObjectiveConfig.Get().DataId)
         {
             MissionUtils::DeactivateObjectiveForMission(local_40.GetKey(), local_22);
             return true;
@@ -993,13 +978,13 @@ UFUNCTION()
 bool TrySetObjectiveStatusForMission(const FECSEntity &inout PlayerEntity, const TDataObjectPtr<FMissionConfig> &inout MissionConfig, const TDataObjectPtr<FObjectiveConfig> &inout ObjectiveConfig, const EObjectiveStatus ObjectiveStatus)
 {
     Has local_4;
-    int local_13 = 0;
     int local_20 = 0;
     if (!(local_4.opCall()))
     {
         XError(ELog(63), FString().Append("PlayerEntity ").Append(PlayerEntity).Append(" does not have FC_PlayerMissionInfo"));
         return false;
     }
+    int local_13 = MissionConfig.Get().DataId;
     int local_12 = local_13;
     if (!(local_20.GetActiveMissionStatus().Contains(local_12)))
     {
@@ -1009,7 +994,7 @@ bool TrySetObjectiveStatusForMission(const FECSEntity &inout PlayerEntity, const
     FMissionDetail& local_22 = local_20.GetModify_ActiveMissionStatus()[local_12];
     for (auto& local_40 : local_22.GetActiveObjectiveStatusMap())
     {
-        if (GetObjectiveId() == 0)
+        if (local_40.GetValue().GetObjectiveId() == ObjectiveConfig.Get().DataId)
         {
             ObjectiveUtils::SetObjectiveStatusManually(local_40.GetKey(), EObjectiveStatus(ObjectiveStatus));
             return true;

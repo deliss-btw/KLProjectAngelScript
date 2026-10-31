@@ -50,8 +50,7 @@ struct FVM_EquipmentEditPage : FEUIViewModel
     {
         this.SetEditingEquipSlot(EEquipSlotType(InEditingEquipSlot));
         this.SetEditingAvatar(TEUIModelRef<FMS_EditingAvatar>(::FMS_EditingAvatar::Get(this.GetContext().Manager)));
-        TEUIModelRef<FMS_EditingAvatar> local_2 = this.GetEditingAvatar();
-        bool local_3 = !(!(GetAvatarConfig()));
+        bool local_3 = !(!(this.GetEditingAvatar().Get().GetAvatarConfig()));
         return;
     }
     void PostConstruct()
@@ -88,8 +87,7 @@ struct FVM_EquipmentEditPage : FEUIViewModel
     }
     void ConfirmEquip()
     {
-        TEUIModelRef<FMS_EditingAvatar> local_6 = this.GetEditingAvatar();
-        ::FEquipmentUtils::GS_RequestChangeEquipment(this.GetContext().GetLocalPlayer(), GetAvatarConfig(), ::FMS_EquipmentDataCache::Get(this.GetContext().Manager).GetItemUid(this.GetEquipment()));
+        ::FEquipmentUtils::GS_RequestChangeEquipment(this.GetContext().GetLocalPlayer(), this.GetEditingAvatar().Get().GetAvatarConfig(), ::FMS_EquipmentDataCache::Get(this.GetContext().Manager).GetItemUid(this.GetEquipment()));
         return;
     }
     void SwitchShowCompare()
@@ -128,16 +126,14 @@ struct FVM_EquipmentEditPage : FEUIViewModel
     }
     TEUIModelRef<FM_Equipment> GetCurrentEquipment() const
     {
-        TEUIModelRef<FMS_EditingAvatar> local_2 = this.GetEditingAvatar();
-        TDataObjectPtr<FAvatarPrefabConfig> local_26 = GetAvatarConfig();
+        TDataObjectPtr<FAvatarPrefabConfig> local_26 = this.GetEditingAvatar().Get().GetAvatarConfig();
         return ::FMS_EquipmentDataCache::Get(this.GetContext().Manager).GetEquipment(::FEquipmentUtils::GetAvatarEquipmentUid(this.GetContext().GetLocalPlayer(), EEquipSlotType(1), local_26));
     }
     void UpdateEquipmentSelectList()
     {
         this.GetModify_EquipmentSelectList().Empty(0);
         TArray<TEUIModelRef<FM_ItemData>> local_6 = ::FMS_PlayerInventory::Get(this.GetContext().Manager).GetAllItemsByType(EItemType(2));
-        TEUIModelRef<FMS_EditingAvatar> local_12 = this.GetEditingAvatar();
-        TDataObjectPtr<FAvatarPrefabConfig> local_36 = GetAvatarConfig();
+        TDataObjectPtr<FAvatarPrefabConfig> local_36 = this.GetEditingAvatar().Get().GetAvatarConfig();
         FMS_EquipmentDataCache& local_62 = ::FMS_EquipmentDataCache::Get(this.GetContext().Manager);
         TArray<TEUIModelRef<FM_Equipment>> local_66;
         for (auto& local_82 : local_6)
@@ -153,6 +149,8 @@ struct FVM_EquipmentEditPage : FEUIViewModel
                 }
             }
         }
+        __Lambda_UI_Private_ViewModel_InGame_Equipment_VM_EquipmentEditPage_139 local_146;
+        local_66.Sort(local_146);
         for (auto& local_160 : local_66)
         {
             FVM_EquipmentSelectListItem& local_162 = ::FVM_EquipmentSelectListItem::Create(this.GetContext().Manager, local_62.GetItemUid(local_160));
@@ -173,8 +171,7 @@ struct FVM_EquipmentEditPage : FEUIViewModel
             {
                 local_4 = local_10.GetbShowCompare();
             }
-            TEUIModelRef<FMS_EditingAvatar> local_12 = this.GetEditingAvatar();
-            this.SetEquipmentSelectDetail(FEUIModelRef(::FVM_EquipmentSelectDetail::Create(this.GetContext().Manager, this.GetEquipment(), GetAvatarConfig())));
+            this.SetEquipmentSelectDetail(FEUIModelRef(::FVM_EquipmentSelectDetail::Create(this.GetContext().Manager, this.GetEquipment(), this.GetEditingAvatar().Get().GetAvatarConfig())));
             local_8.opCall().SetbShowCompare(local_4);
             return;
         }
@@ -296,8 +293,8 @@ struct __Lambda_UI_Private_ViewModel_InGame_Equipment_VM_EquipmentEditPage_139
     }
     bool opCall(const TEUIModelRef<FM_Equipment> &inout A, const TEUIModelRef<FM_Equipment> &inout B)
     {
-        TDataObjectPtr<FEquipmentConfig> local_24 = GetEquipmentConfig();
-        TDataObjectPtr<FEquipmentConfig> local_72 = GetEquipmentConfig();
+        TDataObjectPtr<FEquipmentConfig> local_24 = A.Get().GetEquipmentConfig();
+        TDataObjectPtr<FEquipmentConfig> local_72 = B.Get().GetEquipmentConfig();
         if (local_24.opArrow().Level != local_72.opArrow().Level)
         {
             return (local_24.opArrow().Level > local_72.opArrow().Level);
@@ -341,11 +338,9 @@ FVM_EquipmentEditPage& Create(const UObject ContextObject)
 {
     return FVM_EquipmentEditPage::CreateByManager(EUIInternal::GetContextManager(ContextObject));
 }
-FVM_EquipmentEditPage CreateByManager(const UEUIManagerSubsystem Manager)
+FVM_EquipmentEditPage& CreateByManager(const UEUIManagerSubsystem Manager)
 {
-    FVM_EquipmentEditPage __r;
-    TEUIModelRef<FVM_EquipmentEditPage> local_6 = TEUIModelRef<FVM_EquipmentEditPage>(EUIInternal::MakeModelWithManager(Manager, FVM_EquipmentEditPage::ModelId));
-    return __r;
+    return TEUIModelRef<FVM_EquipmentEditPage>(EUIInternal::MakeModelWithManager(Manager, FVM_EquipmentEditPage::ModelId)).Get();
 }
 void GetModelInfo(FEUIViewModelMetaInfo &inout Result)
 {
@@ -495,7 +490,6 @@ namespace __GeneratedProperties_FVM_EquipmentEditPage
 {
 UScriptStruct StaticStruct()
 {
-    UScriptStruct local_2;
-    return local_2;
+    return __GeneratedProperties_FVM_EquipmentEditPage.Get();
 }
 }

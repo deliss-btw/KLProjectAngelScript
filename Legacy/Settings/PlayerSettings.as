@@ -90,6 +90,7 @@ class UPlayerInfoSettings : UGameplaySettingsBase
             }
         }
         bool local_93 = false;
+        local_60.StigmataLevels.Sort(local_93);
         TDataObjectIterator<FStigmataConfig> local_188;
         for (; local_188; )
         {
@@ -108,9 +109,12 @@ class UPlayerInfoSettings : UGameplaySettingsBase
             }
             local_188.Next();
         }
+        __Lambda_Legacy_Settings_PlayerSettings_204 local_254;
+        local_60.NoCostStigmataConfigs.Sort(local_254);
         for (auto& local_272 : local_60.HasCostStigmataConfigsByLevel)
         {
-            local_272;
+            __Lambda_Legacy_Settings_PlayerSettings_207 local_274;
+            local_272.GetValue().Configs.Sort(local_274);
         }
         if (this.AttributeGrowByLevelConfigTable != nullptr)
         {
@@ -159,13 +163,11 @@ class UPlayerInfoSettings : UGameplaySettingsBase
     }
     TArray<int> GetBreakthroughLevels() const property
     {
-        // body not fully recovered — stub [no-return]
-        TArray<int> __r; return __r;
+        return FInstancedStruct::GetPtr(this.GetCacheData()).opCall().Get().BreakthroughLevels;
     }
     TArray<int> GetStigmataLevels() const property
     {
-        // body not fully recovered — stub [no-return]
-        TArray<int> __r; return __r;
+        return FInstancedStruct::GetPtr(this.GetCacheData()).opCall().Get().StigmataLevels;
     }
     uint GetLevelupTotalUpgradeExp(const int FromLevel, const int ToLevel) const
     {
@@ -187,8 +189,6 @@ class UPlayerInfoSettings : UGameplaySettingsBase
     float32 GetLevelUpAttributeHpGrow(const int FromLevel, const int ToLevel) const
     {
         TArray<TDataObjectPtr<FGameAttributeGrowByLevelConfig>> local_12;
-        float32 local_14 = 0.0f;
-        float32 local_15 = 0.0f;
         int local_2 = this.GetLevelIndexInCache(ToLevel);
         int local_1 = this.GetLevelIndexInCache(FromLevel);
         TConstRawPtr<FPlayerSettingsCache> local_10 = FInstancedStruct::GetPtr(this.GetCacheData()).opCall();
@@ -196,12 +196,12 @@ class UPlayerInfoSettings : UGameplaySettingsBase
         {
             if (local_12.IsValidIndex(local_1))
             {
-                local_14 = local_14 - local_15;
-                return local_14;
+                return (local_12[local_2].Get().HPMax - local_12[local_1].Get().HPMax);
             }
-            return local_15;
+            return local_12[local_2].Get().HPMax;
         }
-        return 0.0f;
+        float32 local_14_2 = 0.0f;
+        return local_14_2;
     }
     int GetFakeStigmataPointNum(const int Level) const
     {
@@ -226,8 +226,7 @@ class UPlayerInfoSettings : UGameplaySettingsBase
     }
     TArray<TDataObjectPtr<FStigmataConfig>> GetAllNoCostStigmataConfigs() const
     {
-        // body not fully recovered — stub [no-return]
-        TArray<TDataObjectPtr<FStigmataConfig>> __r; return __r;
+        return FInstancedStruct::GetPtr(this.GetCacheData()).opCall().Get().NoCostStigmataConfigs;
     }
     TArray<TDataObjectPtr<FStigmataConfig>> GetNoCostStigmataConfigsInRange(const int MinLevel, const int MaxLevelExclusive) const
     {

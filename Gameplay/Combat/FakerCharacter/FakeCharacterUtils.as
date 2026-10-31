@@ -74,8 +74,10 @@ void StopControlFakeCharacter(const FECSEntity &inout SwitchOutAvatar)
             if (local_26.opCall())
             {
                 Modify local_32;
-                if (local_32.opCall())
+                FC_GameAttributeSharedParent& local_34 = local_32.opCall();
+                if (local_34)
                 {
+                    local_34.GetModify_SharedEntities().Remove(local_4.FakeEntity);
                 }
             }
             FBuffUtils::TransferSharedBuff(local_4.FakeEntity, local_4.SwitchOutAvatar);

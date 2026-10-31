@@ -64,8 +64,7 @@ class UESMAction_TargetIgnoreOtherAttack : UESMBPBaseSpanTickAction
     void Exit_Implementation(const FESMContext &inout Context, const FESMActionTime &inout Time) const
     {
         bool local_5;
-        FECSEntity local_4;
-        if (!(local_4.IsValid()))
+        if (!(FECSEntity(this.GetInstanceData(Context).TargetEntity).IsValid()))
         {
             local_5 = false;
         }

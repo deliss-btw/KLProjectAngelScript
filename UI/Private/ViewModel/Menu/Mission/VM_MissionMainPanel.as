@@ -151,14 +151,11 @@ struct FVM_MissionMainPanel : FEUIViewModel
         {
             return false;
         }
-        TEUIModelRef<FVM_MissionList> local_6 = this.GetMissionList();
-        return HasSelectedMission();
+        return this.GetMissionList().Get().HasSelectedMission();
     }
     void OnHighlightedEntryChanged()
     {
-        TEUIModelRef<FVM_MissionList> local_2 = this.GetMissionList();
-        TEUIModelRef<FVM_MissionListEntry> local_6;
-        local_6.GetHighlightedEntry();
+        TEUIModelRef<FVM_MissionListEntry> local_6 = this.GetMissionList().Get().GetHighlightedEntry();
         TEUIModelRef<FVM_MissionListEntry> local_4;
         this.SetbIsChapterEntryHighlighted(local_4.IsValid() && local_4.opArrow().IsChapterEntry());
         this.SetbIsHighlightedChapterExpanded(this.GetbIsChapterEntryHighlighted() && local_4.opArrow().GetbShowChapterMission());
@@ -167,13 +164,11 @@ struct FVM_MissionMainPanel : FEUIViewModel
     void OnSelectedMissionEntryChanged()
     {
         bool local_9;
-        TEUIModelRef<FVM_MissionList> local_2 = this.GetMissionList();
-        TEUIModelRef<FVM_MissionListEntry> local_6;
-        local_6.GetSelectedMissionEntry();
+        TEUIModelRef<FVM_MissionListEntry> local_6 = this.GetMissionList().Get().GetSelectedMissionEntry();
         TEUIModelRef<FVM_MissionListEntry> local_4;
         if (local_4.IsValid())
         {
-            local_9 = GetbIsTracking();
+            local_9 = local_4.Get().GetbIsTracking();
         }
         else
         {
@@ -186,37 +181,31 @@ struct FVM_MissionMainPanel : FEUIViewModel
     {
         if (this.GetMissionList())
         {
-            TEUIModelRef<FVM_MissionList> local_2 = this.GetMissionList();
-            this.SetbShowTrackingButton(GetbShowTrackingButton());
+            this.SetbShowTrackingButton(this.GetMissionList().Get().GetbShowTrackingButton());
         }
         return;
     }
     void OnTrackingMissionChanged(const FC_TrackingMission &inout TrackingMission)
     {
-        TEUIModelRef<FVM_MissionListEntry> local_26;
-        TEUIModelRef<FVM_MissionList> local_2 = this.GetMissionList();
-        for (auto& local_18 : GetMissionEntries())
+        for (auto& local_18 : this.GetMissionList().Get().GetMissionEntries())
         {
-            if (::MissionUtils::IsMissionTracking(this.GetContext().GetLocalPlayer(), GetMissionConfig()))
+            if (::MissionUtils::IsMissionTracking(this.GetContext().GetLocalPlayer(), local_18.Get().GetMissionConfig()))
             {
-                true.SetbIsTracking();
+                local_18.Get().SetbIsTracking(true);
             }
             else
             {
-                if (GetbIsTracking())
+                if (local_18.Get().GetbIsTracking())
                 {
-                    false.SetbIsTracking();
+                    local_18.Get().SetbIsTracking(false);
                 }
             }
-            TEUIModelRef<FVM_MissionList> local_24 = this.GetMissionList();
-            local_26.GetSelectedMissionEntry();
-            if ((local_18 == local_26.opImplConv()))
+            if ((local_18 == this.GetMissionList().Get().GetSelectedMissionEntry().opImplConv()))
             {
-                this.SetbIsSelectedMissionTracked(GetbIsTracking());
+                this.SetbIsSelectedMissionTracked(local_18.Get().GetbIsTracking());
             }
         }
-        TEUIModelRef<FVM_MissionList> local_24_2 = this.GetMissionList();
-        RefreshAllDistanceInfo();
+        this.GetMissionList().Get().RefreshAllDistanceInfo();
         return;
     }
     void SetSelectedTabIndex(const int Index)
@@ -233,8 +222,7 @@ struct FVM_MissionMainPanel : FEUIViewModel
         this.SetCurrentTabIndex(Index);
         this.RefreshSelectedTabItem();
         this.RefreshTabSelection();
-        TEUIModelRef<FVM_MissionList> local_10 = this.GetMissionList();
-        int(this.GetTabTypes()[Index]).UpdateMissionList(true);
+        this.GetMissionList().Get().UpdateMissionList(this.GetTabTypes()[Index], true);
         return;
     }
     void RefreshSelectedTabItem()
@@ -258,16 +246,14 @@ struct FVM_MissionMainPanel : FEUIViewModel
         {
             if (this.GetTabSelectableItems()[local_1].IsValid())
             {
-                (local_1 == this.GetCurrentTabIndex()).SetbIsSelected();
+                this.GetTabSelectableItems()[local_1].Get().SetbIsSelected((local_1 == this.GetCurrentTabIndex()));
             }
         }
         return;
     }
     void OnTrackButtonClicked()
     {
-        TEUIModelRef<FVM_MissionList> local_2 = this.GetMissionList();
-        TEUIModelRef<FVM_MissionListEntry> local_6;
-        local_6.GetSelectedMissionEntry();
+        TEUIModelRef<FVM_MissionListEntry> local_6 = this.GetMissionList().Get().GetSelectedMissionEntry();
         TEUIModelRef<FVM_MissionListEntry> local_4;
         if (!(local_4.IsValid()))
         {
@@ -276,8 +262,8 @@ struct FVM_MissionMainPanel : FEUIViewModel
         FFPTime local_18 = FFPTime(-1);
         FECSEntity local_12 = this.GetContext().GetLocalPlayer();
         FCE_MissionRequestToggleTrack local_22;
-        local_22.MissionConfig = GetMissionConfig();
-        local_22.bIsTracking = !(GetbIsTracking());
+        local_22.MissionConfig = local_4.Get().GetMissionConfig();
+        local_22.bIsTracking = !(local_4.Get().GetbIsTracking());
         return;
     }
     void AddTabEntry(const EMissionTabType TabType)
@@ -347,15 +333,13 @@ struct FVM_MissionMainPanel : FEUIViewModel
     }
     void InitDefaultSelection()
     {
-        int local_2 = 0;
         if (this.GetDefaultSelectMission().IsSet())
         {
-            int local_6 = this.GetTabIndex(::MissionUtils::MissionTypeToTabType(EMissionType(local_2)));
+            int local_6 = this.GetTabIndex(::MissionUtils::MissionTypeToTabType(this.GetDefaultSelectMission().Get().MissionType));
             if (local_6 != -1)
             {
                 this.SetSelectedTabIndex(local_6);
-                TEUIModelRef<FVM_MissionList> local_8 = this.GetMissionList();
-                this.GetDefaultSelectMission().SelectMission();
+                this.GetMissionList().Get().SelectMission(this.GetDefaultSelectMission());
                 return;
             }
         }
@@ -369,15 +353,15 @@ struct FVM_MissionMainPanel : FEUIViewModel
     {
         int local_97;
         EMissionHideType local_98;
-        TDataObjectPtr<FMissionPhaseConfig> local_24 = GetFirstPhase();
-        if (::MissionUtils::GetMissionPresentationRuleConfig(MissionConfig).IsSet())
+        TDataObjectPtr<FMissionPhaseConfig> local_24 = MissionConfig.Get().GetFirstPhase();
+        TDataObjectPtr<FMissionPresentationRuleConfig> local_72 = ::MissionUtils::GetMissionPresentationRuleConfig(MissionConfig);
+        if (local_72.IsSet())
         {
-            EMissionHideType local_99;
-            local_98 = local_99;
+            local_98 = local_72.Get().MissionHideType;
         }
         else
         {
-            local_98 = EMissionHideType(0);
+            local_98 = EMissionHideType::None;
         }
         int local_101 = int(local_98);
         if (local_101 <= 2)
@@ -396,7 +380,7 @@ struct FVM_MissionMainPanel : FEUIViewModel
                 }
                 else
                 {
-                    local_97 = (0 == 0);
+                    local_97 = (ActivePhaseConfig.Get().DataId == local_24.Get().DataId);
                 }
                 return (local_97 != 0);
             }
@@ -424,20 +408,10 @@ struct FVM_MissionMainPanel : FEUIViewModel
             }
             FText local_94 = FText(this.GetMissionTabConfigMap()[EMissionTabType(local_82)].TabTittle);
             FSoftBrush local_140 = FSoftBrush(this.GetMissionTabConfigMap()[EMissionTabType(local_82)].HeaderBrush);
-            TSoftClassPtr<UEUIUserWidget> local_170;
-            if (local_56.opArrow().GetBelongChapter().IsSet())
-            {
-                local_170 = this.GetChapterMissionEntryWidgetClass();
-            }
-            else
-            {
-                local_170 = this.GetSingleMissionEntryWidgetClass();
-            }
-            TSoftClassPtr<UEUIUserWidget> local_180 = this.GetChapterEntryWidgetClass();
-            TEUIModelRef<FVM_MissionList> local_2 = this.GetMissionList();
+            TSoftClassPtr<UEUIUserWidget> local_170 = local_56.opArrow().GetBelongChapter().IsSet() ? this.GetChapterMissionEntryWidgetClass() : this.GetSingleMissionEntryWidgetClass();
+            this.GetMissionList().Get().AddMissionEntry(local_94, local_140, local_56, local_170, this.GetChapterEntryWidgetClass());
         }
-        TEUIModelRef<FVM_MissionList> local_2_2 = this.GetMissionList();
-        SortMissionEntriesAndResetShowCategory();
+        this.GetMissionList().Get().SortMissionEntriesAndResetShowCategory();
         return;
     }
     void InitCommissionDetailTab(const TDataObjectPtr<FCommissionConfig> &inout CommissionConfig)
@@ -779,11 +753,9 @@ FVM_MissionMainPanel& Create(const UObject ContextObject)
 {
     return FVM_MissionMainPanel::CreateByManager(EUIInternal::GetContextManager(ContextObject));
 }
-FVM_MissionMainPanel CreateByManager(const UEUIManagerSubsystem Manager)
+FVM_MissionMainPanel& CreateByManager(const UEUIManagerSubsystem Manager)
 {
-    FVM_MissionMainPanel __r;
-    TEUIModelRef<FVM_MissionMainPanel> local_6 = TEUIModelRef<FVM_MissionMainPanel>(EUIInternal::MakeModelWithManager(Manager, FVM_MissionMainPanel::ModelId));
-    return __r;
+    return TEUIModelRef<FVM_MissionMainPanel>(EUIInternal::MakeModelWithManager(Manager, FVM_MissionMainPanel::ModelId)).Get();
 }
 void GetModelInfo(FEUIViewModelMetaInfo &inout Result)
 {
@@ -1018,7 +990,6 @@ namespace __GeneratedProperties_FVM_MissionMainPanel
 {
 UScriptStruct StaticStruct()
 {
-    UScriptStruct local_2;
-    return local_2;
+    return __GeneratedProperties_FVM_MissionMainPanel.Get();
 }
 }

@@ -170,9 +170,9 @@ struct FVM_TalentSkillInfoItem : FEUIViewModel
         {
             return TDataObjectPtr<FTalentConfig>();
         }
-        if (!(this.GetDoubleStateTalentIndex() != 1) && GetDoubleFormTalent())
+        if (!(this.GetDoubleStateTalentIndex() != 1) && local_28.Get().GetDoubleFormTalent())
         {
-            return GetDoubleFormTalent();
+            return local_28.Get().GetDoubleFormTalent();
         }
         return local_28;
     }
@@ -182,40 +182,42 @@ struct FVM_TalentSkillInfoItem : FEUIViewModel
         {
             return this.GetSkillInitConfig();
         }
-        if (!(!(this.GetEffectiveTalentConfig())) && GetSkillConfig())
+        TDataObjectPtr<FTalentConfig> local_74 = this.GetEffectiveTalentConfig();
+        if (!(!(local_74)) && local_74.Get().GetSkillConfig())
         {
-            return GetSkillConfig();
+            return local_74.Get().GetSkillConfig();
         }
         return TDataObjectPtr<FSkillInitConfig>(nullptr);
     }
     ESkillType ResolveDisplaySkillType() const
     {
-        int local_51 = 0;
         if (!(this.GetSkillInitConfig()))
         {
-            if (this.GetEffectiveTalentConfig() && (local_51 != 0))
+            TDataObjectPtr<FTalentConfig> local_50 = this.GetEffectiveTalentConfig();
+            if (local_50 && (int(local_50.Get().TalentSkillType) != 0))
             {
-                return ESkillType(local_51);
+                return ESkillType(local_50.Get().TalentSkillType);
             }
         }
         if (this.GetSkillInitConfig())
         {
-            return ESkillType(local_51);
+            return ESkillType(this.GetSkillInitConfig().Get().SkillType);
         }
-        if (!(!(this.GetEffectiveTalentConfig())) && GetSkillConfig())
+        TDataObjectPtr<FTalentConfig> local_26 = this.GetEffectiveTalentConfig();
+        if (!(!(local_26)) && local_26.Get().GetSkillConfig())
         {
-            return ESkillType(local_51);
+            return ESkillType(local_26.Get().GetSkillConfig().Get().SkillType);
         }
         return ESkillType(0);
     }
     bool TryGetDisplaySkillCDSeconds(float32 &inout OutSeconds) const
     {
-        int local_52 = 0;
         if (!(this.GetSkillInitConfig()))
         {
-            if (this.GetEffectiveTalentConfig() && (0.0f >= 0.0f))
+            TDataObjectPtr<FTalentConfig> local_50 = this.GetEffectiveTalentConfig();
+            if (local_50 && (local_50.Get().TalentSkillCDSeconds >= 0.0f))
             {
-                OutSeconds = local_52;
+                OutSeconds = local_50.Get().TalentSkillCDSeconds;
                 return true;
             }
         }
@@ -234,7 +236,7 @@ struct FVM_TalentSkillInfoItem : FEUIViewModel
             return false;
         }
         TDataObjectPtr<FTalentConfig> local_28 = this.GetTalentNode().opArrow().GetConfig().NodeConfig;
-        return local_28 && !(!(GetDoubleFormTalent()));
+        return local_28 && !(!(local_28.Get().GetDoubleFormTalent()));
     }
     int GetShowPageTypeIndex() const
     {
@@ -250,13 +252,41 @@ struct FVM_TalentSkillInfoItem : FEUIViewModel
     }
     bool GetIsShowPageTypeIsTalentInfoPage() const
     {
-        // body not fully recovered — stub [opcode-uncovered]
-        bool __r; return __r;
+        switch (int(this.GetShowPageType()))
+        {
+        case 0:
+        {
+            return false;
+        }
+        case 1:
+        {
+            return true;
+        }
+        case 2:
+        {
+            return false;
+        }
+        }
+        return false;
     }
     bool GetIsShowPageTypeIsSkillChangePage() const
     {
-        // body not fully recovered — stub [opcode-uncovered]
-        bool __r; return __r;
+        switch (int(this.GetShowPageType()))
+        {
+        case 0:
+        {
+            return false;
+        }
+        case 1:
+        {
+            return false;
+        }
+        case 2:
+        {
+            return true;
+        }
+        }
+        return false;
     }
     void ToggleDoubleStateTalent()
     {
@@ -269,10 +299,10 @@ struct FVM_TalentSkillInfoItem : FEUIViewModel
     }
     void PostConstruct()
     {
-        bool local_50 = false;
-        bool local_51 = this.GetEffectiveTalentConfig() && local_50;
+        TDataObjectPtr<FTalentConfig> local_48 = this.GetEffectiveTalentConfig();
+        bool local_51 = local_48 && local_48.Get().Icon.IsSet();
         TDataObjectPtr<FSkillInitConfig> local_76 = this.GetSkillInitConfigFromTalent();
-        local_50 = !(local_51);
+        bool local_50 = !(local_51);
         if (!(local_50))
         {
             local_50 = false;
@@ -292,8 +322,7 @@ struct FVM_TalentSkillInfoItem : FEUIViewModel
         this.RefreshShownChoiceEquipped();
         if (this.GetTalentNode().IsValid())
         {
-            TEUIModelRef<FM_TalentNode> local_108 = this.GetTalentNode();
-            this.SetRedDotVM(TEUIModelRef<FVM_RedDot>(::FVM_RedDot::Create(this.GetContext().Manager, FRedDotNodeData(GameplayTags::RedDotSystem_Avatar_NewTalent, GetDataId()))));
+            this.SetRedDotVM(TEUIModelRef<FVM_RedDot>(::FVM_RedDot::Create(this.GetContext().Manager, FRedDotNodeData(GameplayTags::RedDotSystem_Avatar_NewTalent, this.GetTalentNode().Get().GetDataId()))));
         }
         int local_120 = int(this.ResolveDisplaySkillType());
         if (local_120 != 0)
@@ -315,32 +344,20 @@ struct FVM_TalentSkillInfoItem : FEUIViewModel
     void OnTalentNodeChanged()
     {
         this.CreateAchievedCondIdList();
-        TEUIModelRef<FM_TalentNode> local_2 = this.GetTalentNode();
-        this.SetCurLevelForWidget(GetActiveLevel());
+        this.SetCurLevelForWidget(this.GetTalentNode().Get().GetActiveLevel());
         this.RefreshShownChoiceEquipped();
         return;
     }
     void OnTalentNodeLevelChanged()
     {
         this.CreateAchievedCondIdList();
-        TEUIModelRef<FM_TalentNode> local_2 = this.GetTalentNode();
-        this.SetCurLevelForWidget(GetActiveLevel());
+        this.SetCurLevelForWidget(this.GetTalentNode().Get().GetActiveLevel());
         this.RefreshShownChoiceEquipped();
         return;
     }
     void RefreshShownChoiceEquipped()
     {
-        bool local_3 = this.GetTalentNode().IsValid();
-        if (!(local_3))
-        {
-            local_3 = false;
-        }
-        else
-        {
-            TEUIModelRef<FM_TalentNode> local_2 = this.GetTalentNode();
-            local_3 = this.GetChoiceIndex().IsEquippedChoice();
-        }
-        this.SetbIsShownChoiceEquipped(local_3);
+        this.SetbIsShownChoiceEquipped(this.GetTalentNode().IsValid() && this.GetTalentNode().Get().IsEquippedChoice(this.GetChoiceIndex()));
         return;
     }
     void OnTalentDataUpdatedForEquip(const FMsg_TalentTreeDataUpdate &inout Msg)
@@ -387,55 +404,52 @@ struct FVM_TalentSkillInfoItem : FEUIViewModel
         {
             return;
         }
-        TEUIModelRef<FMS_Talent> local_86 = TEUIModelRef<FMS_Talent>(::FMS_Talent::Get(this.GetContext().Manager));
-        TArray<TEUIModelWeakRef<FM_TalentNode>> local_98;
-        local_98.GetTalentParentConfigListByNode(TEUIModelWeakRef<FM_TalentNode>(local_8));
+        TArray<TEUIModelWeakRef<FM_TalentNode>> local_98 = TEUIModelRef<FMS_Talent>(::FMS_Talent::Get(this.GetContext().Manager)).Get().GetTalentParentConfigListByNode((TEUIModelWeakRef<FM_TalentNode>(local_8)));
         if (local_98.Num() > 0)
         {
             bool local_100;
             local_100 = true;
             for (auto& local_114 : local_98)
             {
-                if (local_114.IsValid() && (int(GetStateType()) != 3))
+                if (local_114.IsValid() && (int(local_114.Get().GetStateType()) != 3))
                 {
                     local_100 = false;
                     break;
                 }
             }
             TEUIModelRef<FVM_TalentUpgradeDesc> local_118 = TEUIModelRef<FVM_TalentUpgradeDesc>(::FVM_TalentUpgradeDesc::Create(this.GetContext().Manager));
-            NSLOCTEXT("Talent", "TalentPrereqNodeUnlock", "前置节点需解锁").SetContextDesc();
-            local_100.SetbHighLight();
+            local_118.Get().SetContextDesc(NSLOCTEXT("Talent", "TalentPrereqNodeUnlock", "前置节点需解锁"));
+            local_118.Get().SetbHighLight(local_100);
             this.GetModify_AchievedCondIdList().Add(local_118);
             if (!(local_100))
             {
                 this.SetbAllCondAchieved(false);
             }
         }
-        if (0 > 0)
+        if ((local_60.Get().UnlockLevel) > 0)
         {
             int local_125;
             local_125 = ::FM_LocalPlayerLevel::Get(this.GetContext().Manager).GetLevel();
             TEUIModelRef<FVM_TalentUpgradeDesc> local_118_2 = TEUIModelRef<FVM_TalentUpgradeDesc>(::FVM_TalentUpgradeDesc::Create(this.GetContext().Manager));
-            NSLOCTEXT("Talent", "UpgradeUnlockLevel", "玩家等级达到{0}");
-            FText local_130;
-            local_130.SetContextDesc();
-            local_1 = (local_125 >= 0);
-            local_1.SetbHighLight();
+            local_118_2.Get().SetContextDesc(FText::Format(NSLOCTEXT("Talent", "UpgradeUnlockLevel", "玩家等级达到{0}"), local_60.Get().UnlockLevel));
+            local_1 = (local_125 >= local_60.Get().UnlockLevel);
+            local_118_2.Get().SetbHighLight(local_1);
             this.GetModify_AchievedCondIdList().Add(local_118_2);
             if (!(local_1))
             {
                 this.SetbAllCondAchieved(false);
             }
         }
-        for (auto& local_144 : GetUnlockCondition())
+        for (auto& local_144 : local_60.Get().GetUnlockCondition())
         {
             if (!(local_144))
             {
                 continue;
             }
             TEUIModelRef<FVM_TalentUpgradeDesc> local_118_3 = TEUIModelRef<FVM_TalentUpgradeDesc>(::FVM_TalentUpgradeDesc::Create(this.GetContext().Manager));
+            local_118_3.Get().SetContextDesc(local_144.Get().ConditionTips);
             bool local_116 = local_8.GetAchievedCondIdList().Contains(this.GetConditionDataId(local_144)) || local_8.GetUnlockableTalentIds().Contains(local_60.opArrow().DataId);
-            local_116.SetbHighLight();
+            local_118_3.Get().SetbHighLight(local_116);
             this.GetModify_AchievedCondIdList().Add(local_118_3);
             if (!(local_116))
             {
@@ -466,8 +480,7 @@ struct FVM_TalentSkillInfoItem : FEUIViewModel
     }
     bool GetShowNextlevelUpgradeDesc() const
     {
-        TEUIModelRef<FM_TalentNode> local_2 = this.GetTalentNode();
-        if ((int(GetStateType())) == 3)
+        if ((int(this.GetTalentNode().Get().GetStateType())) == 3)
         {
             if (this.GetIsNotMaxLevel())
             {
@@ -478,83 +491,31 @@ struct FVM_TalentSkillInfoItem : FEUIViewModel
     }
     bool GetIsChoiceTalent() const
     {
-        bool local_3 = this.GetTalentNode().IsValid();
-        if (!(local_3))
-        {
-            local_3 = false;
-        }
-        else
-        {
-            TEUIModelRef<FM_TalentNode> local_2 = this.GetTalentNode();
-            local_3 = HasChoice();
-        }
-        return local_3;
+        return this.GetTalentNode().IsValid() && this.GetTalentNode().Get().HasChoice();
     }
     bool GetIsActiveChoice() const
     {
-        bool local_3 = !(this.GetTalentNode().IsValid());
-        if (local_3)
-        {
-            local_3 = true;
-        }
-        else
-        {
-            TEUIModelRef<FM_TalentNode> local_2 = this.GetTalentNode();
-            local_3 = !(HasChoice());
-        }
-        if (local_3)
+        if (!(this.GetTalentNode().IsValid()) || !(this.GetTalentNode().Get().HasChoice()))
         {
             return false;
         }
-        TEUIModelRef<FM_TalentNode> local_2_2 = this.GetTalentNode();
-        return (int(GetStateType()) == 3);
+        return (int(this.GetTalentNode().Get().GetStateType()) == 3);
     }
     bool GetIsNotActiveChoice() const
     {
-        bool local_3 = !(this.GetTalentNode().IsValid());
-        if (local_3)
-        {
-            local_3 = true;
-        }
-        else
-        {
-            TEUIModelRef<FM_TalentNode> local_2 = this.GetTalentNode();
-            local_3 = !(HasChoice());
-        }
-        if (local_3)
+        if (!(this.GetTalentNode().IsValid()) || !(this.GetTalentNode().Get().HasChoice()))
         {
             return false;
         }
-        TEUIModelRef<FM_TalentNode> local_2_2 = this.GetTalentNode();
-        return (int(GetStateType()) != 3);
+        return (int(this.GetTalentNode().Get().GetStateType()) != 3);
     }
     bool GetIsEquippedChoice() const
     {
-        bool local_3 = this.GetTalentNode().IsValid();
-        if (!(local_3))
-        {
-            local_3 = false;
-        }
-        else
-        {
-            TEUIModelRef<FM_TalentNode> local_2 = this.GetTalentNode();
-            local_3 = this.GetChoiceIndex().IsEquippedChoice();
-        }
-        return local_3;
+        return this.GetTalentNode().IsValid() && this.GetTalentNode().Get().IsEquippedChoice(this.GetChoiceIndex());
     }
     bool GetIsUnequippedChoice() const
     {
-        bool local_3 = this.GetTalentNode().IsValid();
-        if (!(local_3))
-        {
-            local_3 = false;
-        }
-        else
-        {
-            TEUIModelRef<FM_TalentNode> local_2 = this.GetTalentNode();
-            local_3 = this.GetChoiceIndex().IsUnequippedChoice();
-        }
-        return local_3;
+        return this.GetTalentNode().IsValid() && this.GetTalentNode().Get().IsUnequippedChoice(this.GetChoiceIndex());
     }
     bool GetIsFoundationNode() const
     {
@@ -562,11 +523,8 @@ struct FVM_TalentSkillInfoItem : FEUIViewModel
         {
             return false;
         }
-        int local_29 = this.GetChoiceIndex();
-        TEUIModelRef<FM_TalentNode> local_2 = this.GetTalentNode();
-        TDataObjectPtr<FTalentConfig> local_54;
-        local_54.GetConfig(local_29);
-        return (local_54 && (0 == 1));
+        TDataObjectPtr<FTalentConfig> local_54 = this.GetTalentNode().Get().GetConfig(this.GetChoiceIndex());
+        return local_54 && (int(local_54.Get().TalentType) == 1);
     }
     bool GetIsNotFoundationNode() const
     {
@@ -574,17 +532,7 @@ struct FVM_TalentSkillInfoItem : FEUIViewModel
     }
     bool GetIsUnlocked() const
     {
-        bool local_3 = this.GetTalentNode().IsValid();
-        if (!(local_3))
-        {
-            local_3 = false;
-        }
-        else
-        {
-            TEUIModelRef<FM_TalentNode> local_2 = this.GetTalentNode();
-            local_3 = (int(GetStateType()) == 3);
-        }
-        return local_3;
+        return this.GetTalentNode().IsValid() && (int(this.GetTalentNode().Get().GetStateType()) == 3);
     }
     bool GetIsUnlockedAndChoice() const
     {
@@ -617,9 +565,7 @@ struct FVM_TalentSkillInfoItem : FEUIViewModel
         {
             return false;
         }
-        bool local_3 = false;
-        TEUIModelRef<FM_TalentNode> local_2_2 = this.GetTalentNode();
-        if (local_3.CanUpgrade())
+        if (this.GetTalentNode().Get().CanUpgrade(false))
         {
             return true;
         }
@@ -637,30 +583,23 @@ struct FVM_TalentSkillInfoItem : FEUIViewModel
         {
             return false;
         }
-        bool local_3 = true;
-        TEUIModelRef<FM_TalentNode> local_2_2 = this.GetTalentNode();
-        return local_3.CanUpgrade();
+        return this.GetTalentNode().Get().CanUpgrade(true);
     }
     bool GetIsEquippedFoundation() const
     {
         FAvatarEquippedTalentInfo local_86;
-        int local_87 = 0;
         if (!(this.GetTalentNode().IsValid()) || !(this.GetAvatarConfig()))
         {
             return false;
         }
-        int local_29 = this.GetChoiceIndex();
-        TEUIModelRef<FM_TalentNode> local_2 = this.GetTalentNode();
-        TDataObjectPtr<FTalentConfig> local_54;
-        local_54.GetConfig(local_29);
-        if (!(local_54) || (0 != 1))
+        TDataObjectPtr<FTalentConfig> local_54 = this.GetTalentNode().Get().GetConfig(this.GetChoiceIndex());
+        if (!(local_54) || (int(local_54.Get().TalentType) != 1))
         {
             return false;
         }
-        if (::FMS_Talent::Get(this.GetContext().Manager).GetAvatarEquippedTalentInfo(local_87, local_86))
+        if (::FMS_Talent::Get(this.GetContext().Manager).GetAvatarEquippedTalentInfo(this.GetAvatarConfig().Get().DataId, local_86))
         {
-            TEUIModelRef<FM_TalentNode> local_2_2 = this.GetTalentNode();
-            if (GetDataId() == int(local_86.FoundationId))
+            if (this.GetTalentNode().Get().GetDataId() == int(local_86.FoundationId))
             {
                 return true;
             }
@@ -673,51 +612,42 @@ struct FVM_TalentSkillInfoItem : FEUIViewModel
         {
             if (this.GetTalentNode().IsValid())
             {
-                TEUIModelRef<FM_TalentNode> local_6 = this.GetTalentNode();
-                ::FMS_Talent::Get(this.GetContext().Manager).ConsumeNewSkillRedDot(GetDataId());
+                ::FMS_Talent::Get(this.GetContext().Manager).ConsumeNewSkillRedDot(this.GetTalentNode().Get().GetDataId());
             }
         }
         return;
     }
     bool GetIsEquippedSkill() const
     {
-        int local_55 = 0;
         FAvatarEquippedTalentInfo local_86;
-        int local_87 = 0;
         if (!(this.GetTalentNode().IsValid()) || !(this.GetAvatarConfig()))
         {
             return false;
         }
-        int local_29 = this.GetChoiceIndex();
-        TEUIModelRef<FM_TalentNode> local_2 = this.GetTalentNode();
-        TDataObjectPtr<FTalentConfig> local_54;
-        local_54.GetConfig(local_29);
+        TDataObjectPtr<FTalentConfig> local_54 = this.GetTalentNode().Get().GetConfig(this.GetChoiceIndex());
         if (!(local_54))
         {
             return false;
         }
-        if (local_55 != 4)
+        if (int(local_54.Get().TalentType) != 4)
         {
-            if ((local_55) == 6)
+            if ((int(local_54.Get().TalentType)) == 6)
             {
                 return true;
             }
             return false;
         }
         FMS_Talent& local_58 = ::FMS_Talent::Get(this.GetContext().Manager);
-        if (local_58.GetAvatarEquippedTalentInfo(local_87, local_86))
+        if (local_58.GetAvatarEquippedTalentInfo(this.GetAvatarConfig().Get().DataId, local_86))
         {
             for (auto& local_106 : local_86.SlotToTalentId)
             {
-                local_87 = local_106.GetKey();
-                if (local_87 == int(this.GetEquipSlot()))
+                if (local_106.GetKey() == int(this.GetEquipSlot()))
                 {
-                    TEUIModelWeakRef<FM_TalentNode> local_112 = local_58.GetNodeByTalentId(local_87);
+                    TEUIModelWeakRef<FM_TalentNode> local_112 = local_58.GetNodeByTalentId(local_106.GetValue());
                     if (local_112.IsValid())
                     {
-                        local_87 = GetDataId();
-                        TEUIModelRef<FM_TalentNode> local_2_2 = this.GetTalentNode();
-                        if (local_87 == GetDataId())
+                        if (local_112.Get().GetDataId() == this.GetTalentNode().Get().GetDataId())
                         {
                             return true;
                         }
@@ -750,26 +680,21 @@ struct FVM_TalentSkillInfoItem : FEUIViewModel
     }
     bool UnequippedTalentFoundation() const
     {
-        int local_83 = 0;
         FAvatarEquippedTalentInfo local_114;
         if (!(this.GetTalentNode().IsValid()) || !(this.GetAvatarConfig()))
         {
             return false;
         }
-        int local_29 = this.GetChoiceIndex();
-        TEUIModelRef<FM_TalentNode> local_2 = this.GetTalentNode();
-        TDataObjectPtr<FTalentConfig> local_54;
-        local_54.GetConfig(local_29);
+        TDataObjectPtr<FTalentConfig> local_54 = this.GetTalentNode().Get().GetConfig(this.GetChoiceIndex());
         if (!(local_54))
         {
             return false;
         }
-        ETalentType local_56;
-        ETalentType local_55 = local_56;
+        ETalentType local_55 = local_54.Get().TalentType;
         TDataObjectPtr<FTalentConfig> local_80;
         if (int(local_55) == 2)
         {
-            local_80 = GetFoundationTalent();
+            local_80 = local_54.Get().GetFoundationTalent();
         }
         else
         {
@@ -786,31 +711,27 @@ struct FVM_TalentSkillInfoItem : FEUIViewModel
         {
             return false;
         }
+        int local_83 = local_80.Get().DataId;
         int local_82 = local_83;
-        if (::FMS_Talent::Get(this.GetContext().Manager).GetAvatarEquippedTalentInfo(local_83, local_114))
+        if (::FMS_Talent::Get(this.GetContext().Manager).GetAvatarEquippedTalentInfo(this.GetAvatarConfig().Get().DataId, local_114))
         {
-            local_83 = int(local_114.FoundationId);
-            return (local_83 != local_82);
+            return (int(local_114.FoundationId) != local_82);
         }
         return true;
     }
     bool GetIsFoundationPassiveUnlocked() const
     {
-        int local_61 = 0;
         if (!(this.GetTalentNode().IsValid()))
         {
             return false;
         }
-        int local_29 = this.GetChoiceIndex();
-        TEUIModelRef<FM_TalentNode> local_2 = this.GetTalentNode();
-        TDataObjectPtr<FTalentConfig> local_54;
-        local_54.GetConfig(local_29);
-        if (!(local_54) || !(GetFoundationTalentUnlockTalent()))
+        TDataObjectPtr<FTalentConfig> local_54 = this.GetTalentNode().Get().GetConfig(this.GetChoiceIndex());
+        if (!(local_54) || !(local_54.Get().GetFoundationTalentUnlockTalent()))
         {
             return false;
         }
-        TEUIModelWeakRef<FM_TalentNode> local_64 = ::FMS_Talent::Get(this.GetContext().Manager).GetNodeByTalentId(local_61);
-        return local_64.IsValid() && (int(GetStateType()) == 3);
+        TEUIModelWeakRef<FM_TalentNode> local_64 = ::FMS_Talent::Get(this.GetContext().Manager).GetNodeByTalentId(local_54.Get().GetFoundationTalentUnlockTalent().Get().DataId);
+        return local_64.IsValid() && (int(local_64.Get().GetStateType()) == 3);
     }
     bool GetbEquipment() const
     {
@@ -822,7 +743,7 @@ struct FVM_TalentSkillInfoItem : FEUIViewModel
         if (local_4.IsValid())
         {
             int local_8 = int(this.GetEquipSlot());
-            int local_9 = int(GetSkillButtonSlot());
+            int local_9 = int(local_4.Get().GetSkillButtonSlot());
             return (local_8 != local_9);
         }
         return false;
@@ -884,14 +805,12 @@ struct FVM_TalentSkillInfoItem : FEUIViewModel
     FSoftBrush GetIconImage() const
     {
         USkillConfig local_102;
-        bool local_1 = !(this.GetSkillInitConfig());
-        if (local_1)
+        if (!(this.GetSkillInitConfig()))
         {
-            if (this.GetEffectiveTalentConfig() && local_1)
+            TDataObjectPtr<FTalentConfig> local_50 = this.GetEffectiveTalentConfig();
+            if (local_50 && local_50.Get().Icon.IsSet())
             {
-            }
-            else
-            {
+                return local_50.Get().Icon;
             }
         }
         TDataObjectPtr<FSkillInitConfig> local_76 = this.GetSkillInitConfigFromTalent();
@@ -911,24 +830,12 @@ struct FVM_TalentSkillInfoItem : FEUIViewModel
     }
     FText GetSkillDesc() const
     {
-        bool local_51;
-        bool local_1 = !(this.GetSkillInitConfig());
-        if (local_1)
+        if (!(this.GetSkillInitConfig()))
         {
-            if (!(this.GetEffectiveTalentConfig()))
+            TDataObjectPtr<FTalentConfig> local_50 = this.GetEffectiveTalentConfig();
+            if (local_50 && !(local_50.Get().TalentDesc.IsEmpty()))
             {
-                local_51 = false;
-            }
-            else
-            {
-                local_1 = !local_1;
-                local_51 = local_1;
-            }
-            if (local_51)
-            {
-            }
-            else
-            {
+                return local_50.Get().TalentDesc;
             }
         }
         TDataObjectPtr<FSkillInitConfig> local_76 = this.GetSkillInitConfigFromTalent();
@@ -940,24 +847,12 @@ struct FVM_TalentSkillInfoItem : FEUIViewModel
     }
     FText GetSkillName() const
     {
-        bool local_51;
-        bool local_1 = !(this.GetSkillInitConfig());
-        if (local_1)
+        if (!(this.GetSkillInitConfig()))
         {
-            if (!(this.GetEffectiveTalentConfig()))
+            TDataObjectPtr<FTalentConfig> local_50 = this.GetEffectiveTalentConfig();
+            if (local_50 && !(local_50.Get().TalentName.IsEmpty()))
             {
-                local_51 = false;
-            }
-            else
-            {
-                local_1 = !local_1;
-                local_51 = local_1;
-            }
-            if (local_51)
-            {
-            }
-            else
-            {
+                return local_50.Get().TalentName;
             }
         }
         TDataObjectPtr<FSkillInitConfig> local_76 = this.GetSkillInitConfigFromTalent();
@@ -969,24 +864,12 @@ struct FVM_TalentSkillInfoItem : FEUIViewModel
     }
     FText GetSkillTypeShotDesc() const
     {
-        bool local_51;
-        bool local_1 = !(this.GetSkillInitConfig());
-        if (local_1)
+        if (!(this.GetSkillInitConfig()))
         {
-            if (!(this.GetEffectiveTalentConfig()))
+            TDataObjectPtr<FTalentConfig> local_50 = this.GetEffectiveTalentConfig();
+            if (local_50 && !(local_50.Get().ShotDesc.IsEmpty()))
             {
-                local_51 = false;
-            }
-            else
-            {
-                local_1 = !local_1;
-                local_51 = local_1;
-            }
-            if (local_51)
-            {
-            }
-            else
-            {
+                return local_50.Get().ShotDesc;
             }
         }
         TDataObjectPtr<FSkillInitConfig> local_76 = this.GetSkillInitConfigFromTalent();
@@ -998,12 +881,12 @@ struct FVM_TalentSkillInfoItem : FEUIViewModel
     }
     UMediaSource GetSkillPreviewMovie() const
     {
-        UMediaSource local_52;
         if (!(this.GetSkillInitConfig()))
         {
-            if (this.GetEffectiveTalentConfig() && (local_52 != nullptr))
+            TDataObjectPtr<FTalentConfig> local_50 = this.GetEffectiveTalentConfig();
+            if (local_50 && ((local_50.Get().PreviewMovie != nullptr)))
             {
-                return local_52;
+                return local_50.Get().PreviewMovie;
             }
         }
         TDataObjectPtr<FSkillInitConfig> local_78 = this.GetSkillInitConfigFromTalent();
@@ -1025,14 +908,12 @@ struct FVM_TalentSkillInfoItem : FEUIViewModel
     FSoftBrush GetSkillPreviewPicture() const
     {
         const UTalentSettings local_102;
-        bool local_1 = !(this.GetSkillInitConfig());
-        if (local_1)
+        if (!(this.GetSkillInitConfig()))
         {
-            if (this.GetEffectiveTalentConfig() && local_1)
+            TDataObjectPtr<FTalentConfig> local_50 = this.GetEffectiveTalentConfig();
+            if (local_50 && local_50.Get().PreviewImage.IsSet())
             {
-            }
-            else
-            {
+                return local_50.Get().PreviewImage;
             }
         }
         TDataObjectPtr<FSkillInitConfig> local_76 = this.GetSkillInitConfigFromTalent();
@@ -1085,12 +966,12 @@ struct FVM_TalentSkillInfoItem : FEUIViewModel
                 return local_8.TalentSkillTypeIcon[local_2];
             }
         }
-        if (this.GetEffectiveTalentConfig())
+        TDataObjectPtr<FTalentConfig> local_60 = this.GetEffectiveTalentConfig();
+        if (local_60)
         {
             GetGameplaySettings<UTalentSettings> local_10;
             ETalentType local_61;
-            ETalentType local_62;
-            local_61 = local_62;
+            local_61 = local_60.Get().TalentType;
             if ((int(local_61) == 1 || (int(local_61) == 2) || (int(local_61) == 3)))
             {
                 local_8 = local_10;
@@ -1105,9 +986,7 @@ struct FVM_TalentSkillInfoItem : FEUIViewModel
     FText GetNextLevelUpgradeDesc() const
     {
         int local_10 = 0;
-        bool local_69;
-        bool local_3 = !(this.GetTalentNode());
-        if (local_3)
+        if (!(this.GetTalentNode()))
         {
             return FText();
         }
@@ -1118,19 +997,10 @@ struct FVM_TalentSkillInfoItem : FEUIViewModel
             return FText();
         }
         FString local_18 = "";
-        if (!(local_10.FindTalentByChoiceAndLevel(local_10.GetActiveChoiceIndex(), local_12 + 1)))
+        TDataObjectPtr<FTalentConfig> local_68 = local_10.FindTalentByChoiceAndLevel(local_10.GetActiveChoiceIndex(), local_12 + 1);
+        if (local_68 && !(local_68.Get().TalentUpgradeDesc.IsEmpty()))
         {
-            local_69 = false;
-        }
-        else
-        {
-            local_3 = !local_3;
-            local_69 = local_3;
-        }
-        if (local_69)
-        {
-            FString local_74;
-            local_18 += local_74;
+            local_18 += local_68.Get().TalentUpgradeDesc.ToString();
         }
         return FText::FromString(local_18);
     }
@@ -1140,13 +1010,10 @@ struct FVM_TalentSkillInfoItem : FEUIViewModel
         {
             return TArray<TDataObjectPtr<FTalentConfig>>();
         }
-        int local_33 = this.GetChoiceIndex();
-        TEUIModelRef<FM_TalentNode> local_2 = this.GetTalentNode();
-        TDataObjectPtr<FTalentConfig> local_58;
-        local_58.GetConfig(local_33);
-        if (local_58 && (GetPassiveLinkedTalentArray().Num() > 0))
+        TDataObjectPtr<FTalentConfig> local_58 = this.GetTalentNode().Get().GetConfig(this.GetChoiceIndex());
+        if (local_58 && (local_58.Get().GetPassiveLinkedTalentArray().Num() > 0))
         {
-            return GetPassiveLinkedTalentArray();
+            return local_58.Get().GetPassiveLinkedTalentArray();
         }
         return TArray<TDataObjectPtr<FTalentConfig>>();
     }
@@ -1171,7 +1038,6 @@ struct FVM_TalentSkillInfoItem : FEUIViewModel
     FText GetLinkedPassiveTalentDesc() const
     {
         int local_41;
-        int local_42 = 0;
         TArray<TDataObjectPtr<FTalentConfig>> local_8 = this.GetPassiveLinkedTalentArray();
         if (local_8.Num() == 0)
         {
@@ -1188,43 +1054,44 @@ struct FVM_TalentSkillInfoItem : FEUIViewModel
             FText local_40;
             local_41 = 0;
             TDataObjectPtr<FTalentConfig> local_66 = TDataObjectPtr<FTalentConfig>(nullptr);
-            if (local_18.GetNodeByTalentId(local_42).IsValid())
+            TEUIModelWeakRef<FM_TalentNode> local_118 = local_18.GetNodeByTalentId(local_36.Get().DataId);
+            if (local_118.IsValid())
             {
-                if (int(GetStateType()) != 3)
+                if (int(local_118.Get().GetStateType()) != 3)
                 {
                     continue;
                 }
-                if (HasChoice())
+                if (local_118.Get().HasChoice())
                 {
-                    if (local_42.FindChoiceIndexByTalentId() != GetActiveChoiceIndex())
+                    if (local_118.Get().FindChoiceIndexByTalentId(local_36.Get().DataId) != local_118.Get().GetActiveChoiceIndex())
                     {
                         continue;
                     }
                 }
-                local_41 = GetCurrentLevel();
+                local_41 = local_118.Get().GetCurrentLevel();
                 if (local_41 > 0)
                 {
-                    TDataObjectPtr<FTalentConfig> local_114;
-                    local_114.FindTalentByChoiceAndLevel(GetActiveChoiceIndex(), local_41);
-                    local_66 = local_114;
+                    local_66 = local_118.Get().FindTalentByChoiceAndLevel(local_118.Get().GetActiveChoiceIndex(), local_41);
                     if (local_66)
                     {
+                        local_40 = local_66.Get().TalentDesc;
                     }
                 }
             }
             if (local_40.IsEmpty())
             {
+                local_40 = local_36.Get().TalentDesc;
             }
             if (!(local_40.IsEmpty()))
             {
-                FString local_128;
                 if (!(local_22.IsEmpty()))
                 {
                     local_22 += "\n";
                 }
+                FString local_128 = local_36.Get().TalentName.ToString();
                 if (!(!(local_128.IsEmpty())) && local_66)
                 {
-                    local_128 = FString();
+                    local_128 = local_66.Get().TalentName.ToString();
                 }
                 if (!(local_128.IsEmpty()))
                 {
@@ -1244,60 +1111,42 @@ struct FVM_TalentSkillInfoItem : FEUIViewModel
     }
     FText GetFoundationPassiveEffectDesc() const
     {
-        bool local_59 = false;
-        int local_89 = 0;
-        FText __r;
         if (!(this.GetTalentNode()))
         {
             return FText();
         }
-        int local_33 = this.GetChoiceIndex();
-        TEUIModelRef<FM_TalentNode> local_2 = this.GetTalentNode();
-        TDataObjectPtr<FTalentConfig> local_58;
-        local_58.GetConfig(local_33);
-        bool local_3 = !(local_58) || !(GetFoundationTalentUnlockTalent());
-        if (local_3)
+        TDataObjectPtr<FTalentConfig> local_58 = this.GetTalentNode().Get().GetConfig(this.GetChoiceIndex());
+        if (!(local_58) || !(local_58.Get().GetFoundationTalentUnlockTalent()))
         {
             return FText();
         }
-        TDataObjectPtr<FTalentConfig> local_84 = GetFoundationTalentUnlockTalent();
-        if (::FMS_Talent::Get(this.GetContext().Manager).GetNodeByTalentId(local_89).IsValid())
+        TDataObjectPtr<FTalentConfig> local_84 = local_58.Get().GetFoundationTalentUnlockTalent();
+        TEUIModelWeakRef<FM_TalentNode> local_92 = ::FMS_Talent::Get(this.GetContext().Manager).GetNodeByTalentId(local_84.Get().DataId);
+        if (local_92.IsValid())
         {
-            local_89 = GetCurrentLevel();
-            if (local_89 > 0)
+            int local_89_2 = local_92.Get().GetCurrentLevel();
+            if (local_89_2 > 0)
             {
-                TDataObjectPtr<FTalentConfig> local_32;
-                local_32.FindTalentByChoiceAndLevel(0, local_89);
-                if (!(local_32))
+                TDataObjectPtr<FTalentConfig> local_32 = local_92.Get().FindTalentByChoiceAndLevel(0, local_89_2);
+                if (local_32 && !(local_32.Get().TalentUpgradeDesc.IsEmpty()))
                 {
-                    local_3 = false;
-                }
-                else
-                {
-                    local_59 = !local_59;
-                    local_3 = local_59;
-                }
-                if (local_3)
-                {
-                }
-                else
-                {
+                    return local_32.Get().TalentUpgradeDesc;
                 }
             }
         }
-        return __r;
+        return local_84.Get().TalentUpgradeDesc;
     }
     void OnAvatarSkillDetialSelect()
     {
-        if (!(this.GetAvatarConfig().IsSet()) || (GetAvatar().Num() == 0))
+        if (!(this.GetAvatarConfig().IsSet()) || (this.GetAvatarConfig().Get().GetAvatar().Num() == 0))
         {
             return;
         }
-        if (!(::FVM_TalentEditPage::CanViewAvatarTalent(this.GetContext().Manager, GetAvatar()[0])))
+        if (!(::FVM_TalentEditPage::CanViewAvatarTalent(this.GetContext().Manager, this.GetAvatarConfig().Get().GetAvatar()[0])))
         {
             return;
         }
-        ::FVM_TalentEditPage::GotoPage(this.GetContext().UELocalPlayer, GetAvatar()[0]);
+        ::FVM_TalentEditPage::GotoPage(this.GetContext().UELocalPlayer, this.GetAvatarConfig().Get().GetAvatar()[0]);
         int local_6 = int(this.ResolveDisplaySkillType());
         if (local_6 != 0)
         {
@@ -1307,7 +1156,6 @@ struct FVM_TalentSkillInfoItem : FEUIViewModel
     }
     void UnlockOrUpgradeTalent()
     {
-        TEUIModelWeakRef<FM_TalentNode> local_14;
         if (!(this.GetTalentNode()))
         {
             return;
@@ -1317,16 +1165,14 @@ struct FVM_TalentSkillInfoItem : FEUIViewModel
             FMsg_TalentUnlockOrUpgradeOpenConfirm local_6;
             FEUIModelRef local_12 = FEUIModelRef(this);
             FEUIMessageBus::Publish(EUIMessageBus);
-            TEUIModelRef<FM_TalentNode> local_2 = this.GetTalentNode();
-            local_6.TalentNode = local_14;
+            local_6.TalentNode = TEUIModelWeakRef<FM_TalentNode>(this.GetTalentNode().Get());
             local_6.ChoiceIndex = this.GetChoiceIndex();
             return;
         }
         FEUIModelRef local_12_2 = FEUIModelRef(this);
         FEUIMessageBus::Publish(EUIMessageBus);
-        TEUIModelRef<FM_TalentNode> local_2_2 = this.GetTalentNode();
         FMsg_TalentUnlockOrUpgradeRequest local_18;
-        local_18.TalentNode = local_14;
+        local_18.TalentNode = TEUIModelWeakRef<FM_TalentNode>(this.GetTalentNode().Get());
         local_18.ChoiceIndex = this.GetChoiceIndex();
         return;
     }
@@ -1338,17 +1184,14 @@ struct FVM_TalentSkillInfoItem : FEUIViewModel
         }
         FEUIModelRef local_12 = FEUIModelRef(this);
         FEUIMessageBus::Publish(EUIMessageBus);
-        TEUIModelRef<FM_TalentNode> local_2 = this.GetTalentNode();
         FMsg_TalentSetEquipChoiceTalent local_6;
-        TEUIModelWeakRef<FM_TalentNode> local_14;
-        local_6.TalentNode = local_14;
+        local_6.TalentNode = TEUIModelWeakRef<FM_TalentNode>(this.GetTalentNode().Get());
         local_6.NewChoice = this.GetChoiceIndex();
         return;
     }
     void SwitchActiveSlot()
     {
         int local_6 = 0;
-        TEUIModelWeakRef<FM_TalentNode> local_14;
         if (!(this.GetTalentNode()))
         {
             return;
@@ -1357,15 +1200,13 @@ struct FVM_TalentSkillInfoItem : FEUIViewModel
         {
             FEUIModelRef local_12 = FEUIModelRef(this);
             FEUIMessageBus::Publish(EUIMessageBus);
-            TEUIModelRef<FM_TalentNode> local_2 = this.GetTalentNode();
-            local_6.FoundationNode = local_14;
+            local_6.FoundationNode = TEUIModelWeakRef<FM_TalentNode>(this.GetTalentNode().Get());
             return;
         }
         FEUIModelRef local_12_2 = FEUIModelRef(this);
         FEUIMessageBus::Publish(EUIMessageBus);
-        TEUIModelRef<FM_TalentNode> local_2_2 = this.GetTalentNode();
         FMsg_TalentSetEquipSkillSlot local_16;
-        local_16.TalentNode = local_14;
+        local_16.TalentNode = TEUIModelWeakRef<FM_TalentNode>(this.GetTalentNode().Get());
         local_16.ChoiceIndex = this.GetChoiceIndex();
         return;
     }
@@ -1771,11 +1612,9 @@ FVM_TalentSkillInfoItem& Create(const UObject ContextObject, const TDataObjectPt
 {
     return FVM_TalentSkillInfoItem::CreateByManager(EUIInternal::GetContextManager(ContextObject), AvatarConfig, TalentNode, ESkillSlot(EquipSlot), ETalentInfoShowPageType(ShowPageType));
 }
-FVM_TalentSkillInfoItem CreateByManager(const UEUIManagerSubsystem Manager, const TDataObjectPtr<FAvatarMappingConfig> &inout AvatarConfig, const TEUIModelRef<FM_TalentNode> &inout TalentNode, const ESkillSlot EquipSlot, const ETalentInfoShowPageType ShowPageType)
+FVM_TalentSkillInfoItem& CreateByManager(const UEUIManagerSubsystem Manager, const TDataObjectPtr<FAvatarMappingConfig> &inout AvatarConfig, const TEUIModelRef<FM_TalentNode> &inout TalentNode, const ESkillSlot EquipSlot, const ETalentInfoShowPageType ShowPageType)
 {
-    FVM_TalentSkillInfoItem __r;
-    TEUIModelRef<FVM_TalentSkillInfoItem> local_6 = TEUIModelRef<FVM_TalentSkillInfoItem>(EUIInternal::MakeModelWithManager_Generic(Manager, FVM_TalentSkillInfoItem::ModelId, 0, AvatarConfig, TalentNode, EquipSlot, ShowPageType));
-    return __r;
+    return TEUIModelRef<FVM_TalentSkillInfoItem>(EUIInternal::MakeModelWithManager_Generic(Manager, FVM_TalentSkillInfoItem::ModelId, 0, AvatarConfig, TalentNode, EquipSlot, ShowPageType)).Get();
 }
 void GetModelInfo(FEUIViewModelMetaInfo &inout Result)
 {
@@ -2450,7 +2289,6 @@ namespace __GeneratedProperties_FVM_TalentSkillInfoItem
 {
 UScriptStruct StaticStruct()
 {
-    UScriptStruct local_2;
-    return local_2;
+    return __GeneratedProperties_FVM_TalentSkillInfoItem.Get();
 }
 }

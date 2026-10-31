@@ -85,8 +85,10 @@ TRawPtr<FGameplayTagBitContainer> FindDOTTagBitContainer(FCS_EcologyDataCacheCon
         return TRawPtr<FGameplayTagBitContainer>(Context.DataCache.DOTTagConatinerCache[local_4]);
     }
     FGameplayTagBitContainer& local_12 = Context.DataCache.DOTTagConatinerCache.FindOrAdd(local_4);
-    if (FWeatherUtils::GetWeatherConfig(WeatherName))
+    TDataObjectPtr<FWeatherConfig> local_36 = FWeatherUtils::GetWeatherConfig(WeatherName);
+    if (local_36)
     {
+        local_12.Append(local_36.Get().WeatherElements);
     }
     local_12.Append(Context.DataCache.TimeGameplayTags[DaySegment]);
     return TRawPtr<FGameplayTagBitContainer>(local_12);
@@ -102,32 +104,26 @@ FName GetWeatherByVolume(const TSoftObjectPtr<AECSRegionVolume> &inout WeatherSo
 }
 FName GetWeatherByPosition(const FCS_EcologyScriptGlobalContext &inout Context, const FVector &inout Position)
 {
-    int local_22 = 0;
-    bool local_43 = false;
-    AECSVolumeBase local_46;
     FVoxelPosition local_10 = FVoxelPosition(Position);
     if (Context)
     {
         int local_21;
-        const FEcologyVoxelSceneRegion& local_20;
-        bool local_11 = !(Context.VoxelScene.Find(local_10));
-        if (local_11)
+        TConstRawPtr<FEcologyVoxelSceneRegion> local_14 = Context.VoxelScene.Find(local_10);
+        if (!(local_14))
         {
             return FEcologySceneInfoUtils::GetGlobalWeather();
         }
+        const FEcologyVoxelSceneRegion& local_20 = local_14.Get();
         local_21 = -1;
         FName local_24(NAME_None);
         for (auto& local_42 : local_20.VolumeData)
         {
-            local_42;
-            local_43 = local_43 && local_11;
-            if (local_43)
+            if (local_42.GetValue().bEffectWeather && local_42.GetValue().Volume.IsValid())
             {
-                if (local_22 > local_21 && local_46.EncompassesPoint(Position, 0.0f))
+                if (local_42.GetValue().Priority > local_21 && local_42.GetValue().Volume.Get().EncompassesPoint(Position, 0.0f))
                 {
-                    local_21 = local_22;
-                    FECSEntity local_52;
-                    local_24 = FWeatherUtils::GetWeatherNameFromRegionEntity(local_52);
+                    local_21 = local_42.GetValue().Priority;
+                    local_24 = FWeatherUtils::GetWeatherNameFromRegionEntity(FECSEntity(local_42.GetValue().RegionEntityId));
                 }
             }
         }
@@ -207,13 +203,13 @@ TDataObjectPtr<FSpawnerCountRatioDefinitionRow> FindSpawnRatioData(const TDataOb
 }
 void FindActivityResourceType(const TDataObjectPtr<FEcologyCreatureDefinitionRow> &inout Creature, const FName &inout WeatherName, const int TimeSegments, TSet<TDataObjectPtr<FEcologyResourceDefinitionRow>> &inout OutResourceTypes)
 {
-    float32 local_182 = 0.0f;
     TSet<FDataObjectPtr> local_20 = FEcologyUtils::FindAllCareResourceType(Creature);
     for (auto& local_60 : local_20)
     {
         TDataObjectPtr<FEcologyResourceDefinitionRow> local_84 = TDataObjectPtr<FEcologyResourceDefinitionRow>(local_60);
         TDataObjectPtr<FCreatureDefinitionRow> local_108 = TDataObjectPtr<FCreatureDefinitionRow>(Creature.opImplConv());
-        if (!(!((FEcologySceneInfoUtils::FindSpawnRatioData(local_108, local_84, WeatherName, TimeSegments) == nullptr))) || (local_182 > 0.0f && (local_182 > 0.0f)))
+        TDataObjectPtr<FSpawnerCountRatioDefinitionRow> local_156 = FEcologySceneInfoUtils::FindSpawnRatioData(local_108, local_84, WeatherName, TimeSegments);
+        if (!(!((local_156 == nullptr))) || (local_156.Get().BatchCountSpawnRatio > 0.0f && (local_156.Get().CreatureCountSpawnRatio > 0.0f)))
         {
             OutResourceTypes.Add(TDataObjectPtr<FEcologyResourceDefinitionRow>(local_60));
         }
@@ -314,7 +310,6 @@ void UpdateTimeToWorldState(FCS_EcologyScriptGlobalContext &inout Context)
 }
 void InternalRequestResource(const FResourceSearchRequest &inout Request, const FBox &inout SearchBox, FCS_EcologyScriptGlobalContext &inout Context, TArray<FEntitySearchResult> &inout OutResult)
 {
-    TMapIterator<FECSEntityId, FEcologyVoxelSceneUnitSummary> local_148;
     FC_EcologyResourceProviderSummary local_172;
     int local_180 = 0;
     bool local_2 = true;
@@ -338,10 +333,8 @@ void InternalRequestResource(const FResourceSearchRequest &inout Request, const 
         FEcologyVoxelSceneRegion& local_120 = Context.VoxelScene.FindOrAddRegion(local_106.Proceed().Current);
         for (auto& local_140 : local_120.GetCellSlotDataRef(EEcologyVoxelUnitSlot(0)))
         {
-            local_140;
-            for (; local_148.CanProceed;)
+            for (auto& local_158 : local_140.GetValue().SlotData)
             {
-                auto local_158 = local_148.Proceed();
                 if (local_26.Contains(local_158.GetKey()))
                 {
                     continue;
@@ -541,18 +534,17 @@ bool CheckCreatureByRequester(const FECSEntity &inout TargetEntity, const FCreat
 }
 AECSRegionVolume FindECSRegionVolumeByPosition(const FCS_EcologyScriptGlobalContext &inout Context, const FVector &inout Position)
 {
-    const FRegionVolumeSummary& local_38;
     AECSRegionVolume local_44;
-    if (Context.VoxelScene.Find(FVoxelPosition(Position)))
+    TConstRawPtr<FEcologyVoxelSceneRegion> local_12 = Context.VoxelScene.Find(FVoxelPosition(Position));
+    if (local_12)
     {
-        const FEcologyVoxelSceneRegion& local_18;
+        const FEcologyVoxelSceneRegion& local_18 = local_12.Get();
         for (auto& local_36 : local_18.VolumeData)
         {
-            local_36;
+            const FRegionVolumeSummary& local_38 = local_36.GetValue();
             if (local_38.Volume.IsValid())
             {
-                AECSVolumeBase local_40;
-                local_44 = Cast<AECSRegionVolume>(local_40);
+                local_44 = Cast<AECSRegionVolume>(local_38.Volume.Get());
                 if (local_44 != nullptr && local_44.QuickEncompassesPoint(Position))
                 {
                     return local_44;
@@ -578,18 +570,17 @@ TDataObjectPtr<FWorldAreaConfig> GetWorldAreaConfigByPosition(const FECSWorldPtr
 }
 FECSEntity FindCombatRegionByPosition(const FCS_EcologyScriptGlobalContext &inout Context, const FVector &inout Position)
 {
-    const FRegionVolumeSummary& local_38;
     AECSRegionVolume local_46;
-    if (Context.VoxelScene.Find(FVoxelPosition(Position)))
+    TConstRawPtr<FEcologyVoxelSceneRegion> local_12 = Context.VoxelScene.Find(FVoxelPosition(Position));
+    if (local_12)
     {
-        const FEcologyVoxelSceneRegion& local_18;
+        const FEcologyVoxelSceneRegion& local_18 = local_12.Get();
         for (auto& local_36 : local_18.VolumeData)
         {
-            local_36;
+            const FRegionVolumeSummary& local_38 = local_36.GetValue();
             if (local_38.bIsCombatRegion && local_38.Volume.IsValid())
             {
-                AECSVolumeBase local_42;
-                local_46 = Cast<AECSRegionVolume>(local_42);
+                local_46 = Cast<AECSRegionVolume>(local_38.Volume.Get());
                 if (local_46 != nullptr && local_46.QuickEncompassesPoint(Position))
                 {
                     return FECSEntity(local_38.RegionEntityId);

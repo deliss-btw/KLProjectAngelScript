@@ -72,11 +72,10 @@ struct FVM_CommonComponentFilter : FEUIViewModel
     void PostConstruct()
     {
         this.SetCommonActionEntryVM(TEUIModelRef<FVM_CommonActionEntry>(::FVM_CommonActionEntry::Create(this.GetContext().Manager)));
-        TEUIModelRef<FVM_CommonActionEntry> local_2 = this.GetCommonActionEntryVM();
-        this.GetConfig().CustomOperationName.Setup();
+        this.GetCommonActionEntryVM().Get().Setup(this.GetConfig().CustomOperationName);
         FSimpleModelEvent local_24;
         local_24.Add(this, FVM_CommonComponentFilter::OnFilterButtonClicked);
-        TEUIModelRef<FVM_CommonActionEntry> local_2_2 = this.GetCommonActionEntryVM();
+        this.GetCommonActionEntryVM().Get().UseExecute(local_24, FEUIInputAction());
         return;
     }
     void OnFilterButtonClicked()
@@ -177,11 +176,9 @@ FVM_CommonComponentFilter& Create(const UObject ContextObject, const FVM_CommonC
 {
     return FVM_CommonComponentFilter::CreateByManager(EUIInternal::GetContextManager(ContextObject), Config, OnComponentFilterSelected);
 }
-FVM_CommonComponentFilter CreateByManager(const UEUIManagerSubsystem Manager, const FVM_CommonComponentFilterConfig &inout Config, const FOnCommonComponentFilterSelected &inout OnComponentFilterSelected)
+FVM_CommonComponentFilter& CreateByManager(const UEUIManagerSubsystem Manager, const FVM_CommonComponentFilterConfig &inout Config, const FOnCommonComponentFilterSelected &inout OnComponentFilterSelected)
 {
-    FVM_CommonComponentFilter __r;
-    TEUIModelRef<FVM_CommonComponentFilter> local_6 = TEUIModelRef<FVM_CommonComponentFilter>(EUIInternal::MakeModelWithManager_Generic(Manager, FVM_CommonComponentFilter::ModelId, 0, Config, OnComponentFilterSelected));
-    return __r;
+    return TEUIModelRef<FVM_CommonComponentFilter>(EUIInternal::MakeModelWithManager_Generic(Manager, FVM_CommonComponentFilter::ModelId, 0, Config, OnComponentFilterSelected)).Get();
 }
 void GetModelInfo(FEUIViewModelMetaInfo &inout Result)
 {
@@ -232,7 +229,6 @@ namespace __GeneratedProperties_FVM_CommonComponentFilter
 {
 UScriptStruct StaticStruct()
 {
-    UScriptStruct local_2;
-    return local_2;
+    return __GeneratedProperties_FVM_CommonComponentFilter.Get();
 }
 }

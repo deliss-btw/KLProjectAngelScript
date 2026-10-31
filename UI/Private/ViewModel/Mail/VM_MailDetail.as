@@ -170,16 +170,14 @@ struct FVM_MailDetail : FEUIViewModel
         if (this.GetRewardList())
         {
             bool local_9 = this.GetCurrentMailData() && this.GetCurrentMailData().opArrow().IsClaimed();
-            TEUIModelRef<FVM_CommonRewardList> local_2 = this.GetRewardList();
-            for (auto& local_24 : GetRewards())
+            for (auto& local_24 : this.GetRewardList().Get().GetRewards())
             {
                 if (local_24)
                 {
                     local_24.opArrow().SetIsClaimed(local_9);
                 }
             }
-            TEUIModelRef<FVM_CommonRewardList> local_2_2 = this.GetRewardList();
-            return GetRewards();
+            return this.GetRewardList().Get().GetRewards();
         }
         return TArray<TEUIModelRef<FVM_CommonRewardItem>>();
     }
@@ -428,11 +426,9 @@ FVM_MailDetail& Create(const UObject ContextObject)
 {
     return FVM_MailDetail::CreateByManager(EUIInternal::GetContextManager(ContextObject));
 }
-FVM_MailDetail CreateByManager(const UEUIManagerSubsystem Manager)
+FVM_MailDetail& CreateByManager(const UEUIManagerSubsystem Manager)
 {
-    FVM_MailDetail __r;
-    TEUIModelRef<FVM_MailDetail> local_6 = TEUIModelRef<FVM_MailDetail>(EUIInternal::MakeModelWithManager(Manager, FVM_MailDetail::ModelId));
-    return __r;
+    return TEUIModelRef<FVM_MailDetail>(EUIInternal::MakeModelWithManager(Manager, FVM_MailDetail::ModelId)).Get();
 }
 void GetModelInfo(FEUIViewModelMetaInfo &inout Result)
 {
@@ -608,7 +604,6 @@ namespace __GeneratedProperties_FVM_MailDetail
 {
 UScriptStruct StaticStruct()
 {
-    UScriptStruct local_2;
-    return local_2;
+    return __GeneratedProperties_FVM_MailDetail.Get();
 }
 }

@@ -244,11 +244,7 @@ struct FVM_MinimapIconHoverProvider : FEUIViewModel
                 this.SetTooltipWidgetClass(::MinimapUtils::GetMinimapGlobalConfig().DefaultTooltipWidgetClass);
             }
         }
-        bool local_5 = false;
-        TSoftClassPtr<UUserWidget> local_62 = this.GetTooltipWidgetClass();
-        TWeakObjectPtr<UEUIUserWidget> local_4 = this.GetMinimapIcon().opArrow().GetOwningIcon();
-        UEUIUserWidget local_154;
-        this.SetHoverHandle(::CommonPopup::HoverCustom(local_154, local_62, this.GetTooltipModels(), bFixMode, true, ECommonHoverLayout(0), EEUILayoutLayer(0), local_5));
+        this.SetHoverHandle(::CommonPopup::HoverCustom(this.GetMinimapIcon().opArrow().GetOwningIcon().Get(), this.GetTooltipWidgetClass(), this.GetTooltipModels(), bFixMode, true, ECommonHoverLayout(0), EEUILayoutLayer(0), false));
         FEUIModelContainer::GetModel(this.GetTooltipModels()).opCall().UpdateTooltipActions();
         return;
     }
@@ -306,12 +302,7 @@ struct FVM_MinimapIconHoverProvider : FEUIViewModel
         else
         {
             FECSEntityId local_8 = this.GetEntityID();
-            FEUIModelContainer local_36 = FEUIModelContainer(local_14);
-            UMarkSettings local_16 = ::MarkUtil_Internal::GetMinimapMarkIconsSetting();
-            TWeakObjectPtr<UEUIUserWidget> local_6;
-            local_6 = this.GetMinimapIcon().opArrow().GetOwningIcon();
-            UEUIUserWidget local_18;
-            ::CommonPopup::HoverCustom(local_18, local_16.MinimapMarkDialog, local_36, false, true, ECommonHoverLayout(0), EEUILayoutLayer(0), false);
+            ::CommonPopup::HoverCustom(this.GetMinimapIcon().opArrow().GetOwningIcon().Get(), ::MarkUtil_Internal::GetMinimapMarkIconsSetting().MinimapMarkDialog, FEUIModelContainer(local_14), false, true, ECommonHoverLayout(0), EEUILayoutLayer(0), false);
         }
         return true;
     }
@@ -417,13 +408,10 @@ struct FVM_MinimapIconHoverProvider : FEUIViewModel
     }
     void SelectIcon()
     {
-        UEUIMinimap local_8;
-        TWeakObjectPtr<UEUIMinimap> local_4 = this.GetMinimapIcon().opArrow().GetOwningMinimap();
+        UEUIMinimap local_8 = this.GetMinimapIcon().opArrow().GetOwningMinimap().Get();
         if (local_8 != nullptr)
         {
-            TWeakObjectPtr<UEUIUserWidget> local_14 = this.GetMinimapIcon().opArrow().GetOwningIcon();
-            UEUIUserWidget local_16;
-            local_8.SetSelectedIconWidget(local_16);
+            local_8.SetSelectedIconWidget(this.GetMinimapIcon().opArrow().GetOwningIcon().Get());
         }
         return;
     }
@@ -607,11 +595,9 @@ FVM_MinimapIconDecorator& Create(const UObject ContextObject, const EMinimapIcon
 {
     return FVM_MinimapIconDecorator::CreateByManager(EUIInternal::GetContextManager(ContextObject), EMinimapIconDecoratorType(DecoratorType));
 }
-FVM_MinimapIconDecorator CreateByManager(const UEUIManagerSubsystem Manager, const EMinimapIconDecoratorType DecoratorType)
+FVM_MinimapIconDecorator& CreateByManager(const UEUIManagerSubsystem Manager, const EMinimapIconDecoratorType DecoratorType)
 {
-    FVM_MinimapIconDecorator __r;
-    TEUIModelRef<FVM_MinimapIconDecorator> local_6 = TEUIModelRef<FVM_MinimapIconDecorator>(EUIInternal::MakeModelWithManager_Generic(Manager, FVM_MinimapIconDecorator::ModelId, 0, DecoratorType));
-    return __r;
+    return TEUIModelRef<FVM_MinimapIconDecorator>(EUIInternal::MakeModelWithManager_Generic(Manager, FVM_MinimapIconDecorator::ModelId, 0, DecoratorType)).Get();
 }
 void GetModelInfo(FEUIViewModelMetaInfo &inout Result)
 {
@@ -670,8 +656,7 @@ namespace __GeneratedProperties_FVM_MinimapIconDecorator
 {
 UScriptStruct StaticStruct()
 {
-    UScriptStruct local_2;
-    return local_2;
+    return __GeneratedProperties_FVM_MinimapIconDecorator.Get();
 }
 }
 namespace FVM_MinimapIconHoverProvider
@@ -680,11 +665,9 @@ FVM_MinimapIconHoverProvider& Create(const UObject ContextObject, const TEUIMode
 {
     return FVM_MinimapIconHoverProvider::CreateByManager(EUIInternal::GetContextManager(ContextObject), MinimapIcon);
 }
-FVM_MinimapIconHoverProvider CreateByManager(const UEUIManagerSubsystem Manager, const TEUIModelRef<FVM_MinimapIcon> &inout MinimapIcon)
+FVM_MinimapIconHoverProvider& CreateByManager(const UEUIManagerSubsystem Manager, const TEUIModelRef<FVM_MinimapIcon> &inout MinimapIcon)
 {
-    FVM_MinimapIconHoverProvider __r;
-    TEUIModelRef<FVM_MinimapIconHoverProvider> local_6 = TEUIModelRef<FVM_MinimapIconHoverProvider>(EUIInternal::MakeModelWithManager_Generic(Manager, FVM_MinimapIconHoverProvider::ModelId, 0, MinimapIcon));
-    return __r;
+    return TEUIModelRef<FVM_MinimapIconHoverProvider>(EUIInternal::MakeModelWithManager_Generic(Manager, FVM_MinimapIconHoverProvider::ModelId, 0, MinimapIcon)).Get();
 }
 void GetModelInfo(FEUIViewModelMetaInfo &inout Result)
 {
@@ -784,7 +767,6 @@ namespace __GeneratedProperties_FVM_MinimapIconHoverProvider
 {
 UScriptStruct StaticStruct()
 {
-    UScriptStruct local_2;
-    return local_2;
+    return __GeneratedProperties_FVM_MinimapIconHoverProvider.Get();
 }
 }

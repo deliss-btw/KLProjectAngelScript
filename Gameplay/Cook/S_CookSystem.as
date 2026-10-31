@@ -134,6 +134,8 @@ class US_CookSystem : UECSScriptSystem
             local_5 = local_5 + 1;
             local_22.Next();
         }
+        __Lambda_Gameplay_Cook_S_CookSystem_154 local_84;
+        this.FoodCraftConfigs.Sort(local_84);
         this.EnergyThresholdConfigs.Empty(0);
         TDataObjectIterator<FCookEnergyThresholdConfig> local_100;
         for (; local_100; )
@@ -152,6 +154,8 @@ class US_CookSystem : UECSScriptSystem
             this.StatModifierLadderConfigs.Add(local_118.GetData());
             local_118.Next();
         }
+        __Lambda_Gameplay_Cook_S_CookSystem_172 local_120;
+        this.StatModifierLadderConfigs.Sort(local_120);
         bool local_121 = false;
         bool local_122 = false;
         bool local_123 = false;
@@ -337,7 +341,7 @@ class US_CookSystem : UECSScriptSystem
                     int local_45 = 0;
                     for (; local_45 < local_10.GetCookPlayerDatas()[local_39].GetCookCostItems().Num(); ++local_45)
                     {
-                        if (0 == 0)
+                        if (local_10.GetCookPlayerDatas()[local_39].GetCookCostItems()[local_45].GetCookCostItem().Get().DataId == Event.FoodItem.Get().DataId)
                         {
                             Remove local_52;
                             local_52.opCall();
@@ -521,8 +525,7 @@ class US_CookSystem : UECSScriptSystem
             }
             return;
         }
-        int local_179 = this.GenerateCookSessionId(Event.CookPropEntity);
-        local_10.SetCurrentSessionId(local_179);
+        local_10.SetCurrentSessionId(this.GenerateCookSessionId(Event.CookPropEntity));
         this.ReportCookStart(Event.CookPropEntity, local_10);
         int local_180 = 0;
         for (auto& local_36 : local_10.GetCookPlayerDatas())
@@ -582,9 +585,8 @@ class US_CookSystem : UECSScriptSystem
             local_228.SetReason(1);
             for (auto& local_50 : local_36.GetCookCostItems())
             {
-                local_50;
                 FPbGsCostItem local_258 = local_228.AddContentList().GetCostItem();
-                local_258.SetItemId(local_179);
+                local_258.SetItemId(local_50.GetCookCostItem().Get().DataId);
                 local_258.SetCount(1);
             }
             FCookConsumeCallback local_204;
@@ -691,7 +693,7 @@ class US_CookSystem : UECSScriptSystem
             else
             {
                 TDataObjectPtr<FMetaBuffConfig> local_104;
-                local_104 = GetMetaBuffConfig();
+                local_104 = local_10.GetPendingProductFood().Get().GetMetaBuffConfig();
                 local_7 = (local_104 == nullptr);
             }
             if (local_7)
@@ -710,7 +712,7 @@ class US_CookSystem : UECSScriptSystem
                 }
                 else
                 {
-                    ::FMetaBuffUtils::AddMetaBuff(local_28.GetPlayerEntity(), GetMetaBuffConfig(), local_10.GetPendingModifiers(), TArray<TDataObjectPtr<FMetaBuffCapabilityConfig>>());
+                    ::FMetaBuffUtils::AddMetaBuff(local_28.GetPlayerEntity(), local_10.GetPendingProductFood().Get().GetMetaBuffConfig(), local_10.GetPendingModifiers(), TArray<TDataObjectPtr<FMetaBuffCapabilityConfig>>());
                 }
             }
             local_28.SetbCancelMetaBuff(true);
@@ -761,7 +763,7 @@ class US_CookSystem : UECSScriptSystem
                 }
                 if (!(local_22.GetbCancelMetaBuff()))
                 {
-                    ::FMetaBuffUtils::AddMetaBuff(local_22.GetPlayerEntity(), GetMetaBuffConfig(), local_2.GetPendingModifiers(), TArray<TDataObjectPtr<FMetaBuffCapabilityConfig>>());
+                    ::FMetaBuffUtils::AddMetaBuff(local_22.GetPlayerEntity(), local_2.GetPendingProductFood().Get().GetMetaBuffConfig(), local_2.GetPendingModifiers(), TArray<TDataObjectPtr<FMetaBuffCapabilityConfig>>());
                 }
             }
             this.SetCookParticipantsTeleportBan(local_2, false);
@@ -900,23 +902,21 @@ class US_CookSystem : UECSScriptSystem
     void ReportCookEnd(const FECSEntity &inout PawnEntity, const FECSEntity &inout CookPropEntity, const FC_CookProp &inout CookProp) const
     {
         FPbPlayerLogDsCookEnd local_10;
-        int local_70 = 0;
         local_10.SetCookingSessionId(CookProp.GetCurrentSessionId());
-        int local_11 = this.GetCookParticipantCount(CookProp);
-        local_10.SetPlayerCount(local_11);
+        local_10.SetPlayerCount(this.GetCookParticipantCount(CookProp));
         local_10.SetSource(int(::FLevelUtils::GetCurrentLevelType()));
         TDataObjectPtr<FFoodProductConfig> local_38;
         local_38 = CookProp.GetPendingProductFood();
         if ((local_38 == nullptr))
         {
-            local_11 = local_10.GetCookingSessionId();
+            int local_11 = local_10.GetCookingSessionId();
             XError(ELog(80), FString().Append("[CookDataTracker] COOK_END: PendingProductFood is null, skip dish/material fields. session=").Append(local_11));
         }
         else
         {
-            local_10.SetResultDishId(local_11);
-            int local_13 = local_70;
-            local_10.SetResultQuality(local_13);
+            int local_11_2 = CookProp.GetPendingProductFood().Get().DataId;
+            local_10.SetResultDishId(local_11_2);
+            local_10.SetResultQuality(int(CookProp.GetPendingProductFood().Get().ProductRarity));
             this.FillCookEndMaterials(CookProp, local_10);
         }
         XLog(ELog(80), FString().Append("[CookDataTracker] COOK_END report: session=").Append(local_10.GetCookingSessionId()).Append(" player_count=").Append(local_10.GetPlayerCount()).Append(" source=").Append(local_10.GetSource()).Append(" dish=").Append(local_10.GetResultDishId()).Append(" quality=").Append(local_10.GetResultQuality()).Append(" pawn=").Append(PawnEntity));
@@ -927,7 +927,6 @@ class US_CookSystem : UECSScriptSystem
     {
         int local_51;
         TMap<uint, uint> local_20;
-        int local_52 = 0;
         for (auto& local_36 : CookProp.GetCookPlayerDatas())
         {
             for (auto& local_50 : local_36.GetCookCostItems())
@@ -936,6 +935,7 @@ class US_CookSystem : UECSScriptSystem
                 {
                     continue;
                 }
+                int local_52 = local_50.GetCookCostItem().Get().DataId;
                 local_51 = local_52;
                 int local_54 = local_20.FindOrAdd(local_51);
                 local_52 = int(local_54);
@@ -946,7 +946,7 @@ class US_CookSystem : UECSScriptSystem
         for (auto& local_74 : local_20)
         {
             Body.AddMaterialList(local_74.GetKey());
-            Body.AddMaterialCount(local_52);
+            Body.AddMaterialCount(local_74.GetValue());
         }
         return;
     }

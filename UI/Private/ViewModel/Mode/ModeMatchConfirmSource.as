@@ -95,8 +95,7 @@ struct FM_ModeMatchConfirm : FEUIModel
         this.SetbHasReject(false);
         for (auto& local_20 : this.GetPlayerStatus())
         {
-            local_20;
-            if (0 == 2)
+            if (local_20.GetValue() == 2)
             {
                 this.SetbHasReject(true);
                 break;
@@ -248,64 +247,57 @@ class UModeMatchConfirmSource : UTeamMemberConfirmSourceBase
     }
     FText GetTitleName(const FEUIModelContext &inout Context, const FEUIModelRef &inout Business) const
     {
-        FText __return;
-        if (!(TEUIModelRef<FM_ModeMatchConfirm>(Business).IsValid()))
+        TEUIModelRef<FM_ModeMatchConfirm> local_2 = TEUIModelRef<FM_ModeMatchConfirm>(Business);
+        if (!(local_2.IsValid()))
         {
             return FText();
         }
-        if (GetMatchMode() == 2)
+        if (local_2.Get().GetMatchMode() == 2)
         {
             int local_13;
-            local_13 = GetCommissionId();
-            if (::FMS_CommissionData::Get(Context.Manager).FindCommissionByConfigDataId(local_13).IsValid() && GetCommissionConfig().IsSet())
+            local_13 = local_2.Get().GetCommissionId();
+            TEUIModelRef<FM_Commission> local_16 = ::FMS_CommissionData::Get(Context.Manager).FindCommissionByConfigDataId(local_13);
+            if (local_16.IsValid() && local_16.Get().GetCommissionConfig().IsSet())
             {
+                return local_16.Get().GetCommissionConfig().Get().CommissionName;
             }
-            else
+            GetDataObjectByGSDataId<FCommissionConfig> local_68;
+            TDataObjectPtr<FCommissionConfig> local_44 = local_68.opImplConv();
+            if (local_44.IsSet())
             {
-                GetDataObjectByGSDataId<FCommissionConfig> local_68;
-                if (local_68.opImplConv().IsSet())
-                {
-                }
-                else
-                {
-                    __return = FText();
-                }
+                return local_44.Get().CommissionName;
             }
+            return FText();
         }
-        else
+        FM_ModeItem& local_118 = ::FM_ModeItem::Create(Context.Manager, local_2.Get().GetMatchId());
+        if (local_118.GetMatchConfig().IsSet())
         {
-            FM_ModeItem& local_118 = ::FM_ModeItem::Create(Context.Manager, GetMatchId());
-            if (local_118.GetMatchConfig().IsSet())
-            {
-            }
-            else
-            {
-                __return = FText();
-            }
+            return local_118.GetMatchConfig().Get().ModeName;
         }
-        return __return;
+        return FText();
     }
     float32 GetReplyTimeout(const FEUIModelContext &inout Context, const FEUIModelRef &inout Business) const
     {
-        int local_105 = 0;
-        if (!(TEUIModelRef<FM_ModeMatchConfirm>(Business).IsValid()))
+        TEUIModelRef<FM_ModeMatchConfirm> local_2 = TEUIModelRef<FM_ModeMatchConfirm>(Business);
+        if (!(local_2.IsValid()))
         {
             return 0.0f;
         }
-        if (GetMatchMode() == 2)
+        if (local_2.Get().GetMatchMode() == 2)
         {
-            int local_8 = GetMatchId();
+            int local_8 = local_2.Get().GetMatchId();
             GetDataObjectByGSDataId<FPveCommissionMatchConfig> local_56;
-            if (local_56.opImplConv().IsSet())
+            TDataObjectPtr<FPveCommissionMatchConfig> local_32 = local_56.opImplConv();
+            if (local_32.IsSet())
             {
-                return local_105;
+                return local_32.Get().ConfirmWaitTime;
             }
             return 0.0f;
         }
-        FM_ModeItem& local_108 = ::FM_ModeItem::Create(Context.Manager, GetMatchId());
+        FM_ModeItem& local_108 = ::FM_ModeItem::Create(Context.Manager, local_2.Get().GetMatchId());
         if (local_108.GetMatchConfig().IsSet())
         {
-            return local_105;
+            return local_108.GetMatchConfig().Get().ConfirmWaitTime;
         }
         return 0.0f;
     }
@@ -325,8 +317,6 @@ class UModeMatchConfirmSource : UTeamMemberConfirmSourceBase
     }
     void RefreshMembers(const FEUIModelContext &inout Context, const FEUIModelRef &inout Business, const TArray<TEUIModelRef<FVM_TeamMemberPrepareItem>> &inout Members) const
     {
-        TEUIModelRef<FVM_TeammateInfo> local_22;
-        TEUIModelRef<FM_Player> local_28;
         TEUIModelRef<FM_ModeMatchConfirm> local_2 = TEUIModelRef<FM_ModeMatchConfirm>(Business);
         if (!(local_2.IsValid()))
         {
@@ -334,45 +324,32 @@ class UModeMatchConfirmSource : UTeamMemberConfirmSourceBase
         }
         for (auto& local_20 : Members)
         {
-            local_22.GetTeammateInfo();
-            if (!(local_22.IsValid()))
+            if (!(local_20.Get().GetTeammateInfo().IsValid()))
             {
                 continue;
             }
-            local_22.GetTeammateInfo();
-            TEUIModelRef<FM_TeamMember> local_26;
-            local_26.GetTeamMember();
+            TEUIModelRef<FM_TeamMember> local_26 = local_20.Get().GetTeammateInfo().Get().GetTeamMember();
             TEUIModelRef<FM_TeamMember> local_24;
-            bool local_5 = !(local_24.IsValid());
-            if (local_5)
-            {
-                local_5 = true;
-            }
-            else
-            {
-                local_28.GetPlayer();
-                local_5 = !(local_28.IsValid());
-            }
-            if (local_5)
+            if (!(local_24.IsValid()) || !(local_24.Get().GetPlayer().IsValid()))
             {
                 continue;
             }
-            local_28.GetPlayer();
-            this.ApplyMemberStatus(local_20, GetPlayerUid(), local_2);
+            this.ApplyMemberStatus(local_20, local_24.Get().GetPlayer().Get().GetPlayerUid(), local_2);
         }
         return;
     }
     int GetReplyStatusIndex(const FEUIModelContext &inout Context, const FEUIModelRef &inout Business) const
     {
-        if (!(TEUIModelRef<FM_ModeMatchConfirm>(Business).IsValid()))
+        TEUIModelRef<FM_ModeMatchConfirm> local_2 = TEUIModelRef<FM_ModeMatchConfirm>(Business);
+        if (!(local_2.IsValid()))
         {
             return 0;
         }
-        if (GetbHasReject())
+        if (local_2.Get().GetbHasReject())
         {
             return 2;
         }
-        if (GetbConfirmSent())
+        if (local_2.Get().GetbConfirmSent())
         {
             return 1;
         }
@@ -380,25 +357,27 @@ class UModeMatchConfirmSource : UTeamMemberConfirmSourceBase
     }
     FText GetReplyProgressText(const FEUIModelContext &inout Context, const FEUIModelRef &inout Business) const
     {
-        bool local_5 = !(TEUIModelRef<FM_ModeMatchConfirm>(Business).IsValid());
+        TEUIModelRef<FM_ModeMatchConfirm> local_2 = TEUIModelRef<FM_ModeMatchConfirm>(Business);
+        bool local_5 = !(local_2.IsValid());
         if (local_5)
         {
             local_5 = true;
         }
         else
         {
-            int local_6 = GetTotalPlayerNum();
+            int local_6 = local_2.Get().GetTotalPlayerNum();
             local_5 = (local_6 == 0);
         }
         if (local_5)
         {
             return FText();
         }
-        return FText::Format(FText::AsCultureInvariant("{0}/{1}"), GetConfirmPlayerNum(), GetTotalPlayerNum());
+        return FText::Format(FText::AsCultureInvariant("{0}/{1}"), local_2.Get().GetConfirmPlayerNum(), local_2.Get().GetTotalPlayerNum());
     }
     FText GetWarningText(const FEUIModelContext &inout Context, const FEUIModelRef &inout Business) const
     {
-        if (!(TEUIModelRef<FM_ModeMatchConfirm>(Business).IsValid()) || (GetMatchMode() != 2))
+        TEUIModelRef<FM_ModeMatchConfirm> local_2 = TEUIModelRef<FM_ModeMatchConfirm>(Business);
+        if (!(local_2.IsValid()) || (local_2.Get().GetMatchMode() != 2))
         {
             return FText();
         }
@@ -407,9 +386,10 @@ class UModeMatchConfirmSource : UTeamMemberConfirmSourceBase
     bool IsNoneReject(const FEUIModelContext &inout Context, const FEUIModelRef &inout Business) const
     {
         bool local_7;
-        if (TEUIModelRef<FM_ModeMatchConfirm>(Business).IsValid())
+        TEUIModelRef<FM_ModeMatchConfirm> local_2 = TEUIModelRef<FM_ModeMatchConfirm>(Business);
+        if (local_2.IsValid())
         {
-            local_7 = !(GetbHasReject());
+            local_7 = !(local_2.Get().GetbHasReject());
         }
         else
         {
@@ -426,7 +406,7 @@ class UModeMatchConfirmSource : UTeamMemberConfirmSourceBase
         {
             return TSoftClassPtr<UEUIUserWidget>();
         }
-        if (GetMatchMode() == 2)
+        if (local_2.Get().GetMatchMode() == 2)
         {
             TEUIModelRef<FM_Commission> local_20 = this.ResolveCommission(Context, local_2);
             if (!(local_20.IsValid()))
@@ -440,7 +420,7 @@ class UModeMatchConfirmSource : UTeamMemberConfirmSourceBase
         }
         GetGameplaySettings<UModeMatchContentSettings> local_38;
         local_36 = local_38;
-        return local_36.GetContentWidgetClass(GetMatchMode());
+        return local_36.GetContentWidgetClass(local_2.Get().GetMatchMode());
     }
     FEUIModelContainer GetContentModel(const FEUIModelContext &inout Context, const FEUIModelRef &inout Business) const
     {
@@ -451,7 +431,7 @@ class UModeMatchConfirmSource : UTeamMemberConfirmSourceBase
         {
             return FEUIModelContainer();
         }
-        if (GetMatchMode() == 2)
+        if (local_2.Get().GetMatchMode() == 2)
         {
             TEUIModelRef<FM_Commission> local_24 = this.ResolveCommission(Context, local_2);
             if (!(local_24.IsValid()))
@@ -470,7 +450,7 @@ class UModeMatchConfirmSource : UTeamMemberConfirmSourceBase
         }
         GetGameplaySettings<UModeMatchContentSettings> local_46;
         local_44 = local_46;
-        const UModeMatchContentAdapterBase local_52 = local_44.GetContentAdapter(GetMatchMode());
+        const UModeMatchContentAdapterBase local_52 = local_44.GetContentAdapter(local_2.Get().GetMatchMode());
         if (local_52 != nullptr)
         {
             return local_52.MakeViewModels(Context, Business);
@@ -490,24 +470,20 @@ class UModeMatchConfirmSource : UTeamMemberConfirmSourceBase
     TArray<TEUIModelRef<FM_Player>> CollectPlayers(const FEUIModelContext &inout Context) const
     {
         TArray<TEUIModelRef<FM_Player>> local_4;
-        if (::FMS_PlayerSocialTeamData::Get(Context.Manager).GetLocalPlayerTeam().IsValid() && !(GetMembers().IsEmpty()))
+        TEUIModelRef<FM_SocialTeam> local_8 = ::FMS_PlayerSocialTeamData::Get(Context.Manager).GetLocalPlayerTeam();
+        if (local_8.IsValid() && !(local_8.Get().GetMembers().IsEmpty()))
         {
-            TEUIModelRef<FM_Player> local_26;
-            for (auto& local_24 : GetMembers())
+            for (auto& local_24 : local_8.Get().GetMembers())
             {
-                local_24;
-                local_26.GetPlayer();
-                if (local_26.IsValid())
+                if (local_24.Get().GetPlayer().IsValid())
                 {
-                    local_26.GetPlayer();
-                    local_4.Add(local_26);
+                    local_4.Add(local_24.Get().GetPlayer());
                 }
             }
         }
         else
         {
-            TEUIModelRef<FM_Player> local_26;
-            local_26 = ::FMS_PlayerData::Get(Context.Manager).GetLocalPlayerData();
+            TEUIModelRef<FM_Player> local_26 = ::FMS_PlayerData::Get(Context.Manager).GetLocalPlayerData();
             if (local_26.IsValid())
             {
                 local_4.Add(local_26);
@@ -517,11 +493,11 @@ class UModeMatchConfirmSource : UTeamMemberConfirmSourceBase
     }
     TEUIModelRef<FM_Commission> ResolveCommission(const FEUIModelContext &inout Context, const TEUIModelRef<FM_ModeMatchConfirm> &inout Data) const
     {
-        if (!(Data.IsValid()) || (GetMatchMode() != 2))
+        if (!(Data.IsValid()) || (Data.Get().GetMatchMode() != 2))
         {
             return TEUIModelRef<FM_Commission>();
         }
-        return ::FMS_CommissionData::Get(Context.Manager).FindCommissionByConfigDataId(GetCommissionId());
+        return ::FMS_CommissionData::Get(Context.Manager).FindCommissionByConfigDataId(Data.Get().GetCommissionId());
     }
     TEUIModelRef<FVM_TeamMemberPrepareItem> BuildMemberItem(const FEUIModelContext &inout Context, const TEUIModelRef<FM_Player> &inout Player, const TEUIModelRef<FM_ModeMatchConfirm> &inout Data) const
     {
@@ -538,17 +514,16 @@ class UModeMatchConfirmSource : UTeamMemberConfirmSourceBase
             local_2 = TEUIModelRef<FVM_TeammateInfo>(::FVM_TeammateInfo::Create(Context.Manager, (TEUIModelRef<FM_TeamMember>(local_14))));
         }
         TEUIModelRef<FVM_TeamMemberPrepareItem> local_16 = TEUIModelRef<FVM_TeamMemberPrepareItem>(::FVM_TeamMemberPrepareItem::Create(Context.Manager, local_2));
-        ::FMS_PlayerData::Get(Context.Manager).GetLocalPlayerData();
-        int local_23 = GetPlayerUid();
-        (GetPlayerUid() == local_23).SetbSelf();
-        this.ApplyMemberStatus(local_16, GetPlayerUid(), Data);
+        int local_23 = ::FMS_PlayerData::Get(Context.Manager).GetLocalPlayerData().Get().GetPlayerUid();
+        local_16.Get().SetbSelf((Player.Get().GetPlayerUid() == local_23));
+        this.ApplyMemberStatus(local_16, Player.Get().GetPlayerUid(), Data);
         return local_16;
     }
     void ApplyMemberStatus(const TEUIModelRef<FVM_TeamMemberPrepareItem> &inout Item, const uint Uid, const TEUIModelRef<FM_ModeMatchConfirm> &inout Data) const
     {
         int local_1 = 0;
-        (GetPlayerStatus().Find(Uid, local_1)).SetbReady();
-        (local_1 == 2).SetbReject();
+        Item.Get().SetbReady(Data.Get().GetPlayerStatus().Find(Uid, local_1));
+        Item.Get().SetbReject((local_1 == 2));
         return;
     }
 }
@@ -559,11 +534,9 @@ FM_ModeMatchConfirm& Create(const UObject ContextObject, const uint MatchId)
 {
     return FM_ModeMatchConfirm::CreateByManager(EUIInternal::GetContextManager(ContextObject), MatchId);
 }
-FM_ModeMatchConfirm CreateByManager(const UEUIManagerSubsystem Manager, const uint MatchId)
+FM_ModeMatchConfirm& CreateByManager(const UEUIManagerSubsystem Manager, const uint MatchId)
 {
-    FM_ModeMatchConfirm __r;
-    TEUIModelRef<FM_ModeMatchConfirm> local_6 = TEUIModelRef<FM_ModeMatchConfirm>(EUIInternal::MakeModelWithManager_Generic(Manager, FM_ModeMatchConfirm::ModelId, 0, MatchId));
-    return __r;
+    return TEUIModelRef<FM_ModeMatchConfirm>(EUIInternal::MakeModelWithManager_Generic(Manager, FM_ModeMatchConfirm::ModelId, 0, MatchId)).Get();
 }
 void GetModelInfo(FEUIModelOnlyMetaInfo &inout Result)
 {

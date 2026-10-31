@@ -3,7 +3,6 @@ namespace __FMetaBuffConfigFunctions
 UFUNCTION()
 FBuffConfigRef __FMetaBuffConfig_GetBuffConfig(const TDataObjectPtr<FMetaBuffConfig> &inout DataObject)
 {
-    FBuffConfigRef __r;
     if ((DataObject == nullptr))
     {
         if (!(EUIGlobals::GIsDuringPropertyConversion))
@@ -13,12 +12,11 @@ FBuffConfigRef __FMetaBuffConfig_GetBuffConfig(const TDataObjectPtr<FMetaBuffCon
         FMetaBuffConfig local_42;
         return local_42.BuffConfig;
     }
-    return __r;
+    return DataObject.Get().BuffConfig;
 }
 UFUNCTION()
 EMetaBuffSlot __FMetaBuffConfig_GetMetaBuffSlot(const TDataObjectPtr<FMetaBuffConfig> &inout DataObject)
 {
-    int local_43 = 0;
     if ((DataObject == nullptr))
     {
         if (!(EUIGlobals::GIsDuringPropertyConversion))
@@ -26,10 +24,9 @@ EMetaBuffSlot __FMetaBuffConfig_GetMetaBuffSlot(const TDataObjectPtr<FMetaBuffCo
             FBlueprintDebugFunctions::ThrowScriptException("Get 'MetaBuffSlot' from a null 'FMetaBuffConfig' DataObject!");
         }
         FMetaBuffConfig local_42;
-        local_43 = int(local_42.MetaBuffSlot);
-        return EMetaBuffSlot(local_43);
+        return local_42.MetaBuffSlot;
     }
-    return EMetaBuffSlot(local_43);
+    return DataObject.Get().MetaBuffSlot;
 }
 UFUNCTION()
 int __FMetaBuffConfig_GetDuration(const TDataObjectPtr<FMetaBuffConfig> &inout DataObject)
@@ -67,7 +64,7 @@ TDataObjectPtr<FCapabilityConfig> __FMetaBuffCapabilityConfig_GetCapabilityConfi
         FMetaBuffCapabilityConfig local_42;
         return local_42.GetCapabilityConfig();
     }
-    return GetCapabilityConfig();
+    return DataObject.Get().GetCapabilityConfig();
 }
 UFUNCTION()
 int __FMetaBuffCapabilityConfig_GetLevel(const TDataObjectPtr<FMetaBuffCapabilityConfig> &inout DataObject)

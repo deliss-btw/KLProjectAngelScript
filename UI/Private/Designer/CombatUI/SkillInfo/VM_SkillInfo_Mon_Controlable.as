@@ -95,7 +95,6 @@ struct FVMS_SkillInfo_Mon_Controlable : FEUIViewModelSingleton
     void OnPlayerPawnEntityChanged()
     {
         int local_14 = 0;
-        const USkillConfig local_26;
         if (UICommonUtil::CVar_UI_DebugEnableNewSkillBtns.GetBool())
         {
             return;
@@ -105,15 +104,13 @@ struct FVMS_SkillInfo_Mon_Controlable : FEUIViewModelSingleton
         const FC_SkillInstance& local_8 = FSkillUtils::GetSkillInstance(this.GetPlayerPawnEntity(), local_4, local_5);
         if (local_5)
         {
-            TSoftObjectPtr<USkillConfig> local_24 = local_8.GetSkillConfig();
-            local_14.SetSkillConfig(local_26);
+            local_14.SetSkillConfig(local_8.GetSkillConfig().Get());
         }
         local_4 = FSkillUtils::GetSkillIndex(this.GetPlayerPawnEntity(), ESkillSlot(4));
         const FC_SkillInstance& local_28 = FSkillUtils::GetSkillInstance(this.GetPlayerPawnEntity(), local_4, local_5);
         if (local_5)
         {
-            TSoftObjectPtr<USkillConfig> local_24_2 = local_28.GetSkillConfig();
-            local_14.SetSkillConfig(local_26);
+            local_14.SetSkillConfig(local_28.GetSkillConfig().Get());
             local_14.SetSkillProgressAttribute(Attribute::UltraSkillEnergy);
             local_14.SetSkillProgressAttributeMax(Attribute::UltraSkillEnergyMax);
         }
@@ -121,8 +118,7 @@ struct FVMS_SkillInfo_Mon_Controlable : FEUIViewModelSingleton
         const FC_SkillInstance& local_30 = FSkillUtils::GetSkillInstance(this.GetPlayerPawnEntity(), local_4, local_5);
         if (local_5)
         {
-            TSoftObjectPtr<USkillConfig> local_24_3 = local_30.GetSkillConfig();
-            local_14.SetSkillConfig(local_26);
+            local_14.SetSkillConfig(local_30.GetSkillConfig().Get());
         }
         return;
     }
@@ -260,11 +256,9 @@ FVMS_SkillInfo_Mon_Controlable& Get(const UObject ContextObject)
 {
     return FVMS_SkillInfo_Mon_Controlable::GetByManager(EUIInternal::GetContextManager(ContextObject));
 }
-FVMS_SkillInfo_Mon_Controlable GetByManager(const UEUIManagerSubsystem Manager)
+FVMS_SkillInfo_Mon_Controlable& GetByManager(const UEUIManagerSubsystem Manager)
 {
-    FVMS_SkillInfo_Mon_Controlable __r;
-    TEUIModelRef<FVMS_SkillInfo_Mon_Controlable> local_6 = TEUIModelRef<FVMS_SkillInfo_Mon_Controlable>(EUIInternal::MakeModelWithManager(Manager, FVMS_SkillInfo_Mon_Controlable::ModelId));
-    return __r;
+    return TEUIModelRef<FVMS_SkillInfo_Mon_Controlable>(EUIInternal::MakeModelWithManager(Manager, FVMS_SkillInfo_Mon_Controlable::ModelId)).Get();
 }
 void GetModelInfo(FEUIViewModelMetaInfo &inout Result)
 {
@@ -365,7 +359,6 @@ namespace __GeneratedProperties_FVMS_SkillInfo_Mon_Controlable
 {
 UScriptStruct StaticStruct()
 {
-    UScriptStruct local_2;
-    return local_2;
+    return __GeneratedProperties_FVMS_SkillInfo_Mon_Controlable.Get();
 }
 }

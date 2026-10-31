@@ -25,7 +25,7 @@ class UWidget_NetworkAnomaly : UEUIUserWidget
     {
         if (this.NetworkVM.IsValid())
         {
-            InDeltaTime.WidgetTick();
+            this.NetworkVM.Get().WidgetTick(InDeltaTime);
         }
         return;
     }

@@ -113,11 +113,11 @@ class UESMAction_InstantFootStep : UESMSFXBaseInstantAction
         LandedEvent.EntityLandedInfo.SetbUseLandedStrengthLevelDirectly(true);
         LandedEvent.EntityLandedInfo.SetLandedStrengthLevel(this.StepStrengthLevel);
         LandedEvent.EntityLandedInfo.SetbDurational(false);
-        int local_39 = 0;
-        LandedEvent.EntityLandedInfo.SetCharacterSize(EPrefabSize(local_39));
-        if (::GetPrefabConfigPtr(Entity))
+        LandedEvent.EntityLandedInfo.SetCharacterSize(EPrefabSize(0));
+        TDataObjectPtr<FBasePrefabConfig> local_64 = ::GetPrefabConfigPtr(Entity);
+        if (local_64)
         {
-            LandedEvent.EntityLandedInfo.SetCharacterSize(EPrefabSize(local_39));
+            LandedEvent.EntityLandedInfo.SetCharacterSize(local_64.Get().Size);
         }
         return;
     }
@@ -230,11 +230,11 @@ class UESMAction_ActionImpactFX : UESMSFXBaseInstantAction
         LandedEvent.EntityLandedInfo.SetEntityMass(local_1);
         LandedEvent.EntityLandedInfo.SetActionImpactType(this.ActionImpactType);
         LandedEvent.EntityLandedInfo.SetbDurational(false);
-        int local_39 = 0;
-        LandedEvent.EntityLandedInfo.SetCharacterSize(EPrefabSize(local_39));
-        if (::GetPrefabConfigPtr(Entity))
+        LandedEvent.EntityLandedInfo.SetCharacterSize(EPrefabSize(0));
+        TDataObjectPtr<FBasePrefabConfig> local_64 = ::GetPrefabConfigPtr(Entity);
+        if (local_64)
         {
-            LandedEvent.EntityLandedInfo.SetCharacterSize(EPrefabSize(local_39));
+            LandedEvent.EntityLandedInfo.SetCharacterSize(local_64.Get().Size);
         }
         return;
     }

@@ -28,8 +28,8 @@ class UASEventsCallerImpl : UASEventsCallerBase
     UFUNCTION()
     float32 GetDefaultStepHeightForCharacter_Implementation(const FName &inout CharacterName) const
     {
-        UDataTable local_4;
         float32 local_1 = 0.0f;
+        UDataTable local_4 = UGameplayConfigsManager::GetCharacterMovementConfigTable().Get();
         if (local_4 != nullptr)
         {
             FDTCharacterMovementConfig local_148;

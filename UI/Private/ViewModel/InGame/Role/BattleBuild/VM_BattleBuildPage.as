@@ -249,11 +249,9 @@ FVMS_BattleBuildPage& Get(const UObject ContextObject)
 {
     return FVMS_BattleBuildPage::GetByManager(EUIInternal::GetContextManager(ContextObject));
 }
-FVMS_BattleBuildPage GetByManager(const UEUIManagerSubsystem Manager)
+FVMS_BattleBuildPage& GetByManager(const UEUIManagerSubsystem Manager)
 {
-    FVMS_BattleBuildPage __r;
-    TEUIModelRef<FVMS_BattleBuildPage> local_6 = TEUIModelRef<FVMS_BattleBuildPage>(EUIInternal::MakeModelWithManager(Manager, FVMS_BattleBuildPage::ModelId));
-    return __r;
+    return TEUIModelRef<FVMS_BattleBuildPage>(EUIInternal::MakeModelWithManager(Manager, FVMS_BattleBuildPage::ModelId)).Get();
 }
 void GetModelInfo(FEUIViewModelMetaInfo &inout Result)
 {
@@ -370,7 +368,6 @@ namespace __GeneratedProperties_FVMS_BattleBuildPage
 {
 UScriptStruct StaticStruct()
 {
-    UScriptStruct local_2;
-    return local_2;
+    return __GeneratedProperties_FVMS_BattleBuildPage.Get();
 }
 }

@@ -27,7 +27,6 @@ namespace __FStigmataConfigFunctions
 UFUNCTION()
 FText __FStigmataConfig_GetName(const TDataObjectPtr<FStigmataConfig> &inout DataObject)
 {
-    FText __r;
     if ((DataObject == nullptr))
     {
         if (!(EUIGlobals::GIsDuringPropertyConversion))
@@ -37,12 +36,11 @@ FText __FStigmataConfig_GetName(const TDataObjectPtr<FStigmataConfig> &inout Dat
         FStigmataConfig local_108;
         return local_108.Name;
     }
-    return __r;
+    return DataObject.Get().Name;
 }
 UFUNCTION()
 FText __FStigmataConfig_GetInstructions(const TDataObjectPtr<FStigmataConfig> &inout DataObject)
 {
-    FText __r;
     if ((DataObject == nullptr))
     {
         if (!(EUIGlobals::GIsDuringPropertyConversion))
@@ -52,12 +50,11 @@ FText __FStigmataConfig_GetInstructions(const TDataObjectPtr<FStigmataConfig> &i
         FStigmataConfig local_108;
         return local_108.Instructions;
     }
-    return __r;
+    return DataObject.Get().Instructions;
 }
 UFUNCTION()
 FSoftBrush __FStigmataConfig_GetNodeIcon(const TDataObjectPtr<FStigmataConfig> &inout DataObject)
 {
-    FSoftBrush __r;
     if ((DataObject == nullptr))
     {
         if (!(EUIGlobals::GIsDuringPropertyConversion))
@@ -67,12 +64,11 @@ FSoftBrush __FStigmataConfig_GetNodeIcon(const TDataObjectPtr<FStigmataConfig> &
         FStigmataConfig local_108;
         return local_108.NodeIcon;
     }
-    return __r;
+    return DataObject.Get().NodeIcon;
 }
 UFUNCTION()
 EStigmataType __FStigmataConfig_GetNodeType(const TDataObjectPtr<FStigmataConfig> &inout DataObject)
 {
-    int local_109 = 0;
     if ((DataObject == nullptr))
     {
         if (!(EUIGlobals::GIsDuringPropertyConversion))
@@ -80,10 +76,9 @@ EStigmataType __FStigmataConfig_GetNodeType(const TDataObjectPtr<FStigmataConfig
             FBlueprintDebugFunctions::ThrowScriptException("Get 'NodeType' from a null 'FStigmataConfig' DataObject!");
         }
         FStigmataConfig local_108;
-        local_109 = int(local_108.NodeType);
-        return EStigmataType(local_109);
+        return local_108.NodeType;
     }
-    return EStigmataType(local_109);
+    return DataObject.Get().NodeType;
 }
 UFUNCTION()
 TDataObjectPtr<FDataObject> __FStigmataConfig_GetNodeEffect(const TDataObjectPtr<FStigmataConfig> &inout DataObject)
@@ -97,7 +92,7 @@ TDataObjectPtr<FDataObject> __FStigmataConfig_GetNodeEffect(const TDataObjectPtr
         FStigmataConfig local_108;
         return local_108.GetNodeEffect();
     }
-    return GetNodeEffect();
+    return DataObject.Get().GetNodeEffect();
 }
 UFUNCTION()
 FStigmataConfig CastToFStigmataConfig(const TDataObjectPtr<FStigmataConfig> &inout DataObject)

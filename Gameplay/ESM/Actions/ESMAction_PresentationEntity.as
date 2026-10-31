@@ -123,8 +123,7 @@ class UESMAction_SpawnPresentationEntity : UESMBPBaseSpanTickAction
         }
         if (this.bControlEntityLifeTimeByAction)
         {
-            const FSpawnPresentationEntityActionInstanceData& local_4;
-            if (FECSEntity(local_4.PresentationEntity))
+            if (FECSEntity(this.GetInstanceData(Context).PresentationEntity))
             {
                 Modify local_18;
                 FC_LifeTime& local_14 = local_18.opCall();
@@ -149,8 +148,7 @@ class UESMAction_SpawnPresentationEntity : UESMBPBaseSpanTickAction
         {
             return;
         }
-        FECSEntity local_10;
-        if (local_10.IsValid())
+        if (FECSEntity(this.GetInstanceData(Context).PresentationEntity).IsValid())
         {
             Modify local_14;
             FC_LifeTime& local_16 = local_14.opCall();

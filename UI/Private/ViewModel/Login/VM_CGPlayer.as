@@ -221,11 +221,11 @@ struct FVM_CGPlayer : FEUIViewModel
     }
     bool IsLastPage() const
     {
-        int local_3 = 0;
         if (!(this.GetCGConfig().IsSet()))
         {
             return true;
         }
+        int local_3 = this.GetCGConfig().Get().Pages.Num();
         return (local_3 <= 0 || (this.GetCurrentPage() >= (local_3 - 1)));
     }
     bool HasPageFadeIn(const FCGContextConfig &inout PageConfig) const
@@ -251,6 +251,8 @@ struct FVM_CGPlayer : FEUIViewModel
     }
     void ResetState()
     {
+        this.GetModify_ClickCounterDown().Clear();
+        this.GetModify_PageFadeProgress().Clear();
         this.SetbCanClose(false);
         this.SetCurrentPage(0);
         this.SetbCanClickNext(false);
@@ -284,6 +286,7 @@ struct FVM_CGPlayer : FEUIViewModel
             this.SetPagePhase(ECgPlayerPagePhase(1));
             this.SetbIsCountDownVisible(false);
             this.SetbCanClickNext(false);
+            this.GetModify_ClickCounterDown().Clear();
             this.GetModify_PageFadeProgress().RestartSmooth(FFPTime(local_14.FadeInDuration));
             this.SetCurrentAlpha(0.0f);
             return;
@@ -291,6 +294,7 @@ struct FVM_CGPlayer : FEUIViewModel
         this.SetPagePhase(ECgPlayerPagePhase(0));
         this.SetbIsCountDownVisible(true);
         this.SetCurrentAlpha(1.0f);
+        this.GetModify_PageFadeProgress().Clear();
         this.StartBtnState(local_14.NextButtonShowDelay);
         return;
     }
@@ -300,6 +304,7 @@ struct FVM_CGPlayer : FEUIViewModel
         this.SetPagePhase(ECgPlayerPagePhase(2));
         this.SetbIsCountDownVisible(false);
         this.SetbCanClickNext(false);
+        this.GetModify_ClickCounterDown().Clear();
         this.GetModify_PageFadeProgress().RestartSmooth(FFPTime(local_104.FadeOutDuration));
         this.SetCurrentAlpha(1.0f);
         return;
@@ -314,6 +319,7 @@ struct FVM_CGPlayer : FEUIViewModel
         this.SetPagePhase(ECgPlayerPagePhase(0));
         this.SetbIsCountDownVisible(true);
         this.SetCurrentAlpha(1.0f);
+        this.GetModify_PageFadeProgress().Clear();
         this.StartBtnState(local_108.NextButtonShowDelay);
         return;
     }
@@ -324,6 +330,7 @@ struct FVM_CGPlayer : FEUIViewModel
             return;
         }
         this.SetPagePhase(ECgPlayerPagePhase(0));
+        this.GetModify_PageFadeProgress().Clear();
         if (this.GetbPendingFinishAfterFadeOut())
         {
             this.SetbPendingFinishAfterFadeOut(false);
@@ -662,11 +669,9 @@ FVM_CGPlayer& Create(const UObject ContextObject, const TDataObjectPtr<FCGConfig
 {
     return FVM_CGPlayer::CreateByManager(EUIInternal::GetContextManager(ContextObject), CGConfig);
 }
-FVM_CGPlayer CreateByManager(const UEUIManagerSubsystem Manager, const TDataObjectPtr<FCGConfig> &inout CGConfig)
+FVM_CGPlayer& CreateByManager(const UEUIManagerSubsystem Manager, const TDataObjectPtr<FCGConfig> &inout CGConfig)
 {
-    FVM_CGPlayer __r;
-    TEUIModelRef<FVM_CGPlayer> local_6 = TEUIModelRef<FVM_CGPlayer>(EUIInternal::MakeModelWithManager_Generic(Manager, FVM_CGPlayer::ModelId, 0, CGConfig));
-    return __r;
+    return TEUIModelRef<FVM_CGPlayer>(EUIInternal::MakeModelWithManager_Generic(Manager, FVM_CGPlayer::ModelId, 0, CGConfig)).Get();
 }
 void GetModelInfo(FEUIViewModelMetaInfo &inout Result)
 {
@@ -815,7 +820,6 @@ namespace __GeneratedProperties_FVM_CGPlayer
 {
 UScriptStruct StaticStruct()
 {
-    UScriptStruct local_2;
-    return local_2;
+    return __GeneratedProperties_FVM_CGPlayer.Get();
 }
 }

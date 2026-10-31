@@ -74,8 +74,8 @@ struct FVM_ForgeWeaponItemMaterial : FEUIViewModel
         int local_32;
         if (this.GetCurrencyConfig().Item)
         {
-            TDataObjectPtr<FItemConfig> local_26;
-            this.SetInventoryItemData(::FMS_PlayerInventory::Get(this.GetContext().Manager).GetSumItem(local_26));
+            this.SetCurrencyImage(this.GetCurrencyConfig().Item.Get().ItemIcon);
+            this.SetInventoryItemData(::FMS_PlayerInventory::Get(this.GetContext().Manager).GetSumItem(TDataObjectPtr<FItemConfig>(this.GetCurrencyConfig().Item.Get())));
         }
         this.SetCurrencyNum(this.GetCurrencyConfig().Count);
         if (this.GetCurrencyNum() > 0)
@@ -98,17 +98,7 @@ struct FVM_ForgeWeaponItemMaterial : FEUIViewModel
         const UUtilitySettings local_2;
         GetGameplaySettings<UUtilitySettings> local_4;
         local_2 = local_4;
-        bool local_15 = this.GetInventoryItemData();
-        if (!(local_15))
-        {
-            local_15 = false;
-        }
-        else
-        {
-            TEUIModelRef<FM_ItemData> local_14 = this.GetInventoryItemData();
-            local_15 = (GetNum() < this.GetCurrencyNum());
-        }
-        if (local_15)
+        if (this.GetInventoryItemData() && (this.GetInventoryItemData().Get().GetNum() < this.GetCurrencyNum()))
         {
             return FSlateColor(local_2.ItemInsufficientQuantityTextColor);
         }
@@ -265,11 +255,9 @@ FVM_ForgeWeaponItemMaterial& Create(const UObject ContextObject, const bool bUnl
 {
     return FVM_ForgeWeaponItemMaterial::CreateByManager(EUIInternal::GetContextManager(ContextObject), bUnlock, ConsumeItemList, CurrencyConfig);
 }
-FVM_ForgeWeaponItemMaterial CreateByManager(const UEUIManagerSubsystem Manager, const bool bUnlock, const TArray<TEUIModelRef<FVM_ForgeWeaponItemMaterialItem>> &inout ConsumeItemList, const FItemParamConfig &inout CurrencyConfig)
+FVM_ForgeWeaponItemMaterial& CreateByManager(const UEUIManagerSubsystem Manager, const bool bUnlock, const TArray<TEUIModelRef<FVM_ForgeWeaponItemMaterialItem>> &inout ConsumeItemList, const FItemParamConfig &inout CurrencyConfig)
 {
-    FVM_ForgeWeaponItemMaterial __r;
-    TEUIModelRef<FVM_ForgeWeaponItemMaterial> local_6 = TEUIModelRef<FVM_ForgeWeaponItemMaterial>(EUIInternal::MakeModelWithManager_Generic(Manager, FVM_ForgeWeaponItemMaterial::ModelId, 0, bUnlock, ConsumeItemList, CurrencyConfig));
-    return __r;
+    return TEUIModelRef<FVM_ForgeWeaponItemMaterial>(EUIInternal::MakeModelWithManager_Generic(Manager, FVM_ForgeWeaponItemMaterial::ModelId, 0, bUnlock, ConsumeItemList, CurrencyConfig)).Get();
 }
 void GetModelInfo(FEUIViewModelMetaInfo &inout Result)
 {
@@ -381,7 +369,6 @@ namespace __GeneratedProperties_FVM_ForgeWeaponItemMaterial
 {
 UScriptStruct StaticStruct()
 {
-    UScriptStruct local_2;
-    return local_2;
+    return __GeneratedProperties_FVM_ForgeWeaponItemMaterial.Get();
 }
 }

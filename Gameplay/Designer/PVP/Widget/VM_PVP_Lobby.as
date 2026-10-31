@@ -153,15 +153,13 @@ struct FVMS_PVP_Lobby : FEUIViewModelSingleton
             return;
         }
         int local_32 = ::FASCommonUtils::GetPlayerUidFromPlayerEntity(this.GetContext().GetLocalPlayer());
-        bool local_5_3 = false;
-        bool local_33 = local_5_3;
+        bool local_33 = false;
         for (auto& local_52 : local_30)
         {
-            local_52;
+            bool local_5_3 = local_52.GetValue().bWantsBackToRoom;
             if (local_5_3)
             {
-                local_5_3 = true;
-                local_33 = local_5_3;
+                local_33 = true;
                 break;
             }
         }
@@ -185,7 +183,6 @@ struct FVMS_PVP_Lobby : FEUIViewModelSingleton
     }
     void TickLobby()
     {
-        bool local_69;
         int local_76 = 0;
         bool local_5 = !(this.GetContext().GetLocalPlayer().IsValid());
         if (local_5)
@@ -215,14 +212,13 @@ struct FVMS_PVP_Lobby : FEUIViewModelSingleton
         this.SetSelectedGameRuleIndex(local_27);
         TMap<uint, FPVPLobbyPlayerEntry> local_48;
         ::FGameModeDataBridge::GetPVPLobbyPlayerEntries(local_8, local_48);
-        bool local_5_4 = false;
-        bool local_49 = local_5_4;
+        bool local_49 = false;
         for (auto& local_68 : local_48)
         {
+            bool local_5_4 = local_68.GetValue().bWantsBackToRoom;
             if (local_5_4)
             {
-                local_5_4 = true;
-                local_49 = local_5_4;
+                local_49 = true;
                 break;
             }
         }
@@ -314,30 +310,19 @@ struct FVMS_PVP_Lobby : FEUIViewModelSingleton
                 local_134.Add(local_14, local_250);
             }
         }
-        bool local_70 = true;
-        bool local_5_6 = local_70;
+        bool local_5_6 = true;
         Get local_256;
         for (auto& local_68_2 : local_48)
         {
-            if (local_70)
+            if (local_68_2.GetValue().bIsBot)
             {
                 continue;
             }
-            local_69 = !(local_134.Contains(local_68_2.GetKey()));
-            if (local_69)
+            if (!(local_134.Contains(local_68_2.GetKey())))
             {
                 continue;
             }
-            if (!(local_49))
-            {
-                local_69 = false;
-            }
-            else
-            {
-                local_70 = !local_70;
-                local_69 = local_70;
-            }
-            if (local_69)
+            if (local_49 && !(local_68_2.GetValue().bWantsBackToRoom))
             {
                 continue;
             }
@@ -655,11 +640,9 @@ FVMS_PVP_Lobby& Get(const UObject ContextObject)
 {
     return FVMS_PVP_Lobby::GetByManager(EUIInternal::GetContextManager(ContextObject));
 }
-FVMS_PVP_Lobby GetByManager(const UEUIManagerSubsystem Manager)
+FVMS_PVP_Lobby& GetByManager(const UEUIManagerSubsystem Manager)
 {
-    FVMS_PVP_Lobby __r;
-    TEUIModelRef<FVMS_PVP_Lobby> local_6 = TEUIModelRef<FVMS_PVP_Lobby>(EUIInternal::MakeModelWithManager(Manager, FVMS_PVP_Lobby::ModelId));
-    return __r;
+    return TEUIModelRef<FVMS_PVP_Lobby>(EUIInternal::MakeModelWithManager(Manager, FVMS_PVP_Lobby::ModelId)).Get();
 }
 void GetModelInfo(FEUIViewModelMetaInfo &inout Result)
 {
@@ -852,7 +835,6 @@ namespace __GeneratedProperties_FVMS_PVP_Lobby
 {
 UScriptStruct StaticStruct()
 {
-    UScriptStruct local_2;
-    return local_2;
+    return __GeneratedProperties_FVMS_PVP_Lobby.Get();
 }
 }

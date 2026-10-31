@@ -418,14 +418,14 @@ class UInteractionBehaviorAction_EnterDS : UInteractionBehaviorActionBase
     }
     void TriggerAction(const FECSEntity &inout InteractSource, const FECSEntity &inout InteractTarget, const FInteractionPointAndBehaviorIndex &inout InteractTargetPointAndBehaviorIndex)
     {
-        int local_52 = 0;
         if (!(ECS::GetRuntimeInfo().IsServer) || !(this.LevelInfoConfig))
         {
             return;
         }
-        if (::FLevelUtils::GetCurrentLevelInfoConfig(nullptr))
+        TDataObjectPtr<FLevelInfoConfig> local_26 = ::FLevelUtils::GetCurrentLevelInfoConfig(nullptr);
+        if (local_26)
         {
-            if (0 == local_52)
+            if (local_26.Get().DataId == this.LevelInfoConfig.Get().DataId)
             {
                 XWarning(ELog(0), "EnterDS LevelKey is the same as the current level");
                 return;
@@ -435,7 +435,7 @@ class UInteractionBehaviorAction_EnterDS : UInteractionBehaviorActionBase
         {
             FFPTime local_68 = FFPTime(-1);
             FCE_ServerPlayerRequestEnterLevel local_72;
-            local_72.LevelKey = local_52;
+            local_72.LevelKey = this.LevelInfoConfig.Get().DataId;
         }
         return;
     }
@@ -639,10 +639,10 @@ class UInteractionBehaviorAction_TriggerPrefabOnInteractWith : UInteractionBehav
             return;
         }
         Get local_6;
-        if (local_6.opCall())
+        const FC_PrefabLoaded& local_8 = local_6.opCall();
+        if (local_8)
         {
-            AECSPrefab local_10;
-            local_14 = (Cast<AKLLevelPrefabBase>(local_10));
+            local_14 = (Cast<AKLLevelPrefabBase>(local_8.Prefab.Get()));
             if (local_14 != nullptr && local_14.OnInteractWith.IsBound())
             {
                 local_14.OnInteractWith.Broadcast(InteractSource, InteractTarget, InteractTargetPointAndBehaviorIndex.GetPointIndex(), this.CustomEventName);
@@ -768,8 +768,8 @@ class UInteractionBehaviorAction_ActivatePublicEvent : UInteractionBehaviorActio
         {
             if (local_8.GetLevelPublicEventEntity().IsValid())
             {
-                AActor local_14;
-                local_18 = (Cast<AKLLevelScriptPublicEvent>(local_14));
+                GetDefaulted local_12;
+                local_18 = (Cast<AKLLevelScriptPublicEvent>(local_12.opCall().LevelScript.Get()));
                 if (local_18 != nullptr)
                 {
                     local_18.ActivatePublicEvent(InteractSource);
@@ -811,7 +811,7 @@ class UInteractionBehaviorAction_AccountExclusiveTreasureBoxOpen : UInteractionB
                 if (local_26)
                 {
                     local_26.TreasureBoxEntity = InteractTarget;
-                    bool local_1 = ::FLevelObjectStatUtils::IsLevelObjectRecorded(InteractSource, TDataObjectPtr<FLevelObjectStatConfig>());
+                    bool local_1 = ::FLevelObjectStatUtils::IsLevelObjectRecorded(InteractSource, TDataObjectPtr<FLevelObjectStatConfig>(local_16.LevelObjectStatConfig.Get()));
                     if (local_1)
                     {
                         local_52 = 2;
@@ -825,7 +825,7 @@ class UInteractionBehaviorAction_AccountExclusiveTreasureBoxOpen : UInteractionB
                     local_26.OldState = ETreasureBoxState(local_51);
                     local_26.NewState = ETreasureBoxState(1);
                 }
-                ::TreasureBoxUtils::SetTreasureBoxRecordState(InteractSource, TDataObjectPtr<FLevelObjectStatConfig>(), ETreasureBoxRecordState(1), false);
+                ::TreasureBoxUtils::SetTreasureBoxRecordState(InteractSource, TDataObjectPtr<FLevelObjectStatConfig>(local_16.LevelObjectStatConfig.Get()), ETreasureBoxRecordState(1), false);
             }
         }
         return;
@@ -851,7 +851,7 @@ class UInteractionBehaviorAction_AccountExclusiveOculus : UInteractionBehaviorAc
         {
             if (local_8.LevelObjectStatConfig.IsSet())
             {
-                ::FLevelObjectStatUtils::RecordLevelObject(InteractSource, TDataObjectPtr<FLevelObjectStatConfig>());
+                ::FLevelObjectStatUtils::RecordLevelObject(InteractSource, TDataObjectPtr<FLevelObjectStatConfig>(local_8.LevelObjectStatConfig.Get()));
             }
         }
         return;
@@ -877,7 +877,7 @@ class UInteractionBehaviorAction_AccountExclusivePortal : UInteractionBehaviorAc
         {
             if (local_8.LevelObjectStatConfig.IsSet())
             {
-                ::FLevelObjectStatUtils::RecordLevelObject(InteractSource, TDataObjectPtr<FLevelObjectStatConfig>());
+                ::FLevelObjectStatUtils::RecordLevelObject(InteractSource, TDataObjectPtr<FLevelObjectStatConfig>(local_8.LevelObjectStatConfig.Get()));
             }
         }
         return;
@@ -894,7 +894,6 @@ class UInteractionBehaviorAction_AccountExclusiveTriggerTeleporterActivate : UIn
     void TriggerAction(const FECSEntity &inout InteractSource, const FECSEntity &inout InteractTarget, const FInteractionPointAndBehaviorIndex &inout InteractTargetPointAndBehaviorIndex)
     {
         int local_8 = 0;
-        int local_9 = 0;
         if (!(ECS::GetRuntimeInfo().IsServer))
         {
             return;
@@ -907,18 +906,18 @@ class UInteractionBehaviorAction_AccountExclusiveTriggerTeleporterActivate : UIn
         {
             return;
         }
-        if (!(!(::TeleporterUtils::IsTeleporterActive(InteractSource, local_9, InteractTarget))))
+        if (!(!(::TeleporterUtils::IsTeleporterActive(InteractSource, local_8.TeleporterConfig.Get().DataId, InteractTarget))))
         {
             return;
         }
-        if (!(::TeleporterUtils::ActivateTeleporter(InteractSource, local_9, InteractTarget)))
+        if (!(::TeleporterUtils::ActivateTeleporter(InteractSource, local_8.TeleporterConfig.Get().DataId, InteractTarget)))
         {
             return;
         }
-        if (GetActivationReward().IsSet())
+        if (local_8.TeleporterConfig.Get().GetActivationReward().IsSet())
         {
             TArray<TDataObjectPtr<FDropItemConfigBase>> local_14;
-            local_14.Add(GetActivationReward());
+            local_14.Add(local_8.TeleporterConfig.Get().GetActivationReward());
             FDropMovementConfigData local_40;
             ::DropItemsUtils::DropItemsFromBaseConfig(local_14, local_40, InteractTarget, InteractSource);
         }
@@ -929,7 +928,7 @@ class UInteractionBehaviorAction_AccountExclusiveTriggerTeleporterActivate : UIn
         {
             local_48.TeleporterEntity = InteractTarget;
             local_48.InteractSourceEntity = InteractSource;
-            local_48.DataId = local_9;
+            local_48.DataId = local_8.TeleporterConfig.Get().DataId;
         }
         FFPTime local_46_2 = FFPTime(-1);
         SendEvent local_52;
@@ -940,8 +939,7 @@ class UInteractionBehaviorAction_AccountExclusiveTriggerTeleporterActivate : UIn
             local_54.OldState = ETeleporterState(1);
             local_54.NewState = ETeleporterState(2);
         }
-        FString local_64 = InteractSource.ToString();
-        FString local_60 = FString();
+        XLog(ELog(22), FString().Append("Teleporter ").Append(local_8.TeleporterConfig.Get().DataId).Append(" interacted by ").Append(InteractSource.ToString()).Append(", not activated --> activated."));
         return;
     }
 }
@@ -955,7 +953,6 @@ class UInteractionBehaviorAction_AccountExclusiveCollectionPrefabCollect : UInte
     }
     void TriggerAction(const FECSEntity &inout InteractSource, const FECSEntity &inout InteractTarget, const FInteractionPointAndBehaviorIndex &inout InteractTargetPointAndBehaviorIndex)
     {
-        int local_19 = 0;
         if (!(ECS::GetRuntimeInfo().IsServer))
         {
             return;
@@ -975,7 +972,7 @@ class UInteractionBehaviorAction_AccountExclusiveCollectionPrefabCollect : UInte
                 {
                     local_18.CollectionPrefabEntity = InteractTarget;
                     local_18.InteractSourceEntity = InteractSource;
-                    local_18.DataId = local_19;
+                    local_18.DataId = local_8.LevelObjectStatConfig.Get().DataId;
                 }
             }
         }

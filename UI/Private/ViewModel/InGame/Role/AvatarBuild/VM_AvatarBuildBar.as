@@ -156,11 +156,9 @@ FVM_AvatarBuildBar& Create(const UObject ContextObject)
 {
     return FVM_AvatarBuildBar::CreateByManager(EUIInternal::GetContextManager(ContextObject));
 }
-FVM_AvatarBuildBar CreateByManager(const UEUIManagerSubsystem Manager)
+FVM_AvatarBuildBar& CreateByManager(const UEUIManagerSubsystem Manager)
 {
-    FVM_AvatarBuildBar __r;
-    TEUIModelRef<FVM_AvatarBuildBar> local_6 = TEUIModelRef<FVM_AvatarBuildBar>(EUIInternal::MakeModelWithManager(Manager, FVM_AvatarBuildBar::ModelId));
-    return __r;
+    return TEUIModelRef<FVM_AvatarBuildBar>(EUIInternal::MakeModelWithManager(Manager, FVM_AvatarBuildBar::ModelId)).Get();
 }
 void GetModelInfo(FEUIViewModelMetaInfo &inout Result)
 {
@@ -211,7 +209,6 @@ namespace __GeneratedProperties_FVM_AvatarBuildBar
 {
 UScriptStruct StaticStruct()
 {
-    UScriptStruct local_2;
-    return local_2;
+    return __GeneratedProperties_FVM_AvatarBuildBar.Get();
 }
 }

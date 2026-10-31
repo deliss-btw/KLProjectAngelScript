@@ -3,7 +3,6 @@ namespace __FTestConfigFunctions
 UFUNCTION()
 FText __FTestConfig_GetServerText(const TDataObjectPtr<FTestConfig> &inout DataObject)
 {
-    FText __r;
     if ((DataObject == nullptr))
     {
         if (!(EUIGlobals::GIsDuringPropertyConversion))
@@ -13,12 +12,11 @@ FText __FTestConfig_GetServerText(const TDataObjectPtr<FTestConfig> &inout DataO
         FTestConfig local_68;
         return local_68.ServerText;
     }
-    return __r;
+    return DataObject.Get().ServerText;
 }
 UFUNCTION()
 FInstancedPropertyBag __FTestConfig_GetMyBag(const TDataObjectPtr<FTestConfig> &inout DataObject)
 {
-    FInstancedPropertyBag __r;
     if ((DataObject == nullptr))
     {
         if (!(EUIGlobals::GIsDuringPropertyConversion))
@@ -28,12 +26,11 @@ FInstancedPropertyBag __FTestConfig_GetMyBag(const TDataObjectPtr<FTestConfig> &
         FTestConfig local_68;
         return local_68.MyBag;
     }
-    return __r;
+    return DataObject.Get().MyBag;
 }
 UFUNCTION()
 FText __FTestConfig_GetClientText(const TDataObjectPtr<FTestConfig> &inout DataObject)
 {
-    FText __r;
     if ((DataObject == nullptr))
     {
         if (!(EUIGlobals::GIsDuringPropertyConversion))
@@ -43,12 +40,11 @@ FText __FTestConfig_GetClientText(const TDataObjectPtr<FTestConfig> &inout DataO
         FTestConfig local_68;
         return local_68.ClientText;
     }
-    return __r;
+    return DataObject.Get().ClientText;
 }
 UFUNCTION()
 ETestEnumType __FTestConfig_GetTestType(const TDataObjectPtr<FTestConfig> &inout DataObject)
 {
-    int local_69 = 0;
     if ((DataObject == nullptr))
     {
         if (!(EUIGlobals::GIsDuringPropertyConversion))
@@ -56,10 +52,9 @@ ETestEnumType __FTestConfig_GetTestType(const TDataObjectPtr<FTestConfig> &inout
             FBlueprintDebugFunctions::ThrowScriptException("Get 'TestType' from a null 'FTestConfig' DataObject!");
         }
         FTestConfig local_68;
-        local_69 = int(local_68.TestType);
-        return ETestEnumType(local_69);
+        return local_68.TestType;
     }
-    return ETestEnumType(local_69);
+    return DataObject.Get().TestType;
 }
 UFUNCTION()
 FTestStruct __FTestConfig_GetTestStruct(const TDataObjectPtr<FTestConfig> &inout DataObject)
@@ -80,7 +75,6 @@ FTestStruct __FTestConfig_GetTestStruct(const TDataObjectPtr<FTestConfig> &inout
 UFUNCTION()
 TArray<FTestItemParam> __FTestConfig_GetItemParamList(const TDataObjectPtr<FTestConfig> &inout DataObject)
 {
-    TArray<FTestItemParam> __r;
     if ((DataObject == nullptr))
     {
         if (!(EUIGlobals::GIsDuringPropertyConversion))
@@ -90,7 +84,7 @@ TArray<FTestItemParam> __FTestConfig_GetItemParamList(const TDataObjectPtr<FTest
         FTestConfig local_68;
         return local_68.ItemParamList;
     }
-    return __r;
+    return DataObject.Get().ItemParamList;
 }
 UFUNCTION()
 FTestConfig CastToFTestConfig(const TDataObjectPtr<FTestConfig> &inout DataObject)
@@ -104,7 +98,6 @@ namespace __FTestFatherConfigFunctions
 UFUNCTION()
 FText __FTestFatherConfig_GetServerText(const TDataObjectPtr<FTestFatherConfig> &inout DataObject)
 {
-    FText __r;
     if ((DataObject == nullptr))
     {
         if (!(EUIGlobals::GIsDuringPropertyConversion))
@@ -114,7 +107,7 @@ FText __FTestFatherConfig_GetServerText(const TDataObjectPtr<FTestFatherConfig> 
         FTestFatherConfig local_44;
         return local_44.ServerText;
     }
-    return __r;
+    return DataObject.Get().ServerText;
 }
 UFUNCTION()
 TDataObjectPtr<FTestConfig> __FTestFatherConfig_GetTestConfigItem(const TDataObjectPtr<FTestFatherConfig> &inout DataObject)
@@ -128,7 +121,7 @@ TDataObjectPtr<FTestConfig> __FTestFatherConfig_GetTestConfigItem(const TDataObj
         FTestFatherConfig local_44;
         return local_44.GetTestConfigItem();
     }
-    return GetTestConfigItem();
+    return DataObject.Get().GetTestConfigItem();
 }
 UFUNCTION()
 FTestFatherConfig CastToFTestFatherConfig(const TDataObjectPtr<FTestFatherConfig> &inout DataObject)

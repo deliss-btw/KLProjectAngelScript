@@ -29,9 +29,6 @@ class US_CameraPostProcess : UECSScriptSystem
     {
         int local_10 = 0;
         int local_16 = 0;
-        UCameraPostProcessAnimConfig local_72;
-        UCameraPostProcessAnimConfig local_74;
-        UMaterialInstanceDynamic local_86;
         const AActor local_94;
         const TArray<FCameraPostProcessAnimRange>& local_2 = CameraPostProcessAnim.GetAnims();
         FECSWorldPtr local_4 = this.GetECSWorld();
@@ -41,6 +38,7 @@ class US_CameraPostProcess : UECSScriptSystem
         {
             if (local_42.opCmp(local_60.GetStartTime()) >= 0 && (local_42.opCmp((FFPTime(local_60.GetStartTime()) + local_60.GetDuration())) < 0 || (FFPTime(local_60.GetDuration()).opCmp(0.0) < 0)))
             {
+                UCameraPostProcessAnimConfig local_74 = local_60.GetConfig().Get();
                 if (local_74 != nullptr)
                 {
                     FCameraPostProcessAnimResourceData local_78;
@@ -51,11 +49,12 @@ class US_CameraPostProcess : UECSScriptSystem
                         local_78.StartTime = local_60.GetStartTime();
                         local_78.bAttachLocationIsSet = false;
                     }
-                    if (!(local_78.Material.IsValid()) == !(false))
+                    TWeakObjectPtr<UMaterialInstanceDynamic> local_80 = local_78.Material;
+                    if (!(local_80.IsValid()) == !(false))
                     {
                         UMaterialInstanceDynamic local_88 = Material::CreateDynamicMaterialInstance(__GetWorldContext(), local_74.PostProcessAnim.BlendMaterial, NAME_None, EMIDCreationFlags(0));
                         local_10.AddBlendable(local_88, 1.0f);
-                        TWeakObjectPtr<UMaterialInstanceDynamic> local_80 = local_88;
+                        local_80 = local_88;
                     }
                     if (local_60.GetbUpdateAttach() || ((!(local_78.bAttachLocationIsSet) == !(false))))
                     {
@@ -79,7 +78,7 @@ class US_CameraPostProcess : UECSScriptSystem
                             }
                         }
                     }
-                    local_74.PostProcessAnim.UpdateAnim(local_86, local_78.AttachLocation, Player.GetPlayerPawnEntity(), (local_42 - local_60.GetStartTime()).ToSeconds(), local_60.GetDuration().ToSeconds(), local_42);
+                    local_74.PostProcessAnim.UpdateAnim(local_80.Get(), local_78.AttachLocation, Player.GetPlayerPawnEntity(), (local_42 - local_60.GetStartTime()).ToSeconds(), local_60.GetDuration().ToSeconds(), local_42);
                 }
             }
         }
@@ -87,11 +86,11 @@ class US_CameraPostProcess : UECSScriptSystem
         for (; local_142.CanProceed;)
         {
             local_142.Proceed();
-            if (local_142.GetKey().IsValid() && local_36.Contains(local_72))
+            if (local_142.GetKey().IsValid() && local_36.Contains(local_142.GetKey().Get()))
             {
                 continue;
             }
-            local_10.RemoveBlendable(local_86);
+            local_10.RemoveBlendable(local_142.GetValue().Material.Get());
             local_142.RemoveCurrent();
         }
         return;
@@ -100,17 +99,14 @@ class US_CameraPostProcess : UECSScriptSystem
     void Monitor_ClearCameraPostProcess(const FC_CameraPostProcessAnimResource &inout Resource) const
     {
         int local_8 = 0;
-        UMaterialInstanceDynamic local_30;
         FECSWorldPtr local_2 = this.GetECSWorld();
         for (auto& local_28 : Resource.DataMap)
         {
-            local_28;
-            local_8.RemoveBlendable(local_30);
+            local_8.RemoveBlendable(local_28.GetValue().Material.Get());
         }
         for (auto& local_48 : Resource.EsmMaterialsMap)
         {
-            local_48;
-            local_8.RemoveBlendable(local_30);
+            local_8.RemoveBlendable(local_48.GetValue().Get());
         }
         return;
     }

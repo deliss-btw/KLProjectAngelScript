@@ -78,11 +78,9 @@ FVM_EscapeButton& Create(const UObject ContextObject)
 {
     return FVM_EscapeButton::CreateByManager(EUIInternal::GetContextManager(ContextObject));
 }
-FVM_EscapeButton CreateByManager(const UEUIManagerSubsystem Manager)
+FVM_EscapeButton& CreateByManager(const UEUIManagerSubsystem Manager)
 {
-    FVM_EscapeButton __r;
-    TEUIModelRef<FVM_EscapeButton> local_6 = TEUIModelRef<FVM_EscapeButton>(EUIInternal::MakeModelWithManager(Manager, FVM_EscapeButton::ModelId));
-    return __r;
+    return TEUIModelRef<FVM_EscapeButton>(EUIInternal::MakeModelWithManager(Manager, FVM_EscapeButton::ModelId)).Get();
 }
 void GetModelInfo(FEUIViewModelMetaInfo &inout Result)
 {
@@ -134,7 +132,6 @@ namespace __GeneratedProperties_FVM_EscapeButton
 {
 UScriptStruct StaticStruct()
 {
-    UScriptStruct local_2;
-    return local_2;
+    return __GeneratedProperties_FVM_EscapeButton.Get();
 }
 }

@@ -136,7 +136,7 @@ struct FAttachPointConfig : FDataObject
     {
         for (auto& local_16 : this.AvatarOffsetOverrides)
         {
-            if ((local_16.Avatar && (0 == AvatarId)))
+            if (local_16.Avatar && (local_16.Avatar.Get().DataId == AvatarId))
             {
                 return local_16.Offset;
             }

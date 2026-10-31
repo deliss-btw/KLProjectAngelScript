@@ -35,9 +35,7 @@ class UHTNTask_NPCDailyRoutePrepareNext : UHTNTask_ECSScriptBase
     UFUNCTION()
     void Execute_Implementation(const FHTNContext &inout Context)
     {
-        bool local_31 = false;
         int local_34 = 0;
-        int local_53;
         FECSEntity local_4 = FECSEntity(Context.PawnEntity);
         if (!(local_4.IsValid()))
         {
@@ -45,43 +43,30 @@ class UHTNTask_NPCDailyRoutePrepareNext : UHTNTask_ECSScriptBase
             return;
         }
         TDataObjectPtr<FNPCDailyRouteConfig> local_30;
-        if (!(::FNPCDailyRouteUtils::TryGetRouteConfig(local_4, local_30)) || !(HasRouteNodes()) || local_31 || !(IsLoopStartIndexValid()))
+        if (!(::FNPCDailyRouteUtils::TryGetRouteConfig(local_4, local_30)) || !(local_30.Get().HasRouteNodes()) || local_30.Get().RouteSourceId.IsNone() || !(local_30.Get().IsLoopStartIndexValid()))
         {
             ::FNPCDailyRouteUtils::ClearPreparedTarget(local_4);
             this.FinishExecuteWithContext(Context, false);
             return;
         }
-        bool local_5 = !(local_34.RouteConfig.IsSet()) || !((local_34.RouteConfig.GetDataName() == local_30.GetDataName()));
-        if (local_5)
+        if (!(local_34.RouteConfig.IsSet()) || !((local_34.RouteConfig.GetDataName() == local_30.GetDataName())))
         {
             ::FNPCDailyRouteUtils::InitializeRouteState(local_4, local_30, -1);
         }
         FC_NPCDailyRouteRuntime local_46;
         ::FNPCDailyRouteUtils::ClearPreparedRuntime(local_46);
-        if (int(local_46.CurrentNodeIndex) < 0)
-        {
-            local_53 = 0;
-        }
-        else
-        {
-            local_53 = int(local_46.CurrentNodeIndex).GetNextNodeIndex();
-        }
-        local_5 = !local_5;
-        if (local_5)
+        int local_53 = int(local_46.CurrentNodeIndex) < 0 ? 0 : local_30.Get().GetNextNodeIndex(int(local_46.CurrentNodeIndex));
+        if (!(local_30.Get().Nodes.IsValidIndex(local_53)))
         {
             this.FinishExecuteWithContext(Context, false);
             return;
         }
         FNPCDailyRouteNodeConfig local_60;
-        FNPCDailyRouteNodeConfig local_66;
-        local_60 = local_66;
+        local_60 = local_30.Get().Nodes[local_53];
         FNPCDailyRouteRuntimePointInfo local_76;
-        UECSHTNComponent local_78 = Context.GetHTNComponent();
-        local_5 = !local_5;
-        if (local_5)
+        if (!(::NPCDailyRouteRuntimeLibrary::GetRoutePointInfo(Context.GetHTNComponent(), local_30.Get().RouteSourceId, local_60.PointId, local_76)))
         {
-            local_31 = false;
-            this.FinishExecuteWithContext(Context, local_31);
+            this.FinishExecuteWithContext(Context, false);
             return;
         }
         local_46.PendingTargetNodeIndex = local_53;
@@ -91,10 +76,9 @@ class UHTNTask_NPCDailyRoutePrepareNext : UHTNTask_ECSScriptBase
         local_46.ActivePathPoints.Empty(0);
         local_46.ActivePathPointIndex = 0;
         local_46.bHasPreparedTarget = true;
-        if (unresolved.Nodes.IsValidIndex(int(local_46.CurrentNodeIndex)))
+        if (local_30.Get().Nodes.IsValidIndex(int(local_46.CurrentNodeIndex)))
         {
-            int local_43 = int(local_46.CurrentNodeIndex);
-            FName local_81;
+            FName local_81(local_30.Get().Nodes[int(local_46.CurrentNodeIndex)].PointId);
             if ((local_81 == local_60.PointId))
             {
                 ::FNPCDailyRouteUtils::ClearPreparedRuntime(local_46);
@@ -102,9 +86,7 @@ class UHTNTask_NPCDailyRoutePrepareNext : UHTNTask_ECSScriptBase
                 return;
             }
             FNPCDailyRouteRuntimeConnectionInfo local_88;
-            UECSHTNComponent local_78_2 = Context.GetHTNComponent();
-            local_31 = !local_31;
-            if (local_31)
+            if (!(::NPCDailyRouteRuntimeLibrary::GetRouteConnectionInfo(Context.GetHTNComponent(), local_30.Get().RouteSourceId, local_81, local_60.PointId, local_88)))
             {
                 ::FNPCDailyRouteUtils::ClearPreparedRuntime(local_46);
                 this.FinishExecuteWithContext(Context, false);
@@ -157,7 +139,7 @@ class UHTNTask_NPCDailyRouteMoveAlongPath : UHTNTask_ECSScriptBase
             this.FinishExecuteWithContext(Context, false);
             return;
         }
-        FHTNTask_NPCDailyRouteMoveInstanceData local_50;
+        FHTNTask_NPCDailyRouteMoveInstanceData& local_50 = this.GetInstanceData(Context);
         local_50.PathPointIndex = FMath::Clamp(int(local_38.ActivePathPointIndex), 0, (local_38.ActivePathPoints.Num() - 1));
         local_50.BlockedElapsedTime = 0.0f;
         Get local_58;
@@ -167,7 +149,6 @@ class UHTNTask_NPCDailyRouteMoveAlongPath : UHTNTask_ECSScriptBase
     UFUNCTION()
     void Tick_Implementation(const FHTNContext &inout Context, const float32 DeltaSeconds)
     {
-        FHTNTask_NPCDailyRouteMoveInstanceData& local_52;
         int local_56 = 0;
         float32 local_67;
         float32 local_69 = 0.0f;
@@ -183,6 +164,7 @@ class UHTNTask_NPCDailyRouteMoveAlongPath : UHTNTask_ECSScriptBase
             this.FinishExecuteWithContext(Context, false);
             return;
         }
+        FHTNTask_NPCDailyRouteMoveInstanceData& local_52 = this.GetInstanceData(Context);
         if (!(local_42.ActivePathPoints.IsValidIndex(int(local_52.PathPointIndex))))
         {
             FAIInputUtils::SimulateMoveInputLocal(local_4, FVector::ZeroVector, EAIMoveSimulateType(0), false);
@@ -283,7 +265,7 @@ class UHTNTask_NPCDailyRouteWaitAndAdvance : UHTNTask_ECSScriptBase
             return;
         }
         FAIInputUtils::SimulateMoveInputLocal(Context.PawnEntity, FVector::ZeroVector, EAIMoveSimulateType(0), false);
-        FHTNTask_NPCDailyRouteWaitInstanceData local_42;
+        FHTNTask_NPCDailyRouteWaitInstanceData& local_42 = this.GetInstanceData(Context);
         local_42.WaitTime = FMath::Max(0.0f, local_38.SelectedStayTime);
         local_42.ElapsedTime = 0.0f;
         if (local_42.WaitTime <= 0.0f)
@@ -306,7 +288,7 @@ class UHTNTask_NPCDailyRouteWaitAndAdvance : UHTNTask_ECSScriptBase
             this.FinishExecuteWithContext(Context, false);
             return;
         }
-        FHTNTask_NPCDailyRouteWaitInstanceData local_42;
+        FHTNTask_NPCDailyRouteWaitInstanceData& local_42 = this.GetInstanceData(Context);
         local_42.ElapsedTime += DeltaSeconds;
         if (local_42.ElapsedTime >= local_42.WaitTime)
         {

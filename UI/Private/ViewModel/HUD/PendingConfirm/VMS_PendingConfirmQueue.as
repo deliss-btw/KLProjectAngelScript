@@ -255,11 +255,9 @@ FVMS_PendingConfirmQueue& Get(const UObject ContextObject)
 {
     return FVMS_PendingConfirmQueue::GetByManager(EUIInternal::GetContextManager(ContextObject));
 }
-FVMS_PendingConfirmQueue GetByManager(const UEUIManagerSubsystem Manager)
+FVMS_PendingConfirmQueue& GetByManager(const UEUIManagerSubsystem Manager)
 {
-    FVMS_PendingConfirmQueue __r;
-    TEUIModelRef<FVMS_PendingConfirmQueue> local_6 = TEUIModelRef<FVMS_PendingConfirmQueue>(EUIInternal::MakeModelWithManager(Manager, FVMS_PendingConfirmQueue::ModelId));
-    return __r;
+    return TEUIModelRef<FVMS_PendingConfirmQueue>(EUIInternal::MakeModelWithManager(Manager, FVMS_PendingConfirmQueue::ModelId)).Get();
 }
 void GetModelInfo(FEUIViewModelMetaInfo &inout Result)
 {
@@ -377,7 +375,6 @@ namespace __GeneratedProperties_FVMS_PendingConfirmQueue
 {
 UScriptStruct StaticStruct()
 {
-    UScriptStruct local_2;
-    return local_2;
+    return __GeneratedProperties_FVMS_PendingConfirmQueue.Get();
 }
 }

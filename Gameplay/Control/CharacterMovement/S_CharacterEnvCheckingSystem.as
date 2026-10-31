@@ -225,9 +225,7 @@ class US_CharacterEnvCheckingSystem : UECSScriptSystem
     }
     bool CheckHitResultIsWalkable(const FHitResult &inout HitResult, const float32 WalkableSlopDegree) const
     {
-        UPrimitiveComponent local_2;
-        UPrimitiveComponent local_8;
-        if ((local_2 != nullptr && (int(local_8.CanCharacterStepUpOn) == 1)))
+        if (HitResult.GetComponent() != nullptr && (int(HitResult.GetComponent().CanCharacterStepUpOn) == 1))
         {
             return (float32(HitResult.ImpactNormal.DotProduct(FVector::UpVector)) >= FMath::Cos(FMath::DegreesToRadians(WalkableSlopDegree)));
         }

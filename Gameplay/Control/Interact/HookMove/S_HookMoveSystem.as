@@ -349,10 +349,10 @@ class US_HookMoveSystem : UECSScriptSystem
     UFUNCTION()
     void ServerJob_TickSuperHookFlyItem(const FECSEntity &inout Entity, const FCS_FixedTime &inout FixedTime, FC_SuperHookFlyItem &inout SuperHookFlyItem) const
     {
-        USplineComponent local_14;
         bool local_15;
         int local_116 = 0;
         float32 local_9 = float32(((FFPTime(FixedTime.Time) - SuperHookFlyItem.StartTime).ToSeconds()));
+        USplineComponent local_14 = SuperHookFlyItem.Spline.Get();
         if (local_14 != nullptr)
         {
             FC_SplineMoveConfig local_22;

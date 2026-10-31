@@ -27,19 +27,18 @@ class UWidget_CommonItemBar : UEUIUserWidget
     {
         if (this.HoverProvider != nullptr)
         {
-            TEUIModelWeakRef<FVM_CommonHoverProvider> local_6;
-            local_6.SetHoverProvider();
+            this.ItemBar.Get().SetHoverProvider(TEUIModelWeakRef<FVM_CommonHoverProvider>(this.HoverProvider.HoverProvider.Get()));
             this.ApplyConfiguredSharedHoverAnchor();
         }
         if (this.FixedTooltip != nullptr)
         {
-            true.SetHasFixedTooltip();
+            this.ItemBar.Get().SetHasFixedTooltip(true);
         }
         if (!(this.ExternalTipModels.IsEmpty()))
         {
-            this.ExternalTipModels.ApplyExternalTipModels();
+            this.ItemBar.Get().ApplyExternalTipModels(this.ExternalTipModels);
         }
-        SyncClickLockSetting();
+        this.ItemBar.Get().SyncClickLockSetting();
         return;
     }
     UFUNCTION()
@@ -49,9 +48,9 @@ class UWidget_CommonItemBar : UEUIUserWidget
         {
             return;
         }
-        if (HasExternalTipTarget())
+        if (this.ItemBar.Get().HasExternalTipTarget())
         {
-            NotifyExternalHoverEnter();
+            this.ItemBar.Get().NotifyExternalHoverEnter();
             return;
         }
         if (this.FixedTooltip != nullptr)
@@ -67,9 +66,9 @@ class UWidget_CommonItemBar : UEUIUserWidget
         {
             return;
         }
-        if (HasExternalTipTarget())
+        if (this.ItemBar.Get().HasExternalTipTarget())
         {
-            NotifyExternalHoverLeave();
+            this.ItemBar.Get().NotifyExternalHoverLeave();
             return;
         }
         if (this.FixedTooltip != nullptr)
@@ -85,13 +84,13 @@ class UWidget_CommonItemBar : UEUIUserWidget
         {
             return FEventReply::Unhandled();
         }
-        if (!(GetbEnableClickLock()))
+        if (!(this.ItemBar.Get().GetbEnableClickLock()))
         {
             return FEventReply::Unhandled();
         }
-        if (HasExternalTipTarget())
+        if (this.ItemBar.Get().HasExternalTipTarget())
         {
-            NotifyExternalClick();
+            this.ItemBar.Get().NotifyExternalClick();
             return FEventReply::Handled();
         }
         return FEventReply::Unhandled();
@@ -103,9 +102,9 @@ class UWidget_CommonItemBar : UEUIUserWidget
         {
             return;
         }
-        if (HasExternalTipTarget())
+        if (this.ItemBar.Get().HasExternalTipTarget())
         {
-            NotifyExternalHoverEnter();
+            this.ItemBar.Get().NotifyExternalHoverEnter();
             return;
         }
         if (this.FixedTooltip != nullptr)
@@ -121,9 +120,9 @@ class UWidget_CommonItemBar : UEUIUserWidget
         {
             return;
         }
-        if (HasExternalTipTarget())
+        if (this.ItemBar.Get().HasExternalTipTarget())
         {
-            NotifyExternalHoverLeave();
+            this.ItemBar.Get().NotifyExternalHoverLeave();
             return;
         }
         if (this.FixedTooltip != nullptr)
@@ -136,14 +135,27 @@ class UWidget_CommonItemBar : UEUIUserWidget
     {
         if (this.ItemBar.IsValid())
         {
-            (this.FixedTooltip != nullptr).SetHasFixedTooltip();
+            this.ItemBar.Get().SetHasFixedTooltip((this.FixedTooltip != nullptr));
         }
         return;
     }
     UFUNCTION()
     void ApplySharedHoverAnchor(const UWidget InHoverAnchor, const ECommonHoverLayout InHoverLayout)
     {
-        // body not fully recovered — stub [argmismatch:argint]
+        if (this.ItemBar.IsValid())
+        {
+            this.ItemBar.Get().SetSharedHoverAnchor(InHoverAnchor, ECommonHoverLayout(InHoverLayout));
+        }
+        if (this.HoverProvider == nullptr)
+        {
+            return;
+        }
+        this.HoverProvider.SetHoverForWidgetOverride(InHoverAnchor);
+        if (this.HoverProvider.HoverProvider.IsValid())
+        {
+            this.HoverProvider.HoverProvider.Get().SetHoverPosition(ECommonHoverLayout(InHoverLayout));
+        }
+        return;
     }
     void ApplyConfiguredSharedHoverAnchor()
     {
@@ -151,12 +163,12 @@ class UWidget_CommonItemBar : UEUIUserWidget
         {
             return;
         }
-        UWidget local_4 = ResolveSharedHoverAnchorWidget();
+        UWidget local_4 = this.ItemBar.Get().ResolveSharedHoverAnchorWidget();
         if (!(IsValid(local_4)))
         {
             return;
         }
-        this.ApplySharedHoverAnchor(local_4, ResolveSharedHoverLayout());
+        this.ApplySharedHoverAnchor(local_4, this.ItemBar.Get().ResolveSharedHoverLayout());
         return;
     }
     void ShowFixedTooltip()
@@ -165,14 +177,11 @@ class UWidget_CommonItemBar : UEUIUserWidget
         {
             return;
         }
-        TEUIModelRef<FVM_Item> local_6;
-        local_6.GetTipsItem();
-        if (!(local_6.IsValid()))
+        if (!(this.ItemBar.Get().GetTipsItem().IsValid()))
         {
             return;
         }
-        local_6.GetTipsItem();
-        this.FixedTooltip.Item.SetRef(local_6);
+        this.FixedTooltip.Item.SetRef(this.ItemBar.Get().GetTipsItem());
         this.FixedTooltip.SetVisibility(ESlateVisibility(4));
         return;
     }
@@ -188,8 +197,8 @@ class UWidget_CommonItemBar : UEUIUserWidget
     UFUNCTION()
     int ItemBar_ItemNum() const
     {
-        FVM_CommonItemBar& local_2;
         int local_5;
+        FVM_CommonItemBar& local_2 = this.ItemBar.Get();
         if (local_2)
         {
             local_5 = local_2.GetItemNum();
@@ -203,7 +212,7 @@ class UWidget_CommonItemBar : UEUIUserWidget
     UFUNCTION()
     TEUIModelRef<FVM_Item> ItemBar_TipsItem() const
     {
-        FVM_CommonItemBar& local_2;
+        FVM_CommonItemBar& local_2 = this.ItemBar.Get();
         TEUIModelRef<FVM_Item> local_10;
         if (local_2)
         {

@@ -78,11 +78,9 @@ FVM_Image& Create(const UObject ContextObject, const FSoftBrush &inout Image)
 {
     return FVM_Image::CreateByManager(EUIInternal::GetContextManager(ContextObject), Image);
 }
-FVM_Image CreateByManager(const UEUIManagerSubsystem Manager, const FSoftBrush &inout Image)
+FVM_Image& CreateByManager(const UEUIManagerSubsystem Manager, const FSoftBrush &inout Image)
 {
-    FVM_Image __r;
-    TEUIModelRef<FVM_Image> local_6 = TEUIModelRef<FVM_Image>(EUIInternal::MakeModelWithManager_Generic(Manager, FVM_Image::ModelId, 0, Image));
-    return __r;
+    return TEUIModelRef<FVM_Image>(EUIInternal::MakeModelWithManager_Generic(Manager, FVM_Image::ModelId, 0, Image)).Get();
 }
 void GetModelInfo(FEUIViewModelMetaInfo &inout Result)
 {
@@ -124,7 +122,6 @@ namespace __GeneratedProperties_FVM_Image
 {
 UScriptStruct StaticStruct()
 {
-    UScriptStruct local_2;
-    return local_2;
+    return __GeneratedProperties_FVM_Image.Get();
 }
 }

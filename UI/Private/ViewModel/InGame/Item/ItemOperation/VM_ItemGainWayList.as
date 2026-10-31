@@ -188,11 +188,9 @@ FVM_ItemGainWayList& Create(const UObject ContextObject, const TEUIModelRef<FM_I
 {
     return FVM_ItemGainWayList::CreateByManager(EUIInternal::GetContextManager(ContextObject), ItemData);
 }
-FVM_ItemGainWayList CreateByManager(const UEUIManagerSubsystem Manager, const TEUIModelRef<FM_ItemData> &inout ItemData)
+FVM_ItemGainWayList& CreateByManager(const UEUIManagerSubsystem Manager, const TEUIModelRef<FM_ItemData> &inout ItemData)
 {
-    FVM_ItemGainWayList __r;
-    TEUIModelRef<FVM_ItemGainWayList> local_6 = TEUIModelRef<FVM_ItemGainWayList>(EUIInternal::MakeModelWithManager_Generic(Manager, FVM_ItemGainWayList::ModelId, 0, ItemData));
-    return __r;
+    return TEUIModelRef<FVM_ItemGainWayList>(EUIInternal::MakeModelWithManager_Generic(Manager, FVM_ItemGainWayList::ModelId, 0, ItemData)).Get();
 }
 void GetModelInfo(FEUIViewModelMetaInfo &inout Result)
 {
@@ -274,7 +272,6 @@ namespace __GeneratedProperties_FVM_ItemGainWayList
 {
 UScriptStruct StaticStruct()
 {
-    UScriptStruct local_2;
-    return local_2;
+    return __GeneratedProperties_FVM_ItemGainWayList.Get();
 }
 }

@@ -24,7 +24,7 @@ class UWidget_SelectTarget : UEUIUserWidget
     UFUNCTION()
     void Tick_Implementation(const FGeometry &inout MyGeometry, const float32 InDeltaTime)
     {
-        FECSEntity local_4 = FECSEntity(GetSelectTargetEntity());
+        FECSEntity local_4 = FECSEntity(this.SelectTargetUI.Get().GetSelectTargetEntity());
         APlayerController local_6 = this.GetOwningPlayer();
         if ((local_4 == ENTITY_NULL))
         {

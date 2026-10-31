@@ -251,11 +251,9 @@ FVM_Execute_QTEDir& Create(const UObject ContextObject)
 {
     return FVM_Execute_QTEDir::CreateByManager(EUIInternal::GetContextManager(ContextObject));
 }
-FVM_Execute_QTEDir CreateByManager(const UEUIManagerSubsystem Manager)
+FVM_Execute_QTEDir& CreateByManager(const UEUIManagerSubsystem Manager)
 {
-    FVM_Execute_QTEDir __r;
-    TEUIModelRef<FVM_Execute_QTEDir> local_6 = TEUIModelRef<FVM_Execute_QTEDir>(EUIInternal::MakeModelWithManager(Manager, FVM_Execute_QTEDir::ModelId));
-    return __r;
+    return TEUIModelRef<FVM_Execute_QTEDir>(EUIInternal::MakeModelWithManager(Manager, FVM_Execute_QTEDir::ModelId)).Get();
 }
 void GetModelInfo(FEUIViewModelMetaInfo &inout Result)
 {
@@ -333,7 +331,6 @@ namespace __GeneratedProperties_FVM_Execute_QTEDir
 {
 UScriptStruct StaticStruct()
 {
-    UScriptStruct local_2;
-    return local_2;
+    return __GeneratedProperties_FVM_Execute_QTEDir.Get();
 }
 }

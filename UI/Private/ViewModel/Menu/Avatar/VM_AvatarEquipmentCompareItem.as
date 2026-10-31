@@ -66,23 +66,16 @@ struct FVM_AvatarEquipmentCompareItem : FEUIViewModel
     }
     void PostConstruct()
     {
-        int local_6 = 0;
         this.SetBaseTraitInfoIcon(TEUIModelRef<FVM_TraitInfoIcon>(::FVM_TraitInfoIcon::Create(this.GetContext().Manager, this.GetBaseTrait())));
-        TEUIModelRef<FM_Trait> local_2 = this.GetBaseTrait();
-        TEUIModelRef<FM_Trait> local_2_2 = this.GetBaseTrait();
-        TEUIModelRef<FM_Trait> local_8 = this.GetBaseTrait();
-        this.SetBaseTraitLevelText(FText::Format(FText::AsCultureInvariant("Lv.{0}"), FMath::Min(GetTraitLevel(), local_6)));
+        this.SetBaseTraitName(this.GetBaseTrait().Get().GetTraitConfig().Get().TraitName);
+        this.SetBaseTraitLevelText(FText::Format(FText::AsCultureInvariant("Lv.{0}"), FMath::Min(this.GetBaseTrait().Get().GetTraitLevel(), this.GetBaseTrait().Get().GetTraitConfig().Get().LevelLimit)));
         return;
     }
     void SetCompareTrait(const int InCompareLevel)
     {
-        int local_5 = 0;
-        TEUIModelRef<FM_Trait> local_4 = this.GetBaseTrait();
-        int local_6 = FMath::Min(FMath::Max(InCompareLevel, 0), local_5);
+        int local_6 = FMath::Min(FMath::Max(InCompareLevel, 0), this.GetBaseTrait().Get().GetTraitConfig().Get().LevelLimit);
         this.SetCompareTraitLevelText(FText::Format(FText::AsCultureInvariant("Lv.{0}"), local_6));
-        TEUIModelRef<FM_Trait> local_4_2 = this.GetBaseTrait();
-        TEUIModelRef<FM_Trait> local_20 = this.GetBaseTrait();
-        int local_1 = FMath::Min(GetTraitLevel(), local_5);
+        int local_1 = FMath::Min(this.GetBaseTrait().Get().GetTraitLevel(), this.GetBaseTrait().Get().GetTraitConfig().Get().LevelLimit);
         if (local_6 > local_1)
         {
             this.SetCompareResultStateIndex(1);
@@ -233,11 +226,9 @@ FVM_AvatarEquipmentCompareItem& Create(const UObject ContextObject, const TEUIMo
 {
     return FVM_AvatarEquipmentCompareItem::CreateByManager(EUIInternal::GetContextManager(ContextObject), BaseTrait);
 }
-FVM_AvatarEquipmentCompareItem CreateByManager(const UEUIManagerSubsystem Manager, const TEUIModelRef<FM_Trait> &inout BaseTrait)
+FVM_AvatarEquipmentCompareItem& CreateByManager(const UEUIManagerSubsystem Manager, const TEUIModelRef<FM_Trait> &inout BaseTrait)
 {
-    FVM_AvatarEquipmentCompareItem __r;
-    TEUIModelRef<FVM_AvatarEquipmentCompareItem> local_6 = TEUIModelRef<FVM_AvatarEquipmentCompareItem>(EUIInternal::MakeModelWithManager_Generic(Manager, FVM_AvatarEquipmentCompareItem::ModelId, 0, BaseTrait));
-    return __r;
+    return TEUIModelRef<FVM_AvatarEquipmentCompareItem>(EUIInternal::MakeModelWithManager_Generic(Manager, FVM_AvatarEquipmentCompareItem::ModelId, 0, BaseTrait)).Get();
 }
 void GetModelInfo(FEUIViewModelMetaInfo &inout Result)
 {
@@ -336,7 +327,6 @@ namespace __GeneratedProperties_FVM_AvatarEquipmentCompareItem
 {
 UScriptStruct StaticStruct()
 {
-    UScriptStruct local_2;
-    return local_2;
+    return __GeneratedProperties_FVM_AvatarEquipmentCompareItem.Get();
 }
 }

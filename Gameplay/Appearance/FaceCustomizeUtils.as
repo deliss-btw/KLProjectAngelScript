@@ -2,7 +2,8 @@ namespace FaceCustomizeUtils
 {
 void ApplyFacePresetToActor(const AActor Actor, const uint AvatarId, const uint FacePresetId)
 {
-    if (!(FAvatarPrefabConfig::GetByDataId(AvatarId)))
+    TDataObjectPtr<FAvatarPrefabConfig> local_24 = FAvatarPrefabConfig::GetByDataId(AvatarId);
+    if (!(local_24))
     {
         return;
     }
@@ -11,8 +12,7 @@ void ApplyFacePresetToActor(const AActor Actor, const uint AvatarId, const uint 
     {
         return;
     }
-    EGenderType local_100;
-    int local_99 = local_100;
+    int local_99 = local_24.Get().GenderType;
     bool local_101 = false;
     USkeletalMeshComponent local_106 = AppearanceMeshUtils::ResolveViewMesh(Actor, local_101);
     if (local_106 == nullptr)
@@ -71,12 +71,12 @@ void ApplyBodyMaterialToMesh(const USkeletalMeshComponent SkComp, const TSoftObj
 }
 void ApplyFacePresetBodyMaterialToActor(const AActor Actor, const uint AvatarId, const uint FacePresetId)
 {
-    EGenderType local_100 = EGenderType(0);
     if (FacePresetId == 0)
     {
         return;
     }
-    if (!(FAvatarPrefabConfig::GetByDataId(AvatarId)))
+    TDataObjectPtr<FAvatarPrefabConfig> local_26 = FAvatarPrefabConfig::GetByDataId(AvatarId);
+    if (!(local_26))
     {
         return;
     }
@@ -84,7 +84,7 @@ void ApplyFacePresetBodyMaterialToActor(const AActor Actor, const uint AvatarId,
     {
         return;
     }
-    if ((int(local_100)) == 1)
+    if ((int(local_26.Get().GenderType)) == 1)
     {
     }
     else

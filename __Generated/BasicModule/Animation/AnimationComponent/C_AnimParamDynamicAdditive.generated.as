@@ -38,6 +38,7 @@ struct FC_AnimParamDynamicAdditiveConfigHistory : FECSComponent
     }
     void Clear()
     {
+        this.History.Clear();
         return;
     }
     bool GetInterpoValue(const FFPTime &inout WorldTime, FC_AnimParamDynamicAdditiveConfig &inout OutValue) const
@@ -75,6 +76,7 @@ struct FC_AnimParamDynamicAdditiveHistory : FECSComponent
     }
     void Clear()
     {
+        this.History.Clear();
         return;
     }
     bool GetInterpoValue(const FFPTime &inout WorldTime, FC_AnimParamDynamicAdditive &inout OutValue) const

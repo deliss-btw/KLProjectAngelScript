@@ -211,10 +211,10 @@ AECSRegionVolume TryGetRegionVolumeActor(const FECSEntity &inout Entity)
     if (Entity.IsValid())
     {
         Get local_8;
-        if (local_8.opCall())
+        const FC_RegionVolume& local_10 = local_8.opCall();
+        if (local_10)
         {
-            AActor local_12;
-            local_2 = (Cast<AECSRegionVolume>(local_12));
+            local_2 = (Cast<AECSRegionVolume>(local_10.RegionVolume.Get()));
         }
         else
         {
@@ -263,17 +263,16 @@ TDataObjectPtr<FLevelInfoConfig> GetCurrentLevelInfoConfig(const UWorld InWorld 
 UFUNCTION()
 ELevelType GetCurrentLevelType()
 {
-    int local_50 = 0;
-    if (FLevelUtils::GetCurrentLevelInfoConfig(nullptr))
+    TDataObjectPtr<FLevelInfoConfig> local_24 = FLevelUtils::GetCurrentLevelInfoConfig(nullptr);
+    if (local_24)
     {
-        return ELevelType(local_50);
+        return local_24.Get().LevelType;
     }
     return ELevelType(0);
 }
 UFUNCTION()
 void FinishCurrentCommission(const bool bSuccess = true)
 {
-    int local_63 = 0;
     int local_76 = 0;
     FString local_12 = FString().Append("Level call FinishCurrentCommission");
     FString local_8;
@@ -286,7 +285,8 @@ void FinishCurrentCommission(const bool bSuccess = true)
         local_8 = "Failed";
     }
     XLog(ELog(22), (local_12 + local_8));
-    if (FLevelUtils::GetCurrentLevelInfoConfig(nullptr) && (local_63 == 3 || (local_63 == 5)))
+    TDataObjectPtr<FLevelInfoConfig> local_38 = FLevelUtils::GetCurrentLevelInfoConfig(nullptr);
+    if (local_38 && (int(local_38.Get().LevelType) == 3 || (int(local_38.Get().LevelType) == 5)))
     {
         FECSWorldPtr local_70 = ECS::GetECSWorld();
         CommissionUtils::FinishCommission(local_76.CommissionConfig, bSuccess, ECommissionFailReason(4));
@@ -295,26 +295,31 @@ void FinishCurrentCommission(const bool bSuccess = true)
 }
 TDataObjectPtr<FMonsterMainConfig> TryGetMonsterConfigFromObjective(const TDataObjectPtr<FObjectiveSingleConfig> &inout SingleObjective)
 {
-    bool local_111 = false;
-    TDataObjectPtr<FMonsterMainConfig> __return;
     if (!(SingleObjective))
     {
         return TDataObjectPtr<FMonsterMainConfig>();
     }
     CastTo local_54;
-    if (!(local_54.opCall()))
+    TDataObjectPtr<FLocalConditionConfig> local_78 = local_54.opCall();
+    bool local_1 = !(local_78);
+    if (local_1)
     {
         return TDataObjectPtr<FMonsterMainConfig>();
     }
-    FInstancedStruct::GetPtr local_106;
-    if (local_106.opCall() && local_111)
+    TConstRawPtr<FConditionMonsterDeathConfig> local_108 = FInstancedStruct::GetPtr(local_78.Get().ConditionTypeDefineConfig).opCall();
+    if (!(local_108))
     {
+        local_1 = false;
     }
     else
     {
-        __return = TDataObjectPtr<FMonsterMainConfig>();
+        local_1 = local_108.Get().MonsterConfig;
     }
-    return __return;
+    if (local_1)
+    {
+        return local_108.Get().MonsterConfig;
+    }
+    return TDataObjectPtr<FMonsterMainConfig>();
 }
 TDataObjectPtr<FWeatherConfig> GetCurrentCommissionWeatherConfig()
 {
@@ -366,9 +371,10 @@ TArray<TDataObjectPtr<FMonsterMainConfig>> GetTargetMonsterConfigsFromObjective(
     else
     {
         CastTo local_112;
-        if (local_112.opCall())
+        TDataObjectPtr<FObjectiveGroupConfig> local_136 = local_112.opCall();
+        if (local_136)
         {
-            for (auto& local_174 : GetChildObjectives())
+            for (auto& local_174 : local_136.Get().GetChildObjectives())
             {
                 TDataObjectPtr<FMonsterMainConfig> local_106 = FLevelUtils::TryGetMonsterConfigFromObjective(local_174);
                 if (local_106)
@@ -382,21 +388,19 @@ TArray<TDataObjectPtr<FMonsterMainConfig>> GetTargetMonsterConfigsFromObjective(
 }
 TArray<TDataObjectPtr<FMonsterMainConfig>> GetTargetMonsterConfigsFromCommission(const TDataObjectPtr<FCommissionConfig> &inout CommissionConfig)
 {
-    TArrayConstIterator<FCommissionMonsterDisplayInfo> local_24;
     TArray<TDataObjectPtr<FMonsterMainConfig>> local_4;
     if (!(CommissionConfig))
     {
         return local_4;
     }
-    local_4 = FLevelUtils::GetTargetMonsterConfigsFromObjective(GetCommissionTargetObjective());
+    local_4 = FLevelUtils::GetTargetMonsterConfigsFromObjective(CommissionConfig.Get().GetCommissionTargetObjective());
     if (local_4.Num() > 0)
     {
         XLog(ELog(22), FString().Append("GetTargetMonsterConfigs: Found ").Append(local_4.Num()).Append(" MonsterConfig(s) from CommissionTargetObjective"));
         return local_4;
     }
-    for (; local_24.CanProceed;)
+    for (auto& local_32 : CommissionConfig.Get().DisplayMonsters)
     {
-        const FCommissionMonsterDisplayInfo& local_32 = local_24.Proceed();
         if (local_32.MonsterConfig)
         {
             local_4.Add(local_32.MonsterConfig);
@@ -411,7 +415,6 @@ TArray<TDataObjectPtr<FMonsterMainConfig>> GetTargetMonsterConfigsFromCommission
 UFUNCTION()
 uint GetPlayerAreaID(const FECSEntity &inout PlayerEntity)
 {
-    int local_2 = 0;
     int local_12 = 0;
     if (!(PlayerEntity.IsValid()))
     {
@@ -429,7 +432,7 @@ uint GetPlayerAreaID(const FECSEntity &inout PlayerEntity)
             {
                 if (local_22.GetWorldAreaConfig().IsSet())
                 {
-                    return local_2;
+                    return local_22.GetWorldAreaConfig().Get().DataId;
                 }
             }
         }

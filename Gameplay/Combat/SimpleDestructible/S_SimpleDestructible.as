@@ -60,11 +60,11 @@ class US_SimpleDestructible : UECSScriptSystem
     UFUNCTION()
     void ClientJob_HandleSimpleDestructibleHitEvent_FoliageISM(const FCE_SimpleDestructibleHitEvent_FoliageISM &inout Event) const
     {
-        UHierarchicalInstancedStaticMeshComponent local_6;
         if (::SimpleDestructibleUtils::IsClientManagerOnModifyMode())
         {
             return;
         }
+        UHierarchicalInstancedStaticMeshComponent local_6 = Event.ReceiverComponent.Get();
         if (local_6 == nullptr)
         {
             return;
@@ -79,8 +79,7 @@ class US_SimpleDestructible : UECSScriptSystem
         {
             return;
         }
-        UClass local_40;
-        USimpleDestructibleStaticMeshAssetUserData local_48 = (Cast<USimpleDestructibleStaticMeshAssetUserData>(local_8.GetAssetUserData(TSubclassOf<UAssetUserData>(local_40), false)));
+        USimpleDestructibleStaticMeshAssetUserData local_48 = (Cast<USimpleDestructibleStaticMeshAssetUserData>(local_8.GetAssetUserData(TSubclassOf<UAssetUserData>(USimpleDestructibleStaticMeshAssetUserData.Get()), false)));
         if (local_48 == nullptr)
         {
             return;
@@ -98,11 +97,11 @@ class US_SimpleDestructible : UECSScriptSystem
     UFUNCTION()
     void ClientJob_HandleSimpleDestructibleHitEvent_FoliageISkM(const FCE_SimpleDestructibleHitEvent_FoliageISkM &inout Event) const
     {
-        UInstancedSkinnedMeshComponent local_6;
         if (::SimpleDestructibleUtils::IsClientManagerOnModifyMode())
         {
             return;
         }
+        UInstancedSkinnedMeshComponent local_6 = Event.ReceiverComponent.Get();
         if (local_6 == nullptr)
         {
             return;
@@ -117,8 +116,7 @@ class US_SimpleDestructible : UECSScriptSystem
         {
             return;
         }
-        UClass local_40;
-        USimpleDestructibleStaticMeshAssetUserData local_48 = (Cast<USimpleDestructibleStaticMeshAssetUserData>(local_10.GetAssetUserData(TSubclassOf<UAssetUserData>(local_40), false)));
+        USimpleDestructibleStaticMeshAssetUserData local_48 = (Cast<USimpleDestructibleStaticMeshAssetUserData>(local_10.GetAssetUserData(TSubclassOf<UAssetUserData>(USimpleDestructibleStaticMeshAssetUserData.Get()), false)));
         if (local_48 == nullptr)
         {
             return;
@@ -136,11 +134,11 @@ class US_SimpleDestructible : UECSScriptSystem
     UFUNCTION()
     void ClientJob_HandleSimpleDestructibleHitEvent_StaticMesh(const FCE_SimpleDestructibleHitEvent_StaticMesh &inout Event) const
     {
-        UStaticMeshComponent local_6;
         if (::SimpleDestructibleUtils::IsClientManagerOnModifyMode())
         {
             return;
         }
+        UStaticMeshComponent local_6 = Event.ReceiverComponent.Get();
         if (local_6 == nullptr)
         {
             return;
@@ -151,8 +149,7 @@ class US_SimpleDestructible : UECSScriptSystem
             return;
         }
         FTransform local_60 = local_6.GetWorldTransform();
-        UClass local_62;
-        USimpleDestructibleStaticMeshAssetUserData local_70 = (Cast<USimpleDestructibleStaticMeshAssetUserData>(local_8.GetAssetUserData(TSubclassOf<UAssetUserData>(local_62), false)));
+        USimpleDestructibleStaticMeshAssetUserData local_70 = (Cast<USimpleDestructibleStaticMeshAssetUserData>(local_8.GetAssetUserData(TSubclassOf<UAssetUserData>(USimpleDestructibleStaticMeshAssetUserData.Get()), false)));
         if (local_70 == nullptr)
         {
             return;
@@ -169,7 +166,7 @@ class US_SimpleDestructible : UECSScriptSystem
     UFUNCTION()
     void ClientJob_ProcessSimpleDestructibleView_FoliageISM(const FCE_SimpleDestructibleProcessView_FoliageISM &inout Event, FCS_SimpleDestructibleClientCache &inout ClientCache) const
     {
-        UHierarchicalInstancedStaticMeshComponent local_4;
+        UHierarchicalInstancedStaticMeshComponent local_4 = Event.ReceiverComponent.Get();
         if (local_4 == nullptr)
         {
             return;
@@ -183,8 +180,7 @@ class US_SimpleDestructible : UECSScriptSystem
         {
             return;
         }
-        UClass local_14;
-        USimpleDestructibleStaticMeshAssetUserData local_22 = (Cast<USimpleDestructibleStaticMeshAssetUserData>(local_10.GetAssetUserData(TSubclassOf<UAssetUserData>(local_14), false)));
+        USimpleDestructibleStaticMeshAssetUserData local_22 = (Cast<USimpleDestructibleStaticMeshAssetUserData>(local_10.GetAssetUserData(TSubclassOf<UAssetUserData>(USimpleDestructibleStaticMeshAssetUserData.Get()), false)));
         if (local_22 == nullptr)
         {
             return;
@@ -198,7 +194,7 @@ class US_SimpleDestructible : UECSScriptSystem
     UFUNCTION()
     void ClientJob_ProcessSimpleDestructibleView_FoliageISkM(const FCE_SimpleDestructibleProcessView_FoliageISkM &inout Event, FCS_SimpleDestructibleClientCache &inout ClientCache) const
     {
-        UInstancedSkinnedMeshComponent local_4;
+        UInstancedSkinnedMeshComponent local_4 = Event.ReceiverComponent.Get();
         if (local_4 == nullptr)
         {
             return;
@@ -212,8 +208,7 @@ class US_SimpleDestructible : UECSScriptSystem
         {
             return;
         }
-        UClass local_14;
-        USimpleDestructibleStaticMeshAssetUserData local_22 = (Cast<USimpleDestructibleStaticMeshAssetUserData>(local_12.GetAssetUserData(TSubclassOf<UAssetUserData>(local_14), false)));
+        USimpleDestructibleStaticMeshAssetUserData local_22 = (Cast<USimpleDestructibleStaticMeshAssetUserData>(local_12.GetAssetUserData(TSubclassOf<UAssetUserData>(USimpleDestructibleStaticMeshAssetUserData.Get()), false)));
         if (local_22 == nullptr)
         {
             return;
@@ -227,7 +222,7 @@ class US_SimpleDestructible : UECSScriptSystem
     UFUNCTION()
     void ClientJob_ProcessSimpleDestructibleView_StaticMesh(const FCE_SimpleDestructibleProcessView_StaticMesh &inout Event, FCS_SimpleDestructibleClientCache &inout ClientCache) const
     {
-        UStaticMeshComponent local_4;
+        UStaticMeshComponent local_4 = Event.ReceiverComponent.Get();
         if (local_4 == nullptr)
         {
             return;
@@ -241,8 +236,7 @@ class US_SimpleDestructible : UECSScriptSystem
         {
             return;
         }
-        UClass local_14;
-        USimpleDestructibleStaticMeshAssetUserData local_22 = (Cast<USimpleDestructibleStaticMeshAssetUserData>(local_10.GetAssetUserData(TSubclassOf<UAssetUserData>(local_14), false)));
+        USimpleDestructibleStaticMeshAssetUserData local_22 = (Cast<USimpleDestructibleStaticMeshAssetUserData>(local_10.GetAssetUserData(TSubclassOf<UAssetUserData>(USimpleDestructibleStaticMeshAssetUserData.Get()), false)));
         if (local_22 == nullptr)
         {
             return;

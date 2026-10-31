@@ -3,7 +3,6 @@ namespace __FErrorCodeConfigFunctions
 UFUNCTION()
 FString __FErrorCodeConfig_GetErrorCodeCategory(const TDataObjectPtr<FErrorCodeConfig> &inout DataObject)
 {
-    FString __r;
     if ((DataObject == nullptr))
     {
         if (!(EUIGlobals::GIsDuringPropertyConversion))
@@ -13,12 +12,11 @@ FString __FErrorCodeConfig_GetErrorCodeCategory(const TDataObjectPtr<FErrorCodeC
         FErrorCodeConfig local_26;
         return local_26.ErrorCodeCategory;
     }
-    return __r;
+    return DataObject.Get().ErrorCodeCategory;
 }
 UFUNCTION()
 FString __FErrorCodeConfig_GetErrorCodeComment(const TDataObjectPtr<FErrorCodeConfig> &inout DataObject)
 {
-    FString __r;
     if ((DataObject == nullptr))
     {
         if (!(EUIGlobals::GIsDuringPropertyConversion))
@@ -28,12 +26,11 @@ FString __FErrorCodeConfig_GetErrorCodeComment(const TDataObjectPtr<FErrorCodeCo
         FErrorCodeConfig local_26;
         return local_26.ErrorCodeComment;
     }
-    return __r;
+    return DataObject.Get().ErrorCodeComment;
 }
 UFUNCTION()
 FText __FErrorCodeConfig_GetErrorCodeText(const TDataObjectPtr<FErrorCodeConfig> &inout DataObject)
 {
-    FText __r;
     if ((DataObject == nullptr))
     {
         if (!(EUIGlobals::GIsDuringPropertyConversion))
@@ -43,7 +40,7 @@ FText __FErrorCodeConfig_GetErrorCodeText(const TDataObjectPtr<FErrorCodeConfig>
         FErrorCodeConfig local_26;
         return local_26.ErrorCodeText;
     }
-    return __r;
+    return DataObject.Get().ErrorCodeText;
 }
 UFUNCTION()
 FErrorCodeConfig CastToFErrorCodeConfig(const TDataObjectPtr<FErrorCodeConfig> &inout DataObject)

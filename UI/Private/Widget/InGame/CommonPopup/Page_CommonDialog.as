@@ -57,8 +57,8 @@ class UPage_CommonDialog : UEUIActivatableWidget
     }
     void HandleObservedModelChanges(FEUIReactiveSubscriberIterator &inout It)
     {
-        FVM_CommonDialog& local_6;
         TEUIModelRef<FVM_CommonDialog> local_2 = this.Dialog.AsRef();
+        FVM_CommonDialog& local_6 = local_2.Get();
         for (; It; )
         {
             FEUIReactiveSubscriberTrackScope local_56 = FEUIReactiveSubscriberTrackScope(It);

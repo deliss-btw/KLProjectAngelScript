@@ -182,8 +182,7 @@ struct FVM_BreakthroughLevelInfo : FEUIViewModel
     {
         if (this.GetBreakthroughRewardList())
         {
-            TEUIModelRef<FVM_CommonRewardList> local_2 = this.GetBreakthroughRewardList();
-            return GetRewards();
+            return this.GetBreakthroughRewardList().Get().GetRewards();
         }
         return TArray<TEUIModelRef<FVM_CommonRewardItem>>();
     }
@@ -662,11 +661,9 @@ FVM_BreakthroughLevelInfo& Create(const UObject ContextObject)
 {
     return FVM_BreakthroughLevelInfo::CreateByManager(EUIInternal::GetContextManager(ContextObject));
 }
-FVM_BreakthroughLevelInfo CreateByManager(const UEUIManagerSubsystem Manager)
+FVM_BreakthroughLevelInfo& CreateByManager(const UEUIManagerSubsystem Manager)
 {
-    FVM_BreakthroughLevelInfo __r;
-    TEUIModelRef<FVM_BreakthroughLevelInfo> local_6 = TEUIModelRef<FVM_BreakthroughLevelInfo>(EUIInternal::MakeModelWithManager(Manager, FVM_BreakthroughLevelInfo::ModelId));
-    return __r;
+    return TEUIModelRef<FVM_BreakthroughLevelInfo>(EUIInternal::MakeModelWithManager(Manager, FVM_BreakthroughLevelInfo::ModelId)).Get();
 }
 void GetModelInfo(FEUIViewModelMetaInfo &inout Result)
 {
@@ -927,7 +924,6 @@ namespace __GeneratedProperties_FVM_BreakthroughLevelInfo
 {
 UScriptStruct StaticStruct()
 {
-    UScriptStruct local_2;
-    return local_2;
+    return __GeneratedProperties_FVM_BreakthroughLevelInfo.Get();
 }
 }

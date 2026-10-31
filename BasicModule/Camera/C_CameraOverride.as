@@ -287,7 +287,6 @@ struct FC_CameraOverrides : FECSComponent
     }
     void MergeCameraOverrides()
     {
-        int local_1;
         int local_46 = 0;
         int local_48 = 0;
         this.CameraOverridesIndex.Empty(0);
@@ -302,45 +301,38 @@ struct FC_CameraOverrides : FECSComponent
         int local_23_2 = 0;
         for (; local_23_2 < this.SyncCameraOverrides.Num(); )
         {
-            local_1 = this.LocalCameraOverrides.Num();
-            local_1 = local_1 + local_23_2;
             ECameraOverrideLayer local_26_2 = this.SyncCameraOverrides[local_23_2].GetLayer();
-            local_22.FindOrAdd(local_26_2) = local_1;
+            local_22.FindOrAdd(local_26_2) = (this.LocalCameraOverrides.Num() + local_23_2);
             ++local_23_2;
         }
         this.CurrentActiveIndex = INDEX_NONE;
         for (auto& local_44 : local_22)
         {
-            local_44;
-            this.CameraOverridesIndex.Add();
-            int local_24 = INDEX_NONE;
-            if (this.CurrentActiveIndex == local_24)
+            this.CameraOverridesIndex.Add(local_44.GetValue());
+            if (this.CurrentActiveIndex == INDEX_NONE)
             {
-                this.CurrentActiveIndex = local_24;
+                this.CurrentActiveIndex = local_44.GetValue();
                 continue;
             }
             if (this.CurrentActiveIndex < this.LocalCameraOverrides.Num())
             {
-                local_1 = this.CurrentActiveIndex;
+                int local_1_2 = this.CurrentActiveIndex;
             }
             else
             {
-                local_1 = this.CurrentActiveIndex;
-                local_1 = local_1 - this.LocalCameraOverrides.Num();
+                int local_1_3 = this.CurrentActiveIndex - this.LocalCameraOverrides.Num();
             }
-            local_24 = this.LocalCameraOverrides.Num();
-            if (local_1 < local_24)
+            if (local_44.GetValue() < this.LocalCameraOverrides.Num())
             {
+                int local_24 = local_44.GetValue();
             }
             else
             {
-                local_24 = local_24 - this.LocalCameraOverrides.Num();
+                int local_24_2 = local_44.GetValue() - this.LocalCameraOverrides.Num();
             }
-            ECameraOverrideLayer local_26_3 = local_48.GetLayer();
-            local_24 = int(local_46.GetLayer());
-            if (int(local_26_3) > local_24)
+            if (int(local_48.GetLayer()) > int(local_46.GetLayer()))
             {
-                this.CurrentActiveIndex = local_24;
+                this.CurrentActiveIndex = local_44.GetValue();
             }
         }
         return;

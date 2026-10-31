@@ -732,58 +732,10 @@ struct FVM_PlayerKeyMappingPair : FEUIViewModel
     void PostLoad()
     {
         float32 local_9;
-        bool local_3 = this.GetMapping0().IsValid();
-        if (!(local_3))
-        {
-            local_3 = false;
-        }
-        else
-        {
-            TEUIModelRef<FVM_PlayerKeyMapping> local_2 = this.GetMapping0();
-            local_3 = GetbConfigurable();
-        }
-        if (!(local_3))
-        {
-            local_3 = false;
-        }
-        else
-        {
-            TEUIModelRef<FVM_PlayerKeyMapping> local_2_2 = this.GetMapping0();
-            local_3 = (GetCurrentKey().GetKeyName() == NAME_None);
-        }
-        int local_7 = local_3 ? 2 : 0;
+        int local_7 = (this.GetMapping0().IsValid() && this.GetMapping0().Get().GetbConfigurable() && (this.GetMapping0().Get().GetCurrentKey().GetKeyName() == NAME_None)) ? 2 : 0;
         this.SetSwitchVisibleIndex0(local_7);
-        bool local_4 = this.GetMapping1().IsValid();
-        if (!(local_4))
-        {
-            local_4 = false;
-        }
-        else
-        {
-            TEUIModelRef<FVM_PlayerKeyMapping> local_2_3 = this.GetMapping1();
-            local_4 = GetbConfigurable();
-        }
-        if (!(local_4))
-        {
-            local_4 = false;
-        }
-        else
-        {
-            TEUIModelRef<FVM_PlayerKeyMapping> local_2_4 = this.GetMapping1();
-            local_4 = (GetCurrentKey().GetKeyName() == NAME_None);
-        }
-        this.SetSwitchVisibleIndex1((local_4 ? 2 : 0));
-        bool local_3_2 = this.GetMapping0().IsValid();
-        if (!(local_3_2))
-        {
-            local_3_2 = false;
-        }
-        else
-        {
-            TEUIModelRef<FVM_PlayerKeyMapping> local_2_5 = this.GetMapping0();
-            local_3_2 = GetbConfigurable();
-        }
-        if (local_3_2)
+        this.SetSwitchVisibleIndex1(((this.GetMapping1().IsValid() && this.GetMapping1().Get().GetbConfigurable() && (this.GetMapping1().Get().GetCurrentKey().GetKeyName() == NAME_None)) ? 2 : 0));
+        if (this.GetMapping0().IsValid() && this.GetMapping0().Get().GetbConfigurable())
         {
             local_9 = 1.0f;
         }
@@ -792,17 +744,7 @@ struct FVM_PlayerKeyMappingPair : FEUIViewModel
             local_9 = 0.5f;
         }
         this.SetRenderOpacity0(local_9);
-        bool local_4_2 = this.GetMapping1().IsValid();
-        if (!(local_4_2))
-        {
-            local_4_2 = false;
-        }
-        else
-        {
-            TEUIModelRef<FVM_PlayerKeyMapping> local_2_6 = this.GetMapping1();
-            local_4_2 = GetbConfigurable();
-        }
-        if (local_4_2)
+        if (this.GetMapping1().IsValid() && this.GetMapping1().Get().GetbConfigurable())
         {
             local_9 = 1.0f;
         }
@@ -815,167 +757,23 @@ struct FVM_PlayerKeyMappingPair : FEUIViewModel
     }
     bool DifferentFromPreviousKey(const FKey &inout PreviousKey0, const FKey &inout PreviousChordKey0, const FKey &inout PreviousKey1, const FKey &inout PreviousChordKey1) const
     {
-        bool local_5;
-        bool local_3 = this.GetMapping0().IsValid();
-        if (!(local_3))
-        {
-            local_3 = false;
-        }
-        else
-        {
-            TEUIModelRef<FVM_PlayerKeyMapping> local_2 = this.GetMapping0();
-            local_3 = !((PreviousKey0 == GetCurrentKey()));
-        }
-        if (local_3)
-        {
-            local_5 = true;
-        }
-        else
-        {
-            bool local_4;
-            local_4 = this.GetMapping0().IsValid();
-            if (!(local_4))
-            {
-                local_4 = false;
-            }
-            else
-            {
-                TEUIModelRef<FVM_PlayerKeyMapping> local_2_2 = this.GetMapping0();
-                local_4 = !((PreviousChordKey0 == GetChordKey()));
-            }
-            local_5 = local_4;
-        }
-        if (local_5)
-        {
-            local_3 = true;
-        }
-        else
-        {
-            bool local_4;
-            local_4 = this.GetMapping1().IsValid();
-            if (!(local_4))
-            {
-                local_4 = false;
-            }
-            else
-            {
-                TEUIModelRef<FVM_PlayerKeyMapping> local_2_3 = this.GetMapping1();
-                local_4 = !((PreviousKey1 == GetCurrentKey()));
-            }
-            local_3 = local_4;
-        }
-        if (local_3)
-        {
-            local_5 = true;
-        }
-        else
-        {
-            bool local_4;
-            local_4 = this.GetMapping1().IsValid();
-            if (!(local_4))
-            {
-                local_4 = false;
-            }
-            else
-            {
-                TEUIModelRef<FVM_PlayerKeyMapping> local_2_4 = this.GetMapping1();
-                local_4 = !((PreviousChordKey1 == GetChordKey()));
-            }
-            local_5 = local_4;
-        }
-        return local_5;
+        return (((this.GetMapping0().IsValid() && !((PreviousKey0 == this.GetMapping0().Get().GetCurrentKey()))) || (this.GetMapping0().IsValid() && !((PreviousChordKey0 == this.GetMapping0().Get().GetChordKey())))) || (this.GetMapping1().IsValid() && !((PreviousKey1 == this.GetMapping1().Get().GetCurrentKey())))) || (this.GetMapping1().IsValid() && !((PreviousChordKey1 == this.GetMapping1().Get().GetChordKey())));
     }
     void OnChordKeyChanged()
     {
-        bool local_3 = this.GetMapping0().IsValid();
-        if (!(local_3))
-        {
-            local_3 = false;
-        }
-        else
-        {
-            TEUIModelRef<FVM_PlayerKeyMapping> local_2 = this.GetMapping0();
-            local_3 = !((GetChordKey().GetKeyName() == NAME_None));
-        }
-        this.SetbHasChordKey0(local_3);
-        bool local_3_2 = this.GetMapping1().IsValid();
-        if (!(local_3_2))
-        {
-            local_3_2 = false;
-        }
-        else
-        {
-            TEUIModelRef<FVM_PlayerKeyMapping> local_2_2 = this.GetMapping1();
-            local_3_2 = !((GetChordKey().GetKeyName() == NAME_None));
-        }
-        this.SetbHasChordKey1(local_3_2);
+        this.SetbHasChordKey0(this.GetMapping0().IsValid() && !((this.GetMapping0().Get().GetChordKey().GetKeyName() == NAME_None)));
+        this.SetbHasChordKey1(this.GetMapping1().IsValid() && !((this.GetMapping1().Get().GetChordKey().GetKeyName() == NAME_None)));
         return;
     }
     void OnKeyChanged()
     {
-        bool local_5;
-        bool local_3 = this.GetMapping0().IsValid();
-        if (!(local_3))
-        {
-            local_3 = false;
-        }
-        else
-        {
-            TEUIModelRef<FVM_PlayerKeyMapping> local_2 = this.GetMapping0();
-            local_3 = GetbHasChanged();
-        }
-        if (local_3)
-        {
-            local_5 = true;
-        }
-        else
-        {
-            bool local_4 = this.GetMapping1().IsValid();
-            if (!(local_4))
-            {
-                local_4 = false;
-            }
-            else
-            {
-                TEUIModelRef<FVM_PlayerKeyMapping> local_2_2 = this.GetMapping1();
-                local_4 = GetbHasChanged();
-            }
-            local_5 = local_4;
-        }
+        bool local_5 = (this.GetMapping0().IsValid() && this.GetMapping0().Get().GetbHasChanged()) || (this.GetMapping1().IsValid() && this.GetMapping1().Get().GetbHasChanged());
         this.SetbHasChanged(local_5);
         return;
     }
     void OnNeedRefreshHoverChanged()
     {
-        bool local_5;
-        bool local_3 = this.GetMapping0().IsValid();
-        if (!(local_3))
-        {
-            local_3 = false;
-        }
-        else
-        {
-            TEUIModelRef<FVM_PlayerKeyMapping> local_2 = this.GetMapping0();
-            local_3 = GetbNeedRefreshHover();
-        }
-        if (local_3)
-        {
-            local_5 = true;
-        }
-        else
-        {
-            bool local_4 = this.GetMapping1().IsValid();
-            if (!(local_4))
-            {
-                local_4 = false;
-            }
-            else
-            {
-                TEUIModelRef<FVM_PlayerKeyMapping> local_2_2 = this.GetMapping1();
-                local_4 = GetbNeedRefreshHover();
-            }
-            local_5 = local_4;
-        }
+        bool local_5 = (this.GetMapping0().IsValid() && this.GetMapping0().Get().GetbNeedRefreshHover()) || (this.GetMapping1().IsValid() && this.GetMapping1().Get().GetbNeedRefreshHover());
         this.SetbNeedRefreshHover(local_5);
         return;
     }
@@ -1083,8 +881,7 @@ struct FVM_PlayerKeyMappingPair : FEUIViewModel
             this.OnUnConfigurableKeySelectingByGamepad();
             return;
         }
-        TEUIModelRef<FVM_PlayerKeyMapping> local_8 = this.GetMapping0();
-        if (!(GetbConfigurable()))
+        if (!(this.GetMapping0().Get().GetbConfigurable()))
         {
             this.OnUnConfigurableKeySelecting();
             return;
@@ -1099,8 +896,7 @@ struct FVM_PlayerKeyMappingPair : FEUIViewModel
             this.OnUnConfigurableKeySelectingByGamepad();
             return;
         }
-        TEUIModelRef<FVM_PlayerKeyMapping> local_8 = this.GetMapping1();
-        if (!(GetbConfigurable()))
+        if (!(this.GetMapping1().Get().GetbConfigurable()))
         {
             this.OnUnConfigurableKeySelecting();
             return;
@@ -1136,19 +932,7 @@ struct FVM_PlayerKeyMappingPair : FEUIViewModel
         }
         else
         {
-            bool local_2;
-            TEUIModelRef<FVM_PlayerKeyMapping> local_12 = this.GetMapping0();
-            local_2 = GetbConfigurable();
-            if (!(local_2))
-            {
-                local_2 = false;
-            }
-            else
-            {
-                local_10 = this.GetMapping0();
-                local_2 = (GetCurrentKey().GetKeyName() == NAME_None);
-            }
-            local_23 = local_2 ? 2 : 0;
+            local_23 = this.GetMapping0().Get().GetbConfigurable() && (this.GetMapping0().Get().GetCurrentKey().GetKeyName() == NAME_None) ? 2 : 0;
         }
         this.SetSwitchVisibleIndex0(local_23);
         local_8.RefreshCanRevert();
@@ -1183,19 +967,7 @@ struct FVM_PlayerKeyMappingPair : FEUIViewModel
         }
         else
         {
-            bool local_2;
-            TEUIModelRef<FVM_PlayerKeyMapping> local_12 = this.GetMapping1();
-            local_2 = GetbConfigurable();
-            if (!(local_2))
-            {
-                local_2 = false;
-            }
-            else
-            {
-                local_10 = this.GetMapping1();
-                local_2 = (GetCurrentKey().GetKeyName() == NAME_None);
-            }
-            local_23 = local_2 ? 2 : 0;
+            local_23 = this.GetMapping1().Get().GetbConfigurable() && (this.GetMapping1().Get().GetCurrentKey().GetKeyName() == NAME_None) ? 2 : 0;
         }
         this.SetSwitchVisibleIndex1(local_23);
         local_8.RefreshCanRevert();
@@ -1602,10 +1374,9 @@ struct FPlayerKeyMappingModification
     }
     void ApplyRevert()
     {
-        FVM_PlayerKeyMapping& local_2;
+        FVM_PlayerKeyMapping& local_2 = this.KeyMapping0.Get();
         if (local_2)
         {
-            FVM_PlayerKeyMapping& local_8;
             if (this.ModificationNum == 0)
             {
                 ++this.ModificationNum;
@@ -1616,6 +1387,7 @@ struct FPlayerKeyMappingModification
             }
             local_2.SetCurrentKey(this.BackupKey0);
             this.KeyMapping0.Reset();
+            FVM_PlayerKeyMapping& local_8 = this.KeyMapping1.Get();
             if (local_8)
             {
                 local_8.SetCurrentKey(this.BackupKey1);
@@ -1969,20 +1741,15 @@ struct FVMS_PlayerKeyMappings : FEUIViewModelSingleton
             this.SaveSettings(true, false);
             for (auto& local_16 : this.GetKeyboardMouseKeys())
             {
-                TEUIModelRef<FVM_PlayerKeyMapping> local_18 = local_16.opArrow().GetMapping0();
-                0.SetbHasChanged();
-                int local_1 = 0;
-                TEUIModelRef<FVM_PlayerKeyMapping> local_18_2 = local_16.opArrow().GetMapping1();
-                local_1.SetbHasChanged();
+                local_16.opArrow().GetMapping0().Get().SetbHasChanged(false);
+                local_16.opArrow().GetMapping1().Get().SetbHasChanged(false);
             }
             return;
         }
         this.SaveSettings(false, true);
         for (auto& local_16 : this.GetGamepadKeys())
         {
-            int local_2_2 = 0;
-            TEUIModelRef<FVM_PlayerKeyMapping> local_18_3 = local_16.opArrow().GetMapping0();
-            local_2_2.SetbHasChanged();
+            local_16.opArrow().GetMapping0().Get().SetbHasChanged(false);
         }
         return;
     }
@@ -1992,15 +1759,11 @@ struct FVMS_PlayerKeyMappings : FEUIViewModelSingleton
         {
             if (int(this.GetPendingSwitchKey0().opArrow().GetCategory()) == 3)
             {
-                TEUIModelRef<FVM_PlayerKeyMapping> local_6 = this.GetPendingSwitchKey1();
-                TEUIModelRef<FVM_PlayerKeyMapping> local_10 = this.GetPendingSwitchKey0();
-                this.GetModify_GamepadModification().BackupSwitch();
+                this.GetModify_GamepadModification().BackupSwitch(this.GetPendingSwitchKey0().Get(), this.GetPendingSwitchKey1().Get());
             }
             else
             {
-                TEUIModelRef<FVM_PlayerKeyMapping> local_6_2 = this.GetPendingSwitchKey1();
-                TEUIModelRef<FVM_PlayerKeyMapping> local_10_2 = this.GetPendingSwitchKey0();
-                this.GetModify_KeyboardMouseModification().BackupSwitch();
+                this.GetModify_KeyboardMouseModification().BackupSwitch(this.GetPendingSwitchKey0().Get(), this.GetPendingSwitchKey1().Get());
             }
             FKey local_16 = FKey(this.GetPendingSwitchKey0().opArrow().GetCurrentKey());
             this.GetPendingSwitchKey0().opArrow().SetCurrentKey(this.GetPendingSwitchKey1().opArrow().GetCurrentKey());
@@ -2039,7 +1802,6 @@ struct FVMS_PlayerKeyMappings : FEUIViewModelSingleton
     }
     void InitKeys(TArray<TEUIModelRef<FVM_PlayerKeyMappingPair>> &inout ResultKeys, TArray<FEUIModelRef> &inout KeyItems, const EGameUseKeyCategory KeyCategory0, const TArray<FGameUserKeyMapping> &inout Key0, const EGameUseKeyCategory KeyCategory1 = EGameUseKeyCategory::Invalid, const TArray<FGameUserKeyMapping> &inout Key1 = TArray<FGameUserKeyMapping>())
     {
-        FEUIInputAction local_112;
         TDataObjectPtr<FGameUserMappableInputActionCategory> local_24;
         int local_28 = FMath::Max(Key0.Num(), Key1.Num());
         int local_29 = 0;
@@ -2051,16 +1813,15 @@ struct FVMS_PlayerKeyMappings : FEUIViewModelSingleton
             if (Key0.IsValidIndex(local_29))
             {
                 local_104.SetMapping0(TEUIModelRef<FVM_PlayerKeyMapping>(::FVM_PlayerKeyMapping::Create(this.GetContext().Manager, local_29, EGameUseKeyCategory(KeyCategory0), Key0[local_29])));
-                TEUIModelRef<FVM_PlayerKeyMapping> local_106 = local_104.GetMapping0();
-                local_112.SetInputAction();
+                local_104.GetMapping0().Get().SetInputAction(FEUIInputAction(local_54.Get().Action));
             }
             if (Key1.IsValidIndex(local_29))
             {
                 local_104.SetMapping1(TEUIModelRef<FVM_PlayerKeyMapping>(::FVM_PlayerKeyMapping::Create(this.GetContext().Manager, local_29, EGameUseKeyCategory(KeyCategory1), Key1[local_29])));
-                TDataObjectPtr<FGameUserMappableInputAction> local_136 = TDataObjectPtr<FGameUserMappableInputAction>(Key1[local_29].InputAction);
-                TEUIModelRef<FVM_PlayerKeyMapping> local_106_2 = local_104.GetMapping1();
-                local_112.SetInputAction();
+                local_104.GetMapping1().Get().SetInputAction(FEUIInputAction(TDataObjectPtr<FGameUserMappableInputAction>(Key1[local_29].InputAction).Get().Action));
             }
+            local_104.SetKeyboardTag(local_54.Get().KeyboardTag);
+            local_104.SetGamepadTag(local_54.Get().GamepadTag);
             ResultKeys.Add(TEUIModelRef<FVM_PlayerKeyMappingPair>(local_104));
             KeyItems.Add(FEUIModelRef(local_104));
             ++local_29;
@@ -2106,16 +1867,15 @@ struct FVMS_PlayerKeyMappings : FEUIViewModelSingleton
     }
     void ResetAllKeys(const TArray<TEUIModelRef<FVM_PlayerKeyMappingPair>> &inout Keys) const
     {
-        FVM_PlayerKeyMapping& local_18;
         for (auto& local_16 : Keys)
         {
-            TEUIModelRef<FVM_PlayerKeyMapping> local_20 = local_16.opArrow().GetMapping0();
+            FVM_PlayerKeyMapping& local_18 = local_16.opArrow().GetMapping0().Get();
             if (local_18)
             {
                 local_18.SetCurrentKey(this.GetDefaultKey(local_18.GetCategory(), local_18.GetIndex()));
                 local_18.SetbNeedRefreshHover(!(local_18.GetbNeedRefreshHover()));
             }
-            TEUIModelRef<FVM_PlayerKeyMapping> local_20_2 = local_16.opArrow().GetMapping1();
+            local_18 = local_16.opArrow().GetMapping1().Get();
             if (local_18)
             {
                 local_18.SetCurrentKey(this.GetDefaultKey(local_18.GetCategory(), local_18.GetIndex()));
@@ -2126,12 +1886,11 @@ struct FVMS_PlayerKeyMappings : FEUIViewModelSingleton
     }
     TEUIModelRef<FVM_PlayerKeyMapping> FindInUsingKeyMapping(const FKey &inout Key, const FKey &inout ChordKey, const TArray<TEUIModelRef<FVM_PlayerKeyMappingPair>> &inout Keys) const
     {
-        FVM_PlayerKeyMapping& local_18;
         if (Key.IsValid())
         {
             for (auto& local_16 : Keys)
             {
-                TEUIModelRef<FVM_PlayerKeyMapping> local_20 = local_16.opArrow().GetMapping0();
+                FVM_PlayerKeyMapping& local_18 = local_16.opArrow().GetMapping0().Get();
                 if (local_18)
                 {
                     if ((FKey(local_18.GetCurrentKey()) == Key) && (FKey(local_18.GetChordKey()) == ChordKey))
@@ -2139,7 +1898,7 @@ struct FVMS_PlayerKeyMappings : FEUIViewModelSingleton
                         return (TEUIModelRef<FVM_PlayerKeyMapping>(local_18));
                     }
                 }
-                TEUIModelRef<FVM_PlayerKeyMapping> local_30 = local_16.opArrow().GetMapping1();
+                local_18 = local_16.opArrow().GetMapping1().Get();
                 if (local_18)
                 {
                     if ((FKey(local_18.GetCurrentKey()) == Key))
@@ -2580,11 +2339,9 @@ FVM_PlayerKeyMapping& Create(const UObject ContextObject, const int Index, const
 {
     return FVM_PlayerKeyMapping::CreateByManager(EUIInternal::GetContextManager(ContextObject), Index, EGameUseKeyCategory(Category), UserKeyMapping);
 }
-FVM_PlayerKeyMapping CreateByManager(const UEUIManagerSubsystem Manager, const int Index, const EGameUseKeyCategory Category, const FGameUserKeyMapping &inout UserKeyMapping)
+FVM_PlayerKeyMapping& CreateByManager(const UEUIManagerSubsystem Manager, const int Index, const EGameUseKeyCategory Category, const FGameUserKeyMapping &inout UserKeyMapping)
 {
-    FVM_PlayerKeyMapping __r;
-    TEUIModelRef<FVM_PlayerKeyMapping> local_6 = TEUIModelRef<FVM_PlayerKeyMapping>(EUIInternal::MakeModelWithManager_Generic(Manager, FVM_PlayerKeyMapping::ModelId, 0, Index, Category, UserKeyMapping));
-    return __r;
+    return TEUIModelRef<FVM_PlayerKeyMapping>(EUIInternal::MakeModelWithManager_Generic(Manager, FVM_PlayerKeyMapping::ModelId, 0, Index, Category, UserKeyMapping)).Get();
 }
 void GetModelInfo(FEUIViewModelMetaInfo &inout Result)
 {
@@ -2730,8 +2487,7 @@ namespace __GeneratedProperties_FVM_PlayerKeyMapping
 {
 UScriptStruct StaticStruct()
 {
-    UScriptStruct local_2;
-    return local_2;
+    return __GeneratedProperties_FVM_PlayerKeyMapping.Get();
 }
 }
 namespace FVM_PlayerMappableKey
@@ -2740,11 +2496,9 @@ FVM_PlayerMappableKey& Create(const UObject ContextObject, const FKey &inout Key
 {
     return FVM_PlayerMappableKey::CreateByManager(EUIInternal::GetContextManager(ContextObject), Key, EEUIInputType(InputType));
 }
-FVM_PlayerMappableKey CreateByManager(const UEUIManagerSubsystem Manager, const FKey &inout Key, const EEUIInputType InputType)
+FVM_PlayerMappableKey& CreateByManager(const UEUIManagerSubsystem Manager, const FKey &inout Key, const EEUIInputType InputType)
 {
-    FVM_PlayerMappableKey __r;
-    TEUIModelRef<FVM_PlayerMappableKey> local_6 = TEUIModelRef<FVM_PlayerMappableKey>(EUIInternal::MakeModelWithManager_Generic(Manager, FVM_PlayerMappableKey::ModelId, 0, Key, InputType));
-    return __r;
+    return TEUIModelRef<FVM_PlayerMappableKey>(EUIInternal::MakeModelWithManager_Generic(Manager, FVM_PlayerMappableKey::ModelId, 0, Key, InputType)).Get();
 }
 void GetModelInfo(FEUIViewModelMetaInfo &inout Result)
 {
@@ -2807,8 +2561,7 @@ namespace __GeneratedProperties_FVM_PlayerMappableKey
 {
 UScriptStruct StaticStruct()
 {
-    UScriptStruct local_2;
-    return local_2;
+    return __GeneratedProperties_FVM_PlayerMappableKey.Get();
 }
 }
 namespace FVM_PlayerKeyMappingPair
@@ -2817,11 +2570,9 @@ FVM_PlayerKeyMappingPair& Create(const UObject ContextObject)
 {
     return FVM_PlayerKeyMappingPair::CreateByManager(EUIInternal::GetContextManager(ContextObject));
 }
-FVM_PlayerKeyMappingPair CreateByManager(const UEUIManagerSubsystem Manager)
+FVM_PlayerKeyMappingPair& CreateByManager(const UEUIManagerSubsystem Manager)
 {
-    FVM_PlayerKeyMappingPair __r;
-    TEUIModelRef<FVM_PlayerKeyMappingPair> local_6 = TEUIModelRef<FVM_PlayerKeyMappingPair>(EUIInternal::MakeModelWithManager(Manager, FVM_PlayerKeyMappingPair::ModelId));
-    return __r;
+    return TEUIModelRef<FVM_PlayerKeyMappingPair>(EUIInternal::MakeModelWithManager(Manager, FVM_PlayerKeyMappingPair::ModelId)).Get();
 }
 void GetModelInfo(FEUIViewModelMetaInfo &inout Result)
 {
@@ -3280,8 +3031,7 @@ namespace __GeneratedProperties_FVM_PlayerKeyMappingPair
 {
 UScriptStruct StaticStruct()
 {
-    UScriptStruct local_2;
-    return local_2;
+    return __GeneratedProperties_FVM_PlayerKeyMappingPair.Get();
 }
 }
 namespace FVMS_PlayerKeyMappings
@@ -3290,11 +3040,9 @@ FVMS_PlayerKeyMappings& Get(const UObject ContextObject)
 {
     return FVMS_PlayerKeyMappings::GetByManager(EUIInternal::GetContextManager(ContextObject));
 }
-FVMS_PlayerKeyMappings GetByManager(const UEUIManagerSubsystem Manager)
+FVMS_PlayerKeyMappings& GetByManager(const UEUIManagerSubsystem Manager)
 {
-    FVMS_PlayerKeyMappings __r;
-    TEUIModelRef<FVMS_PlayerKeyMappings> local_6 = TEUIModelRef<FVMS_PlayerKeyMappings>(EUIInternal::MakeModelWithManager(Manager, FVMS_PlayerKeyMappings::ModelId));
-    return __r;
+    return TEUIModelRef<FVMS_PlayerKeyMappings>(EUIInternal::MakeModelWithManager(Manager, FVMS_PlayerKeyMappings::ModelId)).Get();
 }
 void GetModelInfo(FEUIViewModelMetaInfo &inout Result)
 {
@@ -3478,7 +3226,6 @@ namespace __GeneratedProperties_FVMS_PlayerKeyMappings
 {
 UScriptStruct StaticStruct()
 {
-    UScriptStruct local_2;
-    return local_2;
+    return __GeneratedProperties_FVMS_PlayerKeyMappings.Get();
 }
 }

@@ -34,19 +34,19 @@ class UWidget_LinkSkillEnergyCrossbow : UEUIUserWidget
     UFUNCTION()
     float32 LinkSkillEnergyCrossbow_EnergyRatio() const
     {
-        FVMS_LinkSkillEnergyCrossbow& local_2;
+        FVMS_LinkSkillEnergyCrossbow& local_2 = this.LinkSkillEnergyCrossbow.Get();
         return local_2 ? local_2.GetEnergyRatio() : 0.0f;
     }
     UFUNCTION()
     float32 LinkSkillEnergyCrossbow_SmoothedEnergyRatio() const
     {
-        FVMS_LinkSkillEnergyCrossbow& local_2;
+        FVMS_LinkSkillEnergyCrossbow& local_2 = this.LinkSkillEnergyCrossbow.Get();
         return local_2 ? local_2.GetSmoothedEnergyRatio() : 0.0f;
     }
     void HandleObservedModelChanges(FEUIReactiveSubscriberIterator &inout It)
     {
-        FVMS_LinkSkillEnergyCrossbow& local_6;
         TEUIModelRef<FVMS_LinkSkillEnergyCrossbow> local_2 = this.LinkSkillEnergyCrossbow.AsRef();
+        FVMS_LinkSkillEnergyCrossbow& local_6 = local_2.Get();
         for (; It; )
         {
             FEUIReactiveSubscriberTrackScope local_56 = FEUIReactiveSubscriberTrackScope(It);

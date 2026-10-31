@@ -22,8 +22,8 @@ class UWidget_EquipmentTraitHoverEntry : UEUIUserListItemWidget
     UFUNCTION()
     bool TraitDetailListItem_bIsCurrentLevel() const
     {
-        FVM_TraitDetailListItem& local_2;
         bool local_5;
+        FVM_TraitDetailListItem& local_2 = this.TraitDetailListItem.Get();
         if (local_2)
         {
             local_5 = local_2.GetbIsCurrentLevel();
@@ -66,7 +66,7 @@ class UWidget_EquipmentTraitHover : UEUIUserListItemWidget
     UFUNCTION()
     TArray<FEUIModelWeakRef> TraitDetailList_ListItems() const
     {
-        FVM_TraitDetailList& local_2;
+        FVM_TraitDetailList& local_2 = this.TraitDetailList.Get();
         TArray<FEUIModelWeakRef> local_16;
         if (local_2)
         {

@@ -59,8 +59,7 @@ struct FVM_FastEquipPage : FEUIViewModel
         this.UpdateEquipmentSelectDetail();
         for (auto& local_22 : ::GameModeSettings::GetGameModeSettings(this.GetContext().Manager.GetWorld()).ChangeRoleDataObjects)
         {
-            TEUIModelRef<FM_Equipment> local_24 = this.GetEquipment();
-            if (::FEquipmentUtils::AvatarCanEquip(local_22, GetEquipmentConfig()))
+            if (::FEquipmentUtils::AvatarCanEquip(local_22, this.GetEquipment().Get().GetEquipmentConfig()))
             {
                 this.GetModify_AvatarList().Add(FEUIModelRef(::FVM_FastEquipPageItem::Create(this.GetContext().Manager, local_22)));
             }
@@ -329,11 +328,9 @@ FVM_FastEquipPage& Create(const UObject ContextObject, const TEUIModelRef<FM_Equ
 {
     return FVM_FastEquipPage::CreateByManager(EUIInternal::GetContextManager(ContextObject), Equipment);
 }
-FVM_FastEquipPage CreateByManager(const UEUIManagerSubsystem Manager, const TEUIModelRef<FM_Equipment> &inout Equipment)
+FVM_FastEquipPage& CreateByManager(const UEUIManagerSubsystem Manager, const TEUIModelRef<FM_Equipment> &inout Equipment)
 {
-    FVM_FastEquipPage __r;
-    TEUIModelRef<FVM_FastEquipPage> local_6 = TEUIModelRef<FVM_FastEquipPage>(EUIInternal::MakeModelWithManager_Generic(Manager, FVM_FastEquipPage::ModelId, 0, Equipment));
-    return __r;
+    return TEUIModelRef<FVM_FastEquipPage>(EUIInternal::MakeModelWithManager_Generic(Manager, FVM_FastEquipPage::ModelId, 0, Equipment)).Get();
 }
 void GetModelInfo(FEUIViewModelMetaInfo &inout Result)
 {
@@ -448,8 +445,7 @@ namespace __GeneratedProperties_FVM_FastEquipPage
 {
 UScriptStruct StaticStruct()
 {
-    UScriptStruct local_2;
-    return local_2;
+    return __GeneratedProperties_FVM_FastEquipPage.Get();
 }
 }
 namespace FVM_FastEquipPageItem
@@ -458,11 +454,9 @@ FVM_FastEquipPageItem& Create(const UObject ContextObject, const TDataObjectPtr<
 {
     return FVM_FastEquipPageItem::CreateByManager(EUIInternal::GetContextManager(ContextObject), AvatarConfig);
 }
-FVM_FastEquipPageItem CreateByManager(const UEUIManagerSubsystem Manager, const TDataObjectPtr<FAvatarPrefabConfig> &inout AvatarConfig)
+FVM_FastEquipPageItem& CreateByManager(const UEUIManagerSubsystem Manager, const TDataObjectPtr<FAvatarPrefabConfig> &inout AvatarConfig)
 {
-    FVM_FastEquipPageItem __r;
-    TEUIModelRef<FVM_FastEquipPageItem> local_6 = TEUIModelRef<FVM_FastEquipPageItem>(EUIInternal::MakeModelWithManager_Generic(Manager, FVM_FastEquipPageItem::ModelId, 0, AvatarConfig));
-    return __r;
+    return TEUIModelRef<FVM_FastEquipPageItem>(EUIInternal::MakeModelWithManager_Generic(Manager, FVM_FastEquipPageItem::ModelId, 0, AvatarConfig)).Get();
 }
 void GetModelInfo(FEUIViewModelMetaInfo &inout Result)
 {
@@ -504,7 +498,6 @@ namespace __GeneratedProperties_FVM_FastEquipPageItem
 {
 UScriptStruct StaticStruct()
 {
-    UScriptStruct local_2;
-    return local_2;
+    return __GeneratedProperties_FVM_FastEquipPageItem.Get();
 }
 }

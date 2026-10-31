@@ -37,12 +37,9 @@ struct FMS_SettingMain : FEUIModelSingleton
     }
     void OnSelectedCategoryIndexChanged()
     {
-        TEUIModelRef<FVMS_SettingPage> local_4 = this.GetSettings();
-        TEUIModelRef<FVMS_SettingPage> local_2 = this.GetSettings();
-        if (GetCategories().IsValidIndex(GetSelectedCategoryIndex()))
+        if (this.GetSettings().Get().GetCategories().IsValidIndex(this.GetSettings().Get().GetSelectedCategoryIndex()))
         {
-            TEUIModelRef<FVMS_SettingPage> local_4_2 = this.GetSettings();
-            this.PrevIndex = GetSelectedCategoryIndex();
+            this.PrevIndex = this.GetSettings().Get().GetSelectedCategoryIndex();
         }
         return;
     }
@@ -71,11 +68,9 @@ FMS_SettingMain& Get(const UObject ContextObject)
 {
     return FMS_SettingMain::GetByManager(EUIInternal::GetContextManager(ContextObject));
 }
-FMS_SettingMain GetByManager(const UEUIManagerSubsystem Manager)
+FMS_SettingMain& GetByManager(const UEUIManagerSubsystem Manager)
 {
-    FMS_SettingMain __r;
-    TEUIModelRef<FMS_SettingMain> local_6 = TEUIModelRef<FMS_SettingMain>(EUIInternal::MakeModelWithManager(Manager, FMS_SettingMain::ModelId));
-    return __r;
+    return TEUIModelRef<FMS_SettingMain>(EUIInternal::MakeModelWithManager(Manager, FMS_SettingMain::ModelId)).Get();
 }
 void GetModelInfo(FEUIModelOnlyMetaInfo &inout Result)
 {

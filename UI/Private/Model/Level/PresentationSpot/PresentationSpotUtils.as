@@ -42,15 +42,13 @@ FM_SpotRegistry& GetMapRegistry(const UObject WorldContextObject, const TDataObj
 {
     int local_8 = 0;
     FMS_SpotRegistries& local_2 = FMS_SpotRegistries::Get(WorldContextObject);
-    bool local_3 = !(local_2.GetMapRegistries().Contains(MapConfig));
-    if (local_3)
+    if (!(local_2.GetMapRegistries().Contains(MapConfig)))
     {
-        local_3 = true;
         FName local_5 = MapConfig.opArrow().GetDataName();
         local_8.SetDefaultDisplayScopeInternal(EPresentationSpotDisplayScope(1));
         local_2.GetModify_MapRegistries().Add(MapConfig, TEUIModelRef<FM_SpotRegistry>(local_8));
     }
-    return local_3;
+    return local_2.GetMapRegistries()[MapConfig].Get();
 }
 TDataObjectPtr<FMapConfig> GetCurrentMapConfig(const UObject WorldContextObject)
 {
@@ -86,6 +84,7 @@ FM_SpotRegistry& GetDefaulted(const UObject WorldContext, const TEUIModelRef<FM_
     {
         return PresentationSpotUtils::GetDefaultRegistry(WorldContext);
     }
+    return Registry.Get();
 }
 FSpotView GetDefaultView(const UObject WorldContextObject)
 {
@@ -132,11 +131,12 @@ TEUIModelRef<FM_Spot> GetEntitySpot(const UObject WorldContextObject, const FECS
 }
 FM_Spot AcquireEntitySpotForRead(const UObject WorldContextObject, const FECSEntityId &inout EntityId)
 {
-    FM_Spot& local_10;
     FM_Spot __r;
     FMS_SpotByEntityId& local_2 = FMS_SpotByEntityId::Get(WorldContextObject);
-    if (local_2.GetEntityIdToSpotsMap().Find(EntityId))
+    TConstRawPtr<FSpotByEntityIdData> local_4 = local_2.GetEntityIdToSpotsMap().Find(EntityId);
+    if (local_4)
     {
+        FM_Spot& local_10 = local_4.opArrow().EntitySpot.Get();
         if (local_10)
         {
         }
@@ -144,19 +144,20 @@ FM_Spot AcquireEntitySpotForRead(const UObject WorldContextObject, const FECSEnt
         {
         }
     }
-    local_10 = FM_Spot::Create(WorldContextObject);
-    local_10.SetEntityIdInternal(EntityId);
-    local_2.RegisterEntitySpot(local_10, EntityId);
+    FM_Spot& local_10_2 = FM_Spot::Create(WorldContextObject);
+    local_10_2.SetEntityIdInternal(EntityId);
+    local_2.RegisterEntitySpot(local_10_2, EntityId);
     return __r;
 }
 FM_Spot& RequireEntitySpot(const UObject WorldContextObject, const FECSEntityId &inout EntityId, const TEUIModelRef<FM_SpotRegistry> &inout Registry = FEUIModelRef())
 {
     bool local_9 = false;
-    FM_Spot& local_12;
     FMS_SpotByEntityId& local_2 = FMS_SpotByEntityId::Get(WorldContextObject);
     FM_SpotRegistry& local_4 = PresentationSpotUtils::GetDefaulted(WorldContextObject, Registry);
-    if (local_2.GetEntityIdToSpotsMap().Find(EntityId))
+    TConstRawPtr<FSpotByEntityIdData> local_6 = local_2.GetEntityIdToSpotsMap().Find(EntityId);
+    if (local_6)
     {
+        FM_Spot& local_12 = local_6.opArrow().EntitySpot.Get();
         if (local_12)
         {
             local_9 = (GetOwnerEntityId(local_12) == ENTITY_ID_NULL);
@@ -170,27 +171,32 @@ FM_Spot& RequireEntitySpot(const UObject WorldContextObject, const FECSEntityId 
         {
         }
     }
-    local_12 = local_4.CreateSpot();
-    local_12.SetEntityIdInternal(EntityId);
-    local_2.RegisterEntitySpot(local_12, EntityId);
+    FM_Spot& local_12_2 = local_4.CreateSpot();
+    local_12_2.SetEntityIdInternal(EntityId);
+    local_2.RegisterEntitySpot(local_12_2, EntityId);
     return local_9;
 }
 void BindEntitySpot(const TEUIModelRef<FM_Spot> &inout Spot, const FECSEntityId &inout EntityId)
 {
-    // body not fully recovered — stub [argmismatch:argtype]
+    if (!(Spot))
+    {
+        return;
+    }
+    Spot.opArrow().SetEntityIdInternal(EntityId);
+    FMS_SpotByEntityId::Get(Spot.opArrow().GetManager()).RegisterEntitySpot(Spot.Get(), EntityId);
+    return;
 }
 TArray<TEUIModelRef<FM_Spot>> FindSpotsByEntityId(const UObject WorldContextObject, const FECSEntityId &inout EntityId, const TEUIModelRef<FM_SpotRegistry> &inout SpecificRegistry = FEUIModelRef())
 {
-    TEUIModelRef<FM_Spot> local_26;
     TArray<TEUIModelRef<FM_Spot>> local_4;
     TConstRawPtr<FSpotByEntityIdData> local_6 = FMS_SpotByEntityId::Get(WorldContextObject).GetEntityIdToSpotsMap().Find(EntityId);
     if (local_6)
     {
         for (auto& local_24 : local_6.opArrow().Spots)
         {
-            if (local_24 && (!(SpecificRegistry) || SpecificRegistry.opArrow().HasSpot(local_26)))
+            if (local_24 && (!(SpecificRegistry) || SpecificRegistry.opArrow().HasSpot(TEUIModelRef<FM_Spot>(local_24.Get()))))
             {
-                local_4.Add(local_26);
+                local_4.Add(TEUIModelRef<FM_Spot>(local_24.Get()));
             }
         }
     }
@@ -262,9 +268,7 @@ bool ConvertSpotPositionToRenderTranslation(const TEUIModelRef<FM_Spot> &inout S
     const FC_PlayerController& local_40 = local_38.opCall();
     if (local_40)
     {
-        TWeakObjectPtr<AECSPlayerController> local_42 = local_40.GetUEPlayerController();
-        AECSPlayerController local_44;
-        local_30 = local_44;
+        local_30 = local_40.GetUEPlayerController().Get();
     }
     if ((!((local_30 != nullptr))))
     {

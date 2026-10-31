@@ -90,11 +90,9 @@ FVM_EntityDialog& Create(const UObject ContextObject, const FECSEntity &inout En
 {
     return FVM_EntityDialog::CreateByManager(EUIInternal::GetContextManager(ContextObject), Entity);
 }
-FVM_EntityDialog CreateByManager(const UEUIManagerSubsystem Manager, const FECSEntity &inout Entity)
+FVM_EntityDialog& CreateByManager(const UEUIManagerSubsystem Manager, const FECSEntity &inout Entity)
 {
-    FVM_EntityDialog __r;
-    TEUIModelRef<FVM_EntityDialog> local_6 = TEUIModelRef<FVM_EntityDialog>(EUIInternal::MakeModelWithManager_Generic(Manager, FVM_EntityDialog::ModelId, 0, Entity));
-    return __r;
+    return TEUIModelRef<FVM_EntityDialog>(EUIInternal::MakeModelWithManager_Generic(Manager, FVM_EntityDialog::ModelId, 0, Entity)).Get();
 }
 void GetModelInfo(FEUIViewModelMetaInfo &inout Result)
 {
@@ -136,7 +134,6 @@ namespace __GeneratedProperties_FVM_EntityDialog
 {
 UScriptStruct StaticStruct()
 {
-    UScriptStruct local_2;
-    return local_2;
+    return __GeneratedProperties_FVM_EntityDialog.Get();
 }
 }

@@ -17,6 +17,8 @@ struct FAICommand_UpdateLock : FAICommandScript
 {
     FAICommandScript _base_FAICommandScript;
 
+    default m_ScriptOverrideMeta = Cast<UASStruct>(FAICommand_UpdateLock.Get());
+
     FAICommand_UpdateLock()
     {
         this.__InitDefaults();
@@ -34,7 +36,7 @@ struct FAICommand_UpdateLock : FAICommandScript
     }
     void Execute_Implementation(const FAICommandParams &inout Params, const FFPTime &inout WorldTime) const
     {
-        const FAICommand_UpdateLockData& local_2;
+        const FAICommand_UpdateLockData& local_2 = this.GetInstanceData(Params);
         FC_AITmpLockCurrentAttackTargetTag local_8;
         Assign local_6;
         local_6.opCall(local_8);
@@ -54,7 +56,7 @@ struct FAICommand_UpdateLock : FAICommandScript
     {
         Remove local_4;
         local_4.opCall();
-        FAICommand_UpdateLockData local_8;
+        const FAICommand_UpdateLockData& local_8 = this.GetInstanceData(Params);
         ::FAITargetingUtils::PopQueryInstanceByHandle(Params.GetPawnProxy(), local_8.QueryHandle);
         if (local_8.bHoldTarget)
         {
@@ -79,6 +81,8 @@ class UBTService_UpdateLock : UBTService_AICommandScript
     bool bHoldTarget = true;
     UPROPERTY()
     FAICommand_UpdateLock AICommand;
+
+    default SetNodeName("更新锁定 & 延迟脱战");
 
     UFUNCTION()
     void OnInitCommandInstanceData_Implementation(const FAICommandInstanceDataInitContextPtr &inout Context) const

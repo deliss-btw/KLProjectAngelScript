@@ -44,13 +44,13 @@ struct FVM_ItemAction : FEUIViewModel
     }
     FVM_ItemAction(const TEUIModelRef<FM_ItemData> &inout ItemDataModel)
     {
-        FM_ItemData& local_6;
         EItemActionType local_44;
         this.m_MainActionType = EItemActionType(0);
         if (EUIInternal::GetModelConstructBodyEnableCounter() == 0)
         {
             return;
         }
+        FM_ItemData& local_6 = ItemDataModel.Get();
         if (local_6)
         {
             int local_42;
@@ -279,11 +279,9 @@ FVM_ItemAction& Create(const UObject ContextObject, const TEUIModelRef<FM_ItemDa
 {
     return FVM_ItemAction::CreateByManager(EUIInternal::GetContextManager(ContextObject), ItemDataModel);
 }
-FVM_ItemAction CreateByManager(const UEUIManagerSubsystem Manager, const TEUIModelRef<FM_ItemData> &inout ItemDataModel)
+FVM_ItemAction& CreateByManager(const UEUIManagerSubsystem Manager, const TEUIModelRef<FM_ItemData> &inout ItemDataModel)
 {
-    FVM_ItemAction __r;
-    TEUIModelRef<FVM_ItemAction> local_6 = TEUIModelRef<FVM_ItemAction>(EUIInternal::MakeModelWithManager_Generic(Manager, FVM_ItemAction::ModelId, 0, ItemDataModel));
-    return __r;
+    return TEUIModelRef<FVM_ItemAction>(EUIInternal::MakeModelWithManager_Generic(Manager, FVM_ItemAction::ModelId, 0, ItemDataModel)).Get();
 }
 void GetModelInfo(FEUIViewModelMetaInfo &inout Result)
 {
@@ -359,7 +357,6 @@ namespace __GeneratedProperties_FVM_ItemAction
 {
 UScriptStruct StaticStruct()
 {
-    UScriptStruct local_2;
-    return local_2;
+    return __GeneratedProperties_FVM_ItemAction.Get();
 }
 }

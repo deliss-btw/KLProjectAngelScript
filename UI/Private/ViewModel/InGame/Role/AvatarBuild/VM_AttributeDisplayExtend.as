@@ -75,11 +75,9 @@ FVM_AttributeDisplayExtend& Create(const UObject ContextObject)
 {
     return FVM_AttributeDisplayExtend::CreateByManager(EUIInternal::GetContextManager(ContextObject));
 }
-FVM_AttributeDisplayExtend CreateByManager(const UEUIManagerSubsystem Manager)
+FVM_AttributeDisplayExtend& CreateByManager(const UEUIManagerSubsystem Manager)
 {
-    FVM_AttributeDisplayExtend __r;
-    TEUIModelRef<FVM_AttributeDisplayExtend> local_6 = TEUIModelRef<FVM_AttributeDisplayExtend>(EUIInternal::MakeModelWithManager(Manager, FVM_AttributeDisplayExtend::ModelId));
-    return __r;
+    return TEUIModelRef<FVM_AttributeDisplayExtend>(EUIInternal::MakeModelWithManager(Manager, FVM_AttributeDisplayExtend::ModelId)).Get();
 }
 void GetModelInfo(FEUIViewModelMetaInfo &inout Result)
 {
@@ -130,7 +128,6 @@ namespace __GeneratedProperties_FVM_AttributeDisplayExtend
 {
 UScriptStruct StaticStruct()
 {
-    UScriptStruct local_2;
-    return local_2;
+    return __GeneratedProperties_FVM_AttributeDisplayExtend.Get();
 }
 }

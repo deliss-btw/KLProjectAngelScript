@@ -66,6 +66,7 @@ class UWidget_SkillResAnimCache : UObject
     void RecordPlay(const UWidgetAnimation Anim)
     {
         UWidgetAnimation local_12;
+        this.CachedStopAnims.Remove(Anim);
         float local_6 = this.GetNowRealTime();
         int local_7 = 0;
         for (; local_7 < this.CachedAnims.Num(); ++local_7)

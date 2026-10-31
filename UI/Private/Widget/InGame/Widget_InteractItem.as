@@ -17,7 +17,7 @@ class UWidget_InteractItem : UEUIUserListItemWidget
     UFUNCTION()
     FText InteractItem_DisplayText() const
     {
-        FVM_InteractItem& local_2;
+        FVM_InteractItem& local_2 = this.InteractItem.Get();
         FText local_12 = local_2 ? local_2.GetDisplayText() : FText();
         return local_12;
     }

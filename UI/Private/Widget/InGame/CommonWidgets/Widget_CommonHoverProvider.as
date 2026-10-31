@@ -30,7 +30,7 @@ class UWidget_CommonHoverProvider : UEUIUserWidget
     UFUNCTION()
     void OnViewBind_Implementation()
     {
-        FVM_CommonHoverProvider local_2;
+        FVM_CommonHoverProvider& local_2 = this.HoverProvider.Get();
         local_2.SetHoverForWidget(this.GetResolvedHoverForWidget());
         local_2.SetHoverWidgetClass(this.HoverWidgetClass);
         local_2.SetHoverModels(this.HoverModels);
@@ -43,9 +43,9 @@ class UWidget_CommonHoverProvider : UEUIUserWidget
     {
         if (this.HoverProvider.IsValid())
         {
-            this.HoverModels.SetHoverModels();
-            this.ParentHoverHandle.SetParentHoverHandle();
-            this.GetResolvedHoverForWidget().SetHoverForWidget();
+            this.HoverProvider.Get().SetHoverModels(this.HoverModels);
+            this.HoverProvider.Get().SetParentHoverHandle(this.ParentHoverHandle);
+            this.HoverProvider.Get().SetHoverForWidget(this.GetResolvedHoverForWidget());
             this.RefreshProviderHoverChainNavigation();
         }
         return;
@@ -115,7 +115,7 @@ class UWidget_CommonHoverProvider : UEUIUserWidget
             this.bJustHover = true;
             return FEventReply::Handled();
         }
-        if (!(GetbResponsibleForClick()))
+        if (!(this.HoverProvider.Get().GetbResponsibleForClick()))
         {
             return FEventReply::Unhandled();
         }
@@ -123,11 +123,11 @@ class UWidget_CommonHoverProvider : UEUIUserWidget
         {
             return FEventReply::Handled();
         }
-        if (GetbClickForExecute() && (MouseEvent.GetEffectingButton() == EKeys::RightMouseButton))
+        if (this.HoverProvider.Get().GetbClickForExecute() && (MouseEvent.GetEffectingButton() == EKeys::RightMouseButton))
         {
             return FEventReply::Unhandled();
         }
-        if (GetbClickForExecute())
+        if (this.HoverProvider.Get().GetbClickForExecute())
         {
             this.HoverProvider_NotifyMouseLeave();
         }
@@ -143,7 +143,7 @@ class UWidget_CommonHoverProvider : UEUIUserWidget
             this.bJustHover = true;
             return FEventReply::Handled();
         }
-        if (!(GetbResponsibleForClick()))
+        if (!(this.HoverProvider.Get().GetbResponsibleForClick()))
         {
             return FEventReply::Unhandled();
         }
@@ -151,11 +151,11 @@ class UWidget_CommonHoverProvider : UEUIUserWidget
         {
             return FEventReply::Handled();
         }
-        if (GetbClickForExecute() && (InMouseEvent.GetEffectingButton() == EKeys::RightMouseButton))
+        if (this.HoverProvider.Get().GetbClickForExecute() && (InMouseEvent.GetEffectingButton() == EKeys::RightMouseButton))
         {
             return FEventReply::Unhandled();
         }
-        if (GetbClickForExecute())
+        if (this.HoverProvider.Get().GetbClickForExecute())
         {
             this.HoverProvider_NotifyMouseLeave();
         }
@@ -193,7 +193,7 @@ class UWidget_CommonHoverProvider : UEUIUserWidget
     UFUNCTION()
     void OpenByClick()
     {
-        if (!(this.HoverProvider.IsValid()) || !(GetbResponsibleForClick()))
+        if (!(this.HoverProvider.IsValid()) || !(this.HoverProvider.Get().GetbResponsibleForClick()))
         {
             return;
         }
@@ -207,7 +207,7 @@ class UWidget_CommonHoverProvider : UEUIUserWidget
         {
             return;
         }
-        PinOrOpenPinnedPassThrough();
+        this.HoverProvider.Get().PinOrOpenPinnedPassThrough();
         return;
     }
     UFUNCTION()
@@ -216,7 +216,7 @@ class UWidget_CommonHoverProvider : UEUIUserWidget
         this.HoverModels = InHoverModels;
         if (this.HoverProvider.IsValid())
         {
-            this.HoverModels.SetHoverModels();
+            this.HoverProvider.Get().SetHoverModels(this.HoverModels);
             this.RefreshProviderHoverChainNavigation();
         }
         return;
@@ -224,7 +224,7 @@ class UWidget_CommonHoverProvider : UEUIUserWidget
     UFUNCTION()
     bool IsHoverDisplayed()
     {
-        return this.HoverProvider.IsValid() && IsHoverDisplayed();
+        return this.HoverProvider.IsValid() && this.HoverProvider.Get().IsHoverDisplayed();
     }
     UFUNCTION()
     void SetHoverForWidgetOverride(const UWidget InHoverForWidget)
@@ -232,7 +232,7 @@ class UWidget_CommonHoverProvider : UEUIUserWidget
         this.HoverForWidgetOverride = InHoverForWidget;
         if (this.HoverProvider.IsValid())
         {
-            this.GetResolvedHoverForWidget().SetHoverForWidget();
+            this.HoverProvider.Get().SetHoverForWidget(this.GetResolvedHoverForWidget());
             this.RefreshProviderHoverChainNavigation();
         }
         return;
@@ -244,11 +244,11 @@ class UWidget_CommonHoverProvider : UEUIUserWidget
         {
             return nullptr;
         }
-        return GetDisplayedHoverWidget();
+        return this.HoverProvider.Get().GetDisplayedHoverWidget();
     }
     void RefreshProviderHoverChainNavigation()
     {
-        bool local_2 = this.HoverProvider.IsValid() && IsValid(GetDisplayedHoverWidget());
+        bool local_2 = this.HoverProvider.IsValid() && IsValid(this.HoverProvider.Get().GetDisplayedHoverWidget());
         bool local_5 = !(this.bHoverProviderChainNavigationBound);
         if (!(local_2) == local_5)
         {
@@ -271,8 +271,8 @@ class UWidget_CommonHoverProvider : UEUIUserWidget
     }
     UWidget GetResolvedHoverForWidget()
     {
-        UWidget local_2;
         UWidget local_4;
+        UWidget local_2 = this.HoverForWidgetOverride.Get();
         if (IsValid(local_2))
         {
             local_4 = local_2;

@@ -7,7 +7,7 @@ class UConditionTeleporterActivated : ULocalConditionTypeDefineBase
     }
     void OnConditionRegistered(const FLocalConditionInstance &inout ConditionInstance) const
     {
-        if (::TeleporterActivatedConditionUtils::HasNoActivatableTeleporter(FECSEntity(GetContextEntity())))
+        if (::TeleporterActivatedConditionUtils::HasNoActivatableTeleporter(FECSEntity(ConditionInstance.GetInstanceData().GetContextEntity())))
         {
             FConditionInstanceHandle local_32;
             FConditionInstanceHandle local_58 = ConditionInstance.GetHandle();
@@ -27,7 +27,7 @@ class UConditionTeleporterActivated : ULocalConditionTypeDefineBase
         FCS_TeleporterActivatedConditionManager& local_8 = local_6.opCall();
         if (local_8)
         {
-            FConditionInstanceHandle local_36 = ConditionInstance.GetHandle();
+            local_8.ConditionInstances.Remove(ConditionInstance.GetHandle());
             if (local_8.ConditionInstances.IsEmpty())
             {
                 FECSWorldPtr local_40 = ECS::GetECSWorld();

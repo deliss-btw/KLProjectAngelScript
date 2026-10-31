@@ -32,13 +32,13 @@ class UWidget_PVX_MainHUD : UEUIUserWidget
     {
         if (!(this.bEscapeConfigPassed) && this.VMS_PVX_MainHUD.IsValid())
         {
-            this.AvatarEscapeTag.SetAvatarEscapeTag();
-            this.EscapeSkillList.SetEscapeSkillList();
+            this.VMS_PVX_MainHUD.Get().SetAvatarEscapeTag(this.AvatarEscapeTag);
+            this.VMS_PVX_MainHUD.Get().SetEscapeSkillList(this.EscapeSkillList);
             this.bEscapeConfigPassed = true;
         }
         if (this.VMS_PVX_MainHUD.IsValid())
         {
-            InDeltaTime.TickExpBarProgress();
+            this.VMS_PVX_MainHUD.Get().TickExpBarProgress(InDeltaTime);
         }
         return;
     }
@@ -47,7 +47,7 @@ class UWidget_PVX_MainHUD : UEUIUserWidget
     {
         if (this.VMS_PVX_MainHUD.IsValid())
         {
-            ToggleLeaderboard();
+            this.VMS_PVX_MainHUD.Get().ToggleLeaderboard();
         }
         return;
     }
@@ -69,8 +69,8 @@ class UWidget_PVX_MainHUD : UEUIUserWidget
     UFUNCTION()
     int VMS_PVX_MainHUD_Level() const
     {
-        FVMS_PVX_MainHUD& local_2;
         int local_5;
+        FVMS_PVX_MainHUD& local_2 = this.VMS_PVX_MainHUD.Get();
         if (local_2)
         {
             local_5 = local_2.GetLevel();
@@ -84,77 +84,77 @@ class UWidget_PVX_MainHUD : UEUIUserWidget
     UFUNCTION()
     int VMS_PVX_MainHUD_Exp() const
     {
-        FVMS_PVX_MainHUD& local_2;
+        FVMS_PVX_MainHUD& local_2 = this.VMS_PVX_MainHUD.Get();
         return local_2 ? local_2.GetExp() : 0;
     }
     UFUNCTION()
     FText VMS_PVX_MainHUD_NextLevelExpStr() const
     {
-        FVMS_PVX_MainHUD& local_2;
+        FVMS_PVX_MainHUD& local_2 = this.VMS_PVX_MainHUD.Get();
         FText local_12 = local_2 ? local_2.GetNextLevelExpStr() : FText();
         return local_12;
     }
     UFUNCTION()
     FText VMS_PVX_MainHUD_DeltaExpText() const
     {
-        FVMS_PVX_MainHUD& local_2;
+        FVMS_PVX_MainHUD& local_2 = this.VMS_PVX_MainHUD.Get();
         FText local_12 = local_2 ? local_2.GetDeltaExpText() : FText();
         return local_12;
     }
     UFUNCTION()
     int VMS_PVX_MainHUD_TargetPanelSwitcherIndex() const
     {
-        FVMS_PVX_MainHUD& local_2;
+        FVMS_PVX_MainHUD& local_2 = this.VMS_PVX_MainHUD.Get();
         return local_2 ? local_2.GetTargetPanelSwitcherIndex() : 0;
     }
     UFUNCTION()
     int VMS_PVX_MainHUD_TriggerAddExpAnim() const
     {
-        FVMS_PVX_MainHUD& local_2;
+        FVMS_PVX_MainHUD& local_2 = this.VMS_PVX_MainHUD.Get();
         return local_2 ? local_2.GetTriggerAddExpAnim() : 0;
     }
     UFUNCTION()
     float32 VMS_PVX_MainHUD_ExpBarProgress() const
     {
-        FVMS_PVX_MainHUD& local_2;
+        FVMS_PVX_MainHUD& local_2 = this.VMS_PVX_MainHUD.Get();
         return local_2 ? local_2.GetExpBarProgress() : 0.0f;
     }
     UFUNCTION()
     FTimespan VMS_PVX_MainHUD_RemainingTime() const
     {
-        FVMS_PVX_MainHUD& local_2;
+        FVMS_PVX_MainHUD& local_2 = this.VMS_PVX_MainHUD.Get();
         FTimespan local_8 = local_2 ? local_2.GetRemainingTime() : FTimespan();
         return local_8;
     }
     UFUNCTION()
     FText VMS_PVX_MainHUD_WinnerFactionText() const
     {
-        FVMS_PVX_MainHUD& local_2;
+        FVMS_PVX_MainHUD& local_2 = this.VMS_PVX_MainHUD.Get();
         FText local_12 = local_2 ? local_2.GetWinnerFactionText() : FText();
         return local_12;
     }
     UFUNCTION()
     int VMS_PVX_MainHUD_LocalPlayerKills() const
     {
-        FVMS_PVX_MainHUD& local_2;
+        FVMS_PVX_MainHUD& local_2 = this.VMS_PVX_MainHUD.Get();
         return local_2 ? local_2.GetLocalPlayerKills() : 0;
     }
     UFUNCTION()
     int VMS_PVX_MainHUD_LocalPlayerDeaths() const
     {
-        FVMS_PVX_MainHUD& local_2;
+        FVMS_PVX_MainHUD& local_2 = this.VMS_PVX_MainHUD.Get();
         return local_2 ? local_2.GetLocalPlayerDeaths() : 0;
     }
     UFUNCTION()
     int VMS_PVX_MainHUD_LocalPlayerAssists() const
     {
-        FVMS_PVX_MainHUD& local_2;
+        FVMS_PVX_MainHUD& local_2 = this.VMS_PVX_MainHUD.Get();
         return local_2 ? local_2.GetLocalPlayerAssists() : 0;
     }
     UFUNCTION()
     TArray<FPVX_PlayerKDAEntry> VMS_PVX_MainHUD_Modify_AllPlayersKDA() const
     {
-        FVMS_PVX_MainHUD& local_2;
+        FVMS_PVX_MainHUD& local_2 = this.VMS_PVX_MainHUD.Get();
         TArray<FPVX_PlayerKDAEntry> local_12;
         if (local_2)
         {
@@ -169,7 +169,7 @@ class UWidget_PVX_MainHUD : UEUIUserWidget
     UFUNCTION()
     TArray<FEUIModelWeakRef> VMS_PVX_MainHUD_Modify_LeaderboardEntries() const
     {
-        FVMS_PVX_MainHUD& local_2;
+        FVMS_PVX_MainHUD& local_2 = this.VMS_PVX_MainHUD.Get();
         TArray<FEUIModelWeakRef> local_16;
         if (local_2)
         {
@@ -184,8 +184,8 @@ class UWidget_PVX_MainHUD : UEUIUserWidget
     UFUNCTION()
     bool VMS_PVX_MainHUD_bLeaderboardVisible() const
     {
-        FVMS_PVX_MainHUD& local_2;
         bool local_5;
+        FVMS_PVX_MainHUD& local_2 = this.VMS_PVX_MainHUD.Get();
         if (local_2)
         {
             local_5 = local_2.GetbLeaderboardVisible();
@@ -199,14 +199,14 @@ class UWidget_PVX_MainHUD : UEUIUserWidget
     UFUNCTION()
     int VMS_PVX_MainHUD_CurrencyItemNum() const
     {
-        FVMS_PVX_MainHUD& local_2;
+        FVMS_PVX_MainHUD& local_2 = this.VMS_PVX_MainHUD.Get();
         return local_2 ? local_2.GetCurrencyItemNum() : 0;
     }
     UFUNCTION()
     bool VMS_PVX_MainHUD_bEscapePanelVisible() const
     {
-        FVMS_PVX_MainHUD& local_2;
         bool local_5;
+        FVMS_PVX_MainHUD& local_2 = this.VMS_PVX_MainHUD.Get();
         if (local_2)
         {
             local_5 = local_2.GetbEscapePanelVisible();
@@ -220,8 +220,8 @@ class UWidget_PVX_MainHUD : UEUIUserWidget
     UFUNCTION()
     bool VMS_PVX_MainHUD_bEscapeEnergyFull() const
     {
-        FVMS_PVX_MainHUD& local_2;
         bool local_5;
+        FVMS_PVX_MainHUD& local_2 = this.VMS_PVX_MainHUD.Get();
         if (local_2)
         {
             local_5 = local_2.GetbEscapeEnergyFull();
@@ -234,8 +234,8 @@ class UWidget_PVX_MainHUD : UEUIUserWidget
     }
     void HandleObservedModelChanges(FEUIReactiveSubscriberIterator &inout It)
     {
-        FVMS_PVX_MainHUD& local_6;
         TEUIModelRef<FVMS_PVX_MainHUD> local_2 = this.VMS_PVX_MainHUD.AsRef();
+        FVMS_PVX_MainHUD& local_6 = local_2.Get();
         for (; It; )
         {
             FEUIReactiveSubscriberTrackScope local_56 = FEUIReactiveSubscriberTrackScope(It);

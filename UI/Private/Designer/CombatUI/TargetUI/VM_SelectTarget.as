@@ -98,11 +98,9 @@ FVM_SelectTarget& Create(const UObject ContextObject, const FECSEntity &inout Se
 {
     return FVM_SelectTarget::CreateByManager(EUIInternal::GetContextManager(ContextObject), SelectTargetEntity, SelectIconWidget);
 }
-FVM_SelectTarget CreateByManager(const UEUIManagerSubsystem Manager, const FECSEntity &inout SelectTargetEntity, const TSoftClassPtr<UEUIUserWidget> &inout SelectIconWidget)
+FVM_SelectTarget& CreateByManager(const UEUIManagerSubsystem Manager, const FECSEntity &inout SelectTargetEntity, const TSoftClassPtr<UEUIUserWidget> &inout SelectIconWidget)
 {
-    FVM_SelectTarget __r;
-    TEUIModelRef<FVM_SelectTarget> local_6 = TEUIModelRef<FVM_SelectTarget>(EUIInternal::MakeModelWithManager_Generic(Manager, FVM_SelectTarget::ModelId, 0, SelectTargetEntity, SelectIconWidget));
-    return __r;
+    return TEUIModelRef<FVM_SelectTarget>(EUIInternal::MakeModelWithManager_Generic(Manager, FVM_SelectTarget::ModelId, 0, SelectTargetEntity, SelectIconWidget)).Get();
 }
 void GetModelInfo(FEUIViewModelMetaInfo &inout Result)
 {
@@ -148,7 +146,6 @@ namespace __GeneratedProperties_FVM_SelectTarget
 {
 UScriptStruct StaticStruct()
 {
-    UScriptStruct local_2;
-    return local_2;
+    return __GeneratedProperties_FVM_SelectTarget.Get();
 }
 }

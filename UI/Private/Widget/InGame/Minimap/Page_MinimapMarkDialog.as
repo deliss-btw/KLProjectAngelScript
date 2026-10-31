@@ -62,7 +62,7 @@ class UPage_MinimapMarkDialog : UEUIUserWidget
     UFUNCTION()
     TArray<FEUIModelWeakRef> MinimapMarkDialog_Options() const
     {
-        FVM_MinimapMarkDialog& local_2;
+        FVM_MinimapMarkDialog& local_2 = this.MinimapMarkDialog.Get();
         TArray<FEUIModelWeakRef> local_16;
         if (local_2)
         {
@@ -77,8 +77,8 @@ class UPage_MinimapMarkDialog : UEUIUserWidget
     UFUNCTION()
     bool MinimapMarkDialog_bHasSelect() const
     {
-        FVM_MinimapMarkDialog& local_2;
         bool local_5;
+        FVM_MinimapMarkDialog& local_2 = this.MinimapMarkDialog.Get();
         if (local_2)
         {
             local_5 = local_2.GetbHasSelect();
@@ -156,8 +156,8 @@ class UPage_MinimapMarkDialog : UEUIUserWidget
     }
     void HandleObservedModelChanges(FEUIReactiveSubscriberIterator &inout It)
     {
-        FVM_MinimapMarkDialog& local_6;
         TEUIModelRef<FVM_MinimapMarkDialog> local_2 = this.MinimapMarkDialog.AsRef();
+        FVM_MinimapMarkDialog& local_6 = local_2.Get();
         for (; It; )
         {
             FEUIReactiveSubscriberTrackScope local_56 = FEUIReactiveSubscriberTrackScope(It);
@@ -238,7 +238,26 @@ class UWidget_MinimapMarkHover : UEUIUserWidget
     UFUNCTION()
     void Tick_Implementation(const FGeometry &inout MyGeometry, const float32 InDeltaTime)
     {
-        // body not fully recovered — stub [unresolved-operand]
+        FEUIModelWeakRef local_2 = this.OptionList.GetSelectedItem();
+        if (local_2.Get())
+        {
+            this.MinimapMarkDialog_OnOptionSelected(TEUIModelRef<FVM_MinimapMarkDialogOption>(FEUIModelRef(local_2.Get())).Get().GetOptionIndex());
+        }
+        else
+        {
+            if (this.MinimapMarkDialog)
+            {
+                int local_14;
+                local_14 = this.MinimapMarkDialog.Get().GetCurrentSelectedIndex();
+                if (local_14 != INDEX_NONE)
+                {
+                    this.OptionList.NavigateToIndex(local_14);
+                    this.OptionList.SetSelectedIndex(local_14);
+                    this.OptionList.SetFocus();
+                }
+            }
+        }
+        return;
     }
     UFUNCTION()
     void Destruct_Implementation()
@@ -249,7 +268,7 @@ class UWidget_MinimapMarkHover : UEUIUserWidget
     UFUNCTION()
     void OnSelectedIndexChanged(const int InSelectedIndex)
     {
-        FVM_MinimapMarkDialog& local_2;
+        FVM_MinimapMarkDialog& local_2 = this.MinimapMarkDialog.Get();
         if ((!((FECSEntityId(local_2.GetMarkEntityID()) == ENTITY_ID_NULL))))
         {
             return;
@@ -266,7 +285,7 @@ class UWidget_MinimapMarkHover : UEUIUserWidget
     UFUNCTION()
     TArray<FEUIModelWeakRef> MinimapMarkDialog_Options() const
     {
-        FVM_MinimapMarkDialog& local_2;
+        FVM_MinimapMarkDialog& local_2 = this.MinimapMarkDialog.Get();
         TArray<FEUIModelWeakRef> local_16;
         if (local_2)
         {
@@ -281,8 +300,8 @@ class UWidget_MinimapMarkHover : UEUIUserWidget
     UFUNCTION()
     bool MinimapMarkDialog_bHasSelect() const
     {
-        FVM_MinimapMarkDialog& local_2;
         bool local_5;
+        FVM_MinimapMarkDialog& local_2 = this.MinimapMarkDialog.Get();
         if (local_2)
         {
             local_5 = local_2.GetbHasSelect();
@@ -360,8 +379,8 @@ class UWidget_MinimapMarkHover : UEUIUserWidget
     }
     void HandleObservedModelChanges(FEUIReactiveSubscriberIterator &inout It)
     {
-        FVM_MinimapMarkDialog& local_6;
         TEUIModelRef<FVM_MinimapMarkDialog> local_2 = this.MinimapMarkDialog.AsRef();
+        FVM_MinimapMarkDialog& local_6 = local_2.Get();
         for (; It; )
         {
             FEUIReactiveSubscriberTrackScope local_56 = FEUIReactiveSubscriberTrackScope(It);
@@ -433,12 +452,31 @@ class UWidget_MinimapMarkTips : UEUIUserWidget
     UFUNCTION()
     void Tick_Implementation(const FGeometry &inout MyGeometry, const float32 InDeltaTime)
     {
-        // body not fully recovered — stub [unresolved-operand]
+        FEUIModelWeakRef local_2 = this.OptionList.GetSelectedItem();
+        if (local_2.Get())
+        {
+            this.MinimapMarkDialog_OnOptionSelected(TEUIModelRef<FVM_MinimapMarkDialogOption>(FEUIModelRef(local_2.Get())).Get().GetOptionIndex());
+        }
+        else
+        {
+            if (this.MinimapMarkDialog)
+            {
+                int local_14;
+                local_14 = this.MinimapMarkDialog.Get().GetCurrentSelectedIndex();
+                if (local_14 != INDEX_NONE)
+                {
+                    this.OptionList.NavigateToIndex(local_14);
+                    this.OptionList.SetSelectedIndex(local_14);
+                    this.OptionList.SetFocus();
+                }
+            }
+        }
+        return;
     }
     UFUNCTION()
     TArray<FEUIModelWeakRef> MinimapMarkDialog_Options() const
     {
-        FVM_MinimapMarkDialog& local_2;
+        FVM_MinimapMarkDialog& local_2 = this.MinimapMarkDialog.Get();
         TArray<FEUIModelWeakRef> local_16;
         if (local_2)
         {
@@ -453,8 +491,8 @@ class UWidget_MinimapMarkTips : UEUIUserWidget
     UFUNCTION()
     bool MinimapMarkDialog_bHasSelect() const
     {
-        FVM_MinimapMarkDialog& local_2;
         bool local_5;
+        FVM_MinimapMarkDialog& local_2 = this.MinimapMarkDialog.Get();
         if (local_2)
         {
             local_5 = local_2.GetbHasSelect();
@@ -562,7 +600,7 @@ class UWidget_MinimapMarkDialogOption : UEUIUserListItemWidget
     UFUNCTION()
     FSlateBrush Option_MarkIcon() const
     {
-        FVM_MinimapMarkDialogOption& local_2;
+        FVM_MinimapMarkDialogOption& local_2 = this.Option.Get();
         FSlateBrush local_92;
         if (local_2)
         {
@@ -577,8 +615,8 @@ class UWidget_MinimapMarkDialogOption : UEUIUserListItemWidget
     UFUNCTION()
     ESlateVisibility Option_SlateVisibilitybSelected() const
     {
-        FVM_MinimapMarkDialogOption& local_2;
         int local_5;
+        FVM_MinimapMarkDialogOption& local_2 = this.Option.Get();
         if (local_2)
         {
             local_5 = int(local_2.bSelectedAsSlateVisibility());

@@ -61,9 +61,7 @@ void ActivatePhase(const TDataObjectPtr<FObjectiveConfig> &inout ObjectiveConfig
 void DoActivatePhase(const TDataObjectPtr<FObjectiveConfig> &inout ObjectiveConfig)
 {
     int local_8 = 0;
-    int local_11 = 0;
     int local_22 = 0;
-    int local_51 = 0;
     FObjectiveInstance local_382;
     FECSWorldPtr local_2 = ECS::GetECSWorld();
     if (!(local_8))
@@ -72,8 +70,7 @@ void DoActivatePhase(const TDataObjectPtr<FObjectiveConfig> &inout ObjectiveConf
     }
     if (local_8.GetActiveObjectiveInstanceId() > 0)
     {
-        local_11 = local_8.GetActiveObjectiveInstanceId();
-        ObjectiveUtils::DeactivateObjectives(local_11);
+        ObjectiveUtils::DeactivateObjectives(local_8.GetActiveObjectiveInstanceId());
     }
     FECSWorldPtr local_2_2 = ECS::GetECSWorld();
     if (!(local_22))
@@ -90,19 +87,19 @@ void DoActivatePhase(const TDataObjectPtr<FObjectiveConfig> &inout ObjectiveConf
     local_8.SetActiveObjective(ObjectiveConfig);
     local_8.SetPendingObjective(TDataObjectPtr<FObjectiveConfig>(nullptr));
     XLog(ELog(22), FString().Append("[PVXPhase] DoActivatePhase: ").Append(ObjectiveConfig.GetDataName().ToString()).Append(", InstanceId=").Append(local_10));
-    if ((local_10 > 0 && (0 == 1)))
+    if (local_10 > 0 && (int(ObjectiveConfig.Get().ObjectiveType) == 1))
     {
         FObjectiveInstance local_218;
         if (ObjectiveUtils::TryFindActivetedObjectiveInstance(local_10, local_218))
         {
             for (auto& local_236 : local_218.ChildObjectiveMap)
             {
-                local_236;
+                int local_11 = local_236.GetValue();
                 if (local_11 == 0)
                 {
                     continue;
                 }
-                if (ObjectiveUtils::TryFindActivetedObjectiveInstance(local_51, local_382))
+                if (ObjectiveUtils::TryFindActivetedObjectiveInstance(local_236.GetValue(), local_382))
                 {
                     FCommissionTargetProgress local_384;
                     local_384.SetSuccessProgressValue(local_382.GetFinishProgressValue());
@@ -243,21 +240,19 @@ void ActivateSingleFactionObjective(const TDataObjectPtr<FObjectiveConfig> &inou
     FObjectiveContext local_36;
     OutInstanceId = ObjectiveUtils::ActivateObjective(ObjConfig, local_36);
     XLog(ELog(22), FString().Append("[PVXPhase] ActivateSingleFactionObjective: ").Append(ObjConfig.GetDataName().ToString()).Append(", InstanceId=").Append(OutInstanceId));
-    int local_25 = OutInstanceId;
-    if ((local_25 > 0 && (0 == 1)))
+    if (OutInstanceId > 0 && (int(ObjConfig.Get().ObjectiveType) == 1))
     {
         FObjectiveInstance local_198;
-        int local_48 = OutInstanceId;
-        if (ObjectiveUtils::TryFindActivetedObjectiveInstance(local_48, local_198))
+        if (ObjectiveUtils::TryFindActivetedObjectiveInstance(OutInstanceId, local_198))
         {
             for (auto& local_216 : local_198.ChildObjectiveMap)
             {
-                local_216;
+                int local_25 = local_216.GetValue();
                 if (local_25 == 0)
                 {
                     continue;
                 }
-                if (ObjectiveUtils::TryFindActivetedObjectiveInstance(local_48, local_362))
+                if (ObjectiveUtils::TryFindActivetedObjectiveInstance(local_216.GetValue(), local_362))
                 {
                     FCommissionTargetProgress local_364;
                     local_364.SetSuccessProgressValue(local_362.GetFinishProgressValue());

@@ -34,8 +34,10 @@ struct FMS_BossLowHPManager : FEUIModelSingleton
             auto local_8 = this.GetLowHpBoss().Iterator();
             for (; local_8.CanProceed;)
             {
-                if (::PresentationSpotUtils::GetEntitySpot(this.GetManager(), local_8.Proceed()))
+                TEUIModelRef<FM_Spot> local_20 = ::PresentationSpotUtils::GetEntitySpot(this.GetManager(), local_8.Proceed());
+                if (local_20)
                 {
+                    ::RemoveDecoractor(local_20.Get(), EPresentationSpotDecoractor(3), TEUIModelRef<FM_SpotRegistry>());
                 }
             }
             this.GetModify_LowHpBoss().Reset(0);
@@ -47,8 +49,10 @@ struct FMS_BossLowHPManager : FEUIModelSingleton
             const FECSEntityId& local_16 = this.GetLowHpBoss()[local_31];
             if (!(BossLowHPList.GetBossLowHPList().Contains(local_16)))
             {
-                if (::PresentationSpotUtils::GetEntitySpot(this.GetManager(), local_16))
+                TEUIModelRef<FM_Spot> local_22 = ::PresentationSpotUtils::GetEntitySpot(this.GetManager(), local_16);
+                if (local_22)
                 {
+                    ::RemoveDecoractor(local_22.Get(), EPresentationSpotDecoractor(3), TEUIModelRef<FM_SpotRegistry>());
                 }
                 this.GetModify_LowHpBoss().RemoveAtSwap(local_31);
             }
@@ -95,11 +99,9 @@ FMS_BossLowHPManager& Get(const UObject ContextObject)
 {
     return FMS_BossLowHPManager::GetByManager(EUIInternal::GetContextManager(ContextObject));
 }
-FMS_BossLowHPManager GetByManager(const UEUIManagerSubsystem Manager)
+FMS_BossLowHPManager& GetByManager(const UEUIManagerSubsystem Manager)
 {
-    FMS_BossLowHPManager __r;
-    TEUIModelRef<FMS_BossLowHPManager> local_6 = TEUIModelRef<FMS_BossLowHPManager>(EUIInternal::MakeModelWithManager(Manager, FMS_BossLowHPManager::ModelId));
-    return __r;
+    return TEUIModelRef<FMS_BossLowHPManager>(EUIInternal::MakeModelWithManager(Manager, FMS_BossLowHPManager::ModelId)).Get();
 }
 void GetModelInfo(FEUIModelOnlyMetaInfo &inout Result)
 {

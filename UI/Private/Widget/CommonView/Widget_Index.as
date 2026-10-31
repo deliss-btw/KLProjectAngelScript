@@ -72,8 +72,8 @@ class UWidget_TeammateIndex : UEUIUserWidget
     }
     void HandleObservedModelChanges(FEUIReactiveSubscriberIterator &inout It)
     {
-        FVM_TeammateInfo& local_6;
         TEUIModelRef<FVM_TeammateInfo> local_2 = this.TeammateInfo.AsRef();
+        FVM_TeammateInfo& local_6 = local_2.Get();
         for (; It; )
         {
             FEUIReactiveSubscriberTrackScope local_56 = FEUIReactiveSubscriberTrackScope(It);

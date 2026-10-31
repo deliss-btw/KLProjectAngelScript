@@ -48,7 +48,6 @@ float32 __FPendingConfirmHintConfig_GetDuration(const TDataObjectPtr<FPendingCon
 UFUNCTION()
 TArray<EPendingConfirmAction> __FPendingConfirmHintConfig_GetActionBar(const TDataObjectPtr<FPendingConfirmHintConfig> &inout DataObject)
 {
-    TArray<EPendingConfirmAction> __r;
     if ((DataObject == nullptr))
     {
         if (!(EUIGlobals::GIsDuringPropertyConversion))
@@ -58,12 +57,11 @@ TArray<EPendingConfirmAction> __FPendingConfirmHintConfig_GetActionBar(const TDa
         FPendingConfirmHintConfig local_80;
         return local_80.ActionBar;
     }
-    return __r;
+    return DataObject.Get().ActionBar;
 }
 UFUNCTION()
 EPendingConfirmTimeOutAction __FPendingConfirmHintConfig_GetDurationTimeOutAutoAction(const TDataObjectPtr<FPendingConfirmHintConfig> &inout DataObject)
 {
-    int local_81 = 0;
     if ((DataObject == nullptr))
     {
         if (!(EUIGlobals::GIsDuringPropertyConversion))
@@ -71,15 +69,13 @@ EPendingConfirmTimeOutAction __FPendingConfirmHintConfig_GetDurationTimeOutAutoA
             FBlueprintDebugFunctions::ThrowScriptException("Get 'DurationTimeOutAutoAction' from a null 'FPendingConfirmHintConfig' DataObject!");
         }
         FPendingConfirmHintConfig local_80;
-        local_81 = int(local_80.DurationTimeOutAutoAction);
-        return EPendingConfirmTimeOutAction(local_81);
+        return local_80.DurationTimeOutAutoAction;
     }
-    return EPendingConfirmTimeOutAction(local_81);
+    return DataObject.Get().DurationTimeOutAutoAction;
 }
 UFUNCTION()
 EPendingConfirmScenePersistence __FPendingConfirmHintConfig_GetScenePersistence(const TDataObjectPtr<FPendingConfirmHintConfig> &inout DataObject)
 {
-    int local_81 = 0;
     if ((DataObject == nullptr))
     {
         if (!(EUIGlobals::GIsDuringPropertyConversion))
@@ -87,15 +83,13 @@ EPendingConfirmScenePersistence __FPendingConfirmHintConfig_GetScenePersistence(
             FBlueprintDebugFunctions::ThrowScriptException("Get 'ScenePersistence' from a null 'FPendingConfirmHintConfig' DataObject!");
         }
         FPendingConfirmHintConfig local_80;
-        local_81 = int(local_80.ScenePersistence);
-        return EPendingConfirmScenePersistence(local_81);
+        return local_80.ScenePersistence;
     }
-    return EPendingConfirmScenePersistence(local_81);
+    return DataObject.Get().ScenePersistence;
 }
 UFUNCTION()
 FText __FPendingConfirmHintConfig_GetTitle(const TDataObjectPtr<FPendingConfirmHintConfig> &inout DataObject)
 {
-    FText __r;
     if ((DataObject == nullptr))
     {
         if (!(EUIGlobals::GIsDuringPropertyConversion))
@@ -105,12 +99,11 @@ FText __FPendingConfirmHintConfig_GetTitle(const TDataObjectPtr<FPendingConfirmH
         FPendingConfirmHintConfig local_80;
         return local_80.Title;
     }
-    return __r;
+    return DataObject.Get().Title;
 }
 UFUNCTION()
 FSoftBrush __FPendingConfirmHintConfig_GetTitleImage(const TDataObjectPtr<FPendingConfirmHintConfig> &inout DataObject)
 {
-    FSoftBrush __r;
     if ((DataObject == nullptr))
     {
         if (!(EUIGlobals::GIsDuringPropertyConversion))
@@ -120,12 +113,11 @@ FSoftBrush __FPendingConfirmHintConfig_GetTitleImage(const TDataObjectPtr<FPendi
         FPendingConfirmHintConfig local_80;
         return local_80.TitleImage;
     }
-    return __r;
+    return DataObject.Get().TitleImage;
 }
 UFUNCTION()
 FText __FPendingConfirmHintConfig_GetContent(const TDataObjectPtr<FPendingConfirmHintConfig> &inout DataObject)
 {
-    FText __r;
     if ((DataObject == nullptr))
     {
         if (!(EUIGlobals::GIsDuringPropertyConversion))
@@ -135,7 +127,7 @@ FText __FPendingConfirmHintConfig_GetContent(const TDataObjectPtr<FPendingConfir
         FPendingConfirmHintConfig local_80;
         return local_80.Content;
     }
-    return __r;
+    return DataObject.Get().Content;
 }
 UFUNCTION()
 FPendingConfirmHintConfig CastToFPendingConfirmHintConfig(const TDataObjectPtr<FPendingConfirmHintConfig> &inout DataObject)

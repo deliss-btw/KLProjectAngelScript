@@ -32,7 +32,7 @@ class UWidget_PVX_Main : UEUIActivatableWidget
     {
         if (this.EUI_List != nullptr)
         {
-            this.EUI_List.SetSelectedIndex(FMath::Max((GetCurrentMenuIndex() - 1), 0));
+            this.EUI_List.SetSelectedIndex(FMath::Max((this.PVX_Main.Get().GetCurrentMenuIndex() - 1), 0));
         }
         return;
     }
@@ -41,7 +41,7 @@ class UWidget_PVX_Main : UEUIActivatableWidget
     {
         if (this.EUI_List != nullptr)
         {
-            this.EUI_List.SetSelectedIndex(FMath::Min((GetCurrentMenuIndex() + 1), (GetMenuCategoryKeys().Num() - 1)));
+            this.EUI_List.SetSelectedIndex(FMath::Min((this.PVX_Main.Get().GetCurrentMenuIndex() + 1), (this.PVX_Main.Get().GetMenuCategoryKeys().Num() - 1)));
         }
         return;
     }
@@ -85,8 +85,8 @@ class UWidget_PVX_Main : UEUIActivatableWidget
     }
     void HandleObservedModelChanges(FEUIReactiveSubscriberIterator &inout It)
     {
-        FVM_PVX_Main& local_6;
         TEUIModelRef<FVM_PVX_Main> local_2 = this.PVX_Main.AsRef();
+        FVM_PVX_Main& local_6 = local_2.Get();
         for (; It; )
         {
             FEUIReactiveSubscriberTrackScope local_56 = FEUIReactiveSubscriberTrackScope(It);

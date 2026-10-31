@@ -110,7 +110,7 @@ class US_CombatPresentationSystem : UECSScriptSystem
         float32 local_6;
         if ((!(Event.bDefended) && !(Event.bBanPresentation)))
         {
-            const FAttackData& local_4;
+            const FAttackData& local_4 = Event.AttackData.Get();
             if (local_4.HitShakeTime > 0.0f)
             {
                 Has local_14;
@@ -173,11 +173,11 @@ class US_CombatPresentationSystem : UECSScriptSystem
     UFUNCTION()
     void Job_HandleHitCameraShake(const FCE_HitEvent &inout Event) const
     {
-        const FAttackData& local_4;
         if Event.bBanPresentation
         {
             return;
         }
+        const FAttackData& local_4 = Event.AttackData.Get();
         FECSEntity local_8 = Event.Receiver;
         FECSEntity local_12 = Event.Attacker;
         if Event.bHitWeakness
@@ -205,7 +205,268 @@ class US_CombatPresentationSystem : UECSScriptSystem
     UFUNCTION()
     void Job_HandleHitEffect(const FCE_HitEvent &inout Event) const
     {
-        // body not fully recovered — stub [unresolved-operand]
+        bool local_18;
+        const AActor local_108;
+        USceneComponent local_110;
+        USceneComponent local_114;
+        const AActor local_120;
+        UMeshComponent local_128;
+        bool local_131;
+        int local_160 = 0;
+        USkeletalMeshComponent local_242;
+        FECSWorldPtr local_4 = ECS::GetECSWorld();
+        Has local_8;
+        bool local_9 = local_8.opCall();
+        if (!(local_9))
+        {
+            local_9 = false;
+        }
+        else
+        {
+            FECSWorldPtr local_4_2 = ECS::GetECSWorld();
+            Get local_14;
+            local_9 = (int(local_14.opCall().GetGameModeType()) != 0);
+        }
+        local_18 = !(CVar_CombatPresentation_EnableOtherPlayerHitFx.GetBool());
+        bool local_1 = !(false);
+        Has local_22;
+        local_18 = local_18 == local_1 && !(local_22.opCall());
+        local_18 = local_18 && !(local_9);
+        if (local_18)
+        {
+            FECSEntity local_26 = Event.Attacker;
+            while (local_26.IsValid())
+            {
+                Get local_30;
+                const FC_Owner& local_32 = local_30.opCall();
+                if (local_32)
+                {
+                    local_26 = local_32.GetOwnerEntity();
+                }
+                else
+                {
+                    break;
+                }
+            }
+            Has local_40;
+            local_1 = local_40.opCall();
+            if (local_1)
+            {
+                FECSEntityId local_45 = local_26.GetId();
+                FECSWorldPtr local_4_3 = ECS::GetECSWorld();
+                Get local_44;
+                if (!((local_45 == local_44.opCall().PlayerEntity.GetId())))
+                {
+                    return;
+                }
+            }
+        }
+        Get local_50;
+        const FC_BeHitPresentationConfig& local_52 = local_50.opCall();
+        if (local_52)
+        {
+            if (!(local_52.bShowHitFX))
+            {
+                return;
+            }
+        }
+        if (Event.bBanPresentation)
+        {
+            return;
+        }
+        const FAttackData& local_54 = Event.AttackData.Get();
+        FECSEntity local_26_2 = Event.Receiver;
+        FECSEntity local_58 = Event.Attacker;
+        FVector local_64 = Event.HitPosition;
+        FVector local_76 = Event.StrikeData.GetStrikeDirection().opNeg();
+        FVector local_82(FVector::ZeroVector);
+        FRotator local_94 = local_76.ToOrientationRotator();
+        TSoftObjectPtr<UGamePhysicalMaterial> local_104 = Event.PhysicalMaterial;
+        if (Event.bNeedHitMeshPresentation)
+        {
+            local_108 = local_58.GetActor();
+            if (local_108 != nullptr)
+            {
+                local_114 = local_108.GetRootComponent();
+            }
+            else
+            {
+            }
+            local_110 = local_114;
+            TArray<UMeshComponent> local_118;
+            local_120 = local_26_2.GetActor();
+            if (local_120 != nullptr)
+            {
+                local_118 = local_120.GetComponentsByClass(UMeshComponent);
+                int local_126 = local_118.Num() - 1;
+                for (; local_126 >= 0; --local_126)
+                {
+                    local_128 = local_118[local_126];
+                    if (!(local_128.IsVisible()) || !(local_128.IsA(USkeletalMeshComponent) || local_128.IsA(UStaticMeshComponent)))
+                    {
+                        local_118.RemoveAtSwap(local_126);
+                    }
+                }
+            }
+            if (local_110 != nullptr && !(local_118.IsEmpty()))
+            {
+                bool local_157;
+                FHitPresentationData local_156;
+                local_157 = false;
+                local_18 = local_22.opCall();
+                if (local_18 && !(Event.StrikeKey.IsNone()))
+                {
+                    local_18 = local_160.GetHitPresentationDataFromCache(Event.StrikeKey, local_26_2, Event.Time, local_156);
+                    local_157 = local_18;
+                }
+                if (!(local_157))
+                {
+                    local_131 = Event.bHitWeakness;
+                    local_156 = ::FHitPresentationUtils::GetHitPresentationData(local_110, local_118, Event.StrikeData, Event.HitPosition, local_131);
+                    if (local_156.HitMeshComp == nullptr)
+                    {
+                        local_18 = false;
+                    }
+                    else
+                    {
+                        local_18 = local_22.opCall();
+                    }
+                    if (!(local_18 && !(Event.StrikeKey.IsNone())))
+                    {
+                        local_131 = false;
+                    }
+                    else
+                    {
+                        Has local_194;
+                        local_131 = local_194.opCall();
+                    }
+                    if (local_131)
+                    {
+                        Modify local_198;
+                        local_198.opCall().SetHitPresentationDataFromCache(Event.StrikeKey, local_26_2, Event.Time, local_156);
+                    }
+                }
+                if (local_156.HitMeshComp != nullptr)
+                {
+                    local_64 = local_156.HitLocation;
+                    FRotator local_88 = FRotator::MakeFromZ(local_156.HitFanPlaneNormal);
+                    local_82 = local_88.UnrotateVector(local_156.HitNormal);
+                    local_82.Z = 0.0;
+                    local_82 = local_88.RotateVector(local_82);
+                    if (FMath::Abs(local_76.DotProduct(local_156.HitNormal)) > 0.5)
+                    {
+                        FVector local_230 = local_156.HitNormal.RotateAngleAxis(90.0, local_156.HitNormal.CrossProduct(local_76).GetSafeNormal(9.99999993922529e-9, FVector::ZeroVector));
+                        local_76 = FMath::Lerp(local_76, local_230, 0.5);
+                        local_94 = local_76.ToOrientationRotator();
+                    }
+                    FVector local_224 = local_94.UnrotateVector(local_156.HitNormal.opNeg());
+                    local_224.X = 0.0;
+                    if (!(local_224.IsZero()))
+                    {
+                        float local_212;
+                        local_212 = FMath::RadiansToDegrees(FMath::Acos(local_224.GetUnsafeNormal().DotProduct(FVector::UpVector)));
+                        if (local_224.Y < 0.0)
+                        {
+                            local_212 = -local_212;
+                        }
+                        local_94.Roll = local_212;
+                    }
+                    local_104 = (Cast<UGamePhysicalMaterial>(local_156.PhysicsMaterial));
+                    if (Event.StrikeData.GetDecalConfig().IsValid())
+                    {
+                        local_242 = (Cast<USkeletalMeshComponent>(local_156.HitMeshComp));
+                        if (local_242 != nullptr)
+                        {
+                            ::FHitDecalUtils::SpawnDecalByHitResult(local_242, local_156.HitBoneName, local_156.HitFanPlaneNormal, local_156.HitLocation, local_156.HitNormal, Event.StrikeData.GetStrikeDirection(), Event.StrikeData.GetDecalConfig());
+                        }
+                    }
+                }
+            }
+        }
+        if (Event.bAttackHitFXSpawnToStrikeCenterLine)
+        {
+            FVector local_218 = Event.StrikeData.GetStrikeDirection().GetSafeNormal(9.99999993922529e-9, FVector::ZeroVector);
+            if (!(local_218.IsNearlyZero(9.999999747378752e-5)))
+            {
+                FVector local_224_2(Event.StrikeData.GetCustomStrikeTransformPos());
+                FVector local_230_2 = (local_64 - local_224_2);
+                float local_210 = local_230_2.DotProduct(local_218);
+                local_64 = (local_224_2 + (local_218 * local_210));
+            }
+        }
+        FFPTime local_244 = FFPTime(this.GetECSRuntime().Time);
+        Get local_248;
+        const FC_InterpoTime& local_250 = local_248.opCall();
+        if (local_250)
+        {
+            local_244 = local_250.Time;
+        }
+        FCE_ImpactFXEvent local_256;
+        local_256.SetbPredictable(Event.GetbLocalCreated());
+        local_256.ImpactPosition = Event.HitPosition;
+        local_256.ImpactOutDir = local_82;
+        local_256.ImpactType = EImpactType(local_54.ImpactType);
+        local_256.ImpactStrength = EImpactStrength(local_54.ImpactStrengthValue);
+        local_256.bDurational = true;
+        local_256.ImpactPosition = local_64;
+        local_256.ImpactRotation = FRotator3f(local_94);
+        local_256.PhysicalMaterial = local_104;
+        local_256.ImpactSFXEvent = local_54.ImpactSFXEvent;
+        if ((int(local_54.FXConfigType)) == 1)
+        {
+            local_256.bHasVFX = false;
+            local_256.bHasSFX = local_54.bEnableImpactSFX;
+        }
+        else
+        {
+            local_256.bHasVFX = local_54.bEnableImpactVFX;
+            local_256.bHasSFX = local_54.bEnableImpactSFX;
+        }
+        local_256.TargetEntity = Event.Receiver;
+        if ((Event.bHitWeakness && (local_54.bUseDefaultHitWeaknessFX || local_54.HitWeaknessFXAsset.IsValid())))
+        {
+            FFXConfig local_380 = local_54.HitFXConfig;
+            FSoftClassPath local_390;
+            if (local_54.bUseDefaultHitWeaknessFX)
+            {
+                local_390 = UCombatGlobalSettingsBase::Get().DefaultHitWeaknessFXAsset;
+            }
+            else
+            {
+                local_390 = local_54.HitWeaknessFXAsset;
+            }
+            local_380.SetAsset(local_390);
+            local_380.SetbUseWorldOriginAsBaseTransformSource(true);
+            local_380.SetLocationOffsetSpace(EFXOffsetSpace(2));
+            local_380.SetRotationOffsetSpace(EFXOffsetSpace(2));
+            local_380.SetLocationOffset(local_64);
+            local_380.SetRotationOffset(local_94);
+            local_380.SetbDetach(true);
+            if (CVar_CombatPresentation_HitFxDetachTime.GetFloat() > 0.0f)
+            {
+                local_380.SetbDetach(false);
+                local_380.SetAutoDetachTime(CVar_CombatPresentation_HitFxDetachTime.GetFloat());
+            }
+            ECSFX::PlayFXDurationalEx(local_58, local_380, local_244, 1.0f, false, Event.Receiver, EAttachFXStopMethod(0), false);
+        }
+        if ((int(local_54.FXConfigType)) == 0 || (int(local_54.FXConfigType) == 1 && !(local_54.HitFXConfig.IsValid())))
+        {
+            return;
+        }
+        FFXConfig local_380_2 = local_54.HitFXConfig;
+        local_380_2.SetbUseWorldOriginAsBaseTransformSource(true);
+        local_380_2.SetLocationOffsetSpace(EFXOffsetSpace(2));
+        local_380_2.SetRotationOffsetSpace(EFXOffsetSpace(2));
+        local_380_2.SetLocationOffset(local_64);
+        local_380_2.SetRotationOffset(local_94);
+        local_380_2.SetbDetach(true);
+        if (CVar_CombatPresentation_HitFxDetachTime.GetFloat() > 0.0f)
+        {
+            local_380_2.SetbDetach(false);
+            local_380_2.SetAutoDetachTime(CVar_CombatPresentation_HitFxDetachTime.GetFloat());
+        }
+        ECSFX::PlayFXDurationalEx(local_58, local_380_2, local_244, 1.0f, false, Event.Receiver, EAttachFXStopMethod(0), false);
+        return;
     }
     UFUNCTION()
     void Run_Job_HandleHitShake() const

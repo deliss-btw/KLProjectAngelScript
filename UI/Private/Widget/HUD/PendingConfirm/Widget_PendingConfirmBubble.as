@@ -139,8 +139,8 @@ class UWidget_PendingConfirmBubble : UEUIUserWidget
     }
     void HandleObservedModelChanges(FEUIReactiveSubscriberIterator &inout It)
     {
-        FVMS_PendingConfirmQueue& local_6;
         TEUIModelRef<FVMS_PendingConfirmQueue> local_2 = this.QueueVM.AsRef();
+        FVMS_PendingConfirmQueue& local_6 = local_2.Get();
         for (; It; )
         {
             FEUIReactiveSubscriberTrackScope local_56 = FEUIReactiveSubscriberTrackScope(It);

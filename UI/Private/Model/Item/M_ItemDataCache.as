@@ -47,22 +47,20 @@ struct FMS_ItemDataCache : FEUIModelSingleton
     }
     bool TryGetItemUid(const TEUIModelRef<FM_ItemData> &inout ItemData, uint64 &inout ItemUid)
     {
-        TEUIModelWeakRef<FM_ItemData> local_2;
-        return this.GetItemDataToUidMap().Find(local_2, ItemUid);
+        return this.GetItemDataToUidMap().Find(TEUIModelWeakRef<FM_ItemData>(ItemData.Get()), ItemUid);
     }
     void AddItemData(const uint64 ItemUid, const TEUIModelRef<FM_ItemData> &inout ItemData)
     {
         this.GetModify_GlobalItemDataCache().Add(ItemUid, ItemData);
-        TEUIModelWeakRef<FM_ItemData> local_2;
-        this.GetModify_ItemDataToUidMap().Add(local_2, ItemUid);
+        this.GetModify_ItemDataToUidMap().Add(TEUIModelWeakRef<FM_ItemData>(ItemData.Get()), ItemUid);
         return;
     }
     void RemoveItemData(const TEUIModelRef<FM_ItemData> &inout ItemData)
     {
         int local_2;
-        TEUIModelWeakRef<FM_ItemData> local_4;
-        if (this.GetModify_ItemDataToUidMap().RemoveAndCopyValue(local_4, local_2))
+        if (this.GetModify_ItemDataToUidMap().RemoveAndCopyValue(TEUIModelWeakRef<FM_ItemData>(ItemData.Get()), local_2))
         {
+            this.GetModify_GlobalItemDataCache().Remove(local_2);
         }
         return;
     }
@@ -120,11 +118,9 @@ FMS_ItemDataCache& Get(const UObject ContextObject)
 {
     return FMS_ItemDataCache::GetByManager(EUIInternal::GetContextManager(ContextObject));
 }
-FMS_ItemDataCache GetByManager(const UEUIManagerSubsystem Manager)
+FMS_ItemDataCache& GetByManager(const UEUIManagerSubsystem Manager)
 {
-    FMS_ItemDataCache __r;
-    TEUIModelRef<FMS_ItemDataCache> local_6 = TEUIModelRef<FMS_ItemDataCache>(EUIInternal::MakeModelWithManager(Manager, FMS_ItemDataCache::ModelId));
-    return __r;
+    return TEUIModelRef<FMS_ItemDataCache>(EUIInternal::MakeModelWithManager(Manager, FMS_ItemDataCache::ModelId)).Get();
 }
 void GetModelInfo(FEUIModelOnlyMetaInfo &inout Result)
 {

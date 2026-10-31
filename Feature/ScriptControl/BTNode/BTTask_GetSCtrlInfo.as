@@ -177,13 +177,12 @@ class UBTTask_GetSCtrlInfo : UBTTask_ECSScriptBase
     void InjectDynamicBTree(const FAIBehaviorTreeContext &inout Context, const FScriptControlBehaviorEntry &inout Entry) const
     {
         TDataObjectPtr<FScriptControlESMSkillConfig> local_2;
-        UBehaviorTree local_16;
         if (!(local_2.IsSet()))
         {
             return;
         }
-        FSoftObjectPath local_12;
-        Ecology::SyncLoadObject(local_12);
+        Ecology::SyncLoadObject(local_2.Get().BehaviorTreeAsset.ToSoftObjectPath());
+        UBehaviorTree local_16 = local_2.Get().BehaviorTreeAsset.Get();
         if (local_16 == nullptr)
         {
             XLog(ELog(30), FString().Append("ScriptControl: Dynamic BehaviorTree asset is not loaded into memory! Dynamic inject skipped."));

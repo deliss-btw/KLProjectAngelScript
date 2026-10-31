@@ -3,7 +3,6 @@ namespace __FAttachPointConfigFunctions
 UFUNCTION()
 EFashionSlotType __FAttachPointConfig_GetSlotType(const TDataObjectPtr<FAttachPointConfig> &inout DataObject)
 {
-    int local_37 = 0;
     if ((DataObject == nullptr))
     {
         if (!(EUIGlobals::GIsDuringPropertyConversion))
@@ -11,10 +10,9 @@ EFashionSlotType __FAttachPointConfig_GetSlotType(const TDataObjectPtr<FAttachPo
             FBlueprintDebugFunctions::ThrowScriptException("Get 'SlotType' from a null 'FAttachPointConfig' DataObject!");
         }
         FAttachPointConfig local_36;
-        local_37 = int(local_36.SlotType);
-        return EFashionSlotType(local_37);
+        return local_36.SlotType;
     }
-    return EFashionSlotType(local_37);
+    return DataObject.Get().SlotType;
 }
 UFUNCTION()
 int __FAttachPointConfig_GetMaxSlotCount(const TDataObjectPtr<FAttachPointConfig> &inout DataObject)
@@ -43,12 +41,11 @@ TArray<TDataObjectPtr<FAvatarPrefabConfig>> __FAttachPointConfig_GetDisabledAvat
         FAttachPointConfig local_36;
         return local_36.GetDisabledAvatars();
     }
-    return GetDisabledAvatars();
+    return DataObject.Get().GetDisabledAvatars();
 }
 UFUNCTION()
 EFashionDecoSocket __FAttachPointConfig_GetDecoSocket(const TDataObjectPtr<FAttachPointConfig> &inout DataObject)
 {
-    int local_37 = 0;
     if ((DataObject == nullptr))
     {
         if (!(EUIGlobals::GIsDuringPropertyConversion))
@@ -56,15 +53,13 @@ EFashionDecoSocket __FAttachPointConfig_GetDecoSocket(const TDataObjectPtr<FAtta
             FBlueprintDebugFunctions::ThrowScriptException("Get 'DecoSocket' from a null 'FAttachPointConfig' DataObject!");
         }
         FAttachPointConfig local_36;
-        local_37 = int(local_36.DecoSocket);
-        return EFashionDecoSocket(local_37);
+        return local_36.DecoSocket;
     }
-    return EFashionDecoSocket(local_37);
+    return DataObject.Get().DecoSocket;
 }
 UFUNCTION()
 FDecoAttachOffset __FAttachPointConfig_GetOffset(const TDataObjectPtr<FAttachPointConfig> &inout DataObject)
 {
-    FDecoAttachOffset __r;
     if ((DataObject == nullptr))
     {
         if (!(EUIGlobals::GIsDuringPropertyConversion))
@@ -74,12 +69,11 @@ FDecoAttachOffset __FAttachPointConfig_GetOffset(const TDataObjectPtr<FAttachPoi
         FAttachPointConfig local_36;
         return local_36.Offset;
     }
-    return __r;
+    return DataObject.Get().Offset;
 }
 UFUNCTION()
 TArray<FAvatarDecoAttachOffsetOverride> __FAttachPointConfig_GetAvatarOffsetOverrides(const TDataObjectPtr<FAttachPointConfig> &inout DataObject)
 {
-    TArray<FAvatarDecoAttachOffsetOverride> __r;
     if ((DataObject == nullptr))
     {
         if (!(EUIGlobals::GIsDuringPropertyConversion))
@@ -89,7 +83,7 @@ TArray<FAvatarDecoAttachOffsetOverride> __FAttachPointConfig_GetAvatarOffsetOver
         FAttachPointConfig local_36;
         return local_36.AvatarOffsetOverrides;
     }
-    return __r;
+    return DataObject.Get().AvatarOffsetOverrides;
 }
 UFUNCTION()
 FAttachPointConfig CastToFAttachPointConfig(const TDataObjectPtr<FAttachPointConfig> &inout DataObject)

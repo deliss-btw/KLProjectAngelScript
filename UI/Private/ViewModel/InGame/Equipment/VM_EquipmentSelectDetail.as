@@ -246,11 +246,9 @@ FVM_EquipmentSelectDetail& Create(const UObject ContextObject, const TEUIModelRe
 {
     return FVM_EquipmentSelectDetail::CreateByManager(EUIInternal::GetContextManager(ContextObject), SelectedEquipment, AvatarConfig);
 }
-FVM_EquipmentSelectDetail CreateByManager(const UEUIManagerSubsystem Manager, const TEUIModelRef<FM_Equipment> &inout SelectedEquipment, const TDataObjectPtr<FAvatarPrefabConfig> &inout AvatarConfig)
+FVM_EquipmentSelectDetail& CreateByManager(const UEUIManagerSubsystem Manager, const TEUIModelRef<FM_Equipment> &inout SelectedEquipment, const TDataObjectPtr<FAvatarPrefabConfig> &inout AvatarConfig)
 {
-    FVM_EquipmentSelectDetail __r;
-    TEUIModelRef<FVM_EquipmentSelectDetail> local_6 = TEUIModelRef<FVM_EquipmentSelectDetail>(EUIInternal::MakeModelWithManager_Generic(Manager, FVM_EquipmentSelectDetail::ModelId, 0, SelectedEquipment, AvatarConfig));
-    return __r;
+    return TEUIModelRef<FVM_EquipmentSelectDetail>(EUIInternal::MakeModelWithManager_Generic(Manager, FVM_EquipmentSelectDetail::ModelId, 0, SelectedEquipment, AvatarConfig)).Get();
 }
 void GetModelInfo(FEUIViewModelMetaInfo &inout Result)
 {
@@ -382,7 +380,6 @@ namespace __GeneratedProperties_FVM_EquipmentSelectDetail
 {
 UScriptStruct StaticStruct()
 {
-    UScriptStruct local_2;
-    return local_2;
+    return __GeneratedProperties_FVM_EquipmentSelectDetail.Get();
 }
 }

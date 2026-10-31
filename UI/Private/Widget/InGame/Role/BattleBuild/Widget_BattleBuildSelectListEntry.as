@@ -18,7 +18,7 @@ class UWidget_BattleBuildSelectListEntry : UEUIUserListItemWidget
     UFUNCTION()
     TDataObjectPtr<FItemConfig> Entry_ItemConfig() const
     {
-        FVM_BattleBuildSelectListEntry& local_2;
+        FVM_BattleBuildSelectListEntry& local_2 = this.Entry.Get();
         TDataObjectPtr<FItemConfig> local_52;
         if (local_2)
         {

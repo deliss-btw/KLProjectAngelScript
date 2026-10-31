@@ -315,11 +315,9 @@ FVM_AvatarButton& Create(const UObject ContextObject)
 {
     return FVM_AvatarButton::CreateByManager(EUIInternal::GetContextManager(ContextObject));
 }
-FVM_AvatarButton CreateByManager(const UEUIManagerSubsystem Manager)
+FVM_AvatarButton& CreateByManager(const UEUIManagerSubsystem Manager)
 {
-    FVM_AvatarButton __r;
-    TEUIModelRef<FVM_AvatarButton> local_6 = TEUIModelRef<FVM_AvatarButton>(EUIInternal::MakeModelWithManager(Manager, FVM_AvatarButton::ModelId));
-    return __r;
+    return TEUIModelRef<FVM_AvatarButton>(EUIInternal::MakeModelWithManager(Manager, FVM_AvatarButton::ModelId)).Get();
 }
 void GetModelInfo(FEUIViewModelMetaInfo &inout Result)
 {
@@ -431,7 +429,6 @@ namespace __GeneratedProperties_FVM_AvatarButton
 {
 UScriptStruct StaticStruct()
 {
-    UScriptStruct local_2;
-    return local_2;
+    return __GeneratedProperties_FVM_AvatarButton.Get();
 }
 }

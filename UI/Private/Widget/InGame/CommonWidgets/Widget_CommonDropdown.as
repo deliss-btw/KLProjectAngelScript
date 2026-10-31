@@ -83,7 +83,7 @@ class UWidget_CommonDropdown : UEUIUserWidget
     }
     void SyncExpandDirectionToModel()
     {
-        FVM_CommonDropdown& local_2;
+        FVM_CommonDropdown& local_2 = this.CommonDropdown.Get();
         if (local_2)
         {
             local_2.SetExpandDirection(this.ExpandDirection);
@@ -125,8 +125,8 @@ class UWidget_CommonDropdown : UEUIUserWidget
     }
     void HandleObservedModelChanges(FEUIReactiveSubscriberIterator &inout It)
     {
-        FVM_CommonDropdown& local_6;
         TEUIModelRef<FVM_CommonDropdown> local_2 = this.CommonDropdown.AsRef();
+        FVM_CommonDropdown& local_6 = local_2.Get();
         for (; It; )
         {
             FEUIReactiveSubscriberTrackScope local_56 = FEUIReactiveSubscriberTrackScope(It);
@@ -277,10 +277,10 @@ class UWidget_CommonDropdownList : UEUIUserWidget
     }
     void HandleObservedModelChanges(FEUIReactiveSubscriberIterator &inout It)
     {
-        FVM_CommonDropdownList& local_6;
-        FVM_WidgetRef& local_12;
         TEUIModelRef<FVM_CommonDropdownList> local_2 = this.CommonDropdownList.AsRef();
+        FVM_CommonDropdownList& local_6 = local_2.Get();
         TEUIModelRef<FVM_WidgetRef> local_8 = this.DropdownWidgetRef.AsRef();
+        FVM_WidgetRef& local_12 = local_8.Get();
         for (; It; )
         {
             FEUIReactiveSubscriberTrackScope local_62 = FEUIReactiveSubscriberTrackScope(It);
@@ -387,7 +387,7 @@ class UWidget_CommonDropdownListCanvas : UEUIActivatableWidget
     UFUNCTION()
     void CloseDropdown()
     {
-        FVM_CommonDropdown& local_2;
+        FVM_CommonDropdown& local_2 = this.CommonDropdown.Get();
         if (local_2)
         {
             local_2.SetbDropdownOpen(false);

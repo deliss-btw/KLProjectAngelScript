@@ -78,7 +78,7 @@ class UWidget_Inventory : UEUIActivatableWidget
     UFUNCTION()
     TArray<FEUIModelWeakRef> Inventory_RootCategories() const
     {
-        FVM_Inventory& local_2;
+        FVM_Inventory& local_2 = this.Inventory.Get();
         TArray<FEUIModelWeakRef> local_16;
         if (local_2)
         {
@@ -93,7 +93,7 @@ class UWidget_Inventory : UEUIActivatableWidget
     UFUNCTION()
     TArray<FEUIModelWeakRef> Inventory_Categories() const
     {
-        FVM_Inventory& local_2;
+        FVM_Inventory& local_2 = this.Inventory.Get();
         TArray<FEUIModelWeakRef> local_16;
         if (local_2)
         {
@@ -108,7 +108,7 @@ class UWidget_Inventory : UEUIActivatableWidget
     UFUNCTION()
     TArray<FEUIModelWeakRef> Inventory_CurrentDisplayItems() const
     {
-        FVM_Inventory& local_2;
+        FVM_Inventory& local_2 = this.Inventory.Get();
         TArray<FEUIModelWeakRef> local_16;
         if (local_2)
         {
@@ -200,8 +200,8 @@ class UWidget_Inventory : UEUIActivatableWidget
     }
     void HandleObservedModelChanges(FEUIReactiveSubscriberIterator &inout It)
     {
-        FVM_CloseVisibilityState& local_6;
         TEUIModelRef<FVM_CloseVisibilityState> local_2 = this.VisibilityState.AsRef();
+        FVM_CloseVisibilityState& local_6 = local_2.Get();
         for (; It; )
         {
             FEUIReactiveSubscriberTrackScope local_56 = FEUIReactiveSubscriberTrackScope(It);

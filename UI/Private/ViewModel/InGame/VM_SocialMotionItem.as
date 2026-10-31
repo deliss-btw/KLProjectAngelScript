@@ -117,13 +117,11 @@ struct FVM_SocialMotionItem : FEUIViewModel
     }
     FText GetName() const
     {
-        // body not fully recovered — stub [no-return]
-        FText __r; return __r;
+        return this.GetData().Get().Name;
     }
     UTexture2D GetActionIcon() const
     {
-        FSlateBrush local_44;
-        UObject local_46 = local_44.ResourceObject;
+        UObject local_46 = this.GetData().Get().Icon.LoadBrush().ResourceObject;
         return Cast<UTexture2D>(local_46);
     }
     EMotionType GetType() const property
@@ -277,11 +275,9 @@ FVM_SocialMotionItem& Create(const UObject ContextObject, const EMotionType Type
 {
     return FVM_SocialMotionItem::CreateByManager(EUIInternal::GetContextManager(ContextObject), EMotionType(Type), Data, IsLock);
 }
-FVM_SocialMotionItem CreateByManager(const UEUIManagerSubsystem Manager, const EMotionType Type, const TDataObjectPtr<FMotionData> &inout Data, const bool IsLock)
+FVM_SocialMotionItem& CreateByManager(const UEUIManagerSubsystem Manager, const EMotionType Type, const TDataObjectPtr<FMotionData> &inout Data, const bool IsLock)
 {
-    FVM_SocialMotionItem __r;
-    TEUIModelRef<FVM_SocialMotionItem> local_6 = TEUIModelRef<FVM_SocialMotionItem>(EUIInternal::MakeModelWithManager_Generic(Manager, FVM_SocialMotionItem::ModelId, 0, Type, Data, IsLock));
-    return __r;
+    return TEUIModelRef<FVM_SocialMotionItem>(EUIInternal::MakeModelWithManager_Generic(Manager, FVM_SocialMotionItem::ModelId, 0, Type, Data, IsLock)).Get();
 }
 void GetModelInfo(FEUIViewModelMetaInfo &inout Result)
 {
@@ -384,7 +380,6 @@ namespace __GeneratedProperties_FVM_SocialMotionItem
 {
 UScriptStruct StaticStruct()
 {
-    UScriptStruct local_2;
-    return local_2;
+    return __GeneratedProperties_FVM_SocialMotionItem.Get();
 }
 }

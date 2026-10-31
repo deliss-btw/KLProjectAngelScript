@@ -57,6 +57,7 @@ struct FVM_SystemControlEntrance : FEUIViewModel
         FText local_22;
         if (this.GetSystemControlConfig().IsSet())
         {
+            local_22 = this.GetSystemControlConfig().Get().Title;
         }
         else
         {
@@ -65,6 +66,7 @@ struct FVM_SystemControlEntrance : FEUIViewModel
         FText local_18;
         if (this.GetSystemControlConfig().IsSet())
         {
+            local_18 = this.GetSystemControlConfig().Get().Content;
         }
         else
         {
@@ -75,27 +77,19 @@ struct FVM_SystemControlEntrance : FEUIViewModel
     }
     FText GetName() const
     {
-        FText __return;
         if (this.GetSystemControlConfig().IsSet())
         {
+            return this.GetSystemControlConfig().Get().Title;
         }
-        else
-        {
-            __return = FText();
-        }
-        return __return;
+        return FText();
     }
     FSoftBrush GetIcon() const
     {
-        FSoftBrush __return;
         if (this.GetSystemControlConfig().IsSet())
         {
+            return this.GetSystemControlConfig().Get().Icon;
         }
-        else
-        {
-            __return = FSoftBrush();
-        }
-        return __return;
+        return FSoftBrush();
     }
     bool IsUnlocked() const
     {
@@ -249,11 +243,9 @@ FVM_SystemControlEntrance& Create(const UObject ContextObject)
 {
     return FVM_SystemControlEntrance::CreateByManager(EUIInternal::GetContextManager(ContextObject));
 }
-FVM_SystemControlEntrance CreateByManager(const UEUIManagerSubsystem Manager)
+FVM_SystemControlEntrance& CreateByManager(const UEUIManagerSubsystem Manager)
 {
-    FVM_SystemControlEntrance __r;
-    TEUIModelRef<FVM_SystemControlEntrance> local_6 = TEUIModelRef<FVM_SystemControlEntrance>(EUIInternal::MakeModelWithManager(Manager, FVM_SystemControlEntrance::ModelId));
-    return __r;
+    return TEUIModelRef<FVM_SystemControlEntrance>(EUIInternal::MakeModelWithManager(Manager, FVM_SystemControlEntrance::ModelId)).Get();
 }
 void GetModelInfo(FEUIViewModelMetaInfo &inout Result)
 {
@@ -348,7 +340,6 @@ namespace __GeneratedProperties_FVM_SystemControlEntrance
 {
 UScriptStruct StaticStruct()
 {
-    UScriptStruct local_2;
-    return local_2;
+    return __GeneratedProperties_FVM_SystemControlEntrance.Get();
 }
 }

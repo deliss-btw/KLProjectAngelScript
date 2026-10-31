@@ -3,7 +3,6 @@ namespace __FAvatarMappingConfigFunctions
 UFUNCTION()
 FText __FAvatarMappingConfig_GetName(const TDataObjectPtr<FAvatarMappingConfig> &inout DataObject)
 {
-    FText __r;
     if ((DataObject == nullptr))
     {
         if (!(EUIGlobals::GIsDuringPropertyConversion))
@@ -13,7 +12,7 @@ FText __FAvatarMappingConfig_GetName(const TDataObjectPtr<FAvatarMappingConfig> 
         FAvatarMappingConfig local_24;
         return local_24.Name;
     }
-    return __r;
+    return DataObject.Get().Name;
 }
 UFUNCTION()
 TArray<TDataObjectPtr<FAvatarPrefabConfig>> __FAvatarMappingConfig_GetAvatar(const TDataObjectPtr<FAvatarMappingConfig> &inout DataObject)
@@ -27,7 +26,7 @@ TArray<TDataObjectPtr<FAvatarPrefabConfig>> __FAvatarMappingConfig_GetAvatar(con
         FAvatarMappingConfig local_24;
         return local_24.GetAvatar();
     }
-    return GetAvatar();
+    return DataObject.Get().GetAvatar();
 }
 UFUNCTION()
 FAvatarMappingConfig CastToFAvatarMappingConfig(const TDataObjectPtr<FAvatarMappingConfig> &inout DataObject)

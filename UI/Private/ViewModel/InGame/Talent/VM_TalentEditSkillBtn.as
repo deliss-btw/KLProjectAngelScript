@@ -95,12 +95,11 @@ struct FVM_TalentEditSkillBtn : FEUIViewModel
     }
     void RebuildSkillDerivedVMs()
     {
-        int local_13 = 0;
         this.SetSkillTypeBGVM(TEUIModelRef<FVM_TalentSkillTypeBG>(::FVM_TalentSkillTypeBG::Create(this.GetContext().Manager, ESkillType(this.GetSkillType()))));
         this.SetSkillDivisionTypeVM(TEUIModelRef<FVM_TalentDivisionTypeIcon>(::FVM_TalentDivisionTypeIcon::Create(this.GetContext().Manager, ETalentDivision(this.GetSkillDivisionType()))));
         if (this.GetAvatarConfig())
         {
-            this.SetRedDotVM(TEUIModelRef<FVM_RedDot>(::FVM_RedDot::Create(this.GetContext().Manager, FRedDotNodeData(GameplayTags::RedDotSystem_Avatar_ReplaceSkillSlot, ::FMS_Talent::Get(this.GetContext().Manager).MakeSlotRedDotKey(local_13, ESkillType(this.GetSkillType()))))));
+            this.SetRedDotVM(TEUIModelRef<FVM_RedDot>(::FVM_RedDot::Create(this.GetContext().Manager, FRedDotNodeData(GameplayTags::RedDotSystem_Avatar_ReplaceSkillSlot, ::FMS_Talent::Get(this.GetContext().Manager).MakeSlotRedDotKey(this.GetAvatarConfig().Get().DataId, ESkillType(this.GetSkillType()))))));
         }
         return;
     }
@@ -112,6 +111,7 @@ struct FVM_TalentEditSkillBtn : FEUIViewModel
     }
     TDataObjectPtr<FSkillInitConfig> GetSkillInitConfig() const
     {
+        bool local_1;
         int local_54 = 0;
         int local_58;
         if (this.GetForceSetSkillInitConfig().IsSet())
@@ -136,9 +136,17 @@ struct FVM_TalentEditSkillBtn : FEUIViewModel
         {
             local_108 = local_54.GetConfig().NodeConfig;
         }
-        if (!(!(local_108)) && GetSkillConfig())
+        if (!(local_108))
         {
-            return GetSkillConfig();
+            local_1 = false;
+        }
+        else
+        {
+            local_1 = local_108.Get().GetSkillConfig();
+        }
+        if (local_1)
+        {
+            return local_108.Get().GetSkillConfig();
         }
         return local_26;
     }
@@ -178,6 +186,7 @@ struct FVM_TalentEditSkillBtn : FEUIViewModel
         int local_6 = 0;
         if (this.GetForceSetSkillInitConfig().IsSet())
         {
+            local_2 = int(this.GetForceSetSkillInitConfig().Get().SkillType);
             return ESkillType(local_2);
         }
         if (this.GetTalentNode().IsValid())
@@ -185,16 +194,19 @@ struct FVM_TalentEditSkillBtn : FEUIViewModel
             TEUIModelWeakRef<FM_TalentNode> local_4 = this.GetTalentNode();
             if (int(local_6.GetTalentType()) == 1)
             {
-                local_2 = 2;
-                return ESkillType(local_2);
+                return ESkillType(2);
             }
         }
-        if (this.GetTalentConfig() && (local_2 != 0))
+        TDataObjectPtr<FTalentConfig> local_34 = this.GetTalentConfig();
+        if (local_34 && (int(local_34.Get().TalentSkillType) != 0))
         {
+            local_2 = int(local_34.Get().TalentSkillType);
             return ESkillType(local_2);
         }
-        if (this.GetSkillInitConfig())
+        TDataObjectPtr<FSkillInitConfig> local_84 = this.GetSkillInitConfig();
+        if (local_84)
         {
+            local_2 = int(local_84.Get().SkillType);
             return ESkillType(local_2);
         }
         switch (int(this.GetSkillButtonSlot()))
@@ -236,15 +248,14 @@ struct FVM_TalentEditSkillBtn : FEUIViewModel
     }
     ETalentDivision GetSkillDivisionType() const
     {
-        int local_2 = 0;
         if (this.GetForceSetSkillInitConfig().IsSet())
         {
-            local_2 = 0;
-            return ETalentDivision(local_2);
+            return ETalentDivision(0);
         }
-        if (this.GetTalentConfig())
+        TDataObjectPtr<FTalentConfig> local_26 = this.GetTalentConfig();
+        if (local_26)
         {
-            return ETalentDivision(local_2);
+            return local_26.Get().TalentDivision;
         }
         return ETalentDivision(0);
     }
@@ -342,146 +353,79 @@ struct FVM_TalentEditSkillBtn : FEUIViewModel
     FSoftBrush GetIconImage() const
     {
         USkillConfig local_102;
-        bool local_1 = !(this.GetForceSetSkillInitConfig().IsSet());
-        if (local_1)
+        if (!(this.GetForceSetSkillInitConfig().IsSet()))
         {
-            if (this.GetTalentConfig() && local_1)
+            TDataObjectPtr<FTalentConfig> local_26 = this.GetTalentConfig();
+            if (local_26 && local_26.Get().Icon.IsSet())
             {
-            }
-            else
-            {
+                return local_26.Get().Icon;
             }
         }
-        if (this.GetSkillInitConfig())
+        TDataObjectPtr<FSkillInitConfig> local_76 = this.GetSkillInitConfig();
+        if (local_76)
         {
-            if (unresolved.Icon.IsSet())
+            if (local_76.Get().Icon.IsSet())
             {
+                return local_76.Get().Icon;
             }
-            else
+            local_102 = local_76.Get().SkillConfig;
+            if (local_102 != nullptr)
             {
-                if (local_102 != nullptr)
-                {
-                    FECSEntity local_106 = this.GetContext().GetLocalPlayerPawn();
-                    FSkillConfigPresentationData local_220;
-                    return local_220.DefaultIcon;
-                }
+                return FSkillUtils::GetSkillPresentationData(this.GetContext().GetLocalPlayerPawn(), local_76.Get().SkillConfig).DefaultIcon;
             }
         }
         return FSoftBrush();
     }
     FText GetSkillDesc() const
     {
-        bool local_51;
-        FText __return;
-        bool local_1 = !(this.GetForceSetSkillInitConfig().IsSet());
-        if (local_1)
+        if (!(this.GetForceSetSkillInitConfig().IsSet()))
         {
-            if (!(this.GetTalentConfig()))
+            TDataObjectPtr<FTalentConfig> local_26 = this.GetTalentConfig();
+            if (local_26 && !(local_26.Get().TalentDesc.IsEmpty()))
             {
-                local_51 = false;
-            }
-            else
-            {
-                local_1 = !local_1;
-                local_51 = local_1;
-            }
-            if (local_51)
-            {
-            }
-            else
-            {
+                return local_26.Get().TalentDesc;
             }
         }
-        if (!(this.GetSkillInitConfig()))
+        TDataObjectPtr<FSkillInitConfig> local_76 = this.GetSkillInitConfig();
+        if (local_76 && !(local_76.Get().Description.IsEmpty()))
         {
-            local_51 = false;
+            return local_76.Get().Description;
         }
-        else
-        {
-            local_1 = !local_1;
-            local_51 = local_1;
-        }
-        if (local_51)
-        {
-        }
-        else
-        {
-            __return = FText();
-        }
-        return __return;
+        return FText();
     }
     FText GetSkillName() const
     {
-        bool local_51;
-        FText __return;
-        bool local_1 = !(this.GetForceSetSkillInitConfig().IsSet());
-        if (local_1)
+        if (!(this.GetForceSetSkillInitConfig().IsSet()))
         {
-            if (!(this.GetTalentConfig()))
+            TDataObjectPtr<FTalentConfig> local_26 = this.GetTalentConfig();
+            if (local_26 && !(local_26.Get().TalentName.IsEmpty()))
             {
-                local_51 = false;
-            }
-            else
-            {
-                local_1 = !local_1;
-                local_51 = local_1;
-            }
-            if (local_51)
-            {
-            }
-            else
-            {
+                return local_26.Get().TalentName;
             }
         }
-        if (!(this.GetSkillInitConfig()))
+        TDataObjectPtr<FSkillInitConfig> local_76 = this.GetSkillInitConfig();
+        if (local_76 && !(local_76.Get().Name.IsEmpty()))
         {
-            local_51 = false;
+            return local_76.Get().Name;
         }
-        else
-        {
-            local_1 = !local_1;
-            local_51 = local_1;
-        }
-        if (local_51)
-        {
-        }
-        else
-        {
-            __return = FText();
-        }
-        return __return;
+        return FText();
     }
     FText GetSkillTypeShotDesc() const
     {
-        bool local_51;
-        FText __return;
-        bool local_1 = !(this.GetForceSetSkillInitConfig().IsSet());
-        if (local_1)
+        if (!(this.GetForceSetSkillInitConfig().IsSet()))
         {
-            if (!(this.GetTalentConfig()))
+            TDataObjectPtr<FTalentConfig> local_26 = this.GetTalentConfig();
+            if (local_26 && !(local_26.Get().ShotDesc.IsEmpty()))
             {
-                local_51 = false;
-            }
-            else
-            {
-                local_1 = !local_1;
-                local_51 = local_1;
-            }
-            if (local_51)
-            {
-            }
-            else
-            {
+                return local_26.Get().ShotDesc;
             }
         }
-        if (this.GetSkillInitConfig())
+        TDataObjectPtr<FSkillInitConfig> local_76 = this.GetSkillInitConfig();
+        if (local_76)
         {
+            return local_76.Get().TypeDesc;
         }
-        else
-        {
-            __return = FText();
-        }
-        return __return;
+        return FText();
     }
     void OnTalentNodeChange()
     {
@@ -725,11 +669,9 @@ FVM_TalentEditSkillBtn& Create(const UObject ContextObject, const TDataObjectPtr
 {
     return FVM_TalentEditSkillBtn::CreateByManager(EUIInternal::GetContextManager(ContextObject), AvatarConfig, TalentNode, ESkillSlot(SkillButtonSlot));
 }
-FVM_TalentEditSkillBtn CreateByManager(const UEUIManagerSubsystem Manager, const TDataObjectPtr<FAvatarPrefabConfig> &inout AvatarConfig, const TEUIModelWeakRef<FM_TalentNode> &inout TalentNode, const ESkillSlot SkillButtonSlot)
+FVM_TalentEditSkillBtn& CreateByManager(const UEUIManagerSubsystem Manager, const TDataObjectPtr<FAvatarPrefabConfig> &inout AvatarConfig, const TEUIModelWeakRef<FM_TalentNode> &inout TalentNode, const ESkillSlot SkillButtonSlot)
 {
-    FVM_TalentEditSkillBtn __r;
-    TEUIModelRef<FVM_TalentEditSkillBtn> local_6 = TEUIModelRef<FVM_TalentEditSkillBtn>(EUIInternal::MakeModelWithManager_Generic(Manager, FVM_TalentEditSkillBtn::ModelId, 0, AvatarConfig, TalentNode, SkillButtonSlot));
-    return __r;
+    return TEUIModelRef<FVM_TalentEditSkillBtn>(EUIInternal::MakeModelWithManager_Generic(Manager, FVM_TalentEditSkillBtn::ModelId, 0, AvatarConfig, TalentNode, SkillButtonSlot)).Get();
 }
 void GetModelInfo(FEUIViewModelMetaInfo &inout Result)
 {
@@ -946,7 +888,6 @@ namespace __GeneratedProperties_FVM_TalentEditSkillBtn
 {
 UScriptStruct StaticStruct()
 {
-    UScriptStruct local_2;
-    return local_2;
+    return __GeneratedProperties_FVM_TalentEditSkillBtn.Get();
 }
 }

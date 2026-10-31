@@ -159,11 +159,9 @@ FVM_MissionTabEntry& Create(const UObject ContextObject, const FText &inout TabT
 {
     return FVM_MissionTabEntry::CreateByManager(EUIInternal::GetContextManager(ContextObject), TabTittle, EMissionTabType(TabType));
 }
-FVM_MissionTabEntry CreateByManager(const UEUIManagerSubsystem Manager, const FText &inout TabTittle, const EMissionTabType TabType)
+FVM_MissionTabEntry& CreateByManager(const UEUIManagerSubsystem Manager, const FText &inout TabTittle, const EMissionTabType TabType)
 {
-    FVM_MissionTabEntry __r;
-    TEUIModelRef<FVM_MissionTabEntry> local_6 = TEUIModelRef<FVM_MissionTabEntry>(EUIInternal::MakeModelWithManager_Generic(Manager, FVM_MissionTabEntry::ModelId, 0, TabTittle, TabType));
-    return __r;
+    return TEUIModelRef<FVM_MissionTabEntry>(EUIInternal::MakeModelWithManager_Generic(Manager, FVM_MissionTabEntry::ModelId, 0, TabTittle, TabType)).Get();
 }
 void GetModelInfo(FEUIViewModelMetaInfo &inout Result)
 {
@@ -254,7 +252,6 @@ namespace __GeneratedProperties_FVM_MissionTabEntry
 {
 UScriptStruct StaticStruct()
 {
-    UScriptStruct local_2;
-    return local_2;
+    return __GeneratedProperties_FVM_MissionTabEntry.Get();
 }
 }

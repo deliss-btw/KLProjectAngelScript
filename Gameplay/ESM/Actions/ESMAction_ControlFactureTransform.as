@@ -108,12 +108,11 @@ class UESMAction_ControlFactureTransform : UESMBPBaseSpanTickAction
     UFUNCTION()
     void Tick_Implementation(const FESMContext &inout Context, const FESMActionTime &inout Time) const
     {
-        const FESMControlTargetInstanceData& local_4;
         if (!(ECS::GetRuntimeInfo().IsServer))
         {
             return;
         }
-        if ((!((local_4.ControlTarget == ENTITY_NULL))))
+        if ((!((this.GetInstanceData(Context).ControlTarget == ENTITY_NULL))))
         {
             Has local_12;
             bool local_1 = local_12.opCall();
@@ -219,6 +218,7 @@ class UESMAction_ControlFactureTransform : UESMBPBaseSpanTickAction
         {
             return;
         }
+        const FESMControlTargetInstanceData& local_4 = this.GetInstanceData(Context);
         Has local_8;
         bool local_1 = local_8.opCall();
         if (local_1)

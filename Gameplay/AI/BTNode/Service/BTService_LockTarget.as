@@ -13,6 +13,8 @@ struct FAICommand_LockTarget : FAICommandScript
 {
     FAICommandScript _base_FAICommandScript;
 
+    default m_ScriptOverrideMeta = Cast<UASStruct>(FAICommand_LockTarget.Get());
+
     FAICommand_LockTarget()
     {
         this.__InitDefaults();
@@ -30,8 +32,8 @@ struct FAICommand_LockTarget : FAICommandScript
     }
     void Execute_Implementation(const FAICommandParams &inout Params, const FFPTime &inout WorldTime) const
     {
-        const FAICommand_LockTargetData& local_2;
         int local_36 = 0;
+        const FAICommand_LockTargetData& local_2 = this.GetInstanceData(Params);
         FC_AITmpLockCurrentAttackTargetTag local_8;
         Assign local_6;
         local_6.opCall(local_8);
@@ -64,8 +66,8 @@ struct FAICommand_LockTarget : FAICommandScript
     }
     void Finish_Implementation(const FAICommandParams &inout Params, const FFPTime &inout WorldTime) const
     {
-        const FAICommand_LockTargetData& local_2;
         int local_16 = 0;
+        const FAICommand_LockTargetData& local_2 = this.GetInstanceData(Params);
         Remove local_6;
         local_6.opCall();
         Modify local_12;
@@ -96,6 +98,8 @@ class UBTService_LockTarget : UBTService_AICommandScript
     UPROPERTY()
     FAICommand_LockTarget AICommand;
 
+    default SetNodeName("锁定目标");
+
     UFUNCTION()
     void OnInitCommandInstanceData_Implementation(const FAICommandInstanceDataInitContextPtr &inout Context) const
     {
@@ -124,6 +128,8 @@ struct FAICommand_AIForceLockTargetTag : FAICommandScript
 {
     FAICommandScript _base_FAICommandScript;
 
+    default m_ScriptOverrideMeta = Cast<UASStruct>(FAICommand_AIForceLockTargetTag.Get());
+
     FAICommand_AIForceLockTargetTag()
     {
         this.__InitDefaults();
@@ -141,8 +147,8 @@ struct FAICommand_AIForceLockTargetTag : FAICommandScript
     }
     void Execute_Implementation(const FAICommandParams &inout Params, const FFPTime &inout WorldTime) const
     {
-        const FAICommand_AIForceLockTargetTagData& local_2;
         int local_4 = 0;
+        const FAICommand_AIForceLockTargetTagData& local_2 = this.GetInstanceData(Params);
         if (int(local_2.bForceLockCurrent) != 0)
         {
             local_4.SetRefCount((local_4.GetRefCount() + 1));
@@ -152,8 +158,8 @@ struct FAICommand_AIForceLockTargetTag : FAICommandScript
     }
     void Finish_Implementation(const FAICommandParams &inout Params, const FFPTime &inout WorldTime) const
     {
-        const FAICommand_AIForceLockTargetTagData& local_2;
         int local_16 = 0;
+        const FAICommand_AIForceLockTargetTagData& local_2 = this.GetInstanceData(Params);
         Remove local_6;
         local_6.opCall();
         Modify local_12;
@@ -177,6 +183,8 @@ class UBTService_AIForceLockTargetTag : UBTService_AICommandScript
     bool bShowArrow = true;
     UPROPERTY()
     FAICommand_AIForceLockTargetTag AICommand;
+
+    default SetNodeName("AI显示锁敌红线");
 
     UFUNCTION()
     void OnInitCommandInstanceData_Implementation(const FAICommandInstanceDataInitContextPtr &inout Context) const

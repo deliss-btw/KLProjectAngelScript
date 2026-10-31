@@ -4,6 +4,8 @@ struct FGTCTransitESMStateAction : FGTCAction
     UPROPERTY()
     FName StateName;
 
+    default m_ScriptOverrideMeta = Cast<UASStruct>(FGTCTransitESMStateAction.Get());
+
     FGTCTransitESMStateAction()
     {
         this.__InitDefaults();

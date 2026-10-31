@@ -29,12 +29,10 @@ class US_TestMonitorSystem : UECSScriptSystem
     UFUNCTION()
     void Server_ModifySingletons(FCS_TestMonitor0 &inout Test0, const FCS_FixedTime &inout FixedTime) const
     {
-        int local_3 = 0;
         if (FixedTime.IsOnInterval(FFPTime(5)))
         {
-            XLog(ELog(0), (FString("TestMonitorSystem ModifySingleton Test0 Modify") + local_3));
-            local_3 = local_3 + 1;
-            Test0.SetValue(local_3);
+            XLog(ELog(0), (FString("TestMonitorSystem ModifySingleton Test0 Modify") + Test0.GetValue()));
+            Test0.SetValue((Test0.GetValue() + 1));
         }
         return;
     }
@@ -56,7 +54,7 @@ class US_TestMonitorSystem : UECSScriptSystem
     UFUNCTION()
     void Monitor_ClientTestMonitor0Modify(const FCS_TestMonitor0 &inout Test0) const
     {
-        XLog(ELog(0), (FString("TestMonitorSystem TestMonitor0 Modify") + 0));
+        XLog(ELog(0), (FString("TestMonitorSystem TestMonitor0 Modify") + Test0.GetValue()));
         return;
     }
     UFUNCTION()

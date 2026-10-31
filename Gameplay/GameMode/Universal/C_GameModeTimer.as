@@ -58,10 +58,9 @@ struct FCS_GameModeTimer : FECSSingleton
         FFPTime local_4 = FFPTime(-1);
         for (auto& local_26 : this.TimerEntries)
         {
-            local_26;
-            FFPTime local_2 = FFPTime(0);
-            if (local_4.opCmp(local_2) < 0 || (local_2.opCmp(local_4) < 0))
+            if (local_4.opCmp(FFPTime(0)) < 0 || (FFPTime(local_26.GetValue().TriggerTime).opCmp(local_4) < 0))
             {
+                local_4 = local_26.GetValue().TriggerTime;
             }
         }
         this.NextTriggerTime = local_4;
@@ -74,6 +73,8 @@ struct FGMTimerAction_DebugLog : FGameModeTimerActionBase
     FGameModeTimerActionBase _base_FGameModeTimerActionBase;
     UPROPERTY()
     FString Message;
+
+    default m_ScriptOverrideMeta = Cast<UASStruct>(FGMTimerAction_DebugLog.Get());
 
     FGMTimerAction_DebugLog()
     {
@@ -93,6 +94,8 @@ struct FGMTimerAction_MessageHint : FGameModeTimerActionBase
     FGameModeTimerActionBase _base_FGameModeTimerActionBase;
     UPROPERTY()
     TDataObjectPtr<FMessageHintConfig> MessageHintConfig;
+
+    default m_ScriptOverrideMeta = Cast<UASStruct>(FGMTimerAction_MessageHint.Get());
 
     FGMTimerAction_MessageHint()
     {
@@ -123,6 +126,8 @@ struct FGMTimerAction_OverrideReviveRule : FGameModeTimerActionBase
     UPROPERTY()
     TDataObjectPtr<FReviveData> ReviveRule;
 
+    default m_ScriptOverrideMeta = Cast<UASStruct>(FGMTimerAction_OverrideReviveRule.Get());
+
     FGMTimerAction_OverrideReviveRule()
     {
         this.__InitDefaults();
@@ -143,6 +148,8 @@ struct FGMTimerAction_CustomLevelEvent : FGameModeTimerActionBase
     FName CustomName;
     UPROPERTY()
     bool bIsTutorialEvent;
+
+    default m_ScriptOverrideMeta = Cast<UASStruct>(FGMTimerAction_CustomLevelEvent.Get());
 
     FGMTimerAction_CustomLevelEvent()
     {
@@ -168,6 +175,8 @@ struct FGMTimerAction_Composite : FGameModeTimerActionBase
     UPROPERTY()
     TArray<FInstancedStruct> Actions;
 
+    default m_ScriptOverrideMeta = Cast<UASStruct>(FGMTimerAction_Composite.Get());
+
     FGMTimerAction_Composite()
     {
         this.__InitDefaults();
@@ -177,9 +186,10 @@ struct FGMTimerAction_Composite : FGameModeTimerActionBase
     {
         for (auto& local_16 : this.Actions)
         {
-            if ((!((FInstancedStruct::GetPtr(local_16).opCall() == nullptr))))
+            TConstRawPtr<FGameModeTimerActionBase> local_22 = FInstancedStruct::GetPtr(local_16).opCall();
+            if ((!((local_22 == nullptr))))
             {
-                Execute();
+                local_22.Get().Execute();
             }
         }
         return;
@@ -191,6 +201,8 @@ struct FGMTimerAction_Callback : FGameModeTimerActionBase
     FGameModeTimerActionBase _base_FGameModeTimerActionBase;
     UPROPERTY()
     FStructClosure Closure;
+
+    default m_ScriptOverrideMeta = Cast<UASStruct>(FGMTimerAction_Callback.Get());
 
     FGMTimerAction_Callback()
     {

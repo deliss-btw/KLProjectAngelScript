@@ -136,11 +136,9 @@ FVM_IndicatorList& Create(const UObject ContextObject)
 {
     return FVM_IndicatorList::CreateByManager(EUIInternal::GetContextManager(ContextObject));
 }
-FVM_IndicatorList CreateByManager(const UEUIManagerSubsystem Manager)
+FVM_IndicatorList& CreateByManager(const UEUIManagerSubsystem Manager)
 {
-    FVM_IndicatorList __r;
-    TEUIModelRef<FVM_IndicatorList> local_6 = TEUIModelRef<FVM_IndicatorList>(EUIInternal::MakeModelWithManager(Manager, FVM_IndicatorList::ModelId));
-    return __r;
+    return TEUIModelRef<FVM_IndicatorList>(EUIInternal::MakeModelWithManager(Manager, FVM_IndicatorList::ModelId)).Get();
 }
 void GetModelInfo(FEUIViewModelMetaInfo &inout Result)
 {
@@ -187,7 +185,6 @@ namespace __GeneratedProperties_FVM_IndicatorList
 {
 UScriptStruct StaticStruct()
 {
-    UScriptStruct local_2;
-    return local_2;
+    return __GeneratedProperties_FVM_IndicatorList.Get();
 }
 }

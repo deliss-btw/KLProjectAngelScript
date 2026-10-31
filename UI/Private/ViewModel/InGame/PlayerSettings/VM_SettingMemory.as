@@ -34,6 +34,8 @@ struct FVM_SettingMemory : FEUIViewModel
     UPROPERTY()
     FLinearColor m_SelfColor;
 
+    default m_ScriptOverrideMeta = Cast<UASStruct>(FVM_SettingMemory.Get());
+
     FVM_SettingMemory()
     {
         this.m_TotalMemory = 8191.0f;
@@ -104,6 +106,7 @@ struct FVM_SettingMemory : FEUIViewModel
     }
     void OnOwnerWidgetUnbind_Implementation()
     {
+        ::FVMS_SettingPage::Get(this.GetContext().UELocalPlayer).GetOnSettingsChanged().Remove(this, FVM_SettingMemory::RefreshVideoMemory);
         return;
     }
     void RefreshVideoMemory()
@@ -460,11 +463,9 @@ FVM_SettingMemory& Create(const UObject ContextObject)
 {
     return FVM_SettingMemory::CreateByManager(EUIInternal::GetContextManager(ContextObject));
 }
-FVM_SettingMemory CreateByManager(const UEUIManagerSubsystem Manager)
+FVM_SettingMemory& CreateByManager(const UEUIManagerSubsystem Manager)
 {
-    FVM_SettingMemory __r;
-    TEUIModelRef<FVM_SettingMemory> local_6 = TEUIModelRef<FVM_SettingMemory>(EUIInternal::MakeModelWithManager(Manager, FVM_SettingMemory::ModelId));
-    return __r;
+    return TEUIModelRef<FVM_SettingMemory>(EUIInternal::MakeModelWithManager(Manager, FVM_SettingMemory::ModelId)).Get();
 }
 void GetModelInfo(FEUIViewModelMetaInfo &inout Result)
 {
@@ -683,7 +684,6 @@ namespace __GeneratedProperties_FVM_SettingMemory
 {
 UScriptStruct StaticStruct()
 {
-    UScriptStruct local_2;
-    return local_2;
+    return __GeneratedProperties_FVM_SettingMemory.Get();
 }
 }

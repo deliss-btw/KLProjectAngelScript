@@ -57,6 +57,7 @@ struct FVM_CommissionEntry : FEUIViewModel
     {
         if (!(this.HasRefreshTime()))
         {
+            this.GetModify_RefreshCounterDown().Clear();
             return;
         }
         this.GetModify_RefreshCounterDown().SetRemainedTimeWithPrecision(FFPTime(::FMS_CommissionData::Get(this.GetContext().Manager).GetRefreshRemainingTime(ECommissionType(this.GetCommissionType())).GetTotalSeconds()), EMWCounterDownPrecision(1));
@@ -143,11 +144,9 @@ FVM_CommissionEntry& Create(const UObject ContextObject)
 {
     return FVM_CommissionEntry::CreateByManager(EUIInternal::GetContextManager(ContextObject));
 }
-FVM_CommissionEntry CreateByManager(const UEUIManagerSubsystem Manager)
+FVM_CommissionEntry& CreateByManager(const UEUIManagerSubsystem Manager)
 {
-    FVM_CommissionEntry __r;
-    TEUIModelRef<FVM_CommissionEntry> local_6 = TEUIModelRef<FVM_CommissionEntry>(EUIInternal::MakeModelWithManager(Manager, FVM_CommissionEntry::ModelId));
-    return __r;
+    return TEUIModelRef<FVM_CommissionEntry>(EUIInternal::MakeModelWithManager(Manager, FVM_CommissionEntry::ModelId)).Get();
 }
 void GetModelInfo(FEUIViewModelMetaInfo &inout Result)
 {
@@ -237,7 +236,6 @@ namespace __GeneratedProperties_FVM_CommissionEntry
 {
 UScriptStruct StaticStruct()
 {
-    UScriptStruct local_2;
-    return local_2;
+    return __GeneratedProperties_FVM_CommissionEntry.Get();
 }
 }

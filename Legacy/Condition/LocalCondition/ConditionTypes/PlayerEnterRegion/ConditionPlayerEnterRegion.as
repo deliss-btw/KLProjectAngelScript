@@ -8,7 +8,7 @@ class UConditionPlayerEnterRegion : ULocalConditionTypeDefineBase
     void OnConditionRegistered(const FLocalConditionInstance &inout ConditionInstance) const
     {
         int local_12 = 0;
-        if (!(FECSEntity(GetContextEntity()).IsValid()))
+        if (!(FECSEntity(ConditionInstance.GetInstanceData().GetContextEntity()).IsValid()))
         {
             return;
         }
@@ -16,8 +16,7 @@ class UConditionPlayerEnterRegion : ULocalConditionTypeDefineBase
         TDataObjectPtr<FConditionConfigBase> local_88 = local_38.GetConditionConfig();
         FEnterRegionInfo& local_116 = local_12.EnterRegionInfos.FindOrAdd(local_38.GetLocalConditionInstanceID());
         CastTo local_120;
-        TDataObjectPtr<FLocalConditionConfig> local_144 = local_120.opCall();
-        this.GetRegionConfig(local_116);
+        this.GetRegionConfig(local_120.opCall().Get(), local_116);
         return;
     }
     void OnConditionUnregistered(const FLocalConditionInstance &inout ConditionInstance) const
@@ -25,10 +24,11 @@ class UConditionPlayerEnterRegion : ULocalConditionTypeDefineBase
         int local_72 = 0;
         int local_54 = ConditionInstance.GetHandle().GetLocalConditionInstanceID();
         Has local_64;
-        if (!(FECSEntity(GetContextEntity()).IsValid()) || !(local_64.opCall()))
+        if (!(FECSEntity(ConditionInstance.GetInstanceData().GetContextEntity()).IsValid()) || !(local_64.opCall()))
         {
             return;
         }
+        local_72.EnterRegionInfos.Remove(local_54);
         if (local_72.EnterRegionInfos.Num() == 0)
         {
             Remove local_78;

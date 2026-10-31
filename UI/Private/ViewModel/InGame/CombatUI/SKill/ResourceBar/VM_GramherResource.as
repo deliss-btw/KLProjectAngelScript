@@ -300,12 +300,10 @@ struct FVM_GramherSkillResource : FEUIViewModel
     {
         this.SetResourcePointer(TEUIModelRef<FVM_SwordSkillResourcePoint>(::FVM_SwordSkillResourcePoint::Create(this.GetContext().Manager)));
         float32 local_3 = 1000.0f;
-        TEUIModelRef<FVM_SwordSkillResourcePoint> local_2 = this.GetResourcePointer();
-        local_3.SetConsumeAnimChangeThreshold();
+        this.GetResourcePointer().Get().SetConsumeAnimChangeThreshold(local_3);
         this.SetResourcePointerFoundationIndex_2(TEUIModelRef<FVM_SwordSkillResourcePoint>(::FVM_SwordSkillResourcePoint::Create(this.GetContext().Manager)));
         float32 local_3_2 = 1000.0f;
-        TEUIModelRef<FVM_SwordSkillResourcePoint> local_2_2 = this.GetResourcePointerFoundationIndex_2();
-        local_3_2.SetConsumeAnimChangeThreshold();
+        this.GetResourcePointerFoundationIndex_2().Get().SetConsumeAnimChangeThreshold(local_3_2);
         this.InitItems();
         return;
     }
@@ -337,11 +335,8 @@ struct FVM_GramherSkillResource : FEUIViewModel
                 local_21 = local_21 / this.GetCustomSkillEnergyMax();
                 this.SetCustomSkillEnergyRatio(local_21);
             }
-            TEUIModelRef<FVM_SwordSkillResourcePoint> local_26 = this.GetResourcePointer();
-            this.GetCustomSkillEnergyRatio().SetResourcePointPercent();
-            bool local_5_2 = (this.GetCustomSkillEnergyRatio() < 1.0f);
-            TEUIModelRef<FVM_SwordSkillResourcePoint> local_26_2 = this.GetResourcePointer();
-            local_5_2.SetbPointVisible();
+            this.GetResourcePointer().Get().SetResourcePointPercent(this.GetCustomSkillEnergyRatio());
+            this.GetResourcePointer().Get().SetbPointVisible((this.GetCustomSkillEnergyRatio() < 1.0f));
             local_21 = this.GetCustomSkillEnergyMax();
             local_21 = local_21 / this.GetCurrentMaxItemCount();
             int local_28 = uint(local_21);
@@ -413,11 +408,8 @@ struct FVM_GramherSkillResource : FEUIViewModel
                 local_21_2 = this.GetCurCustomSkillEnergy2();
                 local_53 = local_21_2 / this.GetMaxCustomSkillEnergy2();
             }
-            TEUIModelRef<FVM_SwordSkillResourcePoint> local_26_3 = this.GetResourcePointerFoundationIndex_2();
-            local_53.SetResourcePointPercent();
-            bool local_5_3 = (local_53 < 1.0f);
-            TEUIModelRef<FVM_SwordSkillResourcePoint> local_26_4 = this.GetResourcePointerFoundationIndex_2();
-            local_5_3.SetbPointVisible();
+            this.GetResourcePointerFoundationIndex_2().Get().SetResourcePointPercent(local_53);
+            this.GetResourcePointerFoundationIndex_2().Get().SetbPointVisible((local_53 < 1.0f));
         }
         return;
     }
@@ -777,11 +769,9 @@ FVM_GramherSkillResourceItem& Create(const UObject ContextObject, const int Inde
 {
     return FVM_GramherSkillResourceItem::CreateByManager(EUIInternal::GetContextManager(ContextObject), Index);
 }
-FVM_GramherSkillResourceItem CreateByManager(const UEUIManagerSubsystem Manager, const int Index)
+FVM_GramherSkillResourceItem& CreateByManager(const UEUIManagerSubsystem Manager, const int Index)
 {
-    FVM_GramherSkillResourceItem __r;
-    TEUIModelRef<FVM_GramherSkillResourceItem> local_6 = TEUIModelRef<FVM_GramherSkillResourceItem>(EUIInternal::MakeModelWithManager_Generic(Manager, FVM_GramherSkillResourceItem::ModelId, 0, Index));
-    return __r;
+    return TEUIModelRef<FVM_GramherSkillResourceItem>(EUIInternal::MakeModelWithManager_Generic(Manager, FVM_GramherSkillResourceItem::ModelId, 0, Index)).Get();
 }
 void GetModelInfo(FEUIViewModelMetaInfo &inout Result)
 {
@@ -831,8 +821,7 @@ namespace __GeneratedProperties_FVM_GramherSkillResourceItem
 {
 UScriptStruct StaticStruct()
 {
-    UScriptStruct local_2;
-    return local_2;
+    return __GeneratedProperties_FVM_GramherSkillResourceItem.Get();
 }
 }
 namespace FVM_GramherSkillResource
@@ -841,11 +830,9 @@ FVM_GramherSkillResource& Create(const UObject ContextObject)
 {
     return FVM_GramherSkillResource::CreateByManager(EUIInternal::GetContextManager(ContextObject));
 }
-FVM_GramherSkillResource CreateByManager(const UEUIManagerSubsystem Manager)
+FVM_GramherSkillResource& CreateByManager(const UEUIManagerSubsystem Manager)
 {
-    FVM_GramherSkillResource __r;
-    TEUIModelRef<FVM_GramherSkillResource> local_6 = TEUIModelRef<FVM_GramherSkillResource>(EUIInternal::MakeModelWithManager(Manager, FVM_GramherSkillResource::ModelId));
-    return __r;
+    return TEUIModelRef<FVM_GramherSkillResource>(EUIInternal::MakeModelWithManager(Manager, FVM_GramherSkillResource::ModelId)).Get();
 }
 void GetModelInfo(FEUIViewModelMetaInfo &inout Result)
 {
@@ -1052,7 +1039,6 @@ namespace __GeneratedProperties_FVM_GramherSkillResource
 {
 UScriptStruct StaticStruct()
 {
-    UScriptStruct local_2;
-    return local_2;
+    return __GeneratedProperties_FVM_GramherSkillResource.Get();
 }
 }

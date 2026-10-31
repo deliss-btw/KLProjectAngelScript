@@ -281,7 +281,6 @@ int GetMinLod(const FECSEntity &inout Entity)
 }
 void UpdateCharacterLod(const FECSEntity &inout Entity)
 {
-    UClass local_36;
     if (!(Entity))
     {
         return;
@@ -299,7 +298,7 @@ void UpdateCharacterLod(const FECSEntity &inout Entity)
     for (auto& local_30 : local_6.GetComponentDataByName())
     {
         const FName& local_32 = local_30.GetKey();
-        if (local_36.IsChildOf(USkeletalMeshComponent))
+        if (local_30.GetValue().Class.Get().IsChildOf(USkeletalMeshComponent))
         {
             Entity.ModifyActorComponent(local_32).CastToSkeletalMeshComponent().OverrideMinLOD(local_11);
         }

@@ -7,23 +7,22 @@ class US_AppearanceSystem : UECSScriptSystem
     UFUNCTION()
     void Monitor_InitViewAppearance(const FECSEntity &inout LogicEntity, const FC_ViewEntityManager &inout ViewEntityManager) const
     {
-        int local_99 = 0;
         if (!(ViewEntityManager.GetGameActorEntity().IsValid()))
         {
             return;
         }
-        bool local_9 = !(::GetAvatarConfig(LogicEntity));
-        if (local_9)
+        TDataObjectPtr<FAvatarPrefabConfig> local_58 = ::GetAvatarConfig(LogicEntity);
+        if (!(local_58))
         {
             return;
         }
-        local_9 = !local_9;
-        if (local_9)
+        GetDefaulted local_62;
+        if (!((local_62.opCall().PrefabClass == local_58.Get().CharacterPrefab)))
         {
             return;
         }
         FC_ViewEntityAppearance local_98;
-        local_98.AvatarId = local_99;
+        local_98.AvatarId = local_58.Get().DataId;
         Get local_104;
         const FC_FacePresetState& local_106 = local_104.opCall();
         if (local_106)
@@ -86,7 +85,7 @@ class US_AppearanceSystem : UECSScriptSystem
         {
             return;
         }
-        AActor local_10;
+        AActor local_10 = local_6.Actor.Get();
         ::FaceCustomizeUtils::ApplyFacePresetToActor(local_10, int(ViewAppearance.AvatarId), int(ViewAppearance.FacePresetId));
         ::FashionUtils::ApplyFashionToActor(local_10, int(ViewAppearance.AvatarId), ViewAppearance.FashionInfo);
         ::FaceCustomizeUtils::ApplyFacePresetBodyMaterialToActor(local_10, int(ViewAppearance.AvatarId), int(ViewAppearance.FacePresetId));
@@ -146,23 +145,12 @@ class US_AppearanceSystem : UECSScriptSystem
     }
     void ApplyMainAvatarFacePreset(const FECSEntity &inout AvatarEntity, const TDataObjectPtr<FAvatarPrefabConfig> &inout AvatarConfig, const uint FacePresetId, const FString &inout LogPrefix) const
     {
-        bool local_2 = false;
         int local_14 = 0;
-        bool local_1 = !(AvatarEntity.IsValid()) || !(AvatarConfig);
-        if (local_1)
-        {
-            local_1 = true;
-        }
-        else
-        {
-            local_2 = !local_2;
-            local_1 = local_2;
-        }
-        if (local_1)
+        if (!(AvatarEntity.IsValid()) || !(AvatarConfig) || !(AvatarConfig.Get().bIsMainPlayer))
         {
             return;
         }
-        FString local_6 = FString();
+        XLog(ELog(79), FString().Append(LogPrefix).Append(" main player face preset AvatarId=").Append(AvatarConfig.Get().DataId).Append(" FacePresetId=").Append(FacePresetId));
         if (FacePresetId == 0)
         {
             return;
@@ -213,7 +201,7 @@ class US_AppearanceSystem : UECSScriptSystem
                     continue;
                 }
                 TDataObjectPtr<FAvatarPrefabConfig> local_90 = ::GetAvatarConfig(local_42);
-                if (!(local_90) || (0 != local_26.GetAvatarId()))
+                if (!(local_90) || (local_90.Get().DataId != local_26.GetAvatarId()))
                 {
                     continue;
                 }
@@ -250,7 +238,6 @@ class US_AppearanceSystem : UECSScriptSystem
     {
         int local_56 = 0;
         int local_64 = 0;
-        int local_112 = 0;
         TDataObjectPtr<FAvatarPrefabConfig> local_48 = ::GetAvatarConfig(AvatarEntity);
         if (!(local_48))
         {
@@ -275,19 +262,18 @@ class US_AppearanceSystem : UECSScriptSystem
             return;
         }
         FPbDsPlayerFashionInfo local_110 = local_90.GetFashionInfo();
+        int local_112 = local_48.Get().DataId;
         int local_111 = local_112;
         TArray<FPbAvatarFashionBin> local_116;
         local_110.GetAvatarFashionList(local_116);
-        int local_121 = local_116.Num();
-        int local_79 = local_64.GetPlayerId();
-        FString local_120 = FString();
+        XLog(ELog(79), FString().Append("[InitAvatarFashionFromDS] AvatarEntity=").Append(AvatarEntity).Append(" TargetAvatarId=").Append(local_111).Append(" PlayerId=").Append(local_64.GetPlayerId()).Append(" bIsMainPlayer=").Append(local_48.Get().bIsMainPlayer).Append(" DsAvatarFashionCount=").Append(local_116.Num()));
         bool local_123 = false;
         for (auto& local_138 : local_116)
         {
-            local_112 = local_138.GetAvatarId();
-            if (local_112 != local_111)
+            int local_112_2 = local_138.GetAvatarId();
+            if (local_112_2 != local_111)
             {
-                XLog(ELog(79), FString().Append("[InitAvatarFashionFromDS] skip entry EntryAvatarId=").Append(local_112).Append(" != Target=").Append(local_111));
+                XLog(ELog(79), FString().Append("[InitAvatarFashionFromDS] skip entry EntryAvatarId=").Append(local_112_2).Append(" != Target=").Append(local_111));
                 continue;
             }
             FAvatarFashionNotifyData local_168 = this.MakeAvatarFashionNotifyData(local_138);

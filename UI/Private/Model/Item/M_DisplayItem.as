@@ -337,11 +337,9 @@ FM_DisplayItemData& Create(const UObject ContextObject)
 {
     return FM_DisplayItemData::CreateByManager(EUIInternal::GetContextManager(ContextObject));
 }
-FM_DisplayItemData CreateByManager(const UEUIManagerSubsystem Manager)
+FM_DisplayItemData& CreateByManager(const UEUIManagerSubsystem Manager)
 {
-    FM_DisplayItemData __r;
-    TEUIModelRef<FM_DisplayItemData> local_6 = TEUIModelRef<FM_DisplayItemData>(EUIInternal::MakeModelWithManager(Manager, FM_DisplayItemData::ModelId));
-    return __r;
+    return TEUIModelRef<FM_DisplayItemData>(EUIInternal::MakeModelWithManager(Manager, FM_DisplayItemData::ModelId)).Get();
 }
 void GetModelInfo(FEUIModelOnlyMetaInfo &inout Result)
 {

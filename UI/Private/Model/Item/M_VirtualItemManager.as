@@ -175,11 +175,9 @@ FMS_VirtualItemManager& Get(const UObject ContextObject)
 {
     return FMS_VirtualItemManager::GetByManager(EUIInternal::GetContextManager(ContextObject));
 }
-FMS_VirtualItemManager GetByManager(const UEUIManagerSubsystem Manager)
+FMS_VirtualItemManager& GetByManager(const UEUIManagerSubsystem Manager)
 {
-    FMS_VirtualItemManager __r;
-    TEUIModelRef<FMS_VirtualItemManager> local_6 = TEUIModelRef<FMS_VirtualItemManager>(EUIInternal::MakeModelWithManager(Manager, FMS_VirtualItemManager::ModelId));
-    return __r;
+    return TEUIModelRef<FMS_VirtualItemManager>(EUIInternal::MakeModelWithManager(Manager, FMS_VirtualItemManager::ModelId)).Get();
 }
 void GetModelInfo(FEUIModelOnlyMetaInfo &inout Result)
 {

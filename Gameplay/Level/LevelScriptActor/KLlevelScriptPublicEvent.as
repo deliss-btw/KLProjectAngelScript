@@ -270,7 +270,6 @@ class AKLLevelScriptPublicEvent : AKLLevelScriptAreaEventBase
     }
     void DropTreasure()
     {
-        AActor local_84;
         int local_154 = 0;
         bool local_155;
         bool local_156;
@@ -287,6 +286,7 @@ class AKLLevelScriptPublicEvent : AKLLevelScriptAreaEventBase
         }
         FVector local_70 = this.GetActorLocation();
         FRotator local_82 = this.GetActorRotation();
+        AActor local_84 = this.TreasureRefLocation.Get();
         if (local_84 != nullptr)
         {
             local_70 = local_84.GetActorLocation();
@@ -329,8 +329,7 @@ class AKLLevelScriptPublicEvent : AKLLevelScriptAreaEventBase
             local_156 = false;
             for (auto& local_170 : this.TreasureDropItems)
             {
-                int local_195 = int(local_170.TriggerType);
-                local_154.AddDropItem(EDropTriggerType(local_195), TDataObjectPtr<FDropItemConfigBase>());
+                local_154.AddDropItem(EDropTriggerType(local_170.TriggerType), TDataObjectPtr<FDropItemConfigBase>(local_170.Item.Get()));
                 if (int(local_170.TriggerType) == 3)
                 {
                     local_155 = true;

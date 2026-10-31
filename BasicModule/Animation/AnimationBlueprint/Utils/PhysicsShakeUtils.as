@@ -118,8 +118,7 @@ void InitializeShakeBoneChainConfigs(const FECSEntity &inout Entity, TArray<FSha
         FPhysicsShakeUtils::SetNormalMode(OutShakeControlSetting);
         return;
     }
-    FAnimPhysicsShakingConfig local_64;
-    TArray<FBoneChainBaseConfig> local_66 = local_64.BoneChainBaseConfigs;
+    TArray<FBoneChainBaseConfig> local_66 = local_14.ConfigPtr.Get().BoneChainBaseConfigs;
     OutShakeBoneChainConfigs.SetNum(local_66.Num());
     int local_67 = 0;
     for (; local_67 < local_66.Num(); ++local_67)
@@ -179,8 +178,7 @@ FBoneChainShakeCurveConfig GetShakeCurveConfig(const FECSEntity &inout Entity, c
         }
         else
         {
-            FAnimPhysicsShakingConfig local_116;
-            TArray<FBoneChainShakeCurveConfig> local_118 = local_116.OverrideShakeCurveConfigs;
+            TArray<FBoneChainShakeCurveConfig> local_118 = local_66.ConfigPtr.Get().OverrideShakeCurveConfigs;
             int local_119 = 0;
             for (; local_119 < local_118.Num(); ++local_119)
             {

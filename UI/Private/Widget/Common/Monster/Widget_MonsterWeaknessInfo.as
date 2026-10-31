@@ -97,7 +97,7 @@ class UWidget_MonsterWeaknessInfoTips : UEUIActivatableWidget
     UFUNCTION()
     TArray<FEUIModelWeakRef> RewardList_Rewards() const
     {
-        FVM_CommonRewardList& local_2;
+        FVM_CommonRewardList& local_2 = this.RewardList.Get();
         TArray<FEUIModelWeakRef> local_16;
         if (local_2)
         {

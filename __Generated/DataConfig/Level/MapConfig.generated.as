@@ -3,7 +3,6 @@ namespace __FMapConfigFunctions
 UFUNCTION()
 FText __FMapConfig_GetMapName(const TDataObjectPtr<FMapConfig> &inout DataObject)
 {
-    FText __r;
     if ((DataObject == nullptr))
     {
         if (!(EUIGlobals::GIsDuringPropertyConversion))
@@ -13,12 +12,11 @@ FText __FMapConfig_GetMapName(const TDataObjectPtr<FMapConfig> &inout DataObject
         FMapConfig local_178;
         return local_178.MapName;
     }
-    return __r;
+    return DataObject.Get().MapName;
 }
 UFUNCTION()
 TSoftObjectPtr<UWorld> __FMapConfig_GetMapReference(const TDataObjectPtr<FMapConfig> &inout DataObject)
 {
-    TSoftObjectPtr<UWorld> __r;
     if ((DataObject == nullptr))
     {
         if (!(EUIGlobals::GIsDuringPropertyConversion))
@@ -28,12 +26,11 @@ TSoftObjectPtr<UWorld> __FMapConfig_GetMapReference(const TDataObjectPtr<FMapCon
         FMapConfig local_178;
         return local_178.MapReference;
     }
-    return __r;
+    return DataObject.Get().MapReference;
 }
 UFUNCTION()
 FName __FMapConfig_GetAssetName(const TDataObjectPtr<FMapConfig> &inout DataObject)
 {
-    FName __r;
     if ((DataObject == nullptr))
     {
         if (!(EUIGlobals::GIsDuringPropertyConversion))
@@ -43,12 +40,11 @@ FName __FMapConfig_GetAssetName(const TDataObjectPtr<FMapConfig> &inout DataObje
         FMapConfig local_178;
         return local_178.AssetName;
     }
-    return __r;
+    return DataObject.Get().AssetName;
 }
 UFUNCTION()
 FName __FMapConfig_GetFullName(const TDataObjectPtr<FMapConfig> &inout DataObject)
 {
-    FName __r;
     if ((DataObject == nullptr))
     {
         if (!(EUIGlobals::GIsDuringPropertyConversion))
@@ -58,7 +54,7 @@ FName __FMapConfig_GetFullName(const TDataObjectPtr<FMapConfig> &inout DataObjec
         FMapConfig local_178;
         return local_178.FullName;
     }
-    return __r;
+    return DataObject.Get().FullName;
 }
 UFUNCTION()
 FSimpleAudioSet __FMapConfig_GetLoadMapAudioSet(const TDataObjectPtr<FMapConfig> &inout DataObject)
@@ -95,7 +91,6 @@ FSimpleAudioSet __FMapConfig_GetUnLoadMapAudioSet(const TDataObjectPtr<FMapConfi
 UFUNCTION()
 TMap<int, FDefaultCombatBGMConfig> __FMapConfig_GetDefaultCombatBGM(const TDataObjectPtr<FMapConfig> &inout DataObject)
 {
-    TMap<int, FDefaultCombatBGMConfig> __r;
     if ((DataObject == nullptr))
     {
         if (!(EUIGlobals::GIsDuringPropertyConversion))
@@ -105,7 +100,7 @@ TMap<int, FDefaultCombatBGMConfig> __FMapConfig_GetDefaultCombatBGM(const TDataO
         FMapConfig local_178;
         return local_178.DefaultCombatBGM;
     }
-    return __r;
+    return DataObject.Get().DefaultCombatBGM;
 }
 UFUNCTION()
 TDataObjectPtr<FMinimapDisplayConfig> __FMapConfig_GetMinimapDisplayConfig(const TDataObjectPtr<FMapConfig> &inout DataObject)
@@ -119,7 +114,7 @@ TDataObjectPtr<FMinimapDisplayConfig> __FMapConfig_GetMinimapDisplayConfig(const
         FMapConfig local_178;
         return local_178.GetMinimapDisplayConfig();
     }
-    return GetMinimapDisplayConfig();
+    return DataObject.Get().GetMinimapDisplayConfig();
 }
 UFUNCTION()
 FMapConfig CastToFMapConfig(const TDataObjectPtr<FMapConfig> &inout DataObject)

@@ -203,7 +203,6 @@ class US_GameAudioSystem : UECSScriptSystem
     void Job_UpdateCombatBGM(const FECSEntity &inout PlayerEntity, FC_PlayerBGMInfo &inout PlayerBGMInfo) const
     {
         bool local_13;
-        int local_137 = 0;
         bool local_183;
         int local_428 = 0;
         FECSEntity local_4 = ::FASCommonUtils::GetUniqueAvatarPawnEntity(::FASCommonUtils::GetControlledPawnEntity(PlayerEntity));
@@ -212,9 +211,10 @@ class US_GameAudioSystem : UECSScriptSystem
             return;
         }
         TDataObjectPtr<FMapConfig> local_38;
-        if (::FLevelUtils::GetCurrentLevelInfoConfig(nullptr))
+        TDataObjectPtr<FLevelInfoConfig> local_62 = ::FLevelUtils::GetCurrentLevelInfoConfig(nullptr);
+        if (local_62)
         {
-            local_38 = GetMapConfig();
+            local_38 = local_62.Get().GetMapConfig();
         }
         TSoftObjectPtr<UAkStateValue> local_120;
         TSoftObjectPtr<UAkAudioEvent> local_130;
@@ -262,8 +262,7 @@ class US_GameAudioSystem : UECSScriptSystem
                                 TDataObjectPtr<FMonsterBaseConfig> local_330 = local_306.opCall();
                                 if (local_330)
                                 {
-                                    local_137 = local_330.opArrow().MonsterStrength;
-                                    local_211 = local_137;
+                                    local_211 = local_330.opArrow().MonsterStrength;
                                 }
                             }
                         }
@@ -346,8 +345,9 @@ class US_GameAudioSystem : UECSScriptSystem
                     {
                         for (auto& local_354 : local_38.opArrow().DefaultCombatBGM)
                         {
-                            local_354;
                             local_136 = 0;
+                            local_120 = local_354.GetValue().DefaultCombatBGMStateRef;
+                            local_130 = local_354.GetValue().DefaultCombatBGMEventRef;
                             local_134 = local_204.GetEntity();
                             break;
                         }
@@ -382,7 +382,7 @@ class US_GameAudioSystem : UECSScriptSystem
                 FC_EcologyFlockBehaviorComponent local_370;
                 GetDefaulted local_360;
                 FECSEntity local_226 = FECSEntity(local_360.opCall().FlockProxyEntity);
-                local_13 = local_370 && ((int(local_370.MainState) == 2));
+                local_13 = local_370 && (int(local_370.MainState) == 2);
                 if (local_13)
                 {
                     local_134 = PlayerBGMInfo.CombatBGMEntity;
@@ -402,9 +402,10 @@ class US_GameAudioSystem : UECSScriptSystem
                 if (local_220.opCall())
                 {
                     CastTo local_378;
-                    if (local_378.opCall())
+                    TDataObjectPtr<FMonsterBaseConfig> local_302 = local_378.opCall();
+                    if (local_302)
                     {
-                        local_211 = local_137;
+                        local_211 = local_302.Get().MonsterStrength;
                     }
                 }
                 const FC_MonsterBGMConfig& local_210_2 = local_208.opCall();
@@ -572,46 +573,33 @@ class US_GameAudioSystem : UECSScriptSystem
         Has local_4;
         if (!(local_4.opCall()))
         {
-            FString local_14;
             if (!(PlayerCurrentBGMState.GetState().IsNull()))
             {
-                local_14 = Entity.ToString();
-                XLog(ELog(1), FString().Append("Monitor_HandleAudioBGMState return. Entity:").Append(local_14).Append(", PlayerBGM State:").Append(PlayerCurrentBGMState.GetState().ToString()));
+                XLog(ELog(1), FString().Append("Monitor_HandleAudioBGMState return. Entity:").Append(Entity.ToString()).Append(", PlayerBGM State:").Append(PlayerCurrentBGMState.GetState().ToString()));
             }
-            if (!(IsNull()))
+            if (!(PlayerCurrentBGMState.GetEvent().IsNull()))
             {
-                local_14.ToString();
-                XLog(ELog(1), FString().Append("Monitor_HandleAudioBGMState return. Entity:").Append(Entity.ToString()).Append(", PlayerBGM Event:").Append(local_14));
+                XLog(ELog(1), FString().Append("Monitor_HandleAudioBGMState return. Entity:").Append(Entity.ToString()).Append(", PlayerBGM Event:").Append(PlayerCurrentBGMState.GetEvent().ToString()));
             }
             return;
         }
         if (!(PlayerCurrentBGMState.GetState().IsNull()))
         {
-            FString local_14;
             if (FAsGameAudioUtils::CVar_EnvSound_EnableDebug.GetBool())
             {
                 Print(FString().Append("Job_HandleAudioBGMState :Entity:").Append(Entity.ToString()).Append(", State ").Append(PlayerCurrentBGMState.GetState().GetAssetName()), 99999.0f, FLinearColor::Yellow);
             }
-            FString local_10;
-            local_10 = Entity.ToString();
-            local_14 = FString();
-            XLog(ELog(1), local_14.Append("Job_HandleAudioBGMState :Entity:").Append(local_10).Append(", State ").Append(PlayerCurrentBGMState.GetState().GetAssetName()));
+            XLog(ELog(1), FString().Append("Job_HandleAudioBGMState :Entity:").Append(Entity.ToString()).Append(", State ").Append(PlayerCurrentBGMState.GetState().GetAssetName()));
             FGameAudioUtils::SetAudioState(PlayerCurrentBGMState.GetState(), FOnLoadEventCallbackWithEntity(), true, FGameAudioUtils::GetCachedAudioWorld());
         }
-        if (!(IsNull()))
+        if (!(PlayerCurrentBGMState.GetEvent().IsNull()))
         {
-            FString local_14;
-            FString local_10;
             if (FAsGameAudioUtils::CVar_EnvSound_EnableDebug.GetBool())
             {
-                local_10.GetAssetName();
-                local_14 = Entity.ToString();
-                Print(FString().Append("Job_HandleAudioBGMState :Entity:").Append(local_14).Append(", Event ").Append(local_10), 99999.0f, FLinearColor::Yellow);
+                Print(FString().Append("Job_HandleAudioBGMState :Entity:").Append(Entity.ToString()).Append(", Event ").Append(PlayerCurrentBGMState.GetEvent().GetAssetName()), 99999.0f, FLinearColor::Yellow);
             }
-            local_14.GetAssetName();
-            XLog(ELog(1), local_10.Append("Job_HandleAudioBGMState :Entity:").Append(Entity.ToString()).Append(", Event ").Append(local_14));
-            FGameAudioUtils::GetCachedAudioWorld();
-            FLoadEventCallback local_30 = FLoadEventCallback();
+            XLog(ELog(1), FString().Append("Job_HandleAudioBGMState :Entity:").Append(Entity.ToString()).Append(", Event ").Append(PlayerCurrentBGMState.GetEvent().GetAssetName()));
+            FGameAudioUtils::PlayEventBGM(PlayerCurrentBGMState.GetEvent(), FLoadEventCallback(), FGameAudioUtils::GetCachedAudioWorld(), true);
         }
         return;
     }
@@ -779,11 +767,11 @@ class US_GameAudioSystem : UECSScriptSystem
         if (local_12 != nullptr)
         {
             EPrefabSize local_13;
-            EPrefabSize local_14 = EPrefabSize(0);
-            local_13 = local_14;
-            if (::GetPrefabConfigPtr(Entity))
+            local_13 = EPrefabSize::Default;
+            TDataObjectPtr<FBasePrefabConfig> local_38 = ::GetPrefabConfigPtr(Entity);
+            if (local_38)
             {
-                local_13 = local_14;
+                local_13 = local_38.Get().Size;
             }
             FGameAudioUtils::SetAudioSwitch(local_12.BodySizeSwitch[int(local_13)], Entity, FOnLoadEventCallbackWithEntity(), true, FGameAudioUtils::GetCachedAudioWorld());
             bool local_2 = (Entity == ::FASCommonUtils::GetLocalPlayerPawnEntity());

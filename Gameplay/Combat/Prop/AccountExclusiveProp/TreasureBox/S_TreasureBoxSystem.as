@@ -13,16 +13,14 @@ class US_TreasureBoxSystem : UECSScriptSystem
         {
             return;
         }
+        local_8.GetModify_TreasureBoxStateConfigs().Remove(Entity);
         return;
     }
     UFUNCTION()
     void ClientJob_InitAccountExclusiveTreasureBoxState(const FECSEntity &inout Entity, const FC_LevelObjectStatConfig &inout LevelObjectStatConfig, const FC_TreasureBoxConfig &inout TreasureBoxConfig, const FCS_FixedTime &inout FixedTime) const
     {
         int local_14 = 0;
-        int local_23 = 0;
-        int local_44 = 0;
         FECSEntity::ModifyOrAdd<FC_ESMExternalTransitOnLocalReg> local_48;
-        int local_63 = 0;
         int local_84 = 0;
         Remove local_4;
         local_4.opCall();
@@ -38,9 +36,10 @@ class US_TreasureBoxSystem : UECSScriptSystem
         FECSEntity local_22 = ::FASCommonUtils::GetLocalPlayerPawnEntity();
         if (local_22.IsValid())
         {
+            int local_23 = LevelObjectStatConfig.LevelObjectStatConfig.Get().DataId;
             if (local_14.LevelObjectStatIdToEntityMap.Contains(local_23))
             {
-                if (FECSEntity(local_14.LevelObjectStatIdToEntityMap[local_23]).IsValid())
+                if (FECSEntity(local_14.LevelObjectStatIdToEntityMap[LevelObjectStatConfig.LevelObjectStatConfig.Get().DataId]).IsValid())
                 {
                     Get local_32;
                     const FC_DefaultToLocal& local_34 = local_32.opCall();
@@ -48,14 +47,15 @@ class US_TreasureBoxSystem : UECSScriptSystem
                     {
                         if (FECSEntity(local_34.LocalEntityId).IsValid())
                         {
+                            local_23 = LevelObjectStatConfig.LevelObjectStatConfig.Get().DataId;
                             bool local_5 = ::TreasureBoxUtils::IsTreasureBoxCoolingDown(local_22, local_23);
                             bool local_39 = !(::FLevelObjectStatUtils::IsLevelObjectRecorded(local_22, LevelObjectStatConfig.LevelObjectStatConfig));
-                            if ((int(::TreasureBoxUtils::GetTreasureBoxRecordState(local_22, local_23))) == 1)
+                            if ((int(::TreasureBoxUtils::GetTreasureBoxRecordState(local_22, LevelObjectStatConfig.LevelObjectStatConfig.Get().DataId))) == 1)
                             {
                                 FC_ESMExternalTransitOnLocalReg& local_50 = local_48.opCall();
                                 if (local_50)
                                 {
-                                    const FTreasureBoxStateData& local_54 = 1.GetData();
+                                    const FTreasureBoxStateData& local_54 = TreasureBoxConfig.StateConfig.Get().GetData(ETreasureBoxState(1));
                                     local_50.SMName = local_54.StateMachineName;
                                     local_50.StateName = local_54.StateName;
                                 }
@@ -68,11 +68,11 @@ class US_TreasureBoxSystem : UECSScriptSystem
                                     FC_ESMExternalTransitOnLocalReg& local_50_2 = local_48.opCall();
                                     if (local_50_2)
                                     {
-                                        const FTreasureBoxStateData& local_54_2 = 1.GetData();
+                                        const FTreasureBoxStateData& local_54_2 = TreasureBoxConfig.StateConfig.Get().GetData(ETreasureBoxState(1));
                                         local_50_2.SMName = local_54_2.StateMachineName;
                                         local_50_2.StateName = local_54_2.StateName;
                                     }
-                                    local_55 = local_44;
+                                    local_55 = LevelObjectStatConfig.LevelObjectStatConfig.Get().CooldownDuration;
                                     if (local_55 > 0)
                                     {
                                         ModifyOrAdd local_60;
@@ -81,7 +81,7 @@ class US_TreasureBoxSystem : UECSScriptSystem
                                         {
                                             local_23 = FDateTime::UtcNow().ToUnixTimestamp();
                                             int local_69 = 0;
-                                            if (::TreasureBoxUtils::GetTreasureBoxLastTime(local_22, local_63, local_69))
+                                            if (::TreasureBoxUtils::GetTreasureBoxLastTime(local_22, LevelObjectStatConfig.LevelObjectStatConfig.Get().DataId, local_69))
                                             {
                                                 local_62.RefreshTargetTime = FFPTime((FixedTime.Time.ToSeconds() + local_55) - (local_23 - local_69));
                                             }
@@ -95,7 +95,7 @@ class US_TreasureBoxSystem : UECSScriptSystem
                                         FC_ESMExternalTransitOnLocalReg& local_50_3 = local_48.opCall();
                                         if (local_50_3)
                                         {
-                                            const FTreasureBoxStateData& local_54_3 = 3.GetData();
+                                            const FTreasureBoxStateData& local_54_3 = TreasureBoxConfig.StateConfig.Get().GetData(ETreasureBoxState(3));
                                             local_50_3.SMName = local_54_3.StateMachineName;
                                             local_50_3.StateName = local_54_3.StateName;
                                         }
@@ -107,7 +107,7 @@ class US_TreasureBoxSystem : UECSScriptSystem
                                             FC_ESMExternalTransitOnLocalReg& local_50_4 = local_48.opCall();
                                             if (local_50_4)
                                             {
-                                                const FTreasureBoxStateData& local_54_4 = 2.GetData();
+                                                const FTreasureBoxStateData& local_54_4 = TreasureBoxConfig.StateConfig.Get().GetData(ETreasureBoxState(2));
                                                 local_50_4.SMName = local_54_4.StateMachineName;
                                                 local_50_4.StateName = local_54_4.StateName;
                                             }
@@ -152,7 +152,7 @@ class US_TreasureBoxSystem : UECSScriptSystem
             {
                 for (auto& local_68 : local_8.GetTreasureBoxes())
                 {
-                    ::TreasureBoxSpawnDropItemUtils::RespawnUncollectedTreasureForPlayer(local_68.GetKey(), local_32);
+                    ::TreasureBoxSpawnDropItemUtils::RespawnUncollectedTreasureForPlayer(local_68.GetKey(), local_68.GetValue(), local_32);
                 }
             }
         }
@@ -175,7 +175,7 @@ class US_TreasureBoxSystem : UECSScriptSystem
         TArray<FECSEntity> local_24 = FGameUtils::GetAllPlayerControllerEntities(true);
         for (auto& local_38 : local_24)
         {
-            ::TreasureBoxSpawnDropItemUtils::RespawnUncollectedTreasureForPlayer(Entity, TDataObjectPtr<FLevelObjectStatConfig>(), local_38);
+            ::TreasureBoxSpawnDropItemUtils::RespawnUncollectedTreasureForPlayer(Entity, TDataObjectPtr<FLevelObjectStatConfig>(local_14.LevelObjectStatConfig.Get()), local_38);
         }
         return;
     }
@@ -226,7 +226,7 @@ class US_TreasureBoxSystem : UECSScriptSystem
             FC_ESMExternalTransitOnLocalReg& local_32 = local_30.opCall();
             if (local_32)
             {
-                const FTreasureBoxStateData& local_34 = 4.GetData();
+                const FTreasureBoxStateData& local_34 = local_8.StateConfig.Get().GetData(ETreasureBoxState(4));
                 local_32.SMName = local_34.StateMachineName;
                 local_32.StateName = local_34.StateName;
             }
@@ -253,7 +253,7 @@ class US_TreasureBoxSystem : UECSScriptSystem
                     FC_ESMExternalTransitOnLocalReg& local_30 = local_28.opCall();
                     if (local_30)
                     {
-                        const FTreasureBoxStateData& local_34 = 2.GetData();
+                        const FTreasureBoxStateData& local_34 = local_10.StateConfig.Get().GetData(ETreasureBoxState(2));
                         local_30.SMName = local_34.StateMachineName;
                         local_30.StateName = local_34.StateName;
                     }
@@ -266,7 +266,6 @@ class US_TreasureBoxSystem : UECSScriptSystem
     void ServerJob_HandleRemoveSpawnedPrefabTracker(const FC_TreasureTracker &inout TreasureTracker, const FECSEntity &inout TreasureEntity) const
     {
         int local_16 = 0;
-        int local_18 = 0;
         ::TreasureBoxSpawnDropItemUtils::UnregisterTrackedTreasure(TreasureEntity);
         if (!(TreasureTracker.bCollected))
         {
@@ -286,6 +285,7 @@ class US_TreasureBoxSystem : UECSScriptSystem
         {
             return;
         }
+        int local_18 = local_16.LevelObjectStatConfig.Get().CooldownDuration;
         int local_17 = local_18;
         if (local_17 >= 0)
         {
@@ -298,7 +298,7 @@ class US_TreasureBoxSystem : UECSScriptSystem
                 local_26.RefreshTargetTime = FFPTime((ECS::GetContextTime().ToSeconds() + local_17));
             }
         }
-        ::TreasureBoxUtils::SetTreasureBoxRecordState(local_6, TDataObjectPtr<FLevelObjectStatConfig>(), ETreasureBoxRecordState(2), true);
+        ::TreasureBoxUtils::SetTreasureBoxRecordState(local_6, TDataObjectPtr<FLevelObjectStatConfig>(local_16.LevelObjectStatConfig.Get()), ETreasureBoxRecordState(2), true);
         return;
     }
     UFUNCTION()

@@ -384,12 +384,11 @@ struct FMissionDetail
     }
     uint GetActivePhaseId() const
     {
-        int local_2 = 0;
         if (!(this.GetActivePhaseConfig().IsSet()))
         {
             return 0;
         }
-        return local_2;
+        return this.GetActivePhaseConfig().Get().DataId;
     }
     const TDataObjectPtr<FMissionConfig> GetMissionConfig() const property
     {

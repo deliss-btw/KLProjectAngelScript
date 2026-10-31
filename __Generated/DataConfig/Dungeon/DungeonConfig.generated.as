@@ -3,7 +3,6 @@ namespace __FDungeonConfigFunctions
 UFUNCTION()
 EDungeonType __FDungeonConfig_GetDungeonType(const TDataObjectPtr<FDungeonConfig> &inout DataObject)
 {
-    int local_121 = 0;
     if ((DataObject == nullptr))
     {
         if (!(EUIGlobals::GIsDuringPropertyConversion))
@@ -11,10 +10,9 @@ EDungeonType __FDungeonConfig_GetDungeonType(const TDataObjectPtr<FDungeonConfig
             FBlueprintDebugFunctions::ThrowScriptException("Get 'DungeonType' from a null 'FDungeonConfig' DataObject!");
         }
         FDungeonConfig local_120;
-        local_121 = int(local_120.DungeonType);
-        return EDungeonType(local_121);
+        return local_120.DungeonType;
     }
-    return EDungeonType(local_121);
+    return DataObject.Get().DungeonType;
 }
 UFUNCTION()
 TDataObjectPtr<FLevelInfoConfig> __FDungeonConfig_GetLevelConfig(const TDataObjectPtr<FDungeonConfig> &inout DataObject)
@@ -28,12 +26,11 @@ TDataObjectPtr<FLevelInfoConfig> __FDungeonConfig_GetLevelConfig(const TDataObje
         FDungeonConfig local_120;
         return local_120.GetLevelConfig();
     }
-    return GetLevelConfig();
+    return DataObject.Get().GetLevelConfig();
 }
 UFUNCTION()
 FSoftBrush __FDungeonConfig_GetDungeonIcon(const TDataObjectPtr<FDungeonConfig> &inout DataObject)
 {
-    FSoftBrush __r;
     if ((DataObject == nullptr))
     {
         if (!(EUIGlobals::GIsDuringPropertyConversion))
@@ -43,12 +40,11 @@ FSoftBrush __FDungeonConfig_GetDungeonIcon(const TDataObjectPtr<FDungeonConfig> 
         FDungeonConfig local_120;
         return local_120.DungeonIcon;
     }
-    return __r;
+    return DataObject.Get().DungeonIcon;
 }
 UFUNCTION()
 FText __FDungeonConfig_GetDungeonName(const TDataObjectPtr<FDungeonConfig> &inout DataObject)
 {
-    FText __r;
     if ((DataObject == nullptr))
     {
         if (!(EUIGlobals::GIsDuringPropertyConversion))
@@ -58,12 +54,11 @@ FText __FDungeonConfig_GetDungeonName(const TDataObjectPtr<FDungeonConfig> &inou
         FDungeonConfig local_120;
         return local_120.DungeonName;
     }
-    return __r;
+    return DataObject.Get().DungeonName;
 }
 UFUNCTION()
 FText __FDungeonConfig_GetDungeonDesc(const TDataObjectPtr<FDungeonConfig> &inout DataObject)
 {
-    FText __r;
     if ((DataObject == nullptr))
     {
         if (!(EUIGlobals::GIsDuringPropertyConversion))
@@ -73,7 +68,7 @@ FText __FDungeonConfig_GetDungeonDesc(const TDataObjectPtr<FDungeonConfig> &inou
         FDungeonConfig local_120;
         return local_120.DungeonDesc;
     }
-    return __r;
+    return DataObject.Get().DungeonDesc;
 }
 UFUNCTION()
 TDataObjectPtr<FDropItemConfigBase> __FDungeonConfig_GetTempRewardView(const TDataObjectPtr<FDungeonConfig> &inout DataObject)
@@ -87,7 +82,7 @@ TDataObjectPtr<FDropItemConfigBase> __FDungeonConfig_GetTempRewardView(const TDa
         FDungeonConfig local_120;
         return local_120.GetTempRewardView();
     }
-    return GetTempRewardView();
+    return DataObject.Get().GetTempRewardView();
 }
 UFUNCTION()
 FDungeonConfig CastToFDungeonConfig(const TDataObjectPtr<FDungeonConfig> &inout DataObject)

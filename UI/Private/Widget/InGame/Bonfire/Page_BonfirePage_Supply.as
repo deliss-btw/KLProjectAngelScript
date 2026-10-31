@@ -35,9 +35,7 @@ class UPage_BonfirePage_Supply : UEUIActivatableWidget
         }
         if (this.w_title != nullptr)
         {
-            TEUIModelRef<FVM_TitleAndDesc> local_10;
-            local_10.GetTitleAndDescVM();
-            this.w_title.GetView().SetViewModel(local_10.opImplConv(), NAME_None);
+            this.w_title.GetView().SetViewModel(this.BonfirePage.Get().GetTitleAndDescVM().opImplConv(), NAME_None);
         }
         this.SupplyAction.Register(this, n"NotifySupplyAction");
         this.ClickAction.Register(this, n"NotifyClickAction");
@@ -46,9 +44,9 @@ class UPage_BonfirePage_Supply : UEUIActivatableWidget
     UFUNCTION()
     void NotifySupplyAction()
     {
-        if (this.BonfirePage.IsValid() && (int(GetAddButtonVisibility()) == 0))
+        if (this.BonfirePage.IsValid() && (int(this.BonfirePage.Get().GetAddButtonVisibility()) == 0))
         {
-            OnAddButtonClicked();
+            this.BonfirePage.Get().OnAddButtonClicked();
         }
         return;
     }
@@ -57,7 +55,7 @@ class UPage_BonfirePage_Supply : UEUIActivatableWidget
     {
         if (this.w_title.w_tips.IsHoverDisplayed())
         {
-            NotifyClick();
+            this.w_title.w_tips.HoverProvider.Get().NotifyClick();
         }
         return;
     }
@@ -82,14 +80,14 @@ class UPage_BonfirePage_Supply : UEUIActivatableWidget
     UFUNCTION()
     FEUIModelContainer BonfirePage_HoverModels() const
     {
-        FVM_BonfirePage_Supply& local_2;
+        FVM_BonfirePage_Supply& local_2 = this.BonfirePage.Get();
         FEUIModelContainer local_32 = local_2 ? local_2.GetHoverModels() : FEUIModelContainer();
         return local_32;
     }
     UFUNCTION()
     TSoftClassPtr<UUserWidget> BonfirePage_HoverWidgetClass() const
     {
-        FVM_BonfirePage_Supply& local_2;
+        FVM_BonfirePage_Supply& local_2 = this.BonfirePage.Get();
         TSoftClassPtr<UUserWidget> local_34;
         if (local_2)
         {
@@ -104,75 +102,75 @@ class UPage_BonfirePage_Supply : UEUIActivatableWidget
     UFUNCTION()
     int BonfirePage_BonfireState() const
     {
-        FVM_BonfirePage_Supply& local_2;
+        FVM_BonfirePage_Supply& local_2 = this.BonfirePage.Get();
         return local_2 ? local_2.GetBonfireState() : 0;
     }
     UFUNCTION()
     FText BonfirePage_RemainedRefillTimes() const
     {
-        FVM_BonfirePage_Supply& local_2;
+        FVM_BonfirePage_Supply& local_2 = this.BonfirePage.Get();
         FText local_12 = local_2 ? local_2.GetRemainedRefillTimes() : FText();
         return local_12;
     }
     UFUNCTION()
     FText BonfirePage_RemainedRefillTimesMax() const
     {
-        FVM_BonfirePage_Supply& local_2;
+        FVM_BonfirePage_Supply& local_2 = this.BonfirePage.Get();
         FText local_12 = local_2 ? local_2.GetRemainedRefillTimesMax() : FText();
         return local_12;
     }
     UFUNCTION()
     FText BonfirePage_ResidualText() const
     {
-        FVM_BonfirePage_Supply& local_2;
+        FVM_BonfirePage_Supply& local_2 = this.BonfirePage.Get();
         FText local_12 = local_2 ? local_2.GetResidualText() : FText();
         return local_12;
     }
     UFUNCTION()
     FText BonfirePage_RefillCostHint() const
     {
-        FVM_BonfirePage_Supply& local_2;
+        FVM_BonfirePage_Supply& local_2 = this.BonfirePage.Get();
         FText local_12 = local_2 ? local_2.GetRefillCostHint() : FText();
         return local_12;
     }
     UFUNCTION()
     FText BonfirePage_HintText() const
     {
-        FVM_BonfirePage_Supply& local_2;
+        FVM_BonfirePage_Supply& local_2 = this.BonfirePage.Get();
         FText local_12 = local_2 ? local_2.GetHintText() : FText();
         return local_12;
     }
     UFUNCTION()
     FText BonfirePage_ButtonText() const
     {
-        FVM_BonfirePage_Supply& local_2;
+        FVM_BonfirePage_Supply& local_2 = this.BonfirePage.Get();
         FText local_12 = local_2 ? local_2.GetButtonText() : FText();
         return local_12;
     }
     UFUNCTION()
     FText BonfirePage_ConsumeKeyText() const
     {
-        FVM_BonfirePage_Supply& local_2;
+        FVM_BonfirePage_Supply& local_2 = this.BonfirePage.Get();
         FText local_12 = local_2 ? local_2.GetConsumeKeyText() : FText();
         return local_12;
     }
     UFUNCTION()
     FText BonfirePage_SupplyHintText() const
     {
-        FVM_BonfirePage_Supply& local_2;
+        FVM_BonfirePage_Supply& local_2 = this.BonfirePage.Get();
         FText local_12 = local_2 ? local_2.GetSupplyHintText() : FText();
         return local_12;
     }
     UFUNCTION()
     float32 BonfirePage_ConsumeOpacity() const
     {
-        FVM_BonfirePage_Supply& local_2;
+        FVM_BonfirePage_Supply& local_2 = this.BonfirePage.Get();
         return local_2 ? local_2.GetConsumeOpacity() : 0.0f;
     }
     UFUNCTION()
     TArray<FEUIModelWeakRef> BonfirePage_ItemRefs() const
     {
-        FVM_BonfirePage_Supply& local_2;
+        FVM_BonfirePage_Supply& local_2 = this.BonfirePage.Get();
         TArray<FEUIModelWeakRef> local_16;
         if (local_2)
         {
@@ -187,7 +185,7 @@ class UPage_BonfirePage_Supply : UEUIActivatableWidget
     UFUNCTION()
     float32 BonfirePage_FillPercent() const
     {
-        FVM_BonfirePage_Supply& local_2;
+        FVM_BonfirePage_Supply& local_2 = this.BonfirePage.Get();
         return local_2 ? local_2.GetFillPercent() : 0.0f;
     }
     UFUNCTION()

@@ -96,6 +96,8 @@ class US_ItemQuickSlotSystem : UECSScriptSystem
         {
             FFPTime local_26 = FFPTime(-1);
             local_30.QuickSlot = local_20.GetKey();
+            local_30.OldItem = local_20.GetValue().OldItem;
+            local_30.NewItem = local_20.GetValue().NewItem;
         }
         Remove local_82;
         local_82.opCall();
@@ -118,6 +120,7 @@ class US_ItemQuickSlotSystem : UECSScriptSystem
             }
             else
             {
+                local_16.GetModify_QuickSlots().Remove(QuickSlot);
             }
         }
         return;

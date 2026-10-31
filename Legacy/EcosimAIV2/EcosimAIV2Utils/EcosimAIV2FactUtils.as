@@ -47,7 +47,7 @@ FString GetEntityShowName(const FECSEntity &inout Entity)
     {
         if (local_6.ConfigPtr && local_6.ConfigPtr.IsSet())
         {
-            return FString();
+            return local_6.ConfigPtr.Get().DisplayName.ToString();
         }
     }
     return "";

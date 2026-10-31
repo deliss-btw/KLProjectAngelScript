@@ -295,11 +295,9 @@ FVM_EquipHoverTips& Create(const UObject ContextObject)
 {
     return FVM_EquipHoverTips::CreateByManager(EUIInternal::GetContextManager(ContextObject));
 }
-FVM_EquipHoverTips CreateByManager(const UEUIManagerSubsystem Manager)
+FVM_EquipHoverTips& CreateByManager(const UEUIManagerSubsystem Manager)
 {
-    FVM_EquipHoverTips __r;
-    TEUIModelRef<FVM_EquipHoverTips> local_6 = TEUIModelRef<FVM_EquipHoverTips>(EUIInternal::MakeModelWithManager(Manager, FVM_EquipHoverTips::ModelId));
-    return __r;
+    return TEUIModelRef<FVM_EquipHoverTips>(EUIInternal::MakeModelWithManager(Manager, FVM_EquipHoverTips::ModelId)).Get();
 }
 void GetModelInfo(FEUIViewModelMetaInfo &inout Result)
 {
@@ -431,7 +429,6 @@ namespace __GeneratedProperties_FVM_EquipHoverTips
 {
 UScriptStruct StaticStruct()
 {
-    UScriptStruct local_2;
-    return local_2;
+    return __GeneratedProperties_FVM_EquipHoverTips.Get();
 }
 }

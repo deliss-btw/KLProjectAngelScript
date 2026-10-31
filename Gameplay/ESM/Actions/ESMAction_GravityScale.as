@@ -38,14 +38,13 @@ class UESMAction_GravityScale : UESMBPBaseSpanAction
     void Exit_Implementation(const FESMContext &inout Context, const FESMActionTime &inout Time) const
     {
         int local_10 = 0;
-        float32 local_15 = 0.0f;
         const FECSEntity& local_2 = Context.GetEntity();
         Has local_6;
         if (local_6.opCall() == false)
         {
             return;
         }
-        local_10.SetGravityScale(local_15);
+        local_10.SetGravityScale(this.GetInstanceData(Context).OriginGravityScale);
         return;
     }
     FESMActionGravityScaleInstanceData GetInstanceData(const FESMContext &inout Context) const

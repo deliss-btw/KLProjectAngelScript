@@ -53,7 +53,31 @@ void PushLayerConduitCamera(FC_PresentationCameraContext &inout PresentationCame
 }
 void PopCamera(FPresentationCameraParamsContext &inout CameraParamsContext, const FName &inout CameraName)
 {
-    // body not fully recovered — stub [unresolved-operand]
+    FCameraPairIndex local_4;
+    local_4.SetCameraName(CameraName);
+    int local_5 = 0;
+    for (; local_5 < CameraParamsContext.GetCameraLayeredStack().Num(); ++local_5)
+    {
+        if (CameraParamsContext.GetModify_CameraLayeredStack()[local_5].Remove(local_4))
+        {
+            break;
+        }
+    }
+    if (CameraParamsContext.GetFixedCameras().Contains(CameraName))
+    {
+        CameraParamsContext.GetModify_FixedCameras().Remove(CameraName);
+        return;
+    }
+    if (CameraParamsContext.GetSpringArmCameras().Contains(CameraName))
+    {
+        CameraParamsContext.GetModify_SpringArmCameras().Remove(CameraName);
+        return;
+    }
+    if (CameraParamsContext.GetAnimatedCameras().Contains(CameraName))
+    {
+        CameraParamsContext.GetModify_AnimatedCameras().Remove(CameraName);
+    }
+    return;
 }
 void ProcessPendingCameraEventDatas(FPresentationCameraParamsContext &inout CameraParamsContext)
 {

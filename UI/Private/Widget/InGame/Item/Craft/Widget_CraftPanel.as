@@ -27,7 +27,7 @@ class UWidget_CraftableItem : UEUIUserListItemWidget
     UFUNCTION()
     TEUIModelRef<FVM_Item> Craft_Item() const
     {
-        FVM_CraftableItem& local_2;
+        FVM_CraftableItem& local_2 = this.Craft.Get();
         TEUIModelRef<FVM_Item> local_10;
         if (local_2)
         {
@@ -42,7 +42,7 @@ class UWidget_CraftableItem : UEUIUserListItemWidget
     UFUNCTION()
     TEUIModelRef<FVM_ComposableItem> Craft_ComposableItem() const
     {
-        FVM_CraftableItem& local_2;
+        FVM_CraftableItem& local_2 = this.Craft.Get();
         TEUIModelRef<FVM_ComposableItem> local_10;
         if (local_2)
         {
@@ -57,7 +57,7 @@ class UWidget_CraftableItem : UEUIUserListItemWidget
     UFUNCTION()
     TEUIModelRef<FVM_SelectableItem> Craft_SelectableItem() const
     {
-        FVM_CraftableItem& local_2;
+        FVM_CraftableItem& local_2 = this.Craft.Get();
         TEUIModelRef<FVM_SelectableItem> local_10;
         if (local_2)
         {
@@ -72,7 +72,7 @@ class UWidget_CraftableItem : UEUIUserListItemWidget
     UFUNCTION()
     TEUIModelRef<FVM_EquipmentInfo> Craft_Equipment() const
     {
-        FVM_CraftableItem& local_2;
+        FVM_CraftableItem& local_2 = this.Craft.Get();
         TEUIModelRef<FVM_EquipmentInfo> local_10;
         if (local_2)
         {
@@ -220,7 +220,7 @@ class UWidget_CraftPanel : UEUIActivatableWidget
     UFUNCTION()
     TEUIModelRef<FVM_QualitySelector> Craft_CraftQuality() const
     {
-        FVM_ItemCraft& local_2;
+        FVM_ItemCraft& local_2 = this.Craft.Get();
         TEUIModelRef<FVM_QualitySelector> local_10;
         if (local_2)
         {
@@ -235,7 +235,7 @@ class UWidget_CraftPanel : UEUIActivatableWidget
     UFUNCTION()
     TEUIModelRef<FVM_CraftableItem> Craft_CurrentCraft() const
     {
-        FVM_ItemCraft& local_2;
+        FVM_ItemCraft& local_2 = this.Craft.Get();
         TEUIModelRef<FVM_CraftableItem> local_10;
         if (local_2)
         {
@@ -250,7 +250,7 @@ class UWidget_CraftPanel : UEUIActivatableWidget
     UFUNCTION()
     TDataObjectPtr<FItemConfig> Craft_CurrentCraftItemConfig() const
     {
-        FVM_ItemCraft& local_2;
+        FVM_ItemCraft& local_2 = this.Craft.Get();
         TDataObjectPtr<FItemConfig> local_52;
         if (local_2)
         {
@@ -265,8 +265,8 @@ class UWidget_CraftPanel : UEUIActivatableWidget
     UFUNCTION()
     bool Craft_bCanDoCurrentCraft() const
     {
-        FVM_ItemCraft& local_2;
         bool local_5;
+        FVM_ItemCraft& local_2 = this.Craft.Get();
         if (local_2)
         {
             local_5 = local_2.GetbCanDoCurrentCraft();
@@ -280,8 +280,8 @@ class UWidget_CraftPanel : UEUIActivatableWidget
     UFUNCTION()
     bool Craft_bCurrentCraftUnlocked() const
     {
-        FVM_ItemCraft& local_2;
         bool local_5;
+        FVM_ItemCraft& local_2 = this.Craft.Get();
         if (local_2)
         {
             local_5 = local_2.GetbCurrentCraftUnlocked();
@@ -295,7 +295,7 @@ class UWidget_CraftPanel : UEUIActivatableWidget
     UFUNCTION()
     TArray<FEUIModelWeakRef> Craft_AllCraftableItems() const
     {
-        FVM_ItemCraft& local_2;
+        FVM_ItemCraft& local_2 = this.Craft.Get();
         TArray<FEUIModelWeakRef> local_16;
         if (local_2)
         {
@@ -310,7 +310,7 @@ class UWidget_CraftPanel : UEUIActivatableWidget
     UFUNCTION()
     TArray<FEUIModelWeakRef> Craft_CraftConsumeRewards() const
     {
-        FVM_ItemCraft& local_2;
+        FVM_ItemCraft& local_2 = this.Craft.Get();
         TArray<FEUIModelWeakRef> local_16;
         if (local_2)
         {
@@ -325,7 +325,7 @@ class UWidget_CraftPanel : UEUIActivatableWidget
     UFUNCTION()
     TEUIModelRef<FVM_CommonItem> Craft_CurrentCommonItem() const
     {
-        FVM_ItemCraft& local_2;
+        FVM_ItemCraft& local_2 = this.Craft.Get();
         TEUIModelRef<FVM_CommonItem> local_10;
         if (local_2)
         {
@@ -340,7 +340,7 @@ class UWidget_CraftPanel : UEUIActivatableWidget
     UFUNCTION()
     TEUIModelRef<FVM_CommonConsume> Craft_CurrentCommonConsume() const
     {
-        FVM_ItemCraft& local_2;
+        FVM_ItemCraft& local_2 = this.Craft.Get();
         TEUIModelRef<FVM_CommonConsume> local_10;
         if (local_2)
         {
@@ -355,15 +355,15 @@ class UWidget_CraftPanel : UEUIActivatableWidget
     UFUNCTION()
     FSlateBrush Craft_CurrentCraftItemIcon() const
     {
-        FVM_ItemCraft& local_2;
+        FVM_ItemCraft& local_2 = this.Craft.Get();
         FSlateBrush local_136 = local_2 ? local_2.CurrentCraftItemIcon() : FSlateBrush();
         return local_136;
     }
     UFUNCTION()
     bool Craft_CurrentCraftIsLocked() const
     {
-        FVM_ItemCraft& local_2;
         bool local_5;
+        FVM_ItemCraft& local_2 = this.Craft.Get();
         if (local_2)
         {
             local_5 = local_2.GetCurrentCraftIsLocked();
@@ -377,7 +377,7 @@ class UWidget_CraftPanel : UEUIActivatableWidget
     UFUNCTION()
     int Craft_CurrentCraftSwitcherIndex() const
     {
-        FVM_ItemCraft& local_2;
+        FVM_ItemCraft& local_2 = this.Craft.Get();
         return local_2 ? local_2.GetCurrentCraftSwitcherIndex() : 0;
     }
     UFUNCTION()
@@ -411,8 +411,8 @@ class UWidget_CraftPanel : UEUIActivatableWidget
     }
     void HandleObservedModelChanges(FEUIReactiveSubscriberIterator &inout It)
     {
-        FVM_ItemCraft& local_6;
         TEUIModelRef<FVM_ItemCraft> local_2 = this.Craft.AsRef();
+        FVM_ItemCraft& local_6 = local_2.Get();
         for (; It; )
         {
             FEUIReactiveSubscriberTrackScope local_56 = FEUIReactiveSubscriberTrackScope(It);

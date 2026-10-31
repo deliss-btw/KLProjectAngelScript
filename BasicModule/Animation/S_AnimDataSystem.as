@@ -62,7 +62,6 @@ class US_AnimDataSystemAS : UECSScriptSystem
     UFUNCTION()
     void Job_TuneESMBBFloat(const FECSEntity &inout Entity, FC_TuneESMBBFloat &inout TuneESMBBFloat, const FCS_FixedTime &inout FixedTime) const
     {
-        FTuneFloatData& local_24;
         float32 local_27;
         float32 local_28;
         float32 local_32;
@@ -71,6 +70,7 @@ class US_AnimDataSystemAS : UECSScriptSystem
         float32 local_2 = FixedTime.DeltaTime;
         for (auto& local_22 : TuneESMBBFloat.GetModify_DataMap())
         {
+            FTuneFloatData& local_24 = local_22.GetValue();
             const FTuneFloatConfig& local_26 = local_24.GetCurrentConfig();
             float32 local_1 = local_24.GetSpanElapsed() + local_2;
             local_24.SetSpanElapsed(local_1);
@@ -136,7 +136,8 @@ class US_AnimDataSystemAS : UECSScriptSystem
             FC_TuneESMBBFloatValue& local_50 = local_48.opCall();
             if (local_50)
             {
-                local_50.SetTunedValueBySourceName(local_22_2.GetKey(), (local_24.GetTunedValue() * local_24.GetBlendAlpha()));
+                FTuneFloatData& local_24_2 = local_22_2.GetValue();
+                local_50.SetTunedValueBySourceName(local_22_2.GetKey(), (local_24_2.GetTunedValue() * local_24_2.GetBlendAlpha()));
             }
         }
         return;

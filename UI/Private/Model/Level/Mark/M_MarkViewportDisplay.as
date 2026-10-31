@@ -50,6 +50,7 @@ struct FMS_MarkViewportDisplay : FEUIModelSingleton
     }
     void OnMarkSpotRemoved(const FMsg_InterestedSpotRemoved &inout Msg)
     {
+        this.GetModify_PositionMarks().Remove(Msg.Spot);
         return;
     }
     TEUIModelRef<FM_SpotView> GetMarkSpotView() const property
@@ -100,11 +101,9 @@ FMS_MarkViewportDisplay& Get(const UObject ContextObject)
 {
     return FMS_MarkViewportDisplay::GetByManager(EUIInternal::GetContextManager(ContextObject));
 }
-FMS_MarkViewportDisplay GetByManager(const UEUIManagerSubsystem Manager)
+FMS_MarkViewportDisplay& GetByManager(const UEUIManagerSubsystem Manager)
 {
-    FMS_MarkViewportDisplay __r;
-    TEUIModelRef<FMS_MarkViewportDisplay> local_6 = TEUIModelRef<FMS_MarkViewportDisplay>(EUIInternal::MakeModelWithManager(Manager, FMS_MarkViewportDisplay::ModelId));
-    return __r;
+    return TEUIModelRef<FMS_MarkViewportDisplay>(EUIInternal::MakeModelWithManager(Manager, FMS_MarkViewportDisplay::ModelId)).Get();
 }
 void GetModelInfo(FEUIModelOnlyMetaInfo &inout Result)
 {

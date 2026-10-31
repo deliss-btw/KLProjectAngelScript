@@ -82,9 +82,6 @@ class USPT_FixBoneDriver : USkeletalPoseTweaker
     void OnInitialization_Implementation()
     {
         int local_1;
-        FFixBoneControllerData& local_154;
-        const FFixBonePoseData& local_246;
-        FFixBoneTargetBoneInfo& local_288;
         this.RuntimeTargets.Empty(0);
         this.TargetIndexByName.Empty(0);
         this.TargetOwnerControllerIndex.Empty(0);
@@ -113,7 +110,7 @@ class USPT_FixBoneDriver : USkeletalPoseTweaker
             {
                 continue;
             }
-            local_154 = this.Config.ControllerPoses[local_20];
+            FFixBoneControllerData& local_154 = this.Config.ControllerPoses[local_20];
             if (!(local_154.TrueTargetBone.IsNone()))
             {
                 local_152.TrueTargetBoneRef.SetBoneName(local_154.TrueTargetBone);
@@ -145,9 +142,10 @@ class USPT_FixBoneDriver : USkeletalPoseTweaker
                 continue;
             }
             local_1 = this.ControllerIndexByName[local_226];
-            for (auto& local_244 : local_154.Poses)
+            FFixBoneControllerData& local_154_2 = local_224.GetValue();
+            for (auto& local_244 : local_154_2.Poses)
             {
-                local_244;
+                const FFixBonePoseData& local_246 = local_244.GetValue();
                 for (auto& local_264 : local_246.BoneData)
                 {
                     FName local_266 = local_264.GetKey();
@@ -167,6 +165,7 @@ class USPT_FixBoneDriver : USkeletalPoseTweaker
         for (auto& local_286 : this.Config.TargetBones)
         {
             FName local_266_2 = local_286.GetKey();
+            FFixBoneTargetBoneInfo& local_288 = local_286.GetValue();
             if (!(this.TargetOwnerControllerIndex.Contains(local_266_2)))
             {
                 continue;
@@ -194,7 +193,6 @@ class USPT_FixBoneDriver : USkeletalPoseTweaker
     UFUNCTION()
     void EvaluatePose_Implementation()
     {
-        const FFixBonePoseData& local_186;
         if ((!((this.Config != nullptr))))
         {
             return;
@@ -247,7 +245,7 @@ class USPT_FixBoneDriver : USkeletalPoseTweaker
             FFixBoneControllerData& local_166 = this.Config.ControllerPoses[local_8_2.Name];
             for (auto& local_184 : local_166.Poses)
             {
-                local_184;
+                const FFixBonePoseData& local_186 = local_184.GetValue();
                 float32 local_188 = this.ComputePoseWeight(local_186, local_8_2.FrameAdditiveOffset);
                 if (local_188 <= 0.0001f)
                 {

@@ -59,11 +59,11 @@ void SendAudioVoEventOnlyPresentation(const FName &inout VoRowName, const FECSEn
 UFUNCTION()
 void HandleAudioVoEvent(const FAudioVoInfo &inout AudioVoInfo, const bool bDebug, const bool bPrintOnScreen)
 {
-    UDataTable local_14;
     if (bDebug)
     {
         XLog(ELog(0), FString().Append("HandleAudioVoEvent Entity:").Append(AudioVoInfo.GetEntity().GetEntityName()).Append("  Audio Vo Path: ").Append(AudioVoInfo.GetVoRowName()));
     }
+    UDataTable local_14 = UGameplayConfigsManager::GetAudioVoTable().Get();
     if (local_14 == nullptr)
     {
         XWarning(ELog(0), "HandleAudioVoEvent can not find datatable: AudioVo Table");
@@ -115,6 +115,8 @@ FECSEntity GetDeterministicRandomTeamate(const FECSEntity &inout Entity, const F
     }
     if (local_8.Num() > 0)
     {
+        __Lambda_BasicModule_Audio_AudioVo_AudioVoUtils_142 local_42;
+        local_8.Sort(local_42);
         int64 local_46 = Time.GetTicks();
         int64 local_48 = (Entity.GetIdValue() + local_46) % local_8.Num();
         int local_40 = local_48;

@@ -12,6 +12,8 @@ struct FASBossTrackingWaitForDiscovered : FECSAsyncAction
     UPROPERTY()
     FECSAsyncActionDelegate_Entity OnDiscovered;
 
+    default m_ScriptOverrideMeta = Cast<UASStruct>(FASBossTrackingWaitForDiscovered.Get());
+
     FASBossTrackingWaitForDiscovered()
     {
         this.DiscoverDistance = 3000.0f;
@@ -91,6 +93,8 @@ struct FASBossTrackingWaitForChangeArea : FECSAsyncAction
     FECSAsyncActionDelegate OnChangeAreaStarted;
     UPROPERTY()
     FECSAsyncActionDelegate OnChangeAreaFinished;
+
+    default m_ScriptOverrideMeta = Cast<UASStruct>(FASBossTrackingWaitForChangeArea.Get());
 
     FASBossTrackingWaitForChangeArea()
     {
@@ -194,6 +198,8 @@ struct FASBossTrackingWaitForBossSpawned : FECSAsyncAction
     float32 ElapsedSinceLastCheck;
     UPROPERTY()
     FECSAsyncActionDelegate OnBossSpawned;
+
+    default m_ScriptOverrideMeta = Cast<UASStruct>(FASBossTrackingWaitForBossSpawned.Get());
 
     FASBossTrackingWaitForBossSpawned()
     {
@@ -311,7 +317,8 @@ TDataObjectPtr<FCommissionEntryRuleConfig> BossTracking_GetEntryRuleConfig()
 UFUNCTION()
 bool BossTracking_IsBossTrackingRule()
 {
-    return BlueprintFunctions_BossTracking::BossTracking_GetEntryRuleConfig().IsSet() && (0 == 2);
+    TDataObjectPtr<FCommissionEntryRuleConfig> local_24 = BlueprintFunctions_BossTracking::BossTracking_GetEntryRuleConfig();
+    return local_24.IsSet() && (int(local_24.Get().RuleType) == 2);
 }
 UFUNCTION()
 bool BossTracking_CheckAnyPlayerNearTarget(const FECSEntity &inout TargetEntity, const float32 DiscoverDistance = 3000.0f)

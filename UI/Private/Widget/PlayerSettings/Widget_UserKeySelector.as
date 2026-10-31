@@ -36,26 +36,13 @@ class UWidget_UserKeySelector : UEUIUserListItemWidget
             return FEventReply::Unhandled();
         }
         FVector2D local_60 = MyGeometry.AbsoluteToLocal(MouseEvent.GetScreenSpacePosition());
-        TEUIModelRef<FVM_PlayerKeyMapping> local_68;
-        local_68.GetMapping1();
-        if (!(local_68.IsValid()))
+        if (!(this.KeyMappingPair.Get().GetMapping1().IsValid()))
         {
             this.OnHoverIndex0();
         }
         else
         {
-            local_68.GetMapping1();
-            bool local_1 = local_68.IsValid();
-            if (!(local_1))
-            {
-                local_1 = false;
-            }
-            else
-            {
-                local_68.GetMapping0();
-                local_1 = local_68.IsValid();
-            }
-            if (local_1)
+            if (this.KeyMappingPair.Get().GetMapping1().IsValid() && this.KeyMappingPair.Get().GetMapping0().IsValid())
             {
                 if (local_60.X > (MyGeometry.GetLocalSize().X * 0.5))
                 {
@@ -91,7 +78,7 @@ class UWidget_UserKeySelector : UEUIUserListItemWidget
             this.OnHoverIndex0();
             this.OnUnhoverIndex1();
         }
-        if (this.KeyMappingPair.IsValid() && GetbIsGamepadSelector())
+        if (this.KeyMappingPair.IsValid() && this.KeyMappingPair.Get().GetbIsGamepadSelector())
         {
             return;
         }
@@ -105,75 +92,45 @@ class UWidget_UserKeySelector : UEUIUserListItemWidget
     UFUNCTION()
     void OnHoverIndex0()
     {
-        TEUIModelRef<FVM_PlayerKeyMapping> local_2;
-        local_2.GetMapping0();
-        int local_4 = local_2.IsValid() ? 1 : 0;
-        local_4.SetHoverIndex0();
+        int local_4 = this.KeyMappingPair.Get().GetMapping0().IsValid() ? 1 : 0;
+        this.KeyMappingPair.Get().SetHoverIndex0(local_4);
         return;
     }
     UFUNCTION()
     void OnHoverIndex1()
     {
-        TEUIModelRef<FVM_PlayerKeyMapping> local_2;
-        local_2.GetMapping1();
-        int local_4 = local_2.IsValid() ? 1 : 0;
-        local_4.SetHoverIndex1();
+        int local_4 = this.KeyMappingPair.Get().GetMapping1().IsValid() ? 1 : 0;
+        this.KeyMappingPair.Get().SetHoverIndex1(local_4);
         return;
     }
     UFUNCTION()
     void OnUnhoverIndex0()
     {
-        TEUIModelRef<FVM_PlayerKeyMapping> local_2;
-        local_2.GetMapping0();
-        if (!(local_2.IsValid()))
+        if (!(this.KeyMappingPair.Get().GetMapping0().IsValid()))
         {
             return;
         }
-        0.SetHoverIndex0();
+        this.KeyMappingPair.Get().SetHoverIndex0(0);
         return;
     }
     UFUNCTION()
     void OnUnhoverIndex1()
     {
-        TEUIModelRef<FVM_PlayerKeyMapping> local_2;
-        local_2.GetMapping1();
-        if (!(local_2.IsValid()))
+        if (!(this.KeyMappingPair.Get().GetMapping1().IsValid()))
         {
             return;
         }
-        0.SetHoverIndex1();
+        this.KeyMappingPair.Get().SetHoverIndex1(0);
         return;
     }
     UFUNCTION()
     void ChangeButtonVisibility0()
     {
-        bool local_7;
         int local_14;
         int local_15;
-        if (this.w_btn == nullptr)
+        if (this.w_btn != nullptr && this.KeyMappingPair.Get().GetMapping0().IsValid())
         {
-            local_7 = false;
-        }
-        else
-        {
-            TEUIModelRef<FVM_PlayerKeyMapping> local_2;
-            local_2.GetMapping0();
-            local_7 = local_2.IsValid();
-        }
-        if (local_7)
-        {
-            TEUIModelRef<FVM_PlayerKeyMapping> local_2;
-            bool local_3 = !(GetbIsGamepadSelector()) && (int(::UICommonUtil::GetCurrentInputType(this.GetOwningLocalPlayer())) == 1);
-            if (local_3)
-            {
-                local_3 = true;
-            }
-            else
-            {
-                local_2.GetMapping0();
-                local_3 = !(GetbConfigurable());
-            }
-            if (local_3)
+            if ((!(this.KeyMappingPair.Get().GetbIsGamepadSelector()) && (int(::UICommonUtil::GetCurrentInputType(this.GetOwningLocalPlayer())) == 1)) || !(this.KeyMappingPair.Get().GetMapping0().Get().GetbConfigurable()))
             {
                 local_15 = 0;
                 local_14 = local_15;
@@ -190,33 +147,11 @@ class UWidget_UserKeySelector : UEUIUserListItemWidget
     UFUNCTION()
     void ChangeButtonVisibility1()
     {
-        bool local_7;
         int local_14;
         int local_15;
-        if (this.w_btn_1 == nullptr)
+        if (this.w_btn_1 != nullptr && this.KeyMappingPair.Get().GetMapping1().IsValid())
         {
-            local_7 = false;
-        }
-        else
-        {
-            TEUIModelRef<FVM_PlayerKeyMapping> local_2;
-            local_2.GetMapping1();
-            local_7 = local_2.IsValid();
-        }
-        if (local_7)
-        {
-            TEUIModelRef<FVM_PlayerKeyMapping> local_2;
-            bool local_3 = !(GetbIsGamepadSelector()) && (int(::UICommonUtil::GetCurrentInputType(this.GetOwningLocalPlayer())) == 1);
-            if (local_3)
-            {
-                local_3 = true;
-            }
-            else
-            {
-                local_2.GetMapping1();
-                local_3 = !(GetbConfigurable());
-            }
-            if (local_3)
+            if ((!(this.KeyMappingPair.Get().GetbIsGamepadSelector()) && (int(::UICommonUtil::GetCurrentInputType(this.GetOwningLocalPlayer())) == 1)) || !(this.KeyMappingPair.Get().GetMapping1().Get().GetbConfigurable()))
             {
                 local_15 = 0;
                 local_14 = local_15;
@@ -233,18 +168,7 @@ class UWidget_UserKeySelector : UEUIUserListItemWidget
     UFUNCTION()
     bool IsKeyValid0(const FKey &inout Key) const
     {
-        bool local_1;
-        if (!(this.KeyMappingPair.IsValid()))
-        {
-            local_1 = false;
-        }
-        else
-        {
-            TEUIModelRef<FVM_PlayerKeyMapping> local_4;
-            local_4.GetMapping0();
-            local_1 = local_4.IsValid();
-        }
-        if (local_1)
+        if (this.KeyMappingPair.IsValid() && this.KeyMappingPair.Get().GetMapping0().IsValid())
         {
             return this.KeyMappingPair.opArrow().GetMapping0().opArrow().IsValid(Key);
         }
@@ -253,18 +177,7 @@ class UWidget_UserKeySelector : UEUIUserListItemWidget
     UFUNCTION()
     bool IsKeyValid1(const FKey &inout Key) const
     {
-        bool local_1;
-        if (!(this.KeyMappingPair.IsValid()))
-        {
-            local_1 = false;
-        }
-        else
-        {
-            TEUIModelRef<FVM_PlayerKeyMapping> local_4;
-            local_4.GetMapping1();
-            local_1 = local_4.IsValid();
-        }
-        if (local_1)
+        if (this.KeyMappingPair.IsValid() && this.KeyMappingPair.Get().GetMapping1().IsValid())
         {
             return this.KeyMappingPair.opArrow().GetMapping1().opArrow().IsValid(Key);
         }
@@ -275,18 +188,7 @@ class UWidget_UserKeySelector : UEUIUserListItemWidget
     {
         int local_96 = 0;
         UWidget_KeySelectionPage local_104;
-        bool local_1 = !(this.KeyMappingPair.IsValid());
-        if (local_1)
-        {
-            local_1 = true;
-        }
-        else
-        {
-            TEUIModelRef<FVM_PlayerKeyMapping> local_4;
-            local_4.GetMapping0();
-            local_1 = !(local_4.IsValid());
-        }
-        if (local_1)
+        if (!(this.KeyMappingPair.IsValid()) || !(this.KeyMappingPair.Get().GetMapping0().IsValid()))
         {
             return;
         }
@@ -330,8 +232,8 @@ class UWidget_UserKeySelector : UEUIUserListItemWidget
     UFUNCTION()
     bool KeyMappingPair_bHasChordKey0() const
     {
-        FVM_PlayerKeyMappingPair& local_2;
         bool local_5;
+        FVM_PlayerKeyMappingPair& local_2 = this.KeyMappingPair.Get();
         if (local_2)
         {
             local_5 = local_2.GetbHasChordKey0();
@@ -345,8 +247,8 @@ class UWidget_UserKeySelector : UEUIUserListItemWidget
     UFUNCTION()
     bool KeyMappingPair_bHasChordKey1() const
     {
-        FVM_PlayerKeyMappingPair& local_2;
         bool local_5;
+        FVM_PlayerKeyMappingPair& local_2 = this.KeyMappingPair.Get();
         if (local_2)
         {
             local_5 = local_2.GetbHasChordKey1();
@@ -421,8 +323,8 @@ class UWidget_UserKeySelector : UEUIUserListItemWidget
     }
     void HandleObservedModelChanges(FEUIReactiveSubscriberIterator &inout It)
     {
-        FVM_PlayerKeyMappingPair& local_6;
         TEUIModelRef<FVM_PlayerKeyMappingPair> local_2 = this.KeyMappingPair.AsRef();
+        FVM_PlayerKeyMappingPair& local_6 = local_2.Get();
         for (; It; )
         {
             FEUIReactiveSubscriberTrackScope local_56 = FEUIReactiveSubscriberTrackScope(It);

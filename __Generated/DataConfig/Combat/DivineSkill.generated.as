@@ -3,7 +3,6 @@ namespace __FDivineSkillConfigFunctions
 UFUNCTION()
 bool __FDivineSkillConfig_GetbDefaultUnlock(const TDataObjectPtr<FDivineSkillConfig> &inout DataObject)
 {
-    bool local_1 = false;
     if ((DataObject == nullptr))
     {
         if (!(EUIGlobals::GIsDuringPropertyConversion))
@@ -13,12 +12,11 @@ bool __FDivineSkillConfig_GetbDefaultUnlock(const TDataObjectPtr<FDivineSkillCon
         FDivineSkillConfig local_192;
         return local_192.bDefaultUnlock;
     }
-    return local_1;
+    return DataObject.Get().bDefaultUnlock;
 }
 UFUNCTION()
 EDivineSkillType __FDivineSkillConfig_GetDivineSkillType(const TDataObjectPtr<FDivineSkillConfig> &inout DataObject)
 {
-    int local_193 = 0;
     if ((DataObject == nullptr))
     {
         if (!(EUIGlobals::GIsDuringPropertyConversion))
@@ -26,10 +24,9 @@ EDivineSkillType __FDivineSkillConfig_GetDivineSkillType(const TDataObjectPtr<FD
             FBlueprintDebugFunctions::ThrowScriptException("Get 'DivineSkillType' from a null 'FDivineSkillConfig' DataObject!");
         }
         FDivineSkillConfig local_192;
-        local_193 = int(local_192.DivineSkillType);
-        return EDivineSkillType(local_193);
+        return local_192.DivineSkillType;
     }
-    return EDivineSkillType(local_193);
+    return DataObject.Get().DivineSkillType;
 }
 UFUNCTION()
 TDataObjectPtr<FDivineSkillConfig> __FDivineSkillConfig_GetUpgradeSkill(const TDataObjectPtr<FDivineSkillConfig> &inout DataObject)
@@ -43,12 +40,11 @@ TDataObjectPtr<FDivineSkillConfig> __FDivineSkillConfig_GetUpgradeSkill(const TD
         FDivineSkillConfig local_192;
         return local_192.GetUpgradeSkill();
     }
-    return GetUpgradeSkill();
+    return DataObject.Get().GetUpgradeSkill();
 }
 UFUNCTION()
 FText __FDivineSkillConfig_GetDisplayName(const TDataObjectPtr<FDivineSkillConfig> &inout DataObject)
 {
-    FText __r;
     if ((DataObject == nullptr))
     {
         if (!(EUIGlobals::GIsDuringPropertyConversion))
@@ -58,12 +54,11 @@ FText __FDivineSkillConfig_GetDisplayName(const TDataObjectPtr<FDivineSkillConfi
         FDivineSkillConfig local_192;
         return local_192.DisplayName;
     }
-    return __r;
+    return DataObject.Get().DisplayName;
 }
 UFUNCTION()
 FText __FDivineSkillConfig_GetCostDescription(const TDataObjectPtr<FDivineSkillConfig> &inout DataObject)
 {
-    FText __r;
     if ((DataObject == nullptr))
     {
         if (!(EUIGlobals::GIsDuringPropertyConversion))
@@ -73,12 +68,11 @@ FText __FDivineSkillConfig_GetCostDescription(const TDataObjectPtr<FDivineSkillC
         FDivineSkillConfig local_192;
         return local_192.CostDescription;
     }
-    return __r;
+    return DataObject.Get().CostDescription;
 }
 UFUNCTION()
 FText __FDivineSkillConfig_GetAttributeDescription(const TDataObjectPtr<FDivineSkillConfig> &inout DataObject)
 {
-    FText __r;
     if ((DataObject == nullptr))
     {
         if (!(EUIGlobals::GIsDuringPropertyConversion))
@@ -88,12 +82,11 @@ FText __FDivineSkillConfig_GetAttributeDescription(const TDataObjectPtr<FDivineS
         FDivineSkillConfig local_192;
         return local_192.AttributeDescription;
     }
-    return __r;
+    return DataObject.Get().AttributeDescription;
 }
 UFUNCTION()
 FText __FDivineSkillConfig_GetDescription(const TDataObjectPtr<FDivineSkillConfig> &inout DataObject)
 {
-    FText __r;
     if ((DataObject == nullptr))
     {
         if (!(EUIGlobals::GIsDuringPropertyConversion))
@@ -103,12 +96,11 @@ FText __FDivineSkillConfig_GetDescription(const TDataObjectPtr<FDivineSkillConfi
         FDivineSkillConfig local_192;
         return local_192.Description;
     }
-    return __r;
+    return DataObject.Get().Description;
 }
 UFUNCTION()
 FText __FDivineSkillConfig_GetBackgroundDescription(const TDataObjectPtr<FDivineSkillConfig> &inout DataObject)
 {
-    FText __r;
     if ((DataObject == nullptr))
     {
         if (!(EUIGlobals::GIsDuringPropertyConversion))
@@ -118,12 +110,11 @@ FText __FDivineSkillConfig_GetBackgroundDescription(const TDataObjectPtr<FDivine
         FDivineSkillConfig local_192;
         return local_192.BackgroundDescription;
     }
-    return __r;
+    return DataObject.Get().BackgroundDescription;
 }
 UFUNCTION()
 FSoftBrush __FDivineSkillConfig_GetDisplayIcon(const TDataObjectPtr<FDivineSkillConfig> &inout DataObject)
 {
-    FSoftBrush __r;
     if ((DataObject == nullptr))
     {
         if (!(EUIGlobals::GIsDuringPropertyConversion))
@@ -133,7 +124,7 @@ FSoftBrush __FDivineSkillConfig_GetDisplayIcon(const TDataObjectPtr<FDivineSkill
         FDivineSkillConfig local_192;
         return local_192.DisplayIcon;
     }
-    return __r;
+    return DataObject.Get().DisplayIcon;
 }
 UFUNCTION()
 TDataObjectPtr<FDivineSkillTypeConfig> __FDivineSkillConfig_GetTypeConfig(const TDataObjectPtr<FDivineSkillConfig> &inout DataObject)
@@ -147,7 +138,7 @@ TDataObjectPtr<FDivineSkillTypeConfig> __FDivineSkillConfig_GetTypeConfig(const 
         FDivineSkillConfig local_192;
         return local_192.GetTypeConfig();
     }
-    return GetTypeConfig();
+    return DataObject.Get().GetTypeConfig();
 }
 UFUNCTION()
 TDataObjectPtr<FDivineLiteraryTypeConfig> __FDivineSkillConfig_GetLiteraryTypeConfig(const TDataObjectPtr<FDivineSkillConfig> &inout DataObject)
@@ -161,7 +152,7 @@ TDataObjectPtr<FDivineLiteraryTypeConfig> __FDivineSkillConfig_GetLiteraryTypeCo
         FDivineSkillConfig local_192;
         return local_192.GetLiteraryTypeConfig();
     }
-    return GetLiteraryTypeConfig();
+    return DataObject.Get().GetLiteraryTypeConfig();
 }
 UFUNCTION()
 USkillConfig __FDivineSkillConfig_GetSkillConfig(const TDataObjectPtr<FDivineSkillConfig> &inout DataObject)
@@ -181,7 +172,6 @@ USkillConfig __FDivineSkillConfig_GetSkillConfig(const TDataObjectPtr<FDivineSki
 UFUNCTION()
 FBuffConfigRef __FDivineSkillConfig_GetBuffConfig(const TDataObjectPtr<FDivineSkillConfig> &inout DataObject)
 {
-    FBuffConfigRef __r;
     if ((DataObject == nullptr))
     {
         if (!(EUIGlobals::GIsDuringPropertyConversion))
@@ -191,12 +181,11 @@ FBuffConfigRef __FDivineSkillConfig_GetBuffConfig(const TDataObjectPtr<FDivineSk
         FDivineSkillConfig local_192;
         return local_192.BuffConfig;
     }
-    return __r;
+    return DataObject.Get().BuffConfig;
 }
 UFUNCTION()
 TArray<FGameplayModifierConfigRefWithArgs> __FDivineSkillConfig_GetModifiers(const TDataObjectPtr<FDivineSkillConfig> &inout DataObject)
 {
-    TArray<FGameplayModifierConfigRefWithArgs> __r;
     if ((DataObject == nullptr))
     {
         if (!(EUIGlobals::GIsDuringPropertyConversion))
@@ -206,12 +195,11 @@ TArray<FGameplayModifierConfigRefWithArgs> __FDivineSkillConfig_GetModifiers(con
         FDivineSkillConfig local_192;
         return local_192.Modifiers;
     }
-    return __r;
+    return DataObject.Get().Modifiers;
 }
 UFUNCTION()
 TArray<FCapabilityConfigWithLevel> __FDivineSkillConfig_GetCapabilities(const TDataObjectPtr<FDivineSkillConfig> &inout DataObject)
 {
-    TArray<FCapabilityConfigWithLevel> __r;
     if ((DataObject == nullptr))
     {
         if (!(EUIGlobals::GIsDuringPropertyConversion))
@@ -221,7 +209,7 @@ TArray<FCapabilityConfigWithLevel> __FDivineSkillConfig_GetCapabilities(const TD
         FDivineSkillConfig local_192;
         return local_192.Capabilities;
     }
-    return __r;
+    return DataObject.Get().Capabilities;
 }
 UFUNCTION()
 UMediaSource __FDivineSkillConfig_GetPreviewMovie(const TDataObjectPtr<FDivineSkillConfig> &inout DataObject)

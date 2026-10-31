@@ -56,8 +56,7 @@ struct FVM_Match_HintComp : FEUIViewModel
     }
     bool IsMatching() const
     {
-        TEUIModelRef<FMS_Mode> local_2 = this.GetModeMS();
-        return GetbMatching();
+        return this.GetModeMS().Get().GetbMatching();
     }
     void SetMatchContext(const uint InMatchMode, const uint InMatchId, const uint InCommissionId)
     {
@@ -71,7 +70,7 @@ struct FVM_Match_HintComp : FEUIViewModel
     {
         if (InMode.IsValid())
         {
-            this.SetMatchContext(1, GetDataId(), 0);
+            this.SetMatchContext(1, InMode.Get().GetDataId(), 0);
         }
         return;
     }
@@ -79,8 +78,10 @@ struct FVM_Match_HintComp : FEUIViewModel
     {
         if (this.GetMatchMode() == 2)
         {
-            if (::FMS_CommissionData::Get(this.GetContext().Manager).FindCommissionByConfigDataId(this.GetCommissionId()).IsValid() && GetCommissionConfig().IsSet())
+            TEUIModelRef<FM_Commission> local_6 = ::FMS_CommissionData::Get(this.GetContext().Manager).FindCommissionByConfigDataId(this.GetCommissionId());
+            if (local_6.IsValid() && local_6.Get().GetCommissionConfig().IsSet())
             {
+                this.SetMatchHintName(local_6.Get().GetCommissionConfig().Get().CommissionName);
             }
             return;
         }
@@ -90,6 +91,7 @@ struct FVM_Match_HintComp : FEUIViewModel
             FM_ModeItem& local_12 = ::FM_ModeItem::Create(this.GetContext().Manager, this.GetMatchId());
             if (local_12.GetMatchConfig().IsSet())
             {
+                this.SetMatchHintName(local_12.GetMatchConfig().Get().ModeName);
             }
         }
         return;
@@ -99,11 +101,11 @@ struct FVM_Match_HintComp : FEUIViewModel
         int local_24 = 0;
         if (this.GetMatchMode() == 2)
         {
-            if (::FMS_CommissionData::Get(this.GetContext().Manager).FindCommissionByConfigDataId(this.GetCommissionId()).IsValid() && GetCommissionConfig().IsSet())
+            TEUIModelRef<FM_Commission> local_6 = ::FMS_CommissionData::Get(this.GetContext().Manager).FindCommissionByConfigDataId(this.GetCommissionId());
+            if (local_6.IsValid() && local_6.Get().GetCommissionConfig().IsSet())
             {
                 int local_10;
-                ECommissionType local_11;
-                local_10 = local_11;
+                local_10 = local_6.Get().GetCommissionConfig().Get().CommissionType;
                 FEUIWidget::AddWidget(this.GetContext().UELocalPlayer, GameplayTags::UI_Type_CommissionPanel, FEUIModelRef(::FVM_CommissionPanel::Create(this.GetContext().Manager, ECommissionType(local_10), this.GetCommissionId())));
             }
             return;
@@ -119,8 +121,7 @@ struct FVM_Match_HintComp : FEUIViewModel
     }
     FText GetMatchHintTime() const
     {
-        TEUIModelRef<FMS_Mode> local_2 = this.GetModeMS();
-        return FText::AsTimespan(FTimespan::FromSeconds(GetMatchWaitTime().ToSeconds()));
+        return FText::AsTimespan(FTimespan::FromSeconds(this.GetModeMS().Get().GetMatchWaitTime().ToSeconds()));
     }
     const FText GetMatchHintName() const property
     {
@@ -226,11 +227,9 @@ FVM_Match_HintComp& Create(const UObject ContextObject)
 {
     return FVM_Match_HintComp::CreateByManager(EUIInternal::GetContextManager(ContextObject));
 }
-FVM_Match_HintComp CreateByManager(const UEUIManagerSubsystem Manager)
+FVM_Match_HintComp& CreateByManager(const UEUIManagerSubsystem Manager)
 {
-    FVM_Match_HintComp __r;
-    TEUIModelRef<FVM_Match_HintComp> local_6 = TEUIModelRef<FVM_Match_HintComp>(EUIInternal::MakeModelWithManager(Manager, FVM_Match_HintComp::ModelId));
-    return __r;
+    return TEUIModelRef<FVM_Match_HintComp>(EUIInternal::MakeModelWithManager(Manager, FVM_Match_HintComp::ModelId)).Get();
 }
 void GetModelInfo(FEUIViewModelMetaInfo &inout Result)
 {
@@ -307,7 +306,6 @@ namespace __GeneratedProperties_FVM_Match_HintComp
 {
 UScriptStruct StaticStruct()
 {
-    UScriptStruct local_2;
-    return local_2;
+    return __GeneratedProperties_FVM_Match_HintComp.Get();
 }
 }

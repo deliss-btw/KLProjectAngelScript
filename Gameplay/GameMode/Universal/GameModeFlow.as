@@ -167,13 +167,14 @@ class UGameModeFlow : UObject
     }
     FDataObjectPtr GetOverrideAttributeData(const FECSEntity &inout Entity, const int Level) const
     {
-        const FAvatarPrefabConfig& local_76;
         FPVPGameAttributeByLevelConfig local_104;
-        bool local_49 = !(::GetAvatarConfig(Entity));
+        TDataObjectPtr<FAvatarPrefabConfig> local_24 = ::GetAvatarConfig(Entity);
+        bool local_49 = !(local_24);
         if (local_49)
         {
             return FDataObjectPtr();
         }
+        const FAvatarPrefabConfig& local_76 = local_24.Get();
         TDataObjectPtr<FGameModeOverrideAvatarConfig> local_100;
         if (!(local_76.GetGameModeOverride().Find(EGameModeType(2), local_100)))
         {
@@ -195,8 +196,7 @@ class UGameModeFlow : UObject
         {
             return FDataObjectPtr();
         }
-        FPVPOverrideAvatarConfig local_130;
-        local_104 = local_130.GameAttributeConfig;
+        local_104 = local_76.GetPVPOverride().Get().GameAttributeConfig;
         if (!(local_104.IsValid()))
         {
             return FDataObjectPtr();

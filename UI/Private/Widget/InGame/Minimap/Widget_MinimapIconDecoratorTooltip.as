@@ -22,8 +22,8 @@ class UWidget_MinimapIconDecoratorTooltip : UEUIUserListItemWidget
     UFUNCTION()
     UWidget Tooltip_TipsFromWidget() const
     {
-        FVM_MinimapIconDecoratorTooltip& local_2;
         UWidget local_8;
+        FVM_MinimapIconDecoratorTooltip& local_2 = this.Tooltip.Get();
         if (local_2)
         {
             local_8 = local_2.GetTipsFromWidget();
@@ -36,21 +36,21 @@ class UWidget_MinimapIconDecoratorTooltip : UEUIUserListItemWidget
     UFUNCTION()
     FText Tooltip_TooltipText() const
     {
-        FVM_MinimapIconDecoratorTooltip& local_2;
+        FVM_MinimapIconDecoratorTooltip& local_2 = this.Tooltip.Get();
         FText local_12 = local_2 ? local_2.GetTooltipText() : FText();
         return local_12;
     }
     UFUNCTION()
     FText Tooltip_DetailText() const
     {
-        FVM_MinimapIconDecoratorTooltip& local_2;
+        FVM_MinimapIconDecoratorTooltip& local_2 = this.Tooltip.Get();
         FText local_12 = local_2 ? local_2.GetDetailText() : FText();
         return local_12;
     }
     UFUNCTION()
     TArray<FEUIModelWeakRef> Tooltip_Actions() const
     {
-        FVM_MinimapIconDecoratorTooltip& local_2;
+        FVM_MinimapIconDecoratorTooltip& local_2 = this.Tooltip.Get();
         TArray<FEUIModelWeakRef> local_16;
         if (local_2)
         {
@@ -116,13 +116,13 @@ class UWidget_MinimapIconDecoratorTooltipPanel : UEUIActivatableWidget
     UFUNCTION()
     void UpdateExtraModel(const FEUIModelRef &inout InExtraModel)
     {
-        InExtraModel.SetExtraModel();
+        this.Tooltip.Get().SetExtraModel(InExtraModel);
         return;
     }
     UFUNCTION()
     TArray<FEUIModelWeakRef> Tooltip_DecoratorTooltips() const
     {
-        FVM_MinimapIconDecoratorTooltipPanel& local_2;
+        FVM_MinimapIconDecoratorTooltipPanel& local_2 = this.Tooltip.Get();
         TArray<FEUIModelWeakRef> local_16;
         if (local_2)
         {
@@ -137,7 +137,7 @@ class UWidget_MinimapIconDecoratorTooltipPanel : UEUIActivatableWidget
     UFUNCTION()
     TSoftClassPtr<UUserWidget> Tooltip_BaseTooltipWidgetClass() const
     {
-        FVM_MinimapIconDecoratorTooltipPanel& local_2;
+        FVM_MinimapIconDecoratorTooltipPanel& local_2 = this.Tooltip.Get();
         TSoftClassPtr<UUserWidget> local_34;
         if (local_2)
         {
@@ -152,8 +152,8 @@ class UWidget_MinimapIconDecoratorTooltipPanel : UEUIActivatableWidget
     UFUNCTION()
     ESlateVisibility Tooltip_BaseTooltipVisibility() const
     {
-        FVM_MinimapIconDecoratorTooltipPanel& local_2;
         int local_5;
+        FVM_MinimapIconDecoratorTooltipPanel& local_2 = this.Tooltip.Get();
         if (local_2)
         {
             local_5 = int(local_2.GetBaseTooltipVisibility());
@@ -167,8 +167,8 @@ class UWidget_MinimapIconDecoratorTooltipPanel : UEUIActivatableWidget
     UFUNCTION()
     ESlateVisibility Tooltip_DecoratorTooltipVisibility() const
     {
-        FVM_MinimapIconDecoratorTooltipPanel& local_2;
         int local_5;
+        FVM_MinimapIconDecoratorTooltipPanel& local_2 = this.Tooltip.Get();
         if (local_2)
         {
             local_5 = int(local_2.GetDecoratorTooltipVisibility());
@@ -181,10 +181,10 @@ class UWidget_MinimapIconDecoratorTooltipPanel : UEUIActivatableWidget
     }
     void HandleObservedModelChanges(FEUIReactiveSubscriberIterator &inout It)
     {
-        FVM_MinimapIconDecoratorTooltipPanel& local_6;
-        FVM_MinimapIconDecoratorExtraModel& local_12;
         TEUIModelRef<FVM_MinimapIconDecoratorTooltipPanel> local_2 = this.Tooltip.AsRef();
+        FVM_MinimapIconDecoratorTooltipPanel& local_6 = local_2.Get();
         TEUIModelRef<FVM_MinimapIconDecoratorExtraModel> local_8 = this.ExtraModel.AsRef();
+        FVM_MinimapIconDecoratorExtraModel& local_12 = local_8.Get();
         for (; It; )
         {
             FEUIReactiveSubscriberTrackScope local_62 = FEUIReactiveSubscriberTrackScope(It);

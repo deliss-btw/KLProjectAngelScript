@@ -6,7 +6,6 @@ class US_TalentSystem : UECSScriptSystem
     }
     void CalcActiveTalentList(const FECSEntity &inout AvatarEntity, const uint FoundationTalentId, const TArray<TDataObjectPtr<FTalentConfig>> &inout UnlockTalentList, const TArray<uint> &inout ChooseTalentIdList, TArray<TDataObjectPtr<FTalentConfig>> &inout OutAllActiveTalentConfigs) const
     {
-        int local_171 = 0;
         OutAllActiveTalentConfigs.Reset(0);
         TDataObjectPtr<FAvatarMappingConfig> local_26;
         TDataObjectPtr<FAvatarPrefabConfig> local_74 = ::GetAvatarConfig(AvatarEntity);
@@ -19,18 +18,17 @@ class US_TalentSystem : UECSScriptSystem
         {
             if (local_144.IsSet())
             {
-                const FTalentConfig& local_146;
+                const FTalentConfig& local_146 = local_144.Get();
                 if (!((local_146.GetAvatar() == local_26.opImplConv())))
                 {
                     continue;
                 }
-                local_171 = int(local_146.DataId);
-                if (local_171 == FoundationTalentId)
+                if (int(local_146.DataId) == FoundationTalentId)
                 {
                     local_130.Add(local_144);
                     continue;
                 }
-                if ((int(local_146.TalentType) != 1 && !(local_146.GetFoundationTalent())) || (local_146.GetFoundationTalent() && (local_171 == FoundationTalentId)))
+                if ((int(local_146.TalentType) != 1 && !(local_146.GetFoundationTalent())) || (local_146.GetFoundationTalent() && (local_146.GetFoundationTalent().Get().DataId == FoundationTalentId)))
                 {
                     local_130.Add(local_144);
                 }
@@ -59,7 +57,7 @@ class US_TalentSystem : UECSScriptSystem
             TDataObjectPtr<FTalentConfig> local_1048;
             if (local_196.Find(local_952, local_1048))
             {
-                if ((!(local_1048)) || (local_171 < int(local_568.TalentLevel)))
+                if ((!(local_1048)) || (local_1048.Get().TalentLevel < int(local_568.TalentLevel)))
                 {
                     local_196.Add(local_952, local_144);
                 }
@@ -122,6 +120,7 @@ class US_TalentSystem : UECSScriptSystem
         if (local_722.Contains(local_360.DataId))
         {
             FCapabilityUtils::RemoveCapabilityByInstanceId(Entity, local_722[local_360.DataId]);
+            local_722.Remove(local_360.DataId);
         }
         return;
     }
@@ -139,7 +138,7 @@ class US_TalentSystem : UECSScriptSystem
         TArray<FCapabilityParamModifier> local_20;
         for (auto& local_16 : CharacterTalent.GetAllActiveTalentConfigs())
         {
-            local_16;
+            local_20.Append(local_16.Get().CapabilityParamModifiers);
         }
         FCapabilityUtils::UpdateCapabilityParamModifiers(Entity, local_20);
         return;
@@ -150,7 +149,6 @@ class US_TalentSystem : UECSScriptSystem
         int local_12 = 0;
         int local_18 = 0;
         int local_24 = 0;
-        int local_74 = 0;
         int local_124 = 0;
         if (!(FECSEntity(ControlledByPlayer.GetPlayerEntity()).IsValid()))
         {
@@ -168,10 +166,12 @@ class US_TalentSystem : UECSScriptSystem
         {
             return;
         }
-        if (!(::GetAvatarConfig(Entity)))
+        TDataObjectPtr<FAvatarPrefabConfig> local_48 = ::GetAvatarConfig(Entity);
+        if (!(local_48))
         {
             return;
         }
+        int local_74 = local_48.Get().DataId;
         int local_73 = local_74;
         for (auto& local_88 : local_18.GetAvatarList())
         {
@@ -215,8 +215,7 @@ class US_TalentSystem : UECSScriptSystem
             if (local_148)
             {
                 TArray<TDataObjectPtr<FTalentConfig>> local_152;
-                int local_77_2 = local_148.GetFoundationTalentId();
-                this.CalcActiveTalentList(local_142, local_77_2, local_14.GetUnlockTalentList(), local_148.GetChooseTalentIdList(), local_152);
+                this.CalcActiveTalentList(local_142, local_148.GetFoundationTalentId(), local_14.GetUnlockTalentList(), local_148.GetChooseTalentIdList(), local_152);
                 TArray<TDataObjectPtr<FTalentConfig>> local_156;
                 TArray<TDataObjectPtr<FTalentConfig>> local_160;
                 this.CalcNewlyAddRemoveTalent(local_148.GetAllActiveTalentConfigs(), local_152, local_156, local_160);
@@ -235,28 +234,29 @@ class US_TalentSystem : UECSScriptSystem
                     if (local_7)
                     {
                         int local_218;
+                        int local_77_2 = local_192.Get().DataId;
                         local_218 = local_77_2;
                         for (auto& local_232 : local_168.GetAvatarList())
                         {
-                            local_77_2 = local_232.GetAvatarId();
-                            if (local_77_2 != local_218)
+                            if (local_232.GetAvatarId() != local_218)
                             {
                                 continue;
                             }
                             for (auto& local_250 : local_232.GetAvatarTalentEquipList().GetTalentIdBySkillSlot())
                             {
+                                local_77_2 = local_250.GetValue();
                                 TDataObjectPtr<FTalentConfig> local_52_2 = local_76.opImplConv();
                                 if (!(local_52_2))
                                 {
                                     continue;
                                 }
-                                TDataObjectPtr<FTalentConfig> local_102 = GetBaseTalent() ? GetBaseTalent() : local_52_2;
+                                TDataObjectPtr<FTalentConfig> local_102 = local_52_2.Get().GetBaseTalent() ? local_52_2.Get().GetBaseTalent() : local_52_2;
                                 for (auto& local_312 : local_156)
                                 {
                                     TDataObjectPtr<FTalentConfig> local_298;
-                                    if (GetBaseTalent())
+                                    if (local_312.Get().GetBaseTalent())
                                     {
-                                        local_298 = GetBaseTalent();
+                                        local_298 = local_312.Get().GetBaseTalent();
                                     }
                                     else
                                     {
@@ -266,11 +266,10 @@ class US_TalentSystem : UECSScriptSystem
                                     {
                                         continue;
                                     }
-                                    if (::FTalentUtils::GetSkillInitConfigByTalentId(local_77_2))
+                                    TDataObjectPtr<FSkillInitConfig> local_456 = ::FTalentUtils::GetSkillInitConfigByTalentId(local_312.Get().DataId);
+                                    if (local_456)
                                     {
-                                        local_7 = false;
-                                        int local_457 = int(local_250.GetKey());
-                                        FECSWorldPtr local_460 = ECS::GetECSWorld();
+                                        FSkillUtils::CreateSkillEntityAndAddSkill(ECS::GetECSWorld(), local_142, local_456.Get().SkillConfig, local_250.GetKey(), true, false, local_312.Get().SkillCapabilityLevel);
                                     }
                                     break;
                                 }
@@ -323,7 +322,6 @@ class US_TalentSystem : UECSScriptSystem
     void ServerJob_OnChangeAvatarTalent(const FCE_ChangeAvatarTalentEquipInfo &inout Event) const
     {
         int local_6 = 0;
-        int local_52 = 0;
         bool local_53;
         bool local_54;
         int local_136 = 0;
@@ -335,8 +333,7 @@ class US_TalentSystem : UECSScriptSystem
         FECSEntity local_12 = FECSEntity(ENTITY_NULL);
         for (auto& local_26 : local_6.GetAllPlayerPawnEntities())
         {
-            TDataObjectPtr<FAvatarPrefabConfig> local_50 = ::GetAvatarConfig(local_26);
-            if (0 == int(Event.AvatarId))
+            if (::GetAvatarConfig(local_26).Get().DataId == int(Event.AvatarId))
             {
                 local_12 = local_26;
                 break;
@@ -357,8 +354,7 @@ class US_TalentSystem : UECSScriptSystem
                     continue;
                 }
                 FDSAvatarTalentEquipInfo& local_86 = local_80.GetModify_AvatarList()[local_81].GetAvatarTalentEquipList();
-                local_52 = local_86.GetOnEquipFoundationId();
-                if (local_52 != int(Event.NewFoundationId))
+                if (local_86.GetOnEquipFoundationId() != int(Event.NewFoundationId))
                 {
                     local_53 = true;
                     local_86.SetOnEquipFoundationId(int(Event.NewFoundationId));
@@ -374,9 +370,9 @@ class US_TalentSystem : UECSScriptSystem
                 local_86.SetTalentIdBySkillSlot(Event.NewTalentIdBySkillSlot);
                 for (auto& local_128 : Event.NewTalentIdBySkillSlot)
                 {
-                    if (!(local_110.Contains(local_128.GetKey())) || (local_110[local_128.GetKey()] != local_52))
+                    if (!(local_110.Contains(local_128.GetKey())) || (local_110[local_128.GetKey()] != local_128.GetValue()))
                     {
-                        local_74.Add(local_128.GetKey());
+                        local_74.Add(local_128.GetKey(), local_128.GetValue());
                     }
                 }
                 break;
@@ -384,8 +380,7 @@ class US_TalentSystem : UECSScriptSystem
         }
         else
         {
-            local_52 = int(Event.NewFoundationId);
-            local_53 = (local_136.GetFoundationTalentId() != local_52);
+            local_53 = (local_136.GetFoundationTalentId() != int(Event.NewFoundationId));
             TArray<uint> local_90;
             local_90 = local_136.GetChooseTalentIdList();
             local_54 = !((local_90 == Event.NewChooseTalentIdList));
@@ -397,14 +392,16 @@ class US_TalentSystem : UECSScriptSystem
             {
                 for (auto& local_154 : local_74)
                 {
+                    int local_51 = local_154.GetValue();
                     GetDataObjectByGSDataId<FTalentConfig> local_202;
                     TDataObjectPtr<FTalentConfig> local_178 = local_202.opImplConv();
                     if (local_178)
                     {
-                        if (::FTalentUtils::GetSkillInitConfigByTalentId(local_52))
+                        TDataObjectPtr<FSkillInitConfig> local_298 = ::FTalentUtils::GetSkillInitConfigByTalentId(local_154.GetValue());
+                        const FTalentConfig& local_300 = local_178.Get();
+                        if (local_298)
                         {
-                            int local_301 = int(local_154.GetKey());
-                            FECSWorldPtr local_304 = ECS::GetECSWorld();
+                            FSkillUtils::CreateSkillEntityAndAddSkill(ECS::GetECSWorld(), local_12, local_298.Get().SkillConfig, local_154.GetKey(), true, false, int(local_300.SkillCapabilityLevel));
                         }
                     }
                 }

@@ -70,7 +70,7 @@ class UWidget_TalentSkillEditPage : UEUIActivatableWidget
     {
         TEUIModelRef<FVM_AvatarShowcase> local_2;
         local_2;
-        local_2.SetCurrentShowcase();
+        this.TalentEditPage.Get().SetCurrentShowcase(local_2);
         UWidget_TalentSkillChangeWidget local_6 = this.GetSkillChangeWidget();
         if (local_6 != nullptr)
         {
@@ -96,11 +96,11 @@ class UWidget_TalentSkillEditPage : UEUIActivatableWidget
     UFUNCTION()
     void OnSelectedDetailTalentChanged()
     {
-        bool local_2 = GetIsDetailSelected();
+        bool local_2 = this.TalentEditPage.Get().GetIsDetailSelected();
         if (this.Showcase.IsValid())
         {
             int local_3 = local_2 ? 1 : 0;
-            local_3.ChangeShowcaseConfigIndex();
+            this.Showcase.Get().ChangeShowcaseConfigIndex(local_3);
         }
         if (!(this.bDetailAnimInitialized))
         {
@@ -324,8 +324,8 @@ class UWidget_TalentSkillEditPage : UEUIActivatableWidget
     }
     void HandleObservedModelChanges(FEUIReactiveSubscriberIterator &inout It)
     {
-        FVM_TalentEditPage& local_6;
         TEUIModelRef<FVM_TalentEditPage> local_2 = this.TalentEditPage.AsRef();
+        FVM_TalentEditPage& local_6 = local_2.Get();
         for (; It; )
         {
             FEUIReactiveSubscriberTrackScope local_56 = FEUIReactiveSubscriberTrackScope(It);

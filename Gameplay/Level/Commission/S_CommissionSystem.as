@@ -7,10 +7,10 @@ class US_CommissionSystem : UECSScriptSystem
     UFUNCTION()
     void ServerJob_InitCommissionInfo() const
     {
-        int local_50 = 0;
-        if (::FLevelUtils::GetCurrentLevelInfoConfig(nullptr))
+        TDataObjectPtr<FLevelInfoConfig> local_24 = ::FLevelUtils::GetCurrentLevelInfoConfig(nullptr);
+        if (local_24)
         {
-            if ((local_50 == 3 || (local_50 == 5)))
+            if (int(local_24.Get().LevelType) == 3 || (int(local_24.Get().LevelType) == 5))
             {
                 int local_54 = 0;
                 if (FParse::Value(FCommandLine::Get(), "-commission_key=", local_54))
@@ -54,9 +54,9 @@ class US_CommissionSystem : UECSScriptSystem
         }
         else
         {
-            if (C_CommissionInfo.CommissionConfig.IsSet() && GetCommissionSubTargetObjective().IsSet())
+            if (C_CommissionInfo.CommissionConfig.IsSet() && C_CommissionInfo.CommissionConfig.Get().GetCommissionSubTargetObjective().IsSet())
             {
-                local_24 = GetCommissionSubTargetObjective();
+                local_24 = C_CommissionInfo.CommissionConfig.Get().GetCommissionSubTargetObjective();
             }
         }
         if (local_24.IsSet())
@@ -138,15 +138,13 @@ class US_CommissionSystem : UECSScriptSystem
         {
             if (local_8.CommissionConfig.IsSet())
             {
-                FName local_18;
-                local_18.GetDataName();
-                XLog(ELog(22), FString().Append(" Start Commission: FixedTime=").Append(C_FixedTime.Time.ToSeconds()).Append("  CommissionConfig=").Append(local_18.ToString()));
+                XLog(ELog(22), FString().Append(" Start Commission: FixedTime=").Append(C_FixedTime.Time.ToSeconds()).Append("  CommissionConfig=").Append(local_8.CommissionConfig.Get().GetDataName().ToString()));
                 local_8.CommissionStartTime = C_FixedTime.Time;
                 local_8.bRaceCommissionStarted = false;
                 local_8.RaceCommissionStartTime = FFPTime(0);
-                if (GetCommissionTargetObjective().IsSet())
+                if (local_8.CommissionConfig.Get().GetCommissionTargetObjective().IsSet())
                 {
-                    ::CommissionUtils::ServerActivateCommissionObjective(GetCommissionTargetObjective(), true);
+                    ::CommissionUtils::ServerActivateCommissionObjective(local_8.CommissionConfig.Get().GetCommissionTargetObjective(), true);
                 }
                 ::CommissionUtils::ServerSetCurrentCommissionTimeoutTime(C_FixedTime, local_8);
                 ::PlayerNotify::NotifyPlayer(EPlayerNotify(0));
@@ -161,31 +159,29 @@ class US_CommissionSystem : UECSScriptSystem
             {
                 FObjectiveContext local_42;
                 local_36.SetObjectiveInstanceId(::ObjectiveUtils::ActivateObjective(local_36.GetSubTargetConfig(), local_42));
-                int local_28 = local_36.GetObjectiveInstanceId();
-                if (local_28 <= 0)
+                if (local_36.GetObjectiveInstanceId() <= 0)
                 {
                     local_9 = 0;
                 }
                 else
                 {
-                    bool local_46 = (0 == 1);
+                    bool local_46 = (int(local_36.GetSubTargetConfig().Get().ObjectiveType) == 1);
                     local_9 = local_46;
                 }
                 if (local_9 != 0)
                 {
                     FObjectiveInstance local_192;
-                    int local_43 = local_36.GetObjectiveInstanceId();
-                    if (::ObjectiveUtils::TryFindActivetedObjectiveInstance(local_43, local_192))
+                    if (::ObjectiveUtils::TryFindActivetedObjectiveInstance(local_36.GetObjectiveInstanceId(), local_192))
                     {
                         TMap<uint, FCommissionSubTargetProgress>& local_194 = local_36.GetModify_ChildProgress();
                         for (auto& local_212 : local_192.ChildObjectiveMap)
                         {
-                            local_212;
+                            int local_28 = local_212.GetValue();
                             if (local_28 == 0)
                             {
                                 continue;
                             }
-                            if (::ObjectiveUtils::TryFindActivetedObjectiveInstance(local_43, local_358))
+                            if (::ObjectiveUtils::TryFindActivetedObjectiveInstance(local_212.GetValue(), local_358))
                             {
                                 FCommissionSubTargetProgress local_360;
                                 local_360.SetSuccessProgressValue(local_358.GetFinishProgressValue());
@@ -221,7 +217,7 @@ class US_CommissionSystem : UECSScriptSystem
                 ++local_18.TotalDeathCount;
                 if (local_18.CommissionConfig)
                 {
-                    const FCommissionConfig& local_22;
+                    const FCommissionConfig& local_22 = local_18.CommissionConfig.Get();
                     if (int(local_22.MaxDeathCount) > 0 && (int(local_18.TotalDeathCount) >= int(local_22.MaxDeathCount)))
                     {
                         ::CommissionUtils::FinishCommission(TDataObjectPtr<FCommissionConfig>(local_22), false, ECommissionFailReason(2));
@@ -471,11 +467,19 @@ class US_CommissionSystem : UECSScriptSystem
     }
     void ServerSetCommissionTargetForPlayer(const FECSEntity &inout Player, const FCS_CommissionInfo &inout C_CommissionInfo) const
     {
-        bool local_6 = false;
-        bool local_1 = ::CommissionUtils::GetCommissionSettings().bSetGuidingPathToTarget;
-        if (C_CommissionInfo.CommissionConfig.IsSet() && local_6)
+        bool local_5 = ::CommissionUtils::GetCommissionSettings().bSetGuidingPathToTarget;
+        bool local_1 = local_5;
+        if (!(C_CommissionInfo.CommissionConfig.IsSet()))
         {
-            local_1 = local_6;
+            local_5 = false;
+        }
+        else
+        {
+            local_5 = C_CommissionInfo.CommissionConfig.Get().bOverrideSetGuidingPathToTarget;
+        }
+        if (local_5)
+        {
+            local_1 = C_CommissionInfo.CommissionConfig.Get().bSetGuidingPathToTarget;
         }
         if (!(local_1))
         {
@@ -537,7 +541,7 @@ class US_CommissionSystem : UECSScriptSystem
         {
             return;
         }
-        if (0 == 0)
+        if (int(CommissionTarget.CommissionTargetObjective.Get().ObjectiveType) == 0)
         {
             if (int(CommissionTarget.CommissionTargetObjectiveInstanceId) == int(Event.ObjectiveInstanceId))
             {
@@ -556,21 +560,19 @@ class US_CommissionSystem : UECSScriptSystem
             return;
         }
         FObjectiveInstance local_162;
-        int local_12 = int(CommissionTarget.CommissionTargetObjectiveInstanceId);
-        if (::ObjectiveUtils::TryFindActivetedObjectiveInstance(local_12, local_162))
+        if (::ObjectiveUtils::TryFindActivetedObjectiveInstance(int(CommissionTarget.CommissionTargetObjectiveInstanceId), local_162))
         {
-            int local_11 = int(Event.ObjectiveInstanceId);
-            if (::ObjectiveUtils::GroupContainsChildInstance(local_162, local_11))
+            if (::ObjectiveUtils::GroupContainsChildInstance(local_162, int(Event.ObjectiveInstanceId)))
             {
                 FECSWorldPtr local_2_4 = ECS::GetECSWorld();
                 for (auto& local_182 : local_162.ChildObjectiveMap)
                 {
-                    local_182;
+                    int local_11 = local_182.GetValue();
                     if (local_11 == 0)
                     {
                         continue;
                     }
-                    if (::ObjectiveUtils::TryFindActivetedObjectiveInstance(local_12, local_328))
+                    if (::ObjectiveUtils::TryFindActivetedObjectiveInstance(local_182.GetValue(), local_328))
                     {
                         TMap<uint, FCommissionTargetProgress> local_164;
                         if (local_164.Contains(local_328.ObjectiveId))

@@ -20,44 +20,18 @@ class UWidget_CommonComponentSlider : UEUIUserWidget
     UFUNCTION()
     void OnIncrease()
     {
-        bool local_1;
-        if (!(this.ComponentSlider.IsValid()))
+        if (this.ComponentSlider.IsValid() && this.ComponentSlider.Get().GetCommonSliderVM().IsValid())
         {
-            local_1 = false;
-        }
-        else
-        {
-            TEUIModelRef<FVM_CommonSlider> local_4;
-            local_4.GetCommonSliderVM();
-            local_1 = local_4.IsValid();
-        }
-        if (local_1)
-        {
-            TEUIModelRef<FVM_CommonSlider> local_4;
-            local_4.GetCommonSliderVM();
-            1065353216.StepCurrentRatio();
+            this.ComponentSlider.Get().GetCommonSliderVM().Get().StepCurrentRatio(1.0f);
         }
         return;
     }
     UFUNCTION()
     void OnDecrease()
     {
-        bool local_1;
-        if (!(this.ComponentSlider.IsValid()))
+        if (this.ComponentSlider.IsValid() && this.ComponentSlider.Get().GetCommonSliderVM().IsValid())
         {
-            local_1 = false;
-        }
-        else
-        {
-            TEUIModelRef<FVM_CommonSlider> local_4;
-            local_4.GetCommonSliderVM();
-            local_1 = local_4.IsValid();
-        }
-        if (local_1)
-        {
-            TEUIModelRef<FVM_CommonSlider> local_4;
-            local_4.GetCommonSliderVM();
-            -1082130432.StepCurrentRatio();
+            this.ComponentSlider.Get().GetCommonSliderVM().Get().StepCurrentRatio(-1.0f);
         }
         return;
     }

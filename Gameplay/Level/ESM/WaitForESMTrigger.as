@@ -10,6 +10,8 @@ struct FASWaitForESMTrigger : FECSAsyncAction
     UPROPERTY()
     FESMTriggerRespondedEvent OnTriggerResponded;
 
+    default m_ScriptOverrideMeta = Cast<UASStruct>(FASWaitForESMTrigger.Get());
+
     FASWaitForESMTrigger()
     {
         this.__InitDefaults();

@@ -73,7 +73,7 @@ bool IsActivitySuitableForSlot(const FEcologyActivityDefinitionRow &inout Activi
     {
         return (ActivityData.bCanUseWithoutSlot || ActivityData.bIsDefaultBehavior);
     }
-    return FEcologyBehaviorUtils::IsActivitySuitableForSlot(ActivityData, bEnableDefault);
+    return FEcologyBehaviorUtils::IsActivitySuitableForSlot(ActivityData, SlotData.Get(), bEnableDefault);
 }
 bool IsActivitySuitableForSlot(const FEcologyActivityDefinitionRow &inout ActivityData, const FEcologyResourceSlotData &inout SlotData, const bool bEnableDefault = false)
 {
@@ -81,8 +81,51 @@ bool IsActivitySuitableForSlot(const FEcologyActivityDefinitionRow &inout Activi
 }
 EActivityInvalidReason IsActivityIsSuitForCurrentState(const FECSEntity &inout CreatureEntity, const TDataObjectPtr<FEcologyActivityDefinitionRow> &inout ActivityDef)
 {
-    // body not fully recovered — stub [argmismatch:argtype]
-    EActivityInvalidReason __r; return __r;
+    FC_CreatureEcologyState local_6;
+    int local_16 = 0;
+    int local_32 = 0;
+    FECSEntity::Get<FC_CreatureEcologyState> local_4 = FECSEntity::Get<FC_CreatureEcologyState>(CreatureEntity);
+    if (!(local_6))
+    {
+        return EActivityInvalidReason(4);
+    }
+    FCreatureActivityData local_10 = local_6.ActivityData;
+    if (!(ActivityDef))
+    {
+        return EActivityInvalidReason(2);
+    }
+    if (!(local_16) || !(FEcologyBehaviorUtils::IsActivityUseableForCreature(ActivityDef.Get(), local_16.CreatureType)))
+    {
+        return EActivityInvalidReason(4);
+    }
+    FECSEntity local_22 = FECSEntity(local_10.RuntimeSlotData.TargetResourceId);
+    if (!(local_22))
+    {
+        return EActivityInvalidReason(3);
+    }
+    if (!(local_32) || !(local_32.ResourceType) || !(FEcologyBehaviorUtils::IsActivityUseableForResource(ActivityDef.Get(), local_32.ResourceType)))
+    {
+        return EActivityInvalidReason(3);
+    }
+    TConstRawPtr<FEcologyResourceSlotData> local_34;
+    if (local_10.RuntimeSlotData.HasSlotConfig())
+    {
+        Get local_38;
+        const FC_EcologyResourceSlot& local_40 = local_38.opCall();
+        if (local_40)
+        {
+            local_34 = local_40.GetSlotData(local_10.RuntimeSlotData.SlotIndex);
+        }
+    }
+    if (!(FEcologyBehaviorUtils::IsActivitySuitableForSlot(ActivityDef.Get(), local_34, false)))
+    {
+        return EActivityInvalidReason(5);
+    }
+    if (!(FEcologyConditionUtils::CheckCreatureCanDoActivity(CreatureEntity, ActivityDef, FEcologyConditionWorldContext(local_22, FEcologyUtils::GetGlobalContext(ECS::GetECSWorld())))))
+    {
+        return EActivityInvalidReason(6);
+    }
+    return EActivityInvalidReason(0);
 }
 bool NormalizeCreatureActivityData(const FECSEntity &inout CreatureEntity)
 {
@@ -113,7 +156,6 @@ bool ReSetActivity(const FECSEntity &inout CreatureEntity, FC_CreatureEcologySta
     int local_30 = 0;
     int local_38 = 0;
     int local_62 = 0;
-    const FEcologyActivityDefinitionRow& local_126;
     if (!(StateComp))
     {
         XError(ELog(30), FString().Append("ReSetActivityBehvaior: StateComp is invalid. CreatureId: ").Append(CreatureEntity.GetIdValue()));
@@ -157,7 +199,7 @@ bool ReSetActivity(const FECSEntity &inout CreatureEntity, FC_CreatureEcologySta
     for (; local_121 < local_50.Num(); ++local_121)
     {
         int local_55 = (local_42_2 + local_121) % local_50.Num();
-        TDataObjectPtr<FEcologyActivityDefinitionRow>& local_124 = local_50[local_55];
+        const FEcologyActivityDefinitionRow& local_126 = local_50[local_55].Get();
         if (!(local_120.IsSet()))
         {
             local_1 = false;
@@ -368,7 +410,6 @@ void AllocateChildSlotData_SimpleFlock(const FECSEntity &inout FlockEntity, cons
     int local_24 = 0;
     int local_30 = 0;
     int local_84 = 0;
-    const FEcologyActivityDefinitionRow& local_128;
     FECSEntityId local_1 = FlockComponent.ActivityTarget.MainTargetResource;
     FECSEntity local_6 = FECSEntity(local_1);
     if (!(local_6))
@@ -436,9 +477,10 @@ void AllocateChildSlotData_SimpleFlock(const FECSEntity &inout FlockEntity, cons
                 for (; local_118.CanProceed;)
                 {
                     TDataObjectPtr<FEcologyActivityDefinitionRow>& local_126 = local_118.Proceed();
+                    const FEcologyActivityDefinitionRow& local_128 = local_126.Get();
                     if (FEcologyBehaviorUtils::IsActivitySuitableForSlot(local_128, local_112, false) && FEcologyConditionUtils::CheckCreatureCanDoActivity(local_10, TDataObjectPtr<FEcologyActivityDefinitionRow>(local_128), local_60))
                     {
-                        local_106.BehaviorRef = TDataObjectPtr<FEcologyActivityDefinitionRow>();
+                        local_106.BehaviorRef = TDataObjectPtr<FEcologyActivityDefinitionRow>(local_126.Get());
                     }
                 }
             }
@@ -595,7 +637,6 @@ void SetCreatureSlotData(const FECSEntity &inout Creature, FResourceSlotAllocato
 }
 TDataObjectPtr<FEcologyActivityDefinitionRow> FindFirstUseableActivityForSlot(const FECSEntity &inout Creature, const FEcologyResourceSlotData &inout SlotData, const TArray<TDataObjectPtr<FEcologyActivityDefinitionRow>> &inout ActivityList, const FEcologyConditionWorldContext &inout WorldContext, const int OffsetIndex = 0, const bool bCheckActivityCondition = true)
 {
-    const FEcologyActivityDefinitionRow& local_82;
     if (ActivityList.Num() <= 0)
     {
         return TDataObjectPtr<FEcologyActivityDefinitionRow>();
@@ -609,6 +650,7 @@ TDataObjectPtr<FEcologyActivityDefinitionRow> FindFirstUseableActivityForSlot(co
         {
             continue;
         }
+        const FEcologyActivityDefinitionRow& local_82 = local_80.Get();
         if (!(FEcologyBehaviorUtils::IsActivitySuitableForSlot(local_82, SlotData, false)))
         {
             continue;
@@ -628,7 +670,6 @@ bool TryAllocateChildSlotDataForCreature(const FECSEntity &inout FlockEntity, co
     int local_54 = 0;
     int local_62 = 0;
     int local_68 = 0;
-    const FEcologyActivityDefinitionRow& local_118;
     bool local_2 = true;
     int local_1 = local_2;
     FScopeCycleCounter local_3 = FScopeCycleCounter(FStatID(n"TryAllocateChildSlotDataForCreature"), false);
@@ -669,6 +710,7 @@ bool TryAllocateChildSlotDataForCreature(const FECSEntity &inout FlockEntity, co
             {
                 continue;
             }
+            const FEcologyActivityDefinitionRow& local_118 = local_116.Get();
             if (!(FEcologyBehaviorUtils::IsActivityUseableForResource(local_118, local_54.ResourceType)))
             {
                 continue;
@@ -847,7 +889,6 @@ FVector CalFlockPosition(const FECSEntity &inout FlockEntity)
 }
 void ClearBehaviorAllocatorData(const FECSEntity &inout FlockEntity, FC_EcologyFlockBehaviorComponent &inout BehaviorComponent, FECSEntity &inout TargetResource)
 {
-    int local_29 = 0;
     FResourceSlotAllocator local_2 = BehaviorComponent.SlotAllocator;
     Modify local_6;
     FC_EcologyResourceSlot& local_8 = local_6.opCall();
@@ -855,11 +896,11 @@ void ClearBehaviorAllocatorData(const FECSEntity &inout FlockEntity, FC_EcologyF
     {
         for (auto& local_28 : BehaviorComponent.SlotAllocator.SlotAllocMap)
         {
-            if (!(HasSlotConfig()))
+            if (!(local_28.GetValue().HasSlotConfig()))
             {
                 continue;
             }
-            local_8.RemoveClaim(local_29, local_28.GetKey(), false);
+            local_8.RemoveClaim(local_28.GetValue().SlotIndex, local_28.GetKey(), false);
         }
     }
     local_2.SlotAllocMap.Reset();
@@ -1054,8 +1095,6 @@ FResourceRequestFilterConfig MakeDefaultSearchResourceConfig(const int SearchRad
 void FindCombatRegionByRadiusAndAppendByLayer(FC_EcologyFlockBehaviorComponent &inout FlockBehaviorComp, const FVector &inout Center, const float32 RadiusQuery, const float32 RadiusLayer1, const float32 RadiusLayer2, TArray<AECSRegionVolume> &inout OutRegions)
 {
     int local_8 = 0;
-    const FEcologyVoxelSceneRegion& local_114;
-    const FRegionVolumeSummary& local_134;
     AECSRegionVolume local_138;
     FECSWorldPtr local_2 = ECS::GetECSWorld();
     if (!(local_8))
@@ -1072,13 +1111,15 @@ void FindCombatRegionByRadiusAndAppendByLayer(FC_EcologyFlockBehaviorComponent &
     FVoxelRegionIterator local_96 = local_54.Iterator();
     for (; local_96.CanProceed;)
     {
-        if (!(local_8.VoxelScene.Find(local_96.Proceed().Current)))
+        TConstRawPtr<FEcologyVoxelSceneRegion> local_110 = local_8.VoxelScene.Find(local_96.Proceed().Current);
+        if (!(local_110))
         {
             continue;
         }
+        const FEcologyVoxelSceneRegion& local_114 = local_110.Get();
         for (auto& local_132 : local_114.VolumeData)
         {
-            local_132;
+            const FRegionVolumeSummary& local_134 = local_132.GetValue();
             if (!(local_134.bIsCombatRegion))
             {
                 continue;
@@ -1101,8 +1142,7 @@ void FindCombatRegionByRadiusAndAppendByLayer(FC_EcologyFlockBehaviorComponent &
             {
                 continue;
             }
-            AECSVolumeBase local_140;
-            local_138 = Cast<AECSRegionVolume>(local_140);
+            local_138 = Cast<AECSRegionVolume>(local_134.Volume.Get());
             if (!((local_138 != nullptr)) || !(local_138.bAffectCombat))
             {
                 continue;
@@ -1283,9 +1323,7 @@ void AddChangeAreaTirggers(const FECSEntity &inout FlockEntity, const TArray<TOb
     {
         for (auto& local_30 : Collection)
         {
-            local_30;
-            UCommonChangeAreaTriggerDefinitionAsset local_32;
-            FEcologyBehaviorUtils::AddChangeAreaTrigger(FlockEntity, local_16, local_32);
+            FEcologyBehaviorUtils::AddChangeAreaTrigger(FlockEntity, local_16, local_30.Get());
         }
         if (local_16.ChangeAreaTriggers.Num() > 0)
         {
@@ -1322,8 +1360,7 @@ void InterruptFlockHTNByTag(const FECSEntityId &inout TargetId, const FGameplayT
     {
         if (local_16.HTNComponent.IsValid())
         {
-            UECSHTNComponent local_18;
-            local_18.NotifyInterrupt(Tag);
+            local_16.HTNComponent.Get().NotifyInterrupt(Tag);
         }
     }
     return;
@@ -1404,12 +1441,12 @@ void ChangeAreaStartServerTrackHandler(const FECSEntity &inout Flock)
     {
         return;
     }
+    FName local_21(local_8.FlockMainCreature.Get().CreatureName);
     FName local_23(NAME_None);
     if ((local_8.LastActivityTarget.MainTargetResource == ENTITY_ID_NULL))
     {
         return;
     }
-    FName local_21;
     FEcologyBehaviorUtils::ChangeAreaStartServerTrackMessage(local_21, FEcologyBehaviorUtils::GetCombatRegionActorNameByResourceHelper(FECSEntity(local_8.LastActivityTarget.MainTargetResource)));
     return;
 }
@@ -1433,7 +1470,7 @@ void ChangeAreaOverServerTrackHandler(const FECSEntity &inout Flock)
     {
         return;
     }
-    FName local_21;
+    FName local_21(local_8.FlockMainCreature.Get().CreatureName);
     FName local_23;
     if ((local_8.ActivityTarget.MainTargetResource == ENTITY_ID_NULL))
     {
@@ -1445,17 +1482,16 @@ void ChangeAreaOverServerTrackHandler(const FECSEntity &inout Flock)
 }
 FName GetCombatRegionActorNameByResourceHelper(const FECSEntity &inout TrackResource)
 {
-    AActor local_22;
+    int local_20 = 0;
     FName __return;
     FName local_2(NAME_None);
     FEcologySceneInfoUtils::FindCombatRegionByEntity(TrackResource);
     Get local_14;
     if (local_14.opCall())
     {
-        if (local_22 != nullptr)
+        if (local_20.Get() != nullptr)
         {
-            AActor local_24;
-            local_2 = local_24.GetFName();
+            local_2 = local_20.Get().GetFName();
         }
     }
     else

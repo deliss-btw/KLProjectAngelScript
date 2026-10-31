@@ -101,8 +101,7 @@ struct FVM_MissionList : FEUIViewModel
         {
             return;
         }
-        TEUIModelRef<FVM_MissionListEntry> local_2 = this.GetHighlightedEntry();
-        this.OnEntryItemClicked(FEUIModelContainer());
+        this.OnEntryItemClicked(FEUIModelContainer(this.GetHighlightedEntry().Get()));
         return;
     }
     void OnEntryItemClicked(const FEUIModelContainer &inout Item)
@@ -156,8 +155,7 @@ struct FVM_MissionList : FEUIViewModel
             return;
         }
         FGuideContext local_144;
-        TEUIModelRef<FVM_MissionListEntry> local_2 = this.GetSelectedMissionEntry();
-        TDataObjectPtr<FMissionConfig> local_168 = GetMissionConfig();
+        TDataObjectPtr<FMissionConfig> local_168 = this.GetSelectedMissionEntry().Get().GetMissionConfig();
         if (::MissionUtils::TryFindMissionFirstGuidingInfo(this.GetContext().GetLocalPlayer(), local_168, local_144))
         {
             if (::GuideUtils::ShouldShowGuideOnTargetLevelMinimap(local_144, ::FLevelUtils::GetCurrentLevelInfoConfig(nullptr)))
@@ -201,37 +199,16 @@ struct FVM_MissionList : FEUIViewModel
     }
     void OnSelectedMissionEntryChanged()
     {
-        bool local_3 = this.GetSelectedMissionEntry().IsValid();
-        if (!(local_3))
+        if (this.GetSelectedMissionEntry().IsValid() && this.GetSelectedMissionEntry().Get().IsMissionEntry())
         {
-            local_3 = false;
-        }
-        else
-        {
-            TEUIModelRef<FVM_MissionListEntry> local_2 = this.GetSelectedMissionEntry();
-            local_3 = IsMissionEntry();
-        }
-        if (local_3)
-        {
-            TEUIModelRef<FVM_MissionListEntry> local_2_2 = this.GetSelectedMissionEntry();
-            ConsumeMissionRedDot();
+            this.GetSelectedMissionEntry().Get().ConsumeMissionRedDot();
         }
         this.UpdateSelectedMissionInfo();
         return;
     }
     bool IsMissionEntryHighlighted() const
     {
-        bool local_3 = this.GetHighlightedEntry().IsValid();
-        if (!(local_3))
-        {
-            local_3 = false;
-        }
-        else
-        {
-            TEUIModelRef<FVM_MissionListEntry> local_2 = this.GetHighlightedEntry();
-            local_3 = IsMissionEntry();
-        }
-        return local_3;
+        return this.GetHighlightedEntry().IsValid() && this.GetHighlightedEntry().Get().IsMissionEntry();
     }
     bool IsChapterEntryHighlighted() const
     {
@@ -239,26 +216,7 @@ struct FVM_MissionList : FEUIViewModel
     }
     bool IsHighlightedChapterExpanded() const
     {
-        bool local_3 = this.GetHighlightedEntry().IsValid();
-        if (!(local_3))
-        {
-            local_3 = false;
-        }
-        else
-        {
-            TEUIModelRef<FVM_MissionListEntry> local_2 = this.GetHighlightedEntry();
-            local_3 = IsChapterEntry();
-        }
-        if (!(local_3))
-        {
-            local_3 = false;
-        }
-        else
-        {
-            TEUIModelRef<FVM_MissionListEntry> local_2_2 = this.GetHighlightedEntry();
-            local_3 = GetbShowChapterMission();
-        }
-        return local_3;
+        return this.GetHighlightedEntry().IsValid() && this.GetHighlightedEntry().Get().IsChapterEntry() && this.GetHighlightedEntry().Get().GetbShowChapterMission();
     }
     void UpdateMissionList(const EMissionTabType TabType, const bool bReselectMissionEntry = true)
     {
@@ -274,7 +232,7 @@ struct FVM_MissionList : FEUIViewModel
         TEUIModelRef<FVM_MissionListEntry> local_6;
         for (auto& local_20 : this.GetAllMissionEntries())
         {
-            local_3 = this.NeedShowMissionForTab(GetMissionType(), EMissionTabType(TabType));
+            local_3 = this.NeedShowMissionForTab(local_20.Get().GetMissionType(), EMissionTabType(TabType));
             if (local_3)
             {
                 if (local_20.opArrow().IsMissionEntry() && local_20.opArrow().GetChapterConfig().IsSet())
@@ -299,7 +257,7 @@ struct FVM_MissionList : FEUIViewModel
                     local_6 = local_20;
                     continue;
                 }
-                if (!(GetbIsTracking()) && GetbIsTracking())
+                if (!(local_6.Get().GetbIsTracking()) && local_20.Get().GetbIsTracking())
                 {
                     local_6 = local_20;
                 }
@@ -317,9 +275,8 @@ struct FVM_MissionList : FEUIViewModel
         {
             return;
         }
-        bool local_2 = !(GetbShowChapterMission());
-        local_2.SetbShowChapterMission();
-        this.SetbIsHighlightedChapterExpanded(GetbShowChapterMission());
+        ChapterEntry.Get().SetbShowChapterMission(!(ChapterEntry.Get().GetbShowChapterMission()));
+        this.SetbIsHighlightedChapterExpanded(ChapterEntry.Get().GetbShowChapterMission());
         this.UpdateMissionList(this.GetCurrentTabType(), false);
         return;
     }
@@ -381,8 +338,6 @@ struct FVM_MissionList : FEUIViewModel
     }
     void UpdateEntrySubTitle(const TEUIModelRef<FVM_MissionListEntry> &inout MissionEntry)
     {
-        int local_163 = 0;
-        FMissionObjectiveInfo local_218;
         float local_274;
         if (!(MissionEntry.IsValid()) || MissionEntry.opArrow().IsChapterEntry())
         {
@@ -390,16 +345,16 @@ struct FVM_MissionList : FEUIViewModel
         }
         TDataObjectPtr<FMissionConfig> local_26 = MissionEntry.opArrow().GetMissionConfig();
         FMissionDetail local_162;
-        if (!(::MissionUtils::TryFindMissionDetail(this.GetContext().GetLocalPlayer(), local_163, local_162, false)) || local_162.GetActiveObjectiveStatusMap().IsEmpty())
+        if (!(::MissionUtils::TryFindMissionDetail(this.GetContext().GetLocalPlayer(), local_26.Get().DataId, local_162, false)) || local_162.GetActiveObjectiveStatusMap().IsEmpty())
         {
-            ApplyGuideDefaultText();
+            MissionEntry.Get().ApplyGuideDefaultText();
             return;
         }
         bool local_169 = false;
         TDataObjectPtr<FLevelInfoConfig> local_194;
         for (auto& local_212 : local_162.GetActiveObjectiveStatusMap())
         {
-            local_212;
+            FMissionObjectiveInfo local_218 = FMissionObjectiveInfo(local_212.GetValue());
             TDataObjectPtr<FObjectiveConfig> local_242 = ::ObjectiveUtils::FindObjectiveConfig(local_218.GetObjectiveId());
             if (!(local_242))
             {
@@ -410,7 +365,7 @@ struct FVM_MissionList : FEUIViewModel
             EObjectiveGuideDisplayState local_299 = ::ObjectiveUtils::GetObjectiveGuideDisplayInfo(local_242, this.GetContext().GetLocalPlayer(), local_274, local_298);
             if (int(local_299) == 1)
             {
-                (FMath::RoundToInt(local_274 * 0.01)).ApplyGuideDistance();
+                MissionEntry.Get().ApplyGuideDistance(FMath::RoundToInt(local_274 * 0.01));
                 return;
             }
             if (int(local_299) == 2 && !(local_169))
@@ -421,10 +376,11 @@ struct FVM_MissionList : FEUIViewModel
         }
         if (local_169 && local_194.IsSet())
         {
+            MissionEntry.Get().ApplyGuideLevelName(local_194.Get().LevelDisplayName);
         }
         else
         {
-            ApplyGuideDefaultText();
+            MissionEntry.Get().ApplyGuideDefaultText();
         }
         return;
     }
@@ -432,15 +388,12 @@ struct FVM_MissionList : FEUIViewModel
     {
         if (this.GetSelectedMissionInfo())
         {
-            TDataObjectPtr<FMissionConfig> local_28;
-            local_28 = TDataObjectPtr<FMissionConfig>();
-            TEUIModelRef<FVM_MissionDetailInfo> local_2 = this.GetSelectedMissionInfo();
+            this.GetSelectedMissionInfo().Get().AssignMissionConfig(TDataObjectPtr<FMissionConfig>(), this.GetRecommendLevelWarningFormat());
         }
         return;
     }
     void UpdateSelectedMissionInfo()
     {
-        int local_167 = 0;
         if (!(this.GetSelectedMissionInfo()))
         {
             this.SetSelectedMissionInfo(TEUIModelRef<FVM_MissionDetailInfo>(::FVM_MissionDetailInfo::Create(this.GetContext().Manager)));
@@ -452,7 +405,7 @@ struct FVM_MissionList : FEUIViewModel
         }
         TDataObjectPtr<FMissionConfig> local_30 = this.GetSelectedMissionEntry().opArrow().GetMissionConfig();
         FMissionDetail local_166;
-        if (!(::MissionUtils::TryFindMissionDetail(this.GetContext().GetLocalPlayer(), local_167, local_166, false)))
+        if (!(::MissionUtils::TryFindMissionDetail(this.GetContext().GetLocalPlayer(), local_30.Get().DataId, local_166, false)))
         {
             XError(ELog(16), FString().Append("Failed to find mission detail for mission config: ").Append(local_30.GetDataName()));
             return;
@@ -488,7 +441,7 @@ struct FVM_MissionList : FEUIViewModel
                 {
                     continue;
                 }
-                if ((!((GetChapterConfig().GetDataName() == ChapterConfig.GetDataName()))))
+                if ((!((local_16.Get().GetChapterConfig().GetDataName() == ChapterConfig.GetDataName()))))
                 {
                     continue;
                 }
@@ -504,24 +457,26 @@ struct FVM_MissionList : FEUIViewModel
         {
             return false;
         }
-        return GetbShowChapterMission();
+        return local_2.Get().GetbShowChapterMission();
     }
     void SortMissionEntriesAndResetShowCategory()
     {
         EMissionType local_9;
+        __Lambda_UI_Private_ViewModel_Menu_Mission_VM_MissionList_449 local_2;
+        this.GetModify_AllMissionEntries().Sort(local_2);
         int local_4 = 0;
         int local_3 = local_4;
         int local_5 = 0;
         for (; local_5 < this.GetAllMissionEntries().Num(); ++local_5)
         {
-            local_9 = GetMissionType();
+            local_9 = this.GetAllMissionEntries()[local_5].Get().GetMissionType();
             if (local_5 == 0 || (int(local_9) != local_3))
             {
                 local_3 = local_9;
-                true.SetbShowCategory();
+                this.GetAllMissionEntries()[local_5].Get().SetbShowCategory(true);
                 continue;
             }
-            0.SetbShowCategory();
+            this.GetAllMissionEntries()[local_5].Get().SetbShowCategory(false);
         }
         return;
     }
@@ -716,23 +671,51 @@ struct __Lambda_UI_Private_ViewModel_Menu_Mission_VM_MissionList_449
     bool opCall(const TEUIModelRef<FVM_MissionListEntry> &inout A, const TEUIModelRef<FVM_MissionListEntry> &inout B)
     {
         int local_4;
-        int local_82 = 0;
+        int local_79;
+        int local_81;
+        int local_83;
         EMissionType local_1;
-        local_1 = GetMissionType();
+        local_1 = A.Get().GetMissionType();
         EMissionType local_3;
-        local_3 = GetMissionType();
-        int local_5 = int(local_3);
-        if (int(local_1) == local_5)
+        local_3 = B.Get().GetMissionType();
+        if (int(local_1) == int(local_3))
         {
-            int local_79;
-            TDataObjectPtr<FChapterConfig> local_78 = GetChapterConfig();
-            local_4 = GetChapterConfig().IsSet() ? local_5 : 2147483647;
-            local_79 = local_78.IsSet() ? local_5 : 2147483647;
+            TDataObjectPtr<FChapterConfig> local_30 = A.Get().GetChapterConfig();
+            TDataObjectPtr<FChapterConfig> local_78 = B.Get().GetChapterConfig();
+            if (local_30.IsSet())
+            {
+                local_4 = local_30.Get().SortPriority;
+            }
+            else
+            {
+                local_4 = 2147483647;
+            }
+            if (local_78.IsSet())
+            {
+                local_79 = local_78.Get().SortPriority;
+            }
+            else
+            {
+                local_79 = 2147483647;
+            }
             if (local_4 == local_79)
             {
-                int local_83;
-                int local_81 = GetMissionConfig().IsSet() ? local_82 : 0;
-                local_83 = GetMissionConfig().IsSet() ? local_82 : 0;
+                if (A.Get().GetMissionConfig().IsSet())
+                {
+                    local_81 = A.Get().GetMissionConfig().Get().DataId;
+                }
+                else
+                {
+                    local_81 = 0;
+                }
+                if (B.Get().GetMissionConfig().IsSet())
+                {
+                    local_83 = B.Get().GetMissionConfig().Get().DataId;
+                }
+                else
+                {
+                    local_83 = 0;
+                }
                 return (local_81 < local_83);
             }
             else
@@ -743,8 +726,8 @@ struct __Lambda_UI_Private_ViewModel_Menu_Mission_VM_MissionList_449
         else
         {
             int local_80 = int(local_1);
-            int local_5_2 = int(local_3);
-            return (local_80 < local_5_2);
+            int local_5 = int(local_3);
+            return (local_80 < local_5);
         }
     }
 }
@@ -766,11 +749,9 @@ FVM_MissionList& Create(const UObject ContextObject)
 {
     return FVM_MissionList::CreateByManager(EUIInternal::GetContextManager(ContextObject));
 }
-FVM_MissionList CreateByManager(const UEUIManagerSubsystem Manager)
+FVM_MissionList& CreateByManager(const UEUIManagerSubsystem Manager)
 {
-    FVM_MissionList __r;
-    TEUIModelRef<FVM_MissionList> local_6 = TEUIModelRef<FVM_MissionList>(EUIInternal::MakeModelWithManager(Manager, FVM_MissionList::ModelId));
-    return __r;
+    return TEUIModelRef<FVM_MissionList>(EUIInternal::MakeModelWithManager(Manager, FVM_MissionList::ModelId)).Get();
 }
 void GetModelInfo(FEUIViewModelMetaInfo &inout Result)
 {
@@ -910,7 +891,6 @@ namespace __GeneratedProperties_FVM_MissionList
 {
 UScriptStruct StaticStruct()
 {
-    UScriptStruct local_2;
-    return local_2;
+    return __GeneratedProperties_FVM_MissionList.Get();
 }
 }

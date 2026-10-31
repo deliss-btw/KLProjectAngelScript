@@ -229,11 +229,9 @@ FVM_CommonBanner& Create(const UObject ContextObject, const FText &inout Title, 
 {
     return FVM_CommonBanner::CreateByManager(EUIInternal::GetContextManager(ContextObject), Title, Tips, Icon, bEnd, EBannerBGType(BackGroundType));
 }
-FVM_CommonBanner CreateByManager(const UEUIManagerSubsystem Manager, const FText &inout Title, const FText &inout Tips, const FSoftBrush &inout Icon, const bool bEnd, const EBannerBGType BackGroundType)
+FVM_CommonBanner& CreateByManager(const UEUIManagerSubsystem Manager, const FText &inout Title, const FText &inout Tips, const FSoftBrush &inout Icon, const bool bEnd, const EBannerBGType BackGroundType)
 {
-    FVM_CommonBanner __r;
-    TEUIModelRef<FVM_CommonBanner> local_6 = TEUIModelRef<FVM_CommonBanner>(EUIInternal::MakeModelWithManager_Generic(Manager, FVM_CommonBanner::ModelId, 0, Title, Tips, Icon, bEnd, BackGroundType));
-    return __r;
+    return TEUIModelRef<FVM_CommonBanner>(EUIInternal::MakeModelWithManager_Generic(Manager, FVM_CommonBanner::ModelId, 0, Title, Tips, Icon, bEnd, BackGroundType)).Get();
 }
 void GetModelInfo(FEUIViewModelMetaInfo &inout Result)
 {
@@ -340,7 +338,6 @@ namespace __GeneratedProperties_FVM_CommonBanner
 {
 UScriptStruct StaticStruct()
 {
-    UScriptStruct local_2;
-    return local_2;
+    return __GeneratedProperties_FVM_CommonBanner.Get();
 }
 }

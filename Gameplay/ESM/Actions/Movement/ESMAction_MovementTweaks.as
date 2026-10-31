@@ -138,6 +138,8 @@ class UESMAction_MovementSideSlideTweaks : UESMBPBaseSpanAction
         FC_CharacterMovementNew& local_8 = local_6.opCall();
         if (local_8)
         {
+            local_8.GetModify_SlideParamForStatic().Clear();
+            local_8.GetModify_SlideParamForDynamic().Clear();
             local_8.SetSlideForwardYaw(0.0f);
         }
         return;

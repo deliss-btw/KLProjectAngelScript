@@ -75,8 +75,8 @@ class UWidget_GiveEcho : UEUIActivatableWidget
     }
     void HandleObservedModelChanges(FEUIReactiveSubscriberIterator &inout It)
     {
-        FVM_GiveEcho& local_6;
         TEUIModelRef<FVM_GiveEcho> local_2 = this.GiveEcho.AsRef();
+        FVM_GiveEcho& local_6 = local_2.Get();
         for (; It; )
         {
             FEUIReactiveSubscriberTrackScope local_56 = FEUIReactiveSubscriberTrackScope(It);

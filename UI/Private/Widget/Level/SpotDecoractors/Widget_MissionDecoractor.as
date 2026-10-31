@@ -40,8 +40,8 @@ class UWidget_MissionDecoractor : UEUIUserWidget
     }
     void HandleObservedModelChanges(FEUIReactiveSubscriberIterator &inout It)
     {
-        FVM_MissionDecoractor& local_6;
         TEUIModelRef<FVM_MissionDecoractor> local_2 = this.Decoractor.AsRef();
+        FVM_MissionDecoractor& local_6 = local_2.Get();
         for (; It; )
         {
             FEUIReactiveSubscriberTrackScope local_56 = FEUIReactiveSubscriberTrackScope(It);

@@ -50,30 +50,16 @@ struct FVM_AvatarEquipmentTraitHoverTips : FEUIViewModel
     }
     void PostConstruct()
     {
-        bool local_60 = false;
-        bool local_1 = true;
-        this.SetTraitInfo(TEUIModelRef<FVM_TraitInfoHover>(::FVM_TraitInfoHover::Create(this.GetContext().Manager, this.GetTrait(), local_1)));
-        TEUIModelRef<FM_Trait> local_4 = this.GetTrait();
-        TDataObjectPtr<FTraitConfig> local_30 = GetTraitConfig();
-        TEUIModelRef<FM_Trait> local_4_2 = this.GetTrait();
-        int local_56 = GetTraitLevel();
+        this.SetTraitInfo(TEUIModelRef<FVM_TraitInfoHover>(::FVM_TraitInfoHover::Create(this.GetContext().Manager, this.GetTrait(), true)));
+        TDataObjectPtr<FTraitConfig> local_30 = this.GetTrait().Get().GetTraitConfig();
+        int local_56 = this.GetTrait().Get().GetTraitLevel();
         int local_55;
         local_55 = local_56;
         int local_56_2 = ::NumericUtils::AsInt32(local_30.opArrow().LevelLimit);
         int local_59 = 1;
         for (; local_59 <= local_56_2; ++local_59)
         {
-            local_1 = !local_1;
-            if (!(local_1))
-            {
-                local_1 = false;
-            }
-            else
-            {
-                local_60 = !local_60;
-                local_1 = local_60;
-            }
-            if (local_1)
+            if (!(local_30.Get().ModifiersByLevel.Contains(local_59)) && !(local_30.Get().CapabilitiesByLevel.Contains(local_59)))
             {
                 XError(ELog(16), FString().Append("Trait level ").Append(local_59).Append(" is not found in trait config ").Append(local_30.GetDataName()));
                 continue;
@@ -184,11 +170,9 @@ FVM_AvatarEquipmentTraitHoverTips& Create(const UObject ContextObject, const TEU
 {
     return FVM_AvatarEquipmentTraitHoverTips::CreateByManager(EUIInternal::GetContextManager(ContextObject), Trait);
 }
-FVM_AvatarEquipmentTraitHoverTips CreateByManager(const UEUIManagerSubsystem Manager, const TEUIModelRef<FM_Trait> &inout Trait)
+FVM_AvatarEquipmentTraitHoverTips& CreateByManager(const UEUIManagerSubsystem Manager, const TEUIModelRef<FM_Trait> &inout Trait)
 {
-    FVM_AvatarEquipmentTraitHoverTips __r;
-    TEUIModelRef<FVM_AvatarEquipmentTraitHoverTips> local_6 = TEUIModelRef<FVM_AvatarEquipmentTraitHoverTips>(EUIInternal::MakeModelWithManager_Generic(Manager, FVM_AvatarEquipmentTraitHoverTips::ModelId, 0, Trait));
-    return __r;
+    return TEUIModelRef<FVM_AvatarEquipmentTraitHoverTips>(EUIInternal::MakeModelWithManager_Generic(Manager, FVM_AvatarEquipmentTraitHoverTips::ModelId, 0, Trait)).Get();
 }
 void GetModelInfo(FEUIViewModelMetaInfo &inout Result)
 {
@@ -270,7 +254,6 @@ namespace __GeneratedProperties_FVM_AvatarEquipmentTraitHoverTips
 {
 UScriptStruct StaticStruct()
 {
-    UScriptStruct local_2;
-    return local_2;
+    return __GeneratedProperties_FVM_AvatarEquipmentTraitHoverTips.Get();
 }
 }

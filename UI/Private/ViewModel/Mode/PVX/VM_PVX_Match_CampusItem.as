@@ -88,9 +88,9 @@ struct FVM_PVX_Match_CampusItem : FEUIViewModel
     }
     void PostConstruct()
     {
-        const FPvxMatchConfig& local_4;
         if (this.GetPvxMatchConfig())
         {
+            const FPvxMatchConfig& local_4 = this.GetPvxMatchConfig().Get();
             if (this.GetbPlayerOrBoss())
             {
                 this.SetCampusName(local_4.PlayerName);
@@ -304,11 +304,9 @@ FVM_PVX_Match_CampusItem& Create(const UObject ContextObject, const TDataObjectP
 {
     return FVM_PVX_Match_CampusItem::CreateByManager(EUIInternal::GetContextManager(ContextObject), PvxMatchConfig, bPlayerOrBoss);
 }
-FVM_PVX_Match_CampusItem CreateByManager(const UEUIManagerSubsystem Manager, const TDataObjectPtr<FPvxMatchConfig> &inout PvxMatchConfig, const bool bPlayerOrBoss)
+FVM_PVX_Match_CampusItem& CreateByManager(const UEUIManagerSubsystem Manager, const TDataObjectPtr<FPvxMatchConfig> &inout PvxMatchConfig, const bool bPlayerOrBoss)
 {
-    FVM_PVX_Match_CampusItem __r;
-    TEUIModelRef<FVM_PVX_Match_CampusItem> local_6 = TEUIModelRef<FVM_PVX_Match_CampusItem>(EUIInternal::MakeModelWithManager_Generic(Manager, FVM_PVX_Match_CampusItem::ModelId, 0, PvxMatchConfig, bPlayerOrBoss));
-    return __r;
+    return TEUIModelRef<FVM_PVX_Match_CampusItem>(EUIInternal::MakeModelWithManager_Generic(Manager, FVM_PVX_Match_CampusItem::ModelId, 0, PvxMatchConfig, bPlayerOrBoss)).Get();
 }
 void GetModelInfo(FEUIViewModelMetaInfo &inout Result)
 {
@@ -419,7 +417,6 @@ namespace __GeneratedProperties_FVM_PVX_Match_CampusItem
 {
 UScriptStruct StaticStruct()
 {
-    UScriptStruct local_2;
-    return local_2;
+    return __GeneratedProperties_FVM_PVX_Match_CampusItem.Get();
 }
 }

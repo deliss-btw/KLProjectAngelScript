@@ -58,8 +58,7 @@ class US_HTNSystem : UECSScriptSystem
         {
             if (local_16.HTNComponent.IsValid())
             {
-                UECSHTNComponent local_18;
-                local_18.NotifyInterrupt(Event.Tag);
+                local_16.HTNComponent.Get().NotifyInterrupt(Event.Tag);
             }
         }
         return;

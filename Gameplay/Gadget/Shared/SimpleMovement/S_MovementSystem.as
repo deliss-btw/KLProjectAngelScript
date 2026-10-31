@@ -803,7 +803,8 @@ class US_MovementSystem : UECSScriptSystem
     UFUNCTION()
     void Job_TickTrackMovementOverride(const FECSEntity &inout Entity, FC_MovementInfo &inout MovementInfo, const FC_TrackMovementOverride &inout Config, FC_TrackRuntime &inout Track, const FC_Transform &inout Transform, const FCS_FixedTime &inout FixedTime) const
     {
-        // body not fully recovered — stub [argmismatch:argtype]
+        ::FMovementUtils::TickTrackMovement(Entity, MovementInfo, Config.GetDataPtr().Get(), Track, Transform, FixedTime);
+        return;
     }
     UFUNCTION()
     void Job_TickOrbitMovement(const FECSEntity &inout Entity, FC_MovementInfo &inout MovementInfo, FC_OrbitMovementRuntime &inout Orbit, const FC_Transform &inout Transform, const FCS_FixedTime &inout FixedTime) const
@@ -860,12 +861,13 @@ class US_MovementSystem : UECSScriptSystem
         }
         float local_8_4 = MovementInfo.GetMoveTime().ToSeconds();
         float32 local_47 = float32(local_8_4);
+        float32 local_66 = Orbit.GetAngleVelocity().GetValue(local_47);
         float local_8_5 = MovementInfo.GetMoveTime().ToSeconds();
-        float32 local_65 = float32(local_8_5);
+        float32 local_47_2 = Orbit.GetCentripetalVelocity().GetValue(float32(local_8_5));
         float local_8_6 = MovementInfo.GetMoveTime().ToSeconds();
-        float32 local_67 = float32(local_8_6);
-        float32 local_67_2 = 0.0f * local_9;
-        float32 local_68 = local_47 * local_9;
+        float32 local_65 = Orbit.GetAxisVelocity().GetValue(float32(local_8_6));
+        float32 local_67 = local_66 * local_9;
+        float32 local_68 = local_47_2 * local_9;
         float32 local_71 = Orbit.GetCurDistanceToCenter();
         FVector local_78;
         if (!(Orbit.GetbKeepRelativePosAfterTargetEntityMove()))
@@ -885,9 +887,9 @@ class US_MovementSystem : UECSScriptSystem
         local_79 = 0.0f;
         if (Orbit.GetbAxisMoveToTargetPlane())
         {
-            if (Orbit.GetbAutoCalcAxisVelocity() && (local_47 > 0.0f))
+            if (Orbit.GetbAutoCalcAxisVelocity() && (local_47_2 > 0.0f))
             {
-                float32 local_70 = Orbit.GetCurDistanceToCenter() / local_47;
+                float32 local_70 = Orbit.GetCurDistanceToCenter() / local_47_2;
                 if (local_70 > 0.0f)
                 {
                     if (local_70 <= local_9)
@@ -921,7 +923,7 @@ class US_MovementSystem : UECSScriptSystem
         {
             local_79 = local_65 * local_9;
         }
-        FVector local_40_2 = ((local_54.GetSafeNormal(9.99999993922529e-9, FVector::ZeroVector).RotateAngleAxis(local_67_2, Orbit.GetAxis())) * local_71);
+        FVector local_40_2 = ((local_54.GetSafeNormal(9.99999993922529e-9, FVector::ZeroVector).RotateAngleAxis(local_67, Orbit.GetAxis())) * local_71);
         FVector local_60_2 = (local_34_2 + local_40_2);
         local_78 = (local_60_2 + (FVector(Orbit.GetAxis()) * local_79));
         FVector local_60_3 = (local_78 - Transform.GetPosition());
@@ -931,7 +933,7 @@ class US_MovementSystem : UECSScriptSystem
             FRotator local_108;
             if (Orbit.GetbRotateToCircleTangentDir())
             {
-                local_60_3 = (local_54.RotateAngleAxis(local_67_2, Orbit.GetAxis()) - local_54);
+                local_60_3 = (local_54.RotateAngleAxis(local_67, Orbit.GetAxis()) - local_54);
             }
             if (!(local_60_3.IsZero()))
             {

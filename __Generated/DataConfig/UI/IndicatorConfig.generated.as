@@ -51,7 +51,6 @@ FPresentationDisplayRule __FIndicatorConfig_GetDistanceTextDisplayRule(const TDa
 UFUNCTION()
 FLinearColor __FIndicatorConfig_GetArrowColor(const TDataObjectPtr<FIndicatorConfig> &inout DataObject)
 {
-    FLinearColor __r;
     if ((DataObject == nullptr))
     {
         if (!(EUIGlobals::GIsDuringPropertyConversion))
@@ -61,7 +60,7 @@ FLinearColor __FIndicatorConfig_GetArrowColor(const TDataObjectPtr<FIndicatorCon
         FIndicatorConfig local_92;
         return local_92.ArrowColor;
     }
-    return __r;
+    return DataObject.Get().ArrowColor;
 }
 UFUNCTION()
 FIndicatorConfig CastToFIndicatorConfig(const TDataObjectPtr<FIndicatorConfig> &inout DataObject)

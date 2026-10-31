@@ -32,6 +32,8 @@ struct FKLFlowNode_ListenSpawner : FKLFlowNode
     UPROPERTY()
     int SubscriptionHandleNewMonsterReady;
 
+    default m_ScriptOverrideMeta = Cast<UASStruct>(FKLFlowNode_ListenSpawner.Get());
+
     FKLFlowNode_ListenSpawner()
     {
         this.SubscriptionHandleMonsterDeath = 0;
@@ -41,7 +43,9 @@ struct FKLFlowNode_ListenSpawner : FKLFlowNode
     }
     void OnBuild_Implementation()
     {
-        // body not fully recovered — stub [opcode-uncovered]
+        this.bIsEntryNode = true;
+        this.OutputPins = {n"OnMonsterDeath", n"OnNewMonsterReady"};
+        return;
     }
     void OnInit_Implementation()
     {
@@ -76,31 +80,20 @@ struct FKLFlowNode_ListenSpawner : FKLFlowNode
     bool TryConsumeSpawnerEvent(const int SubscriptionHandle, FKLFlowEvent_SpawnerMonster &inout OutEvent)
     {
         FInstancedStruct local_4;
-        bool local_20 = false;
         if (!(this.ConsumeEvent(SubscriptionHandle, local_4)))
         {
             return false;
         }
         FInstancedStruct::GetPtr local_10;
-        if (!(local_10.opCall()))
+        TConstRawPtr<FKLFlowEvent_SpawnerMonster> local_12 = local_10.opCall();
+        if (!(local_12))
         {
             return false;
         }
         if (this.LevelUnitRef.IsValid())
         {
             FECSEntity local_18;
-            bool local_5 = !(::KLFlowLibrary::GetEntityByLevelUnitRef(this.LevelUnitRef, local_18));
-            if (local_5)
-            {
-                local_5 = true;
-            }
-            else
-            {
-                FECSEntityId local_19 = local_18.GetId();
-                local_20 = !local_20;
-                local_5 = local_20;
-            }
-            if (local_5)
+            if (!(::KLFlowLibrary::GetEntityByLevelUnitRef(this.LevelUnitRef, local_18)) || !((local_18.GetId() == local_12.Get().SpawnerEntityId)))
             {
                 return false;
             }
@@ -131,13 +124,13 @@ struct FKLFlowNode_ListenSpawner : FKLFlowNode
     }
     void OnLoad_Implementation(const FKLFlowNodeSnapshot &inout InSnapshot)
     {
-        int local_10 = 0;
-        if (!(FInstancedStruct::GetPtr<FKLFlowNodeMemory_ListenSpawner>(InSnapshot.Memory).opCall()))
+        TConstRawPtr<FKLFlowNodeMemory_ListenSpawner> local_6 = FInstancedStruct::GetPtr<FKLFlowNodeMemory_ListenSpawner>(InSnapshot.Memory).opCall();
+        if (!(local_6))
         {
             return;
         }
-        this.SubscriptionHandleMonsterDeath = local_10;
-        this.SubscriptionHandleNewMonsterReady = local_10;
+        this.SubscriptionHandleMonsterDeath = local_6.Get().HandleMonsterDeath;
+        this.SubscriptionHandleNewMonsterReady = local_6.Get().HandleNewMonsterReady;
         return;
     }
 }

@@ -107,12 +107,11 @@ struct FCS_GameModeDamageCoefficientCache : FECSSingleton
     }
     void InitializeFromDataTable(const FDataTablePtr &inout DamageCoefficientTable)
     {
-        const FGameModeDamageCoefficientRow& local_82;
         this.GetModify_CacheMap().Empty(0);
         FDataTableIterator local_6 = FDataTableIterator(DamageCoefficientTable);
         for (; local_6; )
         {
-            TDataObjectPtr<FGameModeDamageCoefficientRow> local_80 = TDataObjectPtr<FGameModeDamageCoefficientRow>(local_6.GetDataPtr());
+            const FGameModeDamageCoefficientRow& local_82 = TDataObjectPtr<FGameModeDamageCoefficientRow>(local_6.GetDataPtr()).Get();
             if (int(local_82.Taker) == 0)
             {
             }
@@ -176,23 +175,23 @@ EGameModeDamageCoefficientEntity GetCoefficientType(const FECSEntity &inout Enti
     Has local_4;
     bool local_5;
     int local_14 = 0;
-    FName local_66;
     Has local_154;
     if (!(local_4.opCall()))
     {
-        if (GetAvatarConfig(Entity))
+        TDataObjectPtr<FAvatarPrefabConfig> local_38 = GetAvatarConfig(Entity);
+        if (local_38)
         {
-            FAvatarPrefabConfig local_64;
-            local_66 = local_64.GetDataName();
-            local_14.SetEnumType(GameModeDamageCoefficient::GetCoefficientTypeByName(local_66));
+            const FAvatarPrefabConfig& local_64 = local_38.Get();
+            local_14.SetEnumType(GameModeDamageCoefficient::GetCoefficientTypeByName(local_64.GetDataName()));
         }
         else
         {
-            if (GetMonsterConfig(Entity))
+            TDataObjectPtr<FMonsterPrefabConfig> local_92 = GetMonsterConfig(Entity);
+            if (local_92)
             {
+                const FMonsterPrefabConfig& local_118 = local_92.Get();
                 if ((int(GameMode.GetGameModeType())) != 0)
                 {
-                    const FMonsterPrefabConfig& local_118;
                     TDataObjectPtr<FGameModeOverrideMonsterConfig> local_146;
                     if (!(local_118.GetGameModeOverride().Find(GameMode.GetGameModeType(), local_146)))
                     {
@@ -204,8 +203,7 @@ EGameModeDamageCoefficientEntity GetCoefficientType(const FECSEntity &inout Enti
                     }
                     if (local_5)
                     {
-                        local_66.GetDataName();
-                        FName local_149 = local_66;
+                        FName local_149(local_146.Get().GetDataName());
                         local_5 = local_154.opCall();
                         if (local_5)
                         {
@@ -217,8 +215,8 @@ EGameModeDamageCoefficientEntity GetCoefficientType(const FECSEntity &inout Enti
                     {
                         if (local_118.GetPVPOverride())
                         {
-                            FPVPOverrideMonsterConfig local_168;
-                            FName local_149_2 = FName(local_168.GetDataName());
+                            const FPVPOverrideMonsterConfig& local_168 = local_118.GetPVPOverride().Get();
+                            FName local_149_2(local_168.GetDataName());
                             if (local_154.opCall())
                             {
                                 local_149_2 = FName((FString(PlayerControlledPrefix) + local_149_2.ToString()));

@@ -406,6 +406,7 @@ struct FC_CharacterVaultInfoCache : FECSComponent
         {
             if ((Frame - this.LastSteerFrame) > 10)
             {
+                this.SteerYawBuffer.Clear();
                 this.LastSteerFrame = (Frame - 1);
             }
         }
@@ -418,6 +419,7 @@ struct FC_CharacterVaultInfoCache : FECSComponent
     }
     void ClearSteerYaw()
     {
+        this.SteerYawBuffer.Clear();
         this.LastSteerFrame = -1;
         return;
     }
@@ -427,7 +429,6 @@ struct FC_CharacterVaultInfoCache : FECSComponent
     }
     bool CheckSteerYawDiff(const float32 RefYaw, const float32 MaxDiff, const int Frames) const
     {
-        float32 local_7 = 0.0f;
         if (Frames > this.SteerYawBuffer.GetNum())
         {
             return false;
@@ -435,7 +436,7 @@ struct FC_CharacterVaultInfoCache : FECSComponent
         int local_3 = 0;
         for (; local_3 < Frames; ++local_3)
         {
-            int local_6 = (this.SteerYawBuffer.GetNum() - 1) - local_3;
+            float32 local_7 = this.SteerYawBuffer.Get((this.SteerYawBuffer.GetNum() - 1) - local_3);
             if (FMath::Abs(FMath::FindDeltaAngleRadians(local_7, RefYaw)) > MaxDiff)
             {
                 return false;
@@ -628,7 +629,6 @@ struct FC_CharacterVaulting : FECSComponent
     }
     void OnWallRunning(const FC_CharacterVaultingConfig &inout VaultingConfig)
     {
-        float32 local_29 = 0.0f;
         bool local_2 = this.GetEnableStableWallRun(VaultingConfig);
         if ((local_2 || !(this.GetWallRunInfo().GetbInAttemptCoolDown())))
         {
@@ -636,10 +636,9 @@ struct FC_CharacterVaulting : FECSComponent
         }
         if (!(this.GetWallRunInfo().GetbInAttemptCoolDown()))
         {
-            if (VaultingConfig.IsValidState(EVaultStartState(this.GetProbPath().VaultStartState)))
+            if (VaultingConfig.IsValidState(this.GetProbPath().VaultStartState))
             {
-                TDataObjectPtr<FCharacterVaultProbeConfig> local_28 = VaultingConfig.GetVaultProbeConfig(EVaultStartState(this.GetProbPath().VaultStartState));
-                this.GetWallRunInfo().SetAttemptHeight(local_29);
+                this.GetWallRunInfo().SetAttemptHeight(VaultingConfig.GetVaultProbeConfig(EVaultStartState(this.GetProbPath().VaultStartState)).Get().WallRunAttemptHeight);
             }
             else
             {

@@ -21,7 +21,7 @@ class US_MonsterThrowDetectSystem : UECSScriptSystem
         {
             return;
         }
-        if (0 != 2)
+        if (int(Event.AttackData.Get().AttackType) != 2)
         {
             return;
         }

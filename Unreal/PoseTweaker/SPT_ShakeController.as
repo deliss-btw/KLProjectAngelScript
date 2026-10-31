@@ -134,12 +134,12 @@ class USPT_ShakeControllerBase : USkeletalPoseTweaker
     UFUNCTION()
     void EvaluatePose_Implementation()
     {
-        const FShakeInputStates& local_24;
         FShakeBoneRuntimeState& local_76;
         float32 local_77;
         const TMap<FName, FShakeInputStates>& local_2 = this.GetInputStates();
         for (auto& local_22 : local_2)
         {
+            const FShakeInputStates& local_24 = local_22.GetValue();
             if (this.ShakeBoneChainStates.Contains(local_22.GetKey()))
             {
                 bool local_28;
@@ -161,7 +161,7 @@ class USPT_ShakeControllerBase : USkeletalPoseTweaker
                     FVector local_50 = (local_36 + (this.InvAnimComponentTransform.TransformVector(local_24.ExternalDriveDirection).GetSafeNormal(9.99999993922529e-9, FVector::ZeroVector) * 20.0));
                     for (auto& local_74 : local_26.BoneStates)
                     {
-                        local_74;
+                        local_76 = local_74.GetValue();
                         local_76.bEverStarted = true;
                         local_76.ElapsedSecondsSinceCurveRun = 0.0f;
                         local_76.RemainingCurveValue = 0.0f;

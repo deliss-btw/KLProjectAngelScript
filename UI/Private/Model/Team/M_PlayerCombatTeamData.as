@@ -115,11 +115,9 @@ FMS_PlayerCombatTeamData& Get(const UObject ContextObject)
 {
     return FMS_PlayerCombatTeamData::GetByManager(EUIInternal::GetContextManager(ContextObject));
 }
-FMS_PlayerCombatTeamData GetByManager(const UEUIManagerSubsystem Manager)
+FMS_PlayerCombatTeamData& GetByManager(const UEUIManagerSubsystem Manager)
 {
-    FMS_PlayerCombatTeamData __r;
-    TEUIModelRef<FMS_PlayerCombatTeamData> local_6 = TEUIModelRef<FMS_PlayerCombatTeamData>(EUIInternal::MakeModelWithManager(Manager, FMS_PlayerCombatTeamData::ModelId));
-    return __r;
+    return TEUIModelRef<FMS_PlayerCombatTeamData>(EUIInternal::MakeModelWithManager(Manager, FMS_PlayerCombatTeamData::ModelId)).Get();
 }
 void GetModelInfo(FEUIModelOnlyMetaInfo &inout Result)
 {

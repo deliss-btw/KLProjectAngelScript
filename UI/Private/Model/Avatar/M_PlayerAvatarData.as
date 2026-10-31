@@ -55,24 +55,21 @@ struct FMS_PlayerAvatarData : FEUIModelSingleton
     }
     TEUIModelRef<FM_Avatar> FindAvatar(const TDataObjectPtr<FAvatarPrefabConfig> &inout AvatarConfig) const
     {
-        TEUIModelRef<FM_Avatar> __return;
-        if (this.GetOwnedAvatars().Find(AvatarConfig.opArrow().DataId))
+        TConstRawPtr<TEUIModelRef<FM_Avatar>> local_2 = this.GetOwnedAvatars().Find(AvatarConfig.opArrow().DataId);
+        if (local_2)
         {
+            return local_2.Get();
         }
-        else
+        for (auto& local_20 : this.GetCurrentAvatars())
         {
-            for (auto& local_20 : this.GetCurrentAvatars())
+            TDataObjectPtr<FAvatarPrefabConfig> local_44;
+            local_44 = local_20.opArrow().GetAvatarConfig();
+            if ((local_44 == AvatarConfig.opImplConv()))
             {
-                TDataObjectPtr<FAvatarPrefabConfig> local_44;
-                local_44 = local_20.opArrow().GetAvatarConfig();
-                if ((local_44 == AvatarConfig.opImplConv()))
-                {
-                    return local_20;
-                }
+                return local_20;
             }
-            __return = TEUIModelRef<FM_Avatar>(nullptr);
         }
-        return __return;
+        return TEUIModelRef<FM_Avatar>(nullptr);
     }
     void OnDSPlayerAvatarInfoChanged(const FC_DSPlayerAvatarInfo &inout PlayerAvatarInfo)
     {
@@ -98,7 +95,7 @@ struct FMS_PlayerAvatarData : FEUIModelSingleton
                         }
                         continue;
                     }
-                    int local_25_2 = local_24.GetAvatarId();
+                    local_4.Remove(local_24.GetAvatarId());
                 }
             }
         }
@@ -116,13 +113,13 @@ struct FMS_PlayerAvatarData : FEUIModelSingleton
                         this.GetModify_OwnedAvatars().Add(local_126.opArrow().DataId, TEUIModelRef<FM_Avatar>(local_102_2));
                         continue;
                     }
+                    local_4.Remove(local_126.opArrow().DataId);
                 }
             }
         }
-        auto local_132 = local_4.Iterator();
-        for (; local_132.CanProceed;)
+        for (auto local_139 : local_4)
         {
-            int local_25_3 = local_132.Proceed();
+            this.GetModify_OwnedAvatars().Remove(local_139);
         }
         if (!(this.GetbHasInit()))
         {
@@ -162,15 +159,15 @@ struct FMS_PlayerAvatarData : FEUIModelSingleton
     void GS_OnUnlockAvatarNotify(const FPbUnlockAvatarNotify &inout Notify)
     {
         TArray<uint64> local_4;
-        bool local_8 = false;
         int local_5 = 0;
         for (; local_5 < Notify.GetAvatarList_Num(); ++local_5)
         {
             XLog(ELog(74), FString().Append("xxxxxx [GS_OnUnlockAvatarNotify] Unlock Avatar: ").Append(Notify.GetAvatarList_Index(local_5).GetAvatarId()));
             FPbAvatar local_22 = Notify.GetAvatarList_Index(local_5);
-            if (::FAvatarPrefabConfig::GetByDataId(local_22.GetAvatarId()))
+            TDataObjectPtr<FAvatarPrefabConfig> local_58 = ::FAvatarPrefabConfig::GetByDataId(local_22.GetAvatarId());
+            if (local_58)
             {
-                if (local_8)
+                if (local_58.Get().bAlwaysHidden)
                 {
                     continue;
                 }
@@ -191,9 +188,10 @@ struct FMS_PlayerAvatarData : FEUIModelSingleton
     bool IsAvatarUnlocked(const TDataObjectPtr<FAvatarPrefabConfig> &inout AvatarConfig) const
     {
         bool local_7;
-        if (this.FindAvatar(AvatarConfig))
+        TEUIModelRef<FM_Avatar> local_4 = this.FindAvatar(AvatarConfig);
+        if (local_4)
         {
-            local_7 = GetbIsUnlocked();
+            local_7 = local_4.Get().GetbIsUnlocked();
         }
         else
         {
@@ -204,7 +202,6 @@ struct FMS_PlayerAvatarData : FEUIModelSingleton
     void RefreshAvatarListEntryRedDot()
     {
         int local_37;
-        int local_38 = 0;
         bool local_39;
         FMS_RedDotSystem& local_2 = ::FMS_RedDotSystem::Get(this.GetContext().Manager);
         TDataObjectIterator<FAvatarMappingConfig> local_18;
@@ -217,6 +214,7 @@ struct FMS_PlayerAvatarData : FEUIModelSingleton
                 {
                     continue;
                 }
+                int local_38 = local_36.Get().DataId;
                 local_37 = local_38;
                 local_39 = false;
                 int64 local_42 = 2;
@@ -318,11 +316,9 @@ FMS_PlayerAvatarData& Get(const UObject ContextObject)
 {
     return FMS_PlayerAvatarData::GetByManager(EUIInternal::GetContextManager(ContextObject));
 }
-FMS_PlayerAvatarData GetByManager(const UEUIManagerSubsystem Manager)
+FMS_PlayerAvatarData& GetByManager(const UEUIManagerSubsystem Manager)
 {
-    FMS_PlayerAvatarData __r;
-    TEUIModelRef<FMS_PlayerAvatarData> local_6 = TEUIModelRef<FMS_PlayerAvatarData>(EUIInternal::MakeModelWithManager(Manager, FMS_PlayerAvatarData::ModelId));
-    return __r;
+    return TEUIModelRef<FMS_PlayerAvatarData>(EUIInternal::MakeModelWithManager(Manager, FMS_PlayerAvatarData::ModelId)).Get();
 }
 void GetModelInfo(FEUIModelOnlyMetaInfo &inout Result)
 {

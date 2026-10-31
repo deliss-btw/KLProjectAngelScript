@@ -214,11 +214,9 @@ FVM_TimeOfDay& Get(const UObject ContextObject)
 {
     return FVM_TimeOfDay::GetByManager(EUIInternal::GetContextManager(ContextObject));
 }
-FVM_TimeOfDay GetByManager(const UEUIManagerSubsystem Manager)
+FVM_TimeOfDay& GetByManager(const UEUIManagerSubsystem Manager)
 {
-    FVM_TimeOfDay __r;
-    TEUIModelRef<FVM_TimeOfDay> local_6 = TEUIModelRef<FVM_TimeOfDay>(EUIInternal::MakeModelWithManager(Manager, FVM_TimeOfDay::ModelId));
-    return __r;
+    return TEUIModelRef<FVM_TimeOfDay>(EUIInternal::MakeModelWithManager(Manager, FVM_TimeOfDay::ModelId)).Get();
 }
 void GetModelInfo(FEUIViewModelMetaInfo &inout Result)
 {
@@ -329,7 +327,6 @@ namespace __GeneratedProperties_FVM_TimeOfDay
 {
 UScriptStruct StaticStruct()
 {
-    UScriptStruct local_2;
-    return local_2;
+    return __GeneratedProperties_FVM_TimeOfDay.Get();
 }
 }

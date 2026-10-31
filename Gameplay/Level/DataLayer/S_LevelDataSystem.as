@@ -115,6 +115,7 @@ class US_LevelDataSystem : UECSScriptSystem
                 FName local_32 = FName(Component.GetLevelUnitConfig().ActorPath.ToString());
                 if (local_24.PathToEntity.Contains(local_32) && (FECSEntity(local_24.PathToEntity[local_32]) == Component.ChildEntity))
                 {
+                    local_24.PathToEntity.Remove(local_32);
                 }
             }
         }

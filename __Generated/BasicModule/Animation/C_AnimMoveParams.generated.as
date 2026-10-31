@@ -38,6 +38,7 @@ struct FC_AnimMoveParamsHistory : FECSComponent
     }
     void Clear()
     {
+        this.History.Clear();
         return;
     }
     bool GetInterpoValue(const FFPTime &inout WorldTime, FC_AnimMoveParams &inout OutValue) const
@@ -75,6 +76,7 @@ struct FC_AnimMoveParamsTempHistory : FECSComponent
     }
     void Clear()
     {
+        this.History.Clear();
         return;
     }
     bool GetInterpoValue(const FFPTime &inout WorldTime, FC_AnimMoveParamsTemp &inout OutValue) const

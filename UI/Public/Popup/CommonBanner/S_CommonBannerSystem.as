@@ -20,6 +20,7 @@ class US_CommonBannerSystem : UECSScriptSystem
                 Manager.DisplayingBanner = local_22;
                 continue;
             }
+            Manager.PendingBanners.Remove(local_18);
         }
         for (auto local_23 : Event.NewDisplayingPopupIds)
         {

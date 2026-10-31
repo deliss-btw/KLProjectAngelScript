@@ -54,7 +54,7 @@ class UWidget_PVX_CombatPreparation : UEUIUserWidget
         }
         TEUIModelRef<FVM_AvatarShowcase> local_8;
         local_8;
-        local_8.SetCurrentShowcase();
+        this.PVX_CombatPreparation.Get().SetCurrentShowcase(local_8);
         return;
     }
     UFUNCTION()

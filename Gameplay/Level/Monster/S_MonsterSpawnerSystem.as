@@ -8,7 +8,6 @@ class US_MonsterSpawnerSystem : UECSScriptSystem
     void ServerJob_LevelProcessRandomSpawnMonster(const FECSEntity &inout SpawnerEntity, const FC_RandomMonsterSpawner &inout RandomMonsterSpawner) const
     {
         FC_RandomMonsterSpawnerRuntimeInfo local_18;
-        AActor local_38;
         UClass local_72;
         if (RandomMonsterSpawner.CandidatePoints.Num() == 0)
         {
@@ -25,6 +24,7 @@ class US_MonsterSpawnerSystem : UECSScriptSystem
         for (; local_23 < int(RandomMonsterSpawner.TargetSpawnNum); ++local_23)
         {
             TSoftObjectPtr<AActor> local_34 = local_22[(local_23 % local_22.Num())];
+            AActor local_38 = local_34.Get();
             if ((!((local_38 != nullptr))))
             {
                 XWarning(ELog(22), FString().Append("MonsterSpawner ").Append(SpawnerEntity).Append(": Failed to get spawn point ").Append(local_34.ToString()));

@@ -53,33 +53,30 @@ struct FVM_AvatarEquipmentItem : FEUIViewModel
     }
     void PostConstruct()
     {
-        int local_67 = 0;
         TEUIModelRef<FM_ItemData> local_6 = ::FMS_ItemDataCache::Get(this.GetContext().Manager).RequireItemData(this.GetEquipmentUid());
         this.SetComposableItemVM(TEUIModelRef<FVM_ComposableItem>(::FVM_ComposableItem::Create(this.GetContext().Manager, local_6, EItemDisplayScenario(4))));
         this.SetEquipment(::FMS_EquipmentDataCache::Get(this.GetContext().Manager).GetEquipment(this.GetEquipmentUid()));
-        TEUIModelRef<FM_Equipment> local_12 = this.GetEquipment();
-        TEUIModelRef<FVM_EquipmentInfo> local_14 = TEUIModelRef<FVM_EquipmentInfo>(::FVM_EquipmentInfo::Create(this.GetContext().Manager, local_12));
+        TEUIModelRef<FVM_EquipmentInfo> local_14 = TEUIModelRef<FVM_EquipmentInfo>(::FVM_EquipmentInfo::Create(this.GetContext().Manager, this.GetEquipment()));
         this.SetEquipmentInfo(local_14);
         TEUIModelRef<FVM_EquipmentInfo> local_14_2 = this.GetEquipmentInfo();
-        local_12.GetEquipment();
-        TDataObjectPtr<FEquipmentConfig> local_38 = GetEquipmentConfig();
+        TDataObjectPtr<FEquipmentConfig> local_38 = local_14_2.Get().GetEquipment().Get().GetEquipmentConfig();
         if (local_38)
         {
             TEUIModelRef<FVM_RedDot> local_66;
-            if (local_67 == 2)
+            if (int(local_38.Get().ItemType) == 2)
             {
                 local_66 = TEUIModelRef<FVM_RedDot>(::FVM_RedDot::Create(this.GetContext().Manager, FRedDotNodeData(GameplayTags::RedDotSystem_Weapon_NewWeapon, this.GetEquipmentUid())));
             }
             else
             {
-                if (local_67 == 7)
+                if (int(local_38.Get().ItemType) == 7)
                 {
                     local_66 = TEUIModelRef<FVM_RedDot>(::FVM_RedDot::Create(this.GetContext().Manager, FRedDotNodeData(GameplayTags::RedDotSystem_Talisman_NewTalisman, this.GetEquipmentUid())));
                 }
             }
             if (local_66.IsValid())
             {
-                TEUIModelRef<FVM_ComposableItem> local_10 = this.GetComposableItemVM();
+                ::ComposableItemUtility::SetItemRedDotVM(this.GetComposableItemVM().Get(), local_66);
             }
         }
         return;
@@ -88,36 +85,17 @@ struct FVM_AvatarEquipmentItem : FEUIViewModel
     {
         if (this.GetComposableItemVM().IsValid())
         {
-            TEUIModelRef<FVM_ComposableItem> local_2 = this.GetComposableItemVM();
-            ::ComposableItemUtility::SetItemMaskEnable(false);
-            TEUIModelRef<FVM_ComposableItem> local_2_2 = this.GetComposableItemVM();
-            ::ComposableItemUtility::SetItemEquipMarkIsCheckableSelected(false);
-            bool local_3 = this.GetEquipment().IsValid();
-            if (!(local_3))
+            ::ComposableItemUtility::SetItemMaskEnable(this.GetComposableItemVM().Get(), false);
+            ::ComposableItemUtility::SetItemEquipMarkIsCheckableSelected(this.GetComposableItemVM().Get(), false);
+            if (!(::ComposableItemUtility::IsItemEquipped(this.GetComposableItemVM().Get())) && (this.GetEquipment().IsValid() && ::FEquipmentUtils::CanDecompose(this.GetEquipment().Get().GetEquipmentConfig())))
             {
-                local_3 = false;
-            }
-            else
-            {
-                TEUIModelRef<FM_Equipment> local_6 = this.GetEquipment();
-                local_3 = ::FEquipmentUtils::CanDecompose(GetEquipmentConfig());
-            }
-            TEUIModelRef<FVM_ComposableItem> local_2_3 = this.GetComposableItemVM();
-            if (!(::ComposableItemUtility::IsItemEquipped()) && local_3)
-            {
-                if (Msg.bBatchDecompose)
-                {
-                }
-                else
-                {
-                }
-                TEUIModelRef<FVM_ComposableItem> local_2_4 = this.GetComposableItemVM();
+                int local_8 = Msg.bBatchDecompose ? 3 : 4;
+                ::ComposableItemUtility::SetItemEquipMarkState(this.GetComposableItemVM().Get(), local_8);
                 return;
             }
             if (!(Msg.bBatchDecompose) == !(true))
             {
-                TEUIModelRef<FVM_ComposableItem> local_2_5 = this.GetComposableItemVM();
-                ::ComposableItemUtility::SetItemMaskEnable(true);
+                ::ComposableItemUtility::SetItemMaskEnable(this.GetComposableItemVM().Get(), true);
             }
         }
         return;
@@ -207,11 +185,9 @@ FVM_AvatarEquipmentItem& Create(const UObject ContextObject, const uint64 Equipm
 {
     return FVM_AvatarEquipmentItem::CreateByManager(EUIInternal::GetContextManager(ContextObject), EquipmentUid);
 }
-FVM_AvatarEquipmentItem CreateByManager(const UEUIManagerSubsystem Manager, const uint64 EquipmentUid)
+FVM_AvatarEquipmentItem& CreateByManager(const UEUIManagerSubsystem Manager, const uint64 EquipmentUid)
 {
-    FVM_AvatarEquipmentItem __r;
-    TEUIModelRef<FVM_AvatarEquipmentItem> local_6 = TEUIModelRef<FVM_AvatarEquipmentItem>(EUIInternal::MakeModelWithManager_Generic(Manager, FVM_AvatarEquipmentItem::ModelId, 0, EquipmentUid));
-    return __r;
+    return TEUIModelRef<FVM_AvatarEquipmentItem>(EUIInternal::MakeModelWithManager_Generic(Manager, FVM_AvatarEquipmentItem::ModelId, 0, EquipmentUid)).Get();
 }
 void GetModelInfo(FEUIViewModelMetaInfo &inout Result)
 {
@@ -276,7 +252,6 @@ namespace __GeneratedProperties_FVM_AvatarEquipmentItem
 {
 UScriptStruct StaticStruct()
 {
-    UScriptStruct local_2;
-    return local_2;
+    return __GeneratedProperties_FVM_AvatarEquipmentItem.Get();
 }
 }

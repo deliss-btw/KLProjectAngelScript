@@ -75,11 +75,9 @@ FVM_TestEUICanvasSlot& Create(const UObject ContextObject, const int Index)
 {
     return FVM_TestEUICanvasSlot::CreateByManager(EUIInternal::GetContextManager(ContextObject), Index);
 }
-FVM_TestEUICanvasSlot CreateByManager(const UEUIManagerSubsystem Manager, const int Index)
+FVM_TestEUICanvasSlot& CreateByManager(const UEUIManagerSubsystem Manager, const int Index)
 {
-    FVM_TestEUICanvasSlot __r;
-    TEUIModelRef<FVM_TestEUICanvasSlot> local_6 = TEUIModelRef<FVM_TestEUICanvasSlot>(EUIInternal::MakeModelWithManager_Generic(Manager, FVM_TestEUICanvasSlot::ModelId, 0, Index));
-    return __r;
+    return TEUIModelRef<FVM_TestEUICanvasSlot>(EUIInternal::MakeModelWithManager_Generic(Manager, FVM_TestEUICanvasSlot::ModelId, 0, Index)).Get();
 }
 void GetModelInfo(FEUIViewModelMetaInfo &inout Result)
 {
@@ -121,7 +119,6 @@ namespace __GeneratedProperties_FVM_TestEUICanvasSlot
 {
 UScriptStruct StaticStruct()
 {
-    UScriptStruct local_2;
-    return local_2;
+    return __GeneratedProperties_FVM_TestEUICanvasSlot.Get();
 }
 }

@@ -3,7 +3,6 @@ namespace __FForgeNodeConfigFunctions
 UFUNCTION()
 FString __FForgeNodeConfig_GetForgeName(const TDataObjectPtr<FForgeNodeConfig> &inout DataObject)
 {
-    FString __r;
     if ((DataObject == nullptr))
     {
         if (!(EUIGlobals::GIsDuringPropertyConversion))
@@ -13,7 +12,7 @@ FString __FForgeNodeConfig_GetForgeName(const TDataObjectPtr<FForgeNodeConfig> &
         FForgeNodeConfig local_54;
         return local_54.ForgeName;
     }
-    return __r;
+    return DataObject.Get().ForgeName;
 }
 UFUNCTION()
 int __FForgeNodeConfig_GetForgeLv(const TDataObjectPtr<FForgeNodeConfig> &inout DataObject)
@@ -42,12 +41,11 @@ TArray<TDataObjectPtr<FConditionConfig>> __FForgeNodeConfig_GetUnlockCondition(c
         FForgeNodeConfig local_54;
         return local_54.GetUnlockCondition();
     }
-    return GetUnlockCondition();
+    return DataObject.Get().GetUnlockCondition();
 }
 UFUNCTION()
 TArray<FItemParamConfig> __FForgeNodeConfig_GetCost(const TDataObjectPtr<FForgeNodeConfig> &inout DataObject)
 {
-    TArray<FItemParamConfig> __r;
     if ((DataObject == nullptr))
     {
         if (!(EUIGlobals::GIsDuringPropertyConversion))
@@ -57,7 +55,7 @@ TArray<FItemParamConfig> __FForgeNodeConfig_GetCost(const TDataObjectPtr<FForgeN
         FForgeNodeConfig local_54;
         return local_54.Cost;
     }
-    return __r;
+    return DataObject.Get().Cost;
 }
 UFUNCTION()
 TDataObjectPtr<FCraftConfig> __FForgeNodeConfig_GetCraft(const TDataObjectPtr<FForgeNodeConfig> &inout DataObject)
@@ -71,7 +69,7 @@ TDataObjectPtr<FCraftConfig> __FForgeNodeConfig_GetCraft(const TDataObjectPtr<FF
         FForgeNodeConfig local_54;
         return local_54.GetCraft();
     }
-    return GetCraft();
+    return DataObject.Get().GetCraft();
 }
 UFUNCTION()
 FForgeNodeConfig CastToFForgeNodeConfig(const TDataObjectPtr<FForgeNodeConfig> &inout DataObject)

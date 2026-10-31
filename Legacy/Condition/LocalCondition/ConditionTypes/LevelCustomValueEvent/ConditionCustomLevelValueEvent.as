@@ -8,7 +8,7 @@ class UConditionCustomLevelValueEvent : ULocalConditionTypeDefineBase
     void OnConditionRegistered(const FLocalConditionInstance &inout ConditionInstance) const
     {
         FECSWorldPtr local_2 = ECS::GetECSWorld();
-        0.MonitoredEvents.FindOrAdd(this.GetEventName(GetConditionConfig())).ConditionInstances.Add(ConditionInstance.GetHandle());
+        0.MonitoredEvents.FindOrAdd(this.GetEventName(ConditionInstance.GetInstanceData().GetConditionConfig())).ConditionInstances.Add(ConditionInstance.GetHandle());
         return;
     }
     void OnConditionUnregistered(const FLocalConditionInstance &inout ConditionInstance) const
@@ -18,13 +18,14 @@ class UConditionCustomLevelValueEvent : ULocalConditionTypeDefineBase
         if (local_6.opCall())
         {
             FName local_13;
-            TMap<FName, FLevelCustomValueEventMonitorConditions> local_16 = local_13 = this.GetEventName(GetConditionConfig());
+            TMap<FName, FLevelCustomValueEventMonitorConditions> local_16 = local_13 = this.GetEventName(ConditionInstance.GetInstanceData().GetConditionConfig());
             if (local_16.Contains(local_13))
             {
                 TArray<FConditionInstanceHandle> local_18;
-                FConditionInstanceHandle local_44 = ConditionInstance.GetHandle();
+                local_18.Remove(ConditionInstance.GetHandle());
                 if (local_18.IsEmpty())
                 {
+                    local_16.Remove(local_13);
                     if (local_16.IsEmpty())
                     {
                         FECSWorldPtr local_48 = ECS::GetECSWorld();

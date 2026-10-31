@@ -42,11 +42,9 @@ FMS_UILayerBlocker& Get(const UObject ContextObject)
 {
     return FMS_UILayerBlocker::GetByManager(EUIInternal::GetContextManager(ContextObject));
 }
-FMS_UILayerBlocker GetByManager(const UEUIManagerSubsystem Manager)
+FMS_UILayerBlocker& GetByManager(const UEUIManagerSubsystem Manager)
 {
-    FMS_UILayerBlocker __r;
-    TEUIModelRef<FMS_UILayerBlocker> local_6 = TEUIModelRef<FMS_UILayerBlocker>(EUIInternal::MakeModelWithManager(Manager, FMS_UILayerBlocker::ModelId));
-    return __r;
+    return TEUIModelRef<FMS_UILayerBlocker>(EUIInternal::MakeModelWithManager(Manager, FMS_UILayerBlocker::ModelId)).Get();
 }
 void GetModelInfo(FEUIModelOnlyMetaInfo &inout Result)
 {

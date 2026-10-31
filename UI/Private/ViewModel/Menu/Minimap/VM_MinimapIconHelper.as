@@ -206,11 +206,9 @@ FVM_MinimapIconHelper& Create(const UObject ContextObject, const TEUIModelRef<FV
 {
     return FVM_MinimapIconHelper::CreateByManager(EUIInternal::GetContextManager(ContextObject), MinimapIcon);
 }
-FVM_MinimapIconHelper CreateByManager(const UEUIManagerSubsystem Manager, const TEUIModelRef<FVM_MinimapIcon> &inout MinimapIcon)
+FVM_MinimapIconHelper& CreateByManager(const UEUIManagerSubsystem Manager, const TEUIModelRef<FVM_MinimapIcon> &inout MinimapIcon)
 {
-    FVM_MinimapIconHelper __r;
-    TEUIModelRef<FVM_MinimapIconHelper> local_6 = TEUIModelRef<FVM_MinimapIconHelper>(EUIInternal::MakeModelWithManager_Generic(Manager, FVM_MinimapIconHelper::ModelId, 0, MinimapIcon));
-    return __r;
+    return TEUIModelRef<FVM_MinimapIconHelper>(EUIInternal::MakeModelWithManager_Generic(Manager, FVM_MinimapIconHelper::ModelId, 0, MinimapIcon)).Get();
 }
 void GetModelInfo(FEUIViewModelMetaInfo &inout Result)
 {
@@ -305,7 +303,6 @@ namespace __GeneratedProperties_FVM_MinimapIconHelper
 {
 UScriptStruct StaticStruct()
 {
-    UScriptStruct local_2;
-    return local_2;
+    return __GeneratedProperties_FVM_MinimapIconHelper.Get();
 }
 }

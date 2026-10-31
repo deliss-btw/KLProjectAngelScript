@@ -12,7 +12,7 @@ class UConditionPlayerStats : ULocalConditionTypeDefineBase
     void OnConditionRegistered(const FLocalConditionInstance &inout ConditionInstance) const
     {
         FECSWorldPtr local_2 = ECS::GetECSWorld();
-        0.MonitoredStats.FindOrAdd(this.GetPlayerStatsType(GetConditionConfig())).ConditionInstances.Add(ConditionInstance.GetHandle());
+        0.MonitoredStats.FindOrAdd(this.GetPlayerStatsType(ConditionInstance.GetInstanceData().GetConditionConfig())).ConditionInstances.Add(ConditionInstance.GetHandle());
         return;
     }
     void OnConditionUnregistered(const FLocalConditionInstance &inout ConditionInstance) const
@@ -22,13 +22,15 @@ class UConditionPlayerStats : ULocalConditionTypeDefineBase
         FCS_PlayerStatsConditionManager& local_8 = local_6.opCall();
         if (local_8)
         {
+            int local_10 = int(this.GetPlayerStatsType(ConditionInstance.GetInstanceData().GetConditionConfig()));
             TMap<ECommissionPlayerStatsType, FPlayerStatsMonitorConditions> local_14 = local_8.MonitoredStats;
-            if (local_14.Contains(this.GetPlayerStatsType(GetConditionConfig())))
+            if (local_14.Contains(ECommissionPlayerStatsType(local_10)))
             {
                 TArray<FConditionInstanceHandle> local_16;
-                FConditionInstanceHandle local_42 = ConditionInstance.GetHandle();
+                local_16.Remove(ConditionInstance.GetHandle());
                 if (local_16.IsEmpty())
                 {
+                    local_14.Remove(ECommissionPlayerStatsType(local_10));
                     if (local_14.IsEmpty())
                     {
                         FECSWorldPtr local_46 = ECS::GetECSWorld();
@@ -42,13 +44,12 @@ class UConditionPlayerStats : ULocalConditionTypeDefineBase
     }
     void ValidateConditionConfig(const TDataObjectPtr<FLocalConditionConfig> &inout ConditionConfig, TArray<FString> &inout OutErrorMessages) const
     {
-        int local_11 = 0;
         if (!(FInstancedStruct::GetPtr(ConditionConfig.opArrow().ConditionTypeDefineConfig).opCall()))
         {
             OutErrorMessages.Add("Condition type define config is empty");
             return;
         }
-        switch (local_11)
+        switch (int(ConditionConfig.Get().CompareType))
         {
         case 3:
         case 4:

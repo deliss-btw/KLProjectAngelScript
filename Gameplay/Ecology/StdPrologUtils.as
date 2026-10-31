@@ -37,33 +37,47 @@ FLegacyEcoQueryContext Context(const FEcoFunctorDeclare &inout Declare)
 }
 FLegacyEcoQueryContext Context(const FEcoFunctorDeclare &inout Declare, const FPlTerm &inout Arg1)
 {
-    // body not fully recovered — stub [opcode-uncovered]
-    FLegacyEcoQueryContext __r; return __r;
+    TArray<FPlTerm> local_8 = {Arg1};
+    return FLegacyEcoQueryContext::Create(Declare, local_8);
 }
 FLegacyEcoQueryContext Context(const FEcoFunctorDeclare &inout Declare, const FPlTerm &inout Arg1, const FPlTerm &inout Arg2)
 {
-    // body not fully recovered — stub [opcode-uncovered]
-    FLegacyEcoQueryContext __r; return __r;
+    TArray<FPlTerm> local_8 = {Arg1, Arg2};
+    return FLegacyEcoQueryContext::Create(Declare, local_8);
 }
 FLegacyEcoQueryContext Context(const FEcoFunctorDeclare &inout Declare, const FPlTerm &inout Arg1, const FPlTerm &inout Arg2, const FPlTerm &inout Arg3)
 {
-    // body not fully recovered — stub [opcode-uncovered]
-    FLegacyEcoQueryContext __r; return __r;
+    FScopeCycleCounter local_1 = FScopeCycleCounter(FStdPrologUtils::StatContextCreate, false);
+    TArray<FPlTerm> local_10 = {Arg1, Arg2, Arg3};
+    return FLegacyEcoQueryContext::Create(Declare, local_10);
 }
 FLegacyEcoQueryContext Context(const FEcoFunctorDeclare &inout Declare, const FPlTerm &inout Arg1, const FPlTerm &inout Arg2, const FPlTerm &inout Arg3, const FPlTerm &inout Arg4)
 {
-    // body not fully recovered — stub [opcode-uncovered]
-    FLegacyEcoQueryContext __r; return __r;
+    TArray<FPlTerm> local_8 = {Arg1, Arg2, Arg3, Arg4};
+    return FLegacyEcoQueryContext::Create(Declare, local_8);
 }
 FLegacyEcoQueryContext Context(const FEcoFunctorDeclare &inout Declare, const FPlTerm &inout Arg1, const FPlTerm &inout Arg2, const FPlTerm &inout Arg3, const FPlTerm &inout Arg4, const FPlTerm &inout Arg5)
 {
-    // body not fully recovered — stub [opcode-uncovered]
-    FLegacyEcoQueryContext __r; return __r;
+    TArray<FPlTerm> local_8 = {Arg1, Arg2, Arg3, Arg4, Arg5};
+    return FLegacyEcoQueryContext::Create(Declare, local_8);
 }
 FLegacyEcoQueryContext Context(const FEcoFunctorDeclare &inout Declare, const FPlTerm &inout Arg1, const FPlTerm &inout Arg2, const FPlTerm &inout Arg3, const FPlTerm &inout Arg4, const FPlTerm &inout Arg5, const FPlTerm &inout Arg6, const FPlTerm &inout Arg7 = None, const FPlTerm &inout Arg8 = None)
 {
-    // body not fully recovered — stub [opcode-uncovered]
-    FLegacyEcoQueryContext __r; return __r;
+    bool local_15 = false;
+    TArray<FPlTerm> local_8 = {Arg1, Arg2, Arg3, Arg4, Arg5, Arg6, Arg7, Arg8};
+    int local_14 = local_8.Num() - 1;
+    while (local_15)
+    {
+        local_8.RemoveAt(local_14);
+        --local_14;
+        if (local_14 < 0)
+        {
+            local_15 = false;
+            continue;
+        }
+        local_15 = (local_14 >= int(Declare.Arity));
+    }
+    return FLegacyEcoQueryContext::Create(Declare, local_8);
 }
 }
 void GetQueryValueResultByArgIndex(FLegacyEcoQuery &inout Query, const int Index, TArray<FLegacyTermValue> &out ResultValue)

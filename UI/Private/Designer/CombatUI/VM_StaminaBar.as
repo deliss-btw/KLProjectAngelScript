@@ -201,11 +201,9 @@ FVM_StaminaBar& Create(const UObject ContextObject)
 {
     return FVM_StaminaBar::CreateByManager(EUIInternal::GetContextManager(ContextObject));
 }
-FVM_StaminaBar CreateByManager(const UEUIManagerSubsystem Manager)
+FVM_StaminaBar& CreateByManager(const UEUIManagerSubsystem Manager)
 {
-    FVM_StaminaBar __r;
-    TEUIModelRef<FVM_StaminaBar> local_6 = TEUIModelRef<FVM_StaminaBar>(EUIInternal::MakeModelWithManager(Manager, FVM_StaminaBar::ModelId));
-    return __r;
+    return TEUIModelRef<FVM_StaminaBar>(EUIInternal::MakeModelWithManager(Manager, FVM_StaminaBar::ModelId)).Get();
 }
 void GetModelInfo(FEUIViewModelMetaInfo &inout Result)
 {
@@ -269,7 +267,6 @@ namespace __GeneratedProperties_FVM_StaminaBar
 {
 UScriptStruct StaticStruct()
 {
-    UScriptStruct local_2;
-    return local_2;
+    return __GeneratedProperties_FVM_StaminaBar.Get();
 }
 }

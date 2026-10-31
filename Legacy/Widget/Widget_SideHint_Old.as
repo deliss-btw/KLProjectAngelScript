@@ -39,6 +39,7 @@ class UWidget_SideHint_Old : UASUserWidget
     void RemoveSelf()
     {
         this.SetVisibility(ESlateVisibility(2));
+        this.UI_SideHintList.AllSideHints.Remove(this);
         this.RemoveFromParent();
         return;
     }

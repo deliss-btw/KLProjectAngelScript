@@ -101,17 +101,12 @@ struct FVM_AvatarEquipmentItemInfoCompare : FEUIViewModel
     {
         if (NewEquipmentInfo.IsValid())
         {
-            TEUIModelRef<FM_Equipment> local_10;
             this.SetCurEquipmentInfo(NewEquipmentInfo);
             this.SetCurEquipItemInfoTitle(TEUIModelRef<FVM_AvatarEquipmentItemInfoTitle>(::FVM_AvatarEquipmentItemInfoTitle::Create(this.GetContext().Manager, this.GetCurEquipmentInfo())));
             this.SetCurEquipItemInfoDetail(TEUIModelRef<FVM_AvatarEquipmentItemInfoDetail>(::FVM_AvatarEquipmentItemInfoDetail::Create(this.GetContext().Manager, this.GetCurEquipmentInfo())));
-            TEUIModelRef<FVM_EquipmentInfo> local_4 = this.GetCurEquipmentInfo();
-            local_10.GetEquipment();
-            if (local_10.IsValid())
+            if (this.GetCurEquipmentInfo().Get().GetEquipment().IsValid())
             {
-                TEUIModelRef<FVM_EquipmentInfo> local_4_2 = this.GetCurEquipmentInfo();
-                local_10.GetEquipment();
-                this.SetCurItemEquiptingAvatarText(GetEquiptingAvatar());
+                this.SetCurItemEquiptingAvatarText(this.GetCurEquipmentInfo().Get().GetEquipment().Get().GetEquiptingAvatar());
             }
         }
         return;
@@ -121,9 +116,7 @@ struct FVM_AvatarEquipmentItemInfoCompare : FEUIViewModel
         this.SetbShowEquiptingAvatarText(CurrentEquiptingAvatarCfg.IsSet());
         if (this.GetbShowEquiptingAvatarText())
         {
-            NSLOCTEXT("EquiptingAvatarText", "{0}装备中");
-            FText local_10;
-            this.SetEquiptingAvatarText(local_10);
+            this.SetEquiptingAvatarText(FText::Format(NSLOCTEXT("EquiptingAvatarText", "{0}装备中"), CurrentEquiptingAvatarCfg.Get().DisplayName));
         }
         return;
     }
@@ -134,24 +127,18 @@ struct FVM_AvatarEquipmentItemInfoCompare : FEUIViewModel
         this.SetCompareOverview(TEUIModelRef<FVM_AvatarEquipmentCompareOverview>(nullptr));
         if (InCompareEquipmentInfo.IsValid())
         {
-            TEUIModelRef<FM_Equipment> local_10;
             this.SetbCanShowCompareInfo(true);
             this.SetCompareItemInfo(TEUIModelRef<FVM_AvatarEquipmentItemInfo>(::FVM_AvatarEquipmentItemInfo::Create(this.GetContext().Manager, InCompareEquipmentInfo)));
             if (CurrentAvatarCfg.IsSet())
             {
                 this.SetCompareOverview(TEUIModelRef<FVM_AvatarEquipmentCompareOverview>(::FVM_AvatarEquipmentCompareOverview::Create(this.GetContext().Manager, CurrentAvatarCfg, InCompareEquipmentInfo, this.GetCurEquipmentInfo())));
             }
-            local_10.GetEquipment();
-            if (local_10.IsValid())
+            if (InCompareEquipmentInfo.Get().GetEquipment().IsValid())
             {
-                local_10.GetEquipment();
-                this.SetbShowCompareEquiptingAvatarText(GetEquiptingAvatar().IsSet());
+                this.SetbShowCompareEquiptingAvatarText(InCompareEquipmentInfo.Get().GetEquipment().Get().GetEquiptingAvatar().IsSet());
                 if (this.GetbShowCompareEquiptingAvatarText())
                 {
-                    local_10.GetEquipment();
-                    NSLOCTEXT("CompareEquiptingAvatarText", "{0}装备中");
-                    FText local_18;
-                    this.SetCompareEquiptingAvatarText(local_18);
+                    this.SetCompareEquiptingAvatarText(FText::Format(NSLOCTEXT("CompareEquiptingAvatarText", "{0}装备中"), InCompareEquipmentInfo.Get().GetEquipment().Get().GetEquiptingAvatar().Get().DisplayName));
                 }
             }
         }
@@ -165,9 +152,7 @@ struct FVM_AvatarEquipmentItemInfoCompare : FEUIViewModel
     }
     void RefreshCompareAttributeList(const TEUIModelRef<FVM_EquipmentInfo> &inout InCompareEquipmentInfo)
     {
-        TEUIModelRef<FM_Attribute> local_46;
         int local_48 = 0;
-        float32 local_50 = 0.0f;
         int local_51;
         this.GetModify_CompareAttributeList().Reset(0);
         if (!(InCompareEquipmentInfo.IsValid()) || !(this.GetCurEquipmentInfo().IsValid()))
@@ -175,33 +160,33 @@ struct FVM_AvatarEquipmentItemInfoCompare : FEUIViewModel
             return;
         }
         TMap<FGameAttributeRef, float32> local_26;
-        for (auto& local_40 : GetEquipmentAttributes())
+        for (auto& local_40 : InCompareEquipmentInfo.Get().GetEquipmentAttributes())
         {
-            if (TEUIModelRef<FVM_AttributeDisplay>(local_40).IsValid())
+            TEUIModelRef<FVM_AttributeDisplay> local_42 = TEUIModelRef<FVM_AttributeDisplay>(local_40);
+            if (local_42.IsValid())
             {
-                local_46.GetAttribute();
-                local_26.Add(local_48.GetAttribute());
+                TEUIModelRef<FM_Attribute> local_46 = local_42.Get().GetAttribute();
+                local_26.Add(local_48.GetAttribute(), local_48.GetValue());
             }
         }
-        TEUIModelRef<FVM_EquipmentInfo> local_4 = this.GetCurEquipmentInfo();
-        for (auto& local_40 : GetEquipmentAttributes())
+        for (auto& local_40 : this.GetCurEquipmentInfo().Get().GetEquipmentAttributes())
         {
             TEUIModelRef<FVM_AttributeDisplay> local_42_2 = TEUIModelRef<FVM_AttributeDisplay>(local_40);
             if (!(local_42_2.IsValid()))
             {
                 continue;
             }
-            local_46.GetAttribute();
+            TEUIModelRef<FM_Attribute> local_46_2 = local_42_2.Get().GetAttribute();
             float32 local_49 = 0.0f;
             local_26.Find(local_48.GetAttribute(), local_49);
             local_51 = INDEX_NONE;
-            if (local_50 > local_49)
+            if (local_48.GetValue() > local_49)
             {
                 local_51 = 1;
             }
             else
             {
-                if (local_50 < local_49)
+                if (local_48.GetValue() < local_49)
                 {
                     local_51 = 0;
                 }
@@ -215,8 +200,7 @@ struct FVM_AvatarEquipmentItemInfoCompare : FEUIViewModel
         }
         if (this.GetCurEquipItemInfoDetail().IsValid())
         {
-            TEUIModelRef<FVM_AvatarEquipmentItemInfoDetail> local_72 = this.GetCurEquipItemInfoDetail();
-            this.GetCompareAttributeList().SetAttributeList();
+            this.GetCurEquipItemInfoDetail().Get().SetAttributeList(this.GetCompareAttributeList());
         }
         return;
     }
@@ -453,11 +437,9 @@ FVM_AvatarEquipmentItemInfoCompare& Create(const UObject ContextObject, const TE
 {
     return FVM_AvatarEquipmentItemInfoCompare::CreateByManager(EUIInternal::GetContextManager(ContextObject), CurEquipmentInfo);
 }
-FVM_AvatarEquipmentItemInfoCompare CreateByManager(const UEUIManagerSubsystem Manager, const TEUIModelRef<FVM_EquipmentInfo> &inout CurEquipmentInfo)
+FVM_AvatarEquipmentItemInfoCompare& CreateByManager(const UEUIManagerSubsystem Manager, const TEUIModelRef<FVM_EquipmentInfo> &inout CurEquipmentInfo)
 {
-    FVM_AvatarEquipmentItemInfoCompare __r;
-    TEUIModelRef<FVM_AvatarEquipmentItemInfoCompare> local_6 = TEUIModelRef<FVM_AvatarEquipmentItemInfoCompare>(EUIInternal::MakeModelWithManager_Generic(Manager, FVM_AvatarEquipmentItemInfoCompare::ModelId, 0, CurEquipmentInfo));
-    return __r;
+    return TEUIModelRef<FVM_AvatarEquipmentItemInfoCompare>(EUIInternal::MakeModelWithManager_Generic(Manager, FVM_AvatarEquipmentItemInfoCompare::ModelId, 0, CurEquipmentInfo)).Get();
 }
 void GetModelInfo(FEUIViewModelMetaInfo &inout Result)
 {
@@ -634,7 +616,6 @@ namespace __GeneratedProperties_FVM_AvatarEquipmentItemInfoCompare
 {
 UScriptStruct StaticStruct()
 {
-    UScriptStruct local_2;
-    return local_2;
+    return __GeneratedProperties_FVM_AvatarEquipmentItemInfoCompare.Get();
 }
 }

@@ -105,8 +105,7 @@ struct FVMS_LinkSkillEnergyCrossbow : FEUIViewModelSingleton
     }
     void SyncSmoothedRatio()
     {
-        float32 local_1 = 0.0f;
-        this.SetSmoothedEnergyRatio(local_1);
+        this.SetSmoothedEnergyRatio(this.GetSmoothedEnergy().GetValue());
         return;
     }
     float32 GetEnergyRatio() const property
@@ -220,11 +219,9 @@ FVMS_LinkSkillEnergyCrossbow& Get(const UObject ContextObject)
 {
     return FVMS_LinkSkillEnergyCrossbow::GetByManager(EUIInternal::GetContextManager(ContextObject));
 }
-FVMS_LinkSkillEnergyCrossbow GetByManager(const UEUIManagerSubsystem Manager)
+FVMS_LinkSkillEnergyCrossbow& GetByManager(const UEUIManagerSubsystem Manager)
 {
-    FVMS_LinkSkillEnergyCrossbow __r;
-    TEUIModelRef<FVMS_LinkSkillEnergyCrossbow> local_6 = TEUIModelRef<FVMS_LinkSkillEnergyCrossbow>(EUIInternal::MakeModelWithManager(Manager, FVMS_LinkSkillEnergyCrossbow::ModelId));
-    return __r;
+    return TEUIModelRef<FVMS_LinkSkillEnergyCrossbow>(EUIInternal::MakeModelWithManager(Manager, FVMS_LinkSkillEnergyCrossbow::ModelId)).Get();
 }
 void GetModelInfo(FEUIViewModelMetaInfo &inout Result)
 {
@@ -326,7 +323,6 @@ namespace __GeneratedProperties_FVMS_LinkSkillEnergyCrossbow
 {
 UScriptStruct StaticStruct()
 {
-    UScriptStruct local_2;
-    return local_2;
+    return __GeneratedProperties_FVMS_LinkSkillEnergyCrossbow.Get();
 }
 }

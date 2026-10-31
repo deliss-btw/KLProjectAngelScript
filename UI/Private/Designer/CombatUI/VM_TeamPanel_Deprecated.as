@@ -353,11 +353,9 @@ FVMS_TeamPanel& Get(const UObject ContextObject)
 {
     return FVMS_TeamPanel::GetByManager(EUIInternal::GetContextManager(ContextObject));
 }
-FVMS_TeamPanel GetByManager(const UEUIManagerSubsystem Manager)
+FVMS_TeamPanel& GetByManager(const UEUIManagerSubsystem Manager)
 {
-    FVMS_TeamPanel __r;
-    TEUIModelRef<FVMS_TeamPanel> local_6 = TEUIModelRef<FVMS_TeamPanel>(EUIInternal::MakeModelWithManager(Manager, FVMS_TeamPanel::ModelId));
-    return __r;
+    return TEUIModelRef<FVMS_TeamPanel>(EUIInternal::MakeModelWithManager(Manager, FVMS_TeamPanel::ModelId)).Get();
 }
 void GetModelInfo(FEUIViewModelMetaInfo &inout Result)
 {
@@ -461,7 +459,6 @@ namespace __GeneratedProperties_FVMS_TeamPanel
 {
 UScriptStruct StaticStruct()
 {
-    UScriptStruct local_2;
-    return local_2;
+    return __GeneratedProperties_FVMS_TeamPanel.Get();
 }
 }

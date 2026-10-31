@@ -3,7 +3,6 @@ namespace __FDivineLiteraryTypeConfigFunctions
 UFUNCTION()
 FText __FDivineLiteraryTypeConfig_GetLiteraryName(const TDataObjectPtr<FDivineLiteraryTypeConfig> &inout DataObject)
 {
-    FText __r;
     if ((DataObject == nullptr))
     {
         if (!(EUIGlobals::GIsDuringPropertyConversion))
@@ -13,12 +12,11 @@ FText __FDivineLiteraryTypeConfig_GetLiteraryName(const TDataObjectPtr<FDivineLi
         FDivineLiteraryTypeConfig local_156;
         return local_156.LiteraryName;
     }
-    return __r;
+    return DataObject.Get().LiteraryName;
 }
 UFUNCTION()
 FSoftBrush __FDivineLiteraryTypeConfig_GetLiteraryImage(const TDataObjectPtr<FDivineLiteraryTypeConfig> &inout DataObject)
 {
-    FSoftBrush __r;
     if ((DataObject == nullptr))
     {
         if (!(EUIGlobals::GIsDuringPropertyConversion))
@@ -28,12 +26,11 @@ FSoftBrush __FDivineLiteraryTypeConfig_GetLiteraryImage(const TDataObjectPtr<FDi
         FDivineLiteraryTypeConfig local_156;
         return local_156.LiteraryImage;
     }
-    return __r;
+    return DataObject.Get().LiteraryImage;
 }
 UFUNCTION()
 FSoftBrush __FDivineLiteraryTypeConfig_GetLiteraryStrengtheningImage(const TDataObjectPtr<FDivineLiteraryTypeConfig> &inout DataObject)
 {
-    FSoftBrush __r;
     if ((DataObject == nullptr))
     {
         if (!(EUIGlobals::GIsDuringPropertyConversion))
@@ -43,12 +40,11 @@ FSoftBrush __FDivineLiteraryTypeConfig_GetLiteraryStrengtheningImage(const TData
         FDivineLiteraryTypeConfig local_156;
         return local_156.LiteraryStrengtheningImage;
     }
-    return __r;
+    return DataObject.Get().LiteraryStrengtheningImage;
 }
 UFUNCTION()
 FSoftBrush __FDivineLiteraryTypeConfig_GetLiteraryWeakenImage(const TDataObjectPtr<FDivineLiteraryTypeConfig> &inout DataObject)
 {
-    FSoftBrush __r;
     if ((DataObject == nullptr))
     {
         if (!(EUIGlobals::GIsDuringPropertyConversion))
@@ -58,12 +54,11 @@ FSoftBrush __FDivineLiteraryTypeConfig_GetLiteraryWeakenImage(const TDataObjectP
         FDivineLiteraryTypeConfig local_156;
         return local_156.LiteraryWeakenImage;
     }
-    return __r;
+    return DataObject.Get().LiteraryWeakenImage;
 }
 UFUNCTION()
 FText __FDivineLiteraryTypeConfig_GetDescription(const TDataObjectPtr<FDivineLiteraryTypeConfig> &inout DataObject)
 {
-    FText __r;
     if ((DataObject == nullptr))
     {
         if (!(EUIGlobals::GIsDuringPropertyConversion))
@@ -73,7 +68,7 @@ FText __FDivineLiteraryTypeConfig_GetDescription(const TDataObjectPtr<FDivineLit
         FDivineLiteraryTypeConfig local_156;
         return local_156.Description;
     }
-    return __r;
+    return DataObject.Get().Description;
 }
 UFUNCTION()
 FDivineLiteraryTypeConfig CastToFDivineLiteraryTypeConfig(const TDataObjectPtr<FDivineLiteraryTypeConfig> &inout DataObject)

@@ -68,8 +68,8 @@ class UEQT_InCombatArea : UEnvQueryTest_ECS_BlueprintBase
             for (; local_138.CanProceed;)
             {
                 local_138.Proceed();
-                AActor local_168;
-                local_172 = Cast<AECSRegionVolume>(local_168);
+                GetDefaulted local_166;
+                local_172 = Cast<AECSRegionVolume>(local_166.opCall().RegionVolume.Get());
                 if (local_172 != nullptr && local_172.bAffectCombat && local_172.GetBounds().GetBox().IntersectXY(local_30))
                 {
                     this.CombatVolumes.Add(local_172);

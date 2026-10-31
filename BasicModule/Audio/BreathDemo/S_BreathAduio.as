@@ -21,9 +21,9 @@ class US_BreathAudio : UECSScriptSystem
     UFUNCTION()
     void ClientJob_BreathAudioUpdate(const FECSEntity &inout Entity, FC_BreathAudio &inout BreathAudio) const
     {
-        UBreathAudioSettings local_4;
         int local_6;
         float32 local_19;
+        UBreathAudioSettings local_4 = BreathAudio.Settings.Get();
         if (local_4 == nullptr)
         {
             return;

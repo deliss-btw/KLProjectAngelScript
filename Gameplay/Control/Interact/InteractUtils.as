@@ -124,7 +124,8 @@ bool GetCurrentInteractTipTargetInfoForUI(const FECSEntity &inout Entity, TArray
                         TDataObjectPtr<FInteractionPointTypeConfig> local_104 = TDataObjectPtr<FInteractionPointTypeConfig>(local_62.PointType);
                         if (local_59 >= 0 && (local_59 < local_80.Behaviors.Num()))
                         {
-                            if (!(FInteractUtils::GetInteractTipPreset(local_62, local_80.Behaviors[local_59].GetDefaultObject()).IsSet()))
+                            TDataObjectPtr<FInteractTipPreset> local_132 = FInteractUtils::GetInteractTipPreset(local_62, local_80.Behaviors[local_59].GetDefaultObject());
+                            if (!(local_132.IsSet()))
                             {
                                 continue;
                             }
@@ -133,7 +134,9 @@ bool GetCurrentInteractTipTargetInfoForUI(const FECSEntity &inout Entity, TArray
                             FInteractUtils::GetInteractTargetLocationAndRotationForClient(local_18, local_62, local_162, local_172, true, false);
                             local_162 = (local_172.RotateVector(local_62.UIDisplayOffsetFromInteractPoint) + local_162);
                             FInteractTipTargetHUDRenderInfo local_240;
+                            local_240.HUDIcon = local_132.Get().InteractTipHUDIcon;
                             local_240.HUDIconDisplayLocation = local_162;
+                            local_240.HUDIconDisplayUIOffset = local_132.Get().InteractTipHUDIconUIOffset;
                             InteractTipTargets.Add(local_240);
                         }
                     }
@@ -471,6 +474,7 @@ void RemoveInteractingSourceEntityFromTarget(const FECSEntity &inout InteractSou
                 {
                     if (BehaviorIndex < 0 || (local_18.GetPointAndBehaviorIndex().GetBehaviorIndex() == BehaviorIndex))
                     {
+                        local_12.GetModify_InteractionPointStatus()[local_16].GetInteractingSourceEntities().Remove(InteractSource);
                         if (local_18.GetInteractingSourceEntities().Num() == 0)
                         {
                             local_12.GetModify_InteractionPointStatus().RemoveAt(local_16);

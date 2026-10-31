@@ -54,19 +54,19 @@ struct FVMS_CurrentRole : FEUIViewModelSingleton
     }
     void RefreshRoleInfo()
     {
-        UDataTable local_20;
+        int local_18 = 0;
         FECSEntity local_4 = this.GetContext().GetLocalPlayer();
         Get local_8;
         const FC_PlayerController& local_10 = local_8.opCall();
         if (local_10)
         {
             FECSWorldUIRef::GetDefaulted<FCS_AvatarConfigTable> local_16 = FECSWorldUIRef::GetDefaulted<FCS_AvatarConfigTable>(this.GetContext().World);
-            if (local_20 != nullptr && (local_10.GetAllPlayerPawnEntities().Num() > 1))
+            if (local_18.DTRoles.Get() != nullptr && (local_10.GetAllPlayerPawnEntities().Num() > 1))
             {
                 FAvatarPrefabConfig local_692;
-                local_20.FindRow(::GetPrefabAvatarName(local_10.GetAllPlayerPawnEntities()[0]), local_692);
+                local_18.DTRoles.Get().FindRow(::GetPrefabAvatarName(local_10.GetAllPlayerPawnEntities()[0]), local_692);
                 this.SetMainAvatarConfig(TDataObjectPtr<FAvatarPrefabConfig>());
-                local_20.FindRow(::GetPrefabAvatarName(local_10.GetAllPlayerPawnEntities()[1]), local_692);
+                local_18.DTRoles.Get().FindRow(::GetPrefabAvatarName(local_10.GetAllPlayerPawnEntities()[1]), local_692);
                 this.SetSubAvatarConfig(TDataObjectPtr<FAvatarPrefabConfig>());
             }
         }
@@ -87,15 +87,11 @@ struct FVMS_CurrentRole : FEUIViewModelSingleton
     }
     FText GetMainAvatarName() const
     {
-        FText __return;
         if (this.GetMainAvatarConfig())
         {
+            return this.GetMainAvatarConfig().Get().DisplayName;
         }
-        else
-        {
-            __return = FText();
-        }
-        return __return;
+        return FText();
     }
     FSlateBrush GetMainAvatarIcon() const
     {
@@ -111,6 +107,7 @@ struct FVMS_CurrentRole : FEUIViewModelSingleton
         if (this.GetMainAvatarConfig())
         {
             FSlateBrush local_48;
+            local_92 = this.GetMainAvatarConfig().Get().PlayerPowerIcon.LoadBrush();
             local_48.ResourceObject = local_92.ResourceObject;
             return local_48;
         }
@@ -118,21 +115,19 @@ struct FVMS_CurrentRole : FEUIViewModelSingleton
     }
     FSlateBrush GetMainPlayerTachie() const
     {
-        FSlateBrush local_48;
         if (this.GetMainAvatarConfig())
         {
-            return local_48;
+            return this.GetMainAvatarConfig().Get().PlayerTachie.LoadBrush();
         }
-        return local_48;
+        return FSlateBrush();
     }
     FSlateBrush GetMainPlayerTachieBack() const
     {
-        FSlateBrush local_48;
         if (this.GetMainAvatarConfig())
         {
-            return local_48;
+            return this.GetMainAvatarConfig().Get().PlayerTachieBack.LoadBrush();
         }
-        return local_48;
+        return FSlateBrush();
     }
     FSlateBrush GetMainPlayerClassIcon() const
     {
@@ -140,6 +135,7 @@ struct FVMS_CurrentRole : FEUIViewModelSingleton
         if (this.GetMainAvatarConfig())
         {
             FSlateBrush local_48;
+            local_92 = this.GetMainAvatarConfig().Get().PlayerClassIcon.LoadBrush();
             local_48.ResourceObject = local_92.ResourceObject;
             return local_48;
         }
@@ -147,36 +143,27 @@ struct FVMS_CurrentRole : FEUIViewModelSingleton
     }
     FText GetMainPlayerIllustrate1() const
     {
-        FText __return;
         if (this.GetMainAvatarConfig())
         {
+            return this.GetMainAvatarConfig().Get().PlayerIllustrate1;
         }
-        else
-        {
-            __return = FText();
-        }
-        return __return;
+        return FText();
     }
     FText GetMainPlayerIllustrate2() const
     {
-        int local_2 = 0;
         if (this.GetMainAvatarConfig())
         {
-            return ::FASCommonUtils::GetWeaponTypeDisplayName(EWeaponType(local_2));
+            return ::FASCommonUtils::GetWeaponTypeDisplayName(this.GetMainAvatarConfig().Get().WeaponType);
         }
         return FText();
     }
     FText GetSubAvatarName() const
     {
-        FText __return;
         if (this.GetSubAvatarConfig())
         {
+            return this.GetSubAvatarConfig().Get().DisplayName;
         }
-        else
-        {
-            __return = FText();
-        }
-        return __return;
+        return FText();
     }
     FSlateBrush GetSubAvatarIcon() const
     {
@@ -192,6 +179,7 @@ struct FVMS_CurrentRole : FEUIViewModelSingleton
         if (this.GetSubAvatarConfig())
         {
             FSlateBrush local_48;
+            local_92 = this.GetSubAvatarConfig().Get().PlayerPowerIcon.LoadBrush();
             local_48.ResourceObject = local_92.ResourceObject;
             return local_48;
         }
@@ -199,21 +187,19 @@ struct FVMS_CurrentRole : FEUIViewModelSingleton
     }
     FSlateBrush GetSubPlayerTachie() const
     {
-        FSlateBrush local_48;
         if (this.GetSubAvatarConfig())
         {
-            return local_48;
+            return this.GetSubAvatarConfig().Get().PlayerTachie.LoadBrush();
         }
-        return local_48;
+        return FSlateBrush();
     }
     FSlateBrush GetSubPlayerTachieBack() const
     {
-        FSlateBrush local_48;
         if (this.GetSubAvatarConfig())
         {
-            return local_48;
+            return this.GetSubAvatarConfig().Get().PlayerTachieBack.LoadBrush();
         }
-        return local_48;
+        return FSlateBrush();
     }
     FSlateBrush GetSubPlayerClassIcon() const
     {
@@ -221,6 +207,7 @@ struct FVMS_CurrentRole : FEUIViewModelSingleton
         if (this.GetSubAvatarConfig())
         {
             FSlateBrush local_48;
+            local_92 = this.GetSubAvatarConfig().Get().PlayerClassIcon.LoadBrush();
             local_48.ResourceObject = local_92.ResourceObject;
             return local_48;
         }
@@ -228,22 +215,17 @@ struct FVMS_CurrentRole : FEUIViewModelSingleton
     }
     FText GetSubPlayerIllustrate1() const
     {
-        FText __return;
         if (this.GetSubAvatarConfig())
         {
+            return this.GetSubAvatarConfig().Get().PlayerIllustrate1;
         }
-        else
-        {
-            __return = FText();
-        }
-        return __return;
+        return FText();
     }
     FText GetSubPlayerIllustrate2() const
     {
-        int local_2 = 0;
         if (this.GetSubAvatarConfig())
         {
-            return ::FASCommonUtils::GetWeaponTypeDisplayName(EWeaponType(local_2));
+            return ::FASCommonUtils::GetWeaponTypeDisplayName(this.GetSubAvatarConfig().Get().WeaponType);
         }
         return FText();
     }
@@ -400,11 +382,9 @@ FVMS_CurrentRole& Get(const UObject ContextObject)
 {
     return FVMS_CurrentRole::GetByManager(EUIInternal::GetContextManager(ContextObject));
 }
-FVMS_CurrentRole GetByManager(const UEUIManagerSubsystem Manager)
+FVMS_CurrentRole& GetByManager(const UEUIManagerSubsystem Manager)
 {
-    FVMS_CurrentRole __r;
-    TEUIModelRef<FVMS_CurrentRole> local_6 = TEUIModelRef<FVMS_CurrentRole>(EUIInternal::MakeModelWithManager(Manager, FVMS_CurrentRole::ModelId));
-    return __r;
+    return TEUIModelRef<FVMS_CurrentRole>(EUIInternal::MakeModelWithManager(Manager, FVMS_CurrentRole::ModelId)).Get();
 }
 void GetModelInfo(FEUIViewModelMetaInfo &inout Result)
 {
@@ -630,7 +610,6 @@ namespace __GeneratedProperties_FVMS_CurrentRole
 {
 UScriptStruct StaticStruct()
 {
-    UScriptStruct local_2;
-    return local_2;
+    return __GeneratedProperties_FVMS_CurrentRole.Get();
 }
 }

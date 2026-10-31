@@ -142,11 +142,9 @@ FVMS_TeleportPoint_Page& Get(const UObject ContextObject)
 {
     return FVMS_TeleportPoint_Page::GetByManager(EUIInternal::GetContextManager(ContextObject));
 }
-FVMS_TeleportPoint_Page GetByManager(const UEUIManagerSubsystem Manager)
+FVMS_TeleportPoint_Page& GetByManager(const UEUIManagerSubsystem Manager)
 {
-    FVMS_TeleportPoint_Page __r;
-    TEUIModelRef<FVMS_TeleportPoint_Page> local_6 = TEUIModelRef<FVMS_TeleportPoint_Page>(EUIInternal::MakeModelWithManager(Manager, FVMS_TeleportPoint_Page::ModelId));
-    return __r;
+    return TEUIModelRef<FVMS_TeleportPoint_Page>(EUIInternal::MakeModelWithManager(Manager, FVMS_TeleportPoint_Page::ModelId)).Get();
 }
 void GetModelInfo(FEUIViewModelMetaInfo &inout Result)
 {
@@ -203,7 +201,6 @@ namespace __GeneratedProperties_FVMS_TeleportPoint_Page
 {
 UScriptStruct StaticStruct()
 {
-    UScriptStruct local_2;
-    return local_2;
+    return __GeneratedProperties_FVMS_TeleportPoint_Page.Get();
 }
 }

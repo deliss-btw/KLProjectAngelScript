@@ -9,13 +9,17 @@ class US_CreatureInitGameplayTagsSystem : UECSScriptSystem
     {
         FGameplayTagContainer local_12;
         int local_116 = 0;
-        if (CreatureMeta.CreatureConfigProxy.GetMonsterConfig())
+        TDataObjectPtr<FMonsterMainConfig> local_36 = CreatureMeta.CreatureConfigProxy.GetMonsterConfig();
+        if (local_36)
         {
+            local_12 = local_36.Get().InitGameplayTags;
         }
         else
         {
-            if (CreatureMeta.CreatureConfigProxy.GetNPCConfig())
+            TDataObjectPtr<FNPCMainConfig> local_86 = CreatureMeta.CreatureConfigProxy.GetNPCConfig();
+            if (local_86)
             {
+                local_12 = local_86.Get().InitGameplayTags;
             }
         }
         if (local_12.IsEmpty())

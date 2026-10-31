@@ -87,11 +87,9 @@ FVM_InputContext& Create(const UObject ContextObject)
 {
     return FVM_InputContext::CreateByManager(EUIInternal::GetContextManager(ContextObject));
 }
-FVM_InputContext CreateByManager(const UEUIManagerSubsystem Manager)
+FVM_InputContext& CreateByManager(const UEUIManagerSubsystem Manager)
 {
-    FVM_InputContext __r;
-    TEUIModelRef<FVM_InputContext> local_6 = TEUIModelRef<FVM_InputContext>(EUIInternal::MakeModelWithManager(Manager, FVM_InputContext::ModelId));
-    return __r;
+    return TEUIModelRef<FVM_InputContext>(EUIInternal::MakeModelWithManager(Manager, FVM_InputContext::ModelId)).Get();
 }
 void GetModelInfo(FEUIViewModelMetaInfo &inout Result)
 {
@@ -126,7 +124,6 @@ namespace __GeneratedProperties_FVM_InputContext
 {
 UScriptStruct StaticStruct()
 {
-    UScriptStruct local_2;
-    return local_2;
+    return __GeneratedProperties_FVM_InputContext.Get();
 }
 }

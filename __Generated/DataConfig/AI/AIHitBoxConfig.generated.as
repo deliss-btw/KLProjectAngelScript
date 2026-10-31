@@ -3,7 +3,6 @@ namespace __FAIHitTestConfigFunctions
 UFUNCTION()
 FVector3f __FAIHitTestConfig_GetBoxSize(const TDataObjectPtr<FAIHitTestConfig> &inout DataObject)
 {
-    FVector3f __r;
     if ((DataObject == nullptr))
     {
         if (!(EUIGlobals::GIsDuringPropertyConversion))
@@ -13,7 +12,7 @@ FVector3f __FAIHitTestConfig_GetBoxSize(const TDataObjectPtr<FAIHitTestConfig> &
         FAIHitTestConfig local_18;
         return local_18.BoxSize;
     }
-    return __r;
+    return DataObject.Get().BoxSize;
 }
 UFUNCTION()
 FAIHitTestConfig CastToFAIHitTestConfig(const TDataObjectPtr<FAIHitTestConfig> &inout DataObject)

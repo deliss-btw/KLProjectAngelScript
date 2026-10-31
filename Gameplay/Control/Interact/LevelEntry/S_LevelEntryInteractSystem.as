@@ -8,8 +8,7 @@ class US_LevelEntryInteractSystem : UECSScriptSystem
     void ServerJob_TickLevelEntryInteract(const FECSEntity &inout TargetEntity, const FCS_FixedTime &inout FixedTime, const FC_RuntimeInteractTargetStatus &inout RuntimeInteractTargetStatus, const FC_LevelEntryConfig &inout LevelEntryConfig) const
     {
         int local_59;
-        int local_73 = 0;
-        if (!(LevelEntryConfig.DungeonConfig.IsSet()) || (0 != 1))
+        if (!(LevelEntryConfig.DungeonConfig.IsSet()) || (int(LevelEntryConfig.DungeonConfig.Get().DungeonType) != 1))
         {
             return;
         }
@@ -19,7 +18,7 @@ class US_LevelEntryInteractSystem : UECSScriptSystem
         {
             local_10.Append(local_28.GetInteractingSourceEntities());
         }
-        if (local_10.Num() >= int(LevelEntryConfig.MinPlayerCount) && LevelEntryConfig.DungeonConfig.IsSet() && GetLevelConfig().IsSet())
+        if (local_10.Num() >= int(LevelEntryConfig.MinPlayerCount) && LevelEntryConfig.DungeonConfig.IsSet() && LevelEntryConfig.DungeonConfig.Get().GetLevelConfig().IsSet())
         {
             TArray<FECSEntity> local_32;
             for (auto& local_46 : local_10)
@@ -37,6 +36,7 @@ class US_LevelEntryInteractSystem : UECSScriptSystem
                 FECSEntity local_64 = ::FASCommonUtils::GetUniquePlayerEntity(local_46);
                 if (local_64.IsValid())
                 {
+                    int local_73 = LevelEntryConfig.DungeonConfig.Get().GetLevelConfig().Get().DataId;
                     ModifyOrAdd local_72;
                     local_72.opCall().SetLevelKey(local_73);
                     local_32.Add(local_64);
@@ -56,7 +56,7 @@ class US_LevelEntryInteractSystem : UECSScriptSystem
                 Assign local_104;
                 local_104.opCall(local_106);
                 local_100.PlayerEntities = local_32;
-                local_100.LevelKey = local_73;
+                local_100.LevelKey = LevelEntryConfig.DungeonConfig.Get().GetLevelConfig().Get().DataId;
                 XLog(ELog(46), FString().Append("Send FCE_LevelEntryInteractSuccess, EventTime=").Append(local_94.ToSeconds()).Append(" PlayerEntities=").Append(local_100.PlayerEntities.Num()).Append(" LevelKey=").Append(local_100.LevelKey));
                 if (LevelEntryConfig.CutSceneData.IsSet())
                 {
@@ -68,7 +68,7 @@ class US_LevelEntryInteractSystem : UECSScriptSystem
                         GetDefaulted local_148;
                         XLog(ELog(46), FString().Append("Play Cut Scene for PlayerPawnEntity=").Append(local_64_2).Append(" PlayerTag=").Append(local_144).Append(" PlayerEntity=").Append(local_148.opCall().GetPlayerEntity()));
                         this.BuildOtherPlayerPawnEntities(local_144, local_14, local_128);
-                        ::CutSceneUtils::PlayCutScene(local_64_2, local_144, TDataObjectPtr<FCutSceneData>(), local_128, FVector::ZeroVector, FRotator::ZeroRotator, false);
+                        ::CutSceneUtils::PlayCutScene(local_64_2, local_144, TDataObjectPtr<FCutSceneData>(LevelEntryConfig.CutSceneData.Get()), local_128, FVector::ZeroVector, FRotator::ZeroRotator, false);
                     }
                 }
             }

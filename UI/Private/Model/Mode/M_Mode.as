@@ -447,8 +447,7 @@ struct FMS_Mode : FEUIModelSingleton
         {
             if (this.GetMatchConfirmData().IsValid())
             {
-                TEUIModelRef<FM_ModeMatchConfirm> local_10 = this.GetMatchConfirmData();
-                SetConfirmSent();
+                this.GetMatchConfirmData().Get().SetConfirmSent();
             }
         }
         return;
@@ -489,7 +488,9 @@ struct FMS_Mode : FEUIModelSingleton
                 {
                     this.ClearPendingSwitch();
                 }
-                if (Notify.GetPlayerConfirmCount() == Notify.GetPlayerTotalCount())
+                int local_18 = Notify.GetPlayerConfirmCount();
+                int local_37_2 = Notify.GetPlayerTotalCount();
+                if (local_18 == local_37_2)
                 {
                     this.SetMatchWaitTime(FFPTime(0.0));
                 }
@@ -510,7 +511,7 @@ struct FMS_Mode : FEUIModelSingleton
                         local_98.SetCommissionId(local_33);
                         this.SetMatchConfirmData(TEUIModelRef<FM_ModeMatchConfirm>(local_98));
                     }
-                    TEUIModelRef<FM_ModeMatchConfirm> local_96 = this.GetMatchConfirmData();
+                    this.GetMatchConfirmData().Get().UpdateStatus(local_72, local_18, local_37_2);
                     if (!(this.GetMatchConfirmWidget().IsValid()))
                     {
                         XLog(ELog(70), FString().Append("[M_Mode]GS_OnMatchInfoNotify. Show MatchConfirm."));
@@ -652,7 +653,7 @@ struct FMS_Mode : FEUIModelSingleton
     }
     void BeginSwitchToDirectEnter(const TEUIModelRef<FM_Commission> &inout Commission)
     {
-        int local_4 = 0;
+        int local_3;
         if (!(Commission.IsValid()))
         {
             return;
@@ -662,7 +663,14 @@ struct FMS_Mode : FEUIModelSingleton
             ::FMS_CommissionData::Get(this.GetContext().Manager).GS_RequestStartCommission(Commission);
             return;
         }
-        int local_3 = GetCommissionConfig().IsSet() ? local_4 : 0;
+        if (Commission.Get().GetCommissionConfig().IsSet())
+        {
+            local_3 = Commission.Get().GetCommissionConfig().Get().DataId;
+        }
+        else
+        {
+            local_3 = 0;
+        }
         if (this.GetbSwitchCancelInFlight())
         {
             this.StagePendingDirectEnter(Commission, local_3);
@@ -799,7 +807,7 @@ struct FMS_Mode : FEUIModelSingleton
         if (this.GetSwitchConfirmDialog().IsValid())
         {
             TEUIModelRef<FVM_CommonDialog> local_2 = this.GetSwitchConfirmDialog();
-            ForceClose();
+            local_2.Get().ForceClose();
             this.SetSwitchConfirmDialog(local_2);
         }
         this.SetSwitchConfirmProxy(TEUIModelRef<FVM_MatchSwitchConfirm>());
@@ -891,7 +899,7 @@ struct FMS_Mode : FEUIModelSingleton
         if (this.GetRecruitConfirmDialog().IsValid())
         {
             TEUIModelRef<FVM_CommonDialog> local_2 = this.GetRecruitConfirmDialog();
-            ForceClose();
+            local_2.Get().ForceClose();
             this.SetRecruitConfirmDialog(local_2);
         }
         this.SetRecruitConfirmProxy(TEUIModelRef<FVM_MatchRecruitConfirm>());
@@ -966,9 +974,10 @@ struct FMS_Mode : FEUIModelSingleton
     uint GetLocalPlayerUid() const
     {
         int local_7;
-        if (::FMS_PlayerData::Get(this.GetContext().Manager).GetLocalPlayerData().IsValid())
+        TEUIModelRef<FM_Player> local_2 = ::FMS_PlayerData::Get(this.GetContext().Manager).GetLocalPlayerData();
+        if (local_2.IsValid())
         {
-            local_7 = GetPlayerUid();
+            local_7 = local_2.Get().GetPlayerUid();
         }
         else
         {
@@ -989,18 +998,16 @@ struct FMS_Mode : FEUIModelSingleton
     {
         if (CommissionConfigId != 0)
         {
-            if (::FMS_CommissionData::Get(this.GetContext().Manager).FindCommissionByConfigDataId(CommissionConfigId).IsValid() && GetCommissionConfig().IsSet())
+            TEUIModelRef<FM_Commission> local_4 = ::FMS_CommissionData::Get(this.GetContext().Manager).FindCommissionByConfigDataId(CommissionConfigId);
+            if (local_4.IsValid() && local_4.Get().GetCommissionConfig().IsSet())
             {
+                return local_4.Get().GetCommissionConfig().Get().CommissionName;
             }
-            else
+            GetDataObjectByGSDataId<FCommissionConfig> local_56;
+            TDataObjectPtr<FCommissionConfig> local_32 = local_56.opImplConv();
+            if (local_32.IsSet())
             {
-                GetDataObjectByGSDataId<FCommissionConfig> local_56;
-                if (local_56.opImplConv().IsSet())
-                {
-                }
-                else
-                {
-                }
+                return local_32.Get().CommissionName;
             }
         }
         return FText();
@@ -1016,9 +1023,7 @@ struct FMS_Mode : FEUIModelSingleton
             FM_ModeItem& local_8 = ::FM_ModeItem::Create(this.GetContext().Manager, MatchId);
             if (local_8.GetMatchConfig().IsSet())
             {
-            }
-            else
-            {
+                return local_8.GetMatchConfig().Get().ModeName;
             }
         }
         return FText();
@@ -1477,11 +1482,9 @@ FM_ModeItem& Create(const UObject ContextObject, const uint DataId)
 {
     return FM_ModeItem::CreateByManager(EUIInternal::GetContextManager(ContextObject), DataId);
 }
-FM_ModeItem CreateByManager(const UEUIManagerSubsystem Manager, const uint DataId)
+FM_ModeItem& CreateByManager(const UEUIManagerSubsystem Manager, const uint DataId)
 {
-    FM_ModeItem __r;
-    TEUIModelRef<FM_ModeItem> local_6 = TEUIModelRef<FM_ModeItem>(EUIInternal::MakeModelWithManager_Generic(Manager, FM_ModeItem::ModelId, 0, DataId));
-    return __r;
+    return TEUIModelRef<FM_ModeItem>(EUIInternal::MakeModelWithManager_Generic(Manager, FM_ModeItem::ModelId, 0, DataId)).Get();
 }
 void GetModelInfo(FEUIModelOnlyMetaInfo &inout Result)
 {
@@ -1509,11 +1512,9 @@ FVM_MatchSwitchConfirm& Create(const UObject ContextObject)
 {
     return FVM_MatchSwitchConfirm::CreateByManager(EUIInternal::GetContextManager(ContextObject));
 }
-FVM_MatchSwitchConfirm CreateByManager(const UEUIManagerSubsystem Manager)
+FVM_MatchSwitchConfirm& CreateByManager(const UEUIManagerSubsystem Manager)
 {
-    FVM_MatchSwitchConfirm __r;
-    TEUIModelRef<FVM_MatchSwitchConfirm> local_6 = TEUIModelRef<FVM_MatchSwitchConfirm>(EUIInternal::MakeModelWithManager(Manager, FVM_MatchSwitchConfirm::ModelId));
-    return __r;
+    return TEUIModelRef<FVM_MatchSwitchConfirm>(EUIInternal::MakeModelWithManager(Manager, FVM_MatchSwitchConfirm::ModelId)).Get();
 }
 void GetModelInfo(FEUIViewModelMetaInfo &inout Result)
 {
@@ -1542,8 +1543,7 @@ namespace __GeneratedProperties_FVM_MatchSwitchConfirm
 {
 UScriptStruct StaticStruct()
 {
-    UScriptStruct local_2;
-    return local_2;
+    return __GeneratedProperties_FVM_MatchSwitchConfirm.Get();
 }
 }
 namespace FVM_MatchRecruitConfirm
@@ -1552,11 +1552,9 @@ FVM_MatchRecruitConfirm& Create(const UObject ContextObject)
 {
     return FVM_MatchRecruitConfirm::CreateByManager(EUIInternal::GetContextManager(ContextObject));
 }
-FVM_MatchRecruitConfirm CreateByManager(const UEUIManagerSubsystem Manager)
+FVM_MatchRecruitConfirm& CreateByManager(const UEUIManagerSubsystem Manager)
 {
-    FVM_MatchRecruitConfirm __r;
-    TEUIModelRef<FVM_MatchRecruitConfirm> local_6 = TEUIModelRef<FVM_MatchRecruitConfirm>(EUIInternal::MakeModelWithManager(Manager, FVM_MatchRecruitConfirm::ModelId));
-    return __r;
+    return TEUIModelRef<FVM_MatchRecruitConfirm>(EUIInternal::MakeModelWithManager(Manager, FVM_MatchRecruitConfirm::ModelId)).Get();
 }
 void GetModelInfo(FEUIViewModelMetaInfo &inout Result)
 {
@@ -1585,8 +1583,7 @@ namespace __GeneratedProperties_FVM_MatchRecruitConfirm
 {
 UScriptStruct StaticStruct()
 {
-    UScriptStruct local_2;
-    return local_2;
+    return __GeneratedProperties_FVM_MatchRecruitConfirm.Get();
 }
 }
 namespace FMS_Mode
@@ -1595,11 +1592,9 @@ FMS_Mode& Get(const UObject ContextObject)
 {
     return FMS_Mode::GetByManager(EUIInternal::GetContextManager(ContextObject));
 }
-FMS_Mode GetByManager(const UEUIManagerSubsystem Manager)
+FMS_Mode& GetByManager(const UEUIManagerSubsystem Manager)
 {
-    FMS_Mode __r;
-    TEUIModelRef<FMS_Mode> local_6 = TEUIModelRef<FMS_Mode>(EUIInternal::MakeModelWithManager(Manager, FMS_Mode::ModelId));
-    return __r;
+    return TEUIModelRef<FMS_Mode>(EUIInternal::MakeModelWithManager(Manager, FMS_Mode::ModelId)).Get();
 }
 void GetModelInfo(FEUIModelOnlyMetaInfo &inout Result)
 {

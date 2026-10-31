@@ -114,57 +114,43 @@ struct FVM_CommonItemTipDisplayAdapter : FEUIViewModel
         {
             return false;
         }
-        TEUIModelRef<FVM_Item> local_4;
-        local_4.GetItem();
-        if (local_4.IsValid())
+        if (InTip.Get().GetItem().IsValid())
         {
-            local_4.GetItem();
-            return this.TrySetupFromItem(local_4);
+            return this.TrySetupFromItem(InTip.Get().GetItem());
         }
-        TEUIModelRef<FVM_DisplayItem> local_6;
-        local_6.GetDisplayItem();
-        if (local_6.IsValid())
+        if (InTip.Get().GetDisplayItem().IsValid())
         {
-            local_6.GetDisplayItem();
-            return this.TrySetupFromDisplayItem(local_6);
+            return this.TrySetupFromDisplayItem(InTip.Get().GetDisplayItem());
         }
-        return this.TrySetupFromDisplayData(GetData().DisplayData);
+        return this.TrySetupFromDisplayData(InTip.Get().GetData().DisplayData);
     }
     bool TrySetupFromItem(const TEUIModelRef<FVM_Item> &inout InItem)
     {
-        int local_53 = 0;
-        bool local_1 = !(InItem.IsValid()) || !(GetItemConfig().IsSet());
-        if (local_1)
+        if (!(InItem.IsValid()) || !(InItem.Get().GetItemConfig().IsSet()))
         {
             return false;
         }
-        TDataObjectPtr<FItemConfig> local_26 = GetItemConfig();
-        TDataObjectPtr<FItemRarityConfig> local_78 = ::UGlobalItemSettings::Get().GetRarityConfig(EItemRarity(local_53));
-        FText local_106;
-        local_106.GetItemCategory();
-        this.SetItemCategory(local_106);
-        FSlateBrush local_152;
-        local_152.GetItemIcon();
-        this.SetItemIcon(local_152);
+        TDataObjectPtr<FItemConfig> local_26 = InItem.Get().GetItemConfig();
+        TDataObjectPtr<FItemRarityConfig> local_78 = ::UGlobalItemSettings::Get().GetRarityConfig(EItemRarity(local_26.Get().Rarity));
+        this.SetItemName(local_26.Get().ItemName);
+        this.SetItemCategory(InItem.Get().GetItemCategory());
+        this.SetItemDescription(local_26.Get().ItemDescription);
+        this.SetItemBackgroundDescription(local_26.Get().ItemBackgroundDescription);
+        this.SetItemIcon(InItem.Get().GetItemIcon());
         this.SetItemSpecialBgImage(::ItemFeature_SpecialBg_Util::GetSpecialBgImage(local_26));
-        FSlateBrush local_284 = (local_78 && local_1) ? local_152 : FSlateBrush();
+        FSlateBrush local_284 = (local_78 && local_78.Get().TipRarityImage.IsSet()) ? local_78.Get().TipRarityImage.LoadBrush() : FSlateBrush();
         this.SetTipRarityImage(local_284);
-        this.SetItemOwnNum(GetItemOwnNum());
-        TEUIModelRef<FVM_AvatarEquipmentItemInfoDetail> local_288;
-        local_288.GetCurEquipItemInfoDetail();
-        this.SetCurEquipItemInfoDetail(local_288);
-        this.SetCanShowEquipInfoDetail(GetCanShowEquipInfoDetail());
-        this.SetIsEquiped(GetIsEquiped());
-        this.SetCanShowItemInfoTips(CanShowItemInfoTips());
-        local_106.GetEquiptingAvatarTextWithoutColor();
-        this.SetEquiptingAvatarTextWithoutColor(local_106);
-        this.SetHasBankLimit(HasBankLimit());
-        this.SetItemBankOwnNum(GetItemBankOwnNum());
-        this.SetItemOwnInfoTipsIndex(GetItemOwnInfoTipsIndex());
-        local_106.GetItemOwnLimit();
-        this.SetItemOwnLimit(local_106);
-        local_106.GetEquipmentLevelText();
-        this.SetEquipmentLevelText(local_106);
+        this.SetItemOwnNum(InItem.Get().GetItemOwnNum());
+        this.SetCurEquipItemInfoDetail(InItem.Get().GetCurEquipItemInfoDetail());
+        this.SetCanShowEquipInfoDetail(InItem.Get().GetCanShowEquipInfoDetail());
+        this.SetIsEquiped(InItem.Get().GetIsEquiped());
+        this.SetCanShowItemInfoTips(InItem.Get().CanShowItemInfoTips());
+        this.SetEquiptingAvatarTextWithoutColor(InItem.Get().GetEquiptingAvatarTextWithoutColor());
+        this.SetHasBankLimit(InItem.Get().HasBankLimit());
+        this.SetItemBankOwnNum(InItem.Get().GetItemBankOwnNum());
+        this.SetItemOwnInfoTipsIndex(InItem.Get().GetItemOwnInfoTipsIndex());
+        this.SetItemOwnLimit(InItem.Get().GetItemOwnLimit());
+        this.SetEquipmentLevelText(InItem.Get().GetEquipmentLevelText());
         return true;
     }
     bool TrySetupFromDisplayItem(const TEUIModelRef<FVM_DisplayItem> &inout InDisplayItem)
@@ -173,53 +159,41 @@ struct FVM_CommonItemTipDisplayAdapter : FEUIViewModel
         {
             return false;
         }
-        TEUIModelRef<FM_DisplayItemData> local_4;
-        local_4.GetDisplayData();
-        return this.TrySetupFromDisplayData(local_4);
+        return this.TrySetupFromDisplayData(InDisplayItem.Get().GetDisplayData());
     }
     bool TrySetupFromDisplayData(const TEUIModelRef<FM_DisplayItemData> &inout DisplayData)
     {
-        int local_83 = 0;
-        int local_109 = 0;
-        FSlateBrush local_160;
-        bool local_1 = !(DisplayData.IsValid()) || (int(GetSourceType()) != 2);
+        bool local_1 = !(DisplayData.IsValid()) || (int(DisplayData.Get().GetSourceType()) != 2);
         if (local_1)
         {
             local_1 = true;
         }
         else
         {
-            int local_6 = GetSourceId();
+            int local_6 = DisplayData.Get().GetSourceId();
             local_1 = (local_6 == 0);
         }
         if (local_1)
         {
             return false;
         }
-        TDataObjectPtr<FFashionConfig> local_56 = ::FFashionConfig::GetByDataId(GetSourceId());
+        TDataObjectPtr<FFashionConfig> local_56 = ::FFashionConfig::GetByDataId(DisplayData.Get().GetSourceId());
         if (!(local_56))
         {
             return false;
         }
-        TDataObjectPtr<FItemRarityConfig> local_108 = ::UGlobalItemSettings::Get().GetRarityConfig(EItemRarity(::DisplayItemAdapter_Fashion::ConvertFashionRarity(EFashionRarity(local_83))));
-        FText local_114 = ::FashionSettings::GetFashionSlotName(EFashionSlotType(local_109));
+        TDataObjectPtr<FItemRarityConfig> local_108 = ::UGlobalItemSettings::Get().GetRarityConfig(EItemRarity(::DisplayItemAdapter_Fashion::ConvertFashionRarity(EFashionRarity(int(local_56.Get().Rarity)))));
+        this.SetItemName(local_56.Get().Name);
+        FText local_114 = ::FashionSettings::GetFashionSlotName(EFashionSlotType(local_56.Get().SlotType));
         this.SetItemCategory(local_114);
         this.SetItemDescription(local_114);
-        FSlateBrush local_248;
-        if (GetItemImage().IsSet())
-        {
-            local_160 = GetItemImage().LoadBrush();
-            local_248 = local_160;
-        }
-        else
-        {
-            local_248 = FSlateBrush();
-        }
+        this.SetItemBackgroundDescription(local_56.Get().Des);
+        FSlateBrush local_248 = DisplayData.Get().GetItemImage().IsSet() ? DisplayData.Get().GetItemImage().LoadBrush() : FSlateBrush();
         this.SetItemIcon(FSlateBrush());
         CastTo local_252;
         this.SetItemSpecialBgImage(::ItemFeature_SpecialBg_Util::GetSpecialBgImage(local_252.opCall()));
-        local_248 = (local_108 && local_1) ? local_160 : FSlateBrush();
-        this.SetTipRarityImage(local_248);
+        FSlateBrush local_248_2 = (local_108 && local_108.Get().TipRarityImage.IsSet()) ? local_108.Get().TipRarityImage.LoadBrush() : FSlateBrush();
+        this.SetTipRarityImage(local_248_2);
         int local_3 = ::DisplayItemAdapter_Fashion::IsUnlocked(local_56, ::FMS_FashionModel::Get(this.GetContext().Manager)) ? 1 : 0;
         this.SetItemOwnNum(local_3);
         this.SetCurEquipItemInfoDetail(TEUIModelRef<FVM_AvatarEquipmentItemInfoDetail>());
@@ -605,11 +579,9 @@ FVM_CommonItemTipDisplayAdapter& Create(const UObject ContextObject)
 {
     return FVM_CommonItemTipDisplayAdapter::CreateByManager(EUIInternal::GetContextManager(ContextObject));
 }
-FVM_CommonItemTipDisplayAdapter CreateByManager(const UEUIManagerSubsystem Manager)
+FVM_CommonItemTipDisplayAdapter& CreateByManager(const UEUIManagerSubsystem Manager)
 {
-    FVM_CommonItemTipDisplayAdapter __r;
-    TEUIModelRef<FVM_CommonItemTipDisplayAdapter> local_6 = TEUIModelRef<FVM_CommonItemTipDisplayAdapter>(EUIInternal::MakeModelWithManager(Manager, FVM_CommonItemTipDisplayAdapter::ModelId));
-    return __r;
+    return TEUIModelRef<FVM_CommonItemTipDisplayAdapter>(EUIInternal::MakeModelWithManager(Manager, FVM_CommonItemTipDisplayAdapter::ModelId)).Get();
 }
 void GetModelInfo(FEUIViewModelMetaInfo &inout Result)
 {
@@ -872,7 +844,6 @@ namespace __GeneratedProperties_FVM_CommonItemTipDisplayAdapter
 {
 UScriptStruct StaticStruct()
 {
-    UScriptStruct local_2;
-    return local_2;
+    return __GeneratedProperties_FVM_CommonItemTipDisplayAdapter.Get();
 }
 }

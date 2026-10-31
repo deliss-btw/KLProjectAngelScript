@@ -432,11 +432,9 @@ FVM_CommonBGItemMenu& Create(const UObject ContextObject, const FName &inout Gro
 {
     return FVM_CommonBGItemMenu::CreateByManager(EUIInternal::GetContextManager(ContextObject), GroupName, Index, Signal, bIsInteractItem, bSetVisibility);
 }
-FVM_CommonBGItemMenu CreateByManager(const UEUIManagerSubsystem Manager, const FName &inout GroupName, const int Index, const FName &inout Signal, const bool bIsInteractItem, const bool bSetVisibility)
+FVM_CommonBGItemMenu& CreateByManager(const UEUIManagerSubsystem Manager, const FName &inout GroupName, const int Index, const FName &inout Signal, const bool bIsInteractItem, const bool bSetVisibility)
 {
-    FVM_CommonBGItemMenu __r;
-    TEUIModelRef<FVM_CommonBGItemMenu> local_6 = TEUIModelRef<FVM_CommonBGItemMenu>(EUIInternal::MakeModelWithManager_Generic(Manager, FVM_CommonBGItemMenu::ModelId, 0, GroupName, Index, Signal, bIsInteractItem, bSetVisibility));
-    return __r;
+    return TEUIModelRef<FVM_CommonBGItemMenu>(EUIInternal::MakeModelWithManager_Generic(Manager, FVM_CommonBGItemMenu::ModelId, 0, GroupName, Index, Signal, bIsInteractItem, bSetVisibility)).Get();
 }
 void GetModelInfo(FEUIViewModelMetaInfo &inout Result)
 {
@@ -559,7 +557,6 @@ namespace __GeneratedProperties_FVM_CommonBGItemMenu
 {
 UScriptStruct StaticStruct()
 {
-    UScriptStruct local_2;
-    return local_2;
+    return __GeneratedProperties_FVM_CommonBGItemMenu.Get();
 }
 }

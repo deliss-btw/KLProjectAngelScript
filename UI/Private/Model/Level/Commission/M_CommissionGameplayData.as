@@ -90,11 +90,9 @@ FMS_CommissionGameplayData& Get(const UObject ContextObject)
 {
     return FMS_CommissionGameplayData::GetByManager(EUIInternal::GetContextManager(ContextObject));
 }
-FMS_CommissionGameplayData GetByManager(const UEUIManagerSubsystem Manager)
+FMS_CommissionGameplayData& GetByManager(const UEUIManagerSubsystem Manager)
 {
-    FMS_CommissionGameplayData __r;
-    TEUIModelRef<FMS_CommissionGameplayData> local_6 = TEUIModelRef<FMS_CommissionGameplayData>(EUIInternal::MakeModelWithManager(Manager, FMS_CommissionGameplayData::ModelId));
-    return __r;
+    return TEUIModelRef<FMS_CommissionGameplayData>(EUIInternal::MakeModelWithManager(Manager, FMS_CommissionGameplayData::ModelId)).Get();
 }
 void GetModelInfo(FEUIModelOnlyMetaInfo &inout Result)
 {

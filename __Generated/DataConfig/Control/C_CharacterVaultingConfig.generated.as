@@ -258,7 +258,6 @@ float32 __FCharacterVaultProbeConfig_GetMaxAngleToWallNormalForVault(const TData
 UFUNCTION()
 FFPTime __FCharacterVaultProbeConfig_GetKeepSteerTimeForVault(const TDataObjectPtr<FCharacterVaultProbeConfig> &inout DataObject)
 {
-    FFPTime __r;
     if ((DataObject == nullptr))
     {
         if (!(EUIGlobals::GIsDuringPropertyConversion))
@@ -268,7 +267,7 @@ FFPTime __FCharacterVaultProbeConfig_GetKeepSteerTimeForVault(const TDataObjectP
         FCharacterVaultProbeConfig local_56;
         return local_56.KeepSteerTimeForVault;
     }
-    return __r;
+    return DataObject.Get().KeepSteerTimeForVault;
 }
 UFUNCTION()
 float32 __FCharacterVaultProbeConfig_GetMaxAngleToWallNormalForWallRun(const TDataObjectPtr<FCharacterVaultProbeConfig> &inout DataObject)
@@ -288,7 +287,6 @@ float32 __FCharacterVaultProbeConfig_GetMaxAngleToWallNormalForWallRun(const TDa
 UFUNCTION()
 FFPTime __FCharacterVaultProbeConfig_GetKeepSteerTimeForWallRun(const TDataObjectPtr<FCharacterVaultProbeConfig> &inout DataObject)
 {
-    FFPTime __r;
     if ((DataObject == nullptr))
     {
         if (!(EUIGlobals::GIsDuringPropertyConversion))
@@ -298,12 +296,11 @@ FFPTime __FCharacterVaultProbeConfig_GetKeepSteerTimeForWallRun(const TDataObjec
         FCharacterVaultProbeConfig local_56;
         return local_56.KeepSteerTimeForWallRun;
     }
-    return __r;
+    return DataObject.Get().KeepSteerTimeForWallRun;
 }
 UFUNCTION()
 TArray<int> __FCharacterVaultProbeConfig_GetUpstairsLevelSeparationHeights(const TDataObjectPtr<FCharacterVaultProbeConfig> &inout DataObject)
 {
-    TArray<int> __r;
     if ((DataObject == nullptr))
     {
         if (!(EUIGlobals::GIsDuringPropertyConversion))
@@ -313,12 +310,11 @@ TArray<int> __FCharacterVaultProbeConfig_GetUpstairsLevelSeparationHeights(const
         FCharacterVaultProbeConfig local_56;
         return local_56.UpstairsLevelSeparationHeights;
     }
-    return __r;
+    return DataObject.Get().UpstairsLevelSeparationHeights;
 }
 UFUNCTION()
 TArray<FCharacterVaultProbePerHeightLevelConfig> __FCharacterVaultProbeConfig_GetUpstairsPerHeightLevelConfigs(const TDataObjectPtr<FCharacterVaultProbeConfig> &inout DataObject)
 {
-    TArray<FCharacterVaultProbePerHeightLevelConfig> __r;
     if ((DataObject == nullptr))
     {
         if (!(EUIGlobals::GIsDuringPropertyConversion))
@@ -328,12 +324,11 @@ TArray<FCharacterVaultProbePerHeightLevelConfig> __FCharacterVaultProbeConfig_Ge
         FCharacterVaultProbeConfig local_56;
         return local_56.UpstairsPerHeightLevelConfigs;
     }
-    return __r;
+    return DataObject.Get().UpstairsPerHeightLevelConfigs;
 }
 UFUNCTION()
 TArray<int> __FCharacterVaultProbeConfig_GetVaultLevelSeparationHeights(const TDataObjectPtr<FCharacterVaultProbeConfig> &inout DataObject)
 {
-    TArray<int> __r;
     if ((DataObject == nullptr))
     {
         if (!(EUIGlobals::GIsDuringPropertyConversion))
@@ -343,7 +338,7 @@ TArray<int> __FCharacterVaultProbeConfig_GetVaultLevelSeparationHeights(const TD
         FCharacterVaultProbeConfig local_56;
         return local_56.VaultLevelSeparationHeights;
     }
-    return __r;
+    return DataObject.Get().VaultLevelSeparationHeights;
 }
 UFUNCTION()
 float32 __FCharacterVaultProbeConfig_GetLeapOffForwardCheckDistance(const TDataObjectPtr<FCharacterVaultProbeConfig> &inout DataObject)
@@ -378,7 +373,6 @@ float32 __FCharacterVaultProbeConfig_GetLeapOffStartHeight(const TDataObjectPtr<
 UFUNCTION()
 TArray<int> __FCharacterVaultProbeConfig_GetLeapOffLevelSeparationHeights(const TDataObjectPtr<FCharacterVaultProbeConfig> &inout DataObject)
 {
-    TArray<int> __r;
     if ((DataObject == nullptr))
     {
         if (!(EUIGlobals::GIsDuringPropertyConversion))
@@ -388,7 +382,7 @@ TArray<int> __FCharacterVaultProbeConfig_GetLeapOffLevelSeparationHeights(const 
         FCharacterVaultProbeConfig local_56;
         return local_56.LeapOffLevelSeparationHeights;
     }
-    return __r;
+    return DataObject.Get().LeapOffLevelSeparationHeights;
 }
 UFUNCTION()
 FCharacterVaultProbeConfig CastToFCharacterVaultProbeConfig(const TDataObjectPtr<FCharacterVaultProbeConfig> &inout DataObject)

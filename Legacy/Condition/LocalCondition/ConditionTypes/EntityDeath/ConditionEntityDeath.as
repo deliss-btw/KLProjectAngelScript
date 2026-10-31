@@ -10,7 +10,7 @@ class UConditionEntityDeath : ULocalConditionTypeDefineBase
     }
     void OnConditionRegistered(const FLocalConditionInstance &inout ConditionInstance) const
     {
-        TDataObjectPtr<FBasePrefabConfig> local_24 = this.GetPrefabConfig(GetConditionConfig());
+        TDataObjectPtr<FBasePrefabConfig> local_24 = this.GetPrefabConfig(ConditionInstance.GetInstanceData().GetConditionConfig());
         FConditionInstanceHandle local_80 = ConditionInstance.GetHandle();
         FECSWorldPtr local_50 = ECS::GetECSWorld();
         ModifyOrAdd local_54;
@@ -19,7 +19,7 @@ class UConditionEntityDeath : ULocalConditionTypeDefineBase
     }
     void OnConditionUnregistered(const FLocalConditionInstance &inout ConditionInstance) const
     {
-        TDataObjectPtr<FBasePrefabConfig> local_24 = this.GetPrefabConfig(GetConditionConfig());
+        TDataObjectPtr<FBasePrefabConfig> local_24 = this.GetPrefabConfig(ConditionInstance.GetInstanceData().GetConditionConfig());
         FECSWorldPtr local_50 = ECS::GetECSWorld();
         Modify local_54;
         FCS_EntityDeathConditionManager& local_56 = local_54.opCall();
@@ -29,9 +29,10 @@ class UConditionEntityDeath : ULocalConditionTypeDefineBase
             if (local_60.Contains(local_24))
             {
                 TArray<FConditionInstanceHandle> local_62;
-                FConditionInstanceHandle local_88 = ConditionInstance.GetHandle();
+                local_62.Remove(ConditionInstance.GetHandle());
                 if (local_62.IsEmpty())
                 {
+                    local_60.Remove(local_24);
                     if (local_60.IsEmpty())
                     {
                         FECSWorldPtr local_92 = ECS::GetECSWorld();

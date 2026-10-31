@@ -206,8 +206,7 @@ struct FVM_SettingItem : FEUIViewModel
     {
         this.InitData();
         this.CreateComponentWidget();
-        TEUIModelWeakRef<FVMS_SettingPage> local_2 = this.GetOwnerPage();
-        if (this.GetItemTag().IsDisplayOrGraphicsItem())
+        if (this.GetOwnerPage().Get().IsDisplayOrGraphicsItem(this.GetItemTag()))
         {
         }
         return;
@@ -215,15 +214,14 @@ struct FVM_SettingItem : FEUIViewModel
     float32 GetDefaultValue()
     {
         float32 local_1;
-        float32 local_2 = 0.0f;
-        float32 local_3 = ::SettingUtils::GetDefaultValue(this.GetApplyEffect(), local_2);
+        float32 local_3 = ::SettingUtils::GetDefaultValue(this.GetApplyEffect(), this.GetItemConfig().Get().DefaultValue);
         if (local_3 != 3.4028235e38f)
         {
             local_1 = local_3;
         }
         else
         {
-            local_1 = local_2;
+            local_1 = this.GetItemConfig().Get().DefaultValue;
         }
         return local_1;
     }
@@ -234,15 +232,13 @@ struct FVM_SettingItem : FEUIViewModel
         {
             return;
         }
-        TEUIModelWeakRef<FVMS_SettingPage> local_2 = this.GetOwnerPage();
-        if (!(GetbIsKeyMapping()))
+        if (!(this.GetOwnerPage().Get().GetbIsKeyMapping()))
         {
             int local_4 = this.GetbIsHovered() ? 1 : 0;
             this.SetSwitchIndex(local_4);
             return;
         }
-        TEUIModelRef<FVM_PlayerKeyMappingPair> local_8 = this.GetKeyMappingVM();
-        bool local_3 = this.GetPreviousKey0().DifferentFromPreviousKey(this.GetPreviousChordKey0(), this.GetPreviousKey1(), this.GetPreviousChordKey1());
+        bool local_3 = this.GetKeyMappingVM().Get().DifferentFromPreviousKey(this.GetPreviousKey0(), this.GetPreviousChordKey0(), this.GetPreviousKey1(), this.GetPreviousChordKey1());
         if (this.GetbIsHovered())
         {
             local_10 = (local_3 ? 3 : 1);
@@ -257,8 +253,7 @@ struct FVM_SettingItem : FEUIViewModel
     }
     void OnComponentHovered()
     {
-        TEUIModelWeakRef<FVMS_SettingPage> local_2 = this.GetOwnerPage();
-        this.GetItemConfig().RefreshSelectedItem(this.GetbShowWarningMessage());
+        this.GetOwnerPage().Get().RefreshSelectedItem(this.GetItemConfig(), this.GetbShowWarningMessage());
         this.SetbIsHovered(true);
         return;
     }
@@ -275,31 +270,17 @@ struct FVM_SettingItem : FEUIViewModel
     void SyncPreviousValue()
     {
         this.SetPreviousValue(this.GetCurrentValue());
-        TEUIModelRef<FVM_PlayerKeyMappingPair> local_2 = this.GetKeyMappingVM();
-        if (GetbIsKeyMapping())
+        if (this.GetKeyMappingVM().Get().GetbIsKeyMapping())
         {
-            TEUIModelRef<FVM_PlayerKeyMapping> local_6;
-            TEUIModelRef<FVM_PlayerKeyMappingPair> local_2_2 = this.GetKeyMappingVM();
-            local_6.GetMapping0();
-            if (local_6.IsValid())
+            if (this.GetKeyMappingVM().Get().GetMapping0().IsValid())
             {
-                TEUIModelRef<FVM_PlayerKeyMappingPair> local_2_3 = this.GetKeyMappingVM();
-                local_6.GetMapping0();
-                this.SetPreviousKey0(GetCurrentKey());
-                TEUIModelRef<FVM_PlayerKeyMappingPair> local_2_4 = this.GetKeyMappingVM();
-                local_6.GetMapping0();
-                this.SetPreviousChordKey0(GetChordKey());
+                this.SetPreviousKey0(this.GetKeyMappingVM().Get().GetMapping0().Get().GetCurrentKey());
+                this.SetPreviousChordKey0(this.GetKeyMappingVM().Get().GetMapping0().Get().GetChordKey());
             }
-            TEUIModelRef<FVM_PlayerKeyMappingPair> local_2_5 = this.GetKeyMappingVM();
-            local_6.GetMapping1();
-            if (local_6.IsValid())
+            if (this.GetKeyMappingVM().Get().GetMapping1().IsValid())
             {
-                TEUIModelRef<FVM_PlayerKeyMappingPair> local_2_6 = this.GetKeyMappingVM();
-                local_6.GetMapping1();
-                this.SetPreviousKey1(GetCurrentKey());
-                TEUIModelRef<FVM_PlayerKeyMappingPair> local_2_7 = this.GetKeyMappingVM();
-                local_6.GetMapping1();
-                this.SetPreviousChordKey1(GetChordKey());
+                this.SetPreviousKey1(this.GetKeyMappingVM().Get().GetMapping1().Get().GetCurrentKey());
+                this.SetPreviousChordKey1(this.GetKeyMappingVM().Get().GetMapping1().Get().GetChordKey());
             }
         }
         return;
@@ -334,12 +315,9 @@ struct FVM_SettingItem : FEUIViewModel
     }
     void ResetValueDisplay()
     {
-        bool local_2 = false;
         this.UpdateCurrentValue(this.GetDefaultValue());
         this.SetChangedValue(this.GetCurrentValue());
-        UScriptStruct local_6;
-        local_2 = this.GetItemConfig() && local_2 && (local_6 != nullptr);
-        if (local_2)
+        if (this.GetItemConfig() && this.GetItemConfig().Get().VisualConfig.IsValid() && (this.GetItemConfig().Get().VisualConfig.GetScriptStruct() != nullptr))
         {
             this.UpdateComponentValue(this.GetCurrentValue(), false);
         }
@@ -349,56 +327,24 @@ struct FVM_SettingItem : FEUIViewModel
     }
     void RevertValue()
     {
-        bool local_3;
-        TEUIModelRef<FVM_PlayerKeyMappingPair> local_2 = this.GetKeyMappingVM();
-        local_3 = GetbIsKeyMapping();
-        if (local_3)
+        if (this.GetKeyMappingVM().Get().GetbIsKeyMapping())
         {
-            TEUIModelRef<FVM_PlayerKeyMapping> local_6;
-            TEUIModelRef<FVM_PlayerKeyMappingPair> local_2_2 = this.GetKeyMappingVM();
-            local_6.GetMapping0();
-            if (local_6.IsValid())
+            if (this.GetKeyMappingVM().Get().GetMapping0().IsValid())
             {
-                TEUIModelRef<FVM_PlayerKeyMappingPair> local_2_3 = this.GetKeyMappingVM();
-                local_6.GetMapping0();
-                this.GetPreviousKey0().SetCurrentKey();
-                local_3 = false;
-                TEUIModelRef<FVM_PlayerKeyMappingPair> local_2_4 = this.GetKeyMappingVM();
-                local_6.GetMapping0();
-                local_3.SetbHasChanged();
-                TEUIModelRef<FVM_PlayerKeyMappingPair> local_2_5 = this.GetKeyMappingVM();
-                local_6.GetMapping0();
-                this.GetPreviousChordKey0().SetChordKey();
+                this.GetKeyMappingVM().Get().GetMapping0().Get().SetCurrentKey(this.GetPreviousKey0());
+                this.GetKeyMappingVM().Get().GetMapping0().Get().SetbHasChanged(false);
+                this.GetKeyMappingVM().Get().GetMapping0().Get().SetChordKey(this.GetPreviousChordKey0());
             }
-            TEUIModelRef<FVM_PlayerKeyMappingPair> local_2_6 = this.GetKeyMappingVM();
-            local_6.GetMapping1();
-            if (local_6.IsValid())
+            if (this.GetKeyMappingVM().Get().GetMapping1().IsValid())
             {
-                TEUIModelRef<FVM_PlayerKeyMappingPair> local_2_7 = this.GetKeyMappingVM();
-                local_6.GetMapping1();
-                this.GetPreviousKey1().SetCurrentKey();
-                TEUIModelRef<FVM_PlayerKeyMappingPair> local_2_8 = this.GetKeyMappingVM();
-                local_6.GetMapping1();
-                this.GetPreviousChordKey1().SetChordKey();
-                local_3 = false;
-                TEUIModelRef<FVM_PlayerKeyMappingPair> local_2_9 = this.GetKeyMappingVM();
-                local_6.GetMapping1();
-                local_3.SetbHasChanged();
+                this.GetKeyMappingVM().Get().GetMapping1().Get().SetCurrentKey(this.GetPreviousKey1());
+                this.GetKeyMappingVM().Get().GetMapping1().Get().SetChordKey(this.GetPreviousChordKey1());
+                this.GetKeyMappingVM().Get().GetMapping1().Get().SetbHasChanged(false);
             }
-            local_3 = false;
-            TEUIModelRef<FVM_PlayerKeyMappingPair> local_2_10 = this.GetKeyMappingVM();
-            local_3.SetbHasChanged();
+            this.GetKeyMappingVM().Get().SetbHasChanged(false);
             return;
         }
-        if (!(unresolved.VisualConfig.IsValid()))
-        {
-            local_3 = false;
-        }
-        else
-        {
-            local_3 = (this.GetPreviousValue() != this.GetCurrentValue());
-        }
-        if (local_3)
+        if (this.GetItemConfig().Get().VisualConfig.IsValid() && (this.GetPreviousValue() != this.GetCurrentValue()))
         {
             this.UpdateCurrentValue(this.GetPreviousValue());
             this.UpdateComponentValue(this.GetCurrentValue(), true);
@@ -434,14 +380,9 @@ struct FVM_SettingItem : FEUIViewModel
     void UpdateDropDownOptions(const TEUIModelRef<FVM_SettingItem> &inout ItemVM, const int DefaultIndex = -1)
     {
         FText local_18;
-        int local_4 = uint(int(GetCurrentValue()));
-        TEUIModelWeakRef<FVM_CommonComponentDropDown> local_2;
-        local_2.GetDropdownVM();
-        if (GetOptionTexts().IsValidIndex(local_4))
+        if (ItemVM.Get().GetDropdownVM().Get().GetOptionTexts().IsValidIndex(uint(int(ItemVM.Get().GetCurrentValue()))))
         {
-            int local_4_2 = uint(int(GetCurrentValue()));
-            local_2.GetDropdownVM();
-            local_18 = GetOptionTexts()[local_4_2];
+            local_18 = ItemVM.Get().GetDropdownVM().Get().GetOptionTexts()[uint(int(ItemVM.Get().GetCurrentValue()))];
         }
         else
         {
@@ -449,7 +390,7 @@ struct FVM_SettingItem : FEUIViewModel
         }
         bool local_23 = true;
         TArray<FSettingOption> local_28;
-        ::SettingUtils::BuildOptions(GetApplyEffect(), local_28);
+        ::SettingUtils::BuildOptions(ItemVM.Get().GetApplyEffect(), local_28);
         TArray<FText> local_32;
         for (auto& local_46 : local_28)
         {
@@ -459,28 +400,25 @@ struct FVM_SettingItem : FEUIViewModel
                 local_23 = false;
             }
         }
-        local_2.GetDropdownVM();
-        local_32.SetOptionTexts();
+        ItemVM.Get().GetDropdownVM().Get().SetOptionTexts(local_32);
         TArray<int> local_50;
-        local_2.GetDropdownVM();
-        local_50.UpdateOptionDisabledIndices();
+        ItemVM.Get().GetDropdownVM().Get().UpdateOptionDisabledIndices(local_50);
         if (local_28.IsEmpty())
         {
             return;
         }
-        if (local_23 || local_50.Contains(uint(int(GetCurrentValue()))) || (int(GetCurrentValue()) == local_32.Num()))
+        if (local_23 || local_50.Contains(uint(int(ItemVM.Get().GetCurrentValue()))) || (int(ItemVM.Get().GetCurrentValue()) == local_32.Num()))
         {
-            TEUIModelWeakRef<FVMS_SettingPage> local_54 = this.GetOwnerPage();
-            float32 local_52 = ::SettingUtils::GetCurrentValue(GetApplyEffect(), GetItemTag().IsDisplayOrGraphicsItem());
+            float32 local_52 = ::SettingUtils::GetCurrentValue(ItemVM.Get().GetApplyEffect(), this.GetOwnerPage().Get().IsDisplayOrGraphicsItem(ItemVM.Get().GetItemTag()));
             if (DefaultIndex != -1)
             {
                 local_52 = DefaultIndex;
             }
-            local_52.UpdateComponentValue(false);
-            local_52.UpdateCurrentValue();
-            local_52.SetChangedValue();
-            SyncPreviousValue();
-            false.SetbHasResolutionOptionChanged();
+            ItemVM.Get().UpdateComponentValue(local_52, false);
+            ItemVM.Get().UpdateCurrentValue(local_52);
+            ItemVM.Get().SetChangedValue(local_52);
+            ItemVM.Get().SyncPreviousValue();
+            ItemVM.Get().SetbHasResolutionOptionChanged(false);
         }
         return;
     }
@@ -505,12 +443,10 @@ struct FVM_SettingItem : FEUIViewModel
             local_4.Add(FSettingApply_FrameGeneration::FrameGenerationIndexMap[EKLFrameGenerationMode(2)]);
             local_4.Add(FSettingApply_FrameGeneration::FrameGenerationIndexMap[EKLFrameGenerationMode(4)]);
         }
-        TEUIModelWeakRef<FVM_CommonComponentDropDown> local_22;
-        local_22.GetDropdownVM();
-        local_4.UpdateOptionDisabledIndices();
-        if (local_4.Contains(uint(GetCurrentValue())))
+        ItemVM.Get().GetDropdownVM().Get().UpdateOptionDisabledIndices(local_4);
+        if (local_4.Contains(uint(ItemVM.Get().GetCurrentValue())))
         {
-            FSettingApply_FrameGeneration::FrameGenerationIndexMap[EKLFrameGenerationMode(0)].UpdateComponentValue(true);
+            ItemVM.Get().UpdateComponentValue(FSettingApply_FrameGeneration::FrameGenerationIndexMap[EKLFrameGenerationMode(0)], true);
         }
         return;
     }
@@ -533,18 +469,15 @@ struct FVM_SettingItem : FEUIViewModel
         if (this.GetItemTag().MatchesTag(FGameplayTag::RequestGameplayTag(n"Setting.Display.Display.UpscalingMethod", true)))
         {
             FGameplayTag local_4 = FGameplayTag::RequestGameplayTag(n"Setting.Display.Display.FrameGeneration", true);
-            TEUIModelWeakRef<FVMS_SettingPage> local_8 = this.GetOwnerPage();
-            if (GetItems().Contains(local_4))
+            if (this.GetOwnerPage().Get().GetItems().Contains(local_4))
             {
-                TEUIModelWeakRef<FVMS_SettingPage> local_8_2 = this.GetOwnerPage();
-                this.UpdateFrameGenerationDropDownOptions(GetItems()[local_4]);
+                this.UpdateFrameGenerationDropDownOptions(this.GetOwnerPage().Get().GetItems()[local_4]);
             }
         }
         return;
     }
     void GraphicsQualityPresetCheck(const float32 Value)
     {
-        TEUIModelWeakRef<FVM_CommonComponentToggle> local_30;
         if (!(this.GetbNeedCheckGraphicsQualityPreset()))
         {
             this.SetbNeedCheckGraphicsQualityPreset(true);
@@ -557,17 +490,13 @@ struct FVM_SettingItem : FEUIViewModel
             {
                 return;
             }
-            TEUIModelWeakRef<FVM_SettingSubTitle> local_14 = this.GetOwnerSubTitle();
-            for (auto& local_28 : GetItems())
+            for (auto& local_28 : this.GetOwnerSubTitle().Get().GetItems())
             {
-                local_28;
-                local_30.GetToggleVM();
-                if (local_30.IsValid() && ((GetChangedValue() != Value)))
+                if (local_28.Get().GetToggleVM().IsValid() && ((local_28.Get().GetChangedValue() != Value)))
                 {
-                    bool local_31 = false;
-                    local_31.SetbNeedCheckGraphicsQualityPreset();
-                    float32 local_5 = ::SettingUtils::GetPresetValue(GetApplyEffect(), Value);
-                    local_5.InitializeApplyValue(true);
+                    local_28.Get().SetbNeedCheckGraphicsQualityPreset(false);
+                    float32 local_5 = ::SettingUtils::GetPresetValue(local_28.Get().GetApplyEffect(), Value);
+                    local_28.Get().InitializeApplyValue(local_5, true);
                 }
             }
         }
@@ -575,15 +504,12 @@ struct FVM_SettingItem : FEUIViewModel
     }
     void OnItemSelectedOrValueChanged(const float32 Value)
     {
-        int local_1 = 0;
         this.SetChangedValue(Value);
-        int local_2 = local_1;
-        if (local_2 == 0)
+        if (int(this.GetItemConfig().Get().ApplyType) == 0)
         {
             this.GraphicsQualityPresetCheck(Value);
             this.ApplyChangedValue();
-            TEUIModelWeakRef<FVMS_SettingPage> local_6 = this.GetOwnerPage();
-            if (this.GetItemTag().IsDisplayOrGraphicsItem())
+            if (this.GetOwnerPage().Get().IsDisplayOrGraphicsItem(this.GetItemTag()))
             {
                 this.ApplyDisplayAndGraphicOptions();
             }
@@ -595,11 +521,13 @@ struct FVM_SettingItem : FEUIViewModel
     }
     void InitData()
     {
+        this.SetItemName(this.GetItemConfig().Get().Name);
+        this.SetItemDesc(this.GetItemConfig().Get().Desc);
         FGameplayTag local_2;
         local_2;
         this.SetItemTag(local_2);
-        TEUIModelRef<FVM_PlayerKeyMappingPair> local_4 = this.GetKeyMappingVM();
-        if (GetbIsKeyMapping())
+        this.SetApplyEffect(this.GetItemConfig().Get().ApplyEffect);
+        if (this.GetKeyMappingVM().Get().GetbIsKeyMapping())
         {
             return;
         }
@@ -609,120 +537,69 @@ struct FVM_SettingItem : FEUIViewModel
     }
     void UpdateComponentValue(const float32 Value, const bool bBroadcast = true)
     {
-        UScriptStruct local_4;
         if (Value == 3.4028235e38f)
         {
             return;
         }
-        if (local_4.IsChildOf(FSettingDropDown) && this.GetDropdownVM().IsValid())
+        if (this.GetItemConfig().Get().VisualConfig.GetScriptStruct().IsChildOf(FSettingDropDown) && this.GetDropdownVM().IsValid())
         {
-            int local_10 = uint(Value);
-            TEUIModelWeakRef<FVM_CommonComponentDropDown> local_8 = this.GetDropdownVM();
-            local_10.SelectByIndex(bBroadcast);
+            this.GetDropdownVM().Get().SelectByIndex(uint(Value), bBroadcast);
             return;
         }
-        if (local_4.IsChildOf(FSettingSlider) && this.GetSliderVM().IsValid())
+        if (this.GetItemConfig().Get().VisualConfig.GetScriptStruct().IsChildOf(FSettingSlider) && this.GetSliderVM().IsValid())
         {
-            TEUIModelWeakRef<FVM_CommonComponentSlider> local_12 = this.GetSliderVM();
-            Value.SetValue(bBroadcast);
+            this.GetSliderVM().Get().SetValue(Value, bBroadcast);
             return;
         }
-        if (local_4.IsChildOf(FSettingLink) && this.GetLinkVM().IsValid())
+        if (this.GetItemConfig().Get().VisualConfig.GetScriptStruct().IsChildOf(FSettingLink) && this.GetLinkVM().IsValid())
         {
             return;
         }
-        if (local_4.IsChildOf(FSettingToggle) && this.GetToggleVM().IsValid())
+        if (this.GetItemConfig().Get().VisualConfig.GetScriptStruct().IsChildOf(FSettingToggle) && this.GetToggleVM().IsValid())
         {
-            int local_10_2 = uint(Value);
-            TEUIModelWeakRef<FVM_CommonComponentToggle> local_16 = this.GetToggleVM();
-            local_10_2.ChangeCurrentSelectedIndex(bBroadcast);
+            this.GetToggleVM().Get().ChangeCurrentSelectedIndex(uint(Value), bBroadcast);
         }
         return;
     }
     void CreateComponentWidget()
     {
         FEUIDynamicWidgetData local_24;
-        bool local_31 = false;
-        TEUIModelRef<FVM_PlayerKeyMapping> local_50;
-        UScriptStruct local_52;
-        TEUIModelRef<FVM_PlayerKeyMappingPair> local_26 = this.GetKeyMappingVM();
-        if (GetbIsKeyMapping())
+        if (this.GetKeyMappingVM().Get().GetbIsKeyMapping())
         {
-            FEUIModelRef local_48;
-            TEUIModelRef<FVM_PlayerKeyMapping> local_30;
             if (!(this.GetKeyMappingVM().IsValid()))
             {
                 return;
             }
-            TEUIModelRef<FVM_PlayerKeyMappingPair> local_26_2 = this.GetKeyMappingVM();
-            local_30.GetMapping0();
-            bool local_27 = local_30.IsValid();
-            if (!(local_27))
-            {
-                local_27 = false;
-            }
-            else
-            {
-                TEUIModelRef<FVM_PlayerKeyMappingPair> local_26_3 = this.GetKeyMappingVM();
-                local_30.GetMapping1();
-                local_27 = local_30.IsValid();
-            }
-            if (local_27)
+            if (this.GetKeyMappingVM().Get().GetMapping0().IsValid() && this.GetKeyMappingVM().Get().GetMapping1().IsValid())
             {
                 local_24.WidgetClass = this.GetSettingComponentWidgetClass().KeyboardWidgetClass;
                 local_24.ModelContainer = FEUIModelContainer();
-                TEUIModelRef<FVM_PlayerKeyMappingPair> local_26_4 = this.GetKeyMappingVM();
+                FEUIModelRef local_48 = FEUIModelRef(this.GetKeyMappingVM().Get());
                 local_24.ModelContainer.AddModel(local_48, false);
-                TEUIModelRef<FVM_PlayerKeyMappingPair> local_26_5 = this.GetKeyMappingVM();
-                local_30.GetMapping0();
-                local_31 = local_30.opArrow().GetbConfigurable();
-                if (local_31)
-                {
-                    local_31 = true;
-                }
-                else
-                {
-                    TEUIModelRef<FVM_PlayerKeyMappingPair> local_26_6 = this.GetKeyMappingVM();
-                    local_50.GetMapping1();
-                    local_31 = local_50.opArrow().GetbConfigurable();
-                }
-                local_31 = !local_31;
-                this.SetbShowWarningMessage(local_31);
+                this.SetbShowWarningMessage(!(this.GetKeyMappingVM().Get().GetMapping0().opArrow().GetbConfigurable() || this.GetKeyMappingVM().Get().GetMapping1().opArrow().GetbConfigurable()));
             }
             else
             {
-                TEUIModelRef<FVM_PlayerKeyMappingPair> local_26_7 = this.GetKeyMappingVM();
-                local_30.GetMapping0();
-                local_31 = local_30.IsValid();
-                if (local_31)
+                if (this.GetKeyMappingVM().Get().GetMapping0().IsValid())
                 {
                     local_24.WidgetClass = this.GetSettingComponentWidgetClass().GamepadWidgetClass;
                     local_24.ModelContainer = FEUIModelContainer();
-                    TEUIModelRef<FVM_PlayerKeyMappingPair> local_26_8 = this.GetKeyMappingVM();
-                    local_24.ModelContainer.AddModel(local_48, false);
-                    TEUIModelRef<FVM_PlayerKeyMappingPair> local_26_9 = this.GetKeyMappingVM();
-                    local_30.GetMapping0();
-                    local_31 = !(local_30.opArrow().GetbConfigurable());
-                    this.SetbShowWarningMessage(local_31);
-                    TEUIModelRef<FVM_PlayerKeyMappingPair> local_26_10 = this.GetKeyMappingVM();
-                    local_50.GetMapping0();
-                    this.SetPreviousKey0(GetCurrentKey());
-                    TEUIModelRef<FVM_PlayerKeyMappingPair> local_26_11 = this.GetKeyMappingVM();
-                    local_30.GetMapping0();
-                    this.SetPreviousChordKey0(GetChordKey());
+                    FEUIModelRef local_48_2 = FEUIModelRef(this.GetKeyMappingVM().Get());
+                    local_24.ModelContainer.AddModel(local_48_2, false);
+                    this.SetbShowWarningMessage(!(this.GetKeyMappingVM().Get().GetMapping0().opArrow().GetbConfigurable()));
+                    this.SetPreviousKey0(this.GetKeyMappingVM().Get().GetMapping0().Get().GetCurrentKey());
+                    this.SetPreviousChordKey0(this.GetKeyMappingVM().Get().GetMapping0().Get().GetChordKey());
                 }
             }
             this.SyncPreviousValue();
         }
         else
         {
-            FEUIModelRef local_48;
-            local_31 = !local_31;
-            if (local_31)
+            if (!(this.GetItemConfig().Get().VisualConfig.IsValid()))
             {
                 return;
             }
-            if (local_52.IsChildOf(FSettingDropDown))
+            if (this.GetItemConfig().Get().VisualConfig.GetScriptStruct().IsChildOf(FSettingDropDown))
             {
                 local_24.WidgetClass = this.GetSettingComponentWidgetClass().DropDownWidgetClass;
                 local_24.ModelContainer = FEUIModelContainer();
@@ -746,14 +623,13 @@ struct FVM_SettingItem : FEUIViewModel
                         local_114.Add(local_115);
                     }
                 }
-                TEUIModelWeakRef<FVM_CommonComponentDropDown> local_110 = this.GetDropdownVM();
-                local_114.UpdateOptionDisabledIndices();
-                TEUIModelWeakRef<FVM_CommonComponentDropDown> local_110_2 = this.GetDropdownVM();
-                local_24.ModelContainer.AddModel(local_48, false);
+                this.GetDropdownVM().Get().UpdateOptionDisabledIndices(local_114);
+                FEUIModelRef local_48_3 = FEUIModelRef(this.GetDropdownVM().Get());
+                local_24.ModelContainer.AddModel(local_48_3, false);
             }
             else
             {
-                if (local_52.IsChildOf(FSettingSlider))
+                if (this.GetItemConfig().Get().VisualConfig.GetScriptStruct().IsChildOf(FSettingSlider))
                 {
                     FSettingSlider local_118;
                     local_24.WidgetClass = this.GetSettingComponentWidgetClass().SliderWidgetClass;
@@ -770,12 +646,12 @@ struct FVM_SettingItem : FEUIViewModel
                     local_152.Add(::FVMS_SettingPage::Get(this.GetContext().UELocalPlayer), FVMS_SettingPage::BroadcastSettingsChanged);
                     local_152.Add(this, FVM_SettingItem::OnItemSelectedOrValueChanged);
                     this.SetSliderVM(TEUIModelWeakRef<FVM_CommonComponentSlider>(::FVM_CommonComponentSlider::Create(this.GetContext().Manager, local_130, local_152)));
-                    TEUIModelWeakRef<FVM_CommonComponentSlider> local_154 = this.GetSliderVM();
-                    local_24.ModelContainer.AddModel(local_48, false);
+                    FEUIModelRef local_48_4 = FEUIModelRef(this.GetSliderVM().Get());
+                    local_24.ModelContainer.AddModel(local_48_4, false);
                 }
                 else
                 {
-                    if (local_52.IsChildOf(FSettingLink))
+                    if (this.GetItemConfig().Get().VisualConfig.GetScriptStruct().IsChildOf(FSettingLink))
                     {
                         local_24.WidgetClass = this.GetSettingComponentWidgetClass().LinkWidgetClass;
                         local_24.ModelContainer = FEUIModelContainer();
@@ -785,12 +661,12 @@ struct FVM_SettingItem : FEUIViewModel
                         local_190.Add(::FVMS_SettingPage::Get(this.GetContext().UELocalPlayer), FVMS_SettingPage::BroadcastSettingsChanged);
                         FVM_CommonComponentFilterConfig local_166;
                         this.SetLinkVM(TEUIModelWeakRef<FVM_CommonComponentFilter>(::FVM_CommonComponentFilter::Create(this.GetContext().Manager, local_166, local_190)));
-                        TEUIModelWeakRef<FVM_CommonComponentFilter> local_192 = this.GetLinkVM();
-                        local_24.ModelContainer.AddModel(local_48, false);
+                        FEUIModelRef local_48_5 = FEUIModelRef(this.GetLinkVM().Get());
+                        local_24.ModelContainer.AddModel(local_48_5, false);
                     }
                     else
                     {
-                        if (local_52.IsChildOf(FSettingToggle))
+                        if (this.GetItemConfig().Get().VisualConfig.GetScriptStruct().IsChildOf(FSettingToggle))
                         {
                             local_24.WidgetClass = this.GetSettingComponentWidgetClass().ToggleWidgetClass;
                             local_24.ModelContainer = FEUIModelContainer();
@@ -805,10 +681,9 @@ struct FVM_SettingItem : FEUIViewModel
                             local_220.Add(::FVMS_SettingPage::Get(this.GetContext().UELocalPlayer), FVMS_SettingPage::BroadcastSettingsChanged);
                             local_220.Add(this, FVM_SettingItem::OnItemSelectedOrValueChanged);
                             this.SetToggleVM(TEUIModelWeakRef<FVM_CommonComponentToggle>(::FVM_CommonComponentToggle::Create(this.GetContext().Manager, local_68, uint(this.GetCurrentValue()), local_220)));
-                            TEUIModelWeakRef<FVMS_SettingPage> local_224 = this.GetOwnerPage();
-                            this.SetbShowWarningMessage(GetbShowWarningMessage());
-                            TEUIModelWeakRef<FVM_CommonComponentToggle> local_222 = this.GetToggleVM();
-                            local_24.ModelContainer.AddModel(local_48, false);
+                            this.SetbShowWarningMessage(this.GetOwnerPage().Get().GetbShowWarningMessage());
+                            FEUIModelRef local_48_6 = FEUIModelRef(this.GetToggleVM().Get());
+                            local_24.ModelContainer.AddModel(local_48_6, false);
                         }
                     }
                 }
@@ -1448,11 +1323,9 @@ FVM_SettingItem& Create(const UObject ContextObject, const TEUIModelWeakRef<FVM_
 {
     return FVM_SettingItem::CreateByManager(EUIInternal::GetContextManager(ContextObject), OwnerSubTitle, OwnerPage, ItemConfig, SettingComponentWidgetClass, KeyMappingVM);
 }
-FVM_SettingItem CreateByManager(const UEUIManagerSubsystem Manager, const TEUIModelWeakRef<FVM_SettingSubTitle> &inout OwnerSubTitle, const TEUIModelWeakRef<FVMS_SettingPage> &inout OwnerPage, const TDataObjectPtr<FSettingItemConfig> &inout ItemConfig, const FSettingComponentWidgetClass &inout SettingComponentWidgetClass, const TEUIModelRef<FVM_PlayerKeyMappingPair> &inout KeyMappingVM)
+FVM_SettingItem& CreateByManager(const UEUIManagerSubsystem Manager, const TEUIModelWeakRef<FVM_SettingSubTitle> &inout OwnerSubTitle, const TEUIModelWeakRef<FVMS_SettingPage> &inout OwnerPage, const TDataObjectPtr<FSettingItemConfig> &inout ItemConfig, const FSettingComponentWidgetClass &inout SettingComponentWidgetClass, const TEUIModelRef<FVM_PlayerKeyMappingPair> &inout KeyMappingVM)
 {
-    FVM_SettingItem __r;
-    TEUIModelRef<FVM_SettingItem> local_6 = TEUIModelRef<FVM_SettingItem>(EUIInternal::MakeModelWithManager_Generic(Manager, FVM_SettingItem::ModelId, 0, OwnerSubTitle, OwnerPage, ItemConfig, SettingComponentWidgetClass, KeyMappingVM));
-    return __r;
+    return TEUIModelRef<FVM_SettingItem>(EUIInternal::MakeModelWithManager_Generic(Manager, FVM_SettingItem::ModelId, 0, OwnerSubTitle, OwnerPage, ItemConfig, SettingComponentWidgetClass, KeyMappingVM)).Get();
 }
 void GetModelInfo(FEUIViewModelMetaInfo &inout Result)
 {
@@ -1729,7 +1602,6 @@ namespace __GeneratedProperties_FVM_SettingItem
 {
 UScriptStruct StaticStruct()
 {
-    UScriptStruct local_2;
-    return local_2;
+    return __GeneratedProperties_FVM_SettingItem.Get();
 }
 }

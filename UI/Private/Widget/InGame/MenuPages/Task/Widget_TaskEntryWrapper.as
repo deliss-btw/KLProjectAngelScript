@@ -18,14 +18,14 @@ class UWidget_TaskEntryWrapper : UEUIUserListItemWidget
     UFUNCTION()
     FEUIModelRef TaskEntryWrapper_TaskEntry() const
     {
-        FVM_TaskEntryWrapper& local_2;
+        FVM_TaskEntryWrapper& local_2 = this.TaskEntryWrapper.Get();
         FEUIModelRef local_8 = local_2 ? local_2.GetTaskEntry() : FEUIModelRef();
         return local_8;
     }
     UFUNCTION()
     TSoftClassPtr<UUserWidget> TaskEntryWrapper_TaskEntryWidgetClass() const
     {
-        FVM_TaskEntryWrapper& local_2;
+        FVM_TaskEntryWrapper& local_2 = this.TaskEntryWrapper.Get();
         TSoftClassPtr<UUserWidget> local_34;
         if (local_2)
         {

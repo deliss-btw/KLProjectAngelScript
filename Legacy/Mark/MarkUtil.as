@@ -246,15 +246,15 @@ bool IsAimingEntityOrPositionMarkable(const FECSEntity &inout ObserverPlayer, FE
 }
 FECSEntity MarkEntity(const FECSEntity &inout RequesterPlayer, const FECSEntity &inout TargetEntity, const TDataObjectPtr<FMarkConfig> &inout MarkConfig)
 {
-    int local_63 = 0;
     int local_66 = 0;
     if (!(MarkUtil::CanMarkEntity(RequesterPlayer, TargetEntity)))
     {
         return ENTITY_NULL;
     }
-    if (MarkUtil::GetMarkPoolConfig(MarkConfig))
+    TDataObjectPtr<FMarkPoolConfig> local_32 = MarkUtil::GetMarkPoolConfig(MarkConfig);
+    if (local_32)
     {
-        FMarkPool local_62 = FMarkPool(local_63);
+        FMarkPool local_62 = FMarkPool(local_32.Get().MaxNum);
         if (MarkUtil_Internal::PrepareSpaceInMarkPool(local_66))
         {
             FECSEntity local_70 = MarkUtil_Internal::AddMarkToEntity(TargetEntity, RequesterPlayer, MarkConfig);
@@ -269,11 +269,11 @@ FECSEntity MarkEntity(const FECSEntity &inout RequesterPlayer, const FECSEntity 
 }
 FECSEntity MarkPosition(const FECSEntity &inout RequesterPlayer, const FVector &inout TargetPosition, const TDataObjectPtr<FMarkConfig> &inout MarkConfig)
 {
-    int local_63 = 0;
     int local_66 = 0;
-    if (MarkUtil::GetMarkPoolConfig(MarkConfig))
+    TDataObjectPtr<FMarkPoolConfig> local_30 = MarkUtil::GetMarkPoolConfig(MarkConfig);
+    if (local_30)
     {
-        FMarkPool local_62 = FMarkPool(local_63);
+        FMarkPool local_62 = FMarkPool(local_30.Get().MaxNum);
         if (MarkUtil_Internal::PrepareSpaceInMarkPool(local_66))
         {
             FECSEntity local_70 = MarkUtil_Internal::AddMarkToPosition(TargetPosition, RequesterPlayer, MarkConfig);
@@ -486,7 +486,6 @@ bool CanMarkEntity(const FECSEntity &inout RequesterPlayer, const FECSEntity &in
 }
 bool CanManuallyRemoveMark(const FECSEntity &inout RequesterPlayer, const FECSEntityId &inout MarkOrMarkedEntityID)
 {
-    bool local_41 = false;
     FECSEntityId local_2 = MarkUtil_Internal::FindMarkEntityIdByMarkedEntityId(RequesterPlayer, MarkOrMarkedEntityID);
     if ((local_2 == ENTITY_ID_NULL))
     {
@@ -495,8 +494,7 @@ bool CanManuallyRemoveMark(const FECSEntity &inout RequesterPlayer, const FECSEn
     FMarkInfo local_40;
     if (MarkUtil_Internal::GetMarkInfo(RequesterPlayer, local_2, local_40) && local_40.GetMarkConfig().IsSet())
     {
-        local_41 = !local_41;
-        return local_41;
+        return !(local_40.GetMarkConfig().Get().bDisableManuallyRemove);
     }
     XWarning(ELog(53), FString().Append("CanManuallyRemoveMark: Mark config not found for entity ").Append(local_2.GetIdValue()).Append(". Preventing removal."));
     return false;
@@ -507,7 +505,7 @@ TDataObjectPtr<FMarkPoolConfig> GetMarkPoolConfig(const TDataObjectPtr<FMarkConf
     {
         return TDataObjectPtr<FMarkPoolConfig>();
     }
-    return GetMarkPool();
+    return MarkConfig.Get().GetMarkPool();
 }
 TDataObjectPtr<FMarkPoolConfig> GetMarkPoolConfig(const FECSEntity &inout MarkEntity)
 {
@@ -552,24 +550,13 @@ bool ShouldNavigationBarShowTeammateMarks()
 FMinimapIconInfo BuildIconInfoFromMarkConfigForUIDisplay(const TDataObjectPtr<FMarkConfig> &inout MarkConfig, const TSoftClassPtr<UUserWidget> &inout IconWidget)
 {
     const UMarkSettings local_46;
-    bool local_2 = !(MarkConfig && !(IconWidget.IsNull()));
-    if (local_2)
+    if (!(MarkConfig && !(IconWidget.IsNull())))
     {
         return FMinimapIconInfo();
     }
     GetGameplaySettings<UMarkSettings> local_48;
     local_46 = local_48;
-    bool local_1 = !(local_46.PositionMarkPresentationRule);
-    if (local_1)
-    {
-        local_1 = true;
-    }
-    else
-    {
-        local_2 = !local_2;
-        local_1 = local_2;
-    }
-    if (local_1)
+    if (!(local_46.PositionMarkPresentationRule) || !(local_46.PositionMarkPresentationRule.Get().bShowMinimapIcon))
     {
         return FMinimapIconInfo();
     }
@@ -590,7 +577,7 @@ FSlateBrush GetMarkIconBrush(const TDataObjectPtr<FMarkIconConfig> &inout MarkIc
     }
     else
     {
-        const FMarkIconConfig& local_50;
+        const FMarkIconConfig& local_50 = MarkIconConfig.Get();
         if (!(local_50.IconBrush.GetResourceObject().IsNull()))
         {
             return local_50.IconBrush.LoadBrush();
@@ -626,7 +613,8 @@ void DestroyMarkEntity(const FECSEntity &inout MarkEntity)
     else
     {
         Modify local_10;
-        if (local_10.opCall())
+        FC_Mark& local_12 = local_10.opCall();
+        if (local_12)
         {
             Modify local_16;
             FC_PlayerMarks& local_18 = local_16.opCall();
@@ -642,6 +630,7 @@ void DestroyMarkEntity(const FECSEntity &inout MarkEntity)
                         FC_Marked& local_70 = local_68.opCall();
                         if (local_70)
                         {
+                            local_70.MarkPlayers.Remove(local_12.GetCreaterPlayer());
                             if (local_70.MarkPlayers.IsEmpty())
                             {
                                 FC_MarkedComponentPendingRemoveTag local_78;
@@ -650,7 +639,7 @@ void DestroyMarkEntity(const FECSEntity &inout MarkEntity)
                             }
                         }
                     }
-                    MarkUtil::GetMarkPoolConfig(local_54.GetMarkConfig());
+                    local_18.GetModify_MarkPools()[MarkUtil::GetMarkPoolConfig(local_54.GetMarkConfig())].Remove(MarkEntity);
                 }
             }
             Modify local_106;
@@ -672,7 +661,7 @@ void DestroyMarkEntity(const FECSEntity &inout MarkEntity)
 }
 void ApplyMarkTags(const FECSEntity &inout MarkEntity, const TDataObjectPtr<FMarkConfig> &inout MarkConfig)
 {
-    const FMarkConfig& local_2;
+    const FMarkConfig& local_2 = MarkConfig.Get();
     if (local_2.bRemoveWhenNoLongerGuidingTarget)
     {
         FC_Mark_RemoveWhenNoLongerGuidingTargetTag local_10;
@@ -800,7 +789,6 @@ FECSEntity AddMarkToPosition(const FVector &inout Position, const FECSEntity &in
 }
 void ChangeMarkConfig(const FECSEntity &inout PlayerEntity, const FECSEntityId &inout MarkEntityID, const TDataObjectPtr<FMarkConfig> &inout NewMarkConfig)
 {
-    int local_199 = 0;
     int local_202 = 0;
     const UMarkSettings local_212;
     Modify local_4;
@@ -815,10 +803,12 @@ void ChangeMarkConfig(const FECSEntity &inout PlayerEntity, const FECSEntityId &
             if ((!((local_68 == NewMarkConfig.opImplConv()))))
             {
                 FECSEntity local_120 = FECSEntity(MarkEntityID);
+                TDataObjectPtr<FMarkPoolConfig> local_144 = MarkUtil::GetMarkPoolConfig(local_44.GetMarkConfig());
                 TDataObjectPtr<FMarkPoolConfig> local_168 = MarkUtil::GetMarkPoolConfig(NewMarkConfig);
-                if ((!((MarkUtil::GetMarkPoolConfig(local_44.GetMarkConfig()) == local_168.opImplConv()))))
+                if ((!((local_144 == local_168.opImplConv()))))
                 {
-                    FMarkPool local_198 = FMarkPool(local_199);
+                    local_6.GetModify_MarkPools()[local_144].Remove(local_120);
+                    FMarkPool local_198 = FMarkPool(local_168.Get().MaxNum);
                     if (MarkUtil_Internal::PrepareSpaceInMarkPool(local_202))
                     {
                         local_202.Push(local_120);
@@ -902,7 +892,7 @@ FECSEntityId FindMarkEntityIdByMarkedEntityId(const FECSEntity &inout CreaterPla
     {
         for (auto& local_26 : local_8.GetAllMarks())
         {
-            if ((FECSEntityId(GetMarkedEntityID()) == MarkedEntityID))
+            if ((FECSEntityId(local_26.GetValue().GetMarkedEntityID()) == MarkedEntityID))
             {
                 return local_26.GetKey();
             }

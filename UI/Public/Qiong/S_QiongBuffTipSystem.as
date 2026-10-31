@@ -18,8 +18,7 @@ class US_QiongBuffTipSystem : UECSScriptSystem
         if (QiongBuffIndicator)
         {
             FEUIModelRef local_34 = FEUIModelRef(::FVM_Qiong_BuffTip::Create(this.GetOwner(), QiongBuffIndicator.GetFromEntity(), Entity, QiongBuffIndicator.GetBuffConfig(), QiongBuffIndicator.GetOffset()));
-            UClass local_26;
-            TSoftClassPtr<UEUIUserWidget> local_44 = TSoftClassPtr<UEUIUserWidget>(local_26);
+            TSoftClassPtr<UEUIUserWidget> local_44 = TSoftClassPtr<UEUIUserWidget>(this.QiongBuffUIWidgetClass.Get());
             FECSWorldPtr local_28 = ECS::GetECSWorld();
             Get local_32;
             local_16.Handle = FEUIWidget::AddWidgetByClass(local_32.opCall().UEPlayerController.GetLocalPlayer(), local_44, local_34);

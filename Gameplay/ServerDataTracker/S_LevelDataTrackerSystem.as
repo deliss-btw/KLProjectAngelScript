@@ -241,7 +241,6 @@ class US_LevelDataTrackerSystem : UECSScriptSystem
     }
     uint64 GetAreaIdFromRegion(const FECSEntity &inout RegionEntity) const
     {
-        int local_11 = 0;
         if (!(RegionEntity.IsValid()))
         {
             return 0;
@@ -252,7 +251,7 @@ class US_LevelDataTrackerSystem : UECSScriptSystem
         {
             if (local_10.GetWorldAreaConfig().IsSet())
             {
-                return local_11;
+                return local_10.GetWorldAreaConfig().Get().DataId;
             }
         }
         int64 local_4 = 0;
@@ -391,7 +390,6 @@ class US_LevelDataTrackerSystem : UECSScriptSystem
     bool GetWorldEventInfo(const FECSEntity &inout LevelScriptEntity, uint64 &out EventId, uint64 &out EventInstanceId, uint &out EventType) const
     {
         int local_8 = 0;
-        int local_15 = 0;
         AKLLevelScriptActor local_24;
         EventId = 0;
         EventInstanceId = 0;
@@ -400,21 +398,19 @@ class US_LevelDataTrackerSystem : UECSScriptSystem
         {
             return false;
         }
-        ELevelEventType local_12;
-        ELevelEventType local_11 = local_12;
+        ELevelEventType local_11 = local_8.GetEventInfo().Get().EventType;
         if ((int(local_11) != 0 && (int(local_11) != 1)))
         {
             return false;
         }
-        EventId = local_15;
+        EventId = local_8.GetEventInfo().Get().DataId;
         Get local_20;
         const FC_LevelScriptActor& local_22 = local_20.opCall();
         if (local_22)
         {
             if (local_22.LevelScript.IsValid())
             {
-                AActor local_26;
-                local_24 = (Cast<AKLLevelScriptActor>(local_26));
+                local_24 = (Cast<AKLLevelScriptActor>(local_22.LevelScript.Get()));
                 if (local_24 != nullptr)
                 {
                     EventInstanceId = local_24.ConfigGUID.ToUint64();

@@ -151,14 +151,10 @@ struct FVM_CommonComponentSlider : FEUIViewModel
         this.SetPrecision(this.GetConfig().Precision);
         this.SetCommonSliderVM(TEUIModelRef<FVM_CommonSlider>(::FVM_CommonSlider::Create(this.GetContext().Manager)));
         float32 local_7_2 = (this.GetStep() / 2.0f) / (this.GetMaxValue() - this.GetMidValue());
-        float32 local_8 = FMath::Max(0.01f, FMath::Min(((this.GetStep() / 2.0f) / (this.GetMidValue() - this.GetMinValue())), local_7_2));
-        TEUIModelRef<FVM_CommonSlider> local_4 = this.GetCommonSliderVM();
-        local_8.SetStep();
-        float32 local_8_2 = this.GetCurrentRatioByValue(this.GetCurrentValue());
-        TEUIModelRef<FVM_CommonSlider> local_4_2 = this.GetCommonSliderVM();
-        local_8_2.SetCurrentRatio();
-        TEUIModelRef<FVM_CommonSlider> local_4_3 = this.GetCommonSliderVM();
-        GetModify_OnRatioChangedEvent().Add(this, FVM_CommonComponentSlider::SetCurrentValueByRatio);
+        float32 local_5_2 = FMath::Min((this.GetStep() / 2.0f) / (this.GetMidValue() - this.GetMinValue()), local_7_2);
+        this.GetCommonSliderVM().Get().SetStep(FMath::Max(0.01f, local_5_2));
+        this.GetCommonSliderVM().Get().SetCurrentRatio(this.GetCurrentRatioByValue(this.GetCurrentValue()));
+        this.GetCommonSliderVM().Get().GetModify_OnRatioChangedEvent().Add(this, FVM_CommonComponentSlider::SetCurrentValueByRatio);
         this.PrevValue = this.GetCurrentValue();
         this.UpdateDisplayText();
         return;
@@ -212,8 +208,7 @@ struct FVM_CommonComponentSlider : FEUIViewModel
     void SetValue(const float32 Value, const bool _bBroadcast = true)
     {
         this.SetCurrentValue(Value);
-        TEUIModelRef<FVM_CommonSlider> local_2 = this.GetCommonSliderVM();
-        this.GetCurrentRatioByValue(this.GetCurrentValue()).SetCurrentRatio();
+        this.GetCommonSliderVM().Get().SetCurrentRatio(this.GetCurrentRatioByValue(this.GetCurrentValue()));
         this.bBroadcast = _bBroadcast;
         return;
     }
@@ -545,11 +540,9 @@ FVM_CommonComponentSlider& Create(const UObject ContextObject, const FVM_CommonC
 {
     return FVM_CommonComponentSlider::CreateByManager(EUIInternal::GetContextManager(ContextObject), Config, OnComponentSliderSelected);
 }
-FVM_CommonComponentSlider CreateByManager(const UEUIManagerSubsystem Manager, const FVM_CommonComponentSliderConfig &inout Config, const FOnCommonComponentSliderSelected &inout OnComponentSliderSelected)
+FVM_CommonComponentSlider& CreateByManager(const UEUIManagerSubsystem Manager, const FVM_CommonComponentSliderConfig &inout Config, const FOnCommonComponentSliderSelected &inout OnComponentSliderSelected)
 {
-    FVM_CommonComponentSlider __r;
-    TEUIModelRef<FVM_CommonComponentSlider> local_6 = TEUIModelRef<FVM_CommonComponentSlider>(EUIInternal::MakeModelWithManager_Generic(Manager, FVM_CommonComponentSlider::ModelId, 0, Config, OnComponentSliderSelected));
-    return __r;
+    return TEUIModelRef<FVM_CommonComponentSlider>(EUIInternal::MakeModelWithManager_Generic(Manager, FVM_CommonComponentSlider::ModelId, 0, Config, OnComponentSliderSelected)).Get();
 }
 void GetModelInfo(FEUIViewModelMetaInfo &inout Result)
 {
@@ -712,7 +705,6 @@ namespace __GeneratedProperties_FVM_CommonComponentSlider
 {
 UScriptStruct StaticStruct()
 {
-    UScriptStruct local_2;
-    return local_2;
+    return __GeneratedProperties_FVM_CommonComponentSlider.Get();
 }
 }

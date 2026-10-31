@@ -90,10 +90,10 @@ class US_EcologyLifyCycle : UECSScriptSystem
     UFUNCTION()
     void Job_WaitLoadViewPrefab(const FECSEntity &inout Entity, const FC_Transform &inout Transform, const FC_CreatureMeta &inout CreatureMeta) const
     {
-        if (TSubclassOf<AECSPrefab>(CreatureMeta.ViewPrefab).IsValid())
+        TSubclassOf<AECSPrefab> local_2 = CreatureMeta.ViewPrefab;
+        if (local_2.IsValid())
         {
-            UClass local_6;
-            ECS::MarkEntityPrefabPendingInit(Entity, TSubclassOf<AECSPrefab>(local_6), Transform.GetPosition(), Transform.GetRotation(), EPrefabCollisionAlignment(0), false);
+            ECS::MarkEntityPrefabPendingInit(Entity, TSubclassOf<AECSPrefab>(local_2.Get()), Transform.GetPosition(), Transform.GetRotation(), EPrefabCollisionAlignment(0), false);
         }
         else
         {
@@ -108,20 +108,17 @@ class US_EcologyLifyCycle : UECSScriptSystem
     {
         int local_110 = 0;
         int local_262 = 0;
-        int local_339 = 0;
         UDataTable local_342;
         int local_362 = 0;
         int local_382 = 0;
         int local_404 = 0;
         int local_464 = 0;
         int local_500 = 0;
-        int local_549 = 0;
         TDataObjectPtr<FMonsterMainConfig> local_24 = CreatureMeta.CreatureConfigProxy.GetMonsterConfig();
         if (!((local_24 == nullptr)))
         {
             FDataObjectPtr local_286;
-            const FCombatUnitBaseConfig& local_162;
-            const FMonsterMainConfig& local_52;
+            const FMonsterMainConfig& local_52 = local_24.Get();
             local_110.SetMonsterConfig(local_24);
             local_110.SetMonsterLevel(int(CreatureMeta.Level));
             local_110.SetPresentationConfig(local_52.GetPresentationConfig());
@@ -129,6 +126,7 @@ class US_EcologyLifyCycle : UECSScriptSystem
             local_136 = local_52.GetCombatConfig();
             if (!((local_136 == nullptr)))
             {
+                const FCombatUnitBaseConfig& local_162 = local_52.GetCombatConfig().Get();
                 TDataObjectPtr<FGameAttributeInitConfig_CombatUnit> local_186;
                 local_186 = local_162.GetInitAttributeValues();
                 if (!((local_186 == nullptr)) || (local_52.AttributeScale.Num() > 0))
@@ -141,9 +139,10 @@ class US_EcologyLifyCycle : UECSScriptSystem
                     }
                 }
                 CastTo local_290;
-                if (local_290.opCall())
+                TDataObjectPtr<FMonsterBaseConfig> local_314 = local_290.opCall();
+                if (local_314)
                 {
-                    local_110.SetMonsterRank(EMonsterRank(local_339));
+                    local_110.SetMonsterRank(local_314.Get().Rank);
                 }
                 local_342 = this.GetDifficultyLevelConfig(Entity, CreatureMeta);
                 int local_345 = int(local_110.GetMonsterRank());
@@ -182,8 +181,7 @@ class US_EcologyLifyCycle : UECSScriptSystem
         if (local_428)
         {
             FDataObjectPtr local_286;
-            const FCombatUnitBaseConfig& local_162;
-            const FNPCMainConfig& local_454;
+            const FNPCMainConfig& local_454 = local_428.Get();
             local_464.SetNPCId(local_428.GetUniqueID());
             local_464.SetCombatPriority(ENPCCombatPriority(local_454.CombatPriority));
             local_500.SetMainConfig(local_428);
@@ -191,14 +189,15 @@ class US_EcologyLifyCycle : UECSScriptSystem
             local_524 = local_454.GetRole();
             if ((!((local_524 == nullptr))))
             {
-                local_464.SetRoleId(local_549);
+                local_464.SetRoleId(local_454.GetRole().Get().DataId);
             }
             TDataObjectPtr<FCombatUnitBaseConfig> local_160;
             local_160 = local_454.GetCombatConfig();
             if ((!((local_160 == nullptr))))
             {
+                const FCombatUnitBaseConfig& local_162_2 = local_454.GetCombatConfig().Get();
                 TDataObjectPtr<FGameAttributeInitConfig_CombatUnit> local_186;
-                local_186 = local_162.GetInitAttributeValues();
+                local_186 = local_162_2.GetInitAttributeValues();
                 if (!((local_186 == nullptr)) || (local_454.AttributeScale.Num() > 0))
                 {
                     local_286;
@@ -237,7 +236,60 @@ class US_EcologyLifyCycle : UECSScriptSystem
     UFUNCTION()
     void Job_AfterViewPrefabLoaded(const FECSEntity &inout Entity, const FC_CreatureMeta &inout CreatureMeta) const
     {
-        // body not fully recovered — stub [argmismatch:argint]
+        bool local_13;
+        FC_ViewPrefabLoadedTag local_6;
+        int local_48 = 0;
+        Assign local_4;
+        local_4.opCall(local_6);
+        Get local_10;
+        const FC_NPCInfo& local_12 = local_10.opCall();
+        if (local_12)
+        {
+            if (!(::FNPCComponentSwitchUtils::IsForceDisabled(local_12.GetMainConfig().Get(), ENPCRuntimeComponentFeature(2))))
+            {
+                local_13 = false;
+            }
+            else
+            {
+                Has local_18;
+                local_13 = local_18.opCall();
+            }
+            if (!(local_13))
+            {
+                local_13 = false;
+            }
+            else
+            {
+                Has local_24;
+                local_13 = local_24.opCall();
+            }
+            local_13 = local_13 && ::FESMUtils::MainSMHasState(Entity, n"SheatheWeapon");
+            if (local_13)
+            {
+                Get local_30;
+                const FC_CharacterWeapon& local_32 = local_30.opCall();
+                if (local_32)
+                {
+                    if (local_32.GetCurrentWeaponEntity().IsValid())
+                    {
+                        FESMExternalTransitHandle local_40 = Entity.ESMExternalTransitMainSM(n"SheatheWeapon", n"NPCCombatSwitchForceDisable");
+                    }
+                }
+            }
+        }
+        FFPTime local_46 = FFPTime(-1);
+        local_48.CreatureRowData = CreatureMeta.CreatureType;
+        local_48.CreatureEntity = Entity;
+        ::FEcologySpawnerUtils::EcologyInitNavAgent(Entity);
+        ::FEcologySpawnerUtils::SetBornLocationToCreatureEcologyStateComponent(Entity);
+        ::ULevelEventManager::Get().NotifyCreatureCreateFinish(Entity);
+        Get local_78;
+        const FC_CreatureInitModifier& local_80 = local_78.opCall();
+        if (local_80)
+        {
+            local_80.ApplyModifier(Entity);
+        }
+        return;
     }
     UFUNCTION()
     void Job_OnCreatureInited(const FCE_EcologySpawnerCreateEntityInited &inout Event) const
@@ -266,13 +318,11 @@ class US_EcologyLifyCycle : UECSScriptSystem
         {
             return;
         }
-        bool local_1 = !(local_12.CreatureType.IsSet());
-        if (local_1)
+        if (!(local_12.CreatureType.IsSet()))
         {
             return;
         }
-        local_1 = !local_1;
-        if (local_1)
+        if (!(local_12.CreatureType.Get().bEnableCorpse))
         {
             return;
         }

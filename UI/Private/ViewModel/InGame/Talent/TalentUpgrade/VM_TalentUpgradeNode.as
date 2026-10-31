@@ -57,14 +57,12 @@ struct FVM_TalentUpgradeNode : FEUIViewModel
             int local_4 = 0;
             for (; local_4 < this.GetChoiceNodeList().Num(); ++local_4)
             {
-                if (this.GetChoiceNodeList()[local_4] && !(GetIsEquippedChoice()))
+                if (this.GetChoiceNodeList()[local_4] && !(this.GetChoiceNodeList()[local_4].Get().GetIsEquippedChoice()))
                 {
                     FMsg_TalentSetEquipChoiceTalent local_8;
                     FEUIModelRef local_14 = FEUIModelRef(this);
                     FEUIMessageBus::Publish(EUIMessageBus);
-                    TEUIModelWeakRef<FM_TalentNode> local_16 = this.GetChoiceNodeList()[local_4].opArrow().GetNode();
-                    TEUIModelWeakRef<FM_TalentNode> local_18;
-                    local_8.TalentNode = local_18;
+                    local_8.TalentNode = TEUIModelWeakRef<FM_TalentNode>(this.GetChoiceNodeList()[local_4].opArrow().GetNode().Get());
                     local_8.NewChoice = this.GetChoiceNodeList()[local_4].opArrow().GetChoiceIndex();
                     break;
                 }
@@ -129,11 +127,9 @@ FVM_TalentUpgradeNode& Create(const UObject ContextObject, const TArray<TEUIMode
 {
     return FVM_TalentUpgradeNode::CreateByManager(EUIInternal::GetContextManager(ContextObject), ChoiceNodeList);
 }
-FVM_TalentUpgradeNode CreateByManager(const UEUIManagerSubsystem Manager, const TArray<TEUIModelRef<FVM_TalentUpgradeItem>> &inout ChoiceNodeList)
+FVM_TalentUpgradeNode& CreateByManager(const UEUIManagerSubsystem Manager, const TArray<TEUIModelRef<FVM_TalentUpgradeItem>> &inout ChoiceNodeList)
 {
-    FVM_TalentUpgradeNode __r;
-    TEUIModelRef<FVM_TalentUpgradeNode> local_6 = TEUIModelRef<FVM_TalentUpgradeNode>(EUIInternal::MakeModelWithManager_Generic(Manager, FVM_TalentUpgradeNode::ModelId, 0, ChoiceNodeList));
-    return __r;
+    return TEUIModelRef<FVM_TalentUpgradeNode>(EUIInternal::MakeModelWithManager_Generic(Manager, FVM_TalentUpgradeNode::ModelId, 0, ChoiceNodeList)).Get();
 }
 void GetModelInfo(FEUIViewModelMetaInfo &inout Result)
 {
@@ -189,7 +185,6 @@ namespace __GeneratedProperties_FVM_TalentUpgradeNode
 {
 UScriptStruct StaticStruct()
 {
-    UScriptStruct local_2;
-    return local_2;
+    return __GeneratedProperties_FVM_TalentUpgradeNode.Get();
 }
 }

@@ -105,11 +105,9 @@ FVM_MarkViewportDisplay& Create(const UObject ContextObject)
 {
     return FVM_MarkViewportDisplay::CreateByManager(EUIInternal::GetContextManager(ContextObject));
 }
-FVM_MarkViewportDisplay CreateByManager(const UEUIManagerSubsystem Manager)
+FVM_MarkViewportDisplay& CreateByManager(const UEUIManagerSubsystem Manager)
 {
-    FVM_MarkViewportDisplay __r;
-    TEUIModelRef<FVM_MarkViewportDisplay> local_6 = TEUIModelRef<FVM_MarkViewportDisplay>(EUIInternal::MakeModelWithManager(Manager, FVM_MarkViewportDisplay::ModelId));
-    return __r;
+    return TEUIModelRef<FVM_MarkViewportDisplay>(EUIInternal::MakeModelWithManager(Manager, FVM_MarkViewportDisplay::ModelId)).Get();
 }
 void GetModelInfo(FEUIViewModelMetaInfo &inout Result)
 {
@@ -170,7 +168,6 @@ namespace __GeneratedProperties_FVM_MarkViewportDisplay
 {
 UScriptStruct StaticStruct()
 {
-    UScriptStruct local_2;
-    return local_2;
+    return __GeneratedProperties_FVM_MarkViewportDisplay.Get();
 }
 }

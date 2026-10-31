@@ -65,7 +65,7 @@ bool FindVisibleNodeByDataId(const TArray<TEUIModelWeakRef<FM_ForgeNode>> &inout
 {
     for (auto& local_16 : NodeList)
     {
-        if (local_16.IsValid() && ForgeWeaponRuntimeAutoLineBuilder::ShouldDrawNodeLine() && (GetDataId() == DataId))
+        if (local_16.IsValid() && ForgeWeaponRuntimeAutoLineBuilder::ShouldDrawNodeLine(local_16.Get()) && (local_16.Get().GetDataId() == DataId))
         {
             OutNode = local_16;
             return true;
@@ -90,7 +90,7 @@ bool FindVisibleLineParent(const UObject ContextObject, const TArray<TEUIModelWe
         {
             return false;
         }
-        local_1 = GetParentDataId();
+        local_1 = local_10.Get().GetParentDataId();
         ++local_3;
         continue;
     }
@@ -139,14 +139,14 @@ void BuildGraphNodes(const UEUIAutoLineCanvas AutoLineCanvas, const TArray<TEUIM
     OutNodes.Reset(0);
     for (auto& local_18 : NodeList)
     {
-        if (!(local_18.IsValid()) || !(ForgeWeaponRuntimeAutoLineBuilder::ShouldDrawNodeLine()))
+        if (!(local_18.IsValid()) || !(ForgeWeaponRuntimeAutoLineBuilder::ShouldDrawNodeLine(local_18.Get())))
         {
             continue;
         }
         FEUIAutoLineNode local_30;
-        local_30.NodeId = ForgeWeaponRuntimeAutoLineBuilder::MakeNodeId();
-        local_30.StyleState = ForgeWeaponRuntimeAutoLineBuilder::ResolveNodeStyleState();
-        if (NodeWidgetMap.Find(GetDataId(), local_34) && (local_34 != nullptr))
+        local_30.NodeId = ForgeWeaponRuntimeAutoLineBuilder::MakeNodeId(local_18.Get());
+        local_30.StyleState = ForgeWeaponRuntimeAutoLineBuilder::ResolveNodeStyleState(local_18.Get());
+        if (NodeWidgetMap.Find(local_18.Get().GetDataId(), local_34) && (local_34 != nullptr))
         {
             local_30.Widget = local_34;
             local_30.AnchorWidget = local_34.GetAutoLineAnchorWidget();
@@ -157,7 +157,48 @@ void BuildGraphNodes(const UEUIAutoLineCanvas AutoLineCanvas, const TArray<TEUIM
 }
 void BuildGraphConnections(const UObject ContextObject, const TArray<TEUIModelWeakRef<FM_ForgeNode>> &inout NodeList, const float32 BranchFromExtend, const float32 BranchToExtend, const float32 SameBranchFromExtend, const float32 SameBranchToExtend, const TArray<FForgeWeaponAutoLineRouteOverride> &inout RouteOverrides, TArray<FEUIAutoLineConnection> &inout OutConnections)
 {
-    // body not fully recovered — stub [argmismatch:argtype]
+    OutConnections.Reset(0);
+    for (auto& local_18 : NodeList)
+    {
+        bool local_15 = !(local_18.IsValid()) || !(ForgeWeaponRuntimeAutoLineBuilder::ShouldDrawNodeLine(local_18.Get()));
+        if (local_15)
+        {
+            local_15 = true;
+        }
+        else
+        {
+            int local_20 = local_18.Get().GetParentDataId();
+            local_15 = (local_20 == 0);
+        }
+        if (local_15)
+        {
+            continue;
+        }
+        TEUIModelWeakRef<FM_ForgeNode> local_24;
+        if (!(ForgeWeaponRuntimeAutoLineBuilder::FindVisibleLineParent(ContextObject, NodeList, local_18.Get(), local_24)))
+        {
+            continue;
+        }
+        FEUIAutoLineConnection local_34;
+        local_34.LineId = ForgeWeaponRuntimeAutoLineBuilder::MakeLineId(local_24.Get(), local_18.Get());
+        local_34.FromNodeId = ForgeWeaponRuntimeAutoLineBuilder::MakeNodeId(local_24.Get());
+        local_34.ToNodeId = ForgeWeaponRuntimeAutoLineBuilder::MakeNodeId(local_18.Get());
+        if (int(local_24.Get().GetBranchType()) == (int(local_18.Get().GetBranchType())))
+        {
+            (int(ForgeWeaponRuntimeAutoLineBuilder::GetSameBranchFromPort(local_24.Get(), local_18.Get()))) = int(ForgeWeaponRuntimeAutoLineBuilder::GetSameBranchToPort(local_24.Get(), local_18.Get()));
+            local_34.FromExtend = SameBranchFromExtend;
+            local_34.ToExtend = SameBranchToExtend;
+        }
+        else
+        {
+            (int(ForgeWeaponRuntimeAutoLineBuilder::GetParentOutPort(local_24.Get(), local_18.Get()))) = int(ForgeWeaponRuntimeAutoLineBuilder::GetChildInPort(local_24.Get(), local_18.Get()));
+            local_34.FromExtend = BranchFromExtend;
+            local_34.ToExtend = BranchToExtend;
+            ForgeWeaponRuntimeAutoLineBuilder::ApplyRouteOverride(local_24.Get(), local_18.Get(), RouteOverrides, local_34);
+        }
+        OutConnections.Add(local_34);
+    }
+    return;
 }
 void BuildAndApplyGraph(const UObject ContextObject, const UEUIAutoLineCanvas AutoLineCanvas, const TArray<TEUIModelWeakRef<FM_ForgeNode>> &inout NodeList, const TMap<uint, UWidget_ForgeWeaponItem> &inout NodeWidgetMap, const float32 BranchFromExtend, const float32 BranchToExtend, const float32 SameBranchFromExtend, const float32 SameBranchToExtend, const TArray<FForgeWeaponAutoLineRouteOverride> &inout RouteOverrides)
 {

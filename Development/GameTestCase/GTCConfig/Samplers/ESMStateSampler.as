@@ -103,6 +103,8 @@ struct FGTCESMStateSampler : FGTCSampler
     UPROPERTY()
     int CachedClientTimeOffsetFrame;
 
+    default m_ScriptOverrideMeta = Cast<UASStruct>(FGTCESMStateSampler.Get());
+
     FGTCESMStateSampler()
     {
         this.TargetAnimLayer = "MainLayer";
@@ -136,7 +138,8 @@ struct FGTCESMStateSampler : FGTCSampler
     void OnStart_Implementation(const FECSEntity &inout TargetEntity, const FGTCActionContext &inout Context)
     {
         FGTCESMStateSampleResult& local_2 = this.GetSampleResult();
-        this.GetCurEsmStates();
+        local_2.Clear();
+        this.GetCurEsmStates().Clear();
         local_2.EntityName = TargetEntity.GetEntityName().ToString();
         return;
     }
@@ -234,6 +237,7 @@ struct FGTCESMStateSampler : FGTCSampler
         {
             local_28.EsmStateRecords = this.GetCurEsmStates().EsmStateRecords;
         }
+        this.GetCurEsmStates().Clear();
         if (this.bSampleClientTimeOffset)
         {
             local_28.ClientTimeOffsetTime = this.CachedClientTimeOffsetTime;

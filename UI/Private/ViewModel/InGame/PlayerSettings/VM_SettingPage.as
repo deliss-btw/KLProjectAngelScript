@@ -282,13 +282,13 @@ struct FVMS_SettingPage : FEUIViewModelSingleton
         for (auto& local_20 : this.GetItems())
         {
             FGameplayTag local_22 = local_20.GetKey();
+            TEUIModelRef<FVM_SettingItem> local_24 = TEUIModelRef<FVM_SettingItem>(local_20.GetValue());
             if (local_22.MatchesTag(FGameplayTag::RequestGameplayTag(n"Setting.Graphics.GraphicsQuality.GraphicsQualityPreset", true)) || this.IsKeyMappingOrGamepadItem(local_22))
             {
                 continue;
             }
-            (::SettingUtils::GetCurrentValue(GetApplyEffect(), this.IsDisplayOrGraphicsItem(local_22))).UpdateComponentValue(false);
-            bool local_30 = false;
-            local_30.SetbHasResolutionOptionChanged();
+            local_24.Get().UpdateComponentValue(::SettingUtils::GetCurrentValue(local_20.GetValue().Get().GetApplyEffect(), this.IsDisplayOrGraphicsItem(local_22)), false);
+            local_24.Get().SetbHasResolutionOptionChanged(false);
         }
         return;
     }
@@ -298,14 +298,11 @@ struct FVMS_SettingPage : FEUIViewModelSingleton
         {
             return;
         }
-        int local_1 = this.GetSelectedCategoryIndex();
-        for (auto& local_16 : GetSubTitles())
+        for (auto& local_16 : this.GetCategories()[this.GetSelectedCategoryIndex()].Get().GetSubTitles())
         {
-            local_16;
-            for (auto& local_30 : GetItems())
+            for (auto& local_30 : local_16.Get().GetItems())
             {
-                local_30;
-                SyncPreviousValue();
+                local_30.Get().SyncPreviousValue();
             }
         }
         return;
@@ -327,6 +324,7 @@ struct FVMS_SettingPage : FEUIViewModelSingleton
     }
     void SaveSettings(const bool bShowTips = true)
     {
+        FGameplayTag local_49;
         if (bShowTips)
         {
             FCommonTipsParam local_4;
@@ -335,16 +333,15 @@ struct FVMS_SettingPage : FEUIViewModelSingleton
         this.GetModify_SettingsCollection().Configs.Reset(0);
         for (auto& local_44 : this.GetItems())
         {
+            TEUIModelRef<FVM_SettingItem> local_46 = TEUIModelRef<FVM_SettingItem>(local_44.GetValue());
             if (this.IsKeyMappingOrGamepadItem(local_44.GetKey()))
             {
                 continue;
             }
-            float32 local_47 = GetCurrentValue();
-            FGameplayTag local_49;
+            float32 local_47 = local_46.Get().GetCurrentValue();
             local_49;
-            FInstancedStruct local_54;
-            this.GetModify_SettingsCollection().Configs.Add(local_54);
-            SyncPreviousValue();
+            this.GetModify_SettingsCollection().Configs.Add(this.SaveSettingsValues(local_46.Get().GetApplyEffect(), local_49, local_46.Get().GetItemConfig().Get().ItemTag));
+            local_46.Get().SyncPreviousValue();
         }
         UGameInputLocalPlayerSubsystem local_58 = UGameInputLocalPlayerSubsystem::Get(this.GetContext().UELocalPlayer);
         local_58.SaveUserSettings(this.GetModify_SettingsCollection());
@@ -352,8 +349,10 @@ struct FVMS_SettingPage : FEUIViewModelSingleton
     }
     void CollectSettingsValues(const FInstancedStruct &inout ApplyEffect)
     {
-        if (FInstancedStruct::GetPtr<FSettingApplyBase>(ApplyEffect).opCall())
+        TConstRawPtr<FSettingApplyBase> local_6 = FInstancedStruct::GetPtr<FSettingApplyBase>(ApplyEffect).opCall();
+        if (local_6)
         {
+            this.GetModify_SettingsValues().Add(local_6.Get().ItemTag, local_6.Get().CurrentValue);
         }
         return;
     }
@@ -391,8 +390,6 @@ struct FVMS_SettingPage : FEUIViewModelSingleton
     {
         TMap<FGameplayTag, TEUIModelRef<FVM_PlayerKeyMappingPair>> local_20;
         int local_230 = 0;
-        FGameplayTag local_246;
-        FGameplayTag local_248;
         int local_250 = 0;
         int local_468 = 0;
         this.BuildKeyMappings(local_20);
@@ -405,6 +402,14 @@ struct FVMS_SettingPage : FEUIViewModelSingleton
         }
         if (!(local_24.IsEmpty()))
         {
+            this.SetSettingSubTitleWidgetClass(local_24[0].Get().SettingSubTitleWidgetClass);
+            this.SetSettingItemWidgetClass(local_24[0].Get().SettingItemWidgetClass);
+            this.SetDropDownWidgetClass(local_24[0].Get().DropDownWidgetClass);
+            this.SetSliderWidgetClass(local_24[0].Get().SliderWidgetClass);
+            this.SetLinkWidgetClass(local_24[0].Get().LinkWidgetClass);
+            this.SetToggleWidgetClass(local_24[0].Get().ToggleWidgetClass);
+            this.SetKeyboardSelectorWidgetClass(local_24[0].Get().KeyboardWidgetClass);
+            this.SetGamepadSelectorWidgetClass(local_24[0].Get().GamepadWidgetClass);
         }
         TArray<TDataObjectPtr<FSettingCategoryConfig>> local_72;
         TArray<TDataObjectPtr<FSettingSubTitleConfig>> local_76;
@@ -434,8 +439,7 @@ struct FVMS_SettingPage : FEUIViewModelSingleton
             TEUIModelWeakRef<FVMS_SettingPage> local_228 = TEUIModelWeakRef<FVMS_SettingPage>(this);
             for (auto& local_244 : local_76)
             {
-                local_244;
-                if (!(local_246.MatchesTag(local_248)))
+                if (!(local_244.Get().SubTitleTag.AsGameplayTag().MatchesTag(local_226.Get().CategoryTag.AsGameplayTag())))
                 {
                     continue;
                 }
@@ -449,16 +453,19 @@ struct FVMS_SettingPage : FEUIViewModelSingleton
                 local_342.GamepadWidgetClass = this.GetGamepadSelectorWidgetClass();
                 for (auto& local_458 : local_80)
                 {
-                    local_458;
-                    if (!(local_246.MatchesTag(local_248)))
+                    FGameplayTag local_248 = local_244.Get().SubTitleTag.AsGameplayTag();
+                    if (!(local_458.Get().ItemTag.AsGameplayTag().MatchesTag(local_248)))
                     {
                         continue;
                     }
                     FVM_PlayerKeyMappingPair& local_460 = ::FVM_PlayerKeyMappingPair::Create(this.GetContext().Manager);
+                    FGameplayTag local_246 = local_458.Get().ItemTag.AsGameplayTag();
                     if (local_20.Find(local_246))
                     {
                         local_246;
+                        local_460 = local_20[local_246].Get();
                         local_246 = FGameplayTag::RequestGameplayTag(n"Setting.Gamepad", true);
+                        local_248 = local_458.Get().ItemTag.AsGameplayTag();
                         local_460.UpdateGamepadSelector(local_248.MatchesTag(local_246));
                     }
                     else
@@ -475,7 +482,7 @@ struct FVMS_SettingPage : FEUIViewModelSingleton
                         local_246;
                         bool local_41 = !(this.IsDisplayOrGraphicsItem(local_246));
                         local_248;
-                        float32 local_471 = this.GetSettingsValues()[local_248];
+                        local_468.InitializeApplyValue(this.GetSettingsValues()[local_248], local_458.Get().ItemTag);
                     }
                     else
                     {
@@ -488,12 +495,14 @@ struct FVMS_SettingPage : FEUIViewModelSingleton
             }
             FVM_SelectableItem& local_476 = ::FVM_SelectableItem::Create(this.GetContext().Manager);
             local_476.SetbIsSelected((local_201 == this.GetSelectedCategoryIndex()));
+            FVM_Image& local_478 = ::FVM_Image::Create(this.GetContext().Manager, local_226.Get().ItemIcon);
+            FGameplayTag local_248_2 = local_226.Get().CategoryTag.AsGameplayTag();
             FVM_CommonTabItem& local_482 = ::FVM_CommonTabItem::Create(this.GetContext().Manager);
+            local_482.SetTitleText(local_226.Get().Name);
             this.GetModify_Categories().Add(TEUIModelRef<FVM_SettingCategory>(local_230));
             this.GetModify_CategorySelectableItems().Add(TEUIModelRef<FVM_SelectableItem>(local_476));
             FEUIModelContainer local_500;
             local_500.AddModel(FEUIModelRef(local_476), false);
-            FVM_Image local_478;
             local_500.AddModel(FEUIModelRef(local_478), false);
             local_500.AddModel(FEUIModelRef(local_482), false);
             this.GetModify_CategoryListItems().Add(local_500);
@@ -513,11 +522,11 @@ struct FVMS_SettingPage : FEUIViewModelSingleton
         TEUIModelRef<FVMS_PlayerKeyMappings> local_2_2 = this.GetKeyMappings();
         for (auto& local_22 : local_6)
         {
-            KeyMappingMap.Add(GetKeyboardTag(), local_22);
+            KeyMappingMap.Add(local_22.Get().GetKeyboardTag(), local_22);
         }
         for (auto& local_22 : local_8)
         {
-            KeyMappingMap.Add(GetGamepadTag(), local_22);
+            KeyMappingMap.Add(local_22.Get().GetGamepadTag(), local_22);
         }
         return;
     }
@@ -559,17 +568,7 @@ struct FVMS_SettingPage : FEUIViewModelSingleton
     }
     void OnKeyMappingsIsKeySelectingChanged()
     {
-        bool local_3 = this.GetKeyMappings().IsValid();
-        if (!(local_3))
-        {
-            local_3 = false;
-        }
-        else
-        {
-            TEUIModelRef<FVMS_PlayerKeyMappings> local_2 = this.GetKeyMappings();
-            local_3 = GetbIsKeySelecting();
-        }
-        this.SetbIsKeySelecting(local_3);
+        this.SetbIsKeySelecting(this.GetKeyMappings().IsValid() && this.GetKeyMappings().Get().GetbIsKeySelecting());
         return;
     }
     void CheckHasSettingsReset(const ECommonDialogAnswerType State)
@@ -663,23 +662,11 @@ struct FVMS_SettingPage : FEUIViewModelSingleton
     }
     bool IsMatchSelectedItemTag(const FGameplayTag &inout ItemTag)
     {
-        bool local_2;
-        if (!(this.GetCategories().IsValidIndex(this.GetSelectedCategoryIndex())))
-        {
-            local_2 = false;
-        }
-        else
-        {
-            int local_1 = this.GetSelectedCategoryIndex();
-            local_2 = ItemTag.MatchesTag(GetCategoryTag());
-        }
-        return local_2;
+        return this.GetCategories().IsValidIndex(this.GetSelectedCategoryIndex()) && ItemTag.MatchesTag(this.GetCategories()[this.GetSelectedCategoryIndex()].Get().GetCategoryTag());
     }
     void RefreshCategorySelection()
     {
-        bool local_2;
         int local_152 = 0;
-        TEUIModelRef<FVM_PlayerKeyMappingPair> local_170;
         if (!(this.GetCategories().IsValidIndex(this.GetSelectedCategoryIndex())))
         {
             return;
@@ -687,8 +674,7 @@ struct FVMS_SettingPage : FEUIViewModelSingleton
         int local_3 = 0;
         for (; local_3 < this.GetCategorySelectableItems().Num(); )
         {
-            local_2 = (local_3 == this.GetSelectedCategoryIndex());
-            local_2.SetbIsSelected();
+            this.GetCategorySelectableItems()[local_3].Get().SetbIsSelected((local_3 == this.GetSelectedCategoryIndex()));
             ++local_3;
         }
         this.GetModify_SelectedListItems().Empty(0);
@@ -698,57 +684,44 @@ struct FVMS_SettingPage : FEUIViewModelSingleton
         {
             return;
         }
-        int local_4 = this.GetSelectedCategoryIndex();
-        for (auto& local_42 : GetSubTitles())
+        for (auto& local_42 : this.GetCategories()[this.GetSelectedCategoryIndex()].Get().GetSubTitles())
         {
             FEUIDynamicWidgetData local_66;
             local_66.ModelContainer.AddModel(local_42.opImplConv(), false);
             local_66.WidgetClass = this.GetSettingSubTitleWidgetClass();
-            local_2 = !(this.GetModify_SelectedListItems().IsEmpty());
-            if (local_2)
+            if (!(this.GetModify_SelectedListItems().IsEmpty()))
             {
                 FEUIDynamicWidgetData local_102;
                 TEUIModelWeakRef<FVMS_SettingPage> local_126 = TEUIModelWeakRef<FVMS_SettingPage>(this);
-                local_2 = false;
-                local_102.ModelContainer.AddModel(FEUIModelRef(local_152), local_2);
+                local_102.ModelContainer.AddModel(FEUIModelRef(local_152), false);
                 local_102.WidgetClass = this.GetSettingSubTitleWidgetClass();
                 this.GetModify_SelectedListItems().Add(local_102);
             }
             this.GetModify_SelectedListItems().Add(local_66);
-            for (auto& local_166 : GetItems())
+            for (auto& local_166 : local_42.Get().GetItems())
             {
-                if (local_2)
+                if (local_166.Get().GetItemConfig().Get().bToHide)
                 {
                     continue;
                 }
-                local_2 = this.IsKeyMappingCategory() || this.IsGamepadCategory();
-                if (!(local_2))
-                {
-                    local_2 = false;
-                }
-                else
-                {
-                    local_170.GetKeyMappingVM();
-                    local_2 = !(GetbIsKeyMapping());
-                }
-                if (local_2)
+                if ((this.IsKeyMappingCategory() || this.IsGamepadCategory()) && !(local_166.Get().GetKeyMappingVM().Get().GetbIsKeyMapping()))
                 {
                     continue;
                 }
-                if (!(GetItemTag().MatchesTag(FGameplayTag::RequestGameplayTag(n"Setting.Graphics.GraphicsQuality.GraphicsQualityPreset", true))))
+                if (!(local_166.Get().GetItemTag().MatchesTag(FGameplayTag::RequestGameplayTag(n"Setting.Graphics.GraphicsQuality.GraphicsQualityPreset", true))))
                 {
-                    float32 local_175 = ::SettingUtils::GetCurrentValue(GetApplyEffect(), this.IsDisplayOrGraphicsItem(GetItemTag()));
-                    local_175.UpdateComponentValue(false);
-                    local_175.UpdateCurrentValue();
-                    false.SetbHasResolutionOptionChanged();
+                    float32 local_175 = ::SettingUtils::GetCurrentValue(local_166.Get().GetApplyEffect(), this.IsDisplayOrGraphicsItem(local_166.Get().GetItemTag()));
+                    local_166.Get().UpdateComponentValue(local_175, false);
+                    local_166.Get().UpdateCurrentValue(local_175);
+                    local_166.Get().SetbHasResolutionOptionChanged(false);
                 }
-                CreateComponentWidget();
-                UpdateSwitchIndex();
+                local_166.Get().CreateComponentWidget();
+                local_166.Get().UpdateSwitchIndex();
                 FEUIDynamicWidgetData local_102;
                 local_102.ModelContainer.AddModel(local_166.opImplConv(), false);
                 local_102.WidgetClass = this.GetSettingItemWidgetClass();
                 this.GetModify_SelectedListItems().Add(local_102);
-                if (this.GetFirstItem().IsEmpty() && CanBeNavigationItem())
+                if (this.GetFirstItem().IsEmpty() && local_166.Get().CanBeNavigationItem())
                 {
                     this.SetFirstItem(local_102);
                     this.SetPrevSelectedItem(local_102);
@@ -757,41 +730,37 @@ struct FVMS_SettingPage : FEUIViewModelSingleton
         }
         if (this.IsKeyMappingCategory())
         {
-            TEUIModelRef<FVMS_PlayerKeyMappings> local_178 = this.GetKeyMappings();
-            0.SetSettingCategoryIndex();
+            this.GetKeyMappings().Get().SetSettingCategoryIndex(0);
         }
         else
         {
             if (this.IsGamepadCategory())
             {
-                TEUIModelRef<FVMS_PlayerKeyMappings> local_178_2 = this.GetKeyMappings();
-                1.SetSettingCategoryIndex();
+                this.GetKeyMappings().Get().SetSettingCategoryIndex(1);
             }
         }
-        TEUIModelRef<FVMS_PlayerKeyMappings> local_178_3 = this.GetKeyMappings();
-        local_170.GetSelectingKeyPair();
-        if (local_170.IsValid())
+        if (this.GetKeyMappings().Get().GetSelectingKeyPair().IsValid())
         {
-            bool local_167 = false;
-            TEUIModelRef<FVMS_PlayerKeyMappings> local_178_4 = this.GetKeyMappings();
-            local_170.GetSelectingKeyPair();
-            local_167.OnKeySelecting0();
-            local_167 = false;
-            TEUIModelRef<FVMS_PlayerKeyMappings> local_178_5 = this.GetKeyMappings();
-            local_170.GetSelectingKeyPair();
-            local_167.OnKeySelecting1();
+            this.GetKeyMappings().Get().GetSelectingKeyPair().Get().OnKeySelecting0(false);
+            this.GetKeyMappings().Get().GetSelectingKeyPair().Get().OnKeySelecting1(false);
         }
         return;
     }
     void UpdateResolutionDropDownOptions()
     {
-        // body not fully recovered — stub [argmismatch:argint]
+        FGameplayTag local_4 = FGameplayTag::RequestGameplayTag(n"Setting.Display.Display.Resolution", true);
+        if (this.GetItems().Contains(local_4))
+        {
+            this.GetItems()[local_4].Get().UpdateDropDownOptions(this.GetItems()[local_4], -1);
+        }
+        return;
     }
     void SyncItemValueDisplay()
     {
         for (auto& local_20 : this.GetItems())
         {
             FGameplayTag local_22 = local_20.GetKey();
+            TEUIModelRef<FVM_SettingItem> local_24 = TEUIModelRef<FVM_SettingItem>(local_20.GetValue());
             if (local_22.MatchesTag(FGameplayTag::RequestGameplayTag(n"Setting.Graphics.GraphicsQuality.GraphicsQualityPreset", true)))
             {
                 continue;
@@ -800,50 +769,28 @@ struct FVMS_SettingPage : FEUIViewModelSingleton
             {
                 continue;
             }
-            GetDefaultValue().UpdateCurrentValue();
+            local_24.Get().UpdateCurrentValue(local_24.Get().GetDefaultValue());
         }
         return;
     }
     bool CheckHasValueActuallyChanged()
     {
-        int local_31 = 0;
-        bool local_34;
-        bool local_2 = !(this.GetCategories().IsValidIndex(this.GetSelectedCategoryIndex()));
-        if (local_2)
+        if (!(this.GetCategories().IsValidIndex(this.GetSelectedCategoryIndex())))
         {
             return false;
         }
         this.SyncItemValueDisplay();
-        int local_1 = this.GetSelectedCategoryIndex();
-        for (auto& local_16 : GetSubTitles())
+        for (auto& local_16 : this.GetCategories()[this.GetSelectedCategoryIndex()].Get().GetSubTitles())
         {
-            local_16;
-            for (auto& local_30 : GetItems())
+            for (auto& local_30 : local_16.Get().GetItems())
             {
-                local_30;
-                if (!(GetItemConfig()))
-                {
-                    local_34 = false;
-                }
-                else
-                {
-                    int local_32 = local_31;
-                    local_2 = (local_32 == 0);
-                    local_34 = local_2;
-                }
-                local_34 = local_34 && local_2;
-                UScriptStruct local_36;
-                local_34 = local_34 && !(local_36.IsChildOf(FSettingLink));
-                local_34 = local_34 && (GetPreviousValue() != GetCurrentValue());
-                if (local_34)
+                if (local_30.Get().GetItemConfig() && (int(local_30.Get().GetItemConfig().Get().ApplyType) == 0) && local_30.Get().GetItemConfig().Get().VisualConfig.IsValid() && !(local_30.Get().GetItemConfig().Get().VisualConfig.GetScriptStruct().IsChildOf(FSettingLink)) && (local_30.Get().GetPreviousValue() != local_30.Get().GetCurrentValue()))
                 {
                     return true;
                 }
-                if (this.IsKeyMappingOrGamepadItem(GetItemTag()))
+                if (this.IsKeyMappingOrGamepadItem(local_30.Get().GetItemTag()))
                 {
-                    TEUIModelRef<FVM_PlayerKeyMappingPair> local_44;
-                    local_44.GetKeyMappingVM();
-                    if (GetPreviousKey0().DifferentFromPreviousKey(GetPreviousChordKey0(), GetPreviousKey1(), GetPreviousChordKey1()))
+                    if (local_30.Get().GetKeyMappingVM().Get().DifferentFromPreviousKey(local_30.Get().GetPreviousKey0(), local_30.Get().GetPreviousChordKey0(), local_30.Get().GetPreviousKey1(), local_30.Get().GetPreviousChordKey1()))
                     {
                         return true;
                     }
@@ -854,52 +801,34 @@ struct FVMS_SettingPage : FEUIViewModelSingleton
     }
     void OnKeyMappingsCanRevertChanged()
     {
-        bool local_3 = this.GetKeyMappings().IsValid();
-        if (!(local_3))
-        {
-            local_3 = false;
-        }
-        else
-        {
-            TEUIModelRef<FVMS_PlayerKeyMappings> local_2 = this.GetKeyMappings();
-            local_3 = GetbCanRevert();
-        }
-        this.SetbCanRevert(local_3);
+        this.SetbCanRevert(this.GetKeyMappings().IsValid() && this.GetKeyMappings().Get().GetbCanRevert());
         return;
     }
     void SaveChangedSettings()
     {
-        bool local_17;
-        TEUIModelRef<FVM_PlayerKeyMappingPair> local_26;
         for (auto& local_20 : this.GetItems())
         {
-            local_20;
-            SyncPreviousValue();
+            TEUIModelRef<FVM_SettingItem>(local_20.GetValue()).Get().SyncPreviousValue();
         }
         if (this.IsGamepadCategory() || this.IsKeyMappingCategory())
         {
             for (auto& local_20 : this.GetItems())
             {
-                local_20;
-                local_26.GetKeyMappingVM();
-                if (local_26.IsValid())
+                TEUIModelRef<FVM_SettingItem> local_22 = TEUIModelRef<FVM_SettingItem>(local_20.GetValue());
+                if (local_22.Get().GetKeyMappingVM().IsValid())
                 {
-                    local_17 = false;
-                    local_26.GetKeyMappingVM();
-                    local_17.SetbHasChanged();
+                    local_22.Get().GetKeyMappingVM().Get().SetbHasChanged(false);
                 }
-                RefreshKeyMappingDisplay();
+                local_22.Get().RefreshKeyMappingDisplay();
             }
-            TEUIModelRef<FVMS_PlayerKeyMappings> local_28 = this.GetKeyMappings();
-            SaveKeySettings();
+            this.GetKeyMappings().Get().SaveKeySettings();
             FCommonTipsParam local_32;
             ::CommonPopup_Internal::OpenTipsWithoutECSWorld(this.GetContext().UELocalPlayer, NSLOCTEXT("SettingPage", "SaveSettingsSuccess", "保存成功"), local_32, ECommonTipsType(0), FEUIModelContainer());
             return;
         }
         for (auto& local_66 : this.GetChangedItemVMs())
         {
-            local_66;
-            ApplyChangedValue();
+            local_66.Get().ApplyChangedValue();
         }
         if (this.GetbHasResolutionOptionChanged())
         {
@@ -917,79 +846,35 @@ struct FVMS_SettingPage : FEUIViewModelSingleton
     }
     bool IsDisplayCategory() const
     {
-        bool local_2 = !(this.GetCategories().IsValidIndex(this.GetSelectedCategoryIndex()));
-        if (local_2)
-        {
-            local_2 = true;
-        }
-        else
-        {
-            FGameplayTag local_5 = FGameplayTag::RequestGameplayTag(n"Setting.Display", true);
-            int local_1 = this.GetSelectedCategoryIndex();
-            local_2 = GetCategoryTag().MatchesTag(local_5);
-        }
-        return local_2;
+        return !(this.GetCategories().IsValidIndex(this.GetSelectedCategoryIndex())) || this.GetCategories()[this.GetSelectedCategoryIndex()].Get().GetCategoryTag().MatchesTag(FGameplayTag::RequestGameplayTag(n"Setting.Display", true));
     }
     bool IsGraphicsCategory() const
     {
-        bool local_2 = !(this.GetCategories().IsValidIndex(this.GetSelectedCategoryIndex()));
-        if (local_2)
-        {
-            local_2 = true;
-        }
-        else
-        {
-            FGameplayTag local_5 = FGameplayTag::RequestGameplayTag(n"Setting.Graphics", true);
-            int local_1 = this.GetSelectedCategoryIndex();
-            local_2 = GetCategoryTag().MatchesTag(local_5);
-        }
-        return local_2;
+        return !(this.GetCategories().IsValidIndex(this.GetSelectedCategoryIndex())) || this.GetCategories()[this.GetSelectedCategoryIndex()].Get().GetCategoryTag().MatchesTag(FGameplayTag::RequestGameplayTag(n"Setting.Graphics", true));
     }
     bool IsKeyMappingCategory() const
     {
-        bool local_2 = !(this.GetCategories().IsValidIndex(this.GetSelectedCategoryIndex()));
-        if (local_2)
-        {
-            local_2 = true;
-        }
-        else
-        {
-            FGameplayTag local_5 = FGameplayTag::RequestGameplayTag(n"Setting.KeyMapping", true);
-            int local_1 = this.GetSelectedCategoryIndex();
-            local_2 = GetCategoryTag().MatchesTag(local_5);
-        }
-        return local_2;
+        return !(this.GetCategories().IsValidIndex(this.GetSelectedCategoryIndex())) || this.GetCategories()[this.GetSelectedCategoryIndex()].Get().GetCategoryTag().MatchesTag(FGameplayTag::RequestGameplayTag(n"Setting.KeyMapping", true));
     }
     bool IsGamepadCategory() const
     {
-        bool local_2 = !(this.GetCategories().IsValidIndex(this.GetSelectedCategoryIndex()));
-        if (local_2)
-        {
-            local_2 = true;
-        }
-        else
-        {
-            FGameplayTag local_5 = FGameplayTag::RequestGameplayTag(n"Setting.Gamepad", true);
-            int local_1 = this.GetSelectedCategoryIndex();
-            local_2 = GetCategoryTag().MatchesTag(local_5);
-        }
-        return local_2;
+        return !(this.GetCategories().IsValidIndex(this.GetSelectedCategoryIndex())) || this.GetCategories()[this.GetSelectedCategoryIndex()].Get().GetCategoryTag().MatchesTag(FGameplayTag::RequestGameplayTag(n"Setting.Gamepad", true));
     }
     bool IsDisplayCategory(const int Index) const
     {
-        return !(this.GetCategories().IsValidIndex(Index)) || GetCategoryTag().MatchesTag(FGameplayTag::RequestGameplayTag(n"Setting.Display", true));
+        return !(this.GetCategories().IsValidIndex(Index)) || this.GetCategories()[Index].Get().GetCategoryTag().MatchesTag(FGameplayTag::RequestGameplayTag(n"Setting.Display", true));
     }
     bool IsGraphicsCategory(const int Index) const
     {
-        return !(this.GetCategories().IsValidIndex(Index)) || GetCategoryTag().MatchesTag(FGameplayTag::RequestGameplayTag(n"Setting.Graphics", true));
+        return !(this.GetCategories().IsValidIndex(Index)) || this.GetCategories()[Index].Get().GetCategoryTag().MatchesTag(FGameplayTag::RequestGameplayTag(n"Setting.Graphics", true));
     }
     bool IsKeyMappingCategory(const int Index) const
     {
-        return !(this.GetCategories().IsValidIndex(Index)) || GetCategoryTag().MatchesTag(FGameplayTag::RequestGameplayTag(n"Setting.KeyMapping", true));
+        return !(this.GetCategories().IsValidIndex(Index)) || this.GetCategories()[Index].Get().GetCategoryTag().MatchesTag(FGameplayTag::RequestGameplayTag(n"Setting.KeyMapping", true));
     }
     bool IsGamepadCategory(const int Index) const
     {
-        return !(this.GetCategories().IsValidIndex(Index)) || GetCategoryTag().MatchesTag(FGameplayTag::RequestGameplayTag(n"Setting.Gamepad", true));
+        return !(this.GetCategories().IsValidIndex(Index)) || this.GetCategories()[Index].Get().GetCategoryTag().MatchesTag(FGameplayTag::RequestGameplayTag(n"Setting.Gamepad", true));
     }
     void ResetChangedSettings()
     {
@@ -999,17 +884,13 @@ struct FVMS_SettingPage : FEUIViewModelSingleton
         {
             if (this.GetKeyMappings().IsValid())
             {
-                TEUIModelRef<FVMS_PlayerKeyMappings> local_6 = this.GetKeyMappings();
-                ResetKeys();
+                this.GetKeyMappings().Get().ResetKeys();
             }
-            int local_1 = this.GetSelectedCategoryIndex();
-            for (auto& local_20 : GetSubTitles())
+            for (auto& local_20 : this.GetCategories()[this.GetSelectedCategoryIndex()].Get().GetSubTitles())
             {
-                local_20;
-                for (auto& local_34 : GetItems())
+                for (auto& local_34 : local_20.Get().GetItems())
                 {
-                    local_34;
-                    RefreshKeyMappingDisplay();
+                    local_34.Get().RefreshKeyMappingDisplay();
                 }
             }
             return;
@@ -1017,14 +898,11 @@ struct FVMS_SettingPage : FEUIViewModelSingleton
         if (this.IsDisplayCategory())
         {
             UKLGameUserSettings::Get().ResetDisplayOptions();
-            int local_1_2 = this.GetSelectedCategoryIndex();
-            for (auto& local_20 : GetSubTitles())
+            for (auto& local_20 : this.GetCategories()[this.GetSelectedCategoryIndex()].Get().GetSubTitles())
             {
-                local_20;
-                for (auto& local_34 : GetItems())
+                for (auto& local_34 : local_20.Get().GetItems())
                 {
-                    local_34;
-                    ResetValueDisplay();
+                    local_34.Get().ResetValueDisplay();
                 }
             }
         }
@@ -1033,27 +911,21 @@ struct FVMS_SettingPage : FEUIViewModelSingleton
             if (this.IsGraphicsCategory())
             {
                 UKLGameUserSettings::Get().ResetQualityOptions();
-                int local_1_3 = this.GetSelectedCategoryIndex();
-                for (auto& local_20 : GetSubTitles())
+                for (auto& local_20 : this.GetCategories()[this.GetSelectedCategoryIndex()].Get().GetSubTitles())
                 {
-                    local_20;
-                    for (auto& local_34 : GetItems())
+                    for (auto& local_34 : local_20.Get().GetItems())
                     {
-                        local_34;
-                        ResetValueDisplay();
+                        local_34.Get().ResetValueDisplay();
                     }
                 }
             }
             else
             {
-                int local_1_4 = this.GetSelectedCategoryIndex();
-                for (auto& local_20 : GetSubTitles())
+                for (auto& local_20 : this.GetCategories()[this.GetSelectedCategoryIndex()].Get().GetSubTitles())
                 {
-                    local_20;
-                    for (auto& local_34 : GetItems())
+                    for (auto& local_34 : local_20.Get().GetItems())
                     {
-                        local_34;
-                        ResetValue();
+                        local_34.Get().ResetValue();
                     }
                 }
             }
@@ -1063,28 +935,23 @@ struct FVMS_SettingPage : FEUIViewModelSingleton
     }
     void RevertUnsavedSettings()
     {
-        int local_33 = 0;
         this.GetModify_ChangedItemVMs().Empty(0);
         this.SetbHasResolutionOptionChanged(false);
         if (this.IsKeyMappingCategory() || this.IsGamepadCategory())
         {
             ::FVMS_PlayerKeyMappings::Get(this.GetContext().Manager).Revert();
         }
-        int local_1 = this.GetSelectedCategoryIndex();
-        for (auto& local_18 : GetSubTitles())
+        for (auto& local_18 : this.GetCategories()[this.GetSelectedCategoryIndex()].Get().GetSubTitles())
         {
-            local_18;
-            for (auto& local_32 : GetItems())
+            for (auto& local_32 : local_18.Get().GetItems())
             {
-                local_32;
-                int local_34 = local_33;
-                if (local_34 == 0)
+                if (int(local_32.Get().GetItemConfig().Get().ApplyType) == 0)
                 {
-                    RevertValue();
+                    local_32.Get().RevertValue();
                 }
                 if (this.IsKeyMappingCategory() || this.IsGamepadCategory())
                 {
-                    RefreshKeyMappingDisplay();
+                    local_32.Get().RefreshKeyMappingDisplay();
                 }
             }
         }
@@ -1743,11 +1610,9 @@ FVM_SettingSystemMainState& Create(const UObject ContextObject)
 {
     return FVM_SettingSystemMainState::CreateByManager(EUIInternal::GetContextManager(ContextObject));
 }
-FVM_SettingSystemMainState CreateByManager(const UEUIManagerSubsystem Manager)
+FVM_SettingSystemMainState& CreateByManager(const UEUIManagerSubsystem Manager)
 {
-    FVM_SettingSystemMainState __r;
-    TEUIModelRef<FVM_SettingSystemMainState> local_6 = TEUIModelRef<FVM_SettingSystemMainState>(EUIInternal::MakeModelWithManager(Manager, FVM_SettingSystemMainState::ModelId));
-    return __r;
+    return TEUIModelRef<FVM_SettingSystemMainState>(EUIInternal::MakeModelWithManager(Manager, FVM_SettingSystemMainState::ModelId)).Get();
 }
 void GetModelInfo(FEUIViewModelMetaInfo &inout Result)
 {
@@ -1789,8 +1654,7 @@ namespace __GeneratedProperties_FVM_SettingSystemMainState
 {
 UScriptStruct StaticStruct()
 {
-    UScriptStruct local_2;
-    return local_2;
+    return __GeneratedProperties_FVM_SettingSystemMainState.Get();
 }
 }
 namespace FVMS_SettingPage
@@ -1799,11 +1663,9 @@ FVMS_SettingPage& Get(const UObject ContextObject)
 {
     return FVMS_SettingPage::GetByManager(EUIInternal::GetContextManager(ContextObject));
 }
-FVMS_SettingPage GetByManager(const UEUIManagerSubsystem Manager)
+FVMS_SettingPage& GetByManager(const UEUIManagerSubsystem Manager)
 {
-    FVMS_SettingPage __r;
-    TEUIModelRef<FVMS_SettingPage> local_6 = TEUIModelRef<FVMS_SettingPage>(EUIInternal::MakeModelWithManager(Manager, FVMS_SettingPage::ModelId));
-    return __r;
+    return TEUIModelRef<FVMS_SettingPage>(EUIInternal::MakeModelWithManager(Manager, FVMS_SettingPage::ModelId)).Get();
 }
 void GetModelInfo(FEUIViewModelMetaInfo &inout Result)
 {
@@ -2129,7 +1991,6 @@ namespace __GeneratedProperties_FVMS_SettingPage
 {
 UScriptStruct StaticStruct()
 {
-    UScriptStruct local_2;
-    return local_2;
+    return __GeneratedProperties_FVMS_SettingPage.Get();
 }
 }

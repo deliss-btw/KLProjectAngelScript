@@ -30,17 +30,16 @@ struct FMissionAction_RemoveItemCallback
         {
             for (auto& local_32 : local_14.ExecutionEntries)
             {
-                int local_33 = local_32.GetKey();
-                if (local_33 != this.ExecutionEntryId)
+                if (local_32.GetKey() != this.ExecutionEntryId)
                 {
                     continue;
                 }
-                if ((this.ActionIndex < 0 || (this.ActionIndex >= local_33)))
+                if (this.ActionIndex < 0 || (this.ActionIndex >= local_32.GetValue().ActionInstances.Num()))
                 {
                     XError(ELog(63), FString().Append("RemoveItem opCall Failed to get ActionIndex, ActionIndex=").Append(this.ActionIndex).Append(", ExecutionEntryId=").Append(this.ExecutionEntryId));
                     return;
                 }
-                int local_34 = this.ActionIndex;
+                FMissionActionInstance& local_38 = local_32.GetValue().ActionInstances[this.ActionIndex];
                 if (int(Result) == 2)
                 {
                     bIsConfirmed = true;
@@ -84,7 +83,6 @@ struct FMissionAction_RemoveItem : FMissionActionBase
     bool SendRemoveItemRequest(const FMissionActionContext &inout Context)
     {
         FPbGetGsResourceReq local_4;
-        int local_91 = 0;
         FPbGsResource local_24 = local_4.GetResource();
         for (auto& local_40 : this.ItemInfos)
         {
@@ -94,7 +92,7 @@ struct FMissionAction_RemoveItem : FMissionActionBase
                 return false;
             }
             FPbGsCostItem local_80 = local_24.AddContentList().GetCostItem();
-            local_80.SetItemId(local_91);
+            local_80.SetItemId(local_40.ItemConfig.Get().DataId);
             local_80.SetCount(int(local_40.ItemCount));
         }
         FMissionAction_RemoveItemCallback local_98;

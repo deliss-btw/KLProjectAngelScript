@@ -278,7 +278,7 @@ struct FCS_GameMode_MatchData : FECSSingleton
             TArray<uint> local_12;
             for (auto& local_30 : this.GetPlayerMatchDatas())
             {
-                if (GetTeamID() == local_5)
+                if (local_30.GetValue().GetTeamID() == local_5)
                 {
                     local_12.Add(local_30.GetKey());
                 }

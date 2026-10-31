@@ -195,12 +195,10 @@ struct FVM_FriendItem : FEUIViewModel
             return;
         }
         FPlayerBriefInfo local_48 = this.GetChatDataModel().opArrow().GetPrivatePeerCachedBrief(this.GetPlayerUid());
-        TEUIModelRef<FM_FriendRow> local_2 = this.GetFriendRow();
-        this.GetPlayerUid().InitForPrivateChatPeer(local_48, this.GetContext().Manager);
+        this.GetFriendRow().Get().InitForPrivateChatPeer(this.GetPlayerUid(), local_48, this.GetContext().Manager);
         if (this.GetPlayerBasicItem().IsValid())
         {
-            TEUIModelRef<FVM_PlayerBasicItem> local_50 = this.GetPlayerBasicItem();
-            local_48.RefreshFromBrief();
+            this.GetPlayerBasicItem().Get().RefreshFromBrief(local_48);
         }
         this.RefreshTipsContext();
         this.RefreshActionState();
@@ -282,8 +280,7 @@ struct FVM_FriendItem : FEUIViewModel
             FText::FromString(local_64);
             return local_64;
         }
-        TEUIModelRef<FM_FriendRow> local_2 = this.GetFriendRow();
-        FPlayerBriefInfo local_48_2 = FPlayerBriefInfo(GetBrief());
+        FPlayerBriefInfo local_48_2 = FPlayerBriefInfo(this.GetFriendRow().Get().GetBrief());
         if (local_48_2.GetNickname().IsEmpty())
         {
             FText local_64;
@@ -304,8 +301,7 @@ struct FVM_FriendItem : FEUIViewModel
         {
             return;
         }
-        TEUIModelRef<FM_FriendRow> local_2 = this.GetFriendRow();
-        if ((int(GetRowType())) != 0)
+        if ((int(this.GetFriendRow().Get().GetRowType())) != 0)
         {
             return;
         }
@@ -433,8 +429,7 @@ struct FVM_FriendItem : FEUIViewModel
                 if (int(this.GetFriendRow().opArrow().GetRowType()) == 1)
                 {
                     this.SetTipsContextIndex(1);
-                    TEUIModelRef<FM_FriendRow> local_2 = this.GetFriendRow();
-                    this.SetTipsContextText(this.BuildFriendApplyTipsText(GetCreateTime()));
+                    this.SetTipsContextText(this.BuildFriendApplyTipsText(this.GetFriendRow().Get().GetCreateTime()));
                     return;
                 }
             }
@@ -718,11 +713,9 @@ FVM_FriendItem& Create(const UObject ContextObject, const TEUIModelRef<FM_Friend
 {
     return FVM_FriendItem::CreateByManager(EUIInternal::GetContextManager(ContextObject), FriendRow);
 }
-FVM_FriendItem CreateByManager(const UEUIManagerSubsystem Manager, const TEUIModelRef<FM_FriendRow> &inout FriendRow)
+FVM_FriendItem& CreateByManager(const UEUIManagerSubsystem Manager, const TEUIModelRef<FM_FriendRow> &inout FriendRow)
 {
-    FVM_FriendItem __r;
-    TEUIModelRef<FVM_FriendItem> local_6 = TEUIModelRef<FVM_FriendItem>(EUIInternal::MakeModelWithManager_Generic(Manager, FVM_FriendItem::ModelId, 0, FriendRow));
-    return __r;
+    return TEUIModelRef<FVM_FriendItem>(EUIInternal::MakeModelWithManager_Generic(Manager, FVM_FriendItem::ModelId, 0, FriendRow)).Get();
 }
 void GetModelInfo(FEUIViewModelMetaInfo &inout Result)
 {
@@ -981,7 +974,6 @@ namespace __GeneratedProperties_FVM_FriendItem
 {
 UScriptStruct StaticStruct()
 {
-    UScriptStruct local_2;
-    return local_2;
+    return __GeneratedProperties_FVM_FriendItem.Get();
 }
 }

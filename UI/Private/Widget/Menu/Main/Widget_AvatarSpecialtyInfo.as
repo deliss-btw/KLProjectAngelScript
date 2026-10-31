@@ -17,7 +17,7 @@ class UWidget_AvatarSpecialtyInfo : UEUIUserWidget
     UFUNCTION()
     void OnAvatarConfigChanged()
     {
-        if (this.AvatarSpecialtyInfo.IsValid() && GetbIsHover())
+        if (this.AvatarSpecialtyInfo.IsValid() && this.AvatarSpecialtyInfo.Get().GetbIsHover())
         {
             this.RuleSetUserFocus(this);
         }
@@ -29,7 +29,7 @@ class UWidget_AvatarSpecialtyInfo : UEUIUserWidget
         this.bIsHover = true;
         if (this.AvatarSpecialtyInfo.IsValid())
         {
-            1.OnHoverChanged();
+            this.AvatarSpecialtyInfo.Get().OnHoverChanged(true);
         }
         return;
     }
@@ -39,7 +39,7 @@ class UWidget_AvatarSpecialtyInfo : UEUIUserWidget
         this.bIsHover = false;
         if (this.AvatarSpecialtyInfo.IsValid())
         {
-            0.OnHoverChanged();
+            this.AvatarSpecialtyInfo.Get().OnHoverChanged(false);
         }
         return;
     }
@@ -54,8 +54,8 @@ class UWidget_AvatarSpecialtyInfo : UEUIUserWidget
     }
     void HandleObservedModelChanges(FEUIReactiveSubscriberIterator &inout It)
     {
-        FVM_AvatarSpecialtyInfo& local_6;
         TEUIModelRef<FVM_AvatarSpecialtyInfo> local_2 = this.AvatarSpecialtyInfo.AsRef();
+        FVM_AvatarSpecialtyInfo& local_6 = local_2.Get();
         for (; It; )
         {
             FEUIReactiveSubscriberTrackScope local_56 = FEUIReactiveSubscriberTrackScope(It);

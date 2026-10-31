@@ -69,11 +69,9 @@ FMS_Loading& Get(const UObject ContextObject)
 {
     return FMS_Loading::GetByManager(EUIInternal::GetContextManager(ContextObject));
 }
-FMS_Loading GetByManager(const UEUIManagerSubsystem Manager)
+FMS_Loading& GetByManager(const UEUIManagerSubsystem Manager)
 {
-    FMS_Loading __r;
-    TEUIModelRef<FMS_Loading> local_6 = TEUIModelRef<FMS_Loading>(EUIInternal::MakeModelWithManager(Manager, FMS_Loading::ModelId));
-    return __r;
+    return TEUIModelRef<FMS_Loading>(EUIInternal::MakeModelWithManager(Manager, FMS_Loading::ModelId)).Get();
 }
 void GetModelInfo(FEUIModelOnlyMetaInfo &inout Result)
 {

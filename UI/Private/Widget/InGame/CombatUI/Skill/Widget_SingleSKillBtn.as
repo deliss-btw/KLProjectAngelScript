@@ -180,7 +180,7 @@ class UWidget_NormalSkillBtn : UEUIUserWidget
         {
             return;
         }
-        if (GetbReleaseFree() || GetbReleasePersistent())
+        if (this.SkillBtn.Get().GetbReleaseFree() || this.SkillBtn.Get().GetbReleasePersistent())
         {
             int local_5;
             local_5 = 11;
@@ -220,7 +220,7 @@ class UWidget_NormalSkillBtn : UEUIUserWidget
         {
             return;
         }
-        if (GetbSkillUsable())
+        if (this.SkillBtn.Get().GetbSkillUsable())
         {
             this.SetPressAnimState(true);
         }
@@ -240,7 +240,7 @@ class UWidget_NormalSkillBtn : UEUIUserWidget
         {
             return;
         }
-        if (GetbToggleMode())
+        if (this.SkillBtn.Get().GetbToggleMode())
         {
             if (this.bInjecting)
             {
@@ -269,7 +269,7 @@ class UWidget_NormalSkillBtn : UEUIUserWidget
     UFUNCTION()
     void OnTouchTriggerReleased()
     {
-        if (GetbToggleMode())
+        if (this.SkillBtn.Get().GetbToggleMode())
         {
             return;
         }
@@ -328,18 +328,18 @@ class UWidget_NormalSkillBtn : UEUIUserWidget
             {
                 TEUIModelRef<FVM_BattleBuildEntry> local_4;
                 local_4;
-                local_4.SetConfigEntry();
+                this.SkillBtn.Get().SetConfigEntry(local_4);
                 return;
             }
-            TEUIModelRef<FVM_BattleBuildEntry>(nullptr).SetConfigEntry();
+            this.SkillBtn.Get().SetConfigEntry(TEUIModelRef<FVM_BattleBuildEntry>(nullptr));
         }
         return;
     }
     UFUNCTION()
     ESlateVisibility SkillBtn_BtnVisibility() const
     {
-        FVM_NormalSkillBtn& local_2;
         int local_5;
+        FVM_NormalSkillBtn& local_2 = this.SkillBtn.Get();
         if (local_2)
         {
             local_5 = int(local_2.BtnVisibility());
@@ -361,8 +361,8 @@ class UWidget_NormalSkillBtn : UEUIUserWidget
     }
     void HandleObservedModelChanges(FEUIReactiveSubscriberIterator &inout It)
     {
-        FVM_NormalSkillBtn& local_6;
         TEUIModelRef<FVM_NormalSkillBtn> local_2 = this.SkillBtn.AsRef();
+        FVM_NormalSkillBtn& local_6 = local_2.Get();
         for (; It; )
         {
             FEUIReactiveSubscriberTrackScope local_56 = FEUIReactiveSubscriberTrackScope(It);
@@ -501,8 +501,8 @@ class UWidget_UltraSkillBtn : UEUIUserWidget
     UFUNCTION()
     ESlateVisibility SkillBtn_BtnVisibility() const
     {
-        FVM_NormalSkillBtn& local_2;
         int local_5;
+        FVM_NormalSkillBtn& local_2 = this.SkillBtn.Get();
         if (local_2)
         {
             local_5 = int(local_2.BtnVisibility());

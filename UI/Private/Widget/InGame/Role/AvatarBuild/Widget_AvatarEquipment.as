@@ -18,7 +18,7 @@ class UWidget_AvatarEquipment : UEUIUserWidget
     UFUNCTION()
     TEUIModelRef<FVM_EquipmentInfo> AvatarEquipment_Equipment() const
     {
-        FVM_AvatarEquipment& local_2;
+        FVM_AvatarEquipment& local_2 = this.AvatarEquipment.Get();
         TEUIModelRef<FVM_EquipmentInfo> local_10;
         if (local_2)
         {

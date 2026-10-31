@@ -273,11 +273,12 @@ void EnableWorldEventIcon(const FECSEntity &inout Entity, const float32 RemainTi
     local_52.SetEventStatus(EWorldEventStatus(1));
     UDataTable local_76 = Cast<UDataTable>(FSoftObjectPath("/Script/Engine.DataTable'/Game/MoleRes/Dev/Data/DropItem/SDT_DropItemGroup.SDT_DropItemGroup'").ResolveObject());
     UDataTable::FindDataObject local_104;
-    if ((local_104.opCall(DropItemGroupRowName) == nullptr))
+    TDataObjectPtr<FDropItemGroupConfig> local_128 = local_104.opCall(DropItemGroupRowName);
+    if ((local_128 == nullptr))
     {
         return;
     }
-    local_52.SetDropItems(TDataObjectPtr<FDropItemConfigBase>());
+    local_52.SetDropItems(TDataObjectPtr<FDropItemConfigBase>(local_128.Get()));
     FECSEntityId local_159 = Entity.GetId();
     FECSWorldPtr local_154 = Entity.GetWorld();
     ModifyOrAdd local_158;
@@ -293,9 +294,10 @@ void DisableWorldEventIcon(const FECSEntity &inout Entity)
     }
     FECSWorldPtr local_4 = Entity.GetWorld();
     Modify local_8;
-    if (local_8.opCall())
+    FCS_WorldEventMinimapIconManager& local_10 = local_8.opCall();
+    if (local_10)
     {
-        FECSEntityId local_11 = Entity.GetId();
+        local_10.GetModify_AllWorldEvents().Remove(Entity.GetId());
     }
     return;
 }

@@ -41,11 +41,10 @@ TDataObjectPtr<FPropPrefabConfig> GetPropConfig(const FECSEntity &inout Entity)
 const FPropPrefabConfig GetDefaultedPropConfig(const FECSEntity &inout Entity)
 {
     const FPropPrefabConfig __r;
-    if (GetPropConfig(Entity))
+    TDataObjectPtr<FPropPrefabConfig> local_24 = GetPropConfig(Entity);
+    if (local_24)
     {
-    }
-    else
-    {
+        return local_24.Get();
     }
     return __r;
 }

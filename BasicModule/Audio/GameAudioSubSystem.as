@@ -170,7 +170,6 @@ class UASGameAudioSubSystem : UGameAudioSubSystem
     void AddPendingUnloadAudioSet(const FString &inout PreserveMusicKey)
     {
         FAudioActionData local_36;
-        float32 local_115 = 0.0f;
         for (auto& local_52 : this.PendingUnloadAudioSet.TargetEvent)
         {
             FString local_56;
@@ -191,7 +190,7 @@ class UASGameAudioSubSystem : UGameAudioSubSystem
         }
         for (auto& local_114 : this.PendingUnloadAudioSet.TargetRtpcValue)
         {
-            local_36.AddRtpc(local_114.GetKey(), local_115);
+            local_36.AddRtpc(local_114.GetKey(), local_114.GetValue());
         }
         if (local_36.IsValidData())
         {
@@ -204,7 +203,7 @@ class UASGameAudioSubSystem : UGameAudioSubSystem
     {
         if (Asset.IsValid())
         {
-            UAkAudioType local_4;
+            UAkAudioType local_4 = Asset.Get();
             this.AudioPreloadState.FindOrAdd(local_4) = bLoaded;
         }
         return;
@@ -234,7 +233,9 @@ class UASGameAudioSubSystem : UGameAudioSubSystem
         {
             return false;
         }
-        return false;
+        bool local_2 = false;
+        UAkAudioType local_4 = Asset.Get();
+        return local_2;
     }
     UFUNCTION()
     bool IsFXAssetPreloaded(const TSoftClassPtr<AFXActor> &inout Asset)
@@ -256,7 +257,6 @@ class UASGameAudioSubSystem : UGameAudioSubSystem
     UFUNCTION()
     void PlayAudioWhenMapLoaded(const TSoftObjectPtr<UWorld> &inout WorldSoftPtr, const FString &inout PreserveMusicKey)
     {
-        float32 local_433 = 0.0f;
         if (!(WorldSoftPtr.IsValid()))
         {
             return;
@@ -297,7 +297,7 @@ class UASGameAudioSubSystem : UGameAudioSubSystem
         }
         for (auto& local_432 : local_370.RtpcMap)
         {
-            local_406.AddRtpc(local_432.GetKey(), local_433);
+            local_406.AddRtpc(local_432.GetKey(), local_432.GetValue());
         }
         if (local_406.IsValidData())
         {
@@ -309,7 +309,6 @@ class UASGameAudioSubSystem : UGameAudioSubSystem
     UFUNCTION()
     void PlayAudioWhenMapUnLoaded(const TSoftObjectPtr<UWorld> &inout WorldSoftPtr)
     {
-        float32 local_429 = 0.0f;
         if (!(WorldSoftPtr.IsValid()))
         {
             return;
@@ -338,7 +337,7 @@ class UASGameAudioSubSystem : UGameAudioSubSystem
         }
         for (auto& local_428 : local_406.RtpcMap)
         {
-            local_52.AddRtpc(local_428.GetKey(), local_429);
+            local_52.AddRtpc(local_428.GetKey(), local_428.GetValue());
         }
         XWarning(ELog(1), FString().Append("[PlayAudioWhenMapUnLoaded]   World AssetName: ").Append(WorldSoftPtr.GetAssetName()));
         this.PendingUnloadWorldAssetName = WorldSoftPtr.GetAssetName();
@@ -490,6 +489,7 @@ class UASGameAudioSubSystem : UGameAudioSubSystem
             XLogIf(FFXUtils::CVar_Fx_LoadDebug.GetBool(), ELog(1), FString().Append("FX Resource PreLoadAsync End, FX: ").Append(local_18.LoadedClass.GetName()));
         }
         local_18.LoadedCallBack.ExecuteIfBound(local_18.LoadedClass);
+        this.CurrentFxPreloadContext.Remove(AssetPath);
         return;
     }
     void TryFinishPendingFxPreloads()
@@ -497,7 +497,7 @@ class UASGameAudioSubSystem : UGameAudioSubSystem
         TArray<FSoftObjectPath> local_4;
         for (auto& local_24 : this.CurrentFxPreloadContext)
         {
-            if (this.IsFxPreloadReady())
+            if (this.IsFxPreloadReady(local_24.GetValue()))
             {
                 local_4.Add(local_24.GetKey());
             }
@@ -563,6 +563,7 @@ class UASGameAudioSubSystem : UGameAudioSubSystem
                     }
                 }
             }
+            this.CurrentAudioPreloadContext.Remove(local_24);
             this.TryFinishPendingFxPreloads();
         }
         return;

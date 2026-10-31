@@ -6,6 +6,8 @@ struct FPlayerShopStateCondition : FDialogueConditionBase
     UPROPERTY()
     bool bIsUnlocked;
 
+    default m_ScriptOverrideMeta = Cast<UASStruct>(FPlayerShopStateCondition.Get());
+
     FPlayerShopStateCondition()
     {
         this.bIsUnlocked = false;
@@ -38,6 +40,8 @@ struct FSystemControlCondition : FDialogueConditionBase
     TDataObjectPtr<FSystemControlConfig> SystemControlConfig;
     UPROPERTY()
     bool bExpectUnlocked;
+
+    default m_ScriptOverrideMeta = Cast<UASStruct>(FSystemControlCondition.Get());
 
     FSystemControlCondition()
     {
@@ -78,6 +82,8 @@ struct FInteractTargetEBBCondition : FDialogueConditionBase
     FString BBKey;
     UPROPERTY()
     bool bExpectTrue;
+
+    default m_ScriptOverrideMeta = Cast<UASStruct>(FInteractTargetEBBCondition.Get());
 
     FInteractTargetEBBCondition()
     {

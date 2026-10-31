@@ -89,6 +89,7 @@ void PreloadBehaviorAssets(const EScriptControlBehaviorName BehaviorName, const 
     {
         return;
     }
+    Params.ESMSkillConfig.Get().BehaviorTreeAsset.LoadAsync(FOnSoftObjectLoaded());
     return;
 }
 void SetScriptControlStateIfNeeded(const FECSEntity &inout Entity, const bool bEnable)

@@ -182,6 +182,7 @@ struct FVM_WorldRegionIcon : FEUIViewModel
     }
     void RemoveMissionSpot(const TEUIModelRef<FM_Spot> &inout Spot)
     {
+        this.GetModify_MissionSpots().Remove(Spot);
         return;
     }
     const TDataObjectPtr<FLevelInfoConfig> GetLevelInfoConfig() const property
@@ -304,11 +305,9 @@ FVM_WorldRegionIcon& Create(const UObject ContextObject)
 {
     return FVM_WorldRegionIcon::CreateByManager(EUIInternal::GetContextManager(ContextObject));
 }
-FVM_WorldRegionIcon CreateByManager(const UEUIManagerSubsystem Manager)
+FVM_WorldRegionIcon& CreateByManager(const UEUIManagerSubsystem Manager)
 {
-    FVM_WorldRegionIcon __r;
-    TEUIModelRef<FVM_WorldRegionIcon> local_6 = TEUIModelRef<FVM_WorldRegionIcon>(EUIInternal::MakeModelWithManager(Manager, FVM_WorldRegionIcon::ModelId));
-    return __r;
+    return TEUIModelRef<FVM_WorldRegionIcon>(EUIInternal::MakeModelWithManager(Manager, FVM_WorldRegionIcon::ModelId)).Get();
 }
 void GetModelInfo(FEUIViewModelMetaInfo &inout Result)
 {
@@ -453,7 +452,6 @@ namespace __GeneratedProperties_FVM_WorldRegionIcon
 {
 UScriptStruct StaticStruct()
 {
-    UScriptStruct local_2;
-    return local_2;
+    return __GeneratedProperties_FVM_WorldRegionIcon.Get();
 }
 }

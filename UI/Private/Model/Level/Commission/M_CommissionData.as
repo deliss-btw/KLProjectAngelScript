@@ -105,7 +105,6 @@ struct FMS_CommissionData : FEUIModelSingleton
     }
     void RequestSendCommissionRecruit(const TDataObjectPtr<FCommissionConfig> &inout CommissionConfig)
     {
-        int local_27 = 0;
         UGameClientConnectionSubsystem local_4 = ::UGameClientConnectionSubsystem::Get();
         if (!((local_4 != nullptr)) || !(local_4.IsConnectedToGameServer()))
         {
@@ -113,15 +112,15 @@ struct FMS_CommissionData : FEUIModelSingleton
             XLog(ELog(27), "SendCommissionRecruit skipped, not connected to game server");
             return;
         }
-        bool local_6 = !(CommissionConfig);
-        if (local_6)
+        if (!(CommissionConfig))
         {
             XError(ELog(27), "SendCommissionRecruit failed, commission config is invalid");
             return;
         }
+        bool local_6 = CommissionConfig.Get().bDisableRecruitSend;
         if (local_6)
         {
-            FString local_12 = FString();
+            XWarning(ELog(27), FString().Append("SendCommissionRecruit skipped, recruit disabled for commissionId=").Append(CommissionConfig.Get().DataId));
             return;
         }
         if (this.GetbIsRecruitSending())
@@ -140,7 +139,7 @@ struct FMS_CommissionData : FEUIModelSingleton
         this.SetbIsRecruitSending(true);
         this.SetRecruitSendRequestTimeSec(::FASCommonUtils::GetTimestamp());
         FPbSendCommissionRecruitReq local_26;
-        local_26.SetCommissionId(local_27);
+        local_26.SetCommissionId(CommissionConfig.Get().DataId);
         this.SendProto(local_26.ToWrapper());
         return;
     }
@@ -163,48 +162,43 @@ struct FMS_CommissionData : FEUIModelSingleton
         TArray<TEUIModelRef<FM_Commission>> local_4;
         for (auto& local_24 : this.GetCommissionMap())
         {
-            local_24;
-            if (int(opArrow().GetCommissionConfig().opArrow().CommissionType) == int(CommissionType))
+            if (int(local_24.GetValue().opArrow().GetCommissionConfig().opArrow().CommissionType) == int(CommissionType))
             {
                 UDataTable local_34;
-                local_34 = Cast<UDataTable>(opArrow().GetCommissionConfig().GetRoot());
+                local_34 = Cast<UDataTable>(local_24.GetValue().opArrow().GetCommissionConfig().GetRoot());
                 if (::CommissionUtils::GetCommissionSettings().HiddenCommissionTables.Contains(local_34))
                 {
                     continue;
                 }
-                if (opArrow().ShouldHideOnDashboard())
+                if (local_24.GetValue().opArrow().ShouldHideOnDashboard())
                 {
                     continue;
                 }
-                local_4.Add();
+                local_4.Add(local_24.GetValue());
             }
         }
         return local_4;
     }
     TEUIModelRef<FM_Commission> FindFirstCommissionsByConfig(const TDataObjectPtr<FCommissionConfig> &inout CommissionConfig) const
     {
-        TEUIModelRef<FM_Commission> __r;
         for (auto& local_20 : this.GetCommissionMap())
         {
-            local_20;
             TDataObjectPtr<FCommissionConfig> local_44;
-            local_44 = opArrow().GetCommissionConfig();
+            local_44 = local_20.GetValue().opArrow().GetCommissionConfig();
             if ((local_44 == CommissionConfig.opImplConv()))
             {
-                return __r;
+                return local_20.GetValue();
             }
         }
         return TEUIModelRef<FM_Commission>();
     }
     TEUIModelRef<FM_Commission> FindCommissionByConfigDataId(const uint ConfigDataId) const
     {
-        TEUIModelRef<FM_Commission> __r;
         for (auto& local_20 : this.GetCommissionMap())
         {
-            local_20;
-            if (opArrow().GetCommissionConfig() && (opArrow().GetCommissionConfig().opArrow().DataId == ConfigDataId))
+            if (local_20.GetValue().opArrow().GetCommissionConfig() && (local_20.GetValue().opArrow().GetCommissionConfig().opArrow().DataId == ConfigDataId))
             {
-                return __r;
+                return local_20.GetValue();
             }
         }
         return TEUIModelRef<FM_Commission>();
@@ -213,7 +207,7 @@ struct FMS_CommissionData : FEUIModelSingleton
     {
         for (auto& local_20 : this.GetCommissionMap())
         {
-            if (IsValid() && (opArrow().GetCommissionConfig().opArrow().DataId == CommissionId))
+            if (local_20.GetValue().IsValid() && (local_20.GetValue().opArrow().GetCommissionConfig().opArrow().DataId == CommissionId))
             {
                 return local_20.GetKey();
             }
@@ -247,9 +241,7 @@ struct FMS_CommissionData : FEUIModelSingleton
         }
         if (!(this.TryGetCommissionInstanceId(CommissionModel, local_10)))
         {
-            FString local_14;
-            local_14.ToString();
-            XError(ELog(27), FString().Append("Failed to start commission, commission id not cached for model ").Append(local_14));
+            XError(ELog(27), FString().Append("Failed to start commission, commission id not cached for model ").Append(CommissionModel.Get().ToString()));
         }
         FPbStartCommissionReq local_18;
         local_18.SetCommissionInstId(local_10);
@@ -332,7 +324,6 @@ struct FMS_CommissionData : FEUIModelSingleton
     }
     void GS_OnCommissionDataUpdateNotify(const FPbCommissionDataUpdateNotify &inout Msg)
     {
-        int local_41 = 0;
         bool local_49;
         bool local_5 = (::NumericUtils::AsInt32(Msg.GetActiveCommissionList_Num()) != this.GetCommissionMap().Num());
         int local_6 = 0;
@@ -349,7 +340,7 @@ struct FMS_CommissionData : FEUIModelSingleton
         }
         if (Msg.GetNextRefreshTime() > 0)
         {
-            local_41 = Msg.GetCommissionType();
+            int local_41 = Msg.GetCommissionType();
             this.GetModify_NextCommissionRefreshTimes().Add(ECommissionType(local_41), FDateTime::FromUnixTimestamp(Msg.GetNextRefreshTime()));
             FEUIModelRef local_36_2 = FEUIModelRef(this);
             FEUIMessageBus::PublishOrPatch(EUIMessageBus).opCall(local_36_2);
@@ -376,12 +367,11 @@ struct FMS_CommissionData : FEUIModelSingleton
                 }
                 int local_50 = local_28.GetId();
                 GetDataObjectByGSDataId<FCommissionConfig> local_98;
-                if (local_98.opImplConv().IsSet() && (local_41 == 2))
+                TDataObjectPtr<FCommissionConfig> local_74 = local_98.opImplConv();
+                if (local_74.IsSet() && (int(local_74.Get().CommissionType) == 2))
                 {
-                    NSLOCTEXT("Commission", "ChallengeFactorRefreshed", "「{0}挑战因子已刷新」");
-                    FText local_154;
                     FCommonTipsParam local_158;
-                    ::CommonPopup::Tips(local_154, local_158);
+                    ::CommonPopup::Tips(FText::Format(NSLOCTEXT("Commission", "ChallengeFactorRefreshed", "「{0}挑战因子已刷新」"), local_74.Get().CommissionName), local_158);
                 }
                 break;
             }
@@ -441,11 +431,9 @@ struct FMS_CommissionData : FEUIModelSingleton
     {
         if (this.GetCommissionMap().Contains(CommissionInstId))
         {
+            return this.GetCommissionMap()[CommissionInstId].Get();
         }
-        else
-        {
-            return this.CreateCommission(CommissionInstId);
-        }
+        return this.CreateCommission(CommissionInstId);
     }
     bool TryGetCommissionInstanceId(const TEUIModelRef<FM_Commission> &inout CommissionModel, uint64 &out CommissionInstId) const
     {
@@ -457,7 +445,7 @@ struct FMS_CommissionData : FEUIModelSingleton
         TEUIModelRef<FM_Commission> local_2;
         if (this.GetModify_CommissionMap().RemoveAndCopyValue(CommissionInstId, local_2))
         {
-            FEUIModelRef local_6 = local_2.opImplConv();
+            this.GetModify_CommissionInstIdMap().Remove(local_2.opImplConv());
         }
         return;
     }
@@ -631,11 +619,9 @@ FMS_CommissionData& Get(const UObject ContextObject)
 {
     return FMS_CommissionData::GetByManager(EUIInternal::GetContextManager(ContextObject));
 }
-FMS_CommissionData GetByManager(const UEUIManagerSubsystem Manager)
+FMS_CommissionData& GetByManager(const UEUIManagerSubsystem Manager)
 {
-    FMS_CommissionData __r;
-    TEUIModelRef<FMS_CommissionData> local_6 = TEUIModelRef<FMS_CommissionData>(EUIInternal::MakeModelWithManager(Manager, FMS_CommissionData::ModelId));
-    return __r;
+    return TEUIModelRef<FMS_CommissionData>(EUIInternal::MakeModelWithManager(Manager, FMS_CommissionData::ModelId)).Get();
 }
 void GetModelInfo(FEUIModelOnlyMetaInfo &inout Result)
 {

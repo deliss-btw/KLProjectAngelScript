@@ -106,12 +106,11 @@ struct FC_AnimParamDynamicAdditive : FECSComponent
     }
     float32 GetWeightByState(const FName &inout InAnimKey) const
     {
-        float32 local_23 = 0.0f;
         for (auto& local_20 : this.GetStateWeights())
         {
             if ((FName(local_20.GetKey()) == InAnimKey))
             {
-                return local_23;
+                return local_20.GetValue();
             }
         }
         return 0.0f;
@@ -130,7 +129,7 @@ struct FC_AnimParamDynamicAdditive : FECSComponent
         {
             if ((FName(local_40.GetKey()) == InAnimKey))
             {
-                local_20.Add(InAnimKey);
+                local_20.Add(InAnimKey, local_40.GetValue());
                 break;
             }
         }
@@ -224,7 +223,6 @@ class UESMAction_AnimDynamicAdditive : UESMBPBaseSpanTickAction
     }
     FName ResolveAnimKey(const FESMContext &inout Context) const
     {
-        const FESMAnimState& local_12;
         Get local_4;
         const FC_AnimState& local_6 = local_4.opCall();
         if (local_6)
@@ -232,6 +230,7 @@ class UESMAction_AnimDynamicAdditive : UESMBPBaseSpanTickAction
             int local_8 = 0;
             for (; local_8 < local_6.GetLayerNum(); ++local_8)
             {
+                const FESMAnimState& local_12 = local_6.Get(local_8);
                 if ((local_12.GetLayer() == this.AnimLayer))
                 {
                     FName local_18 = (!((local_12.GetOverrideAnimKey() == NAME_None))) ? local_12.GetOverrideAnimKey() : local_12.GetTransitionToAnimKey();
@@ -257,20 +256,18 @@ namespace FC_AnimParamDynamicAdditive
 FC_AnimParamDynamicAdditive Interpolate(const FC_AnimParamDynamicAdditive &inout A, const FC_AnimParamDynamicAdditive &inout B, const float32 T, const float32 DeltaTime)
 {
     FC_AnimParamDynamicAdditive local_26;
-    float32 local_69 = 0.0f;
     local_26.SetTargetSequenceAsset(B.GetTargetSequenceAsset());
     local_26.SetSourceSequenceAsset(B.GetSourceSequenceAsset());
     TMap<FName, float32> local_48;
     for (auto& local_68 : B.GetStateWeights())
     {
         float32 local_70 = A.GetWeightByState(local_68.GetKey());
-        local_69 = local_69 - local_70;
-        if (FMath::Abs(local_69) > 0.9f)
+        if (FMath::Abs((local_68.GetValue() - local_70)) > 0.9f)
         {
-            local_48.Add(local_68.GetKey());
+            local_48.Add(local_68.GetKey(), local_68.GetValue());
             continue;
         }
-        local_48.Add(local_68.GetKey(), FMath::Lerp(local_70, T));
+        local_48.Add(local_68.GetKey(), FMath::Lerp(local_70, local_68.GetValue(), T));
     }
     local_26.SetStateWeights(local_48);
     return local_26;

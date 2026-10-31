@@ -7,9 +7,9 @@ class US_LocalConditionSystem : UECSScriptSystem
     UFUNCTION()
     void ServerJob_HandleNewlyCreatedInstances(const FCS_LocalConditionManager &inout Manager, const FCS_LocalConditionNewlyCreatedInstances &inout C_NewlyCreatedInstances) const
     {
-        const FLocalConditionInstanceData& local_18;
         for (auto local_14 : C_NewlyCreatedInstances.NewlyCreatedInstances)
         {
+            const FLocalConditionInstanceData& local_18 = Manager.GetInstanceData(local_14);
             if (local_18.IsValid())
             {
                 const ULocalConditionTypeDefineBase local_20 = ::ConditionUtils::GetConditionTypeDefine(local_18.GetConditionConfig());
@@ -26,7 +26,7 @@ class US_LocalConditionSystem : UECSScriptSystem
     {
         for (auto& local_16 : C_RemovedInstances.RemovedInstances)
         {
-            const ULocalConditionTypeDefineBase local_18 = ::ConditionUtils::GetConditionTypeDefine(GetConditionConfig());
+            const ULocalConditionTypeDefineBase local_18 = ::ConditionUtils::GetConditionTypeDefine(local_16.GetInstanceData().GetConditionConfig());
             local_18.OnConditionUnregistered(local_16);
         }
         FECSWorldPtr local_22 = ECS::GetECSWorld();
@@ -103,7 +103,7 @@ class US_LocalConditionSystem : UECSScriptSystem
             auto local_34 = local_8.Iterator();
             for (; local_34.CanProceed;)
             {
-                local_27 = local_34.Proceed();
+                View.Remove(local_34.Proceed());
             }
             local_1 = true;
         }
@@ -115,7 +115,7 @@ class US_LocalConditionSystem : UECSScriptSystem
             local_27 = local_74.Proceed();
             if (View.Contains(local_27))
             {
-                const FLocalConditionInstanceData& local_82;
+                const FLocalConditionInstanceData& local_82 = Manager.GetInstanceData(local_27);
                 FLocalConditionInstanceData& local_84 = View[local_27];
                 if (local_84.GetCurrentValue() != local_82.GetCurrentValue())
                 {
@@ -145,7 +145,7 @@ class US_LocalConditionSystem : UECSScriptSystem
                 }
                 continue;
             }
-            View.Add(local_27);
+            View.Add(local_27, Manager.GetInstanceData(local_27));
             local_1 = true;
         }
         auto local_136 = local_60.Iterator();

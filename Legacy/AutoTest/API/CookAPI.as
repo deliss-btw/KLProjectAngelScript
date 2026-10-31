@@ -2,23 +2,39 @@ namespace AutoTest::API::CookAPI
 {
 TEUIModelRef<FVM_Cook> GetCookViewModel()
 {
-    // body not fully recovered — stub [unresolved-operand]
-    TEUIModelRef<FVM_Cook> __r; return __r;
+    UWidget_Cook local_28;
+    TEUIModelRef<FVM_Cook> local_2;
+    TArray<UWidget> local_6;
+    KLAutomation::GetAllWidgetsOfClass(local_6, UWidget_Cook, false);
+    ThrowIf(local_6.IsEmpty(), "Can't get CookViewModel, check if the Cook Widget is open.");
+    for (auto local_24 : local_6)
+    {
+        local_28 = Cast<UWidget_Cook>(local_24);
+        ThrowIf(local_28, !((local_28 != nullptr)));
+        if (local_28.Cook.Get())
+        {
+            TEUIModelRef<FVM_Cook> local_30;
+            local_30;
+            local_2 = local_30;
+            break;
+        }
+    }
+    return local_2;
 }
 TArray<FString> GetAllDisplayedIngredientNames()
 {
     int local_28 = 0;
-    ThrowIf(!(AutoTest::API::CookAPI::GetCookViewModel()), "Can't get CookViewModel, check if the Cook Widget is open.");
+    TEUIModelRef<FVM_Cook> local_2 = AutoTest::API::CookAPI::GetCookViewModel();
+    bool local_5 = !(local_2);
+    ThrowIf(local_5, "Can't get CookViewModel, check if the Cook Widget is open.");
     TArray<FString> local_10;
-    for (auto& local_24 : GetCurrentDisplayItems())
+    for (auto& local_24 : local_2.Get().GetCurrentDisplayItems())
     {
-        local_24;
-        if (!(IsValid()))
+        if (!(local_24.Get().IsValid()))
         {
             continue;
         }
-        TEUIModelRef<FM_ItemData> local_26;
-        local_26.GetItem();
+        TEUIModelRef<FM_ItemData> local_26 = local_24.Get().GetItem();
         if (local_28.GetConfig())
         {
             local_10.Add(local_28.GetConfig().GetDataName().ToString());
@@ -29,19 +45,19 @@ TArray<FString> GetAllDisplayedIngredientNames()
 int GetIngredientQuantity(const FString &inout FoodName)
 {
     int local_24 = 0;
-    ThrowIf(!(AutoTest::API::CookAPI::GetCookViewModel()), "Can't get CookViewModel, check if the Cook Widget is open.");
-    for (auto& local_20 : GetCurrentDisplayItems())
+    TEUIModelRef<FVM_Cook> local_2 = AutoTest::API::CookAPI::GetCookViewModel();
+    bool local_5 = !(local_2);
+    ThrowIf(local_5, "Can't get CookViewModel, check if the Cook Widget is open.");
+    for (auto& local_20 : local_2.Get().GetCurrentDisplayItems())
     {
-        local_20;
-        if (!(IsValid()))
+        if (!(local_20.Get().IsValid()))
         {
             continue;
         }
-        TEUIModelRef<FM_ItemData> local_22;
-        local_22.GetItem();
+        TEUIModelRef<FM_ItemData> local_22 = local_20.Get().GetItem();
         if (local_24.GetConfig() && (local_24.GetConfig().GetDataName().ToString() == FoodName))
         {
-            return GetItemNum();
+            return local_20.Get().GetItemNum();
         }
     }
     ThrowIf(true, FString().Append("Can't find ingredient with name: ").Append(FoodName));
@@ -49,25 +65,23 @@ int GetIngredientQuantity(const FString &inout FoodName)
 }
 bool PushFoodToReady(const FString &inout FoodName)
 {
-    FVM_Cook& local_8;
     int local_28 = 0;
-    ThrowIf(!(AutoTest::API::CookAPI::GetCookViewModel()), "Can't get CookViewModel, check if the Cook Widget is open.");
+    TEUIModelRef<FVM_Cook> local_2 = AutoTest::API::CookAPI::GetCookViewModel();
+    bool local_5 = !(local_2);
+    ThrowIf(local_5, "Can't get CookViewModel, check if the Cook Widget is open.");
+    FVM_Cook& local_8 = local_2.Get();
     bool local_9 = false;
     for (auto& local_24 : local_8.GetCurrentDisplayItems())
     {
-        local_24;
-        if (!(IsValid()))
+        if (!(local_24.Get().IsValid()))
         {
             continue;
         }
-        TEUIModelRef<FM_ItemData> local_26;
-        local_26.GetItem();
+        TEUIModelRef<FM_ItemData> local_26 = local_24.Get().GetItem();
         if (local_28.GetConfig() && (local_28.GetConfig().GetDataName().ToString() == FoodName))
         {
-            TEUIModelRef<FVM_Item> local_40;
-            ThrowIf((GetItemNum() <= 0), FString().Append("Ingredient ").Append(FoodName).Append(" has no available quantity to push."));
-            local_40.GetItemModels();
-            local_8.SetCurSelectedItem(local_40);
+            ThrowIf((local_24.Get().GetItemNum() <= 0), FString().Append("Ingredient ").Append(FoodName).Append(" has no available quantity to push."));
+            local_8.SetCurSelectedItem(local_24.Get().GetItemModels());
             local_8.OnClickPushFood();
             local_9 = true;
             break;
@@ -78,54 +92,35 @@ bool PushFoodToReady(const FString &inout FoodName)
 TArray<FString> GetAllReadyFoodNames()
 {
     int local_30 = 0;
-    bool local_33;
-    ThrowIf(!(AutoTest::API::CookAPI::GetCookViewModel()), "Can't get CookViewModel, check if the Cook Widget is open.");
+    TEUIModelRef<FVM_Cook> local_2 = AutoTest::API::CookAPI::GetCookViewModel();
+    ThrowIf(!(local_2), "Can't get CookViewModel, check if the Cook Widget is open.");
     TArray<FString> local_10;
-    for (auto& local_24 : GetAllCookCostFoodItems())
+    for (auto& local_24 : local_2.Get().GetAllCookCostFoodItems())
     {
         GetModel local_28 = FEUIModelContainer::GetModel(local_24);
-        if (!(local_30.IsValid() && local_30.GetItem().IsValid()))
+        if (!(!(local_30.IsValid() && local_30.GetItem().IsValid())) && local_30.GetItem().Get().GetConfig())
         {
-            local_33 = false;
-        }
-        else
-        {
-            TEUIModelRef<FM_ItemData> local_32 = local_30.GetItem();
-            local_33 = GetConfig();
-        }
-        if (local_33)
-        {
-            TEUIModelRef<FM_ItemData> local_32_2 = local_30.GetItem();
-            local_10.Add(GetConfig().GetDataName().ToString());
+            local_10.Add(local_30.GetItem().Get().GetConfig().GetDataName().ToString());
         }
     }
     return local_10;
 }
 bool CancelReadyFood(const FString &inout FoodName)
 {
-    FVM_Cook& local_8;
     int local_30 = 0;
-    ThrowIf(!(AutoTest::API::CookAPI::GetCookViewModel()), "Can't get CookViewModel, check if the Cook Widget is open.");
+    TEUIModelRef<FVM_Cook> local_2 = AutoTest::API::CookAPI::GetCookViewModel();
+    bool local_5 = !(local_2);
+    ThrowIf(local_5, "Can't get CookViewModel, check if the Cook Widget is open.");
+    FVM_Cook& local_8 = local_2.Get();
     bool local_9 = false;
     for (auto& local_24 : local_8.GetAllCookCostFoodItems())
     {
         GetModel local_28 = FEUIModelContainer::GetModel(local_24);
-        bool local_5 = !(local_30.IsValid()) || !(local_30.GetItem().IsValid());
-        if (local_5)
-        {
-            local_5 = true;
-        }
-        else
-        {
-            TEUIModelRef<FM_ItemData> local_32 = local_30.GetItem();
-            local_5 = !(GetConfig());
-        }
-        if (local_5)
+        if (!(local_30.IsValid()) || !(local_30.GetItem().IsValid()) || !(local_30.GetItem().Get().GetConfig()))
         {
             continue;
         }
-        TEUIModelRef<FM_ItemData> local_32_2 = local_30.GetItem();
-        if ((GetConfig().GetDataName().ToString() == FoodName))
+        if ((local_30.GetItem().Get().GetConfig().GetDataName().ToString() == FoodName))
         {
             local_8.SetCurReadyItem(TEUIModelRef<FVM_Item>(FEUIModelContainer::GetModel(local_24).opCall()));
             local_8.OnClickCancelReadyFood();
@@ -137,16 +132,20 @@ bool CancelReadyFood(const FString &inout FoodName)
 }
 void ClickReady()
 {
-    ThrowIf(!(AutoTest::API::CookAPI::GetCookViewModel()), "Can't get CookViewModel, check if the Cook Widget is open.");
-    OnClickReady();
+    TEUIModelRef<FVM_Cook> local_2 = AutoTest::API::CookAPI::GetCookViewModel();
+    bool local_5 = !(local_2);
+    ThrowIf(local_5, "Can't get CookViewModel, check if the Cook Widget is open.");
+    local_2.Get().OnClickReady();
     return;
 }
 void ExitCook()
 {
-    ThrowIf(!(AutoTest::API::CookAPI::GetCookViewModel()), "Can't get CookViewModel, check if the Cook Widget is open.");
+    TEUIModelRef<FVM_Cook> local_2 = AutoTest::API::CookAPI::GetCookViewModel();
+    bool local_5 = !(local_2);
+    ThrowIf(local_5, "Can't get CookViewModel, check if the Cook Widget is open.");
     FCommonDialogAnswer local_8;
     local_8.AnswerType = ECommonDialogAnswerType(1);
-    local_8.OnComfirmExit();
+    local_2.Get().OnComfirmExit(local_8);
     return;
 }
 }

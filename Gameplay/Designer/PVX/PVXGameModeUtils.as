@@ -81,7 +81,7 @@ void TrySendPendingSettlementEventToTeam(const int TeamId, const FPVXGameModeFlo
     FECSWorldPtr local_2_2 = ECS::GetECSWorld();
     for (auto& local_32 : local_14.GetPlayerProgressMap())
     {
-        if (GetTeamId() == TeamId)
+        if (local_32.GetValue().GetTeamId() == TeamId)
         {
             PVXSettlementEventUtils::TrySendPendingSettlementEvent(FECSEntity(local_32.GetKey()), FlowSettings, EventName);
         }
@@ -320,13 +320,11 @@ void SendPVXExpChangeDataTrack(const FECSEntity &inout PlayerEntity, const FECSE
 {
     FPbPlayerLogDsPvxExpChange local_10;
     int local_30 = 0;
-    int local_34 = 0;
     int local_160 = 0;
     float local_13 = (AfterExp - BeforeExp);
     float32 local_11 = float32(local_13);
     local_10.SetIsAdd((local_11 >= 0.0f));
-    int local_15 = uint(FMath::Abs(local_11));
-    local_10.SetChangeValue(local_15);
+    local_10.SetChangeValue(uint(FMath::Abs(local_11)));
     local_10.SetCamp(int(PVXGameModeUtils::GetPVXCampFromMatchData(PlayerEntity)));
     local_10.SetReason(int(Reason));
     FECSWorldPtr local_20 = ECS::GetECSWorld();
@@ -339,8 +337,7 @@ void SendPVXExpChangeDataTrack(const FECSEntity &inout PlayerEntity, const FECSE
             const FPVX_PlayerProgressData& local_32 = local_30.GetPlayerProgressMap()[PlayerEntity];
             local_10.SetPvxExp(FMath::Max(0, AfterExp));
             local_10.SetPvxLevel(FMath::Max(0, local_32.GetLevel()));
-            local_34 = FMath::Max(0, BeforeExp);
-            local_10.SetBeforeExp(local_34);
+            local_10.SetBeforeExp(FMath::Max(0, BeforeExp));
         }
     }
     if (SourceEntity.IsValid())
@@ -354,8 +351,10 @@ void SendPVXExpChangeDataTrack(const FECSEntity &inout PlayerEntity, const FECSE
             EFaction local_16 = PVXGameModeUtils::GetPVXCampFromMatchData(local_46);
             if (int(local_16) == 1)
             {
-                if (GetAvatarConfig(SourceEntity))
+                TDataObjectPtr<FAvatarPrefabConfig> local_72 = GetAvatarConfig(SourceEntity);
+                if (local_72)
                 {
+                    int local_15 = local_72.Get().DataId;
                     local_10.SetSourceEntityId(local_15);
                 }
             }
@@ -380,7 +379,7 @@ void SendPVXExpChangeDataTrack(const FECSEntity &inout PlayerEntity, const FECSE
                 local_10.SetSourceEntityType(2);
                 if (local_160.GetMonsterConfig())
                 {
-                    local_10.SetSourceEntityId(local_34);
+                    local_10.SetSourceEntityId(local_160.GetMonsterConfig().Get().MonsterId);
                 }
                 local_10.SetSourceEntitySessionId(SourceEntity.GetId());
             }

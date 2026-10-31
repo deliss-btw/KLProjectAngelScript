@@ -218,6 +218,7 @@ struct FAttributeSampleInfo
             local_4.opArrow().SetBit(int(Requester), false);
             if (local_4.opArrow().IsEmpty())
             {
+                this.SamplerRequesters.Remove(Sampler);
             }
         }
         return;

@@ -42,7 +42,7 @@ TDataObjectPtr<FMailConfig> __FMailSettingsConfig_GetItemExceedLimitMail(const T
         FMailSettingsConfig local_42;
         return local_42.GetItemExceedLimitMail();
     }
-    return GetItemExceedLimitMail();
+    return DataObject.Get().GetItemExceedLimitMail();
 }
 UFUNCTION()
 FMailSettingsConfig CastToFMailSettingsConfig(const TDataObjectPtr<FMailSettingsConfig> &inout DataObject)

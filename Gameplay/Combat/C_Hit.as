@@ -1072,7 +1072,7 @@ struct FC_HitReaction : FECSComponent
     {
         if (this.GetStackedHitStates().Num() == 0)
         {
-            return EHitReactionState(0);
+            return EHitReactionState::None;
         }
         int local_6 = this.GetStackedHitStates().Num() - 1;
         for (; local_6 >= 0; --local_6)
@@ -1082,7 +1082,7 @@ struct FC_HitReaction : FECSComponent
                 return this.GetStackedHitStates()[local_6];
             }
         }
-        return EHitReactionState(0);
+        return EHitReactionState::None;
     }
     int PushHitState(const EHitReactionState HitState)
     {
@@ -1097,7 +1097,7 @@ struct FC_HitReaction : FECSComponent
     {
         if (Index >= 0 && (Index < this.GetStackedHitStates().Num()))
         {
-            this.GetModify_StackedHitStates()[Index] = EHitReactionState(0);
+            this.GetModify_StackedHitStates()[Index] = EHitReactionState::None;
         }
         int local_7 = this.GetStackedHitStates().Num() - 1;
         for (; local_7 >= 0; --local_7)

@@ -293,14 +293,11 @@ struct FM_CommissionPopup : FEUIModel
         this.SetbCommissionFinishWaitTeamPageShowEnd(false);
         if (this.GetCommissionFinishReward())
         {
-            TEUIModelRef<FVM_CommissionFinish> local_10 = this.GetCommissionFinishReward();
-            true.SetbPendingClose();
+            this.GetCommissionFinishReward().Get().SetbPendingClose(true);
         }
         if (this.GetCommissionFinishTeam())
         {
-            bool local_7_2 = true;
-            TEUIModelRef<FVM_CommissionFinish> local_10_2 = this.GetCommissionFinishTeam();
-            local_7_2.SetbPendingClose();
+            this.GetCommissionFinishTeam().Get().SetbPendingClose(true);
         }
         return;
     }
@@ -314,14 +311,11 @@ struct FM_CommissionPopup : FEUIModel
         this.SetbCommissionFinishWaitTeamPageShowEnd(false);
         if (this.GetCommissionFinishReward())
         {
-            TEUIModelRef<FVM_CommissionFinish> local_4 = this.GetCommissionFinishReward();
-            true.SetbPendingClose();
+            this.GetCommissionFinishReward().Get().SetbPendingClose(true);
         }
         if (this.GetCommissionFinishTeam())
         {
-            bool local_1_2 = true;
-            TEUIModelRef<FVM_CommissionFinish> local_4_2 = this.GetCommissionFinishTeam();
-            local_1_2.SetbPendingClose();
+            this.GetCommissionFinishTeam().Get().SetbPendingClose(true);
         }
         if (this.GetCommissionFullScreenRewardPopupId() != INDEX_NONE)
         {
@@ -372,8 +366,7 @@ struct FM_CommissionPopup : FEUIModel
         this.SetbCommissionFinishMedalCalShowTimeEnd(false);
         if (this.GetCommissionFinishReward())
         {
-            TEUIModelRef<FVM_CommissionFinish> local_4 = this.GetCommissionFinishReward();
-            true.SetStateChange();
+            this.GetCommissionFinishReward().Get().SetStateChange(true);
         }
         return;
     }
@@ -382,8 +375,7 @@ struct FM_CommissionPopup : FEUIModel
         this.SetbCommissionFinishWaitTeamPageShow(false);
         if (this.GetCommissionFinishReward())
         {
-            TEUIModelRef<FVM_CommissionFinish> local_4 = this.GetCommissionFinishReward();
-            true.SetbPendingClose();
+            this.GetCommissionFinishReward().Get().SetbPendingClose(true);
         }
         return;
     }
@@ -404,11 +396,8 @@ struct FM_CommissionPopup : FEUIModel
         this.SetbCommissionFinishWaitTeamPageShowEnd(false);
         if (this.GetCommissionFinishTeam())
         {
-            TEUIModelRef<FVM_CommissionFinish> local_4 = this.GetCommissionFinishTeam();
-            true.SetbCanClose();
-            bool local_1 = true;
-            TEUIModelRef<FVM_CommissionFinish> local_4_2 = this.GetCommissionFinishTeam();
-            local_1.SetbPendingClose();
+            this.GetCommissionFinishTeam().Get().SetbCanClose(true);
+            this.GetCommissionFinishTeam().Get().SetbPendingClose(true);
         }
         return;
     }
@@ -493,8 +482,7 @@ struct FM_CommissionPopup : FEUIModel
             this.OnCommissionEndTeamPageShowCloseButton();
             if (this.GetCommissionFinishTeam())
             {
-                TEUIModelRef<FVM_CommissionFinish> local_16 = this.GetCommissionFinishTeam();
-                true.SetbPendingClose();
+                this.GetCommissionFinishTeam().Get().SetbPendingClose(true);
             }
         }
         return;
@@ -533,7 +521,7 @@ struct FM_CommissionPopup : FEUIModel
         {
             return;
         }
-        FVM_CommissionFinish local_4;
+        FVM_CommissionFinish& local_4 = VMRef.Get();
         local_4.SetbShowSkipButton(bShow);
         if (bShow)
         {
@@ -886,11 +874,9 @@ FM_CommissionPopup& Create(const UObject ContextObject)
 {
     return FM_CommissionPopup::CreateByManager(EUIInternal::GetContextManager(ContextObject));
 }
-FM_CommissionPopup CreateByManager(const UEUIManagerSubsystem Manager)
+FM_CommissionPopup& CreateByManager(const UEUIManagerSubsystem Manager)
 {
-    FM_CommissionPopup __r;
-    TEUIModelRef<FM_CommissionPopup> local_6 = TEUIModelRef<FM_CommissionPopup>(EUIInternal::MakeModelWithManager(Manager, FM_CommissionPopup::ModelId));
-    return __r;
+    return TEUIModelRef<FM_CommissionPopup>(EUIInternal::MakeModelWithManager(Manager, FM_CommissionPopup::ModelId)).Get();
 }
 void GetModelInfo(FEUIModelOnlyMetaInfo &inout Result)
 {

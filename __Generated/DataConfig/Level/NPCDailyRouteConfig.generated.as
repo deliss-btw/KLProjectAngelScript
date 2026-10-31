@@ -3,7 +3,6 @@ namespace __FNPCDailyRouteConfigFunctions
 UFUNCTION()
 FName __FNPCDailyRouteConfig_GetRouteSourceId(const TDataObjectPtr<FNPCDailyRouteConfig> &inout DataObject)
 {
-    FName __r;
     if ((DataObject == nullptr))
     {
         if (!(EUIGlobals::GIsDuringPropertyConversion))
@@ -13,12 +12,11 @@ FName __FNPCDailyRouteConfig_GetRouteSourceId(const TDataObjectPtr<FNPCDailyRout
         FNPCDailyRouteConfig local_24;
         return local_24.RouteSourceId;
     }
-    return __r;
+    return DataObject.Get().RouteSourceId;
 }
 UFUNCTION()
 FName __FNPCDailyRouteConfig_GetPlanName(const TDataObjectPtr<FNPCDailyRouteConfig> &inout DataObject)
 {
-    FName __r;
     if ((DataObject == nullptr))
     {
         if (!(EUIGlobals::GIsDuringPropertyConversion))
@@ -28,12 +26,11 @@ FName __FNPCDailyRouteConfig_GetPlanName(const TDataObjectPtr<FNPCDailyRouteConf
         FNPCDailyRouteConfig local_24;
         return local_24.PlanName;
     }
-    return __r;
+    return DataObject.Get().PlanName;
 }
 UFUNCTION()
 TArray<FNPCDailyRouteNodeConfig> __FNPCDailyRouteConfig_GetNodes(const TDataObjectPtr<FNPCDailyRouteConfig> &inout DataObject)
 {
-    TArray<FNPCDailyRouteNodeConfig> __r;
     if ((DataObject == nullptr))
     {
         if (!(EUIGlobals::GIsDuringPropertyConversion))
@@ -43,7 +40,7 @@ TArray<FNPCDailyRouteNodeConfig> __FNPCDailyRouteConfig_GetNodes(const TDataObje
         FNPCDailyRouteConfig local_24;
         return local_24.Nodes;
     }
-    return __r;
+    return DataObject.Get().Nodes;
 }
 UFUNCTION()
 int __FNPCDailyRouteConfig_GetLoopStartIndex(const TDataObjectPtr<FNPCDailyRouteConfig> &inout DataObject)

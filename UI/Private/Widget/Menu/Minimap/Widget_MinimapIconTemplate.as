@@ -66,8 +66,7 @@ class UWidget_MinimapIconTemplate : UEUIUserWidget
     {
         if (this.OwningMinimap != nullptr)
         {
-            float32 local_4 = this.OwningMinimap.GetMapScale();
-            local_4.SetMapScale();
+            this.MinimapIconHelper.Get().SetMapScale(this.OwningMinimap.GetMapScale());
         }
         return;
     }
@@ -88,14 +87,14 @@ class UWidget_MinimapIconTemplate : UEUIUserWidget
         {
             return FEventReply::Unhandled();
         }
-        if (FSlateApplication::Get().HasTraveledFarEnoughToTriggerDrag(MouseEvent))
+        if (FSlateApplication::Get().HasTraveledFarEnoughToTriggerDrag(MouseEvent, this.MouseDownPosition.GetValue()))
         {
             this.MouseDownPosition.Reset();
             return FEventReply::Unhandled();
         }
+        FVM_MinimapIconHoverProvider& local_50 = this.HoverProvider.Get();
         if ((MouseEvent.GetEffectingButton() == EKeys::LeftMouseButton))
         {
-            FVM_MinimapIconHoverProvider& local_50;
             if (local_50.GetbAllowMark() && local_50.GetbAllowGuide())
             {
                 if (::MarkUtil::IsEntityMarkedBySelf(this.MinimapIcon.opArrow().GetContext().GetLocalPlayer(), this.MinimapIcon.opArrow().GetSpot().opArrow().GetEntityId()) || ::MarkUtil::IsSelfCreateMark(this.MinimapIcon.opArrow().GetContext().GetLocalPlayer(), this.MinimapIcon.opArrow().GetSpot().opArrow().GetEntityId()) || (::FGuidingPathUtils::GetGuidingPathTargetEntityID(this.MinimapIcon.opArrow().GetContext().GetLocalPlayer()) == this.MinimapIcon.opArrow().GetSpot().opArrow().GetEntityId()))
@@ -112,7 +111,6 @@ class UWidget_MinimapIconTemplate : UEUIUserWidget
         if ((MouseEvent.GetEffectingButton() == this.MarkMouseButton))
         {
             FCommonTipsParam local_86;
-            FVM_MinimapIconHoverProvider& local_50;
             if (local_50.GetbAllowMark())
             {
                 this.HoverProvider_FastMarkEntity();
@@ -153,7 +151,6 @@ class UWidget_MinimapIconTemplate : UEUIUserWidget
         if ((MouseEvent.GetEffectingButton() == this.GuideMouseButton))
         {
             FCommonTipsParam local_86;
-            FVM_MinimapIconHoverProvider& local_50;
             if (local_50.GetbAllowGuide())
             {
                 local_50.SetGuideTarget();
@@ -175,8 +172,8 @@ class UWidget_MinimapIconTemplate : UEUIUserWidget
         }
         if (this.MinimapIconHelper.IsValid())
         {
-            FVM_MinimapIconHoverProvider& local_8;
-            1.SetbHasMouseHover();
+            this.MinimapIconHelper.Get().SetbHasMouseHover(true);
+            FVM_MinimapIconHoverProvider& local_8 = this.HoverProvider.Get();
             if (local_8)
             {
                 local_8.ShowHover(false);
@@ -194,8 +191,8 @@ class UWidget_MinimapIconTemplate : UEUIUserWidget
         }
         if (this.MinimapIconHelper.IsValid())
         {
-            FVM_MinimapIconHoverProvider& local_8;
-            0.SetbHasMouseHover();
+            this.MinimapIconHelper.Get().SetbHasMouseHover(false);
+            FVM_MinimapIconHoverProvider& local_8 = this.HoverProvider.Get();
             if (local_8)
             {
                 local_8.HideHover();
@@ -208,7 +205,7 @@ class UWidget_MinimapIconTemplate : UEUIUserWidget
     {
         if (this.MouseDownPosition.IsSet())
         {
-            if (FSlateApplication::Get().HasTraveledFarEnoughToTriggerDrag(MouseEvent))
+            if (FSlateApplication::Get().HasTraveledFarEnoughToTriggerDrag(MouseEvent, this.MouseDownPosition.GetValue()))
             {
                 this.MouseDownPosition.Reset();
             }
@@ -297,7 +294,7 @@ class UWidget_MinimapIconTemplate : UEUIUserWidget
     UFUNCTION()
     void HandleMinimapSelectionChanged(const bool bSelected)
     {
-        FVM_MinimapIconHoverProvider& local_2;
+        FVM_MinimapIconHoverProvider& local_2 = this.HoverProvider.Get();
         if (local_2)
         {
             if (bSelected)
@@ -374,8 +371,8 @@ class UWidget_MinimapIconTemplate : UEUIUserWidget
     UFUNCTION()
     bool HoverProvider_bAllowGuide() const
     {
-        FVM_MinimapIconHoverProvider& local_2;
         bool local_5;
+        FVM_MinimapIconHoverProvider& local_2 = this.HoverProvider.Get();
         if (local_2)
         {
             local_5 = local_2.GetbAllowGuide();
@@ -389,8 +386,8 @@ class UWidget_MinimapIconTemplate : UEUIUserWidget
     UFUNCTION()
     bool HoverProvider_bAllowMark() const
     {
-        FVM_MinimapIconHoverProvider& local_2;
         bool local_5;
+        FVM_MinimapIconHoverProvider& local_2 = this.HoverProvider.Get();
         if (local_2)
         {
             local_5 = local_2.GetbAllowMark();
@@ -404,8 +401,8 @@ class UWidget_MinimapIconTemplate : UEUIUserWidget
     UFUNCTION()
     bool HoverProvider_bAllowTeleport() const
     {
-        FVM_MinimapIconHoverProvider& local_2;
         bool local_5;
+        FVM_MinimapIconHoverProvider& local_2 = this.HoverProvider.Get();
         if (local_2)
         {
             local_5 = local_2.GetbAllowTeleport();
@@ -474,8 +471,8 @@ class UWidget_MinimapIconTemplate : UEUIUserWidget
     }
     void HandleObservedModelChanges(FEUIReactiveSubscriberIterator &inout It)
     {
-        FVM_MinimapIcon& local_6;
         TEUIModelRef<FVM_MinimapIcon> local_2 = this.MinimapIcon.AsRef();
+        FVM_MinimapIcon& local_6 = local_2.Get();
         for (; It; )
         {
             FEUIReactiveSubscriberTrackScope local_56 = FEUIReactiveSubscriberTrackScope(It);

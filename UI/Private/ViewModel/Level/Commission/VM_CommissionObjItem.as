@@ -112,11 +112,10 @@ struct FVM_CommissionObjItemModel : FEUIViewModel
                 int local_5;
                 int local_3;
                 local_5 = this.GetProgress().GetSuccessProgressValue();
-                local_3 = ::ConditionUtils::GetTargetValue(GetFinishCondition());
+                local_3 = ::ConditionUtils::GetTargetValue(this.GetSingleObjectiveConfig().Get().GetFinishCondition());
                 if ((local_3 > 20 || (local_3 < 0)))
                 {
-                    FString local_12;
-                    XWarning(ELog(16), local_12);
+                    XWarning(ELog(16), FString::Format("CommissionObjItem: SegmentProgress TargetValue out of range: {0}, ConfigId: {1}", local_3, this.GetSingleObjectiveConfig().Get().DataId));
                     local_3 = FMath::Clamp(local_3, 0, 20);
                 }
                 if (this.IsReverseProgress())
@@ -168,17 +167,7 @@ struct FVM_CommissionObjItemModel : FEUIViewModel
     }
     int GetObjectProgressUIType() const
     {
-        int local_2 = 0;
-        int local_4;
-        if (this.GetSingleObjectiveConfig().IsSet())
-        {
-            local_4 = local_2;
-        }
-        else
-        {
-            local_4 = 0;
-        }
-        return local_4;
+        return this.GetSingleObjectiveConfig().IsSet() ? int(this.GetSingleObjectiveConfig().Get().ProgressUIType) : 0;
     }
     bool IsMonsterHPBar() const
     {
@@ -186,7 +175,7 @@ struct FVM_CommissionObjItemModel : FEUIViewModel
         {
             return false;
         }
-        if (0 != 2)
+        if (int(this.GetSingleObjectiveConfig().Get().ProgressTextType) != 2)
         {
             return false;
         }
@@ -200,17 +189,14 @@ struct FVM_CommissionObjItemModel : FEUIViewModel
     }
     bool IsReverseProgress() const
     {
-        int local_2 = 0;
         if (!(this.GetSingleObjectiveConfig().IsSet()))
         {
             return false;
         }
-        return (local_2 == 1);
+        return (int(this.GetSingleObjectiveConfig().Get().ProgressTextOrderType) == 1);
     }
     FText GetObjectProgressNumber() const
     {
-        int local_19 = 0;
-        FString local_92;
         int local_126;
         if (this.IsMonsterHPBar())
         {
@@ -219,7 +205,7 @@ struct FVM_CommissionObjItemModel : FEUIViewModel
         FText local_18;
         if (this.GetSingleObjectiveConfig().IsSet())
         {
-            if (local_19 == 1)
+            if (int(this.GetSingleObjectiveConfig().Get().ProgressTextType) == 1)
             {
                 TArray<FInstancedStruct> local_22;
                 if (!(local_22.IsEmpty()))
@@ -232,9 +218,10 @@ struct FVM_CommissionObjItemModel : FEUIViewModel
                     if (local_1)
                     {
                         FInstancedStruct::GetPtr local_76;
-                        if (local_76.opCall())
+                        TConstRawPtr<FGuideRegionData> local_78 = local_76.opCall();
+                        if (local_78)
                         {
-                            if (!(IsPoint()) && ::FASCommonUtils::GetEntityLocation(local_34).IsInRegion())
+                            if (!(local_78.Get().IsPoint()) && local_78.Get().IsInRegion(::FASCommonUtils::GetEntityLocation(local_34)))
                             {
                                 return FText(NSLOCTEXT("CommissionObjItem", "GuideObjHasInRegion", "已进入任务区域"));
                             }
@@ -242,16 +229,16 @@ struct FVM_CommissionObjItemModel : FEUIViewModel
                         local_18 = FText::AsNumber(FMath::FloorToInt(local_40 / 100.0), FNumberFormattingOptions::DefaultNoGrouping());
                         return FText::Format(INVTEXT("{0}m"), local_18);
                     }
-                    XWarning(ELog(16), local_92);
+                    XWarning(ELog(16), FString::Format("CommissionObjItem: TryCalculateGuideDistance failed, ObjectiveId:{0}", this.GetSingleObjectiveConfig().Get().DataId));
                 }
                 else
                 {
-                    XWarning(ELog(16), local_92);
+                    XWarning(ELog(16), FString::Format("CommissionObjItem: ProgressTextType is Distance but GuideDataList is empty, ObjectiveId:{0}", this.GetSingleObjectiveConfig().Get().DataId));
                 }
                 return local_18;
             }
-            int local_2 = ::ConditionUtils::GetTargetValue(GetFinishCondition());
-            int local_3 = ::ConditionUtils::GetTargetValue(GetFailCondition());
+            int local_2 = ::ConditionUtils::GetTargetValue(this.GetSingleObjectiveConfig().Get().GetFinishCondition());
+            int local_3 = ::ConditionUtils::GetTargetValue(this.GetSingleObjectiveConfig().Get().GetFailCondition());
             TMap<FString, FFormatArgumentValue> local_114;
             local_114.Add("ProgressValue", FFormatArgumentValue(this.GetProgress().GetSuccessProgressValue()));
             local_114.Add("TargetValue", FFormatArgumentValue(local_2));
@@ -259,7 +246,7 @@ struct FVM_CommissionObjItemModel : FEUIViewModel
             local_114.Add("FailProgressValue", FFormatArgumentValue(this.GetProgress().GetFailedProgressValue()));
             local_114.Add("FailTargetValue", FFormatArgumentValue(local_3));
             local_114.Add("FailRemainValue", FFormatArgumentValue(FMath::Max(0, local_3 - this.GetProgress().GetFailedProgressValue())));
-            if (local_19 == 2)
+            if (int(this.GetSingleObjectiveConfig().Get().ProgressTextType) == 2)
             {
                 if (local_2 > 0)
                 {
@@ -276,14 +263,15 @@ struct FVM_CommissionObjItemModel : FEUIViewModel
                 return FText::Format(INVTEXT("{0}%"), FText::AsNumber(local_126, FNumberFormattingOptions::DefaultNoGrouping()));
             }
             FText local_130;
-            if (local_19 == 3)
+            if (int(this.GetSingleObjectiveConfig().Get().ProgressTextType) == 3)
             {
                 local_130 = this.IsReverseProgress() ? INVTEXT("({RemainValue}/{TargetValue})") : INVTEXT("({ProgressValue}/{TargetValue})");
             }
             else
             {
-                if (local_19 == 0)
+                if (int(this.GetSingleObjectiveConfig().Get().ProgressTextType) == 0)
                 {
+                    local_130 = this.GetSingleObjectiveConfig().Get().ObjectiveProgressFormat;
                 }
             }
             if (local_130.IsEmpty())
@@ -296,11 +284,11 @@ struct FVM_CommissionObjItemModel : FEUIViewModel
     }
     FText GetObjectProgressDesc() const
     {
-        FText local_42;
         if (this.GetSingleObjectiveConfig().IsSet())
         {
-            int local_3 = ::ConditionUtils::GetTargetValue(GetFinishCondition());
-            int local_2 = ::ConditionUtils::GetTargetValue(GetFailCondition());
+            FText local_42;
+            int local_3 = ::ConditionUtils::GetTargetValue(this.GetSingleObjectiveConfig().Get().GetFinishCondition());
+            int local_2 = ::ConditionUtils::GetTargetValue(this.GetSingleObjectiveConfig().Get().GetFailCondition());
             TMap<FString, FFormatArgumentValue> local_24;
             local_24.Add("ProgressValue", FFormatArgumentValue(this.GetProgress().GetSuccessProgressValue()));
             local_24.Add("TargetValue", FFormatArgumentValue(local_3));
@@ -308,6 +296,7 @@ struct FVM_CommissionObjItemModel : FEUIViewModel
             local_24.Add("FailProgressValue", FFormatArgumentValue(this.GetProgress().GetFailedProgressValue()));
             local_24.Add("FailTargetValue", FFormatArgumentValue(local_2));
             local_24.Add("FailRemainValue", FFormatArgumentValue(FMath::Max(0, local_2 - this.GetProgress().GetFailedProgressValue())));
+            FText::Format(this.GetSingleObjectiveConfig().Get().ObjectiveTitle, local_42);
             if (this.GetSubObj())
             {
                 local_42 = FText::Format(NSLOCTEXT("CommissionObjItem", "SubObjPreText", "[可选]{0}"), local_42);
@@ -351,7 +340,7 @@ struct FVM_CommissionObjItemModel : FEUIViewModel
         int local_8 = 0;
         if (this.GetSingleObjectiveConfig())
         {
-            local_8 = ::ConditionUtils::GetTargetValue(GetFinishCondition());
+            local_8 = ::ConditionUtils::GetTargetValue(this.GetSingleObjectiveConfig().Get().GetFinishCondition());
         }
         if (local_8 == 0)
         {
@@ -552,11 +541,9 @@ FVM_CommissionObjItemModel& Create(const UObject ContextObject, const TDataObjec
 {
     return FVM_CommissionObjItemModel::CreateByManager(EUIInternal::GetContextManager(ContextObject), SingleObjectiveConfig, EObjectiveItemUIState(UIState), Progress, SubObj, DefaultText);
 }
-FVM_CommissionObjItemModel CreateByManager(const UEUIManagerSubsystem Manager, const TDataObjectPtr<FObjectiveSingleConfig> &inout SingleObjectiveConfig, const EObjectiveItemUIState UIState, const FCommissionTargetProgress &inout Progress, const bool SubObj, const FText &inout DefaultText)
+FVM_CommissionObjItemModel& CreateByManager(const UEUIManagerSubsystem Manager, const TDataObjectPtr<FObjectiveSingleConfig> &inout SingleObjectiveConfig, const EObjectiveItemUIState UIState, const FCommissionTargetProgress &inout Progress, const bool SubObj, const FText &inout DefaultText)
 {
-    FVM_CommissionObjItemModel __r;
-    TEUIModelRef<FVM_CommissionObjItemModel> local_6 = TEUIModelRef<FVM_CommissionObjItemModel>(EUIInternal::MakeModelWithManager_Generic(Manager, FVM_CommissionObjItemModel::ModelId, 0, SingleObjectiveConfig, UIState, Progress, SubObj, DefaultText));
-    return __r;
+    return TEUIModelRef<FVM_CommissionObjItemModel>(EUIInternal::MakeModelWithManager_Generic(Manager, FVM_CommissionObjItemModel::ModelId, 0, SingleObjectiveConfig, UIState, Progress, SubObj, DefaultText)).Get();
 }
 void GetModelInfo(FEUIViewModelMetaInfo &inout Result)
 {
@@ -735,7 +722,6 @@ namespace __GeneratedProperties_FVM_CommissionObjItemModel
 {
 UScriptStruct StaticStruct()
 {
-    UScriptStruct local_2;
-    return local_2;
+    return __GeneratedProperties_FVM_CommissionObjItemModel.Get();
 }
 }

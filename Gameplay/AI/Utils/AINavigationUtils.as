@@ -52,8 +52,7 @@ float32 GetToleranceDistance()
 {
     if (UGameplayConfigsManager::GetAIMoveSettings().IsValid())
     {
-        UAIMoveSettings local_4;
-        return local_4.DistanceToleranceToPathPoints;
+        return UGameplayConfigsManager::GetAIMoveSettings().Get().DistanceToleranceToPathPoints;
     }
     return 10.0f;
 }

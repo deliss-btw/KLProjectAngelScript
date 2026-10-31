@@ -50,7 +50,7 @@ class UWidget_PVX_Match_CampusItem : UEUIUserWidget
     {
         if (this.PVX_Match_CampusItem.IsValid())
         {
-            1.SetbHovered();
+            this.PVX_Match_CampusItem.Get().SetbHovered(true);
         }
         return;
     }
@@ -59,7 +59,7 @@ class UWidget_PVX_Match_CampusItem : UEUIUserWidget
     {
         if (this.PVX_Match_CampusItem.IsValid())
         {
-            0.SetbHovered();
+            this.PVX_Match_CampusItem.Get().SetbHovered(false);
         }
         return;
     }
@@ -70,8 +70,7 @@ class UWidget_PVX_Match_CampusItem : UEUIUserWidget
         if (this.PVX_Match_CampusItem.IsValid())
         {
             FEUIMessageBus::PublishWithWidgetReferencedModels(EUIMessageBus);
-            TEUIModelWeakRef<FVM_PVX_Match_CampusItem> local_10;
-            local_4.ClickCampusItem = local_10;
+            local_4.ClickCampusItem = TEUIModelWeakRef<FVM_PVX_Match_CampusItem>(this.PVX_Match_CampusItem.Get());
         }
         return;
     }
@@ -139,8 +138,8 @@ class UWidget_PVX_Match_CampusItem : UEUIUserWidget
     }
     void HandleObservedModelChanges(FEUIReactiveSubscriberIterator &inout It)
     {
-        FVM_PVX_Match_CampusItem& local_6;
         TEUIModelRef<FVM_PVX_Match_CampusItem> local_2 = this.PVX_Match_CampusItem.AsRef();
+        FVM_PVX_Match_CampusItem& local_6 = local_2.Get();
         for (; It; )
         {
             FEUIReactiveSubscriberTrackScope local_56 = FEUIReactiveSubscriberTrackScope(It);

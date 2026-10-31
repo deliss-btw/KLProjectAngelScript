@@ -210,8 +210,10 @@ void BeginMountAsDriver(const FECSEntity &inout RiderEntity, const FFPTime &inou
         Remove local_84;
         local_84.opCall();
         Modify local_88;
-        if (local_88.opCall())
+        FC_TransformHistory& local_90 = local_88.opCall();
+        if (local_90)
         {
+            local_90.Clear();
         }
         local_16.MoveTo(local_62.GetPosition(), local_62.GetRotation(), FFPTime(-1));
         if (!(local_94.opCall()))

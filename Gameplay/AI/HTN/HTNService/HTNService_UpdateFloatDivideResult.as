@@ -28,14 +28,13 @@ class UHTNService_UpdateFloatDivideResult : UHTNService_ECSScriptBase
     }
     void UpdateResult(const FHTNContext &inout Context)
     {
-        float32 local_1 = 0.0f;
-        FAISmartValueContext local_4 = Context.opImplConv();
-        FAISmartValueContext local_4_2 = Context.opImplConv();
+        float32 local_5 = this.ValueA.GetValue(Context.opImplConv());
+        float32 local_1 = this.ValueB.GetValue(Context.opImplConv());
         if (local_1 == 0.0f)
         {
             return;
         }
-        HTNNode::SetWorldStateValueAsFloat(Context, this.Result, 0.0f / local_1);
+        HTNNode::SetWorldStateValueAsFloat(Context, this.Result, local_5 / local_1);
         return;
     }
 }

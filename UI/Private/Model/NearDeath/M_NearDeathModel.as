@@ -161,11 +161,9 @@ FMS_NearDeathModel& Get(const UObject ContextObject)
 {
     return FMS_NearDeathModel::GetByManager(EUIInternal::GetContextManager(ContextObject));
 }
-FMS_NearDeathModel GetByManager(const UEUIManagerSubsystem Manager)
+FMS_NearDeathModel& GetByManager(const UEUIManagerSubsystem Manager)
 {
-    FMS_NearDeathModel __r;
-    TEUIModelRef<FMS_NearDeathModel> local_6 = TEUIModelRef<FMS_NearDeathModel>(EUIInternal::MakeModelWithManager(Manager, FMS_NearDeathModel::ModelId));
-    return __r;
+    return TEUIModelRef<FMS_NearDeathModel>(EUIInternal::MakeModelWithManager(Manager, FMS_NearDeathModel::ModelId)).Get();
 }
 void GetModelInfo(FEUIModelOnlyMetaInfo &inout Result)
 {

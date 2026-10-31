@@ -61,8 +61,7 @@ struct FVM_EquipmentSelectListItem : FEUIViewModel
     void SelectEquipment()
     {
         Get local_4;
-        TEUIModelWeakRef<FVM_EquipmentEditPage> local_6 = this.GetEquipmentEditPage();
-        local_4.opCall().GetEquipment().SetEquipment();
+        this.GetEquipmentEditPage().Get().SetEquipment(local_4.opCall().GetEquipment());
         return;
     }
     uint64 GetEquipmentUid() const property
@@ -156,11 +155,9 @@ FVM_EquipmentSelectListItem& Create(const UObject ContextObject, const uint64 Eq
 {
     return FVM_EquipmentSelectListItem::CreateByManager(EUIInternal::GetContextManager(ContextObject), EquipmentUid);
 }
-FVM_EquipmentSelectListItem CreateByManager(const UEUIManagerSubsystem Manager, const uint64 EquipmentUid)
+FVM_EquipmentSelectListItem& CreateByManager(const UEUIManagerSubsystem Manager, const uint64 EquipmentUid)
 {
-    FVM_EquipmentSelectListItem __r;
-    TEUIModelRef<FVM_EquipmentSelectListItem> local_6 = TEUIModelRef<FVM_EquipmentSelectListItem>(EUIInternal::MakeModelWithManager_Generic(Manager, FVM_EquipmentSelectListItem::ModelId, 0, EquipmentUid));
-    return __r;
+    return TEUIModelRef<FVM_EquipmentSelectListItem>(EUIInternal::MakeModelWithManager_Generic(Manager, FVM_EquipmentSelectListItem::ModelId, 0, EquipmentUid)).Get();
 }
 void GetModelInfo(FEUIViewModelMetaInfo &inout Result)
 {
@@ -215,7 +212,6 @@ namespace __GeneratedProperties_FVM_EquipmentSelectListItem
 {
 UScriptStruct StaticStruct()
 {
-    UScriptStruct local_2;
-    return local_2;
+    return __GeneratedProperties_FVM_EquipmentSelectListItem.Get();
 }
 }

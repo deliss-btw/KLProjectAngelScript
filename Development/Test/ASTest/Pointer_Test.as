@@ -14,8 +14,7 @@ class UPointerTestClass1 : UObject
 
 int PointerTest1(const TObjectPtr<UPointerTestClass1> &inout Ptr)
 {
-    UPointerTestClass1 local_2;
-    if (local_2 != nullptr)
+    if (Ptr.Get() != nullptr)
     {
         return Ptr.opArrow().GetA();
     }

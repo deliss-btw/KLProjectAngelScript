@@ -78,11 +78,9 @@ FVM_InteractTarget& Create(const UObject ContextObject, const FECSEntity &inout 
 {
     return FVM_InteractTarget::CreateByManager(EUIInternal::GetContextManager(ContextObject), TargetEntity);
 }
-FVM_InteractTarget CreateByManager(const UEUIManagerSubsystem Manager, const FECSEntity &inout TargetEntity)
+FVM_InteractTarget& CreateByManager(const UEUIManagerSubsystem Manager, const FECSEntity &inout TargetEntity)
 {
-    FVM_InteractTarget __r;
-    TEUIModelRef<FVM_InteractTarget> local_6 = TEUIModelRef<FVM_InteractTarget>(EUIInternal::MakeModelWithManager_Generic(Manager, FVM_InteractTarget::ModelId, 0, TargetEntity));
-    return __r;
+    return TEUIModelRef<FVM_InteractTarget>(EUIInternal::MakeModelWithManager_Generic(Manager, FVM_InteractTarget::ModelId, 0, TargetEntity)).Get();
 }
 void GetModelInfo(FEUIViewModelMetaInfo &inout Result)
 {
@@ -124,7 +122,6 @@ namespace __GeneratedProperties_FVM_InteractTarget
 {
 UScriptStruct StaticStruct()
 {
-    UScriptStruct local_2;
-    return local_2;
+    return __GeneratedProperties_FVM_InteractTarget.Get();
 }
 }

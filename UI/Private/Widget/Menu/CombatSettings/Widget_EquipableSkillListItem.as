@@ -53,8 +53,8 @@ class UWidget_EquipableSkillListItem : UEUIUserWidget
     }
     void HandleObservedModelChanges(FEUIReactiveSubscriberIterator &inout It)
     {
-        FVM_SelectableItem& local_6;
         TEUIModelRef<FVM_SelectableItem> local_2 = this.SelectableItem.AsRef();
+        FVM_SelectableItem& local_6 = local_2.Get();
         for (; It; )
         {
             FEUIReactiveSubscriberTrackScope local_56 = FEUIReactiveSubscriberTrackScope(It);

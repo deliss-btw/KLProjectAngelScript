@@ -11,11 +11,11 @@ class US_ExecuteSystem : UECSScriptSystem
     UFUNCTION()
     void Monitor_OnExecutedConfigAssigned(const FECSEntity &inout Entity, const FC_ExecutedConfig &inout ExecutedConfig) const
     {
-        const FExecutionConfigDataObject& local_4;
         if (!(ExecutedConfig.ExecutionConfigData))
         {
             return;
         }
+        const FExecutionConfigDataObject& local_4 = ExecutedConfig.ExecutionConfigData.Get();
         TArray<FSoftObjectPath> local_8;
         if (!(local_4.ChaosKnotFX.IsNull()))
         {
@@ -47,33 +47,19 @@ class US_ExecuteSystem : UECSScriptSystem
         Has local_4;
         FC_ExecutedConfig local_12;
         int local_18 = 0;
-        bool local_81 = false;
         if (!(local_4.opCall()))
         {
             return;
         }
-        bool local_5 = !(local_12) || !(local_12.ExecutionConfigData) || !(local_18);
-        if (local_5)
+        if (!(local_12) || !(local_12.ExecutionConfigData) || !(local_18))
         {
             return;
         }
-        bool local_19 = (int(local_18.GetExecutionState())) == 1 && !(local_18.GetChaosKnotFXEntity().IsValid());
-        if (!(local_19))
+        TDataObjectPtr<FExecutionConfigDataObject> local_22 = local_12.ExecutionConfigData;
+        if ((int(local_18.GetExecutionState())) == 1 && !(local_18.GetChaosKnotFXEntity().IsValid()) && !(local_22.Get().ChaosKnotFX.IsNull()))
         {
-            local_19 = false;
-        }
-        else
-        {
-            local_5 = !local_5;
-            local_19 = local_5;
-        }
-        if (local_19)
-        {
-            local_81 = true;
-            TDataObjectPtr<FGameSocketPath> local_110 = TDataObjectPtr<FGameSocketPath>(nullptr);
-            FECSEntityAdapter local_118 = FECSEntityAdapter(Event.Sender);
-            FECSEntity local_122;
-            local_18.SetChaosKnotFXEntity(local_122);
+            FFXSurfaceTraceParam local_66;
+            local_18.SetChaosKnotFXEntity(::BlueprintFunctions_Common::PlayFXDurational(FECSEntityAdapter(Event.Sender), local_22.Get().ChaosKnotFX, TArray<FFXOverrideParam>(), true, local_22.Get().ChaosKnotSocket, TDataObjectPtr<FGameSocketPath>(nullptr), EFXBaseTransformResolveModeWithAttachmentOption(0), local_22.Get().ChaosKnotOffset, EFXOffsetSpaceWithAttachmentOption(3), local_22.Get().ChaosKnotRotationOffset, EFXOffsetSpaceWithAttachmentOption(3), ENTITY_NULL, EAttachFXStopMethod(0), local_66, true, true, false, FSpawnOnGroundConfig()));
             return;
         }
         if ((int(local_18.GetExecutionState())) == 0 && local_18.GetChaosKnotFXEntity().IsValid())
@@ -194,9 +180,9 @@ class US_ExecuteSystem : UECSScriptSystem
         const TArray<FECSEntity>& local_2 = ExecutedInfo.GetExecuteEntityArray();
         if (ExecutedConfig.ExecutionConfigData)
         {
+            FName local_5(ExecutedConfig.ExecutionConfigData.Get().ExecuteInterruptAvatarTrigger);
             for (auto& local_20 : local_2)
             {
-                FName local_5;
                 FESMTriggerUtils::ActivateESMTrigger(local_20, local_5, this.GetECSWorld().GetFixedTime().Time, FFPTime(0), 0);
             }
         }
@@ -243,6 +229,7 @@ class US_ExecuteSystem : UECSScriptSystem
         for (auto local_38 : local_24)
         {
             FESMTriggerUtils::ActivateESMTrigger(local_38, this.InterruptExecutePrepareTriggerName, FixedTime.Time, FFPTime(0.01), 0);
+            ExecutedInfo.GetModify_ExecuteEntityArray().Remove(local_38);
         }
         if (ExecutedInfo.GetExecuteEntityArray().IsEmpty())
         {

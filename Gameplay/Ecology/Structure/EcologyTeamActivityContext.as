@@ -76,49 +76,36 @@ struct FEcologyCreatureSpawnerContext
 
     TSoftClassPtr<ACharacterPrefab> GetMonsterPrefab() const
     {
-        bool local_1 = false;
-        bool local_2;
-        TSoftClassPtr<ACharacterPrefab> local_20;
         if (this.bForceOverridePrefab && this.CreaturePrefab.IsValid())
         {
             return TSoftClassPtr<ACharacterPrefab>(this.CreaturePrefab.ToSoftObjectPath());
         }
-        if (this.CreatureConfigProxy.GetMonsterConfig())
+        TDataObjectPtr<FMonsterMainConfig> local_44 = this.CreatureConfigProxy.GetMonsterConfig();
+        if (local_44)
         {
-            if (GetCombatConfig())
+            if (local_44.Get().GetCombatConfig())
             {
-                local_20.GetSoftCombatPrefab();
-                return local_20;
+                return local_44.Get().GetSoftCombatPrefab();
             }
         }
-        if (this.CreatureConfigProxy.GetNPCConfig())
+        TDataObjectPtr<FNPCMainConfig> local_92 = this.CreatureConfigProxy.GetNPCConfig();
+        if (local_92)
         {
-            const FNPCMainConfig& local_118;
+            const FNPCMainConfig& local_118 = local_92.Get();
             TDataObjectPtr<FNPCSkinOverride> local_142;
             local_142 = local_118.GetSkinOverride();
-            local_2 = !((local_142 == nullptr));
-            if (!(local_2))
+            if (!((local_142 == nullptr)) && !(local_118.GetSkinOverride().Get().PrefabOverride.IsNull()))
             {
-                local_2 = false;
+                return local_118.GetSkinOverride().Get().PrefabOverride;
             }
-            else
+            TSoftClassPtr<ACharacterPrefab> local_20 = local_118.GetSoftCombatPrefab();
+            if ((!((local_20 == nullptr))))
             {
-                local_1 = !local_1;
-                local_2 = local_1;
-            }
-            if (local_2)
-            {
-            }
-            else
-            {
-                local_20 = local_118.GetSoftCombatPrefab();
-                if ((!((local_20 == nullptr))))
-                {
-                    return local_118.GetSoftCombatPrefab();
-                }
+                return local_118.GetSoftCombatPrefab();
             }
         }
-        return TSoftClassPtr<ACharacterPrefab>(this.CreaturePrefab.ToSoftObjectPath());
+        TSoftClassPtr<ACharacterPrefab> local_20_2 = TSoftClassPtr<ACharacterPrefab>(this.CreaturePrefab.ToSoftObjectPath());
+        return local_20_2;
     }
     TSubclassOf<ACharacterPrefab> LoadMonsterPrefab() const
     {

@@ -90,7 +90,7 @@ struct FVM_ChatPrivateChatPanel : FEUIViewModel
         int local_3 = 0;
         for (; local_3 < this.GetPanelMessages().Num(); ++local_3)
         {
-            if (PeerUid.IsPlayerMsgUnRead())
+            if (this.GetPanelMessages()[local_3].Get().IsPlayerMsgUnRead(PeerUid))
             {
                 break;
             }
@@ -121,7 +121,7 @@ struct FVM_ChatPrivateChatPanel : FEUIViewModel
             TEUIModelRef<FVM_FriendItem> local_38;
             if (local_26.Find(local_35, local_38))
             {
-                SyncPrivateChatPeerDisplayFromModel();
+                local_38.Get().SyncPrivateChatPeerDisplayFromModel();
             }
             else
             {
@@ -132,7 +132,7 @@ struct FVM_ChatPrivateChatPanel : FEUIViewModel
             FVM_SelectableItem& local_64 = ::FVM_SelectableItem::Create(this.GetContext().Manager);
             local_64.SetbIsSelected((local_27_2 == this.GetSelectedPrivateChatPeerIndex()));
             FEUIModelContainer local_78;
-            local_78.AddModel(FEUIModelRef(), false);
+            local_78.AddModel(FEUIModelRef(local_38.Get()), false);
             local_78.AddModel(FEUIModelRef(local_64), false);
             this.GetModify_PrivatePeerItems().Add(local_78);
             this.PrivatePeerFriendItems.Add(local_38);
@@ -148,9 +148,10 @@ struct FVM_ChatPrivateChatPanel : FEUIViewModel
         for (; local_15 < this.GetPrivatePeerItems().Num(); ++local_15)
         {
             bool local_18 = (local_15 == this.GetSelectedPrivateChatPeerIndex());
-            if (TEUIModelRef<FVM_SelectableItem>(FEUIModelContainer::GetModel(this.GetPrivatePeerItems()[local_15]).opCall()).IsValid())
+            TEUIModelRef<FVM_SelectableItem> local_22 = TEUIModelRef<FVM_SelectableItem>(FEUIModelContainer::GetModel(this.GetPrivatePeerItems()[local_15]).opCall());
+            if (local_22.IsValid())
             {
-                local_18.SetbIsSelected();
+                local_22.Get().SetbIsSelected(local_18);
             }
             if (local_18)
             {
@@ -168,7 +169,6 @@ struct FVM_ChatPrivateChatPanel : FEUIViewModel
     }
     void RefreshPanelMessages()
     {
-        FM_ChatMessage& local_20;
         this.GetModify_PanelMessages().Empty(0);
         int local_2 = this.GetChatRuntimeData().opArrow().GetSelectedPrivateChatPeerUid();
         if (local_2 == 0)
@@ -184,6 +184,7 @@ struct FVM_ChatPrivateChatPanel : FEUIViewModel
             for (; local_15 < local_10.Num(); )
             {
                 TEUIModelRef<FM_ChatMessage> local_18 = local_10[local_15];
+                FM_ChatMessage& local_20 = local_18.Get();
                 int local_16 = ::ChatSystemUtil::GetUnixTimestampDisplayDayKey(::ChatSystemUtil::MsToUnixSeconds(local_20.GetSendTimeMs()));
                 if (local_16 != local_13)
                 {
@@ -393,11 +394,9 @@ FVM_ChatPrivateChatPanel& Create(const UObject ContextObject)
 {
     return FVM_ChatPrivateChatPanel::CreateByManager(EUIInternal::GetContextManager(ContextObject));
 }
-FVM_ChatPrivateChatPanel CreateByManager(const UEUIManagerSubsystem Manager)
+FVM_ChatPrivateChatPanel& CreateByManager(const UEUIManagerSubsystem Manager)
 {
-    FVM_ChatPrivateChatPanel __r;
-    TEUIModelRef<FVM_ChatPrivateChatPanel> local_6 = TEUIModelRef<FVM_ChatPrivateChatPanel>(EUIInternal::MakeModelWithManager(Manager, FVM_ChatPrivateChatPanel::ModelId));
-    return __r;
+    return TEUIModelRef<FVM_ChatPrivateChatPanel>(EUIInternal::MakeModelWithManager(Manager, FVM_ChatPrivateChatPanel::ModelId)).Get();
 }
 void GetModelInfo(FEUIViewModelMetaInfo &inout Result)
 {
@@ -539,7 +538,6 @@ namespace __GeneratedProperties_FVM_ChatPrivateChatPanel
 {
 UScriptStruct StaticStruct()
 {
-    UScriptStruct local_2;
-    return local_2;
+    return __GeneratedProperties_FVM_ChatPrivateChatPanel.Get();
 }
 }

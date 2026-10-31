@@ -105,12 +105,13 @@ void UICallForceQuitGame(const APlayerController PlayerController)
 UFUNCTION()
 void UICallEnterMainCity(const FECSEntity &inout PlayerEntity)
 {
-    int local_52 = 0;
     if (!(!(PlayerEntity.IsValid())) && ECS::GetRuntimeInfo().IsClient)
     {
-        if (FLevelUtils::GetCurrentLevelInfoConfig(nullptr))
+        TDataObjectPtr<FLevelInfoConfig> local_26 = FLevelUtils::GetCurrentLevelInfoConfig(nullptr);
+        if (local_26)
         {
             int local_51;
+            int local_52 = local_26.Get().CityLevelId;
             local_51 = local_52;
             if (local_51 > 0)
             {
@@ -245,9 +246,7 @@ void DisconnectPlayer(const FECSEntity &inout PlayerEntity, const EDisconnectRea
     const FC_PlayerController& local_16 = local_14.opCall();
     if (local_16)
     {
-        TWeakObjectPtr<AECSPlayerController> local_19 = local_16.GetUEPlayerController();
-        AECSPlayerController local_22;
-        local_26 = (Cast<APXECSPlayerController>(local_22));
+        local_26 = (Cast<APXECSPlayerController>(local_16.GetUEPlayerController().Get()));
         if (local_26 != nullptr)
         {
             local_26.DisconnectPlayer(EDisconnectReason(Reason));
@@ -270,9 +269,7 @@ void DisconnectPlayerForQuitGame(const FECSEntity &inout PlayerEntity)
     const FC_PlayerController& local_12 = local_10.opCall();
     if (local_12)
     {
-        TWeakObjectPtr<AECSPlayerController> local_15 = local_12.GetUEPlayerController();
-        AECSPlayerController local_18;
-        local_22 = (Cast<APXECSPlayerController>(local_18));
+        local_22 = (Cast<APXECSPlayerController>(local_12.GetUEPlayerController().Get()));
         if (local_22 != nullptr)
         {
             local_22.DisconnectPlayer(EDisconnectReason(6));

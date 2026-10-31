@@ -290,7 +290,6 @@ struct FVM_CreatePlayer : FEUIViewModel
     }
     void PostConstruct()
     {
-        const ULoginSettings local_4;
         const UPlayerInfoSettings local_12;
         GetGameplaySettings<ULoginSettings> local_2;
         this.SetLoginSettings(local_2);
@@ -304,8 +303,7 @@ struct FVM_CreatePlayer : FEUIViewModel
             XError(ELog(16), "FVM_CreatePlayer: LoginCreatePlayerConfig is not set");
             return;
         }
-        local_4 = this.GetLoginSettings();
-        this.SetCreatePlayerConfig();
+        this.SetCreatePlayerConfig(this.GetLoginSettings().LoginCreatePlayerConfig.Get());
         this.SetCreatePlayerGender(this.GetCreatePlayerConfig().DefaultGender);
         this.SetbGenderSelected(this.GetCreatePlayerConfig().bForbidMaleSelect);
         this.SetbIsMaleForbid(this.GetCreatePlayerConfig().bForbidMaleSelect);
@@ -508,11 +506,10 @@ struct FVM_CreatePlayer : FEUIViewModel
         {
             return this.GetAvailableFashionSlotTypes()[this.GetSelectedFashionSlotTypeIndex()];
         }
-        return EFashionSlotType(0);
+        return EFashionSlotType::None;
     }
     void RefreshCreatePlayerPhase()
     {
-        FText local_28;
         if (this.GetLoginSettings() != nullptr)
         {
             for (auto& local_20 : this.GetLoginSettings().CreatePlayerStepInfos)
@@ -521,6 +518,7 @@ struct FVM_CreatePlayer : FEUIViewModel
                 {
                     continue;
                 }
+                FText local_28 = FText(local_20.StepNameTextData.Get().Text);
                 if (int(this.GetCreatePlayerPhase()) == 2)
                 {
                     FText local_38;
@@ -600,13 +598,12 @@ struct FVM_CreatePlayer : FEUIViewModel
         {
             return;
         }
-        EFashionSlotType local_4 = this.GetAvailableFashionSlotTypes()[this.GetSelectedFashionSlotTypeIndex()];
-        int local_3 = local_4;
+        int local_3 = this.GetAvailableFashionSlotTypes()[this.GetSelectedFashionSlotTypeIndex()];
         int local_5 = 0;
         for (; local_5 < this.GetAllAvailableFashions().Num(); ++local_5)
         {
             const TDataObjectPtr<FFashionConfig>& local_8 = this.GetAllAvailableFashions()[local_5];
-            if (!(local_8.IsSet()) || (int(local_4) != local_3))
+            if (!(local_8.IsSet()) || (int(local_8.Get().SlotType) != local_3))
             {
                 continue;
             }
@@ -819,8 +816,6 @@ struct FVM_CreatePlayer : FEUIViewModel
     }
     void OnSelectFashionItem(const int ItemIndex)
     {
-        int local_12 = 0;
-        int local_13 = 0;
         if (this.IsMaskBlockingInput())
         {
             return;
@@ -838,9 +833,9 @@ struct FVM_CreatePlayer : FEUIViewModel
         {
             return;
         }
-        FString local_10 = FString();
+        XLog(ELog(16), FString().Append("[CreatePlayer][DBG] OnSelectFashionItem called ItemIndex=").Append(ItemIndex).Append(" SlotType=").Append(local_6.Get().SlotType).Append(" DataId=").Append(local_6.Get().DataId));
         this.SetSelectedFashionItemIndex(ItemIndex);
-        this.ApplyFashionSelection(EFashionSlotType(local_13), local_12);
+        this.ApplyFashionSelection(EFashionSlotType(local_6.Get().SlotType), local_6.Get().DataId);
         return;
     }
     void OnFashionOptionClicked(FVM_CreatePlayerFashionOption &inout Option)
@@ -857,7 +852,7 @@ struct FVM_CreatePlayer : FEUIViewModel
         int local_5 = 0;
         for (; local_5 < this.GetFilteredFashions().Num(); ++local_5)
         {
-            if (this.GetFilteredFashions()[local_5].IsSet() && (0 == Option.GetDataId()))
+            if (this.GetFilteredFashions()[local_5].IsSet() && (this.GetFilteredFashions()[local_5].Get().DataId == Option.GetDataId()))
             {
                 this.OnSelectFashionItem(local_5);
                 break;
@@ -1067,7 +1062,6 @@ struct FVM_CreatePlayer : FEUIViewModel
     TArray<FUIShowcaseActorSpawnParams> BuildSpawnParams() const
     {
         TArray<FUIShowcaseActorSpawnParams> local_4;
-        float32 local_8 = 0.0f;
         bool local_6 = false;
         bool local_5 = local_6;
         float32 local_7 = 1.0f;
@@ -1081,10 +1075,8 @@ struct FVM_CreatePlayer : FEUIViewModel
         }
         if (local_6)
         {
-            int local_9 = this.GetShowcaseConfigIndex();
-            local_7 = local_8;
-            int local_9_2 = this.GetShowcaseConfigIndex();
-            local_5 = local_6;
+            local_7 = this.GetConfigs()[this.GetShowcaseConfigIndex()].Get().DynamicRainControl;
+            local_5 = this.GetConfigs()[this.GetShowcaseConfigIndex()].Get().bUseFaceAnim;
         }
         if (int(this.GetCreatePlayerPhase()) == 0)
         {
@@ -1106,17 +1098,17 @@ struct FVM_CreatePlayer : FEUIViewModel
     }
     void AppendDefaultFashionActor(TArray<FUIShowcaseActorSpawnParams> &inout Actors, const TDataObjectPtr<FCharacterDefaultFashionConfig> &inout DefaultFashion, const float32 RainDynamicControl, const bool bUseFaceAnim, const bool bUseFashion) const
     {
-        const FCharacterDefaultFashionConfig& local_4;
         if (!(DefaultFashion))
         {
             return;
         }
+        const FCharacterDefaultFashionConfig& local_4 = DefaultFashion.Get();
         if (!(local_4.GetAvatar()))
         {
             return;
         }
+        const FAvatarPrefabConfig& local_6 = local_4.GetAvatar().Get();
         FUIShowcaseActorSpawnParams local_66;
-        FAvatarPrefabConfig local_6;
         int local_67 = int(local_6.DataId);
         local_66.ActorClass = local_6.ShowcaseActor;
         local_66.Offset = local_6.ShowcaseOffset;
@@ -1325,7 +1317,7 @@ struct FVM_CreatePlayer : FEUIViewModel
             {
                 continue;
             }
-            if (0 == this.GetSelectedFaceID())
+            if (local_16.Get().DataId == this.GetSelectedFaceID())
             {
                 return true;
             }
@@ -1335,14 +1327,21 @@ struct FVM_CreatePlayer : FEUIViewModel
     void BuildFaceItems()
     {
         int local_98;
-        int local_99 = 0;
         this.GetModify_FaceItems().Reset(0);
         int local_4 = 0;
         for (; local_4 < this.GetCreatePlayerConfig().GetAvailableFace().Num(); )
         {
             const TDataObjectPtr<FFacePresetConfig>& local_8 = this.GetCreatePlayerConfig().GetAvailableFace()[local_4];
-            local_98 = local_8.IsSet() ? local_99 : 0;
-            TEUIModelRef<FVM_DisplayItem> local_104 = this.CreateSimpleIconDisplayItem(this.ResolveFaceDisplayIcon(local_8, this.GetCreatePlayerBodyType()), local_98);
+            FSoftBrush local_96 = this.ResolveFaceDisplayIcon(local_8, this.GetCreatePlayerBodyType());
+            if (local_8.IsSet())
+            {
+                local_98 = local_8.Get().DataId;
+            }
+            else
+            {
+                local_98 = 0;
+            }
+            TEUIModelRef<FVM_DisplayItem> local_104 = this.CreateSimpleIconDisplayItem(local_96, local_98);
             FVM_CreatePlayerFashionOption& local_106 = ::FVM_CreatePlayerFashionOption::Create(this.GetContext().Manager);
             local_106.Setup(this, ECreatePlayerFashionItemType(0), EFashionSlotType(0), local_98, local_4);
             FVM_SelectableItem& local_110 = ::FVM_SelectableItem::Create(this.GetContext().Manager);
@@ -1369,18 +1368,16 @@ struct FVM_CreatePlayer : FEUIViewModel
     }
     FSoftBrush ResolveFaceDisplayIcon(const TDataObjectPtr<FFacePresetConfig> &inout FaceConfig, const EBodyType BodyType) const
     {
-        bool local_1 = !(FaceConfig.IsSet());
-        if (local_1)
+        FFashionDisplayIconByBody local_68;
+        if (!(FaceConfig.IsSet()))
         {
             return FSoftBrush();
         }
-        local_1 = !local_1;
-        if (local_1)
+        if (!(FaceConfig.Get().DisplayIcons.Find(EDisplayItemIconType(1), local_68)))
         {
             return FSoftBrush();
         }
         FSoftBrush local_116;
-        FFashionDisplayIconByBody local_68;
         ::DisplayItemAdapter_Fashion::TryResolveDisplayIconForBody(local_68, EBodyType(BodyType), local_116);
         return local_116;
     }
@@ -1399,7 +1396,6 @@ struct FVM_CreatePlayer : FEUIViewModel
     }
     uint GetFaceDataIdAtIndex(const int Index) const
     {
-        int local_4 = 0;
         if (Index < 0 || (Index >= this.GetCreatePlayerConfig().GetAvailableFace().Num()))
         {
             return 0;
@@ -1409,7 +1405,7 @@ struct FVM_CreatePlayer : FEUIViewModel
         {
             return 0;
         }
-        return local_4;
+        return local_6.Get().DataId;
     }
     bool IsFashionSelectSucc() const
     {
@@ -1470,6 +1466,7 @@ struct FVM_CreatePlayer : FEUIViewModel
             {
                 continue;
             }
+            this.GetModify_AvailableFashionSlotTypes().AddUnique(local_18.Get().SlotType);
         }
         this.GetModify_FashionSlotTabs().Reset(0);
         int local_19 = 0;
@@ -1512,8 +1509,6 @@ struct FVM_CreatePlayer : FEUIViewModel
     }
     void AppendAvailableFashions(const TArray<TDataObjectPtr<FFashionConfig>> &inout FashionList)
     {
-        int local_35 = 0;
-        int local_36 = 0;
         EBodyType local_2 = this.GetCreatePlayerBodyType();
         for (auto& local_18 : FashionList)
         {
@@ -1528,7 +1523,7 @@ struct FVM_CreatePlayer : FEUIViewModel
             local_26.MaskType = 0;
             TEUIModelRef<FVM_DisplayItem> local_32 = ::DisplayItemAdapter_Fashion::CreateDisplayItem(this.GetContext().Manager, local_18, local_26, EItemDisplayScenario(7), local_2);
             FVM_CreatePlayerFashionOption& local_34 = ::FVM_CreatePlayerFashionOption::Create(this.GetContext().Manager);
-            local_34.Setup(this, ECreatePlayerFashionItemType(1), EFashionSlotType(local_36), local_35, INDEX_NONE);
+            local_34.Setup(this, ECreatePlayerFashionItemType(1), local_18.Get().SlotType, local_18.Get().DataId, INDEX_NONE);
             FVM_SelectableItem& local_40 = ::FVM_SelectableItem::Create(this.GetContext().Manager);
             FEUIModelContainer local_54;
             local_54.AddModel(local_32.opImplConv(), false);
@@ -1563,7 +1558,6 @@ struct FVM_CreatePlayer : FEUIViewModel
     }
     uint GetFashionDataIdAtIndex(const TArray<TDataObjectPtr<FFashionConfig>> &inout FashionList, const int Index) const
     {
-        int local_4 = 0;
         if (Index < 0 || (Index >= FashionList.Num()))
         {
             return 0;
@@ -1573,7 +1567,7 @@ struct FVM_CreatePlayer : FEUIViewModel
         {
             return 0;
         }
-        return local_4;
+        return local_6.Get().DataId;
     }
     bool IsFashionIdInList(const uint FashionId, const TArray<TDataObjectPtr<FFashionConfig>> &inout FashionList) const
     {
@@ -1587,7 +1581,7 @@ struct FVM_CreatePlayer : FEUIViewModel
             {
                 continue;
             }
-            if (0 == FashionId)
+            if (local_16.Get().DataId == FashionId)
             {
                 return true;
             }
@@ -1604,7 +1598,7 @@ struct FVM_CreatePlayer : FEUIViewModel
         int local_5 = 0;
         for (; local_5 < this.GetFilteredFashions().Num(); ++local_5)
         {
-            if (this.GetFilteredFashions()[local_5].IsSet() && (0 == local_2))
+            if (this.GetFilteredFashions()[local_5].IsSet() && (this.GetFilteredFashions()[local_5].Get().DataId == local_2))
             {
                 return local_5;
             }
@@ -2781,11 +2775,9 @@ FVM_CreatePlayer& Create(const UObject ContextObject)
 {
     return FVM_CreatePlayer::CreateByManager(EUIInternal::GetContextManager(ContextObject));
 }
-FVM_CreatePlayer CreateByManager(const UEUIManagerSubsystem Manager)
+FVM_CreatePlayer& CreateByManager(const UEUIManagerSubsystem Manager)
 {
-    FVM_CreatePlayer __r;
-    TEUIModelRef<FVM_CreatePlayer> local_6 = TEUIModelRef<FVM_CreatePlayer>(EUIInternal::MakeModelWithManager(Manager, FVM_CreatePlayer::ModelId));
-    return __r;
+    return TEUIModelRef<FVM_CreatePlayer>(EUIInternal::MakeModelWithManager(Manager, FVM_CreatePlayer::ModelId)).Get();
 }
 void GetModelInfo(FEUIViewModelMetaInfo &inout Result)
 {
@@ -3205,7 +3197,6 @@ namespace __GeneratedProperties_FVM_CreatePlayer
 {
 UScriptStruct StaticStruct()
 {
-    UScriptStruct local_2;
-    return local_2;
+    return __GeneratedProperties_FVM_CreatePlayer.Get();
 }
 }

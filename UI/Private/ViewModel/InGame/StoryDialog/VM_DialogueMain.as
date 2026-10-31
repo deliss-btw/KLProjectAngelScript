@@ -39,6 +39,8 @@ struct FVMS_DialogueMain : FEUIViewModelSingleton
     UPROPERTY()
     TMap<FString, FString> m_EvaluatedCache;
 
+    default m_ScriptOverrideMeta = Cast<UASStruct>(FVMS_DialogueMain.Get());
+
     FVMS_DialogueMain()
     {
         if (EUIInternal::GetModelConstructBodyEnableCounter() == 0)
@@ -193,16 +195,13 @@ struct FVMS_DialogueMain : FEUIViewModelSingleton
     }
     void SetOptions(const TArray<FDialogueOptionInfo> &inout Options)
     {
-        TEUIModelRef<FVM_DialogueOptionList> local_2 = this.GetOptionList();
-        GetModify_OptionItems().Empty(0);
+        this.GetOptionList().Get().GetModify_OptionItems().Empty(0);
         int local_4 = 0;
         for (; local_4 < Options.Num(); )
         {
             FDialogueOptionInfo local_70 = FDialogueOptionInfo(Options[local_4]);
             local_70.SetOptionText(this.ResolveDialogueArgText(local_70.GetOptionText()));
-            TEUIModelRef<FVM_DialogueOptionItem> local_82 = TEUIModelRef<FVM_DialogueOptionItem>(::FVM_DialogueOptionItem::Create(this.GetContext().Manager, local_70));
-            TEUIModelRef<FVM_DialogueOptionList> local_2_2 = this.GetOptionList();
-            GetModify_OptionItems().Add(local_82);
+            this.GetOptionList().Get().GetModify_OptionItems().Add(TEUIModelRef<FVM_DialogueOptionItem>(::FVM_DialogueOptionItem::Create(this.GetContext().Manager, local_70)));
             ++local_4;
         }
         return;
@@ -222,8 +221,7 @@ struct FVMS_DialogueMain : FEUIViewModelSingleton
     void NextSection()
     {
         const UDialogueSettings local_6;
-        TEUIModelRef<FVM_DialogueOptionList> local_2 = this.GetOptionList();
-        if (HasOptionItems())
+        if (this.GetOptionList().Get().HasOptionItems())
         {
             return;
         }
@@ -243,23 +241,19 @@ struct FVMS_DialogueMain : FEUIViewModelSingleton
     }
     void HandleEscape()
     {
-        TEUIModelRef<FVM_DialogueOptionList> local_2 = this.GetOptionList();
-        if (!(HasOptionItems()))
+        if (!(this.GetOptionList().Get().HasOptionItems()))
         {
             return;
         }
-        TEUIModelRef<FVM_DialogueOptionList> local_2_2 = this.GetOptionList();
-        for (auto& local_18 : GetOptionItems())
+        for (auto& local_18 : this.GetOptionList().Get().GetOptionItems())
         {
-            local_18;
-            bool local_3 = !(GetOptionInfo().GetOptionStyle().IsSet());
-            if (local_3)
+            if (!(local_18.Get().GetOptionInfo().GetOptionStyle().IsSet()))
             {
                 continue;
             }
-            if (local_3)
+            if (local_18.Get().GetOptionInfo().GetOptionStyle().Get().bIsEscapeOption)
             {
-                SelectOption();
+                local_18.Get().SelectOption();
                 break;
             }
         }
@@ -416,11 +410,9 @@ FVMS_DialogueMain& Get(const UObject ContextObject)
 {
     return FVMS_DialogueMain::GetByManager(EUIInternal::GetContextManager(ContextObject));
 }
-FVMS_DialogueMain GetByManager(const UEUIManagerSubsystem Manager)
+FVMS_DialogueMain& GetByManager(const UEUIManagerSubsystem Manager)
 {
-    FVMS_DialogueMain __r;
-    TEUIModelRef<FVMS_DialogueMain> local_6 = TEUIModelRef<FVMS_DialogueMain>(EUIInternal::MakeModelWithManager(Manager, FVMS_DialogueMain::ModelId));
-    return __r;
+    return TEUIModelRef<FVMS_DialogueMain>(EUIInternal::MakeModelWithManager(Manager, FVMS_DialogueMain::ModelId)).Get();
 }
 void GetModelInfo(FEUIViewModelMetaInfo &inout Result)
 {
@@ -510,7 +502,6 @@ namespace __GeneratedProperties_FVMS_DialogueMain
 {
 UScriptStruct StaticStruct()
 {
-    UScriptStruct local_2;
-    return local_2;
+    return __GeneratedProperties_FVMS_DialogueMain.Get();
 }
 }

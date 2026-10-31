@@ -3,7 +3,6 @@ namespace __FCommissionEntryRuleConfigFunctions
 UFUNCTION()
 FText __FCommissionEntryRuleConfig_GetDescription(const TDataObjectPtr<FCommissionEntryRuleConfig> &inout DataObject)
 {
-    FText __r;
     if ((DataObject == nullptr))
     {
         if (!(EUIGlobals::GIsDuringPropertyConversion))
@@ -13,12 +12,11 @@ FText __FCommissionEntryRuleConfig_GetDescription(const TDataObjectPtr<FCommissi
         FCommissionEntryRuleConfig local_92;
         return local_92.Description;
     }
-    return __r;
+    return DataObject.Get().Description;
 }
 UFUNCTION()
 ECommissionEntryRuleType __FCommissionEntryRuleConfig_GetRuleType(const TDataObjectPtr<FCommissionEntryRuleConfig> &inout DataObject)
 {
-    int local_93 = 0;
     if ((DataObject == nullptr))
     {
         if (!(EUIGlobals::GIsDuringPropertyConversion))
@@ -26,15 +24,13 @@ ECommissionEntryRuleType __FCommissionEntryRuleConfig_GetRuleType(const TDataObj
             FBlueprintDebugFunctions::ThrowScriptException("Get 'RuleType' from a null 'FCommissionEntryRuleConfig' DataObject!");
         }
         FCommissionEntryRuleConfig local_92;
-        local_93 = int(local_92.RuleType);
-        return ECommissionEntryRuleType(local_93);
+        return local_92.RuleType;
     }
-    return ECommissionEntryRuleType(local_93);
+    return DataObject.Get().RuleType;
 }
 UFUNCTION()
 FText __FCommissionEntryRuleConfig_GetRuleName(const TDataObjectPtr<FCommissionEntryRuleConfig> &inout DataObject)
 {
-    FText __r;
     if ((DataObject == nullptr))
     {
         if (!(EUIGlobals::GIsDuringPropertyConversion))
@@ -44,12 +40,11 @@ FText __FCommissionEntryRuleConfig_GetRuleName(const TDataObjectPtr<FCommissionE
         FCommissionEntryRuleConfig local_92;
         return local_92.RuleName;
     }
-    return __r;
+    return DataObject.Get().RuleName;
 }
 UFUNCTION()
 FSoftBrush __FCommissionEntryRuleConfig_GetRuleIcon(const TDataObjectPtr<FCommissionEntryRuleConfig> &inout DataObject)
 {
-    FSoftBrush __r;
     if ((DataObject == nullptr))
     {
         if (!(EUIGlobals::GIsDuringPropertyConversion))
@@ -59,12 +54,11 @@ FSoftBrush __FCommissionEntryRuleConfig_GetRuleIcon(const TDataObjectPtr<FCommis
         FCommissionEntryRuleConfig local_92;
         return local_92.RuleIcon;
     }
-    return __r;
+    return DataObject.Get().RuleIcon;
 }
 UFUNCTION()
 TSet<TSoftClassPtr<AKLLevelScriptActor>> __FCommissionEntryRuleConfig_GetExtraLoadDatalayerClasses(const TDataObjectPtr<FCommissionEntryRuleConfig> &inout DataObject)
 {
-    TSet<TSoftClassPtr<AKLLevelScriptActor>> __r;
     if ((DataObject == nullptr))
     {
         if (!(EUIGlobals::GIsDuringPropertyConversion))
@@ -74,7 +68,7 @@ TSet<TSoftClassPtr<AKLLevelScriptActor>> __FCommissionEntryRuleConfig_GetExtraLo
         FCommissionEntryRuleConfig local_92;
         return local_92.ExtraLoadDatalayerClasses;
     }
-    return __r;
+    return DataObject.Get().ExtraLoadDatalayerClasses;
 }
 UFUNCTION()
 FCommissionEntryRuleConfig CastToFCommissionEntryRuleConfig(const TDataObjectPtr<FCommissionEntryRuleConfig> &inout DataObject)

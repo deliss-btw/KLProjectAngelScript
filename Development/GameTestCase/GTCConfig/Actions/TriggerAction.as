@@ -19,6 +19,8 @@ struct FGTCTriggerAction : FGTCAction
     UPROPERTY()
     TArray<FSimulatedTrigger> TriggerSequence;
 
+    default m_ScriptOverrideMeta = Cast<UASStruct>(FGTCTriggerAction.Get());
+
     FGTCTriggerAction()
     {
         this.__InitDefaults();

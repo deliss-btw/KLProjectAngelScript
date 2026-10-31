@@ -4,9 +4,7 @@ FName GetCreatureRowName(const FC_CreatureMeta &inout CreatureMeta)
 {
     if (CreatureMeta.CreatureType.IsSet())
     {
-        FName local_3;
-        local_3.GetDataName();
-        return local_3;
+        return CreatureMeta.CreatureType.Get().GetDataName();
     }
     return n"Unknown";
 }

@@ -140,8 +140,7 @@ class UESMAction_ManipulateEntity : UESMBPBaseSpanTickAction
         bool local_5;
         FNameHandle_EntityBBVarBool local_26;
         int local_60 = 0;
-        int local_63 = 0;
-        FECSEntity local_4;
+        FECSEntity local_4 = FECSEntity(this.GetInstanceData(Context).TargetEntity);
         bool local_6 = !((local_4 == ENTITY_NULL));
         if (!(local_6))
         {
@@ -256,8 +255,7 @@ class UESMAction_ManipulateEntity : UESMBPBaseSpanTickAction
                 local_86.MasterEntity = Context.GetEntity();
                 local_86.UpdateCounter = local_60.GetUpdateCounter();
                 local_86.LastTickTime = Time.WorldTime;
-                local_63 = 0;
-                local_86.MissedTickCount = local_63;
+                local_86.MissedTickCount = 0;
                 if (this.bUseCurveOffset)
                 {
                     local_5 = false;
@@ -297,7 +295,7 @@ class UESMAction_ManipulateEntity : UESMBPBaseSpanTickAction
         {
             FC_ManipulateActionLifecycle local_86;
             int local_117;
-            local_117 = local_63;
+            local_117 = this.GetInstanceData(Context).ManipulateUpdateCount;
             if (!(local_60))
             {
                 local_17 = false;
@@ -384,10 +382,10 @@ class UESMAction_ManipulateEntity : UESMBPBaseSpanTickAction
     UFUNCTION()
     void Exit_Implementation(const FESMContext &inout Context, const FESMActionTime &inout Time) const
     {
-        int local_6 = 0;
         bool local_7;
+        FECSEntity local_4 = FECSEntity(this.GetInstanceData(Context).TargetEntity);
+        int local_6 = this.GetInstanceData(Context).ManipulateUpdateCount;
         int local_5 = local_6;
-        FECSEntity local_4;
         if (!(local_4.IsValid()))
         {
             local_7 = false;

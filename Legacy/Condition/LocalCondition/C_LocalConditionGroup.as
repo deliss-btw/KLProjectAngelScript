@@ -46,11 +46,12 @@ struct FCS_LocalConditionGroupManager : FECSSingleton
     {
         if (this.ConditionGroupInstanceData.Contains(ConditionGroupInstanceId))
         {
-            auto local_10 = this.ConditionGroupInstanceData[ConditionGroupInstanceId].InnerConditionInstanceIds.Iterator();
-            for (; local_10.CanProceed;)
+            FLocalConditionGroupInstanceData& local_4 = this.ConditionGroupInstanceData[ConditionGroupInstanceId];
+            for (auto local_17 : local_4.InnerConditionInstanceIds)
             {
-                int local_18 = local_10.Proceed();
+                this.ConditionInstanceIdToGroupInstanceId.Remove(local_17);
             }
+            this.ConditionGroupInstanceData.Remove(ConditionGroupInstanceId);
         }
         return;
     }

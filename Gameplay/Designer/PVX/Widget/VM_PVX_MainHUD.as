@@ -465,7 +465,6 @@ struct FVMS_PVX_MainHUD : FEUIViewModelSingleton
     void HandleCalc(const FCS_PVX_ScoreData &inout ScoreData)
     {
         int local_16 = 0;
-        const FPVX_PlayerData& local_28;
         int local_29;
         FText local_54;
         if (this.GetContext().GetLocalPlayer().IsValid())
@@ -488,7 +487,7 @@ struct FVMS_PVX_MainHUD : FEUIViewModelSingleton
                     this.SetMissionEndTime_Record(local_22);
                     this.UpdateCountDownUI();
                 }
-                local_28 = ScoreData.GetPlayerInfoMap()[local_10];
+                const FPVX_PlayerData& local_28 = ScoreData.GetPlayerInfoMap()[local_10];
                 this.SetLevel(local_28.GetLevel());
                 this.SetExp(local_28.GetExp());
                 int local_18 = ::PVXUtil::GetLevelRequiredExp((this.GetLevel() + 1), local_16.GetFaction());
@@ -531,10 +530,10 @@ struct FVMS_PVX_MainHUD : FEUIViewModelSingleton
                 TArray<FString> local_58;
                 for (auto& local_76 : ScoreData.GetPlayerInfoMap())
                 {
-                    local_76;
-                    if (local_28.GetTeamId() == local_29)
+                    const FPVX_PlayerData& local_28_2 = local_76.GetValue();
+                    if (local_28_2.GetTeamId() == local_29)
                     {
-                        FString local_80 = FString(local_28.GetPlayerName());
+                        FString local_80 = FString(local_28_2.GetPlayerName());
                         if (local_80.IsEmpty())
                         {
                             local_80 = "玩家";
@@ -633,12 +632,9 @@ struct FVMS_PVX_MainHUD : FEUIViewModelSingleton
             TArray<FString> local_100;
             for (auto& local_118 : local_30)
             {
-                local_118;
-                if (GetTeamId() == local_83_2)
+                if (local_118.GetValue().GetTeamId() == local_83_2)
                 {
-                    FString local_126;
-                    local_126.GetPlayerName();
-                    FString local_122 = local_126;
+                    FString local_122 = FString(local_118.GetValue().GetPlayerName());
                     if (local_122.IsEmpty())
                     {
                         local_122 = "玩家";
@@ -1485,11 +1481,9 @@ FVMS_PVX_MainHUD& Get(const UObject ContextObject)
 {
     return FVMS_PVX_MainHUD::GetByManager(EUIInternal::GetContextManager(ContextObject));
 }
-FVMS_PVX_MainHUD GetByManager(const UEUIManagerSubsystem Manager)
+FVMS_PVX_MainHUD& GetByManager(const UEUIManagerSubsystem Manager)
 {
-    FVMS_PVX_MainHUD __r;
-    TEUIModelRef<FVMS_PVX_MainHUD> local_6 = TEUIModelRef<FVMS_PVX_MainHUD>(EUIInternal::MakeModelWithManager(Manager, FVMS_PVX_MainHUD::ModelId));
-    return __r;
+    return TEUIModelRef<FVMS_PVX_MainHUD>(EUIInternal::MakeModelWithManager(Manager, FVMS_PVX_MainHUD::ModelId)).Get();
 }
 void GetModelInfo(FEUIViewModelMetaInfo &inout Result)
 {
@@ -1875,7 +1869,6 @@ namespace __GeneratedProperties_FVMS_PVX_MainHUD
 {
 UScriptStruct StaticStruct()
 {
-    UScriptStruct local_2;
-    return local_2;
+    return __GeneratedProperties_FVMS_PVX_MainHUD.Get();
 }
 }

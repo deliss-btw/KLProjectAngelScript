@@ -155,6 +155,7 @@ void UpdateMemberTargetPos(const float IntervalTime, FC_AIGroupData &inout InGro
             if (local_47)
             {
                 FAIGroupFollowCaptainUtils::ReleaseFollowSlot(FollowCaptain, local_48);
+                FollowCaptain.MemberSlotMap.Remove(local_46);
             }
             continue;
         }
@@ -167,6 +168,7 @@ void UpdateMemberTargetPos(const float IntervalTime, FC_AIGroupData &inout InGro
             }
             FAIGroupFollowCaptainUtils::ReleaseFollowSlot(FollowCaptain, local_48);
             FollowCaptain.SlotStates[local_48] = -1;
+            FollowCaptain.MemberSlotMap.Remove(local_46);
         }
         local_65 = false;
         int local_66 = -1;

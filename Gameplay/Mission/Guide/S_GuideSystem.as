@@ -22,14 +22,13 @@ class US_GuideSystem : UECSScriptSystem
         UGuideBehavior local_30;
         FC_DeferredGuideList& local_42;
         int local_65;
-        FGuideContext local_206;
         if (!(::FASCommonUtils::GetUniqueAvatarPawnEntity(PlayerEntity).IsValid()))
         {
             return;
         }
         for (auto& local_28 : PendingGuideList.GuideToStop)
         {
-            if (!(::GuideUtils::TryGetGuideBehavior(local_30)))
+            if (!(::GuideUtils::TryGetGuideBehavior(local_28.GetValue(), local_30)))
             {
                 XError(ELog(62), FString().Append("Failed to stop guide for custom unique id ").Append(local_28.GetKey()).Append(", guide data is not valid"));
                 continue;
@@ -39,6 +38,7 @@ class US_GuideSystem : UECSScriptSystem
             local_42 = local_40.opCall();
             if (local_42)
             {
+                local_42.DeferredGuides.Remove(local_28.GetKey());
                 if (local_42.DeferredGuides.IsEmpty())
                 {
                     Remove local_46;
@@ -49,6 +49,7 @@ class US_GuideSystem : UECSScriptSystem
         for (auto& local_64 : PendingGuideList.GuideToStart)
         {
             local_65 = local_64.GetKey();
+            FGuideContext local_206 = FGuideContext(local_64.GetValue());
             if (!(::GuideUtils::TryGetGuideBehavior(local_206.GetGuideData(), local_30)))
             {
                 XError(ELog(62), FString().Append("Failed to start guide for custom unique id ").Append(local_65).Append(", guide data is not valid"));
@@ -120,7 +121,6 @@ class US_GuideSystem : UECSScriptSystem
     void Monitor_RetryDeferredGuideOnPrefabLoaded(const FECSEntity &inout Entity, const FC_PrefabLoaded &inout C_PrefabLoaded) const
     {
         int local_122 = 0;
-        FGuideContext& local_146;
         UGuideBehavior local_148;
         FECSRuntimeView local_40 = ECS::GetECSWorld().GetRuntimeView(EECSRuntimeViewType(2));
         Include local_44;
@@ -132,6 +132,7 @@ class US_GuideSystem : UECSScriptSystem
             TArray<uint> local_126;
             for (auto& local_144 : local_122.DeferredGuides)
             {
+                FGuideContext& local_146 = local_144.GetValue();
                 if (!(::GuideUtils::TryGetGuideBehavior(local_146.GetGuideData(), local_148)))
                 {
                     continue;
@@ -164,10 +165,9 @@ class US_GuideSystem : UECSScriptSystem
                     }
                 }
             }
-            auto local_312 = local_126.Iterator();
-            for (; local_312.CanProceed;)
+            for (auto local_319 : local_126)
             {
-                int local_295 = local_312.Proceed();
+                local_122.DeferredGuides.Remove(local_319);
             }
             if (local_122.DeferredGuides.IsEmpty())
             {
@@ -180,7 +180,6 @@ class US_GuideSystem : UECSScriptSystem
     UFUNCTION()
     void Monitor_UpdateGuideOnEntityDeath(const FECSEntity &inout Entity, const FC_DeathTag &inout C_DeathTag) const
     {
-        TArrayConstIterator<FECSEntity> local_42;
         FGuideContext local_196;
         int local_223;
         TArray<uint> local_4;
@@ -192,9 +191,8 @@ class US_GuideSystem : UECSScriptSystem
         {
             for (auto& local_36 : local_16.GuideInfoMap)
             {
-                for (; local_42.CanProceed;)
+                for (auto& local_50 : local_36.GetValue().Requesters)
                 {
-                    const FECSEntity& local_50 = local_42.Proceed();
                     Get local_54;
                     FC_GuidingInfoList local_56 = local_54.opCall();
                     if (local_56)

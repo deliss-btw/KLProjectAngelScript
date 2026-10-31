@@ -205,8 +205,7 @@ struct FVM_SkillBtnSpecialCounts : FEUIViewModel
         int local_6 = 0;
         for (; local_6 < this.GetDisplaySpecialCounts().Num(); )
         {
-            bool local_5 = (local_6 < this.GetCharingCount());
-            local_5.SetbCharging();
+            this.GetModify_DisplaySpecialCounts()[local_6].Get().SetbCharging((local_6 < this.GetCharingCount()));
             ++local_6;
         }
         return;
@@ -614,7 +613,6 @@ struct FVM_NormalSkillBtn : FEUIViewModel
     FText GetConsumableItemName() const
     {
         bool local_4;
-        FText __return;
         if (int(this.GetSkillBtnConfig().SkillButtonType) != 3)
         {
             local_4 = false;
@@ -627,29 +625,13 @@ struct FVM_NormalSkillBtn : FEUIViewModel
         }
         if (local_4)
         {
+            return this.GetConsumableItem().Get().ItemName;
         }
-        else
+        if (!(!(this.GetConfigEntry().IsValid())) && this.GetConfigEntry().Get().GetQuickSlot())
         {
-            bool local_53 = this.GetConfigEntry().IsValid();
-            if (!(local_53))
-            {
-                local_53 = false;
-            }
-            else
-            {
-                TEUIModelRef<FVM_BattleBuildEntry> local_56 = this.GetConfigEntry();
-                local_53 = GetQuickSlot();
-            }
-            if (local_53)
-            {
-                TEUIModelRef<FVM_BattleBuildEntry> local_56_2 = this.GetConfigEntry();
-            }
-            else
-            {
-                __return = FText();
-            }
+            return this.GetConfigEntry().Get().GetQuickSlot().Get().DisplayName;
         }
-        return __return;
+        return FText();
     }
     bool IsConsumableItem() const
     {
@@ -713,7 +695,6 @@ struct FVM_NormalSkillBtn : FEUIViewModel
     FSoftBrush GetIconImage() const
     {
         bool local_1;
-        FSoftBrush __return;
         if (this.GetbOverrideIcon())
         {
             return this.GetOverrideIcon();
@@ -730,24 +711,18 @@ struct FVM_NormalSkillBtn : FEUIViewModel
         }
         if (local_1)
         {
+            return this.GetConsumableItem().Get().ItemIcon;
         }
-        else
+        if (this.GetSkillConfig() != nullptr)
         {
-            if (this.GetSkillConfig() != nullptr)
+            FSkillConfigPresentationData local_172 = FSkillUtils::GetSkillPresentationData(this.GetContext().GetLocalPlayerPawn(), this.GetSkillConfig());
+            if (local_172.DefaultIcon.IsSet())
             {
-                FSkillConfigPresentationData local_172 = FSkillUtils::GetSkillPresentationData(this.GetContext().GetLocalPlayerPawn(), this.GetSkillConfig());
-                if (local_172.DefaultIcon.IsSet())
-                {
-                    return local_172.DefaultIcon;
-                }
-                __return = this.GetSkillConfig().PresentationData.DefaultIcon;
+                return local_172.DefaultIcon;
             }
-            else
-            {
-                __return = FSoftBrush();
-            }
+            return this.GetSkillConfig().PresentationData.DefaultIcon;
         }
-        return __return;
+        return FSoftBrush();
     }
     FSoftBrush GetLiteraryImage() const
     {
@@ -1159,7 +1134,25 @@ struct FVM_NormalSkillBtn : FEUIViewModel
     }
     void SyncDurationEffectSource()
     {
-        // body not fully recovered — stub [unresolved-operand]
+        if (!(this.GetCachedVisibility()) || (this.GetContext().GetLocalPlayerPawn() == ENTITY_NULL))
+        {
+            this.GetModify_DurationEffectProgress().Clear();
+            return;
+        }
+        FSkillBtnDurationEffect local_16;
+        Get local_20;
+        const FC_SkillBtnDurationEffect& local_22 = local_20.opCall();
+        if (local_22)
+        {
+            if (local_22.Get(this.GetSkillBtnConfig().SkillSlot, local_16))
+            {
+                FFPTime local_30 = (FFPTime(local_16.GetEndTime()) - local_16.GetStartTime());
+                this.GetModify_DurationEffectProgress().EndAt(local_16.GetEndTime(), local_30);
+                return;
+            }
+        }
+        this.GetModify_DurationEffectProgress().Clear();
+        return;
     }
     void ClearSkillWatchSources()
     {
@@ -1194,9 +1187,7 @@ struct FVM_NormalSkillBtn : FEUIViewModel
     }
     void RefreshDivineStateDisplay()
     {
-        bool local_10 = false;
-        bool local_9 = !(this.GetCachedVisibility()) || (this.GetContext().GetLocalPlayerPawn() == ENTITY_NULL);
-        if (local_9)
+        if (!(this.GetCachedVisibility()) || (this.GetContext().GetLocalPlayerPawn() == ENTITY_NULL))
         {
             return;
         }
@@ -1204,8 +1195,8 @@ struct FVM_NormalSkillBtn : FEUIViewModel
         {
             return;
         }
-        this.SetbDivineChaos(local_9);
-        this.SetbDivineBurst(local_10);
+        this.SetbDivineChaos(this.GetDivineChaosTag().GetValue());
+        this.SetbDivineBurst(this.GetDivineBurstTag().GetValue());
         return;
     }
     void RefreshProgressDisplay()
@@ -1248,10 +1239,6 @@ struct FVM_NormalSkillBtn : FEUIViewModel
     void RefreshPresentationDisplay()
     {
         const USkillConfig local_14;
-        int local_241 = 0;
-        int local_244 = 0;
-        float32 local_247 = 0.0f;
-        float32 local_248 = 0.0f;
         float32 local_249;
         FECSEntity local_8 = this.GetContext().GetLocalPlayerPawn();
         if (!(this.GetCachedVisibility()) || (local_8 == ENTITY_NULL))
@@ -1269,33 +1256,28 @@ struct FVM_NormalSkillBtn : FEUIViewModel
         if (!(local_128.SkillEntityBBShow.Name.IsNone()))
         {
             this.SetbShowEntityBB(true);
-            this.SetShowEntityBBValue(local_241);
+            this.SetShowEntityBBValue(this.GetPresentationEntityBB().GetValue());
         }
-        local_241 = int(local_128.ExtraPresentationState);
-        local_241 = local_241 & 1;
+        int local_241 = int(local_128.ExtraPresentationState) & 1;
         this.SetbReleaseFree((local_241 != 0));
         this.SetbReleasePersistent(((int(local_128.ExtraPresentationState) & 2) != 0));
         this.SetbShowSpecialCount(local_128.bShowSpecialCount);
         if (this.GetbShowSpecialCount() && this.GetSpecialCounts().IsValid())
         {
-            TEUIModelRef<FVM_SkillBtnSpecialCounts> local_246 = this.GetSpecialCounts();
-            local_244.SetCharingCount();
-            int local_242 = int(local_128.MaxSpecialCount);
-            TEUIModelRef<FVM_SkillBtnSpecialCounts> local_246_2 = this.GetSpecialCounts();
-            local_242.SetMaxCount();
+            this.GetSpecialCounts().Get().SetCharingCount(this.GetSpecialChargingCount().GetValue());
+            this.GetSpecialCounts().Get().SetMaxCount(int(local_128.MaxSpecialCount));
         }
         this.SetbShowRecharging(local_128.bShowRecharging);
         if (this.GetbShowRecharging())
         {
-            this.SetCurRecharging(local_247);
-            local_247 = local_128.CustomRechargingAttributeMax;
-            if (local_247 != 0.0f)
+            this.SetCurRecharging(this.GetRechargingValue().GetValue());
+            if (local_128.CustomRechargingAttributeMax != 0.0f)
             {
                 local_249 = local_128.CustomRechargingAttributeMax;
             }
             else
             {
-                local_249 = local_248;
+                local_249 = this.GetRechargingMaxValue().GetValue();
             }
             this.SetMaxRecharging(local_249);
         }
@@ -1346,8 +1328,7 @@ struct FVM_NormalSkillBtn : FEUIViewModel
         }
         if (this.GetConsumeSumItem().IsValid())
         {
-            TEUIModelRef<FM_ItemData> local_52 = this.GetConsumeSumItem();
-            local_54 = GetNum();
+            local_54 = this.GetConsumeSumItem().Get().GetNum();
         }
         else
         {
@@ -1358,17 +1339,25 @@ struct FVM_NormalSkillBtn : FEUIViewModel
     }
     void RefreshSkillUsable()
     {
-        bool local_6 = false;
         if (!(this.GetCachedVisibility()))
         {
             return;
         }
-        if (this.GetSkillRuntime().GetSkillConfig() == nullptr || (this.GetSkillConfig() == nullptr))
+        bool local_1 = this.GetSkillRuntime().GetSkillConfig() == nullptr || (this.GetSkillConfig() == nullptr);
+        if (local_1)
         {
             return;
         }
         bool local_5 = this.GetSkillRuntime().IsUsable() && !(this.GetSkillRuntime().IsDisabled()) && this.GetbConsumeItemEnough();
-        if (int(this.GetSkillBtnConfig().SkillButtonType) == 5 && local_6)
+        if (int(this.GetSkillBtnConfig().SkillButtonType) != 5)
+        {
+            local_1 = false;
+        }
+        else
+        {
+            local_1 = this.GetDivineChaosTag().GetValue();
+        }
+        if (local_1)
         {
             local_5 = false;
         }
@@ -1384,15 +1373,13 @@ struct FVM_NormalSkillBtn : FEUIViewModel
         }
         if (this.GetConfigEntry().IsValid())
         {
-            TEUIModelRef<FVM_BattleBuildEntry> local_10 = this.GetConfigEntry();
-            OpenBattleBuild();
+            this.GetConfigEntry().Get().OpenBattleBuild();
         }
         else
         {
             if (local_4.GetConfigEntry().IsValid())
             {
-                TEUIModelRef<FVM_BattleBuildEntry> local_10_2 = local_4.GetConfigEntry();
-                OpenBattleBuild();
+                local_4.GetConfigEntry().Get().OpenBattleBuild();
             }
         }
         return true;
@@ -2865,11 +2852,9 @@ FVM_SingleSkillBtn& Create(const UObject ContextObject)
 {
     return FVM_SingleSkillBtn::CreateByManager(EUIInternal::GetContextManager(ContextObject));
 }
-FVM_SingleSkillBtn CreateByManager(const UEUIManagerSubsystem Manager)
+FVM_SingleSkillBtn& CreateByManager(const UEUIManagerSubsystem Manager)
 {
-    FVM_SingleSkillBtn __r;
-    TEUIModelRef<FVM_SingleSkillBtn> local_6 = TEUIModelRef<FVM_SingleSkillBtn>(EUIInternal::MakeModelWithManager(Manager, FVM_SingleSkillBtn::ModelId));
-    return __r;
+    return TEUIModelRef<FVM_SingleSkillBtn>(EUIInternal::MakeModelWithManager(Manager, FVM_SingleSkillBtn::ModelId)).Get();
 }
 void GetModelInfo(FEUIViewModelMetaInfo &inout Result)
 {
@@ -2903,8 +2888,7 @@ namespace __GeneratedProperties_FVM_SingleSkillBtn
 {
 UScriptStruct StaticStruct()
 {
-    UScriptStruct local_2;
-    return local_2;
+    return __GeneratedProperties_FVM_SingleSkillBtn.Get();
 }
 }
 namespace FVM_SkillBtnSpecialCountItem
@@ -2913,11 +2897,9 @@ FVM_SkillBtnSpecialCountItem& Create(const UObject ContextObject)
 {
     return FVM_SkillBtnSpecialCountItem::CreateByManager(EUIInternal::GetContextManager(ContextObject));
 }
-FVM_SkillBtnSpecialCountItem CreateByManager(const UEUIManagerSubsystem Manager)
+FVM_SkillBtnSpecialCountItem& CreateByManager(const UEUIManagerSubsystem Manager)
 {
-    FVM_SkillBtnSpecialCountItem __r;
-    TEUIModelRef<FVM_SkillBtnSpecialCountItem> local_6 = TEUIModelRef<FVM_SkillBtnSpecialCountItem>(EUIInternal::MakeModelWithManager(Manager, FVM_SkillBtnSpecialCountItem::ModelId));
-    return __r;
+    return TEUIModelRef<FVM_SkillBtnSpecialCountItem>(EUIInternal::MakeModelWithManager(Manager, FVM_SkillBtnSpecialCountItem::ModelId)).Get();
 }
 void GetModelInfo(FEUIViewModelMetaInfo &inout Result)
 {
@@ -2968,8 +2950,7 @@ namespace __GeneratedProperties_FVM_SkillBtnSpecialCountItem
 {
 UScriptStruct StaticStruct()
 {
-    UScriptStruct local_2;
-    return local_2;
+    return __GeneratedProperties_FVM_SkillBtnSpecialCountItem.Get();
 }
 }
 namespace FVM_SkillBtnSpecialCounts
@@ -2978,11 +2959,9 @@ FVM_SkillBtnSpecialCounts& Create(const UObject ContextObject)
 {
     return FVM_SkillBtnSpecialCounts::CreateByManager(EUIInternal::GetContextManager(ContextObject));
 }
-FVM_SkillBtnSpecialCounts CreateByManager(const UEUIManagerSubsystem Manager)
+FVM_SkillBtnSpecialCounts& CreateByManager(const UEUIManagerSubsystem Manager)
 {
-    FVM_SkillBtnSpecialCounts __r;
-    TEUIModelRef<FVM_SkillBtnSpecialCounts> local_6 = TEUIModelRef<FVM_SkillBtnSpecialCounts>(EUIInternal::MakeModelWithManager(Manager, FVM_SkillBtnSpecialCounts::ModelId));
-    return __r;
+    return TEUIModelRef<FVM_SkillBtnSpecialCounts>(EUIInternal::MakeModelWithManager(Manager, FVM_SkillBtnSpecialCounts::ModelId)).Get();
 }
 void GetModelInfo(FEUIViewModelMetaInfo &inout Result)
 {
@@ -3037,8 +3016,7 @@ namespace __GeneratedProperties_FVM_SkillBtnSpecialCounts
 {
 UScriptStruct StaticStruct()
 {
-    UScriptStruct local_2;
-    return local_2;
+    return __GeneratedProperties_FVM_SkillBtnSpecialCounts.Get();
 }
 }
 namespace FVM_NormalSkillBtn
@@ -3047,11 +3025,9 @@ FVM_NormalSkillBtn& Create(const UObject ContextObject)
 {
     return FVM_NormalSkillBtn::CreateByManager(EUIInternal::GetContextManager(ContextObject));
 }
-FVM_NormalSkillBtn CreateByManager(const UEUIManagerSubsystem Manager)
+FVM_NormalSkillBtn& CreateByManager(const UEUIManagerSubsystem Manager)
 {
-    FVM_NormalSkillBtn __r;
-    TEUIModelRef<FVM_NormalSkillBtn> local_6 = TEUIModelRef<FVM_NormalSkillBtn>(EUIInternal::MakeModelWithManager(Manager, FVM_NormalSkillBtn::ModelId));
-    return __r;
+    return TEUIModelRef<FVM_NormalSkillBtn>(EUIInternal::MakeModelWithManager(Manager, FVM_NormalSkillBtn::ModelId)).Get();
 }
 void GetModelInfo(FEUIViewModelMetaInfo &inout Result)
 {
@@ -3757,8 +3733,7 @@ namespace __GeneratedProperties_FVM_NormalSkillBtn
 {
 UScriptStruct StaticStruct()
 {
-    UScriptStruct local_2;
-    return local_2;
+    return __GeneratedProperties_FVM_NormalSkillBtn.Get();
 }
 }
 namespace FVM_SpecialSkillBtn
@@ -3767,11 +3742,9 @@ FVM_SpecialSkillBtn& Create(const UObject ContextObject)
 {
     return FVM_SpecialSkillBtn::CreateByManager(EUIInternal::GetContextManager(ContextObject));
 }
-FVM_SpecialSkillBtn CreateByManager(const UEUIManagerSubsystem Manager)
+FVM_SpecialSkillBtn& CreateByManager(const UEUIManagerSubsystem Manager)
 {
-    FVM_SpecialSkillBtn __r;
-    TEUIModelRef<FVM_SpecialSkillBtn> local_6 = TEUIModelRef<FVM_SpecialSkillBtn>(EUIInternal::MakeModelWithManager(Manager, FVM_SpecialSkillBtn::ModelId));
-    return __r;
+    return TEUIModelRef<FVM_SpecialSkillBtn>(EUIInternal::MakeModelWithManager(Manager, FVM_SpecialSkillBtn::ModelId)).Get();
 }
 void GetModelInfo(FEUIViewModelMetaInfo &inout Result)
 {
@@ -3826,8 +3799,7 @@ namespace __GeneratedProperties_FVM_SpecialSkillBtn
 {
 UScriptStruct StaticStruct()
 {
-    UScriptStruct local_2;
-    return local_2;
+    return __GeneratedProperties_FVM_SpecialSkillBtn.Get();
 }
 }
 namespace FVM_CommonSkillBtn
@@ -3836,11 +3808,9 @@ FVM_CommonSkillBtn& Create(const UObject ContextObject)
 {
     return FVM_CommonSkillBtn::CreateByManager(EUIInternal::GetContextManager(ContextObject));
 }
-FVM_CommonSkillBtn CreateByManager(const UEUIManagerSubsystem Manager)
+FVM_CommonSkillBtn& CreateByManager(const UEUIManagerSubsystem Manager)
 {
-    FVM_CommonSkillBtn __r;
-    TEUIModelRef<FVM_CommonSkillBtn> local_6 = TEUIModelRef<FVM_CommonSkillBtn>(EUIInternal::MakeModelWithManager(Manager, FVM_CommonSkillBtn::ModelId));
-    return __r;
+    return TEUIModelRef<FVM_CommonSkillBtn>(EUIInternal::MakeModelWithManager(Manager, FVM_CommonSkillBtn::ModelId)).Get();
 }
 void GetModelInfo(FEUIViewModelMetaInfo &inout Result)
 {
@@ -3895,8 +3865,7 @@ namespace __GeneratedProperties_FVM_CommonSkillBtn
 {
 UScriptStruct StaticStruct()
 {
-    UScriptStruct local_2;
-    return local_2;
+    return __GeneratedProperties_FVM_CommonSkillBtn.Get();
 }
 }
 namespace FVM_TSkillBtn
@@ -3905,11 +3874,9 @@ FVM_TSkillBtn& Create(const UObject ContextObject)
 {
     return FVM_TSkillBtn::CreateByManager(EUIInternal::GetContextManager(ContextObject));
 }
-FVM_TSkillBtn CreateByManager(const UEUIManagerSubsystem Manager)
+FVM_TSkillBtn& CreateByManager(const UEUIManagerSubsystem Manager)
 {
-    FVM_TSkillBtn __r;
-    TEUIModelRef<FVM_TSkillBtn> local_6 = TEUIModelRef<FVM_TSkillBtn>(EUIInternal::MakeModelWithManager(Manager, FVM_TSkillBtn::ModelId));
-    return __r;
+    return TEUIModelRef<FVM_TSkillBtn>(EUIInternal::MakeModelWithManager(Manager, FVM_TSkillBtn::ModelId)).Get();
 }
 void GetModelInfo(FEUIViewModelMetaInfo &inout Result)
 {
@@ -3964,7 +3931,6 @@ namespace __GeneratedProperties_FVM_TSkillBtn
 {
 UScriptStruct StaticStruct()
 {
-    UScriptStruct local_2;
-    return local_2;
+    return __GeneratedProperties_FVM_TSkillBtn.Get();
 }
 }

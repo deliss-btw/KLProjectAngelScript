@@ -3,7 +3,6 @@ namespace __FAISpecialCombatTokenConfigFunctions
 UFUNCTION()
 FString __FAISpecialCombatTokenConfig_GetComments(const TDataObjectPtr<FAISpecialCombatTokenConfig> &inout DataObject)
 {
-    FString __r;
     if ((DataObject == nullptr))
     {
         if (!(EUIGlobals::GIsDuringPropertyConversion))
@@ -13,7 +12,7 @@ FString __FAISpecialCombatTokenConfig_GetComments(const TDataObjectPtr<FAISpecia
         FAISpecialCombatTokenConfig local_46;
         return local_46.Comments;
     }
-    return __r;
+    return DataObject.Get().Comments;
 }
 UFUNCTION()
 float32 __FAISpecialCombatTokenConfig_GetValidDuration(const TDataObjectPtr<FAISpecialCombatTokenConfig> &inout DataObject)
@@ -33,7 +32,6 @@ float32 __FAISpecialCombatTokenConfig_GetValidDuration(const TDataObjectPtr<FAIS
 UFUNCTION()
 FAISpecialCombatTokenGenNum __FAISpecialCombatTokenConfig_GetGenerateTokenNum(const TDataObjectPtr<FAISpecialCombatTokenConfig> &inout DataObject)
 {
-    FAISpecialCombatTokenGenNum __r;
     if ((DataObject == nullptr))
     {
         if (!(EUIGlobals::GIsDuringPropertyConversion))
@@ -43,12 +41,11 @@ FAISpecialCombatTokenGenNum __FAISpecialCombatTokenConfig_GetGenerateTokenNum(co
         FAISpecialCombatTokenConfig local_46;
         return local_46.GenerateTokenNum;
     }
-    return __r;
+    return DataObject.Get().GenerateTokenNum;
 }
 UFUNCTION()
 TArray<FAISmartValuePackItem> __FAISpecialCombatTokenConfig_GetParams(const TDataObjectPtr<FAISpecialCombatTokenConfig> &inout DataObject)
 {
-    TArray<FAISmartValuePackItem> __r;
     if ((DataObject == nullptr))
     {
         if (!(EUIGlobals::GIsDuringPropertyConversion))
@@ -58,12 +55,11 @@ TArray<FAISmartValuePackItem> __FAISpecialCombatTokenConfig_GetParams(const TDat
         FAISpecialCombatTokenConfig local_46;
         return local_46.Params;
     }
-    return __r;
+    return DataObject.Get().Params;
 }
 UFUNCTION()
 EESMBlackboardConditionTagQueryType __FAISpecialCombatTokenConfig_GetFilterByTagType(const TDataObjectPtr<FAISpecialCombatTokenConfig> &inout DataObject)
 {
-    int local_47 = 0;
     if ((DataObject == nullptr))
     {
         if (!(EUIGlobals::GIsDuringPropertyConversion))
@@ -71,15 +67,13 @@ EESMBlackboardConditionTagQueryType __FAISpecialCombatTokenConfig_GetFilterByTag
             FBlueprintDebugFunctions::ThrowScriptException("Get 'FilterByTagType' from a null 'FAISpecialCombatTokenConfig' DataObject!");
         }
         FAISpecialCombatTokenConfig local_46;
-        local_47 = int(local_46.FilterByTagType);
-        return EESMBlackboardConditionTagQueryType(local_47);
+        return local_46.FilterByTagType;
     }
-    return EESMBlackboardConditionTagQueryType(local_47);
+    return DataObject.Get().FilterByTagType;
 }
 UFUNCTION()
 FGameplayTagContainer __FAISpecialCombatTokenConfig_GetFilterByTags(const TDataObjectPtr<FAISpecialCombatTokenConfig> &inout DataObject)
 {
-    FGameplayTagContainer __r;
     if ((DataObject == nullptr))
     {
         if (!(EUIGlobals::GIsDuringPropertyConversion))
@@ -89,12 +83,11 @@ FGameplayTagContainer __FAISpecialCombatTokenConfig_GetFilterByTags(const TDataO
         FAISpecialCombatTokenConfig local_46;
         return local_46.FilterByTags;
     }
-    return __r;
+    return DataObject.Get().FilterByTags;
 }
 UFUNCTION()
 EAISpecialCombatTokenFilterByTokenType __FAISpecialCombatTokenConfig_GetFilterByTokenType(const TDataObjectPtr<FAISpecialCombatTokenConfig> &inout DataObject)
 {
-    int local_47 = 0;
     if ((DataObject == nullptr))
     {
         if (!(EUIGlobals::GIsDuringPropertyConversion))
@@ -102,10 +95,9 @@ EAISpecialCombatTokenFilterByTokenType __FAISpecialCombatTokenConfig_GetFilterBy
             FBlueprintDebugFunctions::ThrowScriptException("Get 'FilterByTokenType' from a null 'FAISpecialCombatTokenConfig' DataObject!");
         }
         FAISpecialCombatTokenConfig local_46;
-        local_47 = int(local_46.FilterByTokenType);
-        return EAISpecialCombatTokenFilterByTokenType(local_47);
+        return local_46.FilterByTokenType;
     }
-    return EAISpecialCombatTokenFilterByTokenType(local_47);
+    return DataObject.Get().FilterByTokenType;
 }
 UFUNCTION()
 TArray<TDataObjectPtr<FAISpecialCombatTokenConfig>> __FAISpecialCombatTokenConfig_GetFilterByTokens(const TDataObjectPtr<FAISpecialCombatTokenConfig> &inout DataObject)
@@ -119,7 +111,7 @@ TArray<TDataObjectPtr<FAISpecialCombatTokenConfig>> __FAISpecialCombatTokenConfi
         FAISpecialCombatTokenConfig local_46;
         return local_46.GetFilterByTokens();
     }
-    return GetFilterByTokens();
+    return DataObject.Get().GetFilterByTokens();
 }
 UFUNCTION()
 FAISpecialCombatTokenConfig CastToFAISpecialCombatTokenConfig(const TDataObjectPtr<FAISpecialCombatTokenConfig> &inout DataObject)

@@ -390,11 +390,9 @@ FVM_PVX_LeaderboardListEntry& Create(const UObject ContextObject, const FECSEnti
 {
     return FVM_PVX_LeaderboardListEntry::CreateByManager(EUIInternal::GetContextManager(ContextObject), PlayerEntity);
 }
-FVM_PVX_LeaderboardListEntry CreateByManager(const UEUIManagerSubsystem Manager, const FECSEntity &inout PlayerEntity)
+FVM_PVX_LeaderboardListEntry& CreateByManager(const UEUIManagerSubsystem Manager, const FECSEntity &inout PlayerEntity)
 {
-    FVM_PVX_LeaderboardListEntry __r;
-    TEUIModelRef<FVM_PVX_LeaderboardListEntry> local_6 = TEUIModelRef<FVM_PVX_LeaderboardListEntry>(EUIInternal::MakeModelWithManager_Generic(Manager, FVM_PVX_LeaderboardListEntry::ModelId, 0, PlayerEntity));
-    return __r;
+    return TEUIModelRef<FVM_PVX_LeaderboardListEntry>(EUIInternal::MakeModelWithManager_Generic(Manager, FVM_PVX_LeaderboardListEntry::ModelId, 0, PlayerEntity)).Get();
 }
 void GetModelInfo(FEUIViewModelMetaInfo &inout Result)
 {
@@ -568,7 +566,6 @@ namespace __GeneratedProperties_FVM_PVX_LeaderboardListEntry
 {
 UScriptStruct StaticStruct()
 {
-    UScriptStruct local_2;
-    return local_2;
+    return __GeneratedProperties_FVM_PVX_LeaderboardListEntry.Get();
 }
 }

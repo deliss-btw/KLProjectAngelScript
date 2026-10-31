@@ -8,7 +8,6 @@ class US_ConditionPublicEventCompleteSystem : UECSScriptSystem
     void ServerJob_HandlePublicEventCompleted(const FCE_LevelPublicEventCompleted &inout Event, const FCS_LocalConditionSubscriptionManager &inout SubscriptionManager) const
     {
         int local_10 = 0;
-        const FLocalConditionInstanceData& local_134;
         if (Event.TriggeredPlayers.IsEmpty())
         {
             return;
@@ -46,7 +45,7 @@ class US_ConditionPublicEventCompleteSystem : UECSScriptSystem
             {
                 continue;
             }
-            int local_132 = local_58.GetLocalConditionInstanceID();
+            const FLocalConditionInstanceData& local_134 = local_10.GetInstanceData(local_58.GetLocalConditionInstanceID());
             if (!(local_134.IsValid()))
             {
                 continue;
@@ -71,11 +70,10 @@ class US_ConditionPublicEventCompleteSystem : UECSScriptSystem
         TDataObjectPtr<FLocalConditionConfig> local_110 = local_86.opCall();
         if (local_110)
         {
-            if (FInstancedStruct::GetPtr(local_110.opArrow().ConditionTypeDefineConfig).opCall())
+            TConstRawPtr<FConditionPublicEventCompleteConfig> local_140 = FInstancedStruct::GetPtr(local_110.opArrow().ConditionTypeDefineConfig).opCall();
+            if (local_140)
             {
-            }
-            else
-            {
+                return local_140.Get().EventInfoFilter;
             }
         }
         return TDataObjectPtr<FLevelPublicEventInfoConfig>();

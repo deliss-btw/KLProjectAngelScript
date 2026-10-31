@@ -87,13 +87,13 @@ class UWidget_QualitySelector : UEUIUserWidget
         FString local_8 = Text.ToString();
         if (local_8.IsNumeric())
         {
-            String::Conv_StringToInt(local_8).SetCurrentNumValue();
+            this.Quality.Get().SetCurrentNumValue(String::Conv_StringToInt(local_8));
         }
         if (this.w_editBox_num != nullptr)
         {
             FNumberFormattingOptions local_20;
             local_20.SetMaximumFractionalDigits(0);
-            this.w_editBox_num.SetText(FText::AsNumber(GetCurrentNum(), local_20));
+            this.w_editBox_num.SetText(FText::AsNumber(this.Quality.Get().GetCurrentNum(), local_20));
         }
         return;
     }

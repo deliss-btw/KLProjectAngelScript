@@ -21,14 +21,15 @@ class UESMAction_AnimKeepExitSnapshot : UESMBPBaseSpanAction
     {
         int local_6 = 0;
         int local_12 = 0;
-        FESMAnimState& local_20;
         if (!(!(local_6)) && local_12)
         {
             int local_15 = 0;
             for (; local_15 < local_12.GetLayerNum(); )
             {
-                local_20.SetRawPlaySpeed(0.0f);
-                local_20.SetNormalizedPlaySpeed(0.0f);
+                FESMAnimState& local_20 = local_12.Get(local_15);
+                FESMAnimState& local_20_2 = local_6.Get(local_15);
+                local_20_2.SetRawPlaySpeed(0.0f);
+                local_20_2.SetNormalizedPlaySpeed(0.0f);
                 ++local_15;
             }
         }
@@ -37,7 +38,6 @@ class UESMAction_AnimKeepExitSnapshot : UESMBPBaseSpanAction
     UFUNCTION()
     void Exit_Implementation(const FESMContext &inout Context, const FESMActionTime &inout Time) const
     {
-        FESMAnimState& local_12;
         Modify local_4;
         FC_AnimState& local_6 = local_4.opCall();
         if (local_6)
@@ -45,6 +45,7 @@ class UESMAction_AnimKeepExitSnapshot : UESMBPBaseSpanAction
             int local_8 = 0;
             for (; local_8 < local_6.GetLayerNum(); )
             {
+                FESMAnimState& local_12 = local_6.Get(local_8);
                 local_12.SetState(NAME_None);
                 local_12.SetOverrideAnimKey(NAME_None);
                 local_12.SetOverrideAnimAsset(TSoftObjectPtr<UAnimationAsset>(nullptr));

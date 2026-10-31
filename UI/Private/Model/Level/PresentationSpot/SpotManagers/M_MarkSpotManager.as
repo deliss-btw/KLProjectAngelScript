@@ -67,8 +67,7 @@ struct FM_PlayerMarkSpotManager : FEUIModel
     {
         for (auto& local_20 : this.GetMarkSpots())
         {
-            local_20;
-            FM_Spot local_22;
+            FM_Spot& local_22 = local_20.GetValue().Get();
             this.RemovePlayerMarkData(local_22);
         }
         return;
@@ -90,7 +89,7 @@ struct FM_PlayerMarkSpotManager : FEUIModel
         {
             for (auto& local_20 : this.GetMarkSpots())
             {
-                FM_Spot local_22;
+                FM_Spot& local_22 = local_20.GetValue().Get();
                 this.RemovePlayerMarkData(local_22);
             }
             this.GetModify_MarkSpots().Empty(0);
@@ -101,15 +100,15 @@ struct FM_PlayerMarkSpotManager : FEUIModel
             if (!(this.GetMarkSpots().Contains(local_42.GetKey())))
             {
                 TEUIModelRef<FM_Spot> local_44;
-                if ((FECSEntityId(GetMarkedEntityID()) == ENTITY_ID_NULL))
+                if ((FECSEntityId(local_42.GetValue().GetMarkedEntityID()) == ENTITY_ID_NULL))
                 {
                     local_44 = TEUIModelRef<FM_Spot>(::PresentationSpotUtils::RequireEntitySpot(this.GetContext().Manager, local_42.GetKey(), local_50));
                 }
                 else
                 {
-                    local_44 = TEUIModelRef<FM_Spot>(::PresentationSpotUtils::RequireEntitySpot(this.GetContext().Manager, GetMarkedEntityID(), local_50));
+                    local_44 = TEUIModelRef<FM_Spot>(::PresentationSpotUtils::RequireEntitySpot(this.GetContext().Manager, local_42.GetValue().GetMarkedEntityID(), local_50));
                 }
-                this.SavePlayerMarkData();
+                this.SavePlayerMarkData(local_44.Get(), local_42.GetValue());
                 this.GetModify_MarkSpots().Add(local_42.GetKey(), local_44);
             }
         }
@@ -126,7 +125,7 @@ struct FM_PlayerMarkSpotManager : FEUIModel
             TEUIModelRef<FM_Spot> local_44;
             if (this.GetModify_MarkSpots().RemoveAndCopyValue(local_70, local_44))
             {
-                this.RemovePlayerMarkData();
+                this.RemovePlayerMarkData(local_44.Get());
             }
         }
         return;
@@ -186,7 +185,7 @@ struct FM_PlayerMarkSpotManager : FEUIModel
         TEUIModelRef<FM_PresentationData_Mark> local_16 = ::GetMarkData(Spot, FSpotViewAdapter(local_12));
         if (local_16)
         {
-            TEUIModelRef<FM_Player> local_22 = this.GetPlayer();
+            local_16.opArrow().GetModify_PlayerMarkDataMap().Remove(this.GetPlayer());
             if (local_16.opArrow().GetPlayerMarkDataMap().IsEmpty())
             {
                 local_12 = this.GetSpotRegistry();
@@ -360,6 +359,7 @@ struct FMS_MarkSpotManager : FEUIModelSingleton
         }
         for (auto local_16 : local_24)
         {
+            this.GetModify_PlayerMarkSpotManagers().Remove(local_16);
         }
         return;
     }
@@ -394,11 +394,9 @@ FM_PlayerMarkSpotManager& Create(const UObject ContextObject, const TEUIModelRef
 {
     return FM_PlayerMarkSpotManager::CreateByManager(EUIInternal::GetContextManager(ContextObject), Player);
 }
-FM_PlayerMarkSpotManager CreateByManager(const UEUIManagerSubsystem Manager, const TEUIModelRef<FM_Player> &inout Player)
+FM_PlayerMarkSpotManager& CreateByManager(const UEUIManagerSubsystem Manager, const TEUIModelRef<FM_Player> &inout Player)
 {
-    FM_PlayerMarkSpotManager __r;
-    TEUIModelRef<FM_PlayerMarkSpotManager> local_6 = TEUIModelRef<FM_PlayerMarkSpotManager>(EUIInternal::MakeModelWithManager_Generic(Manager, FM_PlayerMarkSpotManager::ModelId, 0, Player));
-    return __r;
+    return TEUIModelRef<FM_PlayerMarkSpotManager>(EUIInternal::MakeModelWithManager_Generic(Manager, FM_PlayerMarkSpotManager::ModelId, 0, Player)).Get();
 }
 void GetModelInfo(FEUIModelOnlyMetaInfo &inout Result)
 {
@@ -466,11 +464,9 @@ FMS_MarkSpotManager& Get(const UObject ContextObject)
 {
     return FMS_MarkSpotManager::GetByManager(EUIInternal::GetContextManager(ContextObject));
 }
-FMS_MarkSpotManager GetByManager(const UEUIManagerSubsystem Manager)
+FMS_MarkSpotManager& GetByManager(const UEUIManagerSubsystem Manager)
 {
-    FMS_MarkSpotManager __r;
-    TEUIModelRef<FMS_MarkSpotManager> local_6 = TEUIModelRef<FMS_MarkSpotManager>(EUIInternal::MakeModelWithManager(Manager, FMS_MarkSpotManager::ModelId));
-    return __r;
+    return TEUIModelRef<FMS_MarkSpotManager>(EUIInternal::MakeModelWithManager(Manager, FMS_MarkSpotManager::ModelId)).Get();
 }
 void GetModelInfo(FEUIModelOnlyMetaInfo &inout Result)
 {

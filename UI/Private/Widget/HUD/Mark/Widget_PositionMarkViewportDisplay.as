@@ -43,8 +43,8 @@ class UWidget_PositionMarkViewportDisplay : UEUIUserWidget
     }
     void HandleObservedModelChanges(FEUIReactiveSubscriberIterator &inout It)
     {
-        FVM_MarkSpotIcon& local_6;
         TEUIModelRef<FVM_MarkSpotIcon> local_2 = this.MarkSpotIcon.AsRef();
+        FVM_MarkSpotIcon& local_6 = local_2.Get();
         for (; It; )
         {
             FEUIReactiveSubscriberTrackScope local_56 = FEUIReactiveSubscriberTrackScope(It);

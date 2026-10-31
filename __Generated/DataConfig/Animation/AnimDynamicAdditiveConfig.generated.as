@@ -3,7 +3,6 @@ namespace __FAnimDynamicAdditiveConfigFunctions
 UFUNCTION()
 TSoftObjectPtr<UAnimSequence> __FAnimDynamicAdditiveConfig_GetSourceSequence(const TDataObjectPtr<FAnimDynamicAdditiveConfig> &inout DataObject)
 {
-    TSoftObjectPtr<UAnimSequence> __r;
     if ((DataObject == nullptr))
     {
         if (!(EUIGlobals::GIsDuringPropertyConversion))
@@ -13,12 +12,11 @@ TSoftObjectPtr<UAnimSequence> __FAnimDynamicAdditiveConfig_GetSourceSequence(con
         FAnimDynamicAdditiveConfig local_34;
         return local_34.SourceSequence;
     }
-    return __r;
+    return DataObject.Get().SourceSequence;
 }
 UFUNCTION()
 TSoftObjectPtr<UAnimSequence> __FAnimDynamicAdditiveConfig_GetTargetSequence(const TDataObjectPtr<FAnimDynamicAdditiveConfig> &inout DataObject)
 {
-    TSoftObjectPtr<UAnimSequence> __r;
     if ((DataObject == nullptr))
     {
         if (!(EUIGlobals::GIsDuringPropertyConversion))
@@ -28,7 +26,7 @@ TSoftObjectPtr<UAnimSequence> __FAnimDynamicAdditiveConfig_GetTargetSequence(con
         FAnimDynamicAdditiveConfig local_34;
         return local_34.TargetSequence;
     }
-    return __r;
+    return DataObject.Get().TargetSequence;
 }
 UFUNCTION()
 FAnimDynamicAdditiveConfig CastToFAnimDynamicAdditiveConfig(const TDataObjectPtr<FAnimDynamicAdditiveConfig> &inout DataObject)

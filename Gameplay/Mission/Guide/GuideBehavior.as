@@ -448,10 +448,13 @@ class UGuideBehavior : UObject
             if (local_166.Requesters.Contains(RequesterEntity))
             {
                 this.StopGuideInternal(RequesterEntity, local_164);
+                local_166.Requesters.Remove(RequesterEntity);
             }
             if (local_166.Requesters.IsEmpty())
             {
+                local_16.GuideInfoMap.Remove(InstanceId);
             }
+            local_6.GetModify_GuideInfoMap().Remove(InstanceId);
             return;
         }
         XError(ELog(62), FString().Append("Failed to stop guide for custom unique id ").Append(InstanceId).Append(", FC_GuidingInfoList not found"));
@@ -611,42 +614,32 @@ class UGuideNpcBehavior : UGuideEntityCommonBehavior
     }
     FECSEntity FindTargetEntity(const FInstancedStruct &inout GuideData) const
     {
-        FECSEntity local_14;
-        if (FInstancedStruct::GetPtr(GuideData).opCall())
+        TConstRawPtr<FGuideNpcData> local_6 = FInstancedStruct::GetPtr(GuideData).opCall();
+        if (local_6)
         {
-            if (unresolved.TargetNpc)
+            if (local_6.Get().TargetNpc)
             {
-                return local_14;
+                return ::FNPCIdentityUtils::FindEntityByNPCMainConfig(local_6.Get().TargetNpc);
             }
         }
-        return local_14;
+        return FECSEntity();
     }
     bool TryFindTargetPositionInLevel(const TDataObjectPtr<FLevelInfoConfig> &inout LevelInfo, const FInstancedStruct &inout GuideData, FVector &inout TargetPosition) const
     {
-        bool local_2;
-        bool local_1 = !(LevelInfo) || !(GetMapConfig());
-        if (local_1)
+        if (!(LevelInfo) || !(LevelInfo.Get().GetMapConfig()))
         {
             return false;
         }
-        if (FInstancedStruct::GetPtr(GuideData).opCall())
+        TConstRawPtr<FGuideNpcData> local_8 = FInstancedStruct::GetPtr(GuideData).opCall();
+        if (local_8)
         {
-            if (unresolved.OwnerLevelGroup.IsNull())
-            {
-                local_2 = true;
-            }
-            else
-            {
-                local_1 = !local_1;
-                local_2 = local_1;
-            }
-            if (local_2)
+            if (local_8.Get().OwnerLevelGroup.IsNull() || !(local_8.Get().TargetNpc))
             {
                 return false;
             }
-            FString local_18;
-            FName local_14 = FName(local_18);
-            return local_2;
+            FName local_12(LevelInfo.Get().GetMapConfig().Get().FullName);
+            FName local_14 = FName(local_8.Get().OwnerLevelGroup.GetAssetName());
+            return ::FNPCIdentityUtils::TryGetNPCSpawnLocationFromLevelConfig(local_8.Get().TargetNpc, local_12, local_14, TargetPosition);
         }
         return false;
     }
@@ -662,9 +655,10 @@ class UGuidePrefabBehavior : UGuideEntityCommonBehavior
     FECSEntity FindTargetEntity(const FInstancedStruct &inout GuideData) const
     {
         FDataObjectPtr local_196;
-        if (FInstancedStruct::GetPtr(GuideData).opCall())
+        TConstRawPtr<FGuidePrefabData> local_6 = FInstancedStruct::GetPtr(GuideData).opCall();
+        if (local_6)
         {
-            if (unresolved.Target.IsSet())
+            if (local_6.Get().Target.IsSet())
             {
                 FECSRuntimeView local_50 = ECS::GetECSWorld().GetRuntimeView(EECSRuntimeViewType(2));
                 Include local_54;
@@ -701,10 +695,10 @@ class UGuideRegionBehavior : UGuideBehavior
             XError(ELog(62), FString().Append("Failed to calculate distance for region guide, requester entity is not a player"));
             return false;
         }
-        if (FInstancedStruct::GetPtr(GuideData).opCall())
+        TConstRawPtr<FGuideRegionData> local_22 = FInstancedStruct::GetPtr(GuideData).opCall();
+        if (local_22)
         {
-            FVector local_42;
-            Distance = FMath::Max(0.0, ::FASCommonUtils::GetEntityLocation(local_4).Dist2D(local_42));
+            Distance = FMath::Max(0.0, ::FASCommonUtils::GetEntityLocation(local_4).Dist2D(FVector(local_22.Get().Position)));
             return true;
         }
         XError(ELog(62), FString().Append("Failed to calculate distance for region guide, guide data is not a region data"));
@@ -712,16 +706,13 @@ class UGuideRegionBehavior : UGuideBehavior
     }
     FVector GetTargetPosition(const FInstancedStruct &inout GuideData) const
     {
-        FVector __return;
-        if (FInstancedStruct::GetPtr(GuideData).opCall())
+        TConstRawPtr<FGuideRegionData> local_6 = FInstancedStruct::GetPtr(GuideData).opCall();
+        if (local_6)
         {
+            return local_6.Get().Position;
         }
-        else
-        {
-            XError(ELog(62), FString().Append("Failed to get target position for region guide, guide data is not a region data"));
-            __return = FVector::ZeroVector;
-        }
-        return __return;
+        XError(ELog(62), FString().Append("Failed to get target position for region guide, guide data is not a region data"));
+        return FVector::ZeroVector;
     }
     EGuideStartResult StartGuideInternal(const uint InstanceId, FGuideContext &inout Context) const
     {
@@ -734,12 +725,13 @@ class UGuideRegionBehavior : UGuideBehavior
     }
     void SetupGuidePresentation(FGuideContext &inout Context) const
     {
-        float32 local_18 = 0.0f;
         FInstancedStruct local_4 = Context.GetGuideData();
-        if (FInstancedStruct::GetPtr(local_4).opCall())
+        TConstRawPtr<FGuideRegionData> local_14 = FInstancedStruct::GetPtr(local_4).opCall();
+        if (local_14)
         {
-            Context.SetRegionRadius(local_18);
-            Context.SetbShowGuideFX((0 != 0));
+            Context.SetRegionRadius(local_14.Get().Radius);
+            int local_17 = local_14.Get().bShowGuideFX;
+            Context.SetbShowGuideFX((local_17 != 0));
         }
         return;
     }
@@ -763,7 +755,7 @@ class UGuideMonsterBehavior : UGuideEntityCommonBehavior
         TArray<FECSEntity> local_14 = this.FindAllTargetEntities(local_4);
         if (local_14.IsEmpty())
         {
-            return EGuideStartResult(1);
+            return EGuideStartResult::DeferRetry;
         }
         for (auto& local_32 : local_14)
         {
@@ -771,12 +763,21 @@ class UGuideMonsterBehavior : UGuideEntityCommonBehavior
         }
         FECSWorldPtr local_52 = ECS::GetECSWorld();
         local_58.GuideInfoMap.FindOrAdd(InstanceId).Requesters.AddUnique(Context.GetRequesterEntity());
-        return EGuideStartResult(0);
+        return EGuideStartResult::Success;
     }
     bool IsContinuousGuide(const FInstancedStruct &inout GuideData) const
     {
-        bool local_9 = false;
-        return FInstancedStruct::GetPtr(GuideData).opCall() && local_9;
+        bool local_10;
+        TConstRawPtr<FGuideMonsterData> local_6 = FInstancedStruct::GetPtr(GuideData).opCall();
+        if (!(local_6))
+        {
+            local_10 = false;
+        }
+        else
+        {
+            local_10 = local_6.Get().bMarkAll;
+        }
+        return local_10;
     }
     bool AppendGuideInternal(const uint InstanceId, FGuideContext &inout Context) const
     {
@@ -818,29 +819,18 @@ class UGuideMonsterBehavior : UGuideEntityCommonBehavior
     }
     TArray<FECSEntity> FindAllTargetEntities(const FInstancedStruct &inout GuideData) const
     {
-        TArray<FECSEntity> local_4;
-        bool local_14 = false;
         FDataObjectPtr local_226;
-        bool local_13 = !(FInstancedStruct::GetPtr(GuideData).opCall());
-        if (local_13)
-        {
-            local_13 = true;
-        }
-        else
-        {
-            local_14 = !local_14;
-            local_13 = local_14;
-        }
-        if (local_13)
+        TArray<FECSEntity> local_4;
+        TConstRawPtr<FGuideMonsterData> local_10 = FInstancedStruct::GetPtr(GuideData).opCall();
+        if (!(local_10) || !(local_10.Get().MonsterConfig))
         {
             return local_4;
         }
-        local_14 = !local_14;
+        bool local_14 = !(local_10.Get().OwnerLevelGroup.IsNull());
         FName local_17;
         if (local_14)
         {
-            FString local_22;
-            local_17 = FName(local_22);
+            local_17 = FName(local_10.Get().OwnerLevelGroup.GetAssetName());
         }
         FECSRuntimeView local_64 = ECS::GetECSWorld().GetRuntimeView(EECSRuntimeViewType(2));
         Include local_68;

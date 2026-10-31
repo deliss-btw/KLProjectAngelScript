@@ -88,8 +88,7 @@ struct FItemActionInstance
     }
     UItemActionConfigBase GetActionConfig() const property
     {
-        UItemActionConfigBase local_2;
-        return local_2;
+        return this.Config.Get();
     }
     FItemActionConfigPtr GetActionConfigPtr() const property
     {

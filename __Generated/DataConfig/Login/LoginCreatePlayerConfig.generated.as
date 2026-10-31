@@ -3,7 +3,6 @@ namespace __FLoginCreatePlayerConfigFunctions
 UFUNCTION()
 EGenderType __FLoginCreatePlayerConfig_GetDefaultGender(const TDataObjectPtr<FLoginCreatePlayerConfig> &inout DataObject)
 {
-    int local_105 = 0;
     if ((DataObject == nullptr))
     {
         if (!(EUIGlobals::GIsDuringPropertyConversion))
@@ -11,15 +10,13 @@ EGenderType __FLoginCreatePlayerConfig_GetDefaultGender(const TDataObjectPtr<FLo
             FBlueprintDebugFunctions::ThrowScriptException("Get 'DefaultGender' from a null 'FLoginCreatePlayerConfig' DataObject!");
         }
         FLoginCreatePlayerConfig local_104;
-        local_105 = int(local_104.DefaultGender);
-        return EGenderType(local_105);
+        return local_104.DefaultGender;
     }
-    return EGenderType(local_105);
+    return DataObject.Get().DefaultGender;
 }
 UFUNCTION()
 bool __FLoginCreatePlayerConfig_GetbForbidMaleSelect(const TDataObjectPtr<FLoginCreatePlayerConfig> &inout DataObject)
 {
-    bool local_1 = false;
     if ((DataObject == nullptr))
     {
         if (!(EUIGlobals::GIsDuringPropertyConversion))
@@ -29,12 +26,11 @@ bool __FLoginCreatePlayerConfig_GetbForbidMaleSelect(const TDataObjectPtr<FLogin
         FLoginCreatePlayerConfig local_104;
         return local_104.bForbidMaleSelect;
     }
-    return local_1;
+    return DataObject.Get().bForbidMaleSelect;
 }
 UFUNCTION()
 FText __FLoginCreatePlayerConfig_GetNotSelectTip(const TDataObjectPtr<FLoginCreatePlayerConfig> &inout DataObject)
 {
-    FText __r;
     if ((DataObject == nullptr))
     {
         if (!(EUIGlobals::GIsDuringPropertyConversion))
@@ -44,12 +40,11 @@ FText __FLoginCreatePlayerConfig_GetNotSelectTip(const TDataObjectPtr<FLoginCrea
         FLoginCreatePlayerConfig local_104;
         return local_104.NotSelectTip;
     }
-    return __r;
+    return DataObject.Get().NotSelectTip;
 }
 UFUNCTION()
 FText __FLoginCreatePlayerConfig_GetSelectForbidTip(const TDataObjectPtr<FLoginCreatePlayerConfig> &inout DataObject)
 {
-    FText __r;
     if ((DataObject == nullptr))
     {
         if (!(EUIGlobals::GIsDuringPropertyConversion))
@@ -59,7 +54,7 @@ FText __FLoginCreatePlayerConfig_GetSelectForbidTip(const TDataObjectPtr<FLoginC
         FLoginCreatePlayerConfig local_104;
         return local_104.SelectForbidTip;
     }
-    return __r;
+    return DataObject.Get().SelectForbidTip;
 }
 UFUNCTION()
 TDataObjectPtr<FCharacterDefaultFashionConfig> __FLoginCreatePlayerConfig_GetMaleDefaultFashion(const TDataObjectPtr<FLoginCreatePlayerConfig> &inout DataObject)
@@ -73,7 +68,7 @@ TDataObjectPtr<FCharacterDefaultFashionConfig> __FLoginCreatePlayerConfig_GetMal
         FLoginCreatePlayerConfig local_104;
         return local_104.GetMaleDefaultFashion();
     }
-    return GetMaleDefaultFashion();
+    return DataObject.Get().GetMaleDefaultFashion();
 }
 UFUNCTION()
 TDataObjectPtr<FCharacterDefaultFashionConfig> __FLoginCreatePlayerConfig_GetFemaleDefaultFashion(const TDataObjectPtr<FLoginCreatePlayerConfig> &inout DataObject)
@@ -87,7 +82,7 @@ TDataObjectPtr<FCharacterDefaultFashionConfig> __FLoginCreatePlayerConfig_GetFem
         FLoginCreatePlayerConfig local_104;
         return local_104.GetFemaleDefaultFashion();
     }
-    return GetFemaleDefaultFashion();
+    return DataObject.Get().GetFemaleDefaultFashion();
 }
 UFUNCTION()
 TArray<TDataObjectPtr<FFacePresetConfig>> __FLoginCreatePlayerConfig_GetAvailableFace(const TDataObjectPtr<FLoginCreatePlayerConfig> &inout DataObject)
@@ -101,7 +96,7 @@ TArray<TDataObjectPtr<FFacePresetConfig>> __FLoginCreatePlayerConfig_GetAvailabl
         FLoginCreatePlayerConfig local_104;
         return local_104.GetAvailableFace();
     }
-    return GetAvailableFace();
+    return DataObject.Get().GetAvailableFace();
 }
 UFUNCTION()
 int __FLoginCreatePlayerConfig_GetDefaultFaceIndex(const TDataObjectPtr<FLoginCreatePlayerConfig> &inout DataObject)
@@ -130,7 +125,7 @@ TArray<TDataObjectPtr<FFashionConfig>> __FLoginCreatePlayerConfig_GetAvailableHa
         FLoginCreatePlayerConfig local_104;
         return local_104.GetAvailableHair();
     }
-    return GetAvailableHair();
+    return DataObject.Get().GetAvailableHair();
 }
 UFUNCTION()
 int __FLoginCreatePlayerConfig_GetDefaultHairIndex(const TDataObjectPtr<FLoginCreatePlayerConfig> &inout DataObject)
@@ -159,7 +154,7 @@ TArray<TDataObjectPtr<FFashionConfig>> __FLoginCreatePlayerConfig_GetAvailableTo
         FLoginCreatePlayerConfig local_104;
         return local_104.GetAvailableTop();
     }
-    return GetAvailableTop();
+    return DataObject.Get().GetAvailableTop();
 }
 UFUNCTION()
 int __FLoginCreatePlayerConfig_GetDefaultTopIndex(const TDataObjectPtr<FLoginCreatePlayerConfig> &inout DataObject)
@@ -188,7 +183,7 @@ TArray<TDataObjectPtr<FFashionConfig>> __FLoginCreatePlayerConfig_GetAvailableBo
         FLoginCreatePlayerConfig local_104;
         return local_104.GetAvailableBottom();
     }
-    return GetAvailableBottom();
+    return DataObject.Get().GetAvailableBottom();
 }
 UFUNCTION()
 int __FLoginCreatePlayerConfig_GetDefaultBottomIndex(const TDataObjectPtr<FLoginCreatePlayerConfig> &inout DataObject)
@@ -217,7 +212,7 @@ TArray<TDataObjectPtr<FFashionConfig>> __FLoginCreatePlayerConfig_GetAvailableSu
         FLoginCreatePlayerConfig local_104;
         return local_104.GetAvailableSuit();
     }
-    return GetAvailableSuit();
+    return DataObject.Get().GetAvailableSuit();
 }
 UFUNCTION()
 int __FLoginCreatePlayerConfig_GetDefaultSuitIndex(const TDataObjectPtr<FLoginCreatePlayerConfig> &inout DataObject)
@@ -237,7 +232,6 @@ int __FLoginCreatePlayerConfig_GetDefaultSuitIndex(const TDataObjectPtr<FLoginCr
 UFUNCTION()
 bool __FLoginCreatePlayerConfig_GetbGenderPhaseUseSelectFace(const TDataObjectPtr<FLoginCreatePlayerConfig> &inout DataObject)
 {
-    bool local_1 = false;
     if ((DataObject == nullptr))
     {
         if (!(EUIGlobals::GIsDuringPropertyConversion))
@@ -247,12 +241,11 @@ bool __FLoginCreatePlayerConfig_GetbGenderPhaseUseSelectFace(const TDataObjectPt
         FLoginCreatePlayerConfig local_104;
         return local_104.bGenderPhaseUseSelectFace;
     }
-    return local_1;
+    return DataObject.Get().bGenderPhaseUseSelectFace;
 }
 UFUNCTION()
 bool __FLoginCreatePlayerConfig_GetbGenderPhaseUseSelectHair(const TDataObjectPtr<FLoginCreatePlayerConfig> &inout DataObject)
 {
-    bool local_1 = false;
     if ((DataObject == nullptr))
     {
         if (!(EUIGlobals::GIsDuringPropertyConversion))
@@ -262,12 +255,11 @@ bool __FLoginCreatePlayerConfig_GetbGenderPhaseUseSelectHair(const TDataObjectPt
         FLoginCreatePlayerConfig local_104;
         return local_104.bGenderPhaseUseSelectHair;
     }
-    return local_1;
+    return DataObject.Get().bGenderPhaseUseSelectHair;
 }
 UFUNCTION()
 bool __FLoginCreatePlayerConfig_GetbGenderPhaseUseSelectFashion(const TDataObjectPtr<FLoginCreatePlayerConfig> &inout DataObject)
 {
-    bool local_1 = false;
     if ((DataObject == nullptr))
     {
         if (!(EUIGlobals::GIsDuringPropertyConversion))
@@ -277,12 +269,11 @@ bool __FLoginCreatePlayerConfig_GetbGenderPhaseUseSelectFashion(const TDataObjec
         FLoginCreatePlayerConfig local_104;
         return local_104.bGenderPhaseUseSelectFashion;
     }
-    return local_1;
+    return DataObject.Get().bGenderPhaseUseSelectFashion;
 }
 UFUNCTION()
 bool __FLoginCreatePlayerConfig_GetbOpenPre(const TDataObjectPtr<FLoginCreatePlayerConfig> &inout DataObject)
 {
-    bool local_1 = false;
     if ((DataObject == nullptr))
     {
         if (!(EUIGlobals::GIsDuringPropertyConversion))
@@ -292,7 +283,7 @@ bool __FLoginCreatePlayerConfig_GetbOpenPre(const TDataObjectPtr<FLoginCreatePla
         FLoginCreatePlayerConfig local_104;
         return local_104.bOpenPre;
     }
-    return local_1;
+    return DataObject.Get().bOpenPre;
 }
 UFUNCTION()
 float32 __FLoginCreatePlayerConfig_GetMaskTime(const TDataObjectPtr<FLoginCreatePlayerConfig> &inout DataObject)

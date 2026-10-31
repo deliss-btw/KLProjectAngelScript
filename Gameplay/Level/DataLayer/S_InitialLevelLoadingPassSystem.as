@@ -247,7 +247,7 @@ class US_InitialLevelLoadingPassSystem : UECSScriptSystem
     void ServerJob_UpdateLevelGroupLoadingReady(const FECSEntity &inout Entity, const FCS_FixedTime &inout FixedTime, const FC_LevelGroupComponent &inout LevelGroupComponent) const
     {
         Has local_4;
-        bool local_57 = false;
+        bool local_5;
         if (!(local_4.opCall()))
         {
             FC_LevelGroupCheckReadyTime local_12;
@@ -258,9 +258,7 @@ class US_InitialLevelLoadingPassSystem : UECSScriptSystem
         Has local_62;
         for (auto& local_32 : LevelGroupComponent.ExitedLevelUnitInstance)
         {
-            local_32;
-            FECSEntity local_40;
-            if (!(local_40.IsValid()))
+            if (!(FECSEntity(local_32.GetValue()).IsValid()))
             {
                 continue;
             }
@@ -269,7 +267,17 @@ class US_InitialLevelLoadingPassSystem : UECSScriptSystem
             if (local_46)
             {
                 const FLevelConfigInstance& local_48 = local_46.GetLevelUnitConfigInstance();
-                if (!(FInstancedStruct::GetPtr(local_48.GetConfigData()).opCall()) || local_57)
+                TConstRawPtr<FSceneUnitConfig> local_54 = FInstancedStruct::GetPtr(local_48.GetConfigData()).opCall();
+                local_5 = !(local_54);
+                if (local_5)
+                {
+                    local_5 = true;
+                }
+                else
+                {
+                    local_5 = local_54.Get().bInitialInactive;
+                }
+                if (local_5)
                 {
                     continue;
                 }
@@ -299,7 +307,7 @@ class US_InitialLevelLoadingPassSystem : UECSScriptSystem
             }
         }
         Has local_94;
-        bool local_5 = local_94.opCall();
+        local_5 = local_94.opCall();
         if (local_5)
         {
             ::FInitialLevelLoadingPassUtils::NotifyLBPGroupReady(LevelGroupComponent.GetLevelGroupConfig().GroupName);

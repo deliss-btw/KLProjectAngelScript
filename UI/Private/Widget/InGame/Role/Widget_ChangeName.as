@@ -26,13 +26,14 @@ class UWidget_ChangeName : UEUIActivatableWidget
     UFUNCTION()
     void OnViewBind_Implementation()
     {
-        FVMS_ChangeName local_2;
+        FVMS_ChangeName& local_2 = this.ChangeName.Get();
         this.EditableTextBox_PlayerName.SetText(FText::FromString(local_2.GetPlayerNameString()));
         return;
     }
     UFUNCTION()
     void OnConfirmButtonClicked()
     {
+        FVMS_ChangeName& local_2 = this.ChangeName.Get();
         FString local_14 = this.EditableTextBox_PlayerName.GetText().ToString();
         int local_15 = 20;
         int local_16 = local_14.Len();
@@ -46,7 +47,6 @@ class UWidget_ChangeName : UEUIActivatableWidget
         {
             local_14 = local_14.Left(20);
         }
-        FVMS_ChangeName local_2;
         local_2.RequestChangePlayerName(local_14);
         return;
     }
@@ -61,8 +61,8 @@ class UWidget_ChangeName : UEUIActivatableWidget
     }
     void HandleObservedModelChanges(FEUIReactiveSubscriberIterator &inout It)
     {
-        FVMS_ChangeName& local_6;
         TEUIModelRef<FVMS_ChangeName> local_2 = this.ChangeName.AsRef();
+        FVMS_ChangeName& local_6 = local_2.Get();
         for (; It; )
         {
             FEUIReactiveSubscriberTrackScope local_56 = FEUIReactiveSubscriberTrackScope(It);

@@ -64,7 +64,7 @@ class UWidget_GameEntry_PVX : UEUIActivatableWidget
         this.ComboBoxString_Faction.AddOption("Invader");
         this.ComboBoxString_Faction.AddOption("Boss");
         this.ComboBoxString_Faction.SetSelectedIndex(0);
-        0.SetSelectedTeamID();
+        this.GameEntry_PVX.Get().SetSelectedTeamID(0);
         return;
     }
     void InitSpawnPoint()
@@ -113,9 +113,7 @@ class UWidget_GameEntry_PVX : UEUIActivatableWidget
         UAS_GameModeSettingsPVX local_8 = (Cast<UAS_GameModeSettingsPVX>(UECSGameModeSettingsBase::Get(this.GetWorld())));
         for (auto& local_24 : local_8.ChangeRoleDataObjects)
         {
-            local_24;
-            FString local_28;
-            this.ComboBoxString_Prefab_Player.AddOption(local_28);
+            this.ComboBoxString_Prefab_Player.AddOption(local_24.Get().DisplayName.ToString());
         }
         this.ComboBoxString_Prefab_Player.SetSelectedIndex(0);
         return;
@@ -123,8 +121,7 @@ class UWidget_GameEntry_PVX : UEUIActivatableWidget
     UFUNCTION()
     void OnSelectionChanged_Faction(const FString &inout SelectedItem, const ESelectInfo SelectionType)
     {
-        FVMS_GameEntry_PVX local_2;
-        local_2.SetSelectedTeamID(this.ComboBoxString_Faction.GetSelectedIndex());
+        this.GameEntry_PVX.Get().SetSelectedTeamID(this.ComboBoxString_Faction.GetSelectedIndex());
         this.bSpawnPointInitilized = false;
         return;
     }
@@ -189,7 +186,7 @@ class UWidget_GameEntry_PVX : UEUIActivatableWidget
     UFUNCTION()
     int GameEntry_PVX_SelectCharWidgetSwitcherIndex() const
     {
-        FVMS_GameEntry_PVX& local_2;
+        FVMS_GameEntry_PVX& local_2 = this.GameEntry_PVX.Get();
         return local_2 ? local_2.GetSelectCharWidgetSwitcherIndex() : 0;
     }
     UFUNCTION()

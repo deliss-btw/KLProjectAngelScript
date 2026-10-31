@@ -54,8 +54,8 @@ class UWidget_NavigationBar : UEUIUserWidget
         {
             return;
         }
+        FVM_NavigationBar& local_8 = this.NavigationBar.Get();
         FECSWorldPtr local_4 = ECS::GetECSWorld();
-        FVM_NavigationBar local_8;
         FECSEntity local_18 = local_8.GetContext().GetLocalPlayer();
         if ((!(local_14) || !(local_24)))
         {
@@ -89,8 +89,7 @@ class UWidget_NavigationBar : UEUIUserWidget
         {
             if (local_126.NavigationBarIcon.IsValid())
             {
-                FVM_NavigationBarIcon& local_128;
-                if (!(local_102) || ::PresentationSpotUtils::CompareDistance(local_90, local_128.GetSpot(), local_102.opArrow().GetSpot(), false))
+                if (!(local_102) || ::PresentationSpotUtils::CompareDistance(local_90, local_126.NavigationBarIcon.Get().GetSpot(), local_102.opArrow().GetSpot(), false))
                 {
                     local_102 = local_126.NavigationBarIcon;
                     this.FirstCenteredNavigationBarIcon = local_126;
@@ -122,6 +121,7 @@ class UWidget_NavigationBar : UEUIUserWidget
             this.CenteredNavigationBarIcons.Add(NavigationBarIcon);
             return;
         }
+        this.CenteredNavigationBarIcons.Remove(NavigationBarIcon);
         return;
     }
     bool IsFirstCenteredNavigationBarIcon(const UWidget_NavigationBarIcon NavigationBarIcon) const
@@ -130,8 +130,8 @@ class UWidget_NavigationBar : UEUIUserWidget
     }
     void HandleObservedModelChanges(FEUIReactiveSubscriberIterator &inout It)
     {
-        FVM_NavigationBar& local_6;
         TEUIModelRef<FVM_NavigationBar> local_2 = this.NavigationBar.AsRef();
+        FVM_NavigationBar& local_6 = local_2.Get();
         for (; It; )
         {
             FEUIReactiveSubscriberTrackScope local_56 = FEUIReactiveSubscriberTrackScope(It);

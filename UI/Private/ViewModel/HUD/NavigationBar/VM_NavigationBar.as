@@ -136,6 +136,12 @@ struct FVM_NavigationBar : FEUIViewModel
             }
             this.PendingRightResidentIcons.Add(TEUIModelRef<FVM_NavigationBarIcon>(::FVM_NavigationBarIcon::Create(this.GetContext().Manager, local_82)));
         }
+        __Lambda_UI_Private_ViewModel_HUD_NavigationBar_VM_NavigationBar_108 local_150;
+        this.PendingNavigationBarIcons.Sort(local_150);
+        __Lambda_UI_Private_ViewModel_HUD_NavigationBar_VM_NavigationBar_111 local_162;
+        this.PendingLeftResidentIcons.Sort(local_162);
+        __Lambda_UI_Private_ViewModel_HUD_NavigationBar_VM_NavigationBar_112 local_174;
+        this.PendingRightResidentIcons.Sort(local_174);
         this.CommitNavigationBarIconsIfChanged(this.PendingNavigationBarIcons);
         this.CommitLeftResidentIconsIfChanged(this.PendingLeftResidentIcons);
         this.CommitRightResidentIconsIfChanged(this.PendingRightResidentIcons);
@@ -505,11 +511,9 @@ FVM_NavigationBar& Create(const UObject ContextObject)
 {
     return FVM_NavigationBar::CreateByManager(EUIInternal::GetContextManager(ContextObject));
 }
-FVM_NavigationBar CreateByManager(const UEUIManagerSubsystem Manager)
+FVM_NavigationBar& CreateByManager(const UEUIManagerSubsystem Manager)
 {
-    FVM_NavigationBar __r;
-    TEUIModelRef<FVM_NavigationBar> local_6 = TEUIModelRef<FVM_NavigationBar>(EUIInternal::MakeModelWithManager(Manager, FVM_NavigationBar::ModelId));
-    return __r;
+    return TEUIModelRef<FVM_NavigationBar>(EUIInternal::MakeModelWithManager(Manager, FVM_NavigationBar::ModelId)).Get();
 }
 void GetModelInfo(FEUIViewModelMetaInfo &inout Result)
 {
@@ -616,7 +620,6 @@ namespace __GeneratedProperties_FVM_NavigationBar
 {
 UScriptStruct StaticStruct()
 {
-    UScriptStruct local_2;
-    return local_2;
+    return __GeneratedProperties_FVM_NavigationBar.Get();
 }
 }

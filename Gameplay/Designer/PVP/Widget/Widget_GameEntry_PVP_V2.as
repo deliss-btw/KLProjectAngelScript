@@ -100,15 +100,15 @@ class UWidget_GameEntryPVP_V2 : UEUIActivatableWidget
     UFUNCTION()
     void Tick_Implementation(const FGeometry &inout MyGeometry, const float32 InDeltaTime)
     {
-        FVMS_PVP_Lobby& local_4;
+        bool local_1;
         int local_29;
-        FPVPLobbyPlayerEntry& local_214;
         UPVP_PlayerListItemData local_218;
         bool local_235;
         if (!(this.VMS.IsValid()))
         {
             return;
         }
+        FVMS_PVP_Lobby& local_4 = this.VMS.Get();
         if (local_4.GetbShouldHide())
         {
             APlayerController local_6 = this.GetOwningPlayer();
@@ -166,14 +166,13 @@ class UWidget_GameEntryPVP_V2 : UEUIActivatableWidget
             this.PlayerStateItems_2[local_190].bOccupied = false;
             ++local_190;
         }
-        bool local_1 = false;
-        bool local_193 = local_1;
+        bool local_193 = false;
         for (auto& local_212 : local_52)
         {
+            local_1 = local_212.GetValue().bWantsBackToRoom;
             if (local_1)
             {
-                local_1 = true;
-                local_193 = local_1;
+                local_193 = true;
                 break;
             }
         }
@@ -181,6 +180,7 @@ class UWidget_GameEntryPVP_V2 : UEUIActivatableWidget
         for (auto& local_212_2 : local_52)
         {
             local_29 = local_212_2.GetKey();
+            FPVPLobbyPlayerEntry& local_214 = local_212_2.GetValue();
             if (int(local_214.PlayerInTeamIndex) < 0 || (int(local_214.PlayerInTeamIndex) >= this.MaxPlayersPerTeam))
             {
                 continue;
@@ -195,15 +195,13 @@ class UWidget_GameEntryPVP_V2 : UEUIActivatableWidget
                 {
                     int local_191 = int(local_214.PlayerInTeamIndex);
                 }
-                bool local_1_2 = true;
-                local_218.bOccupied = local_1_2;
+                local_218.bOccupied = true;
                 local_218.PlayerName = FString().Append("Bot ").Append(local_190_2);
                 local_218.bReady = true;
-                local_1_2 = false;
-                local_218.bIsLocal = local_1_2;
+                local_218.bIsLocal = false;
                 local_218.bIsHost = false;
-                local_1_2 = true;
-                local_218.bIsBot = local_1_2;
+                local_1 = true;
+                local_218.bIsBot = local_1;
                 ++local_190_2;
                 continue;
             }
@@ -228,14 +226,13 @@ class UWidget_GameEntryPVP_V2 : UEUIActivatableWidget
             {
                 int local_191_2 = int(local_214.PlayerInTeamIndex);
             }
-            bool local_1_3 = true;
-            local_218.bOccupied = local_1_3;
+            local_218.bOccupied = true;
             local_218.PlayerName = local_230;
             local_218.bReady = local_235;
             bool local_215 = (local_29 == local_28);
             local_218.bIsLocal = local_215;
-            local_1_3 = (local_29 == local_27);
-            local_218.bIsHost = local_1_3;
+            local_1 = (local_29 == local_27);
+            local_218.bIsHost = local_1;
             local_215 = false;
             local_218.bIsBot = local_215;
         }
@@ -295,7 +292,7 @@ class UWidget_GameEntryPVP_V2 : UEUIActivatableWidget
     {
         if (this.VMS.IsValid())
         {
-            RequestReady();
+            this.VMS.Get().RequestReady();
         }
         return;
     }
@@ -304,7 +301,7 @@ class UWidget_GameEntryPVP_V2 : UEUIActivatableWidget
     {
         if (this.VMS.IsValid())
         {
-            RequestGo();
+            this.VMS.Get().RequestGo();
         }
         return;
     }
@@ -313,7 +310,7 @@ class UWidget_GameEntryPVP_V2 : UEUIActivatableWidget
     {
         if (this.VMS.IsValid())
         {
-            0.RequestSwitchTeam();
+            this.VMS.Get().RequestSwitchTeam(uint8(0));
         }
         return;
     }
@@ -322,7 +319,7 @@ class UWidget_GameEntryPVP_V2 : UEUIActivatableWidget
     {
         if (this.VMS.IsValid())
         {
-            1.RequestSwitchTeam();
+            this.VMS.Get().RequestSwitchTeam(uint8(1));
         }
         return;
     }
@@ -331,7 +328,7 @@ class UWidget_GameEntryPVP_V2 : UEUIActivatableWidget
     {
         if (this.VMS.IsValid())
         {
-            RequestExit();
+            this.VMS.Get().RequestExit();
         }
         return;
     }
@@ -340,7 +337,7 @@ class UWidget_GameEntryPVP_V2 : UEUIActivatableWidget
     {
         if (this.VMS.IsValid())
         {
-            0.RequestAddBot();
+            this.VMS.Get().RequestAddBot(uint8(0));
         }
         return;
     }
@@ -349,7 +346,7 @@ class UWidget_GameEntryPVP_V2 : UEUIActivatableWidget
     {
         if (this.VMS.IsValid())
         {
-            1.RequestAddBot();
+            this.VMS.Get().RequestAddBot(uint8(1));
         }
         return;
     }
@@ -358,7 +355,7 @@ class UWidget_GameEntryPVP_V2 : UEUIActivatableWidget
     {
         if (this.VMS.IsValid())
         {
-            0.RequestRemoveBot();
+            this.VMS.Get().RequestRemoveBot(uint8(0));
         }
         return;
     }
@@ -367,7 +364,7 @@ class UWidget_GameEntryPVP_V2 : UEUIActivatableWidget
     {
         if (this.VMS.IsValid())
         {
-            1.RequestRemoveBot();
+            this.VMS.Get().RequestRemoveBot(uint8(1));
         }
         return;
     }
@@ -380,7 +377,7 @@ class UWidget_GameEntryPVP_V2 : UEUIActivatableWidget
         }
         if (this.VMS.IsValid())
         {
-            int(this.GameRuleDisplayNameToType(SelectedItem)).RequestSwitchGameRule();
+            this.VMS.Get().RequestSwitchGameRule(this.GameRuleDisplayNameToType(SelectedItem));
         }
         return;
     }
@@ -452,15 +449,15 @@ class UWidget_GameEntryPVP_V2 : UEUIActivatableWidget
     UFUNCTION()
     FText VMS_RoomIDText() const
     {
-        FVMS_PVP_Lobby& local_2;
+        FVMS_PVP_Lobby& local_2 = this.VMS.Get();
         FText local_12 = local_2 ? local_2.GetRoomIDText() : FText();
         return local_12;
     }
     UFUNCTION()
     bool VMS_bIsHost() const
     {
-        FVMS_PVP_Lobby& local_2;
         bool local_5;
+        FVMS_PVP_Lobby& local_2 = this.VMS.Get();
         if (local_2)
         {
             local_5 = local_2.GetbIsHost();
@@ -474,8 +471,8 @@ class UWidget_GameEntryPVP_V2 : UEUIActivatableWidget
     UFUNCTION()
     bool VMS_bAllReady() const
     {
-        FVMS_PVP_Lobby& local_2;
         bool local_5;
+        FVMS_PVP_Lobby& local_2 = this.VMS.Get();
         if (local_2)
         {
             local_5 = local_2.GetbAllReady();
@@ -489,8 +486,8 @@ class UWidget_GameEntryPVP_V2 : UEUIActivatableWidget
     UFUNCTION()
     bool VMS_bShouldHide() const
     {
-        FVMS_PVP_Lobby& local_2;
         bool local_5;
+        FVMS_PVP_Lobby& local_2 = this.VMS.Get();
         if (local_2)
         {
             local_5 = local_2.GetbShouldHide();
@@ -504,7 +501,7 @@ class UWidget_GameEntryPVP_V2 : UEUIActivatableWidget
     UFUNCTION()
     int VMS_SelectedGameRuleIndex() const
     {
-        FVMS_PVP_Lobby& local_2;
+        FVMS_PVP_Lobby& local_2 = this.VMS.Get();
         return local_2 ? local_2.GetSelectedGameRuleIndex() : 0;
     }
     UFUNCTION()

@@ -4,8 +4,6 @@ UFUNCTION()
 void SetEntityMeshHidden(const FECSEntity &inout Entity, const FName &inout MeshName, const bool bNewHidden)
 {
     int local_14 = 0;
-    int local_17 = 0;
-    int local_18 = 0;
     if (!(Entity.IsValid()))
     {
         XError(ELog(8), FString().Append("Call SetEntityMeshHidden: Entity is invalid"));
@@ -15,24 +13,26 @@ void SetEntityMeshHidden(const FECSEntity &inout Entity, const FName &inout Mesh
     {
         int local_16 = local_14.GetModify_HiddenCountByName().FindOrAdd(MeshName);
         ++local_16;
-        local_17 = int(local_16);
-        if (local_17 == 0)
+        if (int(local_16) == 0)
         {
+            local_14.GetModify_HiddenCountByName().Remove(MeshName);
         }
     }
     else
     {
-        if (local_14.GetModify_HiddenCountByName().Find(MeshName))
+        TRawPtr<int> local_22 = local_14.GetModify_HiddenCountByName().Find(MeshName);
+        if (local_22)
         {
-            local_18 = local_18 - 1;
-            if (local_17 == 0)
+            int local_18 = local_22.Get() - 1;
+            if (local_22.Get() == 0)
             {
+                local_14.GetModify_HiddenCountByName().Remove(MeshName);
             }
         }
         else
         {
-            local_18 = -1;
-            local_14.GetModify_HiddenCountByName().Add(MeshName, local_18);
+            int local_18_2 = -1;
+            local_14.GetModify_HiddenCountByName().Add(MeshName, local_18_2);
         }
     }
     if (local_14.GetHiddenCountByName().Num() == 0)

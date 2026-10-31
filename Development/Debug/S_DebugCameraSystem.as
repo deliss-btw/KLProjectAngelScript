@@ -39,11 +39,9 @@ class US_DebugCameraSystem : UECSScriptSystem
     {
         return true;
     }
-    FDebugCameraInfo GetCameraInfo() const
+    FDebugCameraInfo& GetCameraInfo() const
     {
-        FDebugCameraInfo __r;
-        TRawPtr<FDebugCameraInfo> local_6 = FInstancedStruct::GetMutablePtr_Const(this.CameraInfo).opCall();
-        return __r;
+        return FInstancedStruct::GetMutablePtr_Const(this.CameraInfo).opCall().Get();
     }
     UFUNCTION()
     void ClientJob_DebugESMState(const FCS_LocalPlayer &inout LocalPlayer, const FCS_FixedTime &inout Time) const
@@ -217,7 +215,6 @@ class US_DebugCameraSystem : UECSScriptSystem
     void ClientJob_DebugCollisionObject(const FCS_LocalPlayer &inout LocalPlayer, const FCS_FixedTime &inout Time) const
     {
         int local_8 = 0;
-        UPrimitiveComponent local_126;
         if (!(Time.bLatestFrame))
         {
             return;
@@ -250,9 +247,9 @@ class US_DebugCameraSystem : UECSScriptSystem
             {
                 local_120 = "None";
             }
-            if (local_126 != nullptr)
+            if (local_88.GetComponent() != nullptr)
             {
-                local_116 = local_126.GetName();
+                local_116 = local_88.GetComponent().GetName();
             }
             else
             {

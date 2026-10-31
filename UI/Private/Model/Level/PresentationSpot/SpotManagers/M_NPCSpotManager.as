@@ -208,6 +208,7 @@ struct FMS_NPCSpotManager : FEUIModelSingleton
         {
             return;
         }
+        this.GetModify_EntitySpotToConfig().Remove(Spot);
         if (!(this.GetNPCsUsingEntitySpot().Contains(local_24)))
         {
             return;
@@ -236,6 +237,7 @@ struct FMS_NPCSpotManager : FEUIModelSingleton
             local_174.RemoveSpot(Spot);
         }
         this.GetModify_NPCMapSpots()[local_24] = this.CreatePlaceholderInMapRegistry(local_50, local_174);
+        this.GetModify_NPCsUsingEntitySpot().Remove(local_24);
         return;
     }
     TDataObjectPtr<FNPCPresentationConfig> GetPresentationConfigFromSpot(const TEUIModelRef<FM_Spot> &inout Spot)
@@ -354,11 +356,9 @@ FMS_NPCSpotManager& Get(const UObject ContextObject)
 {
     return FMS_NPCSpotManager::GetByManager(EUIInternal::GetContextManager(ContextObject));
 }
-FMS_NPCSpotManager GetByManager(const UEUIManagerSubsystem Manager)
+FMS_NPCSpotManager& GetByManager(const UEUIManagerSubsystem Manager)
 {
-    FMS_NPCSpotManager __r;
-    TEUIModelRef<FMS_NPCSpotManager> local_6 = TEUIModelRef<FMS_NPCSpotManager>(EUIInternal::MakeModelWithManager(Manager, FMS_NPCSpotManager::ModelId));
-    return __r;
+    return TEUIModelRef<FMS_NPCSpotManager>(EUIInternal::MakeModelWithManager(Manager, FMS_NPCSpotManager::ModelId)).Get();
 }
 void GetModelInfo(FEUIModelOnlyMetaInfo &inout Result)
 {

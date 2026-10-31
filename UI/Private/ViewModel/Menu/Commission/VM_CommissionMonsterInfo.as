@@ -190,11 +190,9 @@ FVM_CommissionMonsterInfo& Create(const UObject ContextObject, const TEUIModelRe
 {
     return FVM_CommissionMonsterInfo::CreateByManager(EUIInternal::GetContextManager(ContextObject), CommissionModel);
 }
-FVM_CommissionMonsterInfo CreateByManager(const UEUIManagerSubsystem Manager, const TEUIModelRef<FM_Commission> &inout CommissionModel)
+FVM_CommissionMonsterInfo& CreateByManager(const UEUIManagerSubsystem Manager, const TEUIModelRef<FM_Commission> &inout CommissionModel)
 {
-    FVM_CommissionMonsterInfo __r;
-    TEUIModelRef<FVM_CommissionMonsterInfo> local_6 = TEUIModelRef<FVM_CommissionMonsterInfo>(EUIInternal::MakeModelWithManager_Generic(Manager, FVM_CommissionMonsterInfo::ModelId, 0, CommissionModel));
-    return __r;
+    return TEUIModelRef<FVM_CommissionMonsterInfo>(EUIInternal::MakeModelWithManager_Generic(Manager, FVM_CommissionMonsterInfo::ModelId, 0, CommissionModel)).Get();
 }
 void GetModelInfo(FEUIViewModelMetaInfo &inout Result)
 {
@@ -315,7 +313,6 @@ namespace __GeneratedProperties_FVM_CommissionMonsterInfo
 {
 UScriptStruct StaticStruct()
 {
-    UScriptStruct local_2;
-    return local_2;
+    return __GeneratedProperties_FVM_CommissionMonsterInfo.Get();
 }
 }

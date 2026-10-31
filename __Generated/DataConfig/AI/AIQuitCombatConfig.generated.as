@@ -78,7 +78,6 @@ float32 __FAIQuitCombatConfig_GetCombatRadius(const TDataObjectPtr<FAIQuitCombat
 UFUNCTION()
 EAIQuitCombatRule __FAIQuitCombatConfig_GetQuitCombatRule(const TDataObjectPtr<FAIQuitCombatConfig> &inout DataObject)
 {
-    int local_21 = 0;
     if ((DataObject == nullptr))
     {
         if (!(EUIGlobals::GIsDuringPropertyConversion))
@@ -86,15 +85,13 @@ EAIQuitCombatRule __FAIQuitCombatConfig_GetQuitCombatRule(const TDataObjectPtr<F
             FBlueprintDebugFunctions::ThrowScriptException("Get 'QuitCombatRule' from a null 'FAIQuitCombatConfig' DataObject!");
         }
         FAIQuitCombatConfig local_20;
-        local_21 = int(local_20.QuitCombatRule);
-        return EAIQuitCombatRule(local_21);
+        return local_20.QuitCombatRule;
     }
-    return EAIQuitCombatRule(local_21);
+    return DataObject.Get().QuitCombatRule;
 }
 UFUNCTION()
 EAIBackHomeWay __FAIQuitCombatConfig_GetBackHomeWay(const TDataObjectPtr<FAIQuitCombatConfig> &inout DataObject)
 {
-    int local_21 = 0;
     if ((DataObject == nullptr))
     {
         if (!(EUIGlobals::GIsDuringPropertyConversion))
@@ -102,10 +99,9 @@ EAIBackHomeWay __FAIQuitCombatConfig_GetBackHomeWay(const TDataObjectPtr<FAIQuit
             FBlueprintDebugFunctions::ThrowScriptException("Get 'BackHomeWay' from a null 'FAIQuitCombatConfig' DataObject!");
         }
         FAIQuitCombatConfig local_20;
-        local_21 = int(local_20.BackHomeWay);
-        return EAIBackHomeWay(local_21);
+        return local_20.BackHomeWay;
     }
-    return EAIBackHomeWay(local_21);
+    return DataObject.Get().BackHomeWay;
 }
 UFUNCTION()
 FAIQuitCombatConfig CastToFAIQuitCombatConfig(const TDataObjectPtr<FAIQuitCombatConfig> &inout DataObject)

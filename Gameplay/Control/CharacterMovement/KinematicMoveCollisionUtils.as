@@ -412,6 +412,8 @@ bool SortResultByDistanceAndFilter(const FKMCContext &inout Context, TArray<FHit
     {
         return false;
     }
+    __Lambda_Gameplay_Control_CharacterMovement_KinematicMoveCollisionUtils_259 local_4;
+    HitResults.Sort(local_4);
     bool local_5 = false;
     float32 local_6 = -1.0f;
     int local_8 = 0;
@@ -976,8 +978,6 @@ FVector DepenetrateSweepBackHard(const FKMCContext &inout Context, const FQuat &
 FVector DepenetrateSweepBackSoft(const FKMCContext &inout Context, const FQuat &inout LastRot, const FVector3f &inout DepenetrateDeltaMovement, const FVector &inout OriginPos)
 {
     TArray<FHitResult> local_4;
-    float32 local_41 = 0.0f;
-    float32 local_42 = 0.0f;
     FVector local_22 = (OriginPos + FVector(DepenetrateDeltaMovement));
     TOptional<float32> local_24;
     DepenetrateSweepBackTest(local_4, Context, OriginPos, local_22, LastRot);
@@ -997,18 +997,14 @@ FVector DepenetrateSweepBackSoft(const FKMCContext &inout Context, const FQuat &
         }
         if (!(local_24.IsSet()))
         {
-            local_41 = local_40.Distance;
-            local_41 = local_41 - 2.0f;
-            local_24 = local_41;
+            local_24 = (local_40.Distance - 2.0f);
             continue;
         }
-        local_42 = local_40.Distance;
-        local_42 = local_42 - 2.0f;
-        local_24 = FMath::Min(local_41, local_42);
+        local_24 = FMath::Min(local_24.GetValue(), (local_40.Distance - 2.0f));
     }
     if (local_24.IsSet())
     {
-        return (OriginPos + FVector(DepenetrateDeltaMovement).GetClampedToMaxSize(local_42));
+        return (OriginPos + FVector(DepenetrateDeltaMovement).GetClampedToMaxSize(local_24.GetValue()));
     }
     return local_22;
 }

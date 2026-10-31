@@ -19,6 +19,8 @@ struct FAICommand_OverrideLock : FAICommandScript
 {
     FAICommandScript _base_FAICommandScript;
 
+    default m_ScriptOverrideMeta = Cast<UASStruct>(FAICommand_OverrideLock.Get());
+
     FAICommand_OverrideLock()
     {
         this.__InitDefaults();
@@ -36,7 +38,7 @@ struct FAICommand_OverrideLock : FAICommandScript
     }
     void Execute_Implementation(const FAICommandParams &inout Params, const FFPTime &inout WorldTime) const
     {
-        const FAICommand_OverrideLockData& local_2;
+        const FAICommand_OverrideLockData& local_2 = this.GetInstanceData(Params);
         ::FAITargetingUtils::PushQueryInstance(Params.GetPawnProxy(), EAITargetingQuerySourceType(2), local_2.QueryConfig, local_2.QueryOutputs, local_2.QueryResult, NAME_None, local_2.QueryHandle);
         if (local_2.bPreferUnSelected)
         {
@@ -58,7 +60,7 @@ struct FAICommand_OverrideLock : FAICommandScript
     }
     void Finish_Implementation(const FAICommandParams &inout Params, const FFPTime &inout WorldTime) const
     {
-        FAICommand_OverrideLockData local_2;
+        const FAICommand_OverrideLockData& local_2 = this.GetInstanceData(Params);
         ::FAITargetingUtils::PopQueryInstanceByHandle(Params.GetPawnProxy(), local_2.QueryHandle);
         if (local_2.bPreferUnSelected)
         {
@@ -90,6 +92,8 @@ class UBTService_OverrideLock : UBTService_AICommandScript
     bool bHoldTarget = true;
     UPROPERTY()
     FAICommand_OverrideLock AICommand;
+
+    default SetNodeName("覆盖锁定目标");
 
     UFUNCTION()
     void OnInitCommandInstanceData_Implementation(const FAICommandInstanceDataInitContextPtr &inout Context) const

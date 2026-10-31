@@ -389,11 +389,9 @@ FVM_InventoryQuickSlotsFocus& Create(const UObject ContextObject, const TDataObj
 {
     return FVM_InventoryQuickSlotsFocus::CreateByManager(EUIInternal::GetContextManager(ContextObject), QuickSlot);
 }
-FVM_InventoryQuickSlotsFocus CreateByManager(const UEUIManagerSubsystem Manager, const TDataObjectPtr<FItemQuickSlotConfig> &inout QuickSlot)
+FVM_InventoryQuickSlotsFocus& CreateByManager(const UEUIManagerSubsystem Manager, const TDataObjectPtr<FItemQuickSlotConfig> &inout QuickSlot)
 {
-    FVM_InventoryQuickSlotsFocus __r;
-    TEUIModelRef<FVM_InventoryQuickSlotsFocus> local_6 = TEUIModelRef<FVM_InventoryQuickSlotsFocus>(EUIInternal::MakeModelWithManager_Generic(Manager, FVM_InventoryQuickSlotsFocus::ModelId, 0, QuickSlot));
-    return __r;
+    return TEUIModelRef<FVM_InventoryQuickSlotsFocus>(EUIInternal::MakeModelWithManager_Generic(Manager, FVM_InventoryQuickSlotsFocus::ModelId, 0, QuickSlot)).Get();
 }
 void GetModelInfo(FEUIViewModelMetaInfo &inout Result)
 {
@@ -426,8 +424,7 @@ namespace __GeneratedProperties_FVM_InventoryQuickSlotsFocus
 {
 UScriptStruct StaticStruct()
 {
-    UScriptStruct local_2;
-    return local_2;
+    return __GeneratedProperties_FVM_InventoryQuickSlotsFocus.Get();
 }
 }
 namespace FVM_InventoryQuickSlots
@@ -436,11 +433,9 @@ FVM_InventoryQuickSlots& Create(const UObject ContextObject, const UWidget Hover
 {
     return FVM_InventoryQuickSlots::CreateByManager(EUIInternal::GetContextManager(ContextObject), HoverLimitationWidget);
 }
-FVM_InventoryQuickSlots CreateByManager(const UEUIManagerSubsystem Manager, const UWidget HoverLimitationWidget)
+FVM_InventoryQuickSlots& CreateByManager(const UEUIManagerSubsystem Manager, const UWidget HoverLimitationWidget)
 {
-    FVM_InventoryQuickSlots __r;
-    TEUIModelRef<FVM_InventoryQuickSlots> local_6 = TEUIModelRef<FVM_InventoryQuickSlots>(EUIInternal::MakeModelWithManager_Generic(Manager, FVM_InventoryQuickSlots::ModelId, 0, HoverLimitationWidget));
-    return __r;
+    return TEUIModelRef<FVM_InventoryQuickSlots>(EUIInternal::MakeModelWithManager_Generic(Manager, FVM_InventoryQuickSlots::ModelId, 0, HoverLimitationWidget)).Get();
 }
 void GetModelInfo(FEUIViewModelMetaInfo &inout Result)
 {
@@ -610,7 +605,6 @@ namespace __GeneratedProperties_FVM_InventoryQuickSlots
 {
 UScriptStruct StaticStruct()
 {
-    UScriptStruct local_2;
-    return local_2;
+    return __GeneratedProperties_FVM_InventoryQuickSlots.Get();
 }
 }

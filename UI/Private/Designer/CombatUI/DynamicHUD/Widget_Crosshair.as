@@ -57,7 +57,7 @@ class UWidget_Crosshair : UEUIUserWidget
     UFUNCTION()
     void Scale(const float32 ChargeEnergy)
     {
-        FVMS_Crosshair& local_2;
+        FVMS_Crosshair& local_2 = this.Crosshair.Get();
         if (local_2.GetChargeEnergyMax() <= 0.0f)
         {
             return;
@@ -91,8 +91,8 @@ class UWidget_Crosshair : UEUIUserWidget
     UFUNCTION()
     ESlateVisibility Crosshair_SlateVisibilitybShowRemoveMarkHint() const
     {
-        FVMS_Crosshair& local_2;
         int local_5;
+        FVMS_Crosshair& local_2 = this.Crosshair.Get();
         if (local_2)
         {
             local_5 = int(local_2.bShowRemoveMarkHintAsSlateVisibility());
@@ -106,8 +106,8 @@ class UWidget_Crosshair : UEUIUserWidget
     UFUNCTION()
     ESlateVisibility Crosshair_SlateVisibilitybShowAddMarkHint() const
     {
-        FVMS_Crosshair& local_2;
         int local_5;
+        FVMS_Crosshair& local_2 = this.Crosshair.Get();
         if (local_2)
         {
             local_5 = int(local_2.bShowAddMarkHintAsSlateVisibility());
@@ -120,8 +120,8 @@ class UWidget_Crosshair : UEUIUserWidget
     }
     void HandleObservedModelChanges(FEUIReactiveSubscriberIterator &inout It)
     {
-        FVMS_Crosshair& local_6;
         TEUIModelRef<FVMS_Crosshair> local_2 = this.Crosshair.AsRef();
+        FVMS_Crosshair& local_6 = local_2.Get();
         for (; It; )
         {
             FEUIReactiveSubscriberTrackScope local_56 = FEUIReactiveSubscriberTrackScope(It);

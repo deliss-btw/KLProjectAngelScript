@@ -70,7 +70,7 @@ class UWidget_Minimap : UEUIActivatableWidget
     UFUNCTION()
     void OnViewBind_Implementation()
     {
-        FVM_Minimap& local_2;
+        FVM_Minimap& local_2 = this.Minimap.Get();
         this.InitMapScaleAndPositionDeferred();
         if (!(local_2.GetMinimapDisplayConfig().opArrow().DefaultIconRegistry.IsNull()))
         {
@@ -306,7 +306,7 @@ class UWidget_Minimap : UEUIActivatableWidget
     }
     void UpdateRegionMask() const
     {
-        UTexture2D local_4;
+        UTexture2D local_4 = this.Minimap.opArrow().GetMinimapDisplayConfig().opArrow().DSBoundaryMaskTexture.Get();
         if ((!((local_4 != nullptr))))
         {
             return;
@@ -339,8 +339,8 @@ class UWidget_Minimap : UEUIActivatableWidget
     UFUNCTION()
     bool Minimap_bLocalPlayerPositionSet() const
     {
-        FVM_Minimap& local_2;
         bool local_5;
+        FVM_Minimap& local_2 = this.Minimap.Get();
         if (local_2)
         {
             local_5 = local_2.GetbLocalPlayerPositionSet();
@@ -354,7 +354,7 @@ class UWidget_Minimap : UEUIActivatableWidget
     UFUNCTION()
     FVector2D Minimap_LocalPlayerPosition() const
     {
-        FVM_Minimap& local_2;
+        FVM_Minimap& local_2 = this.Minimap.Get();
         FVector2D local_12 = local_2 ? local_2.GetLocalPlayerPosition() : FVector2D();
         return local_12;
     }

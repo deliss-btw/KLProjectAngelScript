@@ -513,12 +513,12 @@ class UESMAction_PropMovementAction : UESMBPBaseSpanAction
     UFUNCTION()
     void Exit_Implementation(const FESMContext &inout Context, const FESMActionTime &inout Time) const
     {
-        const FESMPropMovementInstanceData& local_4;
         int local_20 = 0;
         if (this.bInstantAction)
         {
             return;
         }
+        const FESMPropMovementInstanceData& local_4 = this.GetInstanceData(Context);
         if (!(local_4.PropEntity.IsValid()))
         {
             return;

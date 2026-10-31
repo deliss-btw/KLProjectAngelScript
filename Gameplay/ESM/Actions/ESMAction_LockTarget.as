@@ -92,9 +92,8 @@ class UESMAction_SoftLockTarget : UESMBPBaseSpanAction
     UFUNCTION()
     void Enter_Implementation(const FESMContext &inout Context, const FESMActionTime &inout Time) const
     {
-        float32 local_1 = 0.0f;
         int local_10 = 0;
-        ::FLockTargetUtils::EnterSoftLock(Context.GetEntity(), Time.WorldTime, (this.bOverrideMaxDistance), local_1, (this.bKeepBeforeExit), this.bWriteMultiLockTargetExtraInfo, this.Config);
+        ::FLockTargetUtils::EnterSoftLock(Context.GetEntity(), Time.WorldTime, (this.bOverrideMaxDistance), this.OverrideMaxDistance.GetValue(Context.GetEntityBB()), (this.bKeepBeforeExit), this.bWriteMultiLockTargetExtraInfo, this.Config);
         if (!(local_10))
         {
             return;
@@ -107,9 +106,8 @@ class UESMAction_SoftLockTarget : UESMBPBaseSpanAction
     UFUNCTION()
     void Exit_Implementation(const FESMContext &inout Context, const FESMActionTime &inout Time) const
     {
-        float32 local_3 = 0.0f;
         FESMSoftLockTargetInstanceData& local_2 = this.ModifyInstanceData(Context);
-        ::FLockTargetUtils::ExitSoftLock(Context.GetEntity(), Time.WorldTime, (this.bOverrideMaxDistance), local_3, (this.bClearOnExit), (this.bKeepBeforeExit), (this.bRepickTargetWhenExit), this.Config, local_2.TargetEntity, int(local_2.LockPointIndex));
+        ::FLockTargetUtils::ExitSoftLock(Context.GetEntity(), Time.WorldTime, (this.bOverrideMaxDistance), this.OverrideMaxDistance.GetValue(Context.GetEntityBB()), (this.bClearOnExit), (this.bKeepBeforeExit), (this.bRepickTargetWhenExit), this.Config, local_2.TargetEntity, int(local_2.LockPointIndex));
         return;
     }
     UFUNCTION()
@@ -216,7 +214,8 @@ class UESMAction_ChangeMultiLockSubPointsValid : UESMBPBaseSpanAction
     UFUNCTION()
     void Exit_Implementation(const FESMContext &inout Context, const FESMActionTime &inout Time) const
     {
-        ::BlueprintFunctions_Common::ChangeMultiLockSubPointsValid(Context.GetEntity(), (0 != 0), this.MainIndex, this.SubSokcetName);
+        int local_2 = this.GetInstanceData(Context).bPreValid;
+        ::BlueprintFunctions_Common::ChangeMultiLockSubPointsValid(Context.GetEntity(), (local_2 != 0), this.MainIndex, this.SubSokcetName);
         return;
     }
     FESMChangeMultiLockSubPointsValidInstanceData GetInstanceData(const FESMContext &inout Context) const

@@ -231,8 +231,7 @@ struct FVM_AvatarEquipment : FEUIViewModel
         bool local_5;
         if (this.GetAvatar())
         {
-            TEUIModelRef<FM_Avatar> local_2 = this.GetAvatar();
-            local_5 = GetbIsUnlocked();
+            local_5 = this.GetAvatar().Get().GetbIsUnlocked();
         }
         else
         {
@@ -264,28 +263,22 @@ struct FVM_AvatarEquipment : FEUIViewModel
         int64 local_12 = ::FEquipmentUtils::GetAvatarEquipmentUid(this.GetContext().GetLocalPlayer(), this.GetEquipSlot(), this.GetAvatarConfig());
         if (local_12 != 0)
         {
-            TEUIModelRef<FM_Equipment> local_14;
-            TEUIModelRef<FVM_EquipmentInfo> local_16;
-            local_14 = ::FMS_EquipmentDataCache::Get(this.GetContext().Manager).GetEquipment(local_12);
-            local_16 = TEUIModelRef<FVM_EquipmentInfo>(::FVM_EquipmentInfo::Create(this.GetContext().Manager, local_14));
+            TEUIModelRef<FVM_EquipmentInfo> local_16 = TEUIModelRef<FVM_EquipmentInfo>(::FVM_EquipmentInfo::Create(this.GetContext().Manager, ::FMS_EquipmentDataCache::Get(this.GetContext().Manager).GetEquipment(local_12)));
             this.SetEquipment(local_16);
         }
         else
         {
             TEUIModelRef<FVM_EquipmentInfo> local_16;
-            TEUIModelRef<FM_Equipment> local_14;
             this.SetEquipment(local_16);
-            TDataObjectPtr<FEquipmentConfig> local_66 = TDataObjectPtr<FEquipmentConfig>(nullptr);
-            TDataObjectPtr<FEquipmentConfig> local_42 = local_66;
+            TDataObjectPtr<FEquipmentConfig> local_42 = TDataObjectPtr<FEquipmentConfig>(nullptr);
             if (!(int(this.GetEquipSlot()) != 1) && this.GetAvatarConfig())
             {
-                local_42 = local_66;
+                local_42 = TDataObjectPtr<FEquipmentConfig>(this.GetAvatarConfig().Get().GetDefaultWeapon().Get());
             }
             if (local_42)
             {
-                TEUIModelRef<FMS_EquipmentDataCache> local_94 = this.GetEquipmentCache();
-                local_14.CreateFromConfig(local_42);
-                this.GetAvatarConfig().SetEquiptingAvatar();
+                TEUIModelRef<FM_Equipment> local_14 = this.GetEquipmentCache().Get().CreateFromConfig(local_42);
+                local_14.Get().SetEquiptingAvatar(this.GetAvatarConfig());
                 local_16 = TEUIModelRef<FVM_EquipmentInfo>(::FVM_EquipmentInfo::Create(this.GetContext().Manager, local_14));
                 this.SetEquipment(local_16);
             }
@@ -461,11 +454,9 @@ FVM_EquipmentSlotInfo& Create(const UObject ContextObject, const EEquipSlotType 
 {
     return FVM_EquipmentSlotInfo::CreateByManager(EUIInternal::GetContextManager(ContextObject), EEquipSlotType(EquipSlot), bIsLocked, bIsEmpty, bIsAvatarUnLocked);
 }
-FVM_EquipmentSlotInfo CreateByManager(const UEUIManagerSubsystem Manager, const EEquipSlotType EquipSlot, const bool bIsLocked, const bool bIsEmpty, const bool bIsAvatarUnLocked)
+FVM_EquipmentSlotInfo& CreateByManager(const UEUIManagerSubsystem Manager, const EEquipSlotType EquipSlot, const bool bIsLocked, const bool bIsEmpty, const bool bIsAvatarUnLocked)
 {
-    FVM_EquipmentSlotInfo __r;
-    TEUIModelRef<FVM_EquipmentSlotInfo> local_6 = TEUIModelRef<FVM_EquipmentSlotInfo>(EUIInternal::MakeModelWithManager_Generic(Manager, FVM_EquipmentSlotInfo::ModelId, 0, EquipSlot, bIsLocked, bIsEmpty, bIsAvatarUnLocked));
-    return __r;
+    return TEUIModelRef<FVM_EquipmentSlotInfo>(EUIInternal::MakeModelWithManager_Generic(Manager, FVM_EquipmentSlotInfo::ModelId, 0, EquipSlot, bIsLocked, bIsEmpty, bIsAvatarUnLocked)).Get();
 }
 void GetModelInfo(FEUIViewModelMetaInfo &inout Result)
 {
@@ -510,8 +501,7 @@ namespace __GeneratedProperties_FVM_EquipmentSlotInfo
 {
 UScriptStruct StaticStruct()
 {
-    UScriptStruct local_2;
-    return local_2;
+    return __GeneratedProperties_FVM_EquipmentSlotInfo.Get();
 }
 }
 namespace FVM_AvatarEquipment
@@ -520,11 +510,9 @@ FVM_AvatarEquipment& Create(const UObject ContextObject, const EEquipSlotType Eq
 {
     return FVM_AvatarEquipment::CreateByManager(EUIInternal::GetContextManager(ContextObject), EEquipSlotType(EquipSlot), Avatar);
 }
-FVM_AvatarEquipment CreateByManager(const UEUIManagerSubsystem Manager, const EEquipSlotType EquipSlot, const TEUIModelRef<FM_Avatar> &inout Avatar)
+FVM_AvatarEquipment& CreateByManager(const UEUIManagerSubsystem Manager, const EEquipSlotType EquipSlot, const TEUIModelRef<FM_Avatar> &inout Avatar)
 {
-    FVM_AvatarEquipment __r;
-    TEUIModelRef<FVM_AvatarEquipment> local_6 = TEUIModelRef<FVM_AvatarEquipment>(EUIInternal::MakeModelWithManager_Generic(Manager, FVM_AvatarEquipment::ModelId, 0, EquipSlot, Avatar));
-    return __r;
+    return TEUIModelRef<FVM_AvatarEquipment>(EUIInternal::MakeModelWithManager_Generic(Manager, FVM_AvatarEquipment::ModelId, 0, EquipSlot, Avatar)).Get();
 }
 void GetModelInfo(FEUIViewModelMetaInfo &inout Result)
 {
@@ -641,7 +629,6 @@ namespace __GeneratedProperties_FVM_AvatarEquipment
 {
 UScriptStruct StaticStruct()
 {
-    UScriptStruct local_2;
-    return local_2;
+    return __GeneratedProperties_FVM_AvatarEquipment.Get();
 }
 }

@@ -70,11 +70,9 @@ FVMS_SelfPlayerInfo& Get(const UObject ContextObject)
 {
     return FVMS_SelfPlayerInfo::GetByManager(EUIInternal::GetContextManager(ContextObject));
 }
-FVMS_SelfPlayerInfo GetByManager(const UEUIManagerSubsystem Manager)
+FVMS_SelfPlayerInfo& GetByManager(const UEUIManagerSubsystem Manager)
 {
-    FVMS_SelfPlayerInfo __r;
-    TEUIModelRef<FVMS_SelfPlayerInfo> local_6 = TEUIModelRef<FVMS_SelfPlayerInfo>(EUIInternal::MakeModelWithManager(Manager, FVMS_SelfPlayerInfo::ModelId));
-    return __r;
+    return TEUIModelRef<FVMS_SelfPlayerInfo>(EUIInternal::MakeModelWithManager(Manager, FVMS_SelfPlayerInfo::ModelId)).Get();
 }
 void GetModelInfo(FEUIViewModelMetaInfo &inout Result)
 {
@@ -116,7 +114,6 @@ namespace __GeneratedProperties_FVMS_SelfPlayerInfo
 {
 UScriptStruct StaticStruct()
 {
-    UScriptStruct local_2;
-    return local_2;
+    return __GeneratedProperties_FVMS_SelfPlayerInfo.Get();
 }
 }

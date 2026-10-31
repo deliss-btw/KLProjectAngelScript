@@ -26,8 +26,8 @@ class UWidget_SideHintItem : UEUIUserListItemWidget
     UFUNCTION()
     bool SideHintItem_bShowHint() const
     {
-        FVM_SideHintItem& local_2;
         bool local_5;
+        FVM_SideHintItem& local_2 = this.SideHintItem.Get();
         if (local_2)
         {
             local_5 = local_2.GetbShowHint();
@@ -41,8 +41,8 @@ class UWidget_SideHintItem : UEUIUserListItemWidget
     UFUNCTION()
     UTexture2D SideHintItem_Icon() const
     {
-        FVM_SideHintItem& local_2;
         UTexture2D local_8;
+        FVM_SideHintItem& local_2 = this.SideHintItem.Get();
         if (local_2)
         {
             local_8 = local_2.GetIcon();
@@ -55,21 +55,21 @@ class UWidget_SideHintItem : UEUIUserListItemWidget
     UFUNCTION()
     FText SideHintItem_HintTitle() const
     {
-        FVM_SideHintItem& local_2;
+        FVM_SideHintItem& local_2 = this.SideHintItem.Get();
         FText local_12 = local_2 ? local_2.GetHintTitle() : FText();
         return local_12;
     }
     UFUNCTION()
     FText SideHintItem_HintText() const
     {
-        FVM_SideHintItem& local_2;
+        FVM_SideHintItem& local_2 = this.SideHintItem.Get();
         FText local_12 = local_2 ? local_2.GetHintText() : FText();
         return local_12;
     }
     void HandleObservedModelChanges(FEUIReactiveSubscriberIterator &inout It)
     {
-        FVM_SideHintItem& local_6;
         TEUIModelRef<FVM_SideHintItem> local_2 = this.SideHintItem.AsRef();
+        FVM_SideHintItem& local_6 = local_2.Get();
         for (; It; )
         {
             FEUIReactiveSubscriberTrackScope local_56 = FEUIReactiveSubscriberTrackScope(It);

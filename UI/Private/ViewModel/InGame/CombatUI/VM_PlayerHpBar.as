@@ -191,35 +191,33 @@ struct FVM_PlayerHpBar : FEUIViewModel
     }
     void RefreshHpDisplay()
     {
-        float32 local_1 = 0.0f;
         float32 local_2 = this.GetHpRatioSource().GetMaxValue();
         if (local_2 <= 0.0f)
         {
             return;
         }
-        this.SetNewHpValues(local_1, local_2, FMath::Clamp(this.GetHpRatioSource().GetRatioValue(), 0.0f, 1.0f), !(this.GetbHasHpRatioInitialized()));
+        this.SetNewHpValues(this.GetHpRatioSource().GetValue(), local_2, FMath::Clamp(this.GetHpRatioSource().GetRatioValue(), 0.0f, 1.0f), !(this.GetbHasHpRatioInitialized()));
         return;
     }
     void RefreshPreviewHpBarRatio()
     {
-        this.SetDisplayPreviewHpBarRatio(0.0f);
+        this.SetDisplayPreviewHpBarRatio(this.GetPreviewHpBarRatioSource().GetValue());
         this.CachedPreviewHpBarRatioForLogic = this.GetDisplayPreviewHpBarRatio();
         return;
     }
     void RefreshShieldDisplay()
     {
         int local_6 = 0;
-        float32 local_12 = 0.0f;
         int local_48 = 0;
         if (!(local_6) || (local_6.GetNamedInherentShields().Num() == 0))
         {
             this.SetShieldVisibility(ESlateVisibility(1));
-            local_12 = 0.0f;
-            this.SetDisplayShieldBarRatio(local_12);
+            this.SetDisplayShieldBarRatio(0.0f);
             this.GetModify_ShieldRemainTimeSource().SnapTo(1.0f);
             return;
         }
         this.SetShieldVisibility(ESlateVisibility(4));
+        float32 local_12 = this.GetShieldValueSource().GetValue();
         float32 local_13 = this.GetHpRatioSource().GetMaxValue();
         if (local_13 > 0.0f)
         {
@@ -229,7 +227,7 @@ struct FVM_PlayerHpBar : FEUIViewModel
         float32 local_19 = 0.0f;
         for (auto& local_38 : local_6.GetNamedInherentShields())
         {
-            local_38;
+            FECSEntity local_42 = FECSEntity(local_38.GetValue());
             if (local_48)
             {
                 if (FFPTime(local_48.GetDestroyTime()).opCmp(0.0) > 0)
@@ -263,8 +261,7 @@ struct FVM_PlayerHpBar : FEUIViewModel
     }
     void RefreshShieldRemainTimeRatio()
     {
-        float32 local_1 = 0.0f;
-        this.SetDisplayShieldRemainTimeRatio(local_1);
+        this.SetDisplayShieldRemainTimeRatio(this.GetShieldRemainTimeSource().GetValue());
         return;
     }
     void HandleEntityChanged()
@@ -803,11 +800,9 @@ FVM_PlayerHpBar& Create(const UObject ContextObject, const FECSEntity &inout Ent
 {
     return FVM_PlayerHpBar::CreateByManager(EUIInternal::GetContextManager(ContextObject), Entity);
 }
-FVM_PlayerHpBar CreateByManager(const UEUIManagerSubsystem Manager, const FECSEntity &inout Entity)
+FVM_PlayerHpBar& CreateByManager(const UEUIManagerSubsystem Manager, const FECSEntity &inout Entity)
 {
-    FVM_PlayerHpBar __r;
-    TEUIModelRef<FVM_PlayerHpBar> local_6 = TEUIModelRef<FVM_PlayerHpBar>(EUIInternal::MakeModelWithManager_Generic(Manager, FVM_PlayerHpBar::ModelId, 0, Entity));
-    return __r;
+    return TEUIModelRef<FVM_PlayerHpBar>(EUIInternal::MakeModelWithManager_Generic(Manager, FVM_PlayerHpBar::ModelId, 0, Entity)).Get();
 }
 void GetModelInfo(FEUIViewModelMetaInfo &inout Result)
 {
@@ -1018,7 +1013,6 @@ namespace __GeneratedProperties_FVM_PlayerHpBar
 {
 UScriptStruct StaticStruct()
 {
-    UScriptStruct local_2;
-    return local_2;
+    return __GeneratedProperties_FVM_PlayerHpBar.Get();
 }
 }

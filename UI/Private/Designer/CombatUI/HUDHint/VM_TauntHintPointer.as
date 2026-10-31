@@ -78,11 +78,9 @@ FVM_TauntHintPointer& Create(const UObject ContextObject, const FECSEntity &inou
 {
     return FVM_TauntHintPointer::CreateByManager(EUIInternal::GetContextManager(ContextObject), TargetEntity);
 }
-FVM_TauntHintPointer CreateByManager(const UEUIManagerSubsystem Manager, const FECSEntity &inout TargetEntity)
+FVM_TauntHintPointer& CreateByManager(const UEUIManagerSubsystem Manager, const FECSEntity &inout TargetEntity)
 {
-    FVM_TauntHintPointer __r;
-    TEUIModelRef<FVM_TauntHintPointer> local_6 = TEUIModelRef<FVM_TauntHintPointer>(EUIInternal::MakeModelWithManager_Generic(Manager, FVM_TauntHintPointer::ModelId, 0, TargetEntity));
-    return __r;
+    return TEUIModelRef<FVM_TauntHintPointer>(EUIInternal::MakeModelWithManager_Generic(Manager, FVM_TauntHintPointer::ModelId, 0, TargetEntity)).Get();
 }
 void GetModelInfo(FEUIViewModelMetaInfo &inout Result)
 {
@@ -115,7 +113,6 @@ namespace __GeneratedProperties_FVM_TauntHintPointer
 {
 UScriptStruct StaticStruct()
 {
-    UScriptStruct local_2;
-    return local_2;
+    return __GeneratedProperties_FVM_TauntHintPointer.Get();
 }
 }

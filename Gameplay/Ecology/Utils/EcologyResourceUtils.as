@@ -20,7 +20,7 @@ void PinedResource(const FECSEntity &inout Flock, const FC_EcologyFlockComponent
     if ((local_3 && !(bPin)))
     {
         --Resource.PinedTeamCount;
-        FECSEntityId local_2 = Flock.GetId();
+        Resource.PinedTeams.Remove(Flock.GetId());
         return;
     }
     if (!(local_3) && bPin)

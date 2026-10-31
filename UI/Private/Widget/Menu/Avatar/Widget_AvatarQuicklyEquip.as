@@ -40,7 +40,7 @@ class UWidget_AvatarQuicklyEquip : UEUIActivatableWidget
     {
         TEUIModelRef<FVM_AvatarShowcase> local_2;
         local_2;
-        local_2.SetCurrentShowcase();
+        this.AvatarQuicklyEquipVM.Get().SetCurrentShowcase(local_2);
         return;
     }
     UFUNCTION()
@@ -113,8 +113,8 @@ class UWidget_AvatarQuicklyEquip : UEUIActivatableWidget
     }
     void HandleObservedModelChanges(FEUIReactiveSubscriberIterator &inout It)
     {
-        FVM_AvatarQuicklyEquip& local_6;
         TEUIModelRef<FVM_AvatarQuicklyEquip> local_2 = this.AvatarQuicklyEquipVM.AsRef();
+        FVM_AvatarQuicklyEquip& local_6 = local_2.Get();
         for (; It; )
         {
             FEUIReactiveSubscriberTrackScope local_56 = FEUIReactiveSubscriberTrackScope(It);

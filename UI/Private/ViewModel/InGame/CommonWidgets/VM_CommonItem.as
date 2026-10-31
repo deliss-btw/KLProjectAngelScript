@@ -94,13 +94,13 @@ struct FVM_CommonItem : FEUIViewModel
             return;
         }
         this.SetItemVM(TEUIModelRef<FVM_Item>(::FVM_Item::Create(this.GetContext().Manager, this.GetItemDataModel())));
-        TEUIModelRef<FM_ItemData> local_2 = this.GetItemDataModel();
-        this.SetItemConfig(GetConfig());
+        this.SetItemConfig(this.GetItemDataModel().Get().GetConfig());
         if (this.GetItemConfig().IsSet())
         {
-            FSoftBrush local_52;
+            this.SetItemName(this.GetItemConfig().Get().ItemName);
+            FSoftBrush local_52 = FSoftBrush(this.GetItemConfig().Get().ItemIcon);
             FVector2f local_63;
-            if (0 == 2)
+            if (int(this.GetItemConfig().Get().ItemType) == 2)
             {
                 local_63 = FVector2f(180.0f, 180.0f);
             }
@@ -119,11 +119,12 @@ struct FVM_CommonItem : FEUIViewModel
     }
     void RefreshDisplay(const EItemDisplayType DisplayType = EItemDisplayType::Normal)
     {
-        int local_29 = 0;
         if (this.GetItemConfig().IsSet())
         {
-            if (::UGlobalItemSettings::Get().GetRarityConfig(EItemRarity(local_29)).IsSet())
+            TDataObjectPtr<FItemRarityConfig> local_54 = ::UGlobalItemSettings::Get().GetRarityConfig(EItemRarity(this.GetItemConfig().Get().Rarity));
+            if (local_54.IsSet())
             {
+                this.SetRarityColor(local_54.Get().DefaultColor);
                 int local_55 = int(DisplayType);
                 if (local_55 <= 2)
                 {
@@ -135,8 +136,11 @@ struct FVM_CommonItem : FEUIViewModel
                     }
                     else
                     {
+                        this.SetItemImageBG(local_54.Get().RarityImage);
+                        this.SetItemImageBG(local_54.Get().RectangleRarityImage);
                     }
                 }
+                this.SetItemImageBG(local_54.Get().RarityImage);
                 return;
             }
             this.SetRarityColor(FLinearColor::White);
@@ -170,13 +174,13 @@ struct FVM_CommonItem : FEUIViewModel
             this.ApplyDisplayState(0);
             return;
         }
-        this.SetItemName(GetDisplayName());
-        this.SetItemImage(GetItemImage());
-        this.SetItemImageHigh(GetItemImageHigh());
-        this.SetItemImageTemp(GetItemImageTemp());
-        this.SetItemImageBG(GetItemImageBG());
-        this.SetRarityColor(GetRarityColor());
-        this.ApplyDisplayState(GetCurDisplayState());
+        this.SetItemName(DisplayData.Get().GetDisplayName());
+        this.SetItemImage(DisplayData.Get().GetItemImage());
+        this.SetItemImageHigh(DisplayData.Get().GetItemImageHigh());
+        this.SetItemImageTemp(DisplayData.Get().GetItemImageTemp());
+        this.SetItemImageBG(DisplayData.Get().GetItemImageBG());
+        this.SetRarityColor(DisplayData.Get().GetRarityColor());
+        this.ApplyDisplayState(DisplayData.Get().GetCurDisplayState());
         return;
     }
     void SetItemCustomSelection(const bool bIsSelected)
@@ -468,11 +472,9 @@ FVM_CommonItem& Create(const UObject ContextObject, const TEUIModelRef<FM_ItemDa
 {
     return FVM_CommonItem::CreateByManager(EUIInternal::GetContextManager(ContextObject), ItemDataModel);
 }
-FVM_CommonItem CreateByManager(const UEUIManagerSubsystem Manager, const TEUIModelRef<FM_ItemData> &inout ItemDataModel)
+FVM_CommonItem& CreateByManager(const UEUIManagerSubsystem Manager, const TEUIModelRef<FM_ItemData> &inout ItemDataModel)
 {
-    FVM_CommonItem __r;
-    TEUIModelRef<FVM_CommonItem> local_6 = TEUIModelRef<FVM_CommonItem>(EUIInternal::MakeModelWithManager_Generic(Manager, FVM_CommonItem::ModelId, 0, ItemDataModel));
-    return __r;
+    return TEUIModelRef<FVM_CommonItem>(EUIInternal::MakeModelWithManager_Generic(Manager, FVM_CommonItem::ModelId, 0, ItemDataModel)).Get();
 }
 void GetModelInfo(FEUIViewModelMetaInfo &inout Result)
 {
@@ -631,7 +633,6 @@ namespace __GeneratedProperties_FVM_CommonItem
 {
 UScriptStruct StaticStruct()
 {
-    UScriptStruct local_2;
-    return local_2;
+    return __GeneratedProperties_FVM_CommonItem.Get();
 }
 }

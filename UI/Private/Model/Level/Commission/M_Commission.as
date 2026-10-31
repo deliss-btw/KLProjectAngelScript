@@ -372,7 +372,7 @@ struct FM_Commission : FEUIModel
     }
     ECommissionTier GetTierFromTimeSec(const int TimeSec) const
     {
-        ECommissionTier local_1 = ECommissionTier(0);
+        ECommissionTier local_1 = ECommissionTier::None;
         CastTo local_6;
         TDataObjectPtr<FRaceCommissionConfig> local_30 = local_6.opCall();
         if (local_30)
@@ -404,6 +404,8 @@ struct FM_Commission : FEUIModel
         }
         if (!(local_4.IsEmpty()))
         {
+            __Lambda_UI_Private_Model_Level_Commission_M_Commission_201 local_82;
+            local_4.Sort(local_82);
         }
         return local_4;
     }
@@ -596,11 +598,9 @@ FM_CommissionInstanceData& Create(const UObject ContextObject)
 {
     return FM_CommissionInstanceData::CreateByManager(EUIInternal::GetContextManager(ContextObject));
 }
-FM_CommissionInstanceData CreateByManager(const UEUIManagerSubsystem Manager)
+FM_CommissionInstanceData& CreateByManager(const UEUIManagerSubsystem Manager)
 {
-    FM_CommissionInstanceData __r;
-    TEUIModelRef<FM_CommissionInstanceData> local_6 = TEUIModelRef<FM_CommissionInstanceData>(EUIInternal::MakeModelWithManager(Manager, FM_CommissionInstanceData::ModelId));
-    return __r;
+    return TEUIModelRef<FM_CommissionInstanceData>(EUIInternal::MakeModelWithManager(Manager, FM_CommissionInstanceData::ModelId)).Get();
 }
 void GetModelInfo(FEUIModelOnlyMetaInfo &inout Result)
 {
@@ -647,11 +647,9 @@ FM_Commission& Create(const UObject ContextObject)
 {
     return FM_Commission::CreateByManager(EUIInternal::GetContextManager(ContextObject));
 }
-FM_Commission CreateByManager(const UEUIManagerSubsystem Manager)
+FM_Commission& CreateByManager(const UEUIManagerSubsystem Manager)
 {
-    FM_Commission __r;
-    TEUIModelRef<FM_Commission> local_6 = TEUIModelRef<FM_Commission>(EUIInternal::MakeModelWithManager(Manager, FM_Commission::ModelId));
-    return __r;
+    return TEUIModelRef<FM_Commission>(EUIInternal::MakeModelWithManager(Manager, FM_Commission::ModelId)).Get();
 }
 void GetModelInfo(FEUIModelOnlyMetaInfo &inout Result)
 {

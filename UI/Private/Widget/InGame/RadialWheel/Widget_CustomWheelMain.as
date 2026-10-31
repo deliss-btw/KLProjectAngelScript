@@ -118,7 +118,7 @@ class UWidget_CustomWheelMain : UEUIActivatableWidget
     FEventReply OnMouseButtonDown_Implementation(const FGeometry &inout MyGeometry, const FPointerEvent &inout MouseEvent)
     {
         int local_1;
-        local_1 = GetSelectedIndex();
+        local_1 = this.VMS_CustomWheel.Get().GetSelectedIndex();
         int local_2 = INDEX_NONE;
         if (local_1 != local_2 && (MouseEvent.GetEffectingButton() == EKeys::LeftMouseButton))
         {
@@ -131,7 +131,7 @@ class UWidget_CustomWheelMain : UEUIActivatableWidget
     FEventReply OnMouseButtonUp_Implementation(const FGeometry &inout MyGeometry, const FPointerEvent &inout MouseEvent)
     {
         int local_1;
-        local_1 = GetSelectedIndex();
+        local_1 = this.VMS_CustomWheel.Get().GetSelectedIndex();
         if (this.ClickedDownIndex != INDEX_NONE && (this.ClickedDownIndex == local_1) && (MouseEvent.GetEffectingButton() == EKeys::LeftMouseButton))
         {
             this.OnFanRingClickedEvent.Broadcast();
@@ -162,7 +162,7 @@ class UWidget_CustomWheelMain : UEUIActivatableWidget
     UFUNCTION()
     void OnFanRingClickedEventCallback()
     {
-        OnConfirmButtonClicked();
+        this.VMS_CustomWheel.Get().OnConfirmButtonClicked();
         return;
     }
     void UpdateMousePosHoverState(const FVector2D &inout LocalPos)
@@ -208,19 +208,19 @@ class UWidget_CustomWheelMain : UEUIActivatableWidget
         if (this.VMS_CustomWheel.IsValid())
         {
             int local_2;
-            local_2 = GetSelectedIndex();
+            local_2 = this.VMS_CustomWheel.Get().GetSelectedIndex();
             if (HoverButtonIndex != local_2)
             {
                 int local_3 = INDEX_NONE;
                 if (local_2 != local_3)
                 {
-                    0.ChangeSelectedState((local_2 != 0));
+                    this.VMS_CustomWheel.Get().ChangeSelectedState(false, local_2);
                 }
-                HoverButtonIndex.SetSelectedIndex();
+                this.VMS_CustomWheel.Get().SetSelectedIndex(HoverButtonIndex);
                 local_3 = INDEX_NONE;
                 if (HoverButtonIndex != local_3)
                 {
-                    1.ChangeSelectedState((HoverButtonIndex != 0));
+                    this.VMS_CustomWheel.Get().ChangeSelectedState(true, HoverButtonIndex);
                     return;
                 }
                 this.ClickedDownIndex = INDEX_NONE;
@@ -266,7 +266,7 @@ class UWidget_CustomWheelMain : UEUIActivatableWidget
         {
             if (this.GamepadLatchedIndex != INDEX_NONE)
             {
-                OnConfirmButtonClicked();
+                this.VMS_CustomWheel.Get().OnConfirmButtonClicked();
                 this.GamepadLatchedIndex = INDEX_NONE;
                 this.SetHoverButtonIndex(INDEX_NONE);
             }
@@ -283,7 +283,7 @@ class UWidget_CustomWheelMain : UEUIActivatableWidget
         }
         int local_7 = (uint(((local_6 + this.AngleOffset) / this.Angle))) % 8;
         this.GamepadLatchedIndex = local_7;
-        if (local_7 != GetSelectedIndex())
+        if (local_7 != this.VMS_CustomWheel.Get().GetSelectedIndex())
         {
             this.SetHoverButtonIndex(local_7);
         }
@@ -318,8 +318,8 @@ class UWidget_CustomWheelMain : UEUIActivatableWidget
     }
     void HandleObservedModelChanges(FEUIReactiveSubscriberIterator &inout It)
     {
-        FVMS_CustomWheel& local_6;
         TEUIModelRef<FVMS_CustomWheel> local_2 = this.VMS_CustomWheel.AsRef();
+        FVMS_CustomWheel& local_6 = local_2.Get();
         for (; It; )
         {
             FEUIReactiveSubscriberTrackScope local_56 = FEUIReactiveSubscriberTrackScope(It);

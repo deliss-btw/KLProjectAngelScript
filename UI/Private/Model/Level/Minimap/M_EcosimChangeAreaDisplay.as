@@ -333,8 +333,7 @@ struct FMS_EcosimChangeAreaDisplayManager : FEUIModelSingleton
         TArray<FMinimapPath> local_4;
         for (auto& local_24 : this.GetMonsterChangeAreaDisplays())
         {
-            local_24;
-            FMinimapPath local_30 = FMinimapPath(opArrow().GetMinimapPath());
+            FMinimapPath local_30 = FMinimapPath(local_24.GetValue().opArrow().GetMinimapPath());
             if (!(local_30.IsEmpty()))
             {
                 local_4.Add(local_30);
@@ -363,16 +362,17 @@ struct FMS_EcosimChangeAreaDisplayManager : FEUIModelSingleton
         }
         for (auto& local_38 : local_6)
         {
-            local_38;
+            this.GetModify_MonsterChangeAreaDisplays().Remove(local_38);
         }
         for (auto& local_56 : C_BossMonsterChangeAreaSummary.GetMonsterTargetLocationMap())
         {
-            if (this.GetModify_MonsterChangeAreaDisplays().Find(local_56.GetKey()))
+            TRawPtr<TEUIModelRef<FM_EcosimChangeAreaDisplay>> local_58 = this.GetModify_MonsterChangeAreaDisplays().Find(local_56.GetKey());
+            if (local_58)
             {
-                opArrow().SetTargetLocation();
+                local_58.Get().opArrow().SetTargetLocation(local_56.GetValue());
                 continue;
             }
-            this.GetModify_MonsterChangeAreaDisplays().Add(local_56.GetKey(), TEUIModelRef<FM_EcosimChangeAreaDisplay>(::FM_EcosimChangeAreaDisplay::Create(this.GetContext().Manager, local_56.GetKey())));
+            this.GetModify_MonsterChangeAreaDisplays().Add(local_56.GetKey(), TEUIModelRef<FM_EcosimChangeAreaDisplay>(::FM_EcosimChangeAreaDisplay::Create(this.GetContext().Manager, local_56.GetKey(), local_56.GetValue())));
         }
         return;
     }
@@ -407,11 +407,9 @@ FM_EcosimChangeAreaDisplay& Create(const UObject ContextObject, const FECSEntity
 {
     return FM_EcosimChangeAreaDisplay::CreateByManager(EUIInternal::GetContextManager(ContextObject), EntityId, TargetLocation);
 }
-FM_EcosimChangeAreaDisplay CreateByManager(const UEUIManagerSubsystem Manager, const FECSEntityId &inout EntityId, const FVector &inout TargetLocation)
+FM_EcosimChangeAreaDisplay& CreateByManager(const UEUIManagerSubsystem Manager, const FECSEntityId &inout EntityId, const FVector &inout TargetLocation)
 {
-    FM_EcosimChangeAreaDisplay __r;
-    TEUIModelRef<FM_EcosimChangeAreaDisplay> local_6 = TEUIModelRef<FM_EcosimChangeAreaDisplay>(EUIInternal::MakeModelWithManager_Generic(Manager, FM_EcosimChangeAreaDisplay::ModelId, 0, EntityId, TargetLocation));
-    return __r;
+    return TEUIModelRef<FM_EcosimChangeAreaDisplay>(EUIInternal::MakeModelWithManager_Generic(Manager, FM_EcosimChangeAreaDisplay::ModelId, 0, EntityId, TargetLocation)).Get();
 }
 void GetModelInfo(FEUIModelOnlyMetaInfo &inout Result)
 {
@@ -485,11 +483,9 @@ FMS_EcosimChangeAreaDisplayManager& Get(const UObject ContextObject)
 {
     return FMS_EcosimChangeAreaDisplayManager::GetByManager(EUIInternal::GetContextManager(ContextObject));
 }
-FMS_EcosimChangeAreaDisplayManager GetByManager(const UEUIManagerSubsystem Manager)
+FMS_EcosimChangeAreaDisplayManager& GetByManager(const UEUIManagerSubsystem Manager)
 {
-    FMS_EcosimChangeAreaDisplayManager __r;
-    TEUIModelRef<FMS_EcosimChangeAreaDisplayManager> local_6 = TEUIModelRef<FMS_EcosimChangeAreaDisplayManager>(EUIInternal::MakeModelWithManager(Manager, FMS_EcosimChangeAreaDisplayManager::ModelId));
-    return __r;
+    return TEUIModelRef<FMS_EcosimChangeAreaDisplayManager>(EUIInternal::MakeModelWithManager(Manager, FMS_EcosimChangeAreaDisplayManager::ModelId)).Get();
 }
 void GetModelInfo(FEUIModelOnlyMetaInfo &inout Result)
 {

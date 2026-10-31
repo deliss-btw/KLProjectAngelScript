@@ -180,13 +180,13 @@ struct FAvatarFashion
         {
             return 0;
         }
-        if (!(::FFashionConfig::GetByDataId(FashionId)))
+        TDataObjectPtr<FFashionConfig> local_50 = ::FFashionConfig::GetByDataId(FashionId);
+        if (!(local_50))
         {
             XLog(ELog(79), FString().Append("[M_Fashion] Clear invalid ChangeAvatarFashionReq field FashionId=").Append(FashionId).Append(" ExpectedSlot=").Append(int(ExpectedSlotType)).Append(" ActualSlot=0"));
             return 0;
         }
-        EFashionSlotType local_58;
-        EFashionSlotType local_57 = local_58;
+        EFashionSlotType local_57 = local_50.Get().SlotType;
         if (int(local_57) != int(ExpectedSlotType))
         {
             XLog(ELog(79), FString().Append("[M_Fashion] Clear mismatched ChangeAvatarFashionReq field FashionId=").Append(FashionId).Append(" ExpectedSlot=").Append(int(ExpectedSlotType)).Append(" ActualSlot=").Append(int(local_57)));
@@ -277,31 +277,23 @@ struct FMS_FashionModel : FEUIModelSingleton
     }
     void CollectUnlockedMountFashionConfigsForQuickSlot(TArray<TDataObjectPtr<FMountFashionConfig>> &inout OutConfigs) const
     {
-        int local_54 = 0;
-        int local_111 = 0;
-        bool local_113 = false;
+        int local_53;
         OutConfigs.Empty(0);
-        int local_53 = this.GetCurrentMountFashionConfig() ? local_54 : 0;
+        TDataObjectPtr<FMountFashionConfig> local_50 = this.GetCurrentMountFashionConfig();
+        if (local_50)
+        {
+            local_53 = local_50.Get().DataId;
+        }
+        else
+        {
+            local_53 = 0;
+        }
         TDataObjectIterator<FMountFashionConfig> local_70;
+        CastTo local_118;
         for (; local_70; )
         {
             TDataObjectPtr<FMountFashionConfig> local_26 = local_70.GetDataPtr();
-            bool local_52 = !(local_26);
-            if (local_52)
-            {
-                local_52 = true;
-            }
-            else
-            {
-                int local_1 = local_111;
-                local_113 = (local_1 != 0);
-                local_52 = local_113;
-            }
-            local_52 = local_52 || (local_54 == local_53);
-            local_52 = local_52 || local_113;
-            CastTo local_118;
-            local_52 = local_52 || !(this.IsFashionConfigUnlockedForDisplay(local_118.opCall()));
-            if (local_52)
+            if (!(local_26) || (int(local_26.Get().ShowType) != 0) || ((local_26.Get().DataId == local_53)) || local_26.Get().MountPrefab.IsNull() || !(this.IsFashionConfigUnlockedForDisplay(local_118.opCall())))
             {
             }
             else
@@ -310,34 +302,38 @@ struct FMS_FashionModel : FEUIModelSingleton
             }
             local_70.Next();
         }
+        __Lambda_UI_Private_Model_Fashion_M_Fashion_328 local_144;
+        OutConfigs.Sort(local_144);
         return;
     }
     bool IsFashionConfigUnlockedForDisplay(const TDataObjectPtr<FFashionConfig> &inout FashionConfig) const
     {
-        bool local_2 = false;
+        if (!(FashionConfig))
+        {
+            return false;
+        }
+        return FashionConfig.Get().bDefaultUnlock || this.GetUnlockedFashionIDList().Contains(FashionConfig.Get().DataId);
+    }
+    bool ShouldGenerateNewFashionRedDot(const TDataObjectPtr<FFashionConfig> &inout FashionConfig) const
+    {
         bool local_1 = !(FashionConfig);
+        if (local_1)
+        {
+            local_1 = true;
+        }
+        else
+        {
+            local_1 = FashionConfig.Get().bDefaultUnlock;
+        }
         if (local_1)
         {
             return false;
         }
-        local_2 = local_2 || local_1;
-        return local_2;
-    }
-    bool ShouldGenerateNewFashionRedDot(const TDataObjectPtr<FFashionConfig> &inout FashionConfig) const
-    {
-        bool local_2 = false;
-        int local_3 = 0;
-        int local_6 = 0;
-        if ((!(FashionConfig) || local_2))
+        if (int(FashionConfig.Get().ShowType) != 0)
         {
             return false;
         }
-        int local_4 = local_3;
-        if (local_4 != 0)
-        {
-            return false;
-        }
-        if (!(::FashionSettings::GetSlotConfig(EFashionSlotType(local_6))))
+        if (!(::FashionSettings::GetSlotConfig(EFashionSlotType(FashionConfig.Get().SlotType))))
         {
             return false;
         }
@@ -345,32 +341,19 @@ struct FMS_FashionModel : FEUIModelSingleton
     }
     bool HasFashionRedDotVisibleResource(const TDataObjectPtr<FFashionConfig> &inout FashionConfig) const
     {
-        int local_2 = 0;
-        bool local_57;
-        TMapConstIterator<EBodyType, TSoftObjectPtr<USkeletalMesh>> local_66;
-        bool local_1 = !(FashionConfig);
-        if (local_1)
+        if (!(FashionConfig))
         {
             return false;
         }
-        if (local_2 == -55)
+        if (int(FashionConfig.Get().SlotType) == -55)
         {
             CastTo local_8;
-            if (!(local_8.opCall()))
-            {
-                local_57 = false;
-            }
-            else
-            {
-                local_1 = !local_1;
-                local_57 = local_1;
-            }
-            return local_57;
+            TDataObjectPtr<FMountFashionConfig> local_32 = local_8.opCall();
+            return local_32 && !(local_32.Get().MountPrefab.IsNull());
         }
-        for (; local_66.CanProceed;)
+        for (auto& local_76 : FashionConfig.Get().MeshAssets)
         {
-            local_66.Proceed();
-            if (!(IsNull()))
+            if (!(local_76.GetValue().IsNull()))
             {
                 return true;
             }
@@ -379,11 +362,11 @@ struct FMS_FashionModel : FEUIModelSingleton
     }
     void GenerateNewFashionRedDotIfNeeded(const TDataObjectPtr<FFashionConfig> &inout FashionConfig, const FString &inout Source) const
     {
-        int local_3 = 0;
         if (!(this.ShouldGenerateNewFashionRedDot(FashionConfig)))
         {
             return;
         }
+        int local_3 = FashionConfig.Get().DataId;
         int local_2 = local_3;
         FMS_RedDotSystem& local_6 = ::FMS_RedDotSystem::Get(this.GetContext().Manager);
         int64 local_8 = local_2;
@@ -400,8 +383,6 @@ struct FMS_FashionModel : FEUIModelSingleton
     }
     bool HasNewWardrobeFashionForAvatar(const TDataObjectPtr<FAvatarPrefabConfig> &inout AvatarConfig) const
     {
-        int local_71 = 0;
-        int local_77 = 0;
         if (!(AvatarConfig))
         {
             return false;
@@ -418,12 +399,13 @@ struct FMS_FashionModel : FEUIModelSingleton
         this.AppendKnownWardrobeSlotCandidates(local_8);
         for (auto local_21 : local_8)
         {
-            if (!(::FashionSettings::GetSlotConfig(EFashionSlotType(local_21))) || !(this.CanShowMainTab(EFashionSlotMainTab(local_71))))
+            TDataObjectPtr<FFashionSlotConfig> local_70 = ::FashionSettings::GetSlotConfig(EFashionSlotType(local_21));
+            if (!(local_70) || !(this.CanShowMainTab(EFashionSlotMainTab(local_70.Get().MainTab))))
             {
                 continue;
             }
             TArray<TDataObjectPtr<FFashionConfig>> local_76;
-            this.CollectFashionConfigsForAvatarSlot(AvatarConfig, EFashionSlotType(local_21), EFashionSlotSubTab(local_77), local_76);
+            this.CollectFashionConfigsForAvatarSlot(AvatarConfig, EFashionSlotType(local_21), local_70.Get().SubTab, local_76);
             for (auto& local_92 : local_76)
             {
                 if (this.HasFashionNewRedDot(local_92))
@@ -436,13 +418,21 @@ struct FMS_FashionModel : FEUIModelSingleton
     }
     bool HasFashionNewRedDot(const TDataObjectPtr<FFashionConfig> &inout FashionConfig) const
     {
-        bool local_2 = false;
-        int local_3 = 0;
-        if (!(FashionConfig) || local_2 || !(this.IsFashionConfigUnlocked(FashionConfig)))
+        bool local_1 = !(FashionConfig);
+        if (local_1)
+        {
+            local_1 = true;
+        }
+        else
+        {
+            local_1 = FashionConfig.Get().bDefaultUnlock;
+        }
+        local_1 = local_1 || !(this.IsFashionConfigUnlocked(FashionConfig));
+        if (local_1)
         {
             return false;
         }
-        int64 local_6 = local_3;
+        int64 local_6 = FashionConfig.Get().DataId;
         return ::FMS_RedDotSystem::Get(this.GetContext().Manager).HasRedDot(GameplayTags::RedDotSystem_Fashion_NewFashion, local_6);
     }
     bool IsFashionConfigUnlocked(const TDataObjectPtr<FFashionConfig> &inout FashionConfig) const
@@ -499,21 +489,19 @@ struct FMS_FashionModel : FEUIModelSingleton
     }
     bool ShouldShowFashionConfigForAvatar(const TDataObjectPtr<FAvatarPrefabConfig> &inout AvatarConfig, const TDataObjectPtr<FFashionConfig> &inout FashionConfig, const EFashionSlotType SlotType) const
     {
-        int local_6 = 0;
-        if ((!(FashionConfig) || (0 != int(SlotType)) || !(AvatarConfig)))
+        if (!(FashionConfig) || (int(FashionConfig.Get().SlotType) != int(SlotType)) || !(AvatarConfig))
         {
             return false;
         }
-        int local_3 = local_6;
-        if (local_3 != 0)
+        if (int(FashionConfig.Get().ShowType) != 0)
         {
             return false;
         }
-        if (0 == this.GetDefaultFashionIdForSlot(AvatarConfig, EFashionSlotType(SlotType)))
+        if (FashionConfig.Get().DataId == this.GetDefaultFashionIdForSlot(AvatarConfig, EFashionSlotType(SlotType)))
         {
             return false;
         }
-        if (GetAvatarTypes().Num() > 0 && !(GetAvatarTypes().Contains(AvatarConfig)))
+        if (FashionConfig.Get().GetAvatarTypes().Num() > 0 && !(FashionConfig.Get().GetAvatarTypes().Contains(AvatarConfig)))
         {
             return false;
         }
@@ -522,40 +510,32 @@ struct FMS_FashionModel : FEUIModelSingleton
     bool HasFashionUsableResourceForAvatar(const TDataObjectPtr<FAvatarPrefabConfig> &inout AvatarConfig, const TDataObjectPtr<FFashionConfig> &inout FashionConfig, const EFashionSlotType SlotType) const
     {
         bool local_57;
-        bool local_1 = !(FashionConfig);
-        if (local_1)
+        if (!(FashionConfig))
         {
             return false;
         }
         if ((int(SlotType)) == -55)
         {
             CastTo local_8;
-            if (!(local_8.opCall()))
-            {
-                local_57 = false;
-            }
-            else
-            {
-                local_1 = !local_1;
-                local_57 = local_1;
-            }
-            return local_57;
+            TDataObjectPtr<FMountFashionConfig> local_32 = local_8.opCall();
+            return local_32 && !(local_32.Get().MountPrefab.IsNull());
         }
         TSoftObjectPtr<USkeletalMesh> local_68;
         EBodyType local_70 = this.GetAvatarBodyType(AvatarConfig);
-        if (!(unresolved.MeshAssets.Find(local_70, local_68)))
-        {
-            local_1 = false;
-        }
-        else
-        {
-            local_1 = !(local_68.IsNull());
-        }
-        if (local_1)
+        if (FashionConfig.Get().MeshAssets.Find(local_70, local_68) && !(local_68.IsNull()))
         {
             return true;
         }
-        if ((int(local_70)) != 0 && local_1 && !(local_68.IsNull()))
+        if ((int(local_70)) == 0)
+        {
+            local_57 = false;
+        }
+        else
+        {
+            local_57 = FashionConfig.Get().MeshAssets.Find(EBodyType(0), local_68);
+        }
+        local_57 = local_57 && !(local_68.IsNull());
+        if (local_57)
         {
             return true;
         }
@@ -565,18 +545,18 @@ struct FMS_FashionModel : FEUIModelSingleton
     {
         if (!(AvatarConfig))
         {
-            return EBodyType(0);
+            return EBodyType::All;
         }
         return ::FashionUtils::GetBodyTypeFromAvatar(AvatarConfig);
     }
     uint GetDefaultFashionIdForSlot(const TDataObjectPtr<FAvatarPrefabConfig> &inout AvatarConfig, const EFashionSlotType SlotType) const
     {
         int local_3 = 0;
-        const FCharacterDefaultFashionConfig& local_6;
-        if (!(AvatarConfig) || !(GetDefaultFashion()))
+        if (!(AvatarConfig) || !(AvatarConfig.Get().GetDefaultFashion()))
         {
             return 0;
         }
+        const FCharacterDefaultFashionConfig& local_6 = AvatarConfig.Get().GetDefaultFashion().Get();
         switch (int(SlotType))
         {
         case 1:
@@ -612,8 +592,15 @@ struct FMS_FashionModel : FEUIModelSingleton
     }
     uint GetFashionConfigDataId(const TDataObjectPtr<FFashionConfig> &inout FashionConfig) const
     {
-        int local_3 = 0;
-        int local_2 = FashionConfig ? local_3 : 0;
+        int local_2;
+        if (FashionConfig)
+        {
+            local_2 = FashionConfig.Get().DataId;
+        }
+        else
+        {
+            local_2 = 0;
+        }
         return local_2;
     }
     bool CanShowMainTab(const EFashionSlotMainTab MainTab) const
@@ -651,29 +638,18 @@ struct FMS_FashionModel : FEUIModelSingleton
             return;
         }
         bool local_2 = this.GetUnlockedFashionIDList().Contains(FashionId);
-        bool local_4 = this.GetModify_UnlockedFashionIDList().AddUnique(FashionId) || !(bAllowHint) || !(this.GetbFashionUnlockListInitialized());
-        if (local_4)
+        if (this.GetModify_UnlockedFashionIDList().AddUnique(FashionId) || !(bAllowHint) || !(this.GetbFashionUnlockListInitialized()))
         {
             return;
         }
         TDataObjectPtr<FFashionConfig> local_52 = ::FFashionConfig::GetByDataId(FashionId);
-        bool local_3 = !(local_52);
-        if (local_3)
+        if (!(local_52))
         {
             XWarning(ELog(79), FString().Append("[M_Fashion] Skip new fashion hint, config not found. FashionId=").Append(FashionId).Append(", Source=").Append(Source));
             return;
         }
         this.GenerateNewFashionRedDotIfNeeded(local_52, Source);
-        if (!(bAllowGuideTrigger))
-        {
-            local_3 = false;
-        }
-        else
-        {
-            local_4 = !local_4;
-            local_3 = local_4;
-        }
-        if (local_3)
+        if (bAllowGuideTrigger && !(local_52.Get().bDefaultUnlock))
         {
             this.TriggerInitialLockedFashionGuide(FashionId, Source);
         }
@@ -717,10 +693,10 @@ struct FMS_FashionModel : FEUIModelSingleton
             }
         }
         UDataObjectManager::GetSingletonDataObject<FFashionGlobalConfig> local_126;
-        TDataObjectPtr<FFashionGlobalConfig> local_150 = local_126.opImplConv();
-        if (!(!(local_150)) && GetDefaultMount())
+        TDataObjectPtr<FFashionGlobalConfig> local_102 = local_126.opImplConv();
+        if (!(!(local_102)) && local_102.Get().GetDefaultMount())
         {
-            return GetDefaultMount();
+            return local_102.Get().GetDefaultMount();
         }
         return TDataObjectPtr<FMountFashionConfig>();
     }
@@ -896,7 +872,7 @@ struct FMS_FashionModel : FEUIModelSingleton
     void HandleChangeAvatarFashionRsp(const FPbChangeAvatarFashionRsp &inout Rsp)
     {
         XLog(ELog(79), FString().Append("[M_Fashion] ChangeAvatarFashionRsp Retcode=").Append(Rsp.GetRetcode()).Append(" Avatar=").Append(Rsp.GetAvatarId()));
-        int local_6 = Rsp.GetAvatarId();
+        this.GetModify_PendingAvatarFashionChangeMap().Remove(Rsp.GetAvatarId());
         if (Rsp.GetRetcode() != 0)
         {
             return;
@@ -1078,23 +1054,19 @@ struct __Lambda_UI_Private_Model_Fashion_M_Fashion_328
     }
     bool opCall(const TDataObjectPtr<FMountFashionConfig> &inout A, const TDataObjectPtr<FMountFashionConfig> &inout B)
     {
-        int local_1 = 0;
-        int local_2 = 0;
-        int local_8 = 0;
-        int local_3 = local_1;
-        int local_4 = local_2;
-        if (local_3 != local_4)
+        if (int(A.Get().Rarity) != int(B.Get().Rarity))
         {
-            local_4 = local_1;
-            local_3 = local_2;
-            local_8 = local_3;
+            int local_4 = int(A.Get().Rarity);
+            int local_8 = int(B.Get().Rarity);
             return (local_4 > local_8);
         }
-        if (local_8 == local_3)
+        if (A.Get().Priority == B.Get().Priority)
         {
-            return (0 < 0);
+            return (A.Get().DataId < B.Get().DataId);
         }
-        return (local_3 > local_4);
+        int local_3 = A.Get().Priority;
+        int local_4_2 = B.Get().Priority;
+        return (local_3 > local_4_2);
     }
 }
 
@@ -1104,11 +1076,9 @@ FMS_FashionModel& Get(const UObject ContextObject)
 {
     return FMS_FashionModel::GetByManager(EUIInternal::GetContextManager(ContextObject));
 }
-FMS_FashionModel GetByManager(const UEUIManagerSubsystem Manager)
+FMS_FashionModel& GetByManager(const UEUIManagerSubsystem Manager)
 {
-    FMS_FashionModel __r;
-    TEUIModelRef<FMS_FashionModel> local_6 = TEUIModelRef<FMS_FashionModel>(EUIInternal::MakeModelWithManager(Manager, FMS_FashionModel::ModelId));
-    return __r;
+    return TEUIModelRef<FMS_FashionModel>(EUIInternal::MakeModelWithManager(Manager, FMS_FashionModel::ModelId)).Get();
 }
 void GetModelInfo(FEUIModelOnlyMetaInfo &inout Result)
 {

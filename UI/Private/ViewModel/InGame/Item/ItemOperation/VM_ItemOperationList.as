@@ -67,8 +67,7 @@ struct FVM_ItemOperationList : FEUIViewModel
     {
         for (auto& local_16 : this.GetOperationItems())
         {
-            local_16;
-            if (IsExpanded())
+            if (local_16.Get().IsExpanded())
             {
                 return true;
             }
@@ -179,11 +178,9 @@ FVM_ItemOperationList& Create(const UObject ContextObject, const TEUIModelRef<FM
 {
     return FVM_ItemOperationList::CreateByManager(EUIInternal::GetContextManager(ContextObject), ItemDataModel);
 }
-FVM_ItemOperationList CreateByManager(const UEUIManagerSubsystem Manager, const TEUIModelRef<FM_ItemData> &inout ItemDataModel)
+FVM_ItemOperationList& CreateByManager(const UEUIManagerSubsystem Manager, const TEUIModelRef<FM_ItemData> &inout ItemDataModel)
 {
-    FVM_ItemOperationList __r;
-    TEUIModelRef<FVM_ItemOperationList> local_6 = TEUIModelRef<FVM_ItemOperationList>(EUIInternal::MakeModelWithManager_Generic(Manager, FVM_ItemOperationList::ModelId, 0, ItemDataModel));
-    return __r;
+    return TEUIModelRef<FVM_ItemOperationList>(EUIInternal::MakeModelWithManager_Generic(Manager, FVM_ItemOperationList::ModelId, 0, ItemDataModel)).Get();
 }
 void GetModelInfo(FEUIViewModelMetaInfo &inout Result)
 {
@@ -270,7 +267,6 @@ namespace __GeneratedProperties_FVM_ItemOperationList
 {
 UScriptStruct StaticStruct()
 {
-    UScriptStruct local_2;
-    return local_2;
+    return __GeneratedProperties_FVM_ItemOperationList.Get();
 }
 }

@@ -164,11 +164,9 @@ FVM_DungeonEnterInteract& Create(const UObject ContextObject, const int MaxInter
 {
     return FVM_DungeonEnterInteract::CreateByManager(EUIInternal::GetContextManager(ContextObject), MaxInteractPlayer, CurInteractPlayer);
 }
-FVM_DungeonEnterInteract CreateByManager(const UEUIManagerSubsystem Manager, const int MaxInteractPlayer, const int CurInteractPlayer)
+FVM_DungeonEnterInteract& CreateByManager(const UEUIManagerSubsystem Manager, const int MaxInteractPlayer, const int CurInteractPlayer)
 {
-    FVM_DungeonEnterInteract __r;
-    TEUIModelRef<FVM_DungeonEnterInteract> local_6 = TEUIModelRef<FVM_DungeonEnterInteract>(EUIInternal::MakeModelWithManager_Generic(Manager, FVM_DungeonEnterInteract::ModelId, 0, MaxInteractPlayer, CurInteractPlayer));
-    return __r;
+    return TEUIModelRef<FVM_DungeonEnterInteract>(EUIInternal::MakeModelWithManager_Generic(Manager, FVM_DungeonEnterInteract::ModelId, 0, MaxInteractPlayer, CurInteractPlayer)).Get();
 }
 void GetModelInfo(FEUIViewModelMetaInfo &inout Result)
 {
@@ -234,7 +232,6 @@ namespace __GeneratedProperties_FVM_DungeonEnterInteract
 {
 UScriptStruct StaticStruct()
 {
-    UScriptStruct local_2;
-    return local_2;
+    return __GeneratedProperties_FVM_DungeonEnterInteract.Get();
 }
 }

@@ -70,15 +70,15 @@ class US_EcosimLevelSystem : UECSScriptSystem
                 {
                     FRotator local_236 = FRotator(0.0, FMath::RandRange(0, 360), 0.0);
                     ECS::RequestEntityByPrefabDeferred(local_210.GetKey(), local_256, local_236, EPrefabCollisionAlignment(2), EECSRegType(0), false);
+                    local_146.Remove(local_192_2);
                 }
                 ++local_135_2;
-                int local_136 = local_214.Num();
-                if (local_135_2 >= local_136)
+                if (local_135_2 >= local_214.Num())
                 {
                     local_7 = false;
                     continue;
                 }
-                local_7 = (local_135_2 < local_136);
+                local_7 = (local_135_2 < local_210.GetValue());
             }
         }
         return;

@@ -185,11 +185,9 @@ FVM_GiveEcho& Create(const UObject ContextObject)
 {
     return FVM_GiveEcho::CreateByManager(EUIInternal::GetContextManager(ContextObject));
 }
-FVM_GiveEcho CreateByManager(const UEUIManagerSubsystem Manager)
+FVM_GiveEcho& CreateByManager(const UEUIManagerSubsystem Manager)
 {
-    FVM_GiveEcho __r;
-    TEUIModelRef<FVM_GiveEcho> local_6 = TEUIModelRef<FVM_GiveEcho>(EUIInternal::MakeModelWithManager(Manager, FVM_GiveEcho::ModelId));
-    return __r;
+    return TEUIModelRef<FVM_GiveEcho>(EUIInternal::MakeModelWithManager(Manager, FVM_GiveEcho::ModelId)).Get();
 }
 void GetModelInfo(FEUIViewModelMetaInfo &inout Result)
 {
@@ -269,7 +267,6 @@ namespace __GeneratedProperties_FVM_GiveEcho
 {
 UScriptStruct StaticStruct()
 {
-    UScriptStruct local_2;
-    return local_2;
+    return __GeneratedProperties_FVM_GiveEcho.Get();
 }
 }

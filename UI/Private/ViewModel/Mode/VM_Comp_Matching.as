@@ -39,15 +39,13 @@ struct FVM_Comp_Matching : FEUIViewModelSingleton
     void PostConstruct()
     {
         this.SetModeMS(TEUIModelRef<FMS_Mode>(::FMS_Mode::Get(this.GetContext().Manager)));
-        TEUIModelRef<FMS_Mode> local_2 = this.GetModeMS();
-        this.SetbMatching(GetbMatching());
+        this.SetbMatching(this.GetModeMS().Get().GetbMatching());
         this.SetMatchHint(TEUIModelRef<FVM_Match_HintComp>(::FVM_Match_HintComp::Create(this.GetContext().Manager)));
         return;
     }
     bool IsMatching() const
     {
-        TEUIModelRef<FMS_Mode> local_2 = this.GetModeMS();
-        return GetbMatching();
+        return this.GetModeMS().Get().GetbMatching();
     }
     void OnModeMatchStatusUpdate(const FMsg_ModeMatchStatusUpdate &inout Msg)
     {
@@ -56,8 +54,7 @@ struct FVM_Comp_Matching : FEUIViewModelSingleton
             this.SetbMatching(Msg.bMatching);
             if (this.GetbMatching() && this.GetMatchHint().IsValid())
             {
-                TEUIModelRef<FVM_Match_HintComp> local_4 = this.GetMatchHint();
-                int(Msg.MatchMode).SetMatchContext(int(Msg.MatchId), int(Msg.CommissionId));
+                this.GetMatchHint().Get().SetMatchContext(int(Msg.MatchMode), int(Msg.MatchId), int(Msg.CommissionId));
             }
         }
         return;
@@ -128,11 +125,9 @@ FVM_Comp_Matching& Get(const UObject ContextObject)
 {
     return FVM_Comp_Matching::GetByManager(EUIInternal::GetContextManager(ContextObject));
 }
-FVM_Comp_Matching GetByManager(const UEUIManagerSubsystem Manager)
+FVM_Comp_Matching& GetByManager(const UEUIManagerSubsystem Manager)
 {
-    FVM_Comp_Matching __r;
-    TEUIModelRef<FVM_Comp_Matching> local_6 = TEUIModelRef<FVM_Comp_Matching>(EUIInternal::MakeModelWithManager(Manager, FVM_Comp_Matching::ModelId));
-    return __r;
+    return TEUIModelRef<FVM_Comp_Matching>(EUIInternal::MakeModelWithManager(Manager, FVM_Comp_Matching::ModelId)).Get();
 }
 void GetModelInfo(FEUIViewModelMetaInfo &inout Result)
 {
@@ -211,7 +206,6 @@ namespace __GeneratedProperties_FVM_Comp_Matching
 {
 UScriptStruct StaticStruct()
 {
-    UScriptStruct local_2;
-    return local_2;
+    return __GeneratedProperties_FVM_Comp_Matching.Get();
 }
 }

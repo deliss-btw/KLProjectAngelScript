@@ -15,6 +15,7 @@ class US_EcosimAIV2LevelSystem : UECSScriptSystem
             if (local_14)
             {
                 FCE_EcosimAIV2WaveMemberChange local_24;
+                local_14.WaveMemberEntityList.Remove(Event.Sender);
                 local_14.TotalDeathCount = (int(local_14.TotalDeathCount) + 1);
                 FFPTime local_22 = FFPTime(-1);
                 local_24.CurrentNum = local_14.WaveMemberEntityList.Num();

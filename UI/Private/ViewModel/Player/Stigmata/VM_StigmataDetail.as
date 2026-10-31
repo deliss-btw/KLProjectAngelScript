@@ -102,8 +102,7 @@ struct FVM_StigmataDetail : FEUIViewModel
     {
         if (this.GetStigmataGifts())
         {
-            TEUIModelRef<FVM_StigmataGifts> local_2 = this.GetStigmataGifts();
-            return GetUnlockPercentText();
+            return this.GetStigmataGifts().Get().GetUnlockPercentText();
         }
         return FText();
     }
@@ -111,8 +110,7 @@ struct FVM_StigmataDetail : FEUIViewModel
     {
         if (this.GetStigmataGifts())
         {
-            TEUIModelRef<FVM_StigmataGifts> local_2 = this.GetStigmataGifts();
-            return GetUnlockPercent();
+            return this.GetStigmataGifts().Get().GetUnlockPercent();
         }
         return 0.0f;
     }
@@ -402,11 +400,9 @@ FVM_StigmataDetail& Create(const UObject ContextObject)
 {
     return FVM_StigmataDetail::CreateByManager(EUIInternal::GetContextManager(ContextObject));
 }
-FVM_StigmataDetail CreateByManager(const UEUIManagerSubsystem Manager)
+FVM_StigmataDetail& CreateByManager(const UEUIManagerSubsystem Manager)
 {
-    FVM_StigmataDetail __r;
-    TEUIModelRef<FVM_StigmataDetail> local_6 = TEUIModelRef<FVM_StigmataDetail>(EUIInternal::MakeModelWithManager(Manager, FVM_StigmataDetail::ModelId));
-    return __r;
+    return TEUIModelRef<FVM_StigmataDetail>(EUIInternal::MakeModelWithManager(Manager, FVM_StigmataDetail::ModelId)).Get();
 }
 void GetModelInfo(FEUIViewModelMetaInfo &inout Result)
 {
@@ -594,7 +590,6 @@ namespace __GeneratedProperties_FVM_StigmataDetail
 {
 UScriptStruct StaticStruct()
 {
-    UScriptStruct local_2;
-    return local_2;
+    return __GeneratedProperties_FVM_StigmataDetail.Get();
 }
 }

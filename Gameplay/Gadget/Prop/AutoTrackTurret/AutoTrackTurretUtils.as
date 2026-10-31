@@ -200,8 +200,7 @@ FECSEntity FilterMonster(const FECSEntity &inout Entity, const FC_AutoTrackTurre
         local_56.FactionRelation = int(local_50.FactionRelation);
         if (int(local_50.ConditionType) == 0 && local_50.SpecificMonsterConfig.IsSet())
         {
-            TSubclassOf<AECSPrefab> local_60;
-            local_56.SpecificPrefabClass = local_60;
+            local_56.SpecificPrefabClass = local_50.SpecificMonsterConfig.Get().GetCreature().Get().CreaturePrefab.Get();
         }
         else
         {

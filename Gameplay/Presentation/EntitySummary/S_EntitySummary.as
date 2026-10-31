@@ -27,10 +27,13 @@ class US_EntitySummary : UECSScriptSystem
     {
         FECSWorldPtr local_2 = this.GetECSWorld();
         Modify local_6;
-        if (local_6.opCall())
+        FCS_PlayerEntitySummary& local_8 = local_6.opCall();
+        if (local_8)
         {
-            if (::FASCommonUtils::GetPlayerUidFromPlayerEntityInternal(PlayerEntity, C_PlayerController) > 0)
+            int local_10 = ::FASCommonUtils::GetPlayerUidFromPlayerEntityInternal(PlayerEntity, C_PlayerController);
+            if (local_10 > 0)
             {
+                local_8.GetModify_PlayerEntities().Remove(local_10);
             }
         }
         return;
@@ -119,6 +122,7 @@ class US_EntitySummary : UECSScriptSystem
         {
             local_198.Add(local_216.GetKey());
         }
+        local_198.Sort(false);
         XLog(ELog(0), "=== Entity Type Summary ===");
         TMap<FString, int> local_238;
         int local_239 = 0;
@@ -222,8 +226,10 @@ class US_EntitySummary : UECSScriptSystem
             this.ClearCachedFlockEntityFromSummary(Entity);
             return;
         }
-        if (!((FECSEntityId(local_10.RegisteredFlockToLeaderMap.FindOrAdd(Entity)) == C_FlockComponent.LeaderEntity)))
+        FECSEntityId local_31 = local_10.RegisteredFlockToLeaderMap.FindOrAdd(Entity);
+        if (!((local_31 == C_FlockComponent.LeaderEntity)))
         {
+            local_16.GetModify_MonsterTargetLocationMap().Remove(local_31);
         }
         local_16.GetModify_MonsterTargetLocationMap().Add(C_FlockComponent.LeaderEntity, local_30.GetPosition());
         local_10.RegisteredFlockToLeaderMap.Add(Entity, C_FlockComponent.LeaderEntity);
@@ -241,8 +247,10 @@ class US_EntitySummary : UECSScriptSystem
             {
                 FECSWorldPtr local_12 = this.GetECSWorld();
                 Modify local_16;
-                if (local_16.opCall())
+                FCS_BossMonsterChangeAreaSummary& local_18 = local_16.opCall();
+                if (local_18)
                 {
+                    local_18.GetModify_MonsterTargetLocationMap().Remove(local_10);
                 }
             }
         }

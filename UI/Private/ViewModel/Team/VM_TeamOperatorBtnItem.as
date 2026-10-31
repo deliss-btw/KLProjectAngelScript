@@ -92,17 +92,14 @@ struct FVM_TeamOperatorBtnItem : FEUIViewModel
         {
         case 0:
         {
-            TEUIModelWeakRef<FVM_TeamPanel> local_2 = this.GetTeamPanel();
-            InviteTeam();
+            this.GetTeamPanel().Get().InviteTeam();
             return;
         }
         case 1:
         {
-            TEUIModelWeakRef<FVM_TeamPanel> local_2_2 = this.GetTeamPanel();
-            if (IsSpecialMapForVoice())
+            if (this.GetTeamPanel().Get().IsSpecialMapForVoice())
             {
-                TEUIModelWeakRef<FVM_TeamPanel> local_2_3 = this.GetTeamPanel();
-                CycleListenState();
+                this.GetTeamPanel().Get().CycleListenState();
             }
             else
             {
@@ -112,11 +109,9 @@ struct FVM_TeamOperatorBtnItem : FEUIViewModel
         }
         case 2:
         {
-            TEUIModelWeakRef<FVM_TeamPanel> local_2_4 = this.GetTeamPanel();
-            if (IsSpecialMapForVoice())
+            if (this.GetTeamPanel().Get().IsSpecialMapForVoice())
             {
-                TEUIModelWeakRef<FVM_TeamPanel> local_2_5 = this.GetTeamPanel();
-                CycleSpeakState();
+                this.GetTeamPanel().Get().CycleSpeakState();
             }
             else
             {
@@ -126,14 +121,12 @@ struct FVM_TeamOperatorBtnItem : FEUIViewModel
         }
         case 3:
         {
-            TEUIModelWeakRef<FVM_TeamPanel> local_2_6 = this.GetTeamPanel();
-            LeaveTeam();
+            this.GetTeamPanel().Get().LeaveTeam();
             return;
         }
         case 4:
         {
-            TEUIModelWeakRef<FVM_TeamPanel> local_2_7 = this.GetTeamPanel();
-            InviteTeamIntoDS();
+            this.GetTeamPanel().Get().InviteTeamIntoDS();
             return;
         }
         }
@@ -160,26 +153,25 @@ struct FVM_TeamOperatorBtnItem : FEUIViewModel
         {
             FOperatorBtnData local_104;
             TEUIModelRef<FVM_BtnOperationItem> local_106 = TEUIModelRef<FVM_BtnOperationItem>(::FVM_BtnOperationItem::Create(this.GetContext().Manager, local_104.ButtonText, local_104.Icon));
-            GetOnClickGoToCallback().Bind(this, FVM_TeamOperatorBtnItem::OnSelectListenSocial);
-            FEUIModelRef(this).SetClickModelRef();
+            local_106.Get().GetOnClickGoToCallback().Bind(this, FVM_TeamOperatorBtnItem::OnSelectListenSocial);
+            local_106.Get().SetClickModelRef(FEUIModelRef(this));
             local_10.Add(local_106);
         }
         if (local_2.OperatorTeamMuteIconConfigs.Contains(ETeamListenState(2)))
         {
             FOperatorBtnData local_104;
-            TEUIModelRef<FVM_BtnOperationItem> local_106 = TEUIModelRef<FVM_BtnOperationItem>(::FVM_BtnOperationItem::Create(this.GetContext().Manager, local_104.ButtonText, local_104.Icon));
-            GetOnClickGoToCallback().Bind(this, FVM_TeamOperatorBtnItem::OnSelectListenBattle);
-            FEUIModelRef(this).SetClickModelRef();
-            local_10.Add(local_106);
+            TEUIModelRef<FVM_BtnOperationItem> local_106_2 = TEUIModelRef<FVM_BtnOperationItem>(::FVM_BtnOperationItem::Create(this.GetContext().Manager, local_104.ButtonText, local_104.Icon));
+            local_106_2.Get().GetOnClickGoToCallback().Bind(this, FVM_TeamOperatorBtnItem::OnSelectListenBattle);
+            local_106_2.Get().SetClickModelRef(FEUIModelRef(this));
+            local_10.Add(local_106_2);
         }
         if (local_2.OperatorTeamMuteIconConfigs.Contains(ETeamListenState(0)))
         {
             FOperatorBtnData local_104;
-            TEUIModelRef<FVM_BtnOperationItem> local_108 = TEUIModelRef<FVM_BtnOperationItem>(::FVM_BtnOperationItem::Create(this.GetContext().Manager, local_104.ButtonText, local_104.Icon));
-            TEUIModelRef<FVM_BtnOperationItem> local_106;
-            GetOnClickGoToCallback().Bind(this, FVM_TeamOperatorBtnItem::OnSelectListenOff);
-            FEUIModelRef(this).SetClickModelRef();
-            local_10.Add(local_108);
+            TEUIModelRef<FVM_BtnOperationItem> local_106_3 = TEUIModelRef<FVM_BtnOperationItem>(::FVM_BtnOperationItem::Create(this.GetContext().Manager, local_104.ButtonText, local_104.Icon));
+            local_106_3.Get().GetOnClickGoToCallback().Bind(this, FVM_TeamOperatorBtnItem::OnSelectListenOff);
+            local_106_3.Get().SetClickModelRef(FEUIModelRef(this));
+            local_10.Add(local_106_3);
         }
         this.ShowDropdown(AnchorWidget, local_10, local_2);
         return;
@@ -195,26 +187,25 @@ struct FVM_TeamOperatorBtnItem : FEUIViewModel
         {
             FOperatorBtnData local_104;
             TEUIModelRef<FVM_BtnOperationItem> local_106 = TEUIModelRef<FVM_BtnOperationItem>(::FVM_BtnOperationItem::Create(this.GetContext().Manager, local_104.ButtonText, local_104.Icon));
-            GetOnClickGoToCallback().Bind(this, FVM_TeamOperatorBtnItem::OnSelectSpeakSocial);
-            FEUIModelRef(this).SetClickModelRef();
+            local_106.Get().GetOnClickGoToCallback().Bind(this, FVM_TeamOperatorBtnItem::OnSelectSpeakSocial);
+            local_106.Get().SetClickModelRef(FEUIModelRef(this));
             local_10.Add(local_106);
         }
         if (local_2.OperatorTeamSpeakIconConfigs.Contains(ETeamSpeakState(2)))
         {
             FOperatorBtnData local_104;
-            TEUIModelRef<FVM_BtnOperationItem> local_106 = TEUIModelRef<FVM_BtnOperationItem>(::FVM_BtnOperationItem::Create(this.GetContext().Manager, local_104.ButtonText, local_104.Icon));
-            GetOnClickGoToCallback().Bind(this, FVM_TeamOperatorBtnItem::OnSelectSpeakBattle);
-            FEUIModelRef(this).SetClickModelRef();
-            local_10.Add(local_106);
+            TEUIModelRef<FVM_BtnOperationItem> local_106_2 = TEUIModelRef<FVM_BtnOperationItem>(::FVM_BtnOperationItem::Create(this.GetContext().Manager, local_104.ButtonText, local_104.Icon));
+            local_106_2.Get().GetOnClickGoToCallback().Bind(this, FVM_TeamOperatorBtnItem::OnSelectSpeakBattle);
+            local_106_2.Get().SetClickModelRef(FEUIModelRef(this));
+            local_10.Add(local_106_2);
         }
         if (local_2.OperatorTeamSpeakIconConfigs.Contains(ETeamSpeakState(0)))
         {
             FOperatorBtnData local_104;
-            TEUIModelRef<FVM_BtnOperationItem> local_108 = TEUIModelRef<FVM_BtnOperationItem>(::FVM_BtnOperationItem::Create(this.GetContext().Manager, local_104.ButtonText, local_104.Icon));
-            TEUIModelRef<FVM_BtnOperationItem> local_106;
-            GetOnClickGoToCallback().Bind(this, FVM_TeamOperatorBtnItem::OnSelectSpeakOff);
-            FEUIModelRef(this).SetClickModelRef();
-            local_10.Add(local_108);
+            TEUIModelRef<FVM_BtnOperationItem> local_106_3 = TEUIModelRef<FVM_BtnOperationItem>(::FVM_BtnOperationItem::Create(this.GetContext().Manager, local_104.ButtonText, local_104.Icon));
+            local_106_3.Get().GetOnClickGoToCallback().Bind(this, FVM_TeamOperatorBtnItem::OnSelectSpeakOff);
+            local_106_3.Get().SetClickModelRef(FEUIModelRef(this));
+            local_10.Add(local_106_3);
         }
         this.ShowDropdown(AnchorWidget, local_10, local_2);
         return;
@@ -236,8 +227,7 @@ struct FVM_TeamOperatorBtnItem : FEUIViewModel
     {
         if (this.GetTeamPanel().IsValid())
         {
-            TEUIModelWeakRef<FVM_TeamPanel> local_2 = this.GetTeamPanel();
-            1.SetListenStateDirect();
+            this.GetTeamPanel().Get().SetListenStateDirect(ETeamListenState(1));
         }
         this.CloseHoverMenu();
         return true;
@@ -246,8 +236,7 @@ struct FVM_TeamOperatorBtnItem : FEUIViewModel
     {
         if (this.GetTeamPanel().IsValid())
         {
-            TEUIModelWeakRef<FVM_TeamPanel> local_2 = this.GetTeamPanel();
-            2.SetListenStateDirect();
+            this.GetTeamPanel().Get().SetListenStateDirect(ETeamListenState(2));
         }
         this.CloseHoverMenu();
         return true;
@@ -256,8 +245,7 @@ struct FVM_TeamOperatorBtnItem : FEUIViewModel
     {
         if (this.GetTeamPanel().IsValid())
         {
-            TEUIModelWeakRef<FVM_TeamPanel> local_2 = this.GetTeamPanel();
-            0.SetListenStateDirect();
+            this.GetTeamPanel().Get().SetListenStateDirect(ETeamListenState(0));
         }
         this.CloseHoverMenu();
         return true;
@@ -266,8 +254,7 @@ struct FVM_TeamOperatorBtnItem : FEUIViewModel
     {
         if (this.GetTeamPanel().IsValid())
         {
-            TEUIModelWeakRef<FVM_TeamPanel> local_2 = this.GetTeamPanel();
-            1.SetSpeakStateDirect();
+            this.GetTeamPanel().Get().SetSpeakStateDirect(ETeamSpeakState(1));
         }
         this.CloseHoverMenu();
         return true;
@@ -276,8 +263,7 @@ struct FVM_TeamOperatorBtnItem : FEUIViewModel
     {
         if (this.GetTeamPanel().IsValid())
         {
-            TEUIModelWeakRef<FVM_TeamPanel> local_2 = this.GetTeamPanel();
-            2.SetSpeakStateDirect();
+            this.GetTeamPanel().Get().SetSpeakStateDirect(ETeamSpeakState(2));
         }
         this.CloseHoverMenu();
         return true;
@@ -286,8 +272,7 @@ struct FVM_TeamOperatorBtnItem : FEUIViewModel
     {
         if (this.GetTeamPanel().IsValid())
         {
-            TEUIModelWeakRef<FVM_TeamPanel> local_2 = this.GetTeamPanel();
-            0.SetSpeakStateDirect();
+            this.GetTeamPanel().Get().SetSpeakStateDirect(ETeamSpeakState(0));
         }
         this.CloseHoverMenu();
         return true;
@@ -410,11 +395,9 @@ FVM_TeamOperatorBtnItem& Create(const UObject ContextObject, const TEUIModelWeak
 {
     return FVM_TeamOperatorBtnItem::CreateByManager(EUIInternal::GetContextManager(ContextObject), TeamPanel, ETeamOperatorBtnType(ButtonType));
 }
-FVM_TeamOperatorBtnItem CreateByManager(const UEUIManagerSubsystem Manager, const TEUIModelWeakRef<FVM_TeamPanel> &inout TeamPanel, const ETeamOperatorBtnType ButtonType)
+FVM_TeamOperatorBtnItem& CreateByManager(const UEUIManagerSubsystem Manager, const TEUIModelWeakRef<FVM_TeamPanel> &inout TeamPanel, const ETeamOperatorBtnType ButtonType)
 {
-    FVM_TeamOperatorBtnItem __r;
-    TEUIModelRef<FVM_TeamOperatorBtnItem> local_6 = TEUIModelRef<FVM_TeamOperatorBtnItem>(EUIInternal::MakeModelWithManager_Generic(Manager, FVM_TeamOperatorBtnItem::ModelId, 0, TeamPanel, ButtonType));
-    return __r;
+    return TEUIModelRef<FVM_TeamOperatorBtnItem>(EUIInternal::MakeModelWithManager_Generic(Manager, FVM_TeamOperatorBtnItem::ModelId, 0, TeamPanel, ButtonType)).Get();
 }
 void GetModelInfo(FEUIViewModelMetaInfo &inout Result)
 {
@@ -494,7 +477,6 @@ namespace __GeneratedProperties_FVM_TeamOperatorBtnItem
 {
 UScriptStruct StaticStruct()
 {
-    UScriptStruct local_2;
-    return local_2;
+    return __GeneratedProperties_FVM_TeamOperatorBtnItem.Get();
 }
 }

@@ -48,13 +48,14 @@ struct FVMS_PlayerLevelInfo : FEUIViewModelSingleton
         FText local_14;
         FText local_18;
         GetDataObjectByGSDataId<FExpOverflowConfig> local_66;
-        TDataObjectPtr<FExpOverflowConfig> local_92 = local_66.opImplConv();
-        if (local_92)
+        TDataObjectPtr<FExpOverflowConfig> local_42 = local_66.opImplConv();
+        if (local_42)
         {
-            const FExpOverflowConfig& local_120;
+            const FExpOverflowConfig& local_120 = local_42.Get();
             FText local_124;
             if (local_120.GetConvertResourceType())
             {
+                local_124 = local_120.GetConvertResourceType().Get().ItemName;
             }
             local_14 = NSLOCTEXT("ExpOverflowTips", "经验溢出说明");
             local_18 = FText::Format(NSLOCTEXT("ExpOverflowTipsDesc", "达到突破等级或服务器等级上限时，经验获取衰减{0}%，最大经验存储上限{1}\n达到经验存储或最大等级上限时，经验获取按{2}%比例折算为{3}"), local_120.ExpDecRatio, local_120.ExpOverflowLimit, local_120.ExpConvertRatio, local_124);
@@ -74,6 +75,7 @@ struct FVMS_PlayerLevelInfo : FEUIViewModelSingleton
     {
         if (!(this.ShouldShowServerLevelCapCountdownFromSource()))
         {
+            this.GetModify_ServerLevelCapCounterDown().Clear();
             return;
         }
         this.GetModify_ServerLevelCapCounterDown().SetRemainedTimeWithPrecision(FFPTime(this.GetServerLevelCapRemainingSecondsFromTimestamp()), EMWCounterDownPrecision(0));
@@ -366,11 +368,9 @@ FVMS_PlayerLevelInfo& Get(const UObject ContextObject)
 {
     return FVMS_PlayerLevelInfo::GetByManager(EUIInternal::GetContextManager(ContextObject));
 }
-FVMS_PlayerLevelInfo GetByManager(const UEUIManagerSubsystem Manager)
+FVMS_PlayerLevelInfo& GetByManager(const UEUIManagerSubsystem Manager)
 {
-    FVMS_PlayerLevelInfo __r;
-    TEUIModelRef<FVMS_PlayerLevelInfo> local_6 = TEUIModelRef<FVMS_PlayerLevelInfo>(EUIInternal::MakeModelWithManager(Manager, FVMS_PlayerLevelInfo::ModelId));
-    return __r;
+    return TEUIModelRef<FVMS_PlayerLevelInfo>(EUIInternal::MakeModelWithManager(Manager, FVMS_PlayerLevelInfo::ModelId)).Get();
 }
 void GetModelInfo(FEUIViewModelMetaInfo &inout Result)
 {
@@ -568,7 +568,6 @@ namespace __GeneratedProperties_FVMS_PlayerLevelInfo
 {
 UScriptStruct StaticStruct()
 {
-    UScriptStruct local_2;
-    return local_2;
+    return __GeneratedProperties_FVMS_PlayerLevelInfo.Get();
 }
 }

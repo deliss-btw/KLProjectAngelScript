@@ -160,11 +160,9 @@ FVM_ForgeWeaponItemPassiveSkill& Create(const UObject ContextObject, const TEUIM
 {
     return FVM_ForgeWeaponItemPassiveSkill::CreateByManager(EUIInternal::GetContextManager(ContextObject), Trait, Attribute, Image);
 }
-FVM_ForgeWeaponItemPassiveSkill CreateByManager(const UEUIManagerSubsystem Manager, const TEUIModelRef<FM_Trait> &inout Trait, const TEUIModelRef<FVM_ForgeWeaponItemAttribute> &inout Attribute, const FSoftBrush &inout Image)
+FVM_ForgeWeaponItemPassiveSkill& CreateByManager(const UEUIManagerSubsystem Manager, const TEUIModelRef<FM_Trait> &inout Trait, const TEUIModelRef<FVM_ForgeWeaponItemAttribute> &inout Attribute, const FSoftBrush &inout Image)
 {
-    FVM_ForgeWeaponItemPassiveSkill __r;
-    TEUIModelRef<FVM_ForgeWeaponItemPassiveSkill> local_6 = TEUIModelRef<FVM_ForgeWeaponItemPassiveSkill>(EUIInternal::MakeModelWithManager_Generic(Manager, FVM_ForgeWeaponItemPassiveSkill::ModelId, 0, Trait, Attribute, Image));
-    return __r;
+    return TEUIModelRef<FVM_ForgeWeaponItemPassiveSkill>(EUIInternal::MakeModelWithManager_Generic(Manager, FVM_ForgeWeaponItemPassiveSkill::ModelId, 0, Trait, Attribute, Image)).Get();
 }
 void GetModelInfo(FEUIViewModelMetaInfo &inout Result)
 {
@@ -237,7 +235,6 @@ namespace __GeneratedProperties_FVM_ForgeWeaponItemPassiveSkill
 {
 UScriptStruct StaticStruct()
 {
-    UScriptStruct local_2;
-    return local_2;
+    return __GeneratedProperties_FVM_ForgeWeaponItemPassiveSkill.Get();
 }
 }

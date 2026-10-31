@@ -79,6 +79,7 @@ class AGoldBirdPlay : AKLLevelScriptAreaTargetEvent
                         this.CurActiveStatue.SetBB_Int(local_34, n"iState");
                     }
                 }
+                this.AllPickedStatueList.Remove(Event.Sender);
                 this.RefreshStatueState();
             }
         }
@@ -146,8 +147,7 @@ class AGoldBirdPlay : AKLLevelScriptAreaTargetEvent
                 local_130.SetbDetach(false);
                 this.FXEntity_Statue = ECSFX::PlayFXDurational(this.CurActiveStatue, local_130, ECS::GetContextTime(), 1.0f, true);
                 local_130.SetAsset(System::GetSoftClassPath(this.ActiveEffect_Desk));
-                AECSPrefab local_144;
-                this.FXEntity_Desk = ECSFX::PlayFXDurational(ECS::GetPrefabEntity(local_144), local_130, ECS::GetContextTime(), 1.0f, true);
+                this.FXEntity_Desk = ECSFX::PlayFXDurational(ECS::GetPrefabEntity(this.Desk.Get()), local_130, ECS::GetContextTime(), 1.0f, true);
             }
         }
         return;
@@ -213,9 +213,8 @@ class AGoldBirdPlay : AKLLevelScriptAreaTargetEvent
         FNameHandle_EntityBBVarInt local_32;
         for (auto& local_20 : this.RightStatueInfoMap)
         {
-            local_20;
             local_32;
-            if (ECS::GetPrefabEntity().GetBB_Int(local_32) != 201)
+            if (ECS::GetPrefabEntity(local_20.GetValue()).GetBB_Int(local_32) != 201)
             {
                 return false;
             }
@@ -225,8 +224,7 @@ class AGoldBirdPlay : AKLLevelScriptAreaTargetEvent
     void OnSuccess()
     {
         this.OnGameplaySuccess();
-        AECSPrefab local_2;
-        ::MessageHintUtils::ServerDebugShowHintTextInArea(this.HintText, local_2.GetActorLocation(), 4000.0f, 4.0f);
+        ::MessageHintUtils::ServerDebugShowHintTextInArea(this.HintText, this.Desk.Get().GetActorLocation(), 4000.0f, 4.0f);
         this.RemoveLinkEffect();
         ECSFX::StopFX(this.FXEntity_Desk, true, false, 0.0f);
         ECSFX::StopFX(this.FXEntity_Statue, true, false, 0.0f);
@@ -236,7 +234,6 @@ class AGoldBirdPlay : AKLLevelScriptAreaTargetEvent
     bool CheckRightStatue()
     {
         ACombatPropPrefab local_8;
-        AECSPrefab local_140;
         if (this.NearestIndex < 0)
         {
             if (this.FXEntity_DeskInfo.IsValid())
@@ -267,22 +264,22 @@ class AGoldBirdPlay : AKLLevelScriptAreaTargetEvent
                 FFXConfig local_128;
                 local_128.SetAsset(System::GetSoftClassPath(this.DeskInfo_Right));
                 local_128.SetbDetach(true);
-                local_128.SetLocationOffset(local_140.GetActorLocation());
+                local_128.SetLocationOffset(this.Desk.Get().GetActorLocation());
                 local_128.SetbUseWorldOriginAsBaseTransformSource(true);
                 local_128.SetLocationOffsetSpace(EFXOffsetSpace(2));
                 local_128.SetRotationOffsetSpace(EFXOffsetSpace(2));
-                this.FXEntity_DeskInfo = ECSFX::PlayFXDurational(ECS::GetPrefabEntity(local_140), local_128, ECS::GetContextTime(), 1.0f, true);
+                this.FXEntity_DeskInfo = ECSFX::PlayFXDurational(ECS::GetPrefabEntity(this.Desk.Get()), local_128, ECS::GetContextTime(), 1.0f, true);
             }
             else
             {
                 FFXConfig local_128;
                 local_128.SetAsset(System::GetSoftClassPath(this.DeskInfo_Wrong));
                 local_128.SetbDetach(true);
-                local_128.SetLocationOffset(local_140.GetActorLocation());
+                local_128.SetLocationOffset(this.Desk.Get().GetActorLocation());
                 local_128.SetbUseWorldOriginAsBaseTransformSource(true);
                 local_128.SetLocationOffsetSpace(EFXOffsetSpace(2));
                 local_128.SetRotationOffsetSpace(EFXOffsetSpace(2));
-                this.FXEntity_DeskInfo = ECSFX::PlayFXDurational(ECS::GetPrefabEntity(local_140), local_128, ECS::GetContextTime(), 1.0f, true);
+                this.FXEntity_DeskInfo = ECSFX::PlayFXDurational(ECS::GetPrefabEntity(this.Desk.Get()), local_128, ECS::GetContextTime(), 1.0f, true);
             }
         }
         return local_6;

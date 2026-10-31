@@ -17,7 +17,7 @@ class UWidget_ChatChannelTab : UEUIUserListItemWidget
     UFUNCTION()
     void OnTabBtnClicked()
     {
-        XLog(ELog(74), FString().Append("OnTabBtnClicked: ").Append(GetTabChannelID()));
+        XLog(ELog(74), FString().Append("OnTabBtnClicked: ").Append(this.ChatChannelTab.Get().GetTabChannelID()));
         if (this.ChatChannelTab.IsValid())
         {
             FMsg_ChatChannelTabSelected local_16;

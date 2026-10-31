@@ -229,6 +229,7 @@ void RemoveMuteCombat(const FECSEntity &inout Entity, const FName &inout MuteSou
     {
         if (local_6.MuteSource.Contains(MuteSource))
         {
+            local_6.MuteSource.Remove(MuteSource);
         }
         if (local_6.MuteSource.IsEmpty())
         {
@@ -299,6 +300,7 @@ void RemoveMuteBeAITarget(const FECSEntity &inout Entity, const FName &inout Mut
     {
         if (local_8.MuteSource.Contains(MuteSource))
         {
+            local_8.MuteSource.Remove(MuteSource);
         }
         if (local_8.MuteSource.IsEmpty())
         {
@@ -418,22 +420,12 @@ bool IsEntityInCombatWithDelay(const FECSEntity &inout Entity)
 void OverrideSightConfig(const FECSEntity &inout Entity, const FName &inout OverrideSightConfigKey)
 {
     int local_6 = 0;
-    bool local_59 = false;
     if (!(local_6))
     {
         return;
     }
-    bool local_7 = (FAIPerceptionUtils::GetPerceptionConfig(Entity) == nullptr) || (0 == 0);
-    if (local_7)
-    {
-        local_7 = true;
-    }
-    else
-    {
-        local_59 = !local_59;
-        local_7 = local_59;
-    }
-    if (local_7)
+    TDataObjectPtr<FAIPerceptionConfig> local_32 = FAIPerceptionUtils::GetPerceptionConfig(Entity);
+    if ((local_32 == nullptr) || (local_32.Get().OverrideSightConfigMap.Num() == 0) || !(local_32.Get().OverrideSightConfigMap.Contains(OverrideSightConfigKey)))
     {
         XError(ELog(14), FString().Append("AIKnowledgeLog: ").Append(Entity.GetEntityName()).Append(" Does Not Exist SightConfigKey:").Append(OverrideSightConfigKey.ToString()).Append(" When Try To Override In ESM"));
         return;
@@ -454,22 +446,12 @@ void ClearOverrideSightConfig(const FECSEntity &inout Entity)
 void OverrideAlertConfig(const FECSEntity &inout Entity, const FName &inout OverrideAlertConfigKey)
 {
     int local_6 = 0;
-    bool local_59 = false;
     if (!(local_6))
     {
         return;
     }
-    bool local_7 = (FAIPerceptionUtils::GetPerceptionConfig(Entity) == nullptr) || (0 == 0);
-    if (local_7)
-    {
-        local_7 = true;
-    }
-    else
-    {
-        local_59 = !local_59;
-        local_7 = local_59;
-    }
-    if (local_7)
+    TDataObjectPtr<FAIPerceptionConfig> local_32 = FAIPerceptionUtils::GetPerceptionConfig(Entity);
+    if ((local_32 == nullptr) || (local_32.Get().OverrideAlertConfigMap.Num() == 0) || !(local_32.Get().OverrideAlertConfigMap.Contains(OverrideAlertConfigKey)))
     {
         XError(ELog(14), FString().Append("AIKnowledgeLog: ").Append(Entity.GetEntityName()).Append(" Does Not Exist AlertConfigKey:").Append(OverrideAlertConfigKey.ToString()).Append(" When Try To Override In ESM"));
         return;
@@ -521,10 +503,8 @@ bool ShouldKeepIndependentCombatGroup(const FECSEntity &inout Entity)
 }
 UBlackboardComponent GetAIBlackboardComponent(const FECSEntity &inout Entity)
 {
-    UBlackboardComponent local_4;
     int local_10 = 0;
     int local_16 = 0;
-    AECSAIProxy local_22;
     int local_36 = 0;
     if (!(Entity.IsValid()))
     {
@@ -536,6 +516,7 @@ UBlackboardComponent GetAIBlackboardComponent(const FECSEntity &inout Entity)
     }
     if (local_16 && local_16.TreeOwnerActor.IsValid())
     {
+        AECSAIProxy local_22 = local_16.TreeOwnerActor.Get();
         if (local_22 != nullptr && ((local_22.BlackBoardComponent != nullptr)))
         {
             return local_22.BlackBoardComponent;
@@ -544,9 +525,9 @@ UBlackboardComponent GetAIBlackboardComponent(const FECSEntity &inout Entity)
     FECSEntity local_26 = FECSEntity(local_10.GetControllerEntity());
     if (local_36 && local_36.GetBlackboardComponent().IsValid())
     {
-        TWeakObjectPtr<UBlackboardComponent> local_38 = local_36.GetBlackboardComponent();
-        return local_4;
+        return local_36.GetBlackboardComponent().Get();
     }
+    UBlackboardComponent local_4;
     return local_4;
 }
 void InitCombatKnowledge(const FECSEntity &inout Entity)

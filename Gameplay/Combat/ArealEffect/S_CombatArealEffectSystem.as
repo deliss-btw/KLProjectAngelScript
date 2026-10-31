@@ -264,6 +264,7 @@ class US_CombatArealEffectSystem : UECSScriptSystem
             }
             if (Runtime.GetEntityLastEffectedTime().Contains(local_100))
             {
+                local_54.Remove(local_100);
                 continue;
             }
             OutEnterEntities.Add(local_100);
@@ -271,6 +272,7 @@ class US_CombatArealEffectSystem : UECSScriptSystem
         for (auto& local_124 : local_54)
         {
             OutLeaveEntities.Add(local_124.GetKey());
+            Runtime.GetModify_EntityLastEffectedTime().Remove(local_124.GetKey());
         }
         return;
     }
@@ -306,6 +308,7 @@ class US_CombatArealEffectSystem : UECSScriptSystem
                 }
                 if (Runtime.GetEntityLastEffectedTime().Contains(local_80.HitEntity))
                 {
+                    local_20.Remove(local_80.HitEntity);
                     continue;
                 }
                 OutEnterEntities.Add(local_80.HitEntity);
@@ -314,6 +317,7 @@ class US_CombatArealEffectSystem : UECSScriptSystem
         for (auto& local_110 : local_20)
         {
             OutLeaveEntities.Add(local_110.GetKey());
+            Runtime.GetModify_EntityLastEffectedTime().Remove(local_110.GetKey());
         }
         return;
     }
@@ -370,17 +374,17 @@ class US_CombatArealEffectSystem : UECSScriptSystem
                                 FBuffUtils::RemoveBuff(local_36, local_64, Time, EBuffEndType(0));
                             }
                         }
-                        FECSEntityId local_45 = local_36.GetId();
+                        local_22.GetModify_DataByOwnerEntity().Remove(local_36.GetId());
                     }
                 }
             }
         }
-        FFPTime local_86;
         if (Data.bAddRepeatedlyEntityInnerRange)
         {
             for (auto& local_84 : Runtime.GetEntityLastEffectedTime())
             {
-                if ((local_86 + Data.AddAgainInnerRangeInterval).opCmp(Time) <= 0)
+                FFPTime local_88 = (FFPTime(local_84.GetValue()) + Data.AddAgainInnerRangeInterval);
+                if (local_88.opCmp(Time) <= 0)
                 {
                     TArray<FECSEntityId> local_94;
                     bool local_1_2 = (local_8 == local_84.GetKey());
@@ -394,7 +398,7 @@ class US_CombatArealEffectSystem : UECSScriptSystem
                     }
                     if (Data.bRemoveBuffOnLeaveArea)
                     {
-                        FECSEntityId local_45_2 = local_84.GetKey().GetId();
+                        FECSEntityId local_45 = local_84.GetKey().GetId();
                         local_114.GetBuffEntityIds().Append(local_94);
                     }
                     Runtime.GetModify_EntityLastEffectedTime()[local_84.GetKey()] = Time;
@@ -415,7 +419,7 @@ class US_CombatArealEffectSystem : UECSScriptSystem
             }
             if (Data.bRemoveBuffOnLeaveArea)
             {
-                FECSEntityId local_45_3 = local_36.GetId();
+                FECSEntityId local_45_2 = local_36.GetId();
                 local_114.GetBuffEntityIds().Append(local_94);
             }
             Runtime.GetModify_EntityLastEffectedTime().Add(local_36, Time);
@@ -435,6 +439,7 @@ class US_CombatArealEffectSystem : UECSScriptSystem
         local_24 = Override.GetDataObject();
         if ((!((local_24 == nullptr))))
         {
+            this.InitArealBuff(Entity, Override.GetDataObject().Get().Data);
             return;
         }
         XError(ELog(8), FString().Append("FC_CombatArealEffectBuffOverride DataObject invalid, entity: ").Append(Entity.GetEntityName()));
@@ -493,6 +498,7 @@ class US_CombatArealEffectSystem : UECSScriptSystem
         {
             return;
         }
+        this.UpdateArealBuffByConfigData(Entity, Override.GetDataObject().Get().Data, Runtime, OwnerComp, Transform, FixedTime);
         return;
     }
     UFUNCTION()
@@ -518,7 +524,7 @@ class US_CombatArealEffectSystem : UECSScriptSystem
                 }
                 if (local_1)
                 {
-                    for (auto& local_52 : GetBuffEntityIds())
+                    for (auto& local_52 : local_28.GetValue().GetBuffEntityIds())
                     {
                         FECSEntity local_56 = FECSEntity(local_52);
                         if (local_56.IsValid() && local_56.IsActive())
@@ -616,12 +622,12 @@ class US_CombatArealEffectSystem : UECSScriptSystem
                 }
             }
         }
-        FFPTime local_72;
         if (Data.bTriggerRepeatedlyEntityInnerRange)
         {
             for (auto& local_70 : Runtime.GetEntityLastEffectedTime())
             {
-                if ((local_72 + Data.TriggerAgainInnerRangeInterval).opCmp(Time) <= 0)
+                FFPTime local_74 = (FFPTime(local_70.GetValue()) + Data.TriggerAgainInnerRangeInterval);
+                if (local_74.opCmp(Time) <= 0)
                 {
                     FAbilityEffectEventData_ArealEffect local_48;
                     local_48.SetTargetEntity(local_70.GetKey());
@@ -652,6 +658,7 @@ class US_CombatArealEffectSystem : UECSScriptSystem
         local_24 = Override.GetDataObject();
         if ((!((local_24 == nullptr))))
         {
+            this.InitArealAbilityEffectTrigger(Entity, OwnerComp, Override.GetDataObject().Get().Data);
             return;
         }
         XError(ELog(8), FString().Append("FC_CombatArealEffectAbilityEffectTriggerOverride DataObject invalid, entity: ").Append(Entity.GetEntityName()));
@@ -708,6 +715,7 @@ class US_CombatArealEffectSystem : UECSScriptSystem
         {
             return;
         }
+        this.UpdateArealAbilityEffectTriggerByConfigData(Entity, Override.GetDataObject().Get().Data, Runtime, OwnerComp, Transform, FixedTime);
         return;
     }
     void InitArealHitTest(const FECSEntity &inout Entity, const FCombatArealEffectConfigData_HitTest &inout ConfigData) const
@@ -813,7 +821,7 @@ class US_CombatArealEffectSystem : UECSScriptSystem
         local_24 = Override.GetDataObject();
         if ((!((local_24 == nullptr))))
         {
-            this.InitArealHitTest(Entity);
+            this.InitArealHitTest(Entity, Override.GetDataObject().Get());
             return;
         }
         XError(ELog(8), FString().Append("FC_CombatArealEffectHitTestOverride DataObject invalid, entity: ").Append(Entity.GetEntityName()));
@@ -834,7 +842,12 @@ class US_CombatArealEffectSystem : UECSScriptSystem
     UFUNCTION()
     void Job_UpdateArealHitTestOverride(const FECSEntity &inout Entity, const FC_CombatArealEffectHitTestOverride &inout Override, FC_CombatArealEffectRuntime &inout Runtime, const FC_Owner &inout OwnerComp, const FC_Transform &inout Transform, const FCS_FixedTime &inout FixedTime) const
     {
-        // body not fully recovered — stub [argmismatch:argtype]
+        if ((!(Override) || !(OwnerComp) || !(Transform)))
+        {
+            return;
+        }
+        this.UpdateArealHitTest(Entity, Override.GetDataObject().Get(), Runtime, OwnerComp, Transform, FixedTime);
+        return;
     }
     UFUNCTION()
     void Monitor_OnArealHitTestInactive(const FECSEntity &inout Entity, const FC_CombatArealEffectHitTestConfig &inout Config) const

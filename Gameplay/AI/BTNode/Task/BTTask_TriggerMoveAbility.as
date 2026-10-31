@@ -57,16 +57,14 @@ class UBTTask_TriggerMoveAbility : UBTTask_ECSScriptBase
     void TickTask_Implementation(const FAIBehaviorTreeContext &inout Context, const FBTNodeMemory &inout NodeMemory, const float32 DeltaSeconds) const
     {
         Has local_18;
-        bool local_50 = false;
+        bool local_50;
         FNameHandle_EntityBBVar local_114;
         FNameHandle_EntityBBVarFloat local_118;
         int local_124 = 0;
         FNameHandle_EntityBBVarEnum local_136;
         FTriggerMoveAbilityTaskInstanceData local_2;
         local_2.TimeCount += DeltaSeconds;
-        float32 local_7_2 = local_2.TimeCount;
-        float32 local_8 = this.FailureTime;
-        if (local_7_2 >= local_8)
+        if (local_2.TimeCount >= this.FailureTime)
         {
             this.FinishLatentTask(Context, EBTNodeResult(1));
         }
@@ -96,14 +94,16 @@ class UBTTask_TriggerMoveAbility : UBTTask_ECSScriptBase
                     FVector local_42 = (local_34 - local_24);
                     if (int(this.MoveAbilityType) == 2)
                     {
+                        local_50 = local_74.Get().bHasMantle;
                         if (local_50)
                         {
+                            float32 local_7_2 = local_74.Get().Mantle_HighThreshold;
                             if (local_7_2 != 0.0f)
                             {
                                 local_114;
                                 if (local_14.HasEntityBB(local_114))
                                 {
-                                    float32 local_7_3 = float32((local_42.Z / local_8));
+                                    float32 local_7_3 = float32((local_42.Z / local_74.Get().Mantle_HighThreshold));
                                     local_118;
                                     local_14.SetBB_Float(local_118, n"MoveAbilityVaulting.fNormalizedMantleHeight");
                                 }
@@ -112,12 +112,13 @@ class UBTTask_TriggerMoveAbility : UBTTask_ECSScriptBase
                     }
                     if (int(this.MoveAbilityType) == 1)
                     {
+                        float32 local_8 = local_74.Get().Upstairs_HighThreshold;
                         if (local_8 != 0.0f)
                         {
                             local_114;
                             if (local_14.HasEntityBB(local_114))
                             {
-                                float32 local_7_4 = float32((local_42.Z / local_8));
+                                float32 local_7_4 = float32((local_42.Z / local_74.Get().Upstairs_HighThreshold));
                                 local_118;
                                 local_14.SetBB_Float(local_118, n"MoveAbilityVaulting.fNormalizedUpstairsHeight");
                             }

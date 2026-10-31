@@ -173,6 +173,8 @@ struct FVM_CommonHover : FEUIViewModel
     UPROPERTY()
     bool bHandlingPinnedCloseRequest;
 
+    default m_ScriptOverrideMeta = Cast<UASStruct>(FVM_CommonHover.Get());
+
     FVM_CommonHover()
     {
         this.m_bClickClose = false;
@@ -615,11 +617,9 @@ FVM_CommonHoverContent& Create(const UObject ContextObject, const FCommonHoverHa
 {
     return FVM_CommonHoverContent::CreateByManager(EUIInternal::GetContextManager(ContextObject), HoverHandle, ParentHoverHandle);
 }
-FVM_CommonHoverContent CreateByManager(const UEUIManagerSubsystem Manager, const FCommonHoverHandle &inout HoverHandle, const FCommonHoverHandle &inout ParentHoverHandle)
+FVM_CommonHoverContent& CreateByManager(const UEUIManagerSubsystem Manager, const FCommonHoverHandle &inout HoverHandle, const FCommonHoverHandle &inout ParentHoverHandle)
 {
-    FVM_CommonHoverContent __r;
-    TEUIModelRef<FVM_CommonHoverContent> local_6 = TEUIModelRef<FVM_CommonHoverContent>(EUIInternal::MakeModelWithManager_Generic(Manager, FVM_CommonHoverContent::ModelId, 0, HoverHandle, ParentHoverHandle));
-    return __r;
+    return TEUIModelRef<FVM_CommonHoverContent>(EUIInternal::MakeModelWithManager_Generic(Manager, FVM_CommonHoverContent::ModelId, 0, HoverHandle, ParentHoverHandle)).Get();
 }
 void GetModelInfo(FEUIViewModelMetaInfo &inout Result)
 {
@@ -670,8 +670,7 @@ namespace __GeneratedProperties_FVM_CommonHoverContent
 {
 UScriptStruct StaticStruct()
 {
-    UScriptStruct local_2;
-    return local_2;
+    return __GeneratedProperties_FVM_CommonHoverContent.Get();
 }
 }
 namespace FVM_CommonHover
@@ -680,11 +679,9 @@ FVM_CommonHover& Create(const UObject ContextObject)
 {
     return FVM_CommonHover::CreateByManager(EUIInternal::GetContextManager(ContextObject));
 }
-FVM_CommonHover CreateByManager(const UEUIManagerSubsystem Manager)
+FVM_CommonHover& CreateByManager(const UEUIManagerSubsystem Manager)
 {
-    FVM_CommonHover __r;
-    TEUIModelRef<FVM_CommonHover> local_6 = TEUIModelRef<FVM_CommonHover>(EUIInternal::MakeModelWithManager(Manager, FVM_CommonHover::ModelId));
-    return __r;
+    return TEUIModelRef<FVM_CommonHover>(EUIInternal::MakeModelWithManager(Manager, FVM_CommonHover::ModelId)).Get();
 }
 void GetModelInfo(FEUIViewModelMetaInfo &inout Result)
 {
@@ -806,7 +803,6 @@ namespace __GeneratedProperties_FVM_CommonHover
 {
 UScriptStruct StaticStruct()
 {
-    UScriptStruct local_2;
-    return local_2;
+    return __GeneratedProperties_FVM_CommonHover.Get();
 }
 }

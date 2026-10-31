@@ -3,7 +3,6 @@ namespace __FOpenTimeRangeFunctions
 UFUNCTION()
 EOpenTimeRuleType __FOpenTimeRange_GetRuleType(const TDataObjectPtr<FOpenTimeRange> &inout DataObject)
 {
-    int local_27 = 0;
     if ((DataObject == nullptr))
     {
         if (!(EUIGlobals::GIsDuringPropertyConversion))
@@ -11,15 +10,13 @@ EOpenTimeRuleType __FOpenTimeRange_GetRuleType(const TDataObjectPtr<FOpenTimeRan
             FBlueprintDebugFunctions::ThrowScriptException("Get 'RuleType' from a null 'FOpenTimeRange' DataObject!");
         }
         FOpenTimeRange local_26;
-        local_27 = int(local_26.RuleType);
-        return EOpenTimeRuleType(local_27);
+        return local_26.RuleType;
     }
-    return EOpenTimeRuleType(local_27);
+    return DataObject.Get().RuleType;
 }
 UFUNCTION()
 FString __FOpenTimeRange_GetTime(const TDataObjectPtr<FOpenTimeRange> &inout DataObject)
 {
-    FString __r;
     if ((DataObject == nullptr))
     {
         if (!(EUIGlobals::GIsDuringPropertyConversion))
@@ -29,12 +26,11 @@ FString __FOpenTimeRange_GetTime(const TDataObjectPtr<FOpenTimeRange> &inout Dat
         FOpenTimeRange local_26;
         return local_26.Time;
     }
-    return __r;
+    return DataObject.Get().Time;
 }
 UFUNCTION()
 FString __FOpenTimeRange_GetDateParam(const TDataObjectPtr<FOpenTimeRange> &inout DataObject)
 {
-    FString __r;
     if ((DataObject == nullptr))
     {
         if (!(EUIGlobals::GIsDuringPropertyConversion))
@@ -44,7 +40,7 @@ FString __FOpenTimeRange_GetDateParam(const TDataObjectPtr<FOpenTimeRange> &inou
         FOpenTimeRange local_26;
         return local_26.DateParam;
     }
-    return __r;
+    return DataObject.Get().DateParam;
 }
 UFUNCTION()
 int __FOpenTimeRange_GetDurationSeconds(const TDataObjectPtr<FOpenTimeRange> &inout DataObject)
@@ -64,18 +60,16 @@ int __FOpenTimeRange_GetDurationSeconds(const TDataObjectPtr<FOpenTimeRange> &in
 UFUNCTION()
 bool __FOpenTimeRange_GetbUseUtc0(const TDataObjectPtr<FOpenTimeRange> &inout DataObject)
 {
-    bool local_1 = false;
     if ((DataObject == nullptr))
     {
-        local_1 = !(EUIGlobals::GIsDuringPropertyConversion);
-        if (local_1)
+        if (!(EUIGlobals::GIsDuringPropertyConversion))
         {
             FBlueprintDebugFunctions::ThrowScriptException("Get 'bUseUtc0' from a null 'FOpenTimeRange' DataObject!");
         }
         FOpenTimeRange local_26;
         return local_26.bUseUtc0;
     }
-    return local_1;
+    return DataObject.Get().bUseUtc0;
 }
 UFUNCTION()
 FOpenTimeRange CastToFOpenTimeRange(const TDataObjectPtr<FOpenTimeRange> &inout DataObject)

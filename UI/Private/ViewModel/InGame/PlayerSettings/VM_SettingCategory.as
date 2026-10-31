@@ -83,6 +83,8 @@ struct FVM_SettingSubTitle : FEUIViewModel
         FGameplayTag local_51;
         if ((!((local_24 == nullptr))))
         {
+            this.SetSubTitleName(this.GetSubTitleConfig().Get().Name);
+            this.SetSubTitleDesc(this.GetSubTitleConfig().Get().Desc);
             local_51;
             this.SetSubTitleTag(local_51);
             return;
@@ -340,8 +342,7 @@ struct FVM_SettingCategory : FEUIViewModel
     }
     void SelectTab()
     {
-        FVMS_SettingPage& local_2;
-        TEUIModelWeakRef<FVMS_SettingPage> local_4 = this.GetOwnerPage();
+        FVMS_SettingPage& local_2 = this.GetOwnerPage().Get();
         if (local_2)
         {
             local_2.SelectCategory(this.GetTabIndex());
@@ -355,6 +356,9 @@ struct FVM_SettingCategory : FEUIViewModel
     }
     void PostConstruct()
     {
+        this.SetCategoryName(this.GetCategoryConfig().Get().Name);
+        this.SetCategoryDesc(this.GetCategoryConfig().Get().Desc);
+        this.SetCategoryIcon(this.GetCategoryConfig().Get().ItemIcon);
         FGameplayTag local_2;
         local_2;
         this.SetCategoryTag(local_2);
@@ -576,11 +580,9 @@ FVM_SettingSubTitle& Create(const UObject ContextObject, const TEUIModelWeakRef<
 {
     return FVM_SettingSubTitle::CreateByManager(EUIInternal::GetContextManager(ContextObject), OwnerPage, SubTitleConfig);
 }
-FVM_SettingSubTitle CreateByManager(const UEUIManagerSubsystem Manager, const TEUIModelWeakRef<FVMS_SettingPage> &inout OwnerPage, const TDataObjectPtr<FSettingSubTitleConfig> &inout SubTitleConfig)
+FVM_SettingSubTitle& CreateByManager(const UEUIManagerSubsystem Manager, const TEUIModelWeakRef<FVMS_SettingPage> &inout OwnerPage, const TDataObjectPtr<FSettingSubTitleConfig> &inout SubTitleConfig)
 {
-    FVM_SettingSubTitle __r;
-    TEUIModelRef<FVM_SettingSubTitle> local_6 = TEUIModelRef<FVM_SettingSubTitle>(EUIInternal::MakeModelWithManager_Generic(Manager, FVM_SettingSubTitle::ModelId, 0, OwnerPage, SubTitleConfig));
-    return __r;
+    return TEUIModelRef<FVM_SettingSubTitle>(EUIInternal::MakeModelWithManager_Generic(Manager, FVM_SettingSubTitle::ModelId, 0, OwnerPage, SubTitleConfig)).Get();
 }
 void GetModelInfo(FEUIViewModelMetaInfo &inout Result)
 {
@@ -696,8 +698,7 @@ namespace __GeneratedProperties_FVM_SettingSubTitle
 {
 UScriptStruct StaticStruct()
 {
-    UScriptStruct local_2;
-    return local_2;
+    return __GeneratedProperties_FVM_SettingSubTitle.Get();
 }
 }
 namespace FVM_SettingCategory
@@ -706,11 +707,9 @@ FVM_SettingCategory& Create(const UObject ContextObject, const int TabIndex, con
 {
     return FVM_SettingCategory::CreateByManager(EUIInternal::GetContextManager(ContextObject), TabIndex, OwnerPage, CategoryConfig);
 }
-FVM_SettingCategory CreateByManager(const UEUIManagerSubsystem Manager, const int TabIndex, const TEUIModelWeakRef<FVMS_SettingPage> &inout OwnerPage, const TDataObjectPtr<FSettingCategoryConfig> &inout CategoryConfig)
+FVM_SettingCategory& CreateByManager(const UEUIManagerSubsystem Manager, const int TabIndex, const TEUIModelWeakRef<FVMS_SettingPage> &inout OwnerPage, const TDataObjectPtr<FSettingCategoryConfig> &inout CategoryConfig)
 {
-    FVM_SettingCategory __r;
-    TEUIModelRef<FVM_SettingCategory> local_6 = TEUIModelRef<FVM_SettingCategory>(EUIInternal::MakeModelWithManager_Generic(Manager, FVM_SettingCategory::ModelId, 0, TabIndex, OwnerPage, CategoryConfig));
-    return __r;
+    return TEUIModelRef<FVM_SettingCategory>(EUIInternal::MakeModelWithManager_Generic(Manager, FVM_SettingCategory::ModelId, 0, TabIndex, OwnerPage, CategoryConfig)).Get();
 }
 void GetModelInfo(FEUIViewModelMetaInfo &inout Result)
 {
@@ -835,7 +834,6 @@ namespace __GeneratedProperties_FVM_SettingCategory
 {
 UScriptStruct StaticStruct()
 {
-    UScriptStruct local_2;
-    return local_2;
+    return __GeneratedProperties_FVM_SettingCategory.Get();
 }
 }

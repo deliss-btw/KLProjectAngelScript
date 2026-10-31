@@ -87,15 +87,11 @@ struct FNPCMainConfig : FCreatureUnitConfig
 
     FText GetNpcName() const
     {
-        FText __return;
         if (this.GetPresentationConfig().IsSet())
         {
+            return this.GetPresentationConfig().Get().Name;
         }
-        else
-        {
-            __return = FText();
-        }
-        return __return;
+        return FText();
     }
     const TDataObjectPtr<FNPCRoleConfig> GetRole() const property
     {

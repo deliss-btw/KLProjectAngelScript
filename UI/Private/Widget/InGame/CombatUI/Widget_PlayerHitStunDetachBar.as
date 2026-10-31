@@ -33,8 +33,8 @@ class UWidget_PlayerHitStunDetachBar : UEUIUserWidget
     }
     void HandleObservedModelChanges(FEUIReactiveSubscriberIterator &inout It)
     {
-        FVM_PlayerHitStunDetachBar& local_6;
         TEUIModelRef<FVM_PlayerHitStunDetachBar> local_2 = this.PlayerHitStunDetachBar.AsRef();
+        FVM_PlayerHitStunDetachBar& local_6 = local_2.Get();
         for (; It; )
         {
             FEUIReactiveSubscriberTrackScope local_56 = FEUIReactiveSubscriberTrackScope(It);

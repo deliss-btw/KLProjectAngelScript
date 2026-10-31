@@ -542,12 +542,12 @@ struct FDialogueInfo
     }
     FDialogueInfo(const TDataObjectPtr<FDialogueConfig> &inout InDialogueConfig)
     {
-        UDialogueGraphAsset local_4;
         this.m_bHasAttachPoint = false;
         this.m_bIsAttachable = false;
         FSubDirtyFlags8 local_6;
         this.__DirtyFlags = local_6;
         this.SetDialogueConfig(InDialogueConfig);
+        UDialogueGraphAsset local_4 = InDialogueConfig.Get().DialogueData.Get();
         if (local_4 == nullptr)
         {
             return;
@@ -717,7 +717,6 @@ struct FDialogueDeliveryContext
     }
     FDialogueGraphScriptBase LoadDialogueGraph() const
     {
-        UDialogueGraphAsset local_22;
         FDialogueGraphScriptBase __r;
         if (!(this.GetDialogueConfig().IsSet()))
         {
@@ -725,7 +724,7 @@ struct FDialogueDeliveryContext
         }
         else
         {
-            if (local_22 == nullptr)
+            if (this.GetDialogueConfig().Get().DialogueData.Get() == nullptr)
             {
                 XError(ELog(64), FString().Append("DialogueData asset is null for Dialogue Config: ").Append(this.GetDialogueName()));
             }
@@ -737,7 +736,6 @@ struct FDialogueDeliveryContext
     }
     uint ProcessSection(const uint InLastNodeId, FDialogueSection &inout Section) const
     {
-        int local_54 = 0;
         int local_1 = 0;
         FDialogueSubtitle local_24;
         Section.SetSubtitleOnPaused(local_24);
@@ -758,9 +756,10 @@ struct FDialogueDeliveryContext
             if (local_2 == 0)
             {
                 local_52 = local_38._base_FDialogueGraphBase[0];
-                if (FInstancedStruct::GetPtr(local_52).opCall())
+                TConstRawPtr<FDialogueNodeBase> local_60 = FInstancedStruct::GetPtr(local_52).opCall();
+                if (local_60)
                 {
-                    local_53 = local_54;
+                    local_53 = int(local_60.Get().NodeId);
                 }
             }
             else
@@ -774,11 +773,12 @@ struct FDialogueDeliveryContext
         else
         {
             int local_53;
-            TArrayConstIterator<uint> local_72;
-            if ((local_38.GetNodePtr(InLastNodeId) == nullptr))
+            TConstRawPtr<FDialogueNodeBase> local_62 = local_38.GetNodePtr(InLastNodeId);
+            if ((local_62 == nullptr))
             {
                 return 0;
             }
+            auto local_72 = local_62.Get().NextNodeIds.Iterator();
             for (; local_72.CanProceed;)
             {
                 local_53 = local_72.Proceed();
@@ -797,28 +797,29 @@ struct FDialogueDeliveryContext
             return false;
         }
         FInstancedStruct local_22 = local_8.GetNode(Subtitle.GetDialogueNodeId());
-        if (FInstancedStruct::GetPtr(local_22).opCall())
+        TConstRawPtr<FDialogueNode_Speech> local_32 = FInstancedStruct::GetPtr(local_22).opCall();
+        if (local_32)
         {
-            Subtitle.FillSubtitle();
+            local_32.Get().FillSubtitle(Subtitle);
         }
         return true;
     }
     bool FillOption(const FInstancedStruct &inout OptionNodeData, const FECSEntity &inout DialogueContextEntity, FDialogueOptionInfo &inout InOption) const
     {
-        if ((FInstancedStruct::GetPtr(OptionNodeData).opCall() == nullptr))
+        TConstRawPtr<FDialogueNode_Option> local_6 = FInstancedStruct::GetPtr(OptionNodeData).opCall();
+        if ((local_6 == nullptr))
         {
             return false;
         }
-        if (!(DialogueContextEntity.CheckCondition(this)))
+        if (!(local_6.Get().CheckCondition(DialogueContextEntity, this)))
         {
             return false;
         }
-        InOption.FillOption();
+        local_6.Get().FillOption(InOption);
         return true;
     }
     TArray<FDialogueOptionInfo> GetFilledOptions(const FDialogueSection &inout Section) const
     {
-        UDialogueGraphAsset local_44;
         TArray<FDialogueOptionInfo> local_4;
         FDialogueGraphScriptBase local_12 = this.LoadDialogueGraph();
         FInstancedStruct::GetPtr local_54;
@@ -827,6 +828,7 @@ struct FDialogueDeliveryContext
             FInstancedStruct local_40;
             if (local_36.GetAttachedDialogueConfig().IsSet())
             {
+                UDialogueGraphAsset local_44 = local_36.GetAttachedDialogueConfig().Get().DialogueData.Get();
                 if (local_44 != nullptr)
                 {
                     local_40 = local_44.DialogueGraphData.AttachedOption;
@@ -849,19 +851,19 @@ struct FDialogueDeliveryContext
     }
     bool HasDeferredActions(const uint InNodeId, const EMissionActionType InActionType) const
     {
-        TArrayConstIterator<FInstancedStruct> local_32;
         FDialogueGraphScriptBase local_8 = this.LoadDialogueGraph();
         if (local_8._base_FDialogueGraphBase.IsEmpty())
         {
             return false;
         }
-        if ((local_8.GetNodePtr(InNodeId) == nullptr) || (0 == 0))
+        TConstRawPtr<FDialogueNodeBase> local_20 = local_8.GetNodePtr(InNodeId);
+        if ((local_20 == nullptr) || (local_20.Get().DeferredActions.Num() == 0))
         {
             return false;
         }
-        for (; local_32.CanProceed;)
+        for (auto& local_40 : local_20.Get().DeferredActions)
         {
-            if (int(::MissionExecUtils::GetActionType(local_32.Proceed())) == (int(InActionType)))
+            if (int(::MissionExecUtils::GetActionType(local_40)) == (int(InActionType)))
             {
                 return true;
             }
@@ -870,7 +872,6 @@ struct FDialogueDeliveryContext
     }
     int ExecuteDeferredActions(const FECSEntity &inout PlayerEntity, const uint InNodeId, const EMissionActionType InActionType) const
     {
-        TArrayConstIterator<FInstancedStruct> local_62;
         int local_1 = -1;
         FDialogueGraphScriptBase local_10 = this.LoadDialogueGraph();
         if (local_10._base_FDialogueGraphBase.IsEmpty())
@@ -878,14 +879,14 @@ struct FDialogueDeliveryContext
             XError(ELog(64), FString().Append("DialogueGraph is null or nodes are empty, cannot execute deferred client actions for node ").Append(InNodeId));
             return local_1;
         }
-        if ((local_10.GetNodePtr(InNodeId) == nullptr) || (0 == 0))
+        TConstRawPtr<FDialogueNodeBase> local_28 = local_10.GetNodePtr(InNodeId);
+        if ((local_28 == nullptr) || (local_28.Get().DeferredActions.Num() == 0))
         {
             return local_1;
         }
         FMissionExecutionEntry local_56 = int(InActionType) == 1 ? ::MissionExecUtils::CreateExecutionEntry(local_1) : ::MissionExecUtils::CreateExecutionEntry();
-        for (; local_62.CanProceed;)
+        for (auto& local_70 : local_28.Get().DeferredActions)
         {
-            const FInstancedStruct& local_70 = local_62.Proceed();
             if (int(::MissionExecUtils::GetActionType(local_70)) != int(InActionType))
             {
                 continue;
@@ -916,14 +917,13 @@ struct FDialogueDeliveryContext
     void GatherRelatedActionNodeIdsImpl(const FDialogueGraphScriptBase &inout Graph, const uint NodeId, TArray<uint> &out OutActionNodeIds) const
     {
         TArray<uint> local_4;
-        bool local_10 = false;
-        int local_13 = 0;
         OutActionNodeIds = local_4;
-        if ((Graph.GetNodePtr(NodeId) == nullptr) || local_10)
+        TConstRawPtr<FDialogueNodeBase> local_6 = Graph.GetNodePtr(NodeId);
+        if ((local_6 == nullptr) || local_6.Get().NextNodeIds.IsEmpty())
         {
             return;
         }
-        int local_12 = local_13;
+        int local_12 = local_6.Get().NextNodeIds[0];
         FInstancedStruct local_18 = Graph.GetNode(local_12);
         if ((FInstancedStruct::GetPtr(local_18).opCall() == nullptr))
         {
@@ -939,42 +939,55 @@ struct FDialogueDeliveryContext
     }
     bool ProcessSingleNode(const FInstancedStruct &inout NodeData, FDialogueSection &inout Section) const
     {
-        if ((FInstancedStruct::GetPtr(NodeData).opCall() == nullptr))
+        TConstRawPtr<FDialogueNodeBase> local_6 = FInstancedStruct::GetPtr(NodeData).opCall();
+        if ((local_6 == nullptr))
         {
             return false;
         }
-        if ((!((FInstancedStruct::GetPtr(NodeData).opCall() == nullptr))))
+        TConstRawPtr<FDialogueNode_Speech> local_16 = FInstancedStruct::GetPtr(NodeData).opCall();
+        if ((!((local_16 == nullptr))))
         {
-            Section.FillSection(this);
+            local_16.Get().FillSection(Section, this);
         }
         else
         {
-            if ((!((FInstancedStruct::GetPtr(NodeData).opCall() == nullptr))))
+            TConstRawPtr<FDialogueNode_Option> local_24 = FInstancedStruct::GetPtr(NodeData).opCall();
+            if ((!((local_24 == nullptr))))
             {
-                Section.FillSection(this);
+                local_24.Get().FillSection(Section, this);
             }
             else
             {
-                if ((!((FInstancedStruct::GetPtr(NodeData).opCall() == nullptr))))
+                TConstRawPtr<FDialogueActionNodeBase> local_32 = FInstancedStruct::GetPtr(NodeData).opCall();
+                if ((!((local_32 == nullptr))))
                 {
-                    Section.GetDialogueContextEntity().Execute();
+                    local_32.Get().Execute(Section.GetDialogueContextEntity());
                 }
             }
         }
-        return Section.GetDialogueContextEntity().NeedGoOn();
+        return local_6.Get().NeedGoOn(Section.GetDialogueContextEntity());
     }
     void ProcessNodeRecursively(const FDialogueGraphScriptBase &inout DialogueGraph, const FInstancedStruct &inout NodeData, FDialogueSection &inout Section, TArray<uint> &inout VisitedNodeIds) const
     {
-        bool local_11 = false;
-        UDialogueGraphAsset local_40;
-        TArrayConstIterator<uint> local_186;
-        int local_193;
-        if ((FInstancedStruct::GetPtr(NodeData).opCall() == nullptr))
+        bool local_21;
+        TConstRawPtr<FDialogueNodeBase> local_6 = FInstancedStruct::GetPtr(NodeData).opCall();
+        if ((local_6 == nullptr))
         {
             return;
         }
+        VisitedNodeIds.Add(local_6.Get().NodeId);
         bool local_9 = this.ProcessSingleNode(NodeData, Section);
-        if (FInstancedStruct::GetPtr<FDialogueNode_Speech>(NodeData).opCall() && local_11 && (this.GetAttachableDialogues().Num() > 0))
+        TConstRawPtr<FDialogueNode_Speech> local_18 = FInstancedStruct::GetPtr<FDialogueNode_Speech>(NodeData).opCall();
+        if (!(local_18))
+        {
+            local_21 = false;
+        }
+        else
+        {
+            local_21 = local_18.Get().bIsAttachPoint;
+        }
+        local_21 = local_21 && (this.GetAttachableDialogues().Num() > 0);
+        if (local_21)
         {
             for (auto& local_36 : this.GetAttachableDialogues())
             {
@@ -982,14 +995,15 @@ struct FDialogueDeliveryContext
                 {
                     continue;
                 }
+                UDialogueGraphAsset local_40 = local_36.GetDialogueConfig().Get().DialogueData.Get();
                 if (local_40 == nullptr)
                 {
                     continue;
                 }
-                if (FInstancedStruct::GetPtr(local_40.DialogueGraphData.AttachedOption).opCall() && Section.GetDialogueContextEntity().CheckCondition(this))
+                TConstRawPtr<FDialogueNode_Option> local_50 = FInstancedStruct::GetPtr(local_40.DialogueGraphData.AttachedOption).opCall();
+                if (local_50 && local_50.Get().CheckCondition(Section.GetDialogueContextEntity(), this))
                 {
-                    FDialogueOptionInfo local_116;
-                    local_116.CreateOptionInfo();
+                    FDialogueOptionInfo local_116 = local_50.Get().CreateOptionInfo();
                     local_116.SetInteractTarget(this.GetInteractTarget());
                     local_116.SetAttachedDialogueConfig(local_36.GetDialogueConfig());
                     Section.GetModify_Options().Add(local_116);
@@ -1000,12 +1014,11 @@ struct FDialogueDeliveryContext
         {
             return;
         }
-        for (; local_186.CanProceed;)
+        for (auto local_193 : local_6.Get().NextNodeIds)
         {
-            local_193 = local_186.Proceed();
             if (VisitedNodeIds.Contains(local_193))
             {
-                FString local_198 = FString();
+                XWarning(ELog(64), FString().Append("Node ").Append(local_6.Get().NodeId).Append(" has a loop or diamond structure, skipping next node ").Append(local_193));
                 continue;
             }
             FInstancedStruct local_204 = DialogueGraph.GetNode(local_193);

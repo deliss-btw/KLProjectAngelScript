@@ -386,11 +386,9 @@ FM_FastMarkActionBarDisplay& Get(const UObject ContextObject)
 {
     return FM_FastMarkActionBarDisplay::GetByManager(EUIInternal::GetContextManager(ContextObject));
 }
-FM_FastMarkActionBarDisplay GetByManager(const UEUIManagerSubsystem Manager)
+FM_FastMarkActionBarDisplay& GetByManager(const UEUIManagerSubsystem Manager)
 {
-    FM_FastMarkActionBarDisplay __r;
-    TEUIModelRef<FM_FastMarkActionBarDisplay> local_6 = TEUIModelRef<FM_FastMarkActionBarDisplay>(EUIInternal::MakeModelWithManager(Manager, FM_FastMarkActionBarDisplay::ModelId));
-    return __r;
+    return TEUIModelRef<FM_FastMarkActionBarDisplay>(EUIInternal::MakeModelWithManager(Manager, FM_FastMarkActionBarDisplay::ModelId)).Get();
 }
 void GetModelInfo(FEUIModelOnlyMetaInfo &inout Result)
 {

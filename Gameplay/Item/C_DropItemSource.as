@@ -180,8 +180,7 @@ struct FC_DropItemConfig : FECSComponent
                 {
                     continue;
                 }
-                int local_51 = int(local_26.TriggerType);
-                local_10.AddDropItem(EDropTriggerType(local_51), TDataObjectPtr<FDropItemConfigBase>());
+                local_10.AddDropItem(EDropTriggerType(local_26.TriggerType), TDataObjectPtr<FDropItemConfigBase>(local_26.Item.Get()));
                 if (int(local_26.TriggerType) == 3)
                 {
                     local_11 = true;
@@ -220,12 +219,12 @@ struct FC_DropItemSource : FECSComponent
     }
     void AddDropItemAutoGetTriggerType(const TDataObjectPtr<FDropItemConfigBase> &inout Config)
     {
-        EDropTriggerType local_2 = EDropTriggerType(0);
-        int local_1 = local_2;
+        int local_1 = EDropTriggerType::Death;
         FDataObjectPtr local_50 = Config.opImplConv();
-        if (TDataObjectPtr<FDropItemGroupConfig>(local_50))
+        TDataObjectPtr<FDropItemGroupConfig> local_26 = TDataObjectPtr<FDropItemGroupConfig>(local_50);
+        if (local_26)
         {
-            local_1 = local_2;
+            local_1 = local_26.Get().TriggerType;
         }
         this.AddDropItem(EDropTriggerType(local_1), Config);
         return;

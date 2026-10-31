@@ -45,8 +45,8 @@ class UWidget_PlayerHpBar : UEUIUserWidget
     }
     void HandleObservedModelChanges(FEUIReactiveSubscriberIterator &inout It)
     {
-        FVM_PlayerHpBar& local_6;
         TEUIModelRef<FVM_PlayerHpBar> local_2 = this.PlayerHpBar.AsRef();
+        FVM_PlayerHpBar& local_6 = local_2.Get();
         for (; It; )
         {
             FEUIReactiveSubscriberTrackScope local_56 = FEUIReactiveSubscriberTrackScope(It);

@@ -33,6 +33,7 @@ struct FC_GlimmeringWolfTailGroomHistory : FECSComponent
     }
     void Clear()
     {
+        this.History.Clear();
         return;
     }
     bool GetInterpoValue(const FFPTime &inout WorldTime, FC_GlimmeringWolfTailGroom &inout OutValue) const

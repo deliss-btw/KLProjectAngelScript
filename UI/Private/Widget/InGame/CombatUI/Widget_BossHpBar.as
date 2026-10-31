@@ -107,7 +107,7 @@ class UWidget_BossHpBar : UEUIUserWidget
     UFUNCTION()
     TEUIModelRef<FVM_BuffInfo> BossHpBar_VM_BuffInfo() const
     {
-        FVMS_BossHpBar& local_2;
+        FVMS_BossHpBar& local_2 = this.BossHpBar.Get();
         TEUIModelRef<FVM_BuffInfo> local_10;
         if (local_2)
         {
@@ -122,32 +122,32 @@ class UWidget_BossHpBar : UEUIUserWidget
     UFUNCTION()
     FText BossHpBar_BossDisplayName() const
     {
-        FVMS_BossHpBar& local_2;
+        FVMS_BossHpBar& local_2 = this.BossHpBar.Get();
         FText local_12 = local_2 ? local_2.GetBossDisplayName() : FText();
         return local_12;
     }
     UFUNCTION()
     float32 BossHpBar_DisplayHpBarRatio() const
     {
-        FVMS_BossHpBar& local_2;
+        FVMS_BossHpBar& local_2 = this.BossHpBar.Get();
         return local_2 ? local_2.GetDisplayHpBarRatio() : 0.0f;
     }
     UFUNCTION()
     float32 BossHpBar_DisplayPreviewHpBarRatio() const
     {
-        FVMS_BossHpBar& local_2;
+        FVMS_BossHpBar& local_2 = this.BossHpBar.Get();
         return local_2 ? local_2.GetDisplayPreviewHpBarRatio() : 0.0f;
     }
     UFUNCTION()
     float32 BossHpBar_PostureBarRatio() const
     {
-        FVMS_BossHpBar& local_2;
+        FVMS_BossHpBar& local_2 = this.BossHpBar.Get();
         return local_2 ? local_2.GetPostureBarRatio() : 0.0f;
     }
     UFUNCTION()
     TArray<FEUIDynamicWidgetData> BossHpBar_BuffDataList() const
     {
-        FVMS_BossHpBar& local_2;
+        FVMS_BossHpBar& local_2 = this.BossHpBar.Get();
         TArray<FEUIDynamicWidgetData> local_12;
         if (local_2)
         {
@@ -162,8 +162,8 @@ class UWidget_BossHpBar : UEUIUserWidget
     UFUNCTION()
     ESlateVisibility BossHpBar_BossHpBarVisibility() const
     {
-        FVMS_BossHpBar& local_2;
         int local_5;
+        FVMS_BossHpBar& local_2 = this.BossHpBar.Get();
         if (local_2)
         {
             local_5 = int(local_2.BossHpBarVisibility());
@@ -176,8 +176,8 @@ class UWidget_BossHpBar : UEUIUserWidget
     }
     void HandleObservedModelChanges(FEUIReactiveSubscriberIterator &inout It)
     {
-        FVMS_BossHpBar& local_6;
         TEUIModelRef<FVMS_BossHpBar> local_2 = this.BossHpBar.AsRef();
+        FVMS_BossHpBar& local_6 = local_2.Get();
         for (; It; )
         {
             FEUIReactiveSubscriberTrackScope local_56 = FEUIReactiveSubscriberTrackScope(It);

@@ -77,19 +77,15 @@ struct FMS_LocalPlayerTeamData : FEUIModelSingleton
     }
     bool SelfIsSocialTeamCaptain() const
     {
-        TEUIModelRef<FM_Player> local_20;
         if (!(this.GetLocalPlayerSocialTeam().IsValid()))
         {
             return false;
         }
-        TEUIModelWeakRef<FM_SocialTeam> local_2 = this.GetLocalPlayerSocialTeam();
-        for (auto& local_18 : GetMembers())
+        for (auto& local_18 : this.GetLocalPlayerSocialTeam().Get().GetMembers())
         {
-            local_18;
-            local_20.GetPlayer();
-            if (local_20.opArrow().GetPlayerUid() == ::FMS_PlayerData::Get(this.GetManager()).GetLocalPlayerData().opArrow().GetPlayerUid())
+            if (local_18.Get().GetPlayer().opArrow().GetPlayerUid() == ::FMS_PlayerData::Get(this.GetManager()).GetLocalPlayerData().opArrow().GetPlayerUid())
             {
-                return IsCaptain();
+                return local_18.Get().IsCaptain();
             }
         }
         return false;
@@ -113,30 +109,26 @@ struct FMS_LocalPlayerTeamData : FEUIModelSingleton
     }
     bool IsTeamMember(const uint Uid, const ETeamType TeamType) const
     {
-        bool local_17 = false;
         for (auto& local_20 : this.GetLocalPlayerTeamMembers())
         {
             if (local_20.GetKey().opArrow().GetPlayerUid() == Uid)
             {
-                return local_17;
+                return local_20.GetValue().TeamMembers.Contains(TeamType);
             }
         }
         return false;
     }
     int GetTeamMemberCount(const ETeamType TeamType) const
     {
-        TEUIModelWeakRef<FM_SocialTeam> local_2 = this.GetLocalPlayerSocialTeam();
-        if (false)
+        if (this.GetLocalPlayerSocialTeam().Get())
         {
             if (int(TeamType) == 2)
             {
-                TEUIModelWeakRef<FM_CombatTeam> local_8 = this.GetLocalPlayerCombatTeam();
-                return GetMembers().Num();
+                return this.GetLocalPlayerCombatTeam().Get().GetMembers().Num();
             }
             if (int(TeamType) == 1)
             {
-                TEUIModelWeakRef<FM_SocialTeam> local_2_2 = this.GetLocalPlayerSocialTeam();
-                return GetMembers().Num();
+                return this.GetLocalPlayerSocialTeam().Get().GetMembers().Num();
             }
         }
         return 0;
@@ -146,11 +138,10 @@ struct FMS_LocalPlayerTeamData : FEUIModelSingleton
         TConstRawPtr<FLocalPlayerTeamMember> local_2 = this.GetLocalPlayerTeamMembers().Find(Player);
         if (local_2)
         {
-            if (local_2.opArrow().TeamMembers.Find(TeamType))
+            TConstRawPtr<TEUIModelRef<FM_TeamMember>> local_8 = local_2.opArrow().TeamMembers.Find(TeamType);
+            if (local_8)
             {
-            }
-            else
-            {
+                return local_8.Get();
             }
         }
         return TEUIModelRef<FM_TeamMember>();
@@ -162,18 +153,16 @@ struct FMS_LocalPlayerTeamData : FEUIModelSingleton
         {
             if (!(::FTeamUtils::GetIsInCityTeamState()))
             {
-                if (local_2.opArrow().TeamMembers.Find(ETeamType(2)))
+                TConstRawPtr<TEUIModelRef<FM_TeamMember>> local_8 = local_2.opArrow().TeamMembers.Find(ETeamType(2));
+                if (local_8)
                 {
-                }
-                else
-                {
+                    return local_8.Get();
                 }
             }
-            if (local_2.opArrow().TeamMembers.Find(ETeamType(1)))
+            TConstRawPtr<TEUIModelRef<FM_TeamMember>> local_10 = local_2.opArrow().TeamMembers.Find(ETeamType(1));
+            if (local_10)
             {
-            }
-            else
-            {
+                return local_10.Get();
             }
         }
         return TEUIModelRef<FM_TeamMember>();
@@ -186,7 +175,7 @@ struct FMS_LocalPlayerTeamData : FEUIModelSingleton
         }
         for (auto& local_22 : this.GetLocalPlayerTeamMembers())
         {
-            if (unresolved.TeamMembers.Contains(ETeamType(1)))
+            if (local_22.GetValue().TeamMembers.Contains(ETeamType(1)))
             {
                 if (!(local_22.GetKey().opArrow().GetPlayerEntity().IsValid()))
                 {
@@ -216,34 +205,14 @@ struct FMS_LocalPlayerTeamData : FEUIModelSingleton
     }
     bool IsUidInSocialTeamSource(const uint Uid) const
     {
-        TEUIModelRef<FM_Player> local_24;
         TEUIModelRef<FM_SocialTeam> local_4 = ::FMS_PlayerSocialTeamData::Get(this.GetManager()).GetLocalPlayerTeam();
-        bool local_7 = !(local_4.IsValid());
-        if (local_7)
+        if (!(local_4.IsValid()))
         {
             return false;
         }
-        for (auto& local_22 : GetMembers())
+        for (auto& local_22 : local_4.Get().GetMembers())
         {
-            if (!(local_22.IsValid()))
-            {
-                local_7 = false;
-            }
-            else
-            {
-                local_24.GetPlayer();
-                local_7 = local_24.IsValid();
-            }
-            if (!(local_7))
-            {
-                local_7 = false;
-            }
-            else
-            {
-                local_24.GetPlayer();
-                local_7 = (local_24.opArrow().GetPlayerUid() == Uid);
-            }
-            if (local_7)
+            if (local_22.IsValid() && local_22.Get().GetPlayer().IsValid() && (local_22.Get().GetPlayer().opArrow().GetPlayerUid() == Uid))
             {
                 return true;
             }
@@ -252,34 +221,14 @@ struct FMS_LocalPlayerTeamData : FEUIModelSingleton
     }
     bool IsUidInCombatTeamSource(const uint Uid) const
     {
-        TEUIModelRef<FM_Player> local_24;
         TEUIModelRef<FM_CombatTeam> local_4 = ::FMS_PlayerCombatTeamData::Get(this.GetManager()).GetLocalPlayerCombatTeam();
-        bool local_7 = !(local_4.IsValid());
-        if (local_7)
+        if (!(local_4.IsValid()))
         {
             return false;
         }
-        for (auto& local_22 : GetMembers())
+        for (auto& local_22 : local_4.Get().GetMembers())
         {
-            if (!(local_22.IsValid()))
-            {
-                local_7 = false;
-            }
-            else
-            {
-                local_24.GetPlayer();
-                local_7 = local_24.IsValid();
-            }
-            if (!(local_7))
-            {
-                local_7 = false;
-            }
-            else
-            {
-                local_24.GetPlayer();
-                local_7 = (local_24.opArrow().GetPlayerUid() == Uid);
-            }
-            if (local_7)
+            if (local_22.IsValid() && local_22.Get().GetPlayer().IsValid() && (local_22.Get().GetPlayer().opArrow().GetPlayerUid() == Uid))
             {
                 return true;
             }
@@ -288,22 +237,22 @@ struct FMS_LocalPlayerTeamData : FEUIModelSingleton
     }
     void PostConstruct()
     {
-        TEUIModelRef<FM_CombatTeam> local_4 = ::FMS_PlayerCombatTeamData::Get(this.GetManager()).GetLocalPlayerCombatTeam();
-        this.SetLocalPlayerCombatTeam(TEUIModelWeakRef<FM_CombatTeam>());
-        TEUIModelRef<FM_SocialTeam> local_8 = ::FMS_PlayerSocialTeamData::Get(this.GetManager()).GetLocalPlayerTeam();
-        this.SetLocalPlayerSocialTeam(TEUIModelWeakRef<FM_SocialTeam>());
+        this.SetLocalPlayerCombatTeam(TEUIModelWeakRef<FM_CombatTeam>(::FMS_PlayerCombatTeamData::Get(this.GetManager()).GetLocalPlayerCombatTeam().Get()));
+        this.SetLocalPlayerSocialTeam(TEUIModelWeakRef<FM_SocialTeam>(::FMS_PlayerSocialTeamData::Get(this.GetManager()).GetLocalPlayerTeam().Get()));
         this.FullyUpdateCombatTeam();
         this.FullyUpdateSocialTeam();
         return;
     }
     void OnLocalPlayerCombatTeamChanged(const FMsg_CombatTeamChanged &inout Msg)
     {
-        TEUIModelRef<FM_CombatTeam> local_4 = ::FMS_PlayerCombatTeamData::Get(this.GetManager()).GetLocalPlayerCombatTeam();
-        this.SetLocalPlayerCombatTeam(TEUIModelWeakRef<FM_CombatTeam>());
+        TEUIModelWeakRef<FM_CombatTeam> local_6 = TEUIModelWeakRef<FM_CombatTeam>(::FMS_PlayerCombatTeamData::Get(this.GetManager()).GetLocalPlayerCombatTeam().Get());
+        this.SetLocalPlayerCombatTeam(local_6);
         this.FullyUpdateCombatTeam();
-        if (this.GetLocalPlayerCombatTeam().IsValid())
+        TEUIModelWeakRef<FM_CombatTeam> local_6_2 = this.GetLocalPlayerCombatTeam();
+        if (local_6_2.IsValid())
         {
-            this.LogTeamInfo("CombatTeamChanged", this.GetLocalPlayerCombatTeam().opArrow().GetTeamCommonData());
+            TEUIModelWeakRef<FM_CombatTeam> local_6_3 = this.GetLocalPlayerCombatTeam();
+            this.LogTeamInfo("CombatTeamChanged", local_6_3.opArrow().GetTeamCommonData());
             return;
         }
         XLog(ELog(16), FString().Append("[LocalPlayerTeamData] CombatTeam is invalid"));
@@ -311,12 +260,14 @@ struct FMS_LocalPlayerTeamData : FEUIModelSingleton
     }
     void OnLocalPlayerCombatTeamMemberChanged(const FMsg_CombatTeamMemberChanged &inout Msg)
     {
-        TEUIModelRef<FM_CombatTeam> local_4 = ::FMS_PlayerCombatTeamData::Get(this.GetManager()).GetLocalPlayerCombatTeam();
-        this.SetLocalPlayerCombatTeam(TEUIModelWeakRef<FM_CombatTeam>());
+        TEUIModelWeakRef<FM_CombatTeam> local_6 = TEUIModelWeakRef<FM_CombatTeam>(::FMS_PlayerCombatTeamData::Get(this.GetManager()).GetLocalPlayerCombatTeam().Get());
+        this.SetLocalPlayerCombatTeam(local_6);
         this.FullyUpdateCombatTeam();
-        if (this.GetLocalPlayerCombatTeam().IsValid())
+        TEUIModelWeakRef<FM_CombatTeam> local_6_2 = this.GetLocalPlayerCombatTeam();
+        if (local_6_2.IsValid())
         {
-            this.LogTeamInfo("CombatTeamMemberChanged", this.GetLocalPlayerCombatTeam().opArrow().GetTeamCommonData());
+            TEUIModelWeakRef<FM_CombatTeam> local_6_3 = this.GetLocalPlayerCombatTeam();
+            this.LogTeamInfo("CombatTeamMemberChanged", local_6_3.opArrow().GetTeamCommonData());
             return;
         }
         XLog(ELog(16), FString().Append("[LocalPlayerTeamData] CombatTeam is invalid"));
@@ -324,12 +275,14 @@ struct FMS_LocalPlayerTeamData : FEUIModelSingleton
     }
     void OnLocalPlayerSocialTeamChanged(const FMsg_SocialTeamChanged &inout Msg)
     {
-        TEUIModelRef<FM_SocialTeam> local_4 = ::FMS_PlayerSocialTeamData::Get(this.GetManager()).GetLocalPlayerTeam();
-        this.SetLocalPlayerSocialTeam(TEUIModelWeakRef<FM_SocialTeam>());
+        TEUIModelWeakRef<FM_SocialTeam> local_6 = TEUIModelWeakRef<FM_SocialTeam>(::FMS_PlayerSocialTeamData::Get(this.GetManager()).GetLocalPlayerTeam().Get());
+        this.SetLocalPlayerSocialTeam(local_6);
         this.FullyUpdateSocialTeam();
-        if (this.GetLocalPlayerSocialTeam().IsValid())
+        TEUIModelWeakRef<FM_SocialTeam> local_6_2 = this.GetLocalPlayerSocialTeam();
+        if (local_6_2.IsValid())
         {
-            this.LogTeamInfo("SocialTeamChanged", this.GetLocalPlayerSocialTeam().opArrow().GetTeamCommonData());
+            TEUIModelWeakRef<FM_SocialTeam> local_6_3 = this.GetLocalPlayerSocialTeam();
+            this.LogTeamInfo("SocialTeamChanged", local_6_3.opArrow().GetTeamCommonData());
             return;
         }
         XLog(ELog(16), FString().Append("[LocalPlayerTeamData] SocialTeam is invalid"));
@@ -337,12 +290,14 @@ struct FMS_LocalPlayerTeamData : FEUIModelSingleton
     }
     void OnLocalPlayerSocialTeamMemberChanged(const FMsg_SocialTeamMemberChanged &inout Msg)
     {
-        TEUIModelRef<FM_SocialTeam> local_4 = ::FMS_PlayerSocialTeamData::Get(this.GetManager()).GetLocalPlayerTeam();
-        this.SetLocalPlayerSocialTeam(TEUIModelWeakRef<FM_SocialTeam>());
+        TEUIModelWeakRef<FM_SocialTeam> local_6 = TEUIModelWeakRef<FM_SocialTeam>(::FMS_PlayerSocialTeamData::Get(this.GetManager()).GetLocalPlayerTeam().Get());
+        this.SetLocalPlayerSocialTeam(local_6);
         this.FullyUpdateSocialTeam();
-        if (this.GetLocalPlayerSocialTeam().IsValid())
+        TEUIModelWeakRef<FM_SocialTeam> local_6_2 = this.GetLocalPlayerSocialTeam();
+        if (local_6_2.IsValid())
         {
-            this.LogTeamInfo("SocialMemberChanged", this.GetLocalPlayerSocialTeam().opArrow().GetTeamCommonData());
+            TEUIModelWeakRef<FM_SocialTeam> local_6_3 = this.GetLocalPlayerSocialTeam();
+            this.LogTeamInfo("SocialMemberChanged", local_6_3.opArrow().GetTeamCommonData());
             return;
         }
         XLog(ELog(16), FString().Append("[LocalPlayerTeamData] SocialTeam is invalid"));
@@ -350,26 +305,12 @@ struct FMS_LocalPlayerTeamData : FEUIModelSingleton
     }
     void LogTeamInfo(const FString &inout TeamTypeName, const FTeamCommonData &inout TeamCommonData)
     {
-        bool local_19;
-        TEUIModelRef<FM_Player> local_24;
         XLog(ELog(16), FString().Append("[LocalPlayerTeamData] ").Append(TeamTypeName).Append(" Team Updated, MemberCount: ").Append(TeamCommonData.Members.Num()));
         for (auto& local_22 : TeamCommonData.Members)
         {
-            if (!(local_22.IsValid()))
+            if (local_22.IsValid() && local_22.Get().GetPlayer().IsValid())
             {
-                local_19 = false;
-            }
-            else
-            {
-                local_24.GetPlayer();
-                local_19 = local_24.IsValid();
-            }
-            if (local_19)
-            {
-                local_24.GetPlayer();
-                int local_31 = local_24.opArrow().GetPlayerUid();
-                local_24.GetPlayer();
-                XLog(ELog(16), FString().Append("[LocalPlayerTeamData]   Member Index=").Append(GetMemberIndex()).Append(", Name=").Append(local_24.opArrow().GetNickName()).Append(", Uid=").Append(local_31));
+                XLog(ELog(16), FString().Append("[LocalPlayerTeamData]   Member Index=").Append(local_22.Get().GetMemberIndex()).Append(", Name=").Append(local_22.Get().GetPlayer().opArrow().GetNickName()).Append(", Uid=").Append(local_22.Get().GetPlayer().opArrow().GetPlayerUid()));
             }
         }
         return;
@@ -418,22 +359,24 @@ struct FMS_LocalPlayerTeamData : FEUIModelSingleton
             {
                 continue;
             }
-            if (unresolved.TeamMembers.IsEmpty())
+            local_60.GetValue().TeamMembers.Remove(TeamType);
+            if (local_60.GetValue().TeamMembers.IsEmpty())
             {
                 local_42.Add(local_60.GetKey());
             }
         }
         for (auto& local_76 : local_42)
         {
-            local_76;
+            this.GetModify_LocalPlayerTeamMembers().Remove(local_76);
         }
         for (auto& local_94 : local_20)
         {
             FLocalPlayerTeamMember& local_96 = this.GetModify_LocalPlayerTeamMembers().FindOrAdd(local_94.GetKey());
             if (local_96.TeamMembers.Contains(TeamType))
             {
+                local_96.TeamMembers.Remove(TeamType);
             }
-            local_96.TeamMembers.Add(TeamType);
+            local_96.TeamMembers.Add(TeamType, local_94.GetValue());
         }
         return;
     }
@@ -442,14 +385,15 @@ struct FMS_LocalPlayerTeamData : FEUIModelSingleton
         TArray<TEUIModelRef<FM_Player>> local_4;
         for (auto& local_24 : this.GetModify_LocalPlayerTeamMembers())
         {
-            if (unresolved.TeamMembers.IsEmpty())
+            local_24.GetValue().TeamMembers.Remove(TeamType);
+            if (local_24.GetValue().TeamMembers.IsEmpty())
             {
                 local_4.Add(local_24.GetKey());
             }
         }
         for (auto& local_40 : local_4)
         {
-            local_40;
+            this.GetModify_LocalPlayerTeamMembers().Remove(local_40);
         }
         return;
     }
@@ -518,11 +462,9 @@ FMS_LocalPlayerTeamData& Get(const UObject ContextObject)
 {
     return FMS_LocalPlayerTeamData::GetByManager(EUIInternal::GetContextManager(ContextObject));
 }
-FMS_LocalPlayerTeamData GetByManager(const UEUIManagerSubsystem Manager)
+FMS_LocalPlayerTeamData& GetByManager(const UEUIManagerSubsystem Manager)
 {
-    FMS_LocalPlayerTeamData __r;
-    TEUIModelRef<FMS_LocalPlayerTeamData> local_6 = TEUIModelRef<FMS_LocalPlayerTeamData>(EUIInternal::MakeModelWithManager(Manager, FMS_LocalPlayerTeamData::ModelId));
-    return __r;
+    return TEUIModelRef<FMS_LocalPlayerTeamData>(EUIInternal::MakeModelWithManager(Manager, FMS_LocalPlayerTeamData::ModelId)).Get();
 }
 void GetModelInfo(FEUIModelOnlyMetaInfo &inout Result)
 {

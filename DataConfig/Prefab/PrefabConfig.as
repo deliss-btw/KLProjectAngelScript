@@ -42,11 +42,10 @@ TDataObjectPtr<FBasePrefabConfig> GetBasePrefabConfig(const FECSEntity &inout En
 const FBasePrefabConfig GetDefaultedBasePrefabConfig(const FECSEntity &inout Entity)
 {
     const FBasePrefabConfig __r;
-    if (GetBasePrefabConfig(Entity))
+    TDataObjectPtr<FBasePrefabConfig> local_24 = GetBasePrefabConfig(Entity);
+    if (local_24)
     {
-    }
-    else
-    {
+        return local_24.Get();
     }
     return __r;
 }

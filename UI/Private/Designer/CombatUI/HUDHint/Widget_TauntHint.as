@@ -28,7 +28,7 @@ class UWidget_TauntHint : UEUIUserWidget
     void Tick_Implementation(const FGeometry &inout MyGeometry, const float32 InDeltaTime)
     {
         const AActor local_20;
-        FECSEntity local_4 = FECSEntity(GetSelfEntity());
+        FECSEntity local_4 = FECSEntity(this.TauntHint.Get().GetSelfEntity());
         APlayerController local_6 = this.GetOwningPlayer();
         if ((local_4 == ENTITY_NULL))
         {
@@ -59,7 +59,7 @@ class UWidget_TauntHint : UEUIUserWidget
     UFUNCTION()
     TArray<FEUIModelWeakRef> TauntHint_PlayerTauntHintModelArray() const
     {
-        FVM_TauntHint& local_2;
+        FVM_TauntHint& local_2 = this.TauntHint.Get();
         TArray<FEUIModelWeakRef> local_16;
         if (local_2)
         {

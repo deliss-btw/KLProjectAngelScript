@@ -416,11 +416,9 @@ FVM_Text& Create(const UObject ContextObject, const FText &inout Text)
 {
     return FVM_Text::CreateByManager(EUIInternal::GetContextManager(ContextObject), Text);
 }
-FVM_Text CreateByManager(const UEUIManagerSubsystem Manager, const FText &inout Text)
+FVM_Text& CreateByManager(const UEUIManagerSubsystem Manager, const FText &inout Text)
 {
-    FVM_Text __r;
-    TEUIModelRef<FVM_Text> local_6 = TEUIModelRef<FVM_Text>(EUIInternal::MakeModelWithManager_Generic(Manager, FVM_Text::ModelId, 0, Text));
-    return __r;
+    return TEUIModelRef<FVM_Text>(EUIInternal::MakeModelWithManager_Generic(Manager, FVM_Text::ModelId, 0, Text)).Get();
 }
 void GetModelInfo(FEUIViewModelMetaInfo &inout Result)
 {
@@ -462,8 +460,7 @@ namespace __GeneratedProperties_FVM_Text
 {
 UScriptStruct StaticStruct()
 {
-    UScriptStruct local_2;
-    return local_2;
+    return __GeneratedProperties_FVM_Text.Get();
 }
 }
 namespace FVM_TitleAndDesc
@@ -472,11 +469,9 @@ FVM_TitleAndDesc& Create(const UObject ContextObject, const FText &inout Title, 
 {
     return FVM_TitleAndDesc::CreateByManager(EUIInternal::GetContextManager(ContextObject), Title, Desc);
 }
-FVM_TitleAndDesc CreateByManager(const UEUIManagerSubsystem Manager, const FText &inout Title, const FText &inout Desc)
+FVM_TitleAndDesc& CreateByManager(const UEUIManagerSubsystem Manager, const FText &inout Title, const FText &inout Desc)
 {
-    FVM_TitleAndDesc __r;
-    TEUIModelRef<FVM_TitleAndDesc> local_6 = TEUIModelRef<FVM_TitleAndDesc>(EUIInternal::MakeModelWithManager_Generic(Manager, FVM_TitleAndDesc::ModelId, 0, Title, Desc));
-    return __r;
+    return TEUIModelRef<FVM_TitleAndDesc>(EUIInternal::MakeModelWithManager_Generic(Manager, FVM_TitleAndDesc::ModelId, 0, Title, Desc)).Get();
 }
 void GetModelInfo(FEUIViewModelMetaInfo &inout Result)
 {
@@ -565,8 +560,7 @@ namespace __GeneratedProperties_FVM_TitleAndDesc
 {
 UScriptStruct StaticStruct()
 {
-    UScriptStruct local_2;
-    return local_2;
+    return __GeneratedProperties_FVM_TitleAndDesc.Get();
 }
 }
 namespace FVM_TitleAndDescAndStatus
@@ -575,11 +569,9 @@ FVM_TitleAndDescAndStatus& Create(const UObject ContextObject, const FText &inou
 {
     return FVM_TitleAndDescAndStatus::CreateByManager(EUIInternal::GetContextManager(ContextObject), Title, Desc);
 }
-FVM_TitleAndDescAndStatus CreateByManager(const UEUIManagerSubsystem Manager, const FText &inout Title, const FText &inout Desc)
+FVM_TitleAndDescAndStatus& CreateByManager(const UEUIManagerSubsystem Manager, const FText &inout Title, const FText &inout Desc)
 {
-    FVM_TitleAndDescAndStatus __r;
-    TEUIModelRef<FVM_TitleAndDescAndStatus> local_6 = TEUIModelRef<FVM_TitleAndDescAndStatus>(EUIInternal::MakeModelWithManager_Generic(Manager, FVM_TitleAndDescAndStatus::ModelId, 0, Title, Desc));
-    return __r;
+    return TEUIModelRef<FVM_TitleAndDescAndStatus>(EUIInternal::MakeModelWithManager_Generic(Manager, FVM_TitleAndDescAndStatus::ModelId, 0, Title, Desc)).Get();
 }
 void GetModelInfo(FEUIViewModelMetaInfo &inout Result)
 {
@@ -647,7 +639,6 @@ namespace __GeneratedProperties_FVM_TitleAndDescAndStatus
 {
 UScriptStruct StaticStruct()
 {
-    UScriptStruct local_2;
-    return local_2;
+    return __GeneratedProperties_FVM_TitleAndDescAndStatus.Get();
 }
 }

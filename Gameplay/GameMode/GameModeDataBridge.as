@@ -70,7 +70,7 @@ EPVPGameRuleType GetPVPSelectedGameRule(const FECSWorldPtr &inout World)
         Has local_6;
         if (!(local_6.opCall()))
         {
-            return EPVPGameRuleType(1);
+            return EPVPGameRuleType::Brawl;
         }
         Get local_12;
         return local_12.opCall().GetSelectedGameRuleType();
@@ -78,7 +78,7 @@ EPVPGameRuleType GetPVPSelectedGameRule(const FECSWorldPtr &inout World)
     Has local_16;
     if (!(local_16.opCall()))
     {
-        return EPVPGameRuleType(1);
+        return EPVPGameRuleType::Brawl;
     }
     Get local_20;
     return local_20.opCall().GetSelectedGameRuleType();
@@ -100,9 +100,9 @@ bool GetPVPLobbyPlayerEntries(const FECSWorldPtr &inout World, TMap<uint, FPVPLo
         for (auto& local_42 : local_24.GetPlayerMatchDatas())
         {
             FPVPLobbyPlayerEntry local_46;
-            int local_47 = GetTeamID();
+            int local_47 = local_42.GetValue().GetTeamID();
             local_46.TeamID = (local_47 != 0);
-            local_46.PlayerInTeamIndex = GetPlayerInTeamIndex();
+            local_46.PlayerInTeamIndex = local_42.GetValue().GetPlayerInTeamIndex();
             if (local_18.GetPlayerExtras().Contains(local_42.GetKey()))
             {
                 local_46.bWantsBackToRoom = local_18.GetPlayerExtras()[local_42.GetKey()].GetbWantsBackToRoom();
@@ -120,11 +120,11 @@ bool GetPVPLobbyPlayerEntries(const FECSWorldPtr &inout World, TMap<uint, FPVPLo
     for (auto& local_76 : local_58.GetPlayerMatchDatas())
     {
         FPVPLobbyPlayerEntry local_46;
-        int local_47_2 = GetTeamID();
+        int local_47_2 = local_76.GetValue().GetTeamID();
         local_46.TeamID = (local_47_2 != 0);
-        local_46.PlayerInTeamIndex = GetPlayerInTeamIndex();
-        local_46.bWantsBackToRoom = GetbWantsBackToRoom();
-        local_46.bIsBot = GetbIsBot();
+        local_46.PlayerInTeamIndex = local_76.GetValue().GetPlayerInTeamIndex();
+        local_46.bWantsBackToRoom = local_76.GetValue().GetbWantsBackToRoom();
+        local_46.bIsBot = local_76.GetValue().GetbIsBot();
         OutEntries.Add(local_76.GetKey(), local_46);
     }
     return true;
@@ -237,7 +237,6 @@ float32 GetPVPPlayerDamageTaken(const FECSWorldPtr &inout World, const FECSEntit
 TMap<FECSEntity, FPVX_PlayerData> GetPVXPlayerInfoMap(const FECSWorldPtr &inout World)
 {
     int local_60;
-    FString local_136;
     int local_148 = 0;
     if (!(FGameModeUtils::CVar_GameMode_UseUniversalSystem.GetBool()))
     {
@@ -259,22 +258,21 @@ TMap<FECSEntity, FPVX_PlayerData> GetPVXPlayerInfoMap(const FECSWorldPtr &inout 
     for (auto& local_78 : local_60.GetPlayerProgressMap())
     {
         FPVX_PlayerData local_130;
-        local_130.SetLevel(GetLevel());
-        local_130.SetLastEvolveLevel_Boss(GetLastEvolveLevel_Boss());
-        local_130.SetExp(GetExp());
-        local_130.SetScore(GetScore());
-        local_130.SetbInLevelProtect(GetbInLevelProtect());
-        local_130.SetTeamId(GetTeamId());
-        local_130.SetPlayerInTeamIndex(GetPlayerInTeamIndex());
-        local_136.GetPlayerName();
-        local_130.SetPlayerName(local_136);
-        local_130.SetPlayerUID(GetPlayerUID());
-        local_130.SetPlayerAvatarID(GetPlayerAvatarID());
-        local_130.SetPlayerDivineSkillID(GetPlayerDivineSkillID());
-        local_130.SetCurrencyAmount(GetCurrencyAmount());
-        local_130.SetLastOverrideAttributeData(GetLastOverrideAttributeData());
-        local_130.SetPendingSettlementEvents(GetPendingSettlementEvents());
-        local_130.SetFinalState(GetFinalState());
+        local_130.SetLevel(local_78.GetValue().GetLevel());
+        local_130.SetLastEvolveLevel_Boss(local_78.GetValue().GetLastEvolveLevel_Boss());
+        local_130.SetExp(local_78.GetValue().GetExp());
+        local_130.SetScore(local_78.GetValue().GetScore());
+        local_130.SetbInLevelProtect(local_78.GetValue().GetbInLevelProtect());
+        local_130.SetTeamId(local_78.GetValue().GetTeamId());
+        local_130.SetPlayerInTeamIndex(local_78.GetValue().GetPlayerInTeamIndex());
+        local_130.SetPlayerName(local_78.GetValue().GetPlayerName());
+        local_130.SetPlayerUID(local_78.GetValue().GetPlayerUID());
+        local_130.SetPlayerAvatarID(local_78.GetValue().GetPlayerAvatarID());
+        local_130.SetPlayerDivineSkillID(local_78.GetValue().GetPlayerDivineSkillID());
+        local_130.SetCurrencyAmount(local_78.GetValue().GetCurrencyAmount());
+        local_130.SetLastOverrideAttributeData(local_78.GetValue().GetLastOverrideAttributeData());
+        local_130.SetPendingSettlementEvents(local_78.GetValue().GetPendingSettlementEvents());
+        local_130.SetFinalState(local_78.GetValue().GetFinalState());
         Has local_142;
         bool local_1_2 = local_142.opCall();
         if (local_1_2)
@@ -352,16 +350,16 @@ EFaction GetPVXPlayerFaction(const FECSWorldPtr &inout World, const FECSEntity &
             {
                 if ((local_12.GetPlayerProgressMap()[PlayerEntity].GetTeamId()) == 4)
                 {
-                    local_15 = EFaction(6);
+                    local_15 = EFaction::Boss;
                 }
                 else
                 {
-                    local_15 = EFaction(1);
+                    local_15 = EFaction::Player;
                 }
                 return EFaction(local_15);
             }
         }
-        return EFaction(1);
+        return EFaction::Player;
     }
     if (!(PlayerEntity.IsValid()))
     {
@@ -424,12 +422,12 @@ bool GetPVXMatchPlayerEntries(const FECSWorldPtr &inout World, TMap<uint, FPVX_M
     for (auto& local_38 : local_20.GetPlayerMatchDatas())
     {
         FPVX_MatchPlayerEntry local_46;
-        local_46.SetUid(GetUID());
-        local_46.SetTeamId(GetTeamID());
-        local_46.SetPlayerInTeamIndex(GetPlayerInTeamIndex());
-        local_46.SetFaction(GetFaction());
-        local_46.SetBossPrefabIdx(GetBossPrefabIdx());
-        local_46.SetPlayerPrefabIdx(GetPlayerPrefabIdx());
+        local_46.SetUid(local_38.GetValue().GetUID());
+        local_46.SetTeamId(local_38.GetValue().GetTeamID());
+        local_46.SetPlayerInTeamIndex(local_38.GetValue().GetPlayerInTeamIndex());
+        local_46.SetFaction(local_38.GetValue().GetFaction());
+        local_46.SetBossPrefabIdx(local_38.GetValue().GetBossPrefabIdx());
+        local_46.SetPlayerPrefabIdx(local_38.GetValue().GetPlayerPrefabIdx());
         OutEntries.Add(local_38.GetKey(), local_46);
     }
     return true;

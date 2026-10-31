@@ -3,7 +3,6 @@ namespace __FCreatureAttributeScaleByLevelConfigFunctions
 UFUNCTION()
 TMap<int, FCreatureAttributeScaleData> __FCreatureAttributeScaleByLevelConfig_GetAttributeScaleByLevel(const TDataObjectPtr<FCreatureAttributeScaleByLevelConfig> &inout DataObject)
 {
-    TMap<int, FCreatureAttributeScaleData> __r;
     if ((DataObject == nullptr))
     {
         if (!(EUIGlobals::GIsDuringPropertyConversion))
@@ -13,7 +12,7 @@ TMap<int, FCreatureAttributeScaleData> __FCreatureAttributeScaleByLevelConfig_Ge
         FCreatureAttributeScaleByLevelConfig local_34;
         return local_34.AttributeScaleByLevel;
     }
-    return __r;
+    return DataObject.Get().AttributeScaleByLevel;
 }
 UFUNCTION()
 FCreatureAttributeScaleByLevelConfig CastToFCreatureAttributeScaleByLevelConfig(const TDataObjectPtr<FCreatureAttributeScaleByLevelConfig> &inout DataObject)
@@ -27,7 +26,6 @@ namespace __FCombatUnitBaseConfigFunctions
 UFUNCTION()
 FString __FCombatUnitBaseConfig_GetFriendlyName(const TDataObjectPtr<FCombatUnitBaseConfig> &inout DataObject)
 {
-    FString __r;
     if ((DataObject == nullptr))
     {
         if (!(EUIGlobals::GIsDuringPropertyConversion))
@@ -37,12 +35,11 @@ FString __FCombatUnitBaseConfig_GetFriendlyName(const TDataObjectPtr<FCombatUnit
         FCombatUnitBaseConfig local_126;
         return local_126.FriendlyName;
     }
-    return __r;
+    return DataObject.Get().FriendlyName;
 }
 UFUNCTION()
 TSoftClassPtr<ACharacterPrefab> __FCombatUnitBaseConfig_GetPrefab(const TDataObjectPtr<FCombatUnitBaseConfig> &inout DataObject)
 {
-    TSoftClassPtr<ACharacterPrefab> __r;
     if ((DataObject == nullptr))
     {
         if (!(EUIGlobals::GIsDuringPropertyConversion))
@@ -52,7 +49,7 @@ TSoftClassPtr<ACharacterPrefab> __FCombatUnitBaseConfig_GetPrefab(const TDataObj
         FCombatUnitBaseConfig local_126;
         return local_126.Prefab;
     }
-    return __r;
+    return DataObject.Get().Prefab;
 }
 UFUNCTION()
 TDataObjectPtr<FGameAttributeInitConfig_CombatUnit> __FCombatUnitBaseConfig_GetInitAttributeValues(const TDataObjectPtr<FCombatUnitBaseConfig> &inout DataObject)
@@ -66,7 +63,7 @@ TDataObjectPtr<FGameAttributeInitConfig_CombatUnit> __FCombatUnitBaseConfig_GetI
         FCombatUnitBaseConfig local_126;
         return local_126.GetInitAttributeValues();
     }
-    return GetInitAttributeValues();
+    return DataObject.Get().GetInitAttributeValues();
 }
 UFUNCTION()
 TDataObjectPtr<FAITargetingConfig> __FCombatUnitBaseConfig_GetTargetingConfig(const TDataObjectPtr<FCombatUnitBaseConfig> &inout DataObject)
@@ -80,7 +77,7 @@ TDataObjectPtr<FAITargetingConfig> __FCombatUnitBaseConfig_GetTargetingConfig(co
         FCombatUnitBaseConfig local_126;
         return local_126.GetTargetingConfig();
     }
-    return GetTargetingConfig();
+    return DataObject.Get().GetTargetingConfig();
 }
 UFUNCTION()
 TDataObjectPtr<FAIQuitCombatConfig> __FCombatUnitBaseConfig_GetQuitCombatConfig(const TDataObjectPtr<FCombatUnitBaseConfig> &inout DataObject)
@@ -94,7 +91,7 @@ TDataObjectPtr<FAIQuitCombatConfig> __FCombatUnitBaseConfig_GetQuitCombatConfig(
         FCombatUnitBaseConfig local_126;
         return local_126.GetQuitCombatConfig();
     }
-    return GetQuitCombatConfig();
+    return DataObject.Get().GetQuitCombatConfig();
 }
 UFUNCTION()
 TDataObjectPtr<FAIPerceptionConfig> __FCombatUnitBaseConfig_GetPerceptionConfig(const TDataObjectPtr<FCombatUnitBaseConfig> &inout DataObject)
@@ -108,12 +105,11 @@ TDataObjectPtr<FAIPerceptionConfig> __FCombatUnitBaseConfig_GetPerceptionConfig(
         FCombatUnitBaseConfig local_126;
         return local_126.GetPerceptionConfig();
     }
-    return GetPerceptionConfig();
+    return DataObject.Get().GetPerceptionConfig();
 }
 UFUNCTION()
 EMonsterRank __FCombatUnitBaseConfig_GetRank(const TDataObjectPtr<FCombatUnitBaseConfig> &inout DataObject)
 {
-    int local_127 = 0;
     if ((DataObject == nullptr))
     {
         if (!(EUIGlobals::GIsDuringPropertyConversion))
@@ -121,10 +117,9 @@ EMonsterRank __FCombatUnitBaseConfig_GetRank(const TDataObjectPtr<FCombatUnitBas
             FBlueprintDebugFunctions::ThrowScriptException("Get 'Rank' from a null 'FCombatUnitBaseConfig' DataObject!");
         }
         FCombatUnitBaseConfig local_126;
-        local_127 = int(local_126.Rank);
-        return EMonsterRank(local_127);
+        return local_126.Rank;
     }
-    return EMonsterRank(local_127);
+    return DataObject.Get().Rank;
 }
 UFUNCTION()
 FCombatUnitBaseConfig CastToFCombatUnitBaseConfig(const TDataObjectPtr<FCombatUnitBaseConfig> &inout DataObject)
@@ -138,7 +133,6 @@ namespace __FNPCWatchPlayerLookPresetConfigFunctions
 UFUNCTION()
 ENPCWatchPlayerLookMode __FNPCWatchPlayerLookPresetConfig_GetWatchPlayerLookMode(const TDataObjectPtr<FNPCWatchPlayerLookPresetConfig> &inout DataObject)
 {
-    int local_23 = 0;
     if ((DataObject == nullptr))
     {
         if (!(EUIGlobals::GIsDuringPropertyConversion))
@@ -146,10 +140,9 @@ ENPCWatchPlayerLookMode __FNPCWatchPlayerLookPresetConfig_GetWatchPlayerLookMode
             FBlueprintDebugFunctions::ThrowScriptException("Get 'WatchPlayerLookMode' from a null 'FNPCWatchPlayerLookPresetConfig' DataObject!");
         }
         FNPCWatchPlayerLookPresetConfig local_22;
-        local_23 = int(local_22.WatchPlayerLookMode);
-        return ENPCWatchPlayerLookMode(local_23);
+        return local_22.WatchPlayerLookMode;
     }
-    return ENPCWatchPlayerLookMode(local_23);
+    return DataObject.Get().WatchPlayerLookMode;
 }
 UFUNCTION()
 float32 __FNPCWatchPlayerLookPresetConfig_GetMinPitchAngle(const TDataObjectPtr<FNPCWatchPlayerLookPresetConfig> &inout DataObject)
@@ -268,7 +261,6 @@ namespace __FCreatureUnitConfigFunctions
 UFUNCTION()
 FString __FCreatureUnitConfig_GetFriendlyName(const TDataObjectPtr<FCreatureUnitConfig> &inout DataObject)
 {
-    FString __r;
     if ((DataObject == nullptr))
     {
         if (!(EUIGlobals::GIsDuringPropertyConversion))
@@ -278,7 +270,7 @@ FString __FCreatureUnitConfig_GetFriendlyName(const TDataObjectPtr<FCreatureUnit
         FCreatureUnitConfig local_156;
         return local_156.FriendlyName;
     }
-    return __r;
+    return DataObject.Get().FriendlyName;
 }
 UFUNCTION()
 TDataObjectPtr<FCombatUnitBaseConfig> __FCreatureUnitConfig_GetCombatConfig(const TDataObjectPtr<FCreatureUnitConfig> &inout DataObject)
@@ -292,12 +284,11 @@ TDataObjectPtr<FCombatUnitBaseConfig> __FCreatureUnitConfig_GetCombatConfig(cons
         FCreatureUnitConfig local_156;
         return local_156.GetCombatConfig();
     }
-    return GetCombatConfig();
+    return DataObject.Get().GetCombatConfig();
 }
 UFUNCTION()
 TMap<TSubclassOf<UGameAttribute>, float32> __FCreatureUnitConfig_GetAttributeScale(const TDataObjectPtr<FCreatureUnitConfig> &inout DataObject)
 {
-    TMap<TSubclassOf<UGameAttribute>, float32> __r;
     if ((DataObject == nullptr))
     {
         if (!(EUIGlobals::GIsDuringPropertyConversion))
@@ -307,7 +298,7 @@ TMap<TSubclassOf<UGameAttribute>, float32> __FCreatureUnitConfig_GetAttributeSca
         FCreatureUnitConfig local_156;
         return local_156.AttributeScale;
     }
-    return __r;
+    return DataObject.Get().AttributeScale;
 }
 UFUNCTION()
 TDataObjectPtr<FPresentationRuleConfig> __FCreatureUnitConfig_GetPresentationRuleConfig(const TDataObjectPtr<FCreatureUnitConfig> &inout DataObject)
@@ -321,7 +312,7 @@ TDataObjectPtr<FPresentationRuleConfig> __FCreatureUnitConfig_GetPresentationRul
         FCreatureUnitConfig local_156;
         return local_156.GetPresentationRuleConfig();
     }
-    return GetPresentationRuleConfig();
+    return DataObject.Get().GetPresentationRuleConfig();
 }
 UFUNCTION()
 TDataObjectPtr<FNPCWatchPlayerLookPresetConfig> __FCreatureUnitConfig_GetWatchPlayerLookPreset(const TDataObjectPtr<FCreatureUnitConfig> &inout DataObject)
@@ -335,7 +326,7 @@ TDataObjectPtr<FNPCWatchPlayerLookPresetConfig> __FCreatureUnitConfig_GetWatchPl
         FCreatureUnitConfig local_156;
         return local_156.GetWatchPlayerLookPreset();
     }
-    return GetWatchPlayerLookPreset();
+    return DataObject.Get().GetWatchPlayerLookPreset();
 }
 UFUNCTION()
 TArray<TDataObjectPtr<FDropItemConfigBase>> __FCreatureUnitConfig_GetDropItems(const TDataObjectPtr<FCreatureUnitConfig> &inout DataObject)
@@ -349,12 +340,11 @@ TArray<TDataObjectPtr<FDropItemConfigBase>> __FCreatureUnitConfig_GetDropItems(c
         FCreatureUnitConfig local_156;
         return local_156.GetDropItems();
     }
-    return GetDropItems();
+    return DataObject.Get().GetDropItems();
 }
 UFUNCTION()
 TArray<FBuffConfigRef> __FCreatureUnitConfig_GetInitBuffs(const TDataObjectPtr<FCreatureUnitConfig> &inout DataObject)
 {
-    TArray<FBuffConfigRef> __r;
     if ((DataObject == nullptr))
     {
         if (!(EUIGlobals::GIsDuringPropertyConversion))
@@ -364,12 +354,11 @@ TArray<FBuffConfigRef> __FCreatureUnitConfig_GetInitBuffs(const TDataObjectPtr<F
         FCreatureUnitConfig local_156;
         return local_156.InitBuffs;
     }
-    return __r;
+    return DataObject.Get().InitBuffs;
 }
 UFUNCTION()
 FGameplayTagContainer __FCreatureUnitConfig_GetInitGameplayTags(const TDataObjectPtr<FCreatureUnitConfig> &inout DataObject)
 {
-    FGameplayTagContainer __r;
     if ((DataObject == nullptr))
     {
         if (!(EUIGlobals::GIsDuringPropertyConversion))
@@ -379,7 +368,7 @@ FGameplayTagContainer __FCreatureUnitConfig_GetInitGameplayTags(const TDataObjec
         FCreatureUnitConfig local_156;
         return local_156.InitGameplayTags;
     }
-    return __r;
+    return DataObject.Get().InitGameplayTags;
 }
 UFUNCTION()
 TDataObjectPtr<FEcologyCreatureDefinitionRow> __FCreatureUnitConfig_GetCreature(const TDataObjectPtr<FCreatureUnitConfig> &inout DataObject)
@@ -393,12 +382,11 @@ TDataObjectPtr<FEcologyCreatureDefinitionRow> __FCreatureUnitConfig_GetCreature(
         FCreatureUnitConfig local_156;
         return local_156.GetCreature();
     }
-    return GetCreature();
+    return DataObject.Get().GetCreature();
 }
 UFUNCTION()
 bool __FCreatureUnitConfig_GetbAvailableForLevelPlacement(const TDataObjectPtr<FCreatureUnitConfig> &inout DataObject)
 {
-    bool local_1 = false;
     if ((DataObject == nullptr))
     {
         if (!(EUIGlobals::GIsDuringPropertyConversion))
@@ -408,7 +396,7 @@ bool __FCreatureUnitConfig_GetbAvailableForLevelPlacement(const TDataObjectPtr<F
         FCreatureUnitConfig local_156;
         return local_156.bAvailableForLevelPlacement;
     }
-    return local_1;
+    return DataObject.Get().bAvailableForLevelPlacement;
 }
 UFUNCTION()
 FCreatureUnitConfig CastToFCreatureUnitConfig(const TDataObjectPtr<FCreatureUnitConfig> &inout DataObject)

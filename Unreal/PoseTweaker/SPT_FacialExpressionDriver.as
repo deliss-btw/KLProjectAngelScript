@@ -136,7 +136,6 @@ class USPT_FacialExpressionDriver : USkeletalPoseTweaker
     }
     void EvaluatePose_Raw()
     {
-        bool local_13 = false;
         int local_46 = 0;
         for (auto& local_16 : this.CtrlInputs)
         {
@@ -146,8 +145,7 @@ class USPT_FacialExpressionDriver : USkeletalPoseTweaker
             }
             FFacialExprCtrlPoseMap& local_18 = this.Config.ControllerPoses[local_16.Name];
             FName local_22 = local_16.GetCtrlAttrDirKey();
-            local_13 = !(local_18.CtrlPoseMap.Contains(local_22));
-            if (local_13)
+            if (!(local_18.CtrlPoseMap.Contains(local_22)))
             {
                 continue;
             }
@@ -159,14 +157,12 @@ class USPT_FacialExpressionDriver : USkeletalPoseTweaker
         }
         for (auto& local_64 : this.ModifyBones)
         {
-            local_64;
-            local_13 = !local_13;
-            if (local_13)
+            if (!(local_64.GetValue().bDirty))
             {
                 continue;
             }
-            this.ApplyToBone();
-            local_13 = false;
+            local_64.GetValue().ApplyToBone(this);
+            local_64.GetValue().bDirty = false;
         }
         return;
     }
@@ -258,6 +254,7 @@ class USPT_FacialExpressionDriver : USkeletalPoseTweaker
                 }
                 if (!(local_58.bDirty))
                 {
+                    local_58.Clear();
                     local_58.bDirty = true;
                     this.DirtyBoneIndices.Add(local_55);
                 }
@@ -401,6 +398,7 @@ class USPT_FacialExpressionDriver : USkeletalPoseTweaker
         FFacialModifyBone& local_4 = this.ModifyBones[BoneName];
         if (!(local_4.bDirty))
         {
+            local_4.Clear();
             local_4.bDirty = true;
         }
         float32 local_5 = this.ParseCtrlInputAttrValue(CtrlInput, NameToAttrMap, this.BoneAttr_TranslateX);

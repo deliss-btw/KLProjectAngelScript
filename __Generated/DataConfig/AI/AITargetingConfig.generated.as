@@ -18,7 +18,6 @@ float32 __FAILockPointRatingConfig_GetMaxZDistance(const TDataObjectPtr<FAILockP
 UFUNCTION()
 FRuntimeFloatCurve __FAILockPointRatingConfig_GetScoreCurveByDistanceXY(const TDataObjectPtr<FAILockPointRatingConfig> &inout DataObject)
 {
-    FRuntimeFloatCurve __r;
     if ((DataObject == nullptr))
     {
         if (!(EUIGlobals::GIsDuringPropertyConversion))
@@ -28,12 +27,11 @@ FRuntimeFloatCurve __FAILockPointRatingConfig_GetScoreCurveByDistanceXY(const TD
         FAILockPointRatingConfig local_86;
         return local_86.ScoreCurveByDistanceXY;
     }
-    return __r;
+    return DataObject.Get().ScoreCurveByDistanceXY;
 }
 UFUNCTION()
 FRuntimeFloatCurve __FAILockPointRatingConfig_GetScoreCurveByDistanceZ(const TDataObjectPtr<FAILockPointRatingConfig> &inout DataObject)
 {
-    FRuntimeFloatCurve __r;
     if ((DataObject == nullptr))
     {
         if (!(EUIGlobals::GIsDuringPropertyConversion))
@@ -43,7 +41,7 @@ FRuntimeFloatCurve __FAILockPointRatingConfig_GetScoreCurveByDistanceZ(const TDa
         FAILockPointRatingConfig local_86;
         return local_86.ScoreCurveByDistanceZ;
     }
-    return __r;
+    return DataObject.Get().ScoreCurveByDistanceZ;
 }
 UFUNCTION()
 float32 __FAILockPointRatingConfig_GetWeightXY(const TDataObjectPtr<FAILockPointRatingConfig> &inout DataObject)
@@ -96,7 +94,7 @@ TDataObjectPtr<FAITargetingQueryConfig> __FAITargetingConfig_GetDefaultTargeting
         FAITargetingConfig local_62;
         return local_62.GetDefaultTargetingQueryConfig();
     }
-    return GetDefaultTargetingQueryConfig();
+    return DataObject.Get().GetDefaultTargetingQueryConfig();
 }
 UFUNCTION()
 TDataObjectPtr<FAILockPointRatingConfig> __FAITargetingConfig_GetLockPointRatingConfig(const TDataObjectPtr<FAITargetingConfig> &inout DataObject)
@@ -110,7 +108,7 @@ TDataObjectPtr<FAILockPointRatingConfig> __FAITargetingConfig_GetLockPointRating
         FAITargetingConfig local_62;
         return local_62.GetLockPointRatingConfig();
     }
-    return GetLockPointRatingConfig();
+    return DataObject.Get().GetLockPointRatingConfig();
 }
 UFUNCTION()
 FAITargetingConfig CastToFAITargetingConfig(const TDataObjectPtr<FAITargetingConfig> &inout DataObject)

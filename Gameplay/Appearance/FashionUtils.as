@@ -4,12 +4,11 @@ namespace FashionUtils
 {
 EBodyType GetBodyTypeFromAvatar(const TDataObjectPtr<FAvatarPrefabConfig> &inout AvatarConfig)
 {
-    int local_3 = 0;
     if (!(AvatarConfig))
     {
         return EBodyType(1);
     }
-    int local_4 = local_3;
+    int local_4 = int(AvatarConfig.Get().GenderType);
     if (local_4 <= 1)
     {
         if (local_4 != 0)
@@ -33,7 +32,8 @@ TDataObjectPtr<FMountFashionConfig> GetPlayerMountFashionConfig(const FECSEntity
     {
         for (auto local_21 : local_6.GetFashionIds())
         {
-            if (!(FFashionConfig::GetByDataId(local_21)) || ((0 != -55)))
+            TDataObjectPtr<FFashionConfig> local_70 = FFashionConfig::GetByDataId(local_21);
+            if (!(local_70) || ((int(local_70.Get().SlotType) != -55)))
             {
                 continue;
             }
@@ -42,30 +42,26 @@ TDataObjectPtr<FMountFashionConfig> GetPlayerMountFashionConfig(const FECSEntity
         }
     }
     UDataObjectManager::GetSingletonDataObject<FFashionGlobalConfig> local_174;
-    TDataObjectPtr<FFashionGlobalConfig> local_198 = local_174.opImplConv();
-    if (!(local_198))
+    TDataObjectPtr<FFashionGlobalConfig> local_150 = local_174.opImplConv();
+    if (!(local_150))
     {
         return TDataObjectPtr<FMountFashionConfig>(nullptr);
     }
-    return GetDefaultMount();
+    return local_150.Get().GetDefaultMount();
 }
 UClass GetMountPrefabClass(const FECSEntity &inout PlayerEntity)
 {
-    if (!(FashionUtils::GetPlayerMountFashionConfig(PlayerEntity)))
+    TDataObjectPtr<FMountFashionConfig> local_48 = FashionUtils::GetPlayerMountFashionConfig(PlayerEntity);
+    if (!(local_48))
     {
         return nullptr;
     }
-    return TSubclassOf<ACharacterPrefab>();
+    return local_48.Get().MountPrefab.Get();
 }
 void ApplyFashionToActor(const AActor Actor, const uint AvatarId, const FRuntimeFashionInfo &inout FashionInfo)
 {
-    int local_311 = 0;
-    bool local_340;
-    bool local_341 = false;
     USkeletalMeshComponent local_344;
     int local_479;
-    int local_480 = 0;
-    FDecoAttachOffset local_548;
     if (CVar_Fashion_DisableApply.GetBool())
     {
         return;
@@ -75,7 +71,7 @@ void ApplyFashionToActor(const AActor Actor, const uint AvatarId, const FRuntime
     {
         return;
     }
-    TDataObjectPtr<FCharacterDefaultFashionConfig> local_74 = GetDefaultFashion();
+    TDataObjectPtr<FCharacterDefaultFashionConfig> local_74 = local_26.Get().GetDefaultFashion();
     if (!(local_74))
     {
         return;
@@ -87,7 +83,7 @@ void ApplyFashionToActor(const AActor Actor, const uint AvatarId, const FRuntime
     {
         return;
     }
-    FCharacterDefaultFashionConfig local_108;
+    const FCharacterDefaultFashionConfig& local_108 = local_74.Get();
     TDataObjectPtr<FFashionConfig> local_132 = local_108.GetInitHair();
     if (FashionInfo.GetbUseBathrobe())
     {
@@ -125,7 +121,7 @@ void ApplyFashionToActor(const AActor Actor, const uint AvatarId, const FRuntime
         {
             continue;
         }
-        switch (local_311)
+        switch (int(local_276.Get().SlotType))
         {
         case 1:
         {
@@ -191,13 +187,15 @@ void ApplyFashionToActor(const AActor Actor, const uint AvatarId, const FRuntime
     bool local_339 = !((local_338 == nullptr)) || (!((local_108.GetInitSuit() == nullptr)));
     if (FashionInfo.GetbUseBathrobe())
     {
+        bool local_340;
         local_314 = local_314 && !((local_180 == nullptr));
         local_340 = local_339 && !((local_204 == nullptr));
         local_339 = local_340;
     }
     else
     {
-        local_341 = !((local_228 == nullptr));
+        bool local_340;
+        bool local_341 = !((local_228 == nullptr));
         if (local_341)
         {
             if (local_278)
@@ -257,52 +255,43 @@ void ApplyFashionToActor(const AActor Actor, const uint AvatarId, const FRuntime
         }
     }
     TSet<EFashionDecoSocket> local_364;
-    CastTo local_382;
     for (auto& local_378 : local_282)
     {
-        if ((local_382.opCall() == nullptr))
+        CastTo local_382;
+        TDataObjectPtr<FDecoFashionConfig> local_406 = local_382.opCall();
+        if ((local_406 == nullptr))
         {
             continue;
         }
-        if (!(FashionInfo.GetbUseBathrobe()))
-        {
-            local_340 = false;
-        }
-        else
-        {
-            local_341 = !local_341;
-            local_340 = local_341;
-        }
-        if (local_340)
+        if (FashionInfo.GetbUseBathrobe() && !(local_406.Get().bAllowedWithBathrobe))
         {
             continue;
         }
-        TDataObjectPtr<FAttachPointConfig> local_454 = GetAttachPoint();
+        TDataObjectPtr<FAttachPointConfig> local_454 = local_406.Get().GetAttachPoint();
         if ((local_454 == nullptr))
         {
             continue;
         }
-        local_479 = local_480;
+        local_479 = int(local_454.Get().DecoSocket);
         local_364.Add(EFashionDecoSocket(local_479));
         local_344 = AppearanceMeshUtils::FindChildSkeletalMesh(local_106, AppearanceMeshUtils::DecoChildName(EFashionDecoSocket(local_479)));
         if (local_344 != nullptr)
         {
-            FDecoAttachOffset local_492;
+            FDecoAttachOffset local_548;
             FashionUtils::ApplyMeshToChild(local_344, local_106, local_378, EBodyType(local_100));
-            local_492.GetOffsetForAvatar(AvatarId);
-            FTransform local_516 = local_492.ToTransform();
-            local_340 = !local_340;
-            if (local_340)
+            FTransform local_516 = local_454.Get().GetOffsetForAvatar(AvatarId).ToTransform();
+            if (!(FashionInfo.GetDecoAttachOffsets().Find(local_406.Get().DataId, local_548)))
             {
                 FFloat3 local_552;
                 FFloat3 local_556;
+                local_556 = local_406.Get().DefaultAttachOffset;
                 local_552 = local_556;
                 local_548.SetLocation(FVector3f(local_552.X, local_552.Y, local_552.Z));
                 FFloat3 local_566;
+                local_556 = local_406.Get().DefaultAttachRotation;
                 local_566 = local_556;
-                float32 local_560 = local_566.Z;
-                local_548.SetRotation(FRotator3f(local_566.X, local_566.Y, local_560));
-                local_548.SetScale(local_560);
+                local_548.SetRotation(FRotator3f(local_566.X, local_566.Y, local_566.Z));
+                local_548.SetScale(local_406.Get().DefaultAttachScale);
             }
             local_516 = (local_548.ToTransform() * local_516);
             local_344.SetRelativeTransform(local_516);
@@ -311,7 +300,7 @@ void ApplyFashionToActor(const AActor Actor, const uint AvatarId, const FRuntime
     int local_285_2 = 1;
     for (; local_285_2 < 14; ++local_285_2)
     {
-        local_480 = local_285_2;
+        int local_480 = local_285_2;
         if (local_364.Contains(EFashionDecoSocket(local_480)))
         {
             continue;
@@ -328,19 +317,16 @@ void ApplyFashionToActor(const AActor Actor, const uint AvatarId, const FRuntime
 }
 void ApplyMeshToChild(const USkeletalMeshComponent ChildMesh, const USkeletalMeshComponent LeaderMesh, const TDataObjectPtr<FFashionConfig> &inout Config, const EBodyType BodyType)
 {
-    bool local_1 = !(Config);
-    if (local_1)
+    if (!(Config))
     {
         ChildMesh.SetAnimInstanceClass(nullptr);
         ChildMesh.SetSkeletalMeshAsset(nullptr);
         return;
     }
     TSoftObjectPtr<USkeletalMesh> local_12;
-    local_1 = !local_1;
-    if (local_1)
+    if (!(Config.Get().MeshAssets.Find(BodyType, local_12)))
     {
-        local_1 = !local_1;
-        if (local_1)
+        if (!(Config.Get().MeshAssets.Find(EBodyType(0), local_12)))
         {
             return;
         }
@@ -348,8 +334,7 @@ void ApplyMeshToChild(const USkeletalMeshComponent ChildMesh, const USkeletalMes
     USkeletalMesh local_16 = (Cast<USkeletalMesh>(local_12.ToSoftObjectPath().TryLoad()));
     if (local_16 == nullptr)
     {
-        FString local_36 = local_12.ToSoftObjectPath().ToString();
-        FString local_32 = FString();
+        XError(ELog(79), FString().Append("ApplyMeshToChild: failed to load mesh FashionId=").Append(Config.Get().DataId).Append(" path=").Append(local_12.ToSoftObjectPath().ToString()).Append(" ChildMesh=").Append(ChildMesh));
         return;
     }
     FashionUtils::ApplyFashionAnimBlueprint(ChildMesh, LeaderMesh, Config, EBodyType(BodyType));
@@ -370,7 +355,7 @@ TSoftClassPtr<UAnimInstance> ResolveAnimBlueprint(const TMap<EBodyType, TSoftCla
 }
 void ApplyFashionAnimBlueprint(const USkeletalMeshComponent ChildMesh, const USkeletalMeshComponent LeaderMesh, const TDataObjectPtr<FFashionConfig> &inout Config, const EBodyType BodyType)
 {
-    TSoftClassPtr<UAnimInstance> local_20;
+    TSoftClassPtr<UAnimInstance> local_20 = FashionUtils::ResolveAnimBlueprint(Config.Get().AnimBlueprints, EBodyType(BodyType));
     if (local_20.IsNull())
     {
         ChildMesh.SetAnimInstanceClass(nullptr);
@@ -380,8 +365,7 @@ void ApplyFashionAnimBlueprint(const USkeletalMeshComponent ChildMesh, const USk
     UClass local_24 = (Cast<UClass>(local_20.ToSoftObjectPath().TryLoad()));
     if (local_24 == nullptr)
     {
-        FString local_44 = local_20.ToSoftObjectPath().ToString();
-        FString local_40 = FString();
+        XError(ELog(79), FString().Append("ApplyFashionAnimBlueprint: failed to load AnimBlueprint FashionId=").Append(Config.Get().DataId).Append(" BodyType=").Append(BodyType).Append(" path=").Append(local_20.ToSoftObjectPath().ToString()).Append(" ChildMesh=").Append(ChildMesh));
         ChildMesh.SetAnimInstanceClass(nullptr);
         ChildMesh.SetLeaderPoseComponent(LeaderMesh, false, false);
         return;
@@ -402,47 +386,50 @@ FName ResolveDyeConfigName(const TMap<EBodyType, FName> &inout DyeConfigs, const
 }
 void ApplyFashionDye(const USkeletalMeshComponent SkComp, const TDataObjectPtr<FFashionConfig> &inout Config, const EBodyType BodyType)
 {
-    FName local_4;
-    int local_6 = 0;
+    FName local_4 = FashionUtils::ResolveDyeConfigName(Config.Get().DyeConfigs, EBodyType(BodyType));
     if ((local_4 == NAME_None))
     {
         return;
     }
     else
     {
-        switch (local_6)
+        switch (int(Config.Get().SlotType))
         {
         case 1:
         {
-            if (TDataObjectPtr<FFashionHairDyeConfig>(FFashionHairDyeConfig::FindByKey(local_4)))
+            TDataObjectPtr<FFashionHairDyeConfig> local_56 = TDataObjectPtr<FFashionHairDyeConfig>(FFashionHairDyeConfig::FindByKey(local_4));
+            if (local_56)
             {
-                FashionUtils::ApplyHairDyeToMesh(SkComp);
+                FashionUtils::ApplyHairDyeToMesh(SkComp, local_56.Get());
             }
             return;
         }
         case 2:
         case 4:
         {
-            if (TDataObjectPtr<FFashionUpperClothDyeConfig>(FFashionUpperClothDyeConfig::FindByKey(local_4)))
+            TDataObjectPtr<FFashionUpperClothDyeConfig> local_104 = TDataObjectPtr<FFashionUpperClothDyeConfig>(FFashionUpperClothDyeConfig::FindByKey(local_4));
+            if (local_104)
             {
-                FashionUtils::ApplyClothDyeToMesh(SkComp);
+                FashionUtils::ApplyClothDyeToMesh(SkComp, local_104.Get());
             }
             return;
         }
         case 3:
         case 6:
         {
-            if (TDataObjectPtr<FFashionLowerClothDyeConfig>(FFashionLowerClothDyeConfig::FindByKey(local_4)))
+            TDataObjectPtr<FFashionLowerClothDyeConfig> local_152 = TDataObjectPtr<FFashionLowerClothDyeConfig>(FFashionLowerClothDyeConfig::FindByKey(local_4));
+            if (local_152)
             {
-                FashionUtils::ApplyClothDyeToMesh(SkComp);
+                FashionUtils::ApplyClothDyeToMesh(SkComp, local_152.Get());
             }
             return;
         }
         case 5:
         {
-            if (TDataObjectPtr<FFashionUpperClothDyeConfig>(FFashionUpperClothDyeConfig::FindByKey(local_4)))
+            TDataObjectPtr<FFashionUpperClothDyeConfig> local_128 = TDataObjectPtr<FFashionUpperClothDyeConfig>(FFashionUpperClothDyeConfig::FindByKey(local_4));
+            if (local_128)
             {
-                FashionUtils::ApplyClothDyeToMesh(SkComp);
+                FashionUtils::ApplyClothDyeToMesh(SkComp, local_128.Get());
             }
             return;
         }

@@ -3,7 +3,6 @@ namespace __FShopConfigFunctions
 UFUNCTION()
 FText __FShopConfig_GetDisplayName(const TDataObjectPtr<FShopConfig> &inout DataObject)
 {
-    FText __r;
     if ((DataObject == nullptr))
     {
         if (!(EUIGlobals::GIsDuringPropertyConversion))
@@ -13,12 +12,11 @@ FText __FShopConfig_GetDisplayName(const TDataObjectPtr<FShopConfig> &inout Data
         FShopConfig local_100;
         return local_100.DisplayName;
     }
-    return __r;
+    return DataObject.Get().DisplayName;
 }
 UFUNCTION()
 FSoftBrush __FShopConfig_GetDisplayIcon(const TDataObjectPtr<FShopConfig> &inout DataObject)
 {
-    FSoftBrush __r;
     if ((DataObject == nullptr))
     {
         if (!(EUIGlobals::GIsDuringPropertyConversion))
@@ -28,7 +26,7 @@ FSoftBrush __FShopConfig_GetDisplayIcon(const TDataObjectPtr<FShopConfig> &inout
         FShopConfig local_100;
         return local_100.DisplayIcon;
     }
-    return __r;
+    return DataObject.Get().DisplayIcon;
 }
 UFUNCTION()
 TDataObjectPtr<FServerConditionConfigBase> __FShopConfig_GetUnlockCondition(const TDataObjectPtr<FShopConfig> &inout DataObject)
@@ -42,7 +40,7 @@ TDataObjectPtr<FServerConditionConfigBase> __FShopConfig_GetUnlockCondition(cons
         FShopConfig local_100;
         return local_100.GetUnlockCondition();
     }
-    return GetUnlockCondition();
+    return DataObject.Get().GetUnlockCondition();
 }
 UFUNCTION()
 TArray<TDataObjectPtr<FItemConfig>> __FShopConfig_GetShowCostTypes(const TDataObjectPtr<FShopConfig> &inout DataObject)
@@ -56,7 +54,7 @@ TArray<TDataObjectPtr<FItemConfig>> __FShopConfig_GetShowCostTypes(const TDataOb
         FShopConfig local_100;
         return local_100.GetShowCostTypes();
     }
-    return GetShowCostTypes();
+    return DataObject.Get().GetShowCostTypes();
 }
 UFUNCTION()
 TArray<TDataObjectPtr<FShopGoodsListConfig>> __FShopConfig_GetGoodsLists(const TDataObjectPtr<FShopConfig> &inout DataObject)
@@ -70,7 +68,7 @@ TArray<TDataObjectPtr<FShopGoodsListConfig>> __FShopConfig_GetGoodsLists(const T
         FShopConfig local_100;
         return local_100.GetGoodsLists();
     }
-    return GetGoodsLists();
+    return DataObject.Get().GetGoodsLists();
 }
 UFUNCTION()
 FShopConfig CastToFShopConfig(const TDataObjectPtr<FShopConfig> &inout DataObject)

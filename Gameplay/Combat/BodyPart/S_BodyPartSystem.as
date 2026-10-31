@@ -13,7 +13,8 @@ class US_BodyPartSystem : UECSScriptSystem
             for (auto& local_28 : BodyPartsConfig.BodyPartData.BodyParts)
             {
                 FCharacterBodyPartRuntimeData local_30;
-                local_30.SetbCanDestroy((0 != 0));
+                int local_3 = local_28.GetValue().bCanDestroy;
+                local_30.SetbCanDestroy((local_3 != 0));
                 local_10.GetModify_BodyPartDatas().Add(local_28.GetKey(), local_30);
             }
         }

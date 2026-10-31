@@ -137,10 +137,9 @@ struct FVM_DmageText : FEUIViewModel
     }
     float32 GetDamageTextFontScale() const
     {
-        float32 local_2 = 0.0f;
         if (this.GetbSpecialText())
         {
-            return local_2;
+            return this.GetDamageTextData().SpecialDamageTextConfig.Get().FontScale;
         }
         float32 local_3 = 1.0f;
         bool local_1 = this.GetDamageTextData().bHitWeakness;
@@ -174,10 +173,9 @@ struct FVM_DmageText : FEUIViewModel
     }
     float32 GetDamageTextAnimDuration() const
     {
-        float32 local_2 = 0.0f;
         if (this.GetbSpecialText())
         {
-            return local_2;
+            return this.GetDamageTextData().SpecialDamageTextConfig.Get().Duration;
         }
         if (!(::DamageSettings::Get().DamageTextDurationConfigs.Contains(this.GetDamageTextData().DamageType)))
         {
@@ -329,7 +327,7 @@ struct FVM_DmageTextPanel : FEUIViewModel
         int local_9 = this.GetDamageTextList().Num() - 1;
         for (; local_9 >= 0; --local_9)
         {
-            if (FFPTime(GetDamageTextData().EndTime).opCmp(this.GetContext().Time) <= 0)
+            if (FFPTime(this.GetDamageTextList()[local_9].Get().GetDamageTextData().EndTime).opCmp(this.GetContext().Time) <= 0)
             {
                 this.GetModify_DamageTextList().RemoveAt(local_9);
             }
@@ -361,12 +359,11 @@ struct FVM_DmageTextPanel : FEUIViewModel
         local_46.bHitWeakness = Event.bHitWeakness;
         local_46.bAttenuated = Event.bAttenuated;
         local_46.bCritical = Event.bCritical;
-        int local_1_2 = Event.DamageNumberRandomRatio;
-        local_46.DamageNumberRandomRatio = local_1_2;
+        local_46.DamageNumberRandomRatio = Event.DamageNumberRandomRatio;
         local_46.EndTime = (FFPTime(this.GetContext().Time) + FFPTime(3.0));
         if ((!((Event.SpecialDamageTextConfig == nullptr))))
         {
-            local_46.EndTime += FFPTime(local_1_2);
+            local_46.EndTime += FFPTime(int(Event.SpecialDamageTextConfig.Get().Duration));
         }
         FVM_DmageText& local_112 = ::FVM_DmageText::Create(this.GetContext().Manager, local_46);
         local_112.SetRandomOffset(FVector2D(FMath::RandRange(-50.0f, 50.0f), FMath::RandRange(-30.0f, 30.0f)));
@@ -485,11 +482,9 @@ FVM_DmageText& Create(const UObject ContextObject, const FDmageTextData &inout D
 {
     return FVM_DmageText::CreateByManager(EUIInternal::GetContextManager(ContextObject), DamageTextData);
 }
-FVM_DmageText CreateByManager(const UEUIManagerSubsystem Manager, const FDmageTextData &inout DamageTextData)
+FVM_DmageText& CreateByManager(const UEUIManagerSubsystem Manager, const FDmageTextData &inout DamageTextData)
 {
-    FVM_DmageText __r;
-    TEUIModelRef<FVM_DmageText> local_6 = TEUIModelRef<FVM_DmageText>(EUIInternal::MakeModelWithManager_Generic(Manager, FVM_DmageText::ModelId, 0, DamageTextData));
-    return __r;
+    return TEUIModelRef<FVM_DmageText>(EUIInternal::MakeModelWithManager_Generic(Manager, FVM_DmageText::ModelId, 0, DamageTextData)).Get();
 }
 void GetModelInfo(FEUIViewModelMetaInfo &inout Result)
 {
@@ -579,8 +574,7 @@ namespace __GeneratedProperties_FVM_DmageText
 {
 UScriptStruct StaticStruct()
 {
-    UScriptStruct local_2;
-    return local_2;
+    return __GeneratedProperties_FVM_DmageText.Get();
 }
 }
 namespace FVM_DmageTextPanel
@@ -589,11 +583,9 @@ FVM_DmageTextPanel& Create(const UObject ContextObject)
 {
     return FVM_DmageTextPanel::CreateByManager(EUIInternal::GetContextManager(ContextObject));
 }
-FVM_DmageTextPanel CreateByManager(const UEUIManagerSubsystem Manager)
+FVM_DmageTextPanel& CreateByManager(const UEUIManagerSubsystem Manager)
 {
-    FVM_DmageTextPanel __r;
-    TEUIModelRef<FVM_DmageTextPanel> local_6 = TEUIModelRef<FVM_DmageTextPanel>(EUIInternal::MakeModelWithManager(Manager, FVM_DmageTextPanel::ModelId));
-    return __r;
+    return TEUIModelRef<FVM_DmageTextPanel>(EUIInternal::MakeModelWithManager(Manager, FVM_DmageTextPanel::ModelId)).Get();
 }
 void GetModelInfo(FEUIViewModelMetaInfo &inout Result)
 {
@@ -651,7 +643,6 @@ namespace __GeneratedProperties_FVM_DmageTextPanel
 {
 UScriptStruct StaticStruct()
 {
-    UScriptStruct local_2;
-    return local_2;
+    return __GeneratedProperties_FVM_DmageTextPanel.Get();
 }
 }

@@ -89,7 +89,7 @@ class US_EcosimAIV2WorldCellSystem : UECSScriptSystem
                         {
                             EcosimAIV2WorldCell.EntityLastCellIndexMap.Add(local_24, local_60);
                             FEcosimAIV2WorldCellContent& local_62 = EcosimAIV2WorldCell.CellContentMap.FindOrAdd(local_60);
-                            if (0 > 0)
+                            if (local_62.EntityList.Remove(local_24) > 0)
                             {
                                 local_62.IncreaseCellVersion();
                             }

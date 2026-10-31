@@ -33,6 +33,7 @@ struct FC_AnimResolvedSyncedHistory : FECSComponent
     }
     void Clear()
     {
+        this.History.Clear();
         return;
     }
     bool GetInterpoValue(const FFPTime &inout WorldTime, FC_AnimResolvedSynced &inout OutValue) const

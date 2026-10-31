@@ -133,7 +133,7 @@ struct FStringValidationHelper
         this.ValidatorContexts.Empty(0);
         this.ValidationResults.Empty(0);
         this.bValidationStarted = false;
-        this.CachedValidationResult = EStringValidationResult(EStringValidationResult(2));
+        this.CachedValidationResult = EStringValidationResult(EStringValidationResult::Pending);
         return;
     }
     EStringValidationResult GetValidationResult() const

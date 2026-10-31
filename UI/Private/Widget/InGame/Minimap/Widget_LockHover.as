@@ -18,7 +18,7 @@ class UWidget_LockHover : UEUIUserListItemWidget
     UFUNCTION()
     FText lockhover_TipText() const
     {
-        FVM_LockHover& local_2;
+        FVM_LockHover& local_2 = this.lockhover.Get();
         FText local_12 = local_2 ? local_2.GetTipText() : FText();
         return local_12;
     }

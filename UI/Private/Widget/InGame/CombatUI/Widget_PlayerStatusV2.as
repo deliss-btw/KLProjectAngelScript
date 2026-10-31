@@ -193,7 +193,7 @@ class UWidget_PlayerStatusV2 : UEUIUserWidget
         bool local_4;
         if (this.PlayerStatus.IsValid())
         {
-            local_4 = GetbGamepadLeftShoulderPress();
+            local_4 = this.PlayerStatus.Get().GetbGamepadLeftShoulderPress();
         }
         else
         {
@@ -205,19 +205,19 @@ class UWidget_PlayerStatusV2 : UEUIUserWidget
     UFUNCTION()
     void OnTriggerLeftShoulderPress()
     {
-        1.SetbGamepadLeftShoulderPress();
+        this.PlayerStatus.Get().SetbGamepadLeftShoulderPress(true);
         return;
     }
     UFUNCTION()
     void OnTriggerLeftShoulderRelease()
     {
-        0.SetbGamepadLeftShoulderPress();
+        this.PlayerStatus.Get().SetbGamepadLeftShoulderPress(false);
         return;
     }
     void HandleObservedModelChanges(FEUIReactiveSubscriberIterator &inout It)
     {
-        FVMS_PlayerStatusV2& local_6;
         TEUIModelRef<FVMS_PlayerStatusV2> local_2 = this.PlayerStatus.AsRef();
+        FVMS_PlayerStatusV2& local_6 = local_2.Get();
         for (; It; )
         {
             FEUIReactiveSubscriberTrackScope local_56 = FEUIReactiveSubscriberTrackScope(It);

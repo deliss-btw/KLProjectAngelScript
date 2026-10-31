@@ -35,10 +35,10 @@ void EntityRunHTN(const FECSEntity &inout Entity)
 void EntityStopHTN(const FECSEntity &inout Entity)
 {
     Get local_4;
-    if (local_4.opCall())
+    const FC_HTNInstance& local_6 = local_4.opCall();
+    if (local_6)
     {
-        UECSHTNComponent local_10;
-        local_10.StopHTN(false);
+        local_6.HTNComponent.Get().StopHTN(false);
     }
     return;
 }

@@ -315,11 +315,9 @@ FVM_SimpleLevelSequence& Create(const UObject ContextObject)
 {
     return FVM_SimpleLevelSequence::CreateByManager(EUIInternal::GetContextManager(ContextObject));
 }
-FVM_SimpleLevelSequence CreateByManager(const UEUIManagerSubsystem Manager)
+FVM_SimpleLevelSequence& CreateByManager(const UEUIManagerSubsystem Manager)
 {
-    FVM_SimpleLevelSequence __r;
-    TEUIModelRef<FVM_SimpleLevelSequence> local_6 = TEUIModelRef<FVM_SimpleLevelSequence>(EUIInternal::MakeModelWithManager(Manager, FVM_SimpleLevelSequence::ModelId));
-    return __r;
+    return TEUIModelRef<FVM_SimpleLevelSequence>(EUIInternal::MakeModelWithManager(Manager, FVM_SimpleLevelSequence::ModelId)).Get();
 }
 void GetModelInfo(FEUIViewModelMetaInfo &inout Result)
 {
@@ -382,7 +380,6 @@ namespace __GeneratedProperties_FVM_SimpleLevelSequence
 {
 UScriptStruct StaticStruct()
 {
-    UScriptStruct local_2;
-    return local_2;
+    return __GeneratedProperties_FVM_SimpleLevelSequence.Get();
 }
 }

@@ -214,11 +214,9 @@ FVM_CommonConsume& Create(const UObject ContextObject, const TArray<FRewardItemE
 {
     return FVM_CommonConsume::CreateByManager(EUIInternal::GetContextManager(ContextObject), RewardEntries);
 }
-FVM_CommonConsume CreateByManager(const UEUIManagerSubsystem Manager, const TArray<FRewardItemEntry> &inout RewardEntries)
+FVM_CommonConsume& CreateByManager(const UEUIManagerSubsystem Manager, const TArray<FRewardItemEntry> &inout RewardEntries)
 {
-    FVM_CommonConsume __r;
-    TEUIModelRef<FVM_CommonConsume> local_6 = TEUIModelRef<FVM_CommonConsume>(EUIInternal::MakeModelWithManager_Generic(Manager, FVM_CommonConsume::ModelId, 0, RewardEntries));
-    return __r;
+    return TEUIModelRef<FVM_CommonConsume>(EUIInternal::MakeModelWithManager_Generic(Manager, FVM_CommonConsume::ModelId, 0, RewardEntries)).Get();
 }
 void GetModelInfo(FEUIViewModelMetaInfo &inout Result)
 {
@@ -317,7 +315,6 @@ namespace __GeneratedProperties_FVM_CommonConsume
 {
 UScriptStruct StaticStruct()
 {
-    UScriptStruct local_2;
-    return local_2;
+    return __GeneratedProperties_FVM_CommonConsume.Get();
 }
 }

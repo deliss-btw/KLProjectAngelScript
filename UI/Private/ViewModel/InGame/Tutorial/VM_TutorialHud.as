@@ -81,13 +81,13 @@ struct FVM_TutorialHud : FEUIViewModel
     }
     void UpdateFromInfo(const FTutorialInfo &inout Info)
     {
-        const FTutorialInfoConfig& local_2;
         int local_6;
-        FVM_TutorialHudItem& local_8;
         int local_10;
+        const FTutorialInfoConfig& local_2 = Info.GetTutorialInfoId().Get();
         int local_3 = 0;
         for (; local_3 < this.GetItems().Num(); ++local_3)
         {
+            FVM_TutorialHudItem& local_8 = this.GetItems()[local_3].Get();
             if (local_8.GetStepIndex() < 0)
             {
                 continue;
@@ -123,8 +123,7 @@ struct FVM_TutorialHud : FEUIViewModel
     {
         for (auto& local_16 : this.GetItems())
         {
-            local_16;
-            if (GetbIsProgress() && !(GetbFinished()))
+            if (local_16.Get().GetbIsProgress() && !(local_16.Get().GetbFinished()))
             {
                 return false;
             }
@@ -138,14 +137,14 @@ struct FVM_TutorialHud : FEUIViewModel
     }
     void RebuildItems(const FTutorialInfo &inout Info)
     {
-        const FTutorialInfoConfig& local_4;
-        FVM_TutorialHudItem& local_16;
         this.GetModify_Items().Empty(0);
+        const FTutorialInfoConfig& local_4 = Info.GetTutorialInfoId().Get();
         int local_5 = 0;
         int local_6 = 0;
         for (; local_6 < local_4.Steps.Num(); )
         {
-            TEUIModelRef<FVM_TutorialHudItem> TEUIModelRef<FVM_TutorialHudItem>() = TEUIModelRef<FVM_TutorialHudItem>(::FVM_TutorialHudItem::Create(this.GetManager(), local_5));
+            TEUIModelRef<FVM_TutorialHudItem> local_10 = TEUIModelRef<FVM_TutorialHudItem>(::FVM_TutorialHudItem::Create(this.GetManager(), local_5));
+            FVM_TutorialHudItem& local_16 = local_10.Get();
             local_16.SetStepIndex(local_6);
             if (local_6 < Info.GetStepProgress().Num())
             {
@@ -169,18 +168,19 @@ struct FVM_TutorialHud : FEUIViewModel
                 local_16.SetbFinished(false);
                 local_16.SetDisplayText(local_4.Steps[local_6].DescKey);
             }
-            this.GetModify_Items().Add(TEUIModelRef<FVM_TutorialHudItem>());
+            this.GetModify_Items().Add(local_10);
             local_5 = local_5 + 1;
             ++local_6;
         }
         if (!(local_4.ExtraDescKey.IsEmpty()))
         {
-            TEUIModelRef<FVM_TutorialHudItem> local_14 = TEUIModelRef<FVM_TutorialHudItem>(::FVM_TutorialHudItem::Create(this.GetManager(), local_5));
-            local_16.SetbIsProgress(false);
-            local_16.SetbFinished(false);
-            local_16.SetStepIndex(-1);
-            local_16.SetDisplayText(local_4.ExtraDescKey);
-            this.GetModify_Items().Add(local_14);
+            TEUIModelRef<FVM_TutorialHudItem> local_10_2 = TEUIModelRef<FVM_TutorialHudItem>(::FVM_TutorialHudItem::Create(this.GetManager(), local_5));
+            FVM_TutorialHudItem& local_16_2 = local_10_2.Get();
+            local_16_2.SetbIsProgress(false);
+            local_16_2.SetbFinished(false);
+            local_16_2.SetStepIndex(-1);
+            local_16_2.SetDisplayText(local_4.ExtraDescKey);
+            this.GetModify_Items().Add(local_10_2);
         }
         return;
     }
@@ -304,11 +304,9 @@ FVM_TutorialHud& Create(const UObject ContextObject)
 {
     return FVM_TutorialHud::CreateByManager(EUIInternal::GetContextManager(ContextObject));
 }
-FVM_TutorialHud CreateByManager(const UEUIManagerSubsystem Manager)
+FVM_TutorialHud& CreateByManager(const UEUIManagerSubsystem Manager)
 {
-    FVM_TutorialHud __r;
-    TEUIModelRef<FVM_TutorialHud> local_6 = TEUIModelRef<FVM_TutorialHud>(EUIInternal::MakeModelWithManager(Manager, FVM_TutorialHud::ModelId));
-    return __r;
+    return TEUIModelRef<FVM_TutorialHud>(EUIInternal::MakeModelWithManager(Manager, FVM_TutorialHud::ModelId)).Get();
 }
 void GetModelInfo(FEUIViewModelMetaInfo &inout Result)
 {
@@ -399,7 +397,6 @@ namespace __GeneratedProperties_FVM_TutorialHud
 {
 UScriptStruct StaticStruct()
 {
-    UScriptStruct local_2;
-    return local_2;
+    return __GeneratedProperties_FVM_TutorialHud.Get();
 }
 }

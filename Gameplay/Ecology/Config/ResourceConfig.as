@@ -63,6 +63,8 @@ struct FSingleResourceConfig : FEcologyResourceConfig
     UPROPERTY()
     FGameplayTagContainer InstanceGameplayTags;
 
+    default _base_FEcologyResourceConfig = Cast<UASStruct>(FSingleResourceConfig.Get());
+
     FSingleResourceConfig()
     {
         this.MaxTeamCount = 1;
@@ -93,6 +95,7 @@ struct FSingleResourceConfig : FEcologyResourceConfig
         local_248.Append(this.InstanceGameplayTags);
         if (this.ResourceType)
         {
+            local_248.Append(this.ResourceType.Get().GameplayTags);
         }
         if (::FEcologyConditionUtils::SetupConditionComponent(local_14, this.DOTCondition))
         {
@@ -112,6 +115,8 @@ struct FResourceAreaConfig : FEcologyResourceConfig
     TDataObjectPtr<FEcologyResourceDefinitionRow> ResourceType;
     UPROPERTY()
     FBox Volume;
+
+    default _base_FEcologyResourceConfig = Cast<UASStruct>(FResourceAreaConfig.Get());
 
     FResourceAreaConfig()
     {
@@ -228,9 +233,8 @@ struct FResourceRequestFilterConfig
             {
                 for (auto& local_70 : local_16_2.ActivityVolumes)
                 {
-                    local_70;
                     FVolumeProxy local_72;
-                    AECSRegionVolume local_74;
+                    AECSRegionVolume local_74 = local_70.Get();
                     local_72.Volume = local_74;
                     NewRequest.IncludeVolumes.Add(local_72);
                 }
@@ -240,10 +244,10 @@ struct FResourceRequestFilterConfig
         {
             ::FEcologySceneInfoUtils::FindCombatRegionByEntity(FECSEntity(::FEcologyBehaviorUtils::FindMainTargetResource(Entity)));
             Get local_92;
-            if (local_92.opCall())
+            const FC_RegionVolume& local_94 = local_92.opCall();
+            if (local_94)
             {
-                AActor local_98;
-                local_96 = Cast<AECSRegionVolume>(local_98);
+                local_96 = Cast<AECSRegionVolume>(local_94.RegionVolume.Get());
                 if (local_96 != nullptr)
                 {
                     NewRequest.ExcludeVolumes.Add(FVolumeProxy(local_96));

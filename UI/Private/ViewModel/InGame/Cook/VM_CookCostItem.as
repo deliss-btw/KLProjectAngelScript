@@ -81,8 +81,7 @@ struct FVM_CookCostItem : FEUIViewModel
     }
     void PostConstruct()
     {
-        TEUIModelWeakRef<FVM_Cook> local_2 = this.GetCookMain();
-        this.SetCookPropEntity(GetCookPropEntity());
+        this.SetCookPropEntity(this.GetCookMain().Get().GetCookPropEntity());
         this.RefreshItemModel();
         this.SetPushReadyItemNum();
         return;
@@ -111,8 +110,7 @@ struct FVM_CookCostItem : FEUIViewModel
         {
             return FSoftBrush();
         }
-        TEUIModelRef<FVM_Item> local_6 = this.GetItemModels();
-        return GetItemConfig().opArrow().ItemIcon;
+        return this.GetItemModels().Get().GetItemConfig().opArrow().ItemIcon;
     }
     int GetItemNum() const
     {
@@ -138,10 +136,7 @@ struct FVM_CookCostItem : FEUIViewModel
     {
         if (!(this.GetItemModels().IsNull()))
         {
-            FLinearColor local_7;
-            TEUIModelRef<FVM_Item> local_2 = this.GetItemModels();
-            local_7.GetRarityColor();
-            return local_7;
+            return this.GetItemModels().Get().GetRarityColor();
         }
         return FLinearColor::White;
     }
@@ -173,6 +168,7 @@ struct FVM_CookCostItem : FEUIViewModel
             local_6 = local_4.GetConfig();
         }
         this.SetbIsValid(local_6);
+        this.GetModify_TipHoverModels().Clear();
         if (!(this.GetbIsValid()))
         {
             return;
@@ -183,17 +179,8 @@ struct FVM_CookCostItem : FEUIViewModel
     }
     void RebuildTipHoverModels()
     {
-        bool local_3 = !(this.GetItem().IsValid());
-        if (local_3)
-        {
-            local_3 = true;
-        }
-        else
-        {
-            TEUIModelRef<FM_ItemData> local_2 = this.GetItem();
-            local_3 = !(GetConfig());
-        }
-        if (local_3)
+        this.GetModify_TipHoverModels().Clear();
+        if (!(this.GetItem().IsValid()) || !(this.GetItem().Get().GetConfig()))
         {
             return;
         }
@@ -202,21 +189,8 @@ struct FVM_CookCostItem : FEUIViewModel
     }
     void SetPushReadyItemNum()
     {
-        int local_51 = 0;
-        int local_52 = 0;
-        FVM_CookCostItem& local_62;
-        bool local_3 = !(this.GetItem().IsValid());
-        if (local_3)
-        {
-            local_3 = true;
-        }
-        else
-        {
-            TEUIModelRef<FM_ItemData> local_2 = this.GetItem();
-            local_3 = !(GetConfig());
-        }
-        local_3 = local_3 || !(this.GetCookMain().IsValid());
-        if (local_3)
+        int local_58 = 0;
+        if (!(this.GetItem().IsValid()) || !(this.GetItem().Get().GetConfig()) || !(this.GetCookMain().IsValid()))
         {
             this.SetPushReadyItemNum(0);
             return;
@@ -229,21 +203,11 @@ struct FVM_CookCostItem : FEUIViewModel
         {
             for (auto& local_28 : local_10.GetCookPlayerDatas())
             {
-                bool local_4 = (FECSEntity(local_28.GetPlayerEntity()) == this.GetContext().GetLocalPlayerPawn());
-                if (local_4)
+                if ((FECSEntity(local_28.GetPlayerEntity()) == this.GetContext().GetLocalPlayerPawn()))
                 {
                     for (auto& local_50 : local_28.GetCookCostItems())
                     {
-                        if (!(local_50.GetCookCostItem()))
-                        {
-                            local_4 = false;
-                        }
-                        else
-                        {
-                            TEUIModelRef<FM_ItemData> local_2_2 = this.GetItem();
-                            local_4 = (local_51 == local_52);
-                        }
-                        if (local_4)
+                        if (local_50.GetCookCostItem() && (local_50.GetCookCostItem().Get().DataId == this.GetItem().Get().GetConfig().Get().DataId))
                         {
                             local_8 = local_8 + 1;
                         }
@@ -256,30 +220,18 @@ struct FVM_CookCostItem : FEUIViewModel
         bool local_55 = false;
         TEUIModelWeakRef<FVM_Cook> local_6_2 = this.GetCookMain();
         int local_59 = 0;
-        for (; local_59 < 0.Num(); ++local_59)
+        for (; local_59 < local_58.Num(); ++local_59)
         {
-            bool local_3_2 = !(local_62.GetItem().IsValid());
-            if (local_3_2)
-            {
-                local_3_2 = true;
-            }
-            else
-            {
-                TEUIModelRef<FM_ItemData> local_2_3 = local_62.GetItem();
-                local_3_2 = !(GetConfig());
-            }
-            if (local_3_2)
+            FVM_CookCostItem& local_62 = local_58[local_59].Get();
+            if (!(local_62.GetItem().IsValid()) || !(local_62.GetItem().Get().GetConfig()))
             {
                 continue;
             }
-            TEUIModelRef<FM_ItemData> local_2_4 = local_62.GetItem();
-            TEUIModelRef<FM_ItemData> local_64 = this.GetItem();
-            if (local_52 != local_51)
+            if (local_62.GetItem().Get().GetConfig().Get().DataId != this.GetItem().Get().GetConfig().Get().DataId)
             {
                 continue;
             }
-            TEUIModelRef<FM_ItemData> local_64_2 = local_62.GetItem();
-            local_53 = local_53 + GetNum();
+            local_53 = local_53 + local_62.GetItem().Get().GetNum();
             if ((local_62.GetItem() == this.GetItem().opImplConv()))
             {
                 local_55 = true;
@@ -287,15 +239,11 @@ struct FVM_CookCostItem : FEUIViewModel
             }
             if (!(local_55))
             {
-                TEUIModelRef<FM_ItemData> local_64_3 = local_62.GetItem();
-                local_54 = local_54 + GetNum();
+                local_54 = local_54 + local_62.GetItem().Get().GetNum();
             }
         }
-        int local_67 = FMath::Max(local_53 - local_8, 0);
-        TEUIModelRef<FM_ItemData> local_2_5 = this.GetItem();
-        int local_69 = FMath::Clamp(local_67 - local_54, 0, GetNum());
-        TEUIModelRef<FM_ItemData> local_2_6 = this.GetItem();
-        this.SetPushReadyItemNum(GetNum() - local_69);
+        int local_69 = FMath::Clamp((FMath::Max(local_53 - local_8, 0)) - local_54, 0, this.GetItem().Get().GetNum());
+        this.SetPushReadyItemNum(this.GetItem().Get().GetNum() - local_69);
         return;
     }
     void SetItemSelected(const bool bSelected)
@@ -563,17 +511,7 @@ struct FVM_WaitCookItem : FEUIViewModel
     }
     ESlateVisibility GetWaitCookItemIconVisibility() const
     {
-        bool local_5 = this.GetItem();
-        if (!(local_5))
-        {
-            local_5 = false;
-        }
-        else
-        {
-            TEUIModelRef<FM_ItemData> local_2 = this.GetItem();
-            local_5 = GetConfig();
-        }
-        if (local_5)
+        if (!(!(this.GetItem())) && this.GetItem().Get().GetConfig())
         {
             return ESlateVisibility(0);
         }
@@ -581,17 +519,7 @@ struct FVM_WaitCookItem : FEUIViewModel
     }
     ESlateVisibility GetEmptyCookItemIconVisibility() const
     {
-        bool local_5 = this.GetItem();
-        if (!(local_5))
-        {
-            local_5 = false;
-        }
-        else
-        {
-            TEUIModelRef<FM_ItemData> local_2 = this.GetItem();
-            local_5 = GetConfig();
-        }
-        if (local_5)
+        if (!(!(this.GetItem())) && this.GetItem().Get().GetConfig())
         {
             return ESlateVisibility(2);
         }
@@ -599,19 +527,16 @@ struct FVM_WaitCookItem : FEUIViewModel
     }
     FSoftBrush GetOwnerIcon() const
     {
-        FSoftBrush __return;
         if (!(this.GetOwner().IsValid()))
         {
             return FSoftBrush();
         }
-        if (::GetAvatarConfig(this.GetOwner()))
+        TDataObjectPtr<FAvatarPrefabConfig> local_72 = ::GetAvatarConfig(this.GetOwner());
+        if (local_72)
         {
+            return local_72.Get().AvatarIcon;
         }
-        else
-        {
-            __return = FSoftBrush();
-        }
-        return __return;
+        return FSoftBrush();
     }
     ESlateVisibility GetOwnerReady() const
     {
@@ -854,11 +779,9 @@ FVM_CookCostItem& Create(const UObject ContextObject, const TEUIModelRef<FM_Item
 {
     return FVM_CookCostItem::CreateByManager(EUIInternal::GetContextManager(ContextObject), Item, CookMain);
 }
-FVM_CookCostItem CreateByManager(const UEUIManagerSubsystem Manager, const TEUIModelRef<FM_ItemData> &inout Item, const TEUIModelWeakRef<FVM_Cook> &inout CookMain)
+FVM_CookCostItem& CreateByManager(const UEUIManagerSubsystem Manager, const TEUIModelRef<FM_ItemData> &inout Item, const TEUIModelWeakRef<FVM_Cook> &inout CookMain)
 {
-    FVM_CookCostItem __r;
-    TEUIModelRef<FVM_CookCostItem> local_6 = TEUIModelRef<FVM_CookCostItem>(EUIInternal::MakeModelWithManager_Generic(Manager, FVM_CookCostItem::ModelId, 0, Item, CookMain));
-    return __r;
+    return TEUIModelRef<FVM_CookCostItem>(EUIInternal::MakeModelWithManager_Generic(Manager, FVM_CookCostItem::ModelId, 0, Item, CookMain)).Get();
 }
 void GetModelInfo(FEUIViewModelMetaInfo &inout Result)
 {
@@ -1024,8 +947,7 @@ namespace __GeneratedProperties_FVM_CookCostItem
 {
 UScriptStruct StaticStruct()
 {
-    UScriptStruct local_2;
-    return local_2;
+    return __GeneratedProperties_FVM_CookCostItem.Get();
 }
 }
 namespace FVM_WaitCookItem
@@ -1034,11 +956,9 @@ FVM_WaitCookItem& Create(const UObject ContextObject, const TEUIModelRef<FM_Item
 {
     return FVM_WaitCookItem::CreateByManager(EUIInternal::GetContextManager(ContextObject), Item, CookMain);
 }
-FVM_WaitCookItem CreateByManager(const UEUIManagerSubsystem Manager, const TEUIModelRef<FM_ItemData> &inout Item, const TEUIModelWeakRef<FVM_Cook> &inout CookMain)
+FVM_WaitCookItem& CreateByManager(const UEUIManagerSubsystem Manager, const TEUIModelRef<FM_ItemData> &inout Item, const TEUIModelWeakRef<FVM_Cook> &inout CookMain)
 {
-    FVM_WaitCookItem __r;
-    TEUIModelRef<FVM_WaitCookItem> local_6 = TEUIModelRef<FVM_WaitCookItem>(EUIInternal::MakeModelWithManager_Generic(Manager, FVM_WaitCookItem::ModelId, 0, Item, CookMain));
-    return __r;
+    return TEUIModelRef<FVM_WaitCookItem>(EUIInternal::MakeModelWithManager_Generic(Manager, FVM_WaitCookItem::ModelId, 0, Item, CookMain)).Get();
 }
 void GetModelInfo(FEUIViewModelMetaInfo &inout Result)
 {
@@ -1178,7 +1098,6 @@ namespace __GeneratedProperties_FVM_WaitCookItem
 {
 UScriptStruct StaticStruct()
 {
-    UScriptStruct local_2;
-    return local_2;
+    return __GeneratedProperties_FVM_WaitCookItem.Get();
 }
 }

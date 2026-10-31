@@ -19,6 +19,7 @@ class UESMAction_StoreEntityBB : UESMBPBaseSpanAction
         int local_6 = 0;
         if (local_6)
         {
+            local_6.GetModify_FloatStore().Remove(this.FloatNameHandle.Name);
         }
         return;
     }

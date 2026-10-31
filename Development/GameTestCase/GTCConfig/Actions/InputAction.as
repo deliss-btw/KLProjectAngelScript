@@ -25,6 +25,8 @@ struct FGTCInputAction : FGTCAction
     UPROPERTY()
     TArray<FSimulatedInput> InputGroup;
 
+    default m_ScriptOverrideMeta = Cast<UASStruct>(FGTCInputAction.Get());
+
     FGTCInputAction()
     {
         this.bIsLocalInput = false;

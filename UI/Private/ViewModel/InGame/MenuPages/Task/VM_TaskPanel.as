@@ -93,8 +93,7 @@ struct FVM_TaskPanel : FEUIViewModel
     }
     FText GetTitle() const
     {
-        FM_Task& local_4;
-        TEUIModelRef<FM_Task> local_2 = this.GetSelectedTask();
+        FM_Task& local_4 = this.GetSelectedTask().Get();
         if (local_4)
         {
             return local_4.GetTaskTitle();
@@ -103,8 +102,7 @@ struct FVM_TaskPanel : FEUIViewModel
     }
     FText GetDesc() const
     {
-        FM_Task& local_4;
-        TEUIModelRef<FM_Task> local_2 = this.GetSelectedTask();
+        FM_Task& local_4 = this.GetSelectedTask().Get();
         if (local_4)
         {
             return local_4.GetTaskDetailShort();
@@ -113,8 +111,7 @@ struct FVM_TaskPanel : FEUIViewModel
     }
     FText GetDetail() const
     {
-        FM_Task& local_4;
-        TEUIModelRef<FM_Task> local_2 = this.GetSelectedTask();
+        FM_Task& local_4 = this.GetSelectedTask().Get();
         if (local_4)
         {
             return local_4.GetTaskDetailLong();
@@ -145,7 +142,7 @@ struct FVM_TaskPanel : FEUIViewModel
     void AddTask(const TEUIModelRef<FM_Task> &inout Task)
     {
         int local_20 = 0;
-        int local_2 = int(GetDataSource());
+        int local_2 = int(Task.Get().GetDataSource());
         if (local_2 <= 1)
         {
             if (local_2 != 1)
@@ -302,11 +299,9 @@ FVM_TaskPanel& Create(const UObject ContextObject)
 {
     return FVM_TaskPanel::CreateByManager(EUIInternal::GetContextManager(ContextObject));
 }
-FVM_TaskPanel CreateByManager(const UEUIManagerSubsystem Manager)
+FVM_TaskPanel& CreateByManager(const UEUIManagerSubsystem Manager)
 {
-    FVM_TaskPanel __r;
-    TEUIModelRef<FVM_TaskPanel> local_6 = TEUIModelRef<FVM_TaskPanel>(EUIInternal::MakeModelWithManager(Manager, FVM_TaskPanel::ModelId));
-    return __r;
+    return TEUIModelRef<FVM_TaskPanel>(EUIInternal::MakeModelWithManager(Manager, FVM_TaskPanel::ModelId)).Get();
 }
 void GetModelInfo(FEUIViewModelMetaInfo &inout Result)
 {
@@ -432,7 +427,6 @@ namespace __GeneratedProperties_FVM_TaskPanel
 {
 UScriptStruct StaticStruct()
 {
-    UScriptStruct local_2;
-    return local_2;
+    return __GeneratedProperties_FVM_TaskPanel.Get();
 }
 }

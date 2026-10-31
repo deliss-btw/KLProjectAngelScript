@@ -105,7 +105,21 @@ struct FVM_CommonSideHintList : FEUIViewModel
     }
     void RegisterSideHintManager(const TEUIModelRef<FM_CommonSideHintManager> &inout InSideHintManager)
     {
-        // body not fully recovered — stub [opcode-uncovered]
+        FMS_CommonSideHintManagerAccessor& local_2 = ::FMS_CommonSideHintManagerAccessor::Get(this.GetContext().Manager);
+        if (!(local_2))
+        {
+            return;
+        }
+        switch (this.GetSideHintListType())
+        {
+            case ECommonSideHintListType::SmallHint:
+                local_2.SetSmallSideHintManager(InSideHintManager);
+                return;
+            case ECommonSideHintListType::LargeHint:
+                local_2.SetLargeSideHintManager(InSideHintManager);
+                return;
+        }
+        return;
     }
     ECommonSideHintListType GetSideHintListType() const property
     {
@@ -474,11 +488,9 @@ FVM_CommonSideHintList& Create(const UObject ContextObject)
 {
     return FVM_CommonSideHintList::CreateByManager(EUIInternal::GetContextManager(ContextObject));
 }
-FVM_CommonSideHintList CreateByManager(const UEUIManagerSubsystem Manager)
+FVM_CommonSideHintList& CreateByManager(const UEUIManagerSubsystem Manager)
 {
-    FVM_CommonSideHintList __r;
-    TEUIModelRef<FVM_CommonSideHintList> local_6 = TEUIModelRef<FVM_CommonSideHintList>(EUIInternal::MakeModelWithManager(Manager, FVM_CommonSideHintList::ModelId));
-    return __r;
+    return TEUIModelRef<FVM_CommonSideHintList>(EUIInternal::MakeModelWithManager(Manager, FVM_CommonSideHintList::ModelId)).Get();
 }
 void GetModelInfo(FEUIViewModelMetaInfo &inout Result)
 {
@@ -553,8 +565,7 @@ namespace __GeneratedProperties_FVM_CommonSideHintList
 {
 UScriptStruct StaticStruct()
 {
-    UScriptStruct local_2;
-    return local_2;
+    return __GeneratedProperties_FVM_CommonSideHintList.Get();
 }
 }
 namespace FVM_CommonSideHint_Large
@@ -563,11 +574,9 @@ FVM_CommonSideHint_Large& Create(const UObject ContextObject, const FSoftBrush &
 {
     return FVM_CommonSideHint_Large::CreateByManager(EUIInternal::GetContextManager(ContextObject), Icon, SpecialBgImage, Title, Content);
 }
-FVM_CommonSideHint_Large CreateByManager(const UEUIManagerSubsystem Manager, const FSoftBrush &inout Icon, const FSoftBrush &inout SpecialBgImage, const FText &inout Title, const FText &inout Content)
+FVM_CommonSideHint_Large& CreateByManager(const UEUIManagerSubsystem Manager, const FSoftBrush &inout Icon, const FSoftBrush &inout SpecialBgImage, const FText &inout Title, const FText &inout Content)
 {
-    FVM_CommonSideHint_Large __r;
-    TEUIModelRef<FVM_CommonSideHint_Large> local_6 = TEUIModelRef<FVM_CommonSideHint_Large>(EUIInternal::MakeModelWithManager_Generic(Manager, FVM_CommonSideHint_Large::ModelId, 0, Icon, SpecialBgImage, Title, Content));
-    return __r;
+    return TEUIModelRef<FVM_CommonSideHint_Large>(EUIInternal::MakeModelWithManager_Generic(Manager, FVM_CommonSideHint_Large::ModelId, 0, Icon, SpecialBgImage, Title, Content)).Get();
 }
 void GetModelInfo(FEUIViewModelMetaInfo &inout Result)
 {
@@ -648,8 +657,7 @@ namespace __GeneratedProperties_FVM_CommonSideHint_Large
 {
 UScriptStruct StaticStruct()
 {
-    UScriptStruct local_2;
-    return local_2;
+    return __GeneratedProperties_FVM_CommonSideHint_Large.Get();
 }
 }
 namespace FVM_CommonSideHint_Small
@@ -658,11 +666,9 @@ FVM_CommonSideHint_Small& Create(const UObject ContextObject, const FSoftBrush &
 {
     return FVM_CommonSideHint_Small::CreateByManager(EUIInternal::GetContextManager(ContextObject), Icon, SpecialBgImage, Content);
 }
-FVM_CommonSideHint_Small CreateByManager(const UEUIManagerSubsystem Manager, const FSoftBrush &inout Icon, const FSoftBrush &inout SpecialBgImage, const FText &inout Content)
+FVM_CommonSideHint_Small& CreateByManager(const UEUIManagerSubsystem Manager, const FSoftBrush &inout Icon, const FSoftBrush &inout SpecialBgImage, const FText &inout Content)
 {
-    FVM_CommonSideHint_Small __r;
-    TEUIModelRef<FVM_CommonSideHint_Small> local_6 = TEUIModelRef<FVM_CommonSideHint_Small>(EUIInternal::MakeModelWithManager_Generic(Manager, FVM_CommonSideHint_Small::ModelId, 0, Icon, SpecialBgImage, Content));
-    return __r;
+    return TEUIModelRef<FVM_CommonSideHint_Small>(EUIInternal::MakeModelWithManager_Generic(Manager, FVM_CommonSideHint_Small::ModelId, 0, Icon, SpecialBgImage, Content)).Get();
 }
 void GetModelInfo(FEUIViewModelMetaInfo &inout Result)
 {
@@ -730,7 +736,6 @@ namespace __GeneratedProperties_FVM_CommonSideHint_Small
 {
 UScriptStruct StaticStruct()
 {
-    UScriptStruct local_2;
-    return local_2;
+    return __GeneratedProperties_FVM_CommonSideHint_Small.Get();
 }
 }

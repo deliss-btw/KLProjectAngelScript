@@ -102,13 +102,12 @@ struct FC_CombatScriptControl : FECSComponent
             }
             else
             {
-                local_5 = EScriptControlBehaviorName(0);
+                local_5 = EScriptControlBehaviorName::None;
             }
             this.CurrentActionBehavior = EScriptControlBehaviorName(local_5);
             return;
         }
-        EScriptControlBehaviorName local_6 = EScriptControlBehaviorName(0);
-        this.CurrentActionBehavior = EScriptControlBehaviorName(local_6);
+        this.CurrentActionBehavior = EScriptControlBehaviorName(EScriptControlBehaviorName::None);
         return;
     }
     void DisableAndClearAll()

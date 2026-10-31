@@ -45,8 +45,8 @@ class UWidget_CommissionLeaderBoardPlayer : UEUIUserWidget
     }
     void HandleObservedModelChanges(FEUIReactiveSubscriberIterator &inout It)
     {
-        FVM_CommissionLeaderboardPlayer& local_6;
         TEUIModelRef<FVM_CommissionLeaderboardPlayer> local_2 = this.LeaderboardPlayer.AsRef();
+        FVM_CommissionLeaderboardPlayer& local_6 = local_2.Get();
         for (; It; )
         {
             FEUIReactiveSubscriberTrackScope local_56 = FEUIReactiveSubscriberTrackScope(It);

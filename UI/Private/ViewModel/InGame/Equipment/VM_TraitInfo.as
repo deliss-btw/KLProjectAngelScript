@@ -62,8 +62,7 @@ struct FVM_TraitSourceInfo : FEUIViewModel
     }
     FSoftBrush GetEquipmentIcon() const
     {
-        TEUIModelRef<FM_Equipment> local_2 = this.GetEquipmentInfo();
-        return GetEquipmentConfig().opArrow().ItemIcon;
+        return this.GetEquipmentInfo().Get().GetEquipmentConfig().opArrow().ItemIcon;
     }
     void PostConstruct()
     {
@@ -245,13 +244,11 @@ struct FVM_TraitInfo : FEUIViewModel
     }
     TDataObjectPtr<FTraitConfig> GetTraitConfig() const
     {
-        TEUIModelRef<FM_Trait> local_2 = this.GetTrait();
-        return GetTraitConfig();
+        return this.GetTrait().Get().GetTraitConfig();
     }
     int GetTraitLevel() const
     {
-        TEUIModelRef<FM_Trait> local_2 = this.GetTrait();
-        return GetTraitLevel();
+        return this.GetTrait().Get().GetTraitLevel();
     }
     int GetTraitMaxLevel() const
     {
@@ -259,10 +256,7 @@ struct FVM_TraitInfo : FEUIViewModel
     }
     FText GetTraitDescription() const
     {
-        TEUIModelRef<FM_Trait> local_2 = this.GetTrait();
-        FText local_6;
-        local_6.GetTraitDescription();
-        return local_6;
+        return this.GetTrait().Get().GetTraitDescription();
     }
     FSoftBrush GetTraitIcon() const
     {
@@ -415,11 +409,9 @@ FVM_TraitSourceInfo& Create(const UObject ContextObject, const TEUIModelRef<FM_E
 {
     return FVM_TraitSourceInfo::CreateByManager(EUIInternal::GetContextManager(ContextObject), EquipmentInfo, TraitLevel);
 }
-FVM_TraitSourceInfo CreateByManager(const UEUIManagerSubsystem Manager, const TEUIModelRef<FM_Equipment> &inout EquipmentInfo, const uint TraitLevel)
+FVM_TraitSourceInfo& CreateByManager(const UEUIManagerSubsystem Manager, const TEUIModelRef<FM_Equipment> &inout EquipmentInfo, const uint TraitLevel)
 {
-    FVM_TraitSourceInfo __r;
-    TEUIModelRef<FVM_TraitSourceInfo> local_6 = TEUIModelRef<FVM_TraitSourceInfo>(EUIInternal::MakeModelWithManager_Generic(Manager, FVM_TraitSourceInfo::ModelId, 0, EquipmentInfo, TraitLevel));
-    return __r;
+    return TEUIModelRef<FVM_TraitSourceInfo>(EUIInternal::MakeModelWithManager_Generic(Manager, FVM_TraitSourceInfo::ModelId, 0, EquipmentInfo, TraitLevel)).Get();
 }
 void GetModelInfo(FEUIViewModelMetaInfo &inout Result)
 {
@@ -496,8 +488,7 @@ namespace __GeneratedProperties_FVM_TraitSourceInfo
 {
 UScriptStruct StaticStruct()
 {
-    UScriptStruct local_2;
-    return local_2;
+    return __GeneratedProperties_FVM_TraitSourceInfo.Get();
 }
 }
 namespace FVM_TraitInfo
@@ -506,11 +497,9 @@ FVM_TraitInfo& Create(const UObject ContextObject, const TEUIModelRef<FM_Trait> 
 {
     return FVM_TraitInfo::CreateByManager(EUIInternal::GetContextManager(ContextObject), Trait);
 }
-FVM_TraitInfo CreateByManager(const UEUIManagerSubsystem Manager, const TEUIModelRef<FM_Trait> &inout Trait)
+FVM_TraitInfo& CreateByManager(const UEUIManagerSubsystem Manager, const TEUIModelRef<FM_Trait> &inout Trait)
 {
-    FVM_TraitInfo __r;
-    TEUIModelRef<FVM_TraitInfo> local_6 = TEUIModelRef<FVM_TraitInfo>(EUIInternal::MakeModelWithManager_Generic(Manager, FVM_TraitInfo::ModelId, 0, Trait));
-    return __r;
+    return TEUIModelRef<FVM_TraitInfo>(EUIInternal::MakeModelWithManager_Generic(Manager, FVM_TraitInfo::ModelId, 0, Trait)).Get();
 }
 void GetModelInfo(FEUIViewModelMetaInfo &inout Result)
 {
@@ -695,7 +684,6 @@ namespace __GeneratedProperties_FVM_TraitInfo
 {
 UScriptStruct StaticStruct()
 {
-    UScriptStruct local_2;
-    return local_2;
+    return __GeneratedProperties_FVM_TraitInfo.Get();
 }
 }

@@ -77,7 +77,7 @@ class UESMAction_KeepInteract : UESMBPBaseSpanTickAction
     void Exit_Implementation(const FESMContext &inout Context, const FESMActionTime &inout Time) const
     {
         const FECSEntity& local_2 = Context.GetEntity();
-        FESMKeepInteractInstanceData local_4;
+        const FESMKeepInteractInstanceData& local_4 = this.GetInstanceData(Context);
         FInteractionPointAndBehaviorIndex local_6 = local_4.TargetPointAndBehaviorIndex;
         FDataObjectPtr local_30;
         Get local_34;
@@ -276,12 +276,13 @@ class UESMAction_AddInteractProgress : UESMBPBaseInstantAction
             FC_RuntimeInteractTargetStatus& local_20 = local_18.opCall();
             if (local_20)
             {
+                float32 local_22 = this.ProgressValueToAdd.GetValue(Context.GetEntityBB());
                 UInteractionBehaviorBase local_26 = ::FInteractUtils::GetInteractionBehaviorFromEntity(local_14, local_8.GetTargetPointAndBehaviorIndex());
                 int local_28 = local_20.GetInteractionBehaviorStatusIndex(local_26);
                 if (local_28 != INDEX_NONE)
                 {
                     FRuntimeInteractionBehaviorStatus& local_30 = local_20.GetModify_InteractionBehaviorStatus()[local_28];
-                    local_30.SetProgressValue((local_30.GetProgressValue() + 0.0f));
+                    local_30.SetProgressValue((local_30.GetProgressValue() + local_22));
                     if (local_30.GetProgressValue() > local_26.InteractProgressConfig.MaxProgressValue)
                     {
                         local_30.SetProgressValue(local_26.InteractProgressConfig.MaxProgressValue);

@@ -284,7 +284,6 @@ UFUNCTION()
 bool FindNearestWaterBody(const FVector &inout Position, const TArray<TWeakObjectPtr<AWaterBodyLake>> &inout WaterBodies, AWaterBodyLake &inout OutNearestWaterBody, FVector &inout OutNearestWaterPoint, float32 &inout OutDistance)
 {
     AWaterBodyLake local_10;
-    AWaterBodyLake local_26;
     FScopeCycleCounter local_1 = FScopeCycleCounter(FStatID(n"WaterAudio_FindNearestWaterBody"), false);
     if (WaterBodies.Num() == 0)
     {
@@ -293,7 +292,7 @@ bool FindNearestWaterBody(const FVector &inout Position, const TArray<TWeakObjec
     float32 local_6 = 100000000.0f;
     for (auto& local_24 : WaterBodies)
     {
-        local_24;
+        AWaterBodyLake local_26 = local_24.Get();
         if (local_26 != nullptr)
         {
             UWaterSplineComponent local_30 = Cast<UWaterSplineComponent>(local_26.GetComponentByClass(UWaterSplineComponent));
@@ -502,6 +501,7 @@ void StartWaterAudio(const FECSEntity &inout Entity, FC_WaterAudio &inout WaterA
     }
     if (!(local_22.IsNull()))
     {
+        local_12 = local_22.Get();
         if (local_12 == nullptr)
         {
             local_12 = (Cast<UAkAudioEvent>(local_22.ToSoftObjectPath().TryLoad()));
@@ -523,6 +523,7 @@ void StartWaterAudio(const FECSEntity &inout Entity, FC_WaterAudio &inout WaterA
             TSoftObjectPtr<UAkAudioEvent> local_68 = TSoftObjectPtr<UAkAudioEvent>(FSoftObjectPath(local_40));
             if (local_68.IsValid())
             {
+                local_12 = local_68.Get();
                 if (local_12 == nullptr)
                 {
                     local_12 = (Cast<UAkAudioEvent>(local_68.ToSoftObjectPath().TryLoad()));

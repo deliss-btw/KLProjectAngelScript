@@ -52,15 +52,12 @@ class US_DialogueDeliverySystem : UECSScriptSystem
         }
         if (Event.AttachedDialogueConfig.IsSet())
         {
-            FName local_70;
-            local_70.GetDataName();
-            XLog(ELog(64), FString().Append("Add quick start component for player: ").Append(local_4.GetEntityName()).Append(", dialogue config: ").Append(local_70));
+            XLog(ELog(64), FString().Append("Add quick start component for player: ").Append(local_4.GetEntityName()).Append(", dialogue config: ").Append(Event.AttachedDialogueConfig.Get().GetDataName()));
             local_108.SetInteractTarget(local_56.GetInteractTarget());
             local_108.SetDialogueConfig(Event.AttachedDialogueConfig);
         }
         else
         {
-            FName local_70;
             bool local_109;
             local_109 = false;
             for (auto& local_124 : local_10.GetSection().GetOptions())
@@ -84,14 +81,12 @@ class US_DialogueDeliverySystem : UECSScriptSystem
                     Assign local_188;
                     local_188.opCall(local_190);
                 }
-                if (FInstancedStruct::GetPtr(local_56.LoadDialogueGraph().GetNode(int(Event.OptionNodeId))).opCall())
+                TConstRawPtr<FDialogueNode_Option> local_212 = FInstancedStruct::GetPtr(local_56.LoadDialogueGraph().GetNode(int(Event.OptionNodeId))).opCall();
+                if (local_212)
                 {
                     FName local_68 = local_56.GetDialogueName();
-                    local_70.GetOptionName();
-                    local_222.GetOptionHistory().Add(local_70);
-                    local_70 = local_56.GetDialogueName();
-                    local_68.GetOptionName();
-                    XLog(ELog(64), FString().Append("OptionHistory added: ").Append(local_68).Append(", Dialogue: ").Append(local_70));
+                    local_222.GetOptionHistory().Add(local_212.Get().GetOptionName());
+                    XLog(ELog(64), FString().Append("OptionHistory added: ").Append(local_212.Get().GetOptionName()).Append(", Dialogue: ").Append(local_56.GetDialogueName()));
                 }
             }
             if (!(local_109))
@@ -131,9 +126,10 @@ class US_DialogueDeliverySystem : UECSScriptSystem
         }
         for (auto local_98 : local_18)
         {
-            if (FInstancedStruct::GetPtr(local_64.LoadDialogueGraph().GetNode(int(local_98))).opCall())
+            FInstancedStruct local_110 = local_64.LoadDialogueGraph().GetNode(int(local_98));
+            if (FInstancedStruct::GetPtr(local_110).opCall())
             {
-                CurrentDialogue.GetModify_ExecutedActionNodeIds().Add(local_98);
+                CurrentDialogue.GetModify_ExecutedActionNodeIds().Add(DialogueActions.ActionNodeIds.Remove(local_64.ProcessSingleNode(local_110, DialogueActions.Section)));
                 ::DialogueUtils::SetDialogueLastNodeId(DialogueEntity, int(local_98));
             }
         }
@@ -644,6 +640,7 @@ class US_DialogueDeliverySystem : UECSScriptSystem
                 CurrentDialogue.GetModify_PlayerEntitiesInRange().Add(local_132);
                 if (CurrentDialogue.GetPlayerEntitiesOutRange().Contains(local_132))
                 {
+                    CurrentDialogue.GetModify_PlayerEntitiesOutRange().Remove(local_132);
                 }
             }
             else
@@ -651,6 +648,7 @@ class US_DialogueDeliverySystem : UECSScriptSystem
                 if (!(local_129) && CurrentDialogue.GetPlayerEntitiesInRange().Contains(local_132))
                 {
                     XLog(ELog(64), FString().Append("Player ").Append(local_132.GetEntityName()).Append(" left range for dialogue: ").Append(CurrentDialogue.GetDialogueContext().GetDialogueName()));
+                    CurrentDialogue.GetModify_PlayerEntitiesInRange().Remove(local_132);
                     CurrentDialogue.GetModify_PlayerEntitiesOutRange().Add(local_132);
                     local_4.Add(local_132);
                 }
@@ -661,13 +659,12 @@ class US_DialogueDeliverySystem : UECSScriptSystem
     UFUNCTION()
     void ClientJob_HandleNarrationStart(const FCE_NarrationDialogueStart &inout Event) const
     {
-        const FNarrationDialogueConfig& local_4;
-        const FDialogueLineConfig& local_24;
         const UDialogueSettings local_78;
         if (!(Event.DialogueConfig.IsSet()))
         {
             return;
         }
+        const FNarrationDialogueConfig& local_4 = Event.DialogueConfig.Get();
         if (local_4.NarrationEntries.IsEmpty())
         {
             XError(ELog(64), FString().Append("[Dialogue] Narration entries is empty: ").Append(local_4.GetDataName()));
@@ -682,13 +679,14 @@ class US_DialogueDeliverySystem : UECSScriptSystem
             {
                 continue;
             }
+            const FDialogueLineConfig& local_24 = local_22.DialogueLine.Get();
             FDialogueSubtitle local_46 = FDialogueSubtitle(FECSEntity(), local_17, local_24.GetDataName());
             local_46.SetDuration(local_22.SubtitleDuration);
             local_46.SetContent(local_24.LineText);
             local_46.SetSpeakerName(local_24.GetSpeakerName());
             if (local_24.GetVoiceConfig().IsSet())
             {
-                const FDialogueVoiceConfig& local_58;
+                const FDialogueVoiceConfig& local_58 = local_24.GetVoiceConfig().Get();
                 for (auto& local_72 : local_58.VOSources)
                 {
                     if ((int(local_72.PlayerGender) == 0 || (int(local_72.PlayerGender) == 2)))

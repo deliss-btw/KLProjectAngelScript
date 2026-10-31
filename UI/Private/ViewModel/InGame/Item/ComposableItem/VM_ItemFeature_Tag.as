@@ -146,11 +146,9 @@ FVM_ItemFeature_Tag& Create(const UObject ContextObject, const TEUIModelRef<FVM_
 {
     return FVM_ItemFeature_Tag::CreateByManager(EUIInternal::GetContextManager(ContextObject), CommonItemVM);
 }
-FVM_ItemFeature_Tag CreateByManager(const UEUIManagerSubsystem Manager, const TEUIModelRef<FVM_CommonItem> &inout CommonItemVM)
+FVM_ItemFeature_Tag& CreateByManager(const UEUIManagerSubsystem Manager, const TEUIModelRef<FVM_CommonItem> &inout CommonItemVM)
 {
-    FVM_ItemFeature_Tag __r;
-    TEUIModelRef<FVM_ItemFeature_Tag> local_6 = TEUIModelRef<FVM_ItemFeature_Tag>(EUIInternal::MakeModelWithManager_Generic(Manager, FVM_ItemFeature_Tag::ModelId, 0, CommonItemVM));
-    return __r;
+    return TEUIModelRef<FVM_ItemFeature_Tag>(EUIInternal::MakeModelWithManager_Generic(Manager, FVM_ItemFeature_Tag::ModelId, 0, CommonItemVM)).Get();
 }
 void GetModelInfo(FEUIViewModelMetaInfo &inout Result)
 {
@@ -210,7 +208,6 @@ namespace __GeneratedProperties_FVM_ItemFeature_Tag
 {
 UScriptStruct StaticStruct()
 {
-    UScriptStruct local_2;
-    return local_2;
+    return __GeneratedProperties_FVM_ItemFeature_Tag.Get();
 }
 }

@@ -47,7 +47,7 @@ class UWidget_StigmataItem : UEUIUserWidget
     {
         if (this.StigmataItem.IsValid())
         {
-            ConsumeRedDot();
+            this.StigmataItem.Get().ConsumeRedDot();
         }
         return;
     }

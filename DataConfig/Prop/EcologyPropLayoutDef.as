@@ -14,6 +14,8 @@ struct FEcologyPropLayoutDef : FCreatureDefinitionRow
     UPROPERTY()
     FVector2D SpawnScaleUniformFactorRandomRange;
 
+    default m_ScriptOverrideMeta = Cast<UASStruct>(FEcologyPropLayoutDef.Get());
+
     FEcologyPropLayoutDef()
     {
         this.bRandomizeLocalRotationZOnSpawn = false;

@@ -106,11 +106,9 @@ FVM_BattleBuildSelectListEntry& Create(const UObject ContextObject, const TDataO
 {
     return FVM_BattleBuildSelectListEntry::CreateByManager(EUIInternal::GetContextManager(ContextObject), ItemConfig);
 }
-FVM_BattleBuildSelectListEntry CreateByManager(const UEUIManagerSubsystem Manager, const TDataObjectPtr<FItemConfig> &inout ItemConfig)
+FVM_BattleBuildSelectListEntry& CreateByManager(const UEUIManagerSubsystem Manager, const TDataObjectPtr<FItemConfig> &inout ItemConfig)
 {
-    FVM_BattleBuildSelectListEntry __r;
-    TEUIModelRef<FVM_BattleBuildSelectListEntry> local_6 = TEUIModelRef<FVM_BattleBuildSelectListEntry>(EUIInternal::MakeModelWithManager_Generic(Manager, FVM_BattleBuildSelectListEntry::ModelId, 0, ItemConfig));
-    return __r;
+    return TEUIModelRef<FVM_BattleBuildSelectListEntry>(EUIInternal::MakeModelWithManager_Generic(Manager, FVM_BattleBuildSelectListEntry::ModelId, 0, ItemConfig)).Get();
 }
 void GetModelInfo(FEUIViewModelMetaInfo &inout Result)
 {
@@ -188,7 +186,6 @@ namespace __GeneratedProperties_FVM_BattleBuildSelectListEntry
 {
 UScriptStruct StaticStruct()
 {
-    UScriptStruct local_2;
-    return local_2;
+    return __GeneratedProperties_FVM_BattleBuildSelectListEntry.Get();
 }
 }

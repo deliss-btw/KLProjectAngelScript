@@ -165,7 +165,7 @@ struct FCameraPairIndexStack
     }
     bool Remove(const FCameraPairIndex &inout CameraPairIndex)
     {
-        return (0 > 0);
+        return (this.GetCameraPairIndexes().Remove(CameraPairIndex) > 0);
     }
     const TArray<FCameraPairIndex> GetCameraPairIndexes() const property
     {
@@ -500,7 +500,7 @@ struct FC_PresentationCameraContext : FECSComponent
             local_78 = local_86.opCall().GetBlendConfig();
             if (!(local_86.opCall().CameraRuntimeData.IsFullyBlend(WorldTime)))
             {
-                this.LastCameraInstanceData.RunningCameraType = ECameraType(ECameraType(0));
+                this.LastCameraInstanceData.RunningCameraType = ECameraType(ECameraType::None);
             }
             break;
         }
@@ -510,7 +510,7 @@ struct FC_PresentationCameraContext : FECSComponent
             local_78 = FInstancedStruct::GetMutable(this.LastCameraInstanceData.PresentationCamera).opCall().GetBlendConfig();
             if (!(local_170.opCall().CameraRuntimeData.IsFullyBlend(WorldTime)))
             {
-                this.LastCameraInstanceData.RunningCameraType = ECameraType(ECameraType(0));
+                this.LastCameraInstanceData.RunningCameraType = ECameraType(ECameraType::None);
             }
             break;
         }
@@ -520,7 +520,7 @@ struct FC_PresentationCameraContext : FECSComponent
             local_78 = local_174.opCall().GetBlendConfig();
             if (!(local_174.opCall().CameraRuntimeData.IsFullyBlend(WorldTime)))
             {
-                this.LastCameraInstanceData.RunningCameraType = ECameraType(ECameraType(0));
+                this.LastCameraInstanceData.RunningCameraType = ECameraType(ECameraType::None);
             }
             break;
         }
@@ -530,7 +530,7 @@ struct FC_PresentationCameraContext : FECSComponent
             local_78 = local_178.opCall().GetBlendConfig();
             if (!(local_178.opCall().IsFullyBlend(WorldTime)))
             {
-                this.LastCameraInstanceData.RunningCameraType = ECameraType(ECameraType(0));
+                this.LastCameraInstanceData.RunningCameraType = ECameraType(ECameraType::None);
             }
             break;
         }
@@ -568,7 +568,7 @@ struct FC_PresentationCameraContext : FECSComponent
         }
         case 1:
         {
-            this.CurrentCameraInstanceData.Layer = EPresentationCameraLayer(EPresentationCameraLayer(0));
+            this.CurrentCameraInstanceData.Layer = EPresentationCameraLayer(EPresentationCameraLayer::Logic);
             this.CurrentCameraInstanceData.EnterStackTime = 0.0;
             this.CurrentCameraInstanceData.PresentationCamera = FInstancedStruct::Make(this.LayerConduitCamera);
             break;

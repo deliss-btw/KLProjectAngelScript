@@ -182,11 +182,9 @@ FVM_WorldMapInfo& Create(const UObject ContextObject)
 {
     return FVM_WorldMapInfo::CreateByManager(EUIInternal::GetContextManager(ContextObject));
 }
-FVM_WorldMapInfo CreateByManager(const UEUIManagerSubsystem Manager)
+FVM_WorldMapInfo& CreateByManager(const UEUIManagerSubsystem Manager)
 {
-    FVM_WorldMapInfo __r;
-    TEUIModelRef<FVM_WorldMapInfo> local_6 = TEUIModelRef<FVM_WorldMapInfo>(EUIInternal::MakeModelWithManager(Manager, FVM_WorldMapInfo::ModelId));
-    return __r;
+    return TEUIModelRef<FVM_WorldMapInfo>(EUIInternal::MakeModelWithManager(Manager, FVM_WorldMapInfo::ModelId)).Get();
 }
 void GetModelInfo(FEUIViewModelMetaInfo &inout Result)
 {
@@ -265,7 +263,6 @@ namespace __GeneratedProperties_FVM_WorldMapInfo
 {
 UScriptStruct StaticStruct()
 {
-    UScriptStruct local_2;
-    return local_2;
+    return __GeneratedProperties_FVM_WorldMapInfo.Get();
 }
 }

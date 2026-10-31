@@ -149,12 +149,21 @@ class US_ASGameModeSystemPlayerBorn : US_ECSScriptGameModeSystemBase
     }
     bool IsMainAvatar(const uint AvatarId) const
     {
-        bool local_51 = false;
+        bool local_2;
         if (AvatarId == 0)
         {
             return false;
         }
-        return ::FAvatarPrefabConfig::GetByDataId(AvatarId).IsSet() && local_51;
+        TDataObjectPtr<FAvatarPrefabConfig> local_50 = ::FAvatarPrefabConfig::GetByDataId(AvatarId);
+        if (!(local_50.IsSet()))
+        {
+            local_2 = false;
+        }
+        else
+        {
+            local_2 = local_50.Get().bIsMainPlayer;
+        }
+        return local_2;
     }
     void OverrideAvatarBuildBySpecialty(const FECSEntity &inout PlayerEntity, const uint SpecialtyAvatarId) const
     {
@@ -240,13 +249,14 @@ class US_ASGameModeSystemPlayerBorn : US_ECSScriptGameModeSystemBase
         {
             return false;
         }
-        if (!(GetAvatarMappingConfig().IsSet()))
+        TDataObjectPtr<FAvatarMappingConfig> local_26 = BuildConfig.Get().GetAvatarMappingConfig();
+        if (!(local_26.IsSet()))
         {
             return false;
         }
-        for (auto& local_64 : GetAvatar())
+        for (auto& local_64 : local_26.Get().GetAvatar())
         {
-            if (local_64.IsSet() && (0 == AvatarId))
+            if (local_64.IsSet() && (local_64.Get().DataId == AvatarId))
             {
                 return true;
             }
@@ -292,11 +302,10 @@ class US_ASGameModeSystemPlayerBorn : US_ECSScriptGameModeSystemBase
     {
         Position = FVector::ZeroVector;
         Rotation = FQuat::Identity;
-        ESpawnPointSelectionRule local_2 = ESpawnPointSelectionRule(0);
-        int local_1 = local_2;
+        int local_1 = ESpawnPointSelectionRule::TeamMatchedRandom;
         if (LevelInfoConfig.IsSet())
         {
-            local_1 = local_2;
+            local_1 = LevelInfoConfig.Get().SpawnPointRule;
         }
         return ::FGameModeUtils::GetSpawnLocationForPlayerBySpawnPointRule(ENTITY_NULL, uint8(TeamId), SpawnerIndex, ESpawnPointSelectionRule(local_1), Position, Rotation);
     }

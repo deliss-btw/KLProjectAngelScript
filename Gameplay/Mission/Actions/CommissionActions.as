@@ -33,9 +33,7 @@ struct FMissionAction_RequestStartCommission : FMissionActionBase
         {
             return EMissionActionStatus(2);
         }
-        FName local_15;
-        local_15.GetDataName();
-        XLog(ELog(63), FString().Append("RequestStartCommission, Commission=").Append(local_15));
+        XLog(ELog(63), FString().Append("RequestStartCommission, Commission=").Append(this.Commission.Get().GetDataName()));
         if (!(::UScriptAsToCppModelFunctionRouter::Get().OnRequestStartCommission.Execute(this.Commission)))
         {
             XError(ELog(63), FString().Append("Request start commission failed"));
@@ -82,14 +80,14 @@ struct FMissionAction_RequestLeaveCurrentLevel : FMissionActionBase
             this.bScheduled = false;
             return EMissionActionStatus(4);
         }
-        if (!(::FLevelUtils::GetCurrentLevelInfoConfig(nullptr).IsSet()))
+        TDataObjectPtr<FLevelInfoConfig> local_46 = ::FLevelUtils::GetCurrentLevelInfoConfig(nullptr);
+        if (!(local_46.IsSet()))
         {
             XError(ELog(63), FString().Append("CurrentLevelInfoConfig is empty, RequestLeaveCurrentLevel failed."));
             this.bScheduled = false;
             return EMissionActionStatus(4);
         }
-        ELevelType local_72;
-        ELevelType local_71 = local_72;
+        ELevelType local_71 = local_46.Get().LevelType;
         if ((int(local_71) != 3 && (int(local_71) != 6) && (int(local_71) != 5)))
         {
             XError(ELog(63), FString().Append("Current level type is not supported for leaving, RequestLeaveCurrentLevel failed."));

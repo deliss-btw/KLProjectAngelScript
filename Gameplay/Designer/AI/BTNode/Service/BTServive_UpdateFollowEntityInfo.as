@@ -2,6 +2,8 @@ struct FAICommand_UpdateFollowEntityInfo : FAICommandScript
 {
     FAICommandScript _base_FAICommandScript;
 
+    default m_ScriptOverrideMeta = Cast<UASStruct>(FAICommand_UpdateFollowEntityInfo.Get());
+
     FAICommand_UpdateFollowEntityInfo()
     {
         this.__InitDefaults();
@@ -52,6 +54,8 @@ class UBTService_UpdateFollowEntityInfo : UBTService_AICommandScript
     FBlackboardKeySelector FollowOffset;
     UPROPERTY()
     FAICommand_UpdateFollowEntityInfo AICommand;
+
+    default SetNodeName("更新首领信息（临时）");
 
     UBTService_UpdateFollowEntityInfo()
     {

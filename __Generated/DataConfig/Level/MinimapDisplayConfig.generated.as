@@ -3,7 +3,6 @@ namespace __FMinimapDisplayConfigFunctions
 UFUNCTION()
 TSoftObjectPtr<UMinimapConfig> __FMinimapDisplayConfig_GetMinimapConfig(const TDataObjectPtr<FMinimapDisplayConfig> &inout DataObject)
 {
-    TSoftObjectPtr<UMinimapConfig> __r;
     if ((DataObject == nullptr))
     {
         if (!(EUIGlobals::GIsDuringPropertyConversion))
@@ -13,12 +12,11 @@ TSoftObjectPtr<UMinimapConfig> __FMinimapDisplayConfig_GetMinimapConfig(const TD
         FMinimapDisplayConfig local_62;
         return local_62.MinimapConfig;
     }
-    return __r;
+    return DataObject.Get().MinimapConfig;
 }
 UFUNCTION()
 TSoftClassPtr<UMinimapIconRegistryAsset> __FMinimapDisplayConfig_GetDefaultIconRegistry(const TDataObjectPtr<FMinimapDisplayConfig> &inout DataObject)
 {
-    TSoftClassPtr<UMinimapIconRegistryAsset> __r;
     if ((DataObject == nullptr))
     {
         if (!(EUIGlobals::GIsDuringPropertyConversion))
@@ -28,7 +26,7 @@ TSoftClassPtr<UMinimapIconRegistryAsset> __FMinimapDisplayConfig_GetDefaultIconR
         FMinimapDisplayConfig local_62;
         return local_62.DefaultIconRegistry;
     }
-    return __r;
+    return DataObject.Get().DefaultIconRegistry;
 }
 UFUNCTION()
 float32 __FMinimapDisplayConfig_GetBaseMapScale(const TDataObjectPtr<FMinimapDisplayConfig> &inout DataObject)
@@ -138,39 +136,34 @@ float32 __FMinimapDisplayConfig_GetWorldMapMaxMapScale(const TDataObjectPtr<FMin
 UFUNCTION()
 bool __FMinimapDisplayConfig_GetbShowDSBoundary(const TDataObjectPtr<FMinimapDisplayConfig> &inout DataObject)
 {
-    bool local_1 = false;
     if ((DataObject == nullptr))
     {
-        local_1 = !(EUIGlobals::GIsDuringPropertyConversion);
-        if (local_1)
+        if (!(EUIGlobals::GIsDuringPropertyConversion))
         {
             FBlueprintDebugFunctions::ThrowScriptException("Get 'bShowDSBoundary' from a null 'FMinimapDisplayConfig' DataObject!");
         }
         FMinimapDisplayConfig local_62;
         return local_62.bShowDSBoundary;
     }
-    return local_1;
+    return DataObject.Get().bShowDSBoundary;
 }
 UFUNCTION()
 bool __FMinimapDisplayConfig_GetbDSBoundaryMaskStandsForUnreachable(const TDataObjectPtr<FMinimapDisplayConfig> &inout DataObject)
 {
-    bool local_1 = false;
     if ((DataObject == nullptr))
     {
-        local_1 = !(EUIGlobals::GIsDuringPropertyConversion);
-        if (local_1)
+        if (!(EUIGlobals::GIsDuringPropertyConversion))
         {
             FBlueprintDebugFunctions::ThrowScriptException("Get 'bDSBoundaryMaskStandsForUnreachable' from a null 'FMinimapDisplayConfig' DataObject!");
         }
         FMinimapDisplayConfig local_62;
         return local_62.bDSBoundaryMaskStandsForUnreachable;
     }
-    return local_1;
+    return DataObject.Get().bDSBoundaryMaskStandsForUnreachable;
 }
 UFUNCTION()
 TSoftObjectPtr<UTexture2D> __FMinimapDisplayConfig_GetDSBoundaryMaskTexture(const TDataObjectPtr<FMinimapDisplayConfig> &inout DataObject)
 {
-    TSoftObjectPtr<UTexture2D> __r;
     if ((DataObject == nullptr))
     {
         if (!(EUIGlobals::GIsDuringPropertyConversion))
@@ -180,12 +173,11 @@ TSoftObjectPtr<UTexture2D> __FMinimapDisplayConfig_GetDSBoundaryMaskTexture(cons
         FMinimapDisplayConfig local_62;
         return local_62.DSBoundaryMaskTexture;
     }
-    return __r;
+    return DataObject.Get().DSBoundaryMaskTexture;
 }
 UFUNCTION()
 FBox2D __FMinimapDisplayConfig_GetDSBoundaryMaskWorldPosition(const TDataObjectPtr<FMinimapDisplayConfig> &inout DataObject)
 {
-    FBox2D __r;
     if ((DataObject == nullptr))
     {
         if (!(EUIGlobals::GIsDuringPropertyConversion))
@@ -195,7 +187,7 @@ FBox2D __FMinimapDisplayConfig_GetDSBoundaryMaskWorldPosition(const TDataObjectP
         FMinimapDisplayConfig local_62;
         return local_62.DSBoundaryMaskWorldPosition;
     }
-    return __r;
+    return DataObject.Get().DSBoundaryMaskWorldPosition;
 }
 UFUNCTION()
 FMinimapDisplayConfig CastToFMinimapDisplayConfig(const TDataObjectPtr<FMinimapDisplayConfig> &inout DataObject)

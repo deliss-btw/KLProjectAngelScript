@@ -61,8 +61,7 @@ struct FVM_ItemFeature_RedDot : FEUIViewModel
     {
         if (this.GetCommonItemVM().IsValid())
         {
-            TEUIModelRef<FVM_CommonItem> local_2 = this.GetCommonItemVM();
-            GetOnCommonItemClicked().AddUnique(this, FVM_ItemFeature_RedDot::OnRedDotClicked);
+            this.GetCommonItemVM().Get().GetOnCommonItemClicked().AddUnique(this, FVM_ItemFeature_RedDot::OnRedDotClicked);
         }
         return;
     }
@@ -70,7 +69,7 @@ struct FVM_ItemFeature_RedDot : FEUIViewModel
     {
         if (this.GetCommonItemVM().IsValid())
         {
-            TEUIModelRef<FVM_CommonItem> local_2 = this.GetCommonItemVM();
+            this.GetCommonItemVM().Get().GetOnCommonItemClicked().Remove(this, FVM_ItemFeature_RedDot::OnRedDotClicked);
         }
         return;
     }
@@ -85,8 +84,7 @@ struct FVM_ItemFeature_RedDot : FEUIViewModel
             this.SetbDisplayHasRedDot(false);
             return;
         }
-        TEUIModelRef<FVM_RedDot> local_2 = this.GetRedDotVM();
-        this.SetbDisplayHasRedDot(GetbDisplayHasRedDot());
+        this.SetbDisplayHasRedDot(this.GetRedDotVM().Get().GetbDisplayHasRedDot());
         return;
     }
     void OnRedDotClicked()
@@ -99,8 +97,7 @@ struct FVM_ItemFeature_RedDot : FEUIViewModel
         {
             return;
         }
-        TEUIModelRef<FVM_RedDot> local_2 = this.GetRedDotVM();
-        ::FMS_RedDotSystem::Get(this.GetContext().Manager).ConsumeRedDot(GetNodeData());
+        ::FMS_RedDotSystem::Get(this.GetContext().Manager).ConsumeRedDot(this.GetRedDotVM().Get().GetNodeData());
         return;
     }
     TEUIModelRef<FVM_CommonItem> GetCommonItemVM() const property
@@ -214,11 +211,9 @@ FVM_ItemFeature_RedDot& Create(const UObject ContextObject, const TEUIModelRef<F
 {
     return FVM_ItemFeature_RedDot::CreateByManager(EUIInternal::GetContextManager(ContextObject), CommonItemVM);
 }
-FVM_ItemFeature_RedDot CreateByManager(const UEUIManagerSubsystem Manager, const TEUIModelRef<FVM_CommonItem> &inout CommonItemVM)
+FVM_ItemFeature_RedDot& CreateByManager(const UEUIManagerSubsystem Manager, const TEUIModelRef<FVM_CommonItem> &inout CommonItemVM)
 {
-    FVM_ItemFeature_RedDot __r;
-    TEUIModelRef<FVM_ItemFeature_RedDot> local_6 = TEUIModelRef<FVM_ItemFeature_RedDot>(EUIInternal::MakeModelWithManager_Generic(Manager, FVM_ItemFeature_RedDot::ModelId, 0, CommonItemVM));
-    return __r;
+    return TEUIModelRef<FVM_ItemFeature_RedDot>(EUIInternal::MakeModelWithManager_Generic(Manager, FVM_ItemFeature_RedDot::ModelId, 0, CommonItemVM)).Get();
 }
 void GetModelInfo(FEUIViewModelMetaInfo &inout Result)
 {
@@ -286,7 +281,6 @@ namespace __GeneratedProperties_FVM_ItemFeature_RedDot
 {
 UScriptStruct StaticStruct()
 {
-    UScriptStruct local_2;
-    return local_2;
+    return __GeneratedProperties_FVM_ItemFeature_RedDot.Get();
 }
 }

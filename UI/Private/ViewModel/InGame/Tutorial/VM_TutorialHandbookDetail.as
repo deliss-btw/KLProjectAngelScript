@@ -105,7 +105,7 @@ struct FVM_TutorialHandbookDetail : FEUIViewModel
         }
         this.SetSelectedIndex(Index);
         this.SetSelectedItem(this.GetListItems()[Index]);
-        TDataObjectPtr<FGuideGroupConfig> local_28 = GetGuideConfig();
+        TDataObjectPtr<FGuideGroupConfig> local_28 = this.GetListItems()[Index].Get().GetGuideConfig();
         this.SetSelectedDetail(TEUIModelRef<FVM_GuideGroupDetail>(::FVM_GuideGroupDetail::Create(this.GetManager(), local_28)));
         return;
     }
@@ -123,7 +123,7 @@ struct FVM_TutorialHandbookDetail : FEUIViewModel
         int local_1 = 0;
         for (; local_1 < this.GetListItems().Num(); ++local_1)
         {
-            if (0 == GuideDataId)
+            if (this.GetListItems()[local_1].Get().GetGuideConfig().Get().DataId == GuideDataId)
             {
                 this.SelectByIndex(local_1);
                 break;
@@ -133,14 +133,13 @@ struct FVM_TutorialHandbookDetail : FEUIViewModel
     }
     void RebuildList(const EGuideManualTab Tab)
     {
-        int local_99 = 0;
         FMS_GuideManual& local_4 = ::FMS_GuideManual::Get(this.GetManager());
         TArray<TDataObjectPtr<FGuideGroupConfig>> local_8;
         TDataObjectIterator<FGuideGroupConfig> local_24;
         for (; local_24; )
         {
             TDataObjectPtr<FGuideGroupConfig> local_66 = local_24.GetDataPtr();
-            if (0 != int(Tab))
+            if (int(local_66.Get().ManualTab) != int(Tab))
             {
             }
             else
@@ -155,12 +154,15 @@ struct FVM_TutorialHandbookDetail : FEUIViewModel
             }
             local_24.Next();
         }
+        __Lambda_UI_Private_ViewModel_InGame_Tutorial_VM_TutorialHandbookDetail_106 local_94;
+        local_8.Sort(local_94);
         int local_95 = 0;
         for (; local_95 < local_8.Num(); )
         {
             FVM_TutorialHandbookListItem& local_98 = ::FVM_TutorialHandbookListItem::Create(this.GetManager(), local_95);
             local_98.SetGuideConfig(local_8[local_95]);
-            local_98.SetbShowRedDot(!(local_4.IsGuideFinished(local_99)));
+            local_98.SetName(local_8[local_95].Get().Name);
+            local_98.SetbShowRedDot(!(local_4.IsGuideFinished(local_8[local_95].Get().DataId)));
             this.GetModify_ListItems().Add(TEUIModelRef<FVM_TutorialHandbookListItem>(local_98));
             ++local_95;
         }
@@ -301,7 +303,7 @@ struct __Lambda_UI_Private_ViewModel_InGame_Tutorial_VM_TutorialHandbookDetail_1
     }
     bool opCall(const TDataObjectPtr<FGuideGroupConfig> &inout A, const TDataObjectPtr<FGuideGroupConfig> &inout B)
     {
-        return (0 > 0);
+        return (A.Get().SortOrder > B.Get().SortOrder);
     }
 }
 
@@ -322,11 +324,9 @@ FVM_TutorialHandbookDetail& Create(const UObject ContextObject, const int TabInd
 {
     return FVM_TutorialHandbookDetail::CreateByManager(EUIInternal::GetContextManager(ContextObject), TabIndex);
 }
-FVM_TutorialHandbookDetail CreateByManager(const UEUIManagerSubsystem Manager, const int TabIndex)
+FVM_TutorialHandbookDetail& CreateByManager(const UEUIManagerSubsystem Manager, const int TabIndex)
 {
-    FVM_TutorialHandbookDetail __r;
-    TEUIModelRef<FVM_TutorialHandbookDetail> local_6 = TEUIModelRef<FVM_TutorialHandbookDetail>(EUIInternal::MakeModelWithManager_Generic(Manager, FVM_TutorialHandbookDetail::ModelId, 0, TabIndex));
-    return __r;
+    return TEUIModelRef<FVM_TutorialHandbookDetail>(EUIInternal::MakeModelWithManager_Generic(Manager, FVM_TutorialHandbookDetail::ModelId, 0, TabIndex)).Get();
 }
 void GetModelInfo(FEUIViewModelMetaInfo &inout Result)
 {
@@ -438,7 +438,6 @@ namespace __GeneratedProperties_FVM_TutorialHandbookDetail
 {
 UScriptStruct StaticStruct()
 {
-    UScriptStruct local_2;
-    return local_2;
+    return __GeneratedProperties_FVM_TutorialHandbookDetail.Get();
 }
 }

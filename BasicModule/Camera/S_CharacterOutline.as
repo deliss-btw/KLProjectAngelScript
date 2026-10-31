@@ -11,8 +11,7 @@ class US_CharacterOutline : UECSScriptSystem
         const FC_ViewEntityActorData& local_6 = local_4.opCall();
         if (local_6)
         {
-            AActor local_10;
-            ::CharacterOutline::UpdatePawnOutline(local_6.LogicEntity, local_10);
+            ::CharacterOutline::UpdatePawnOutline(local_6.LogicEntity, Actor.Actor.Get());
         }
         return;
     }
@@ -23,8 +22,7 @@ class US_CharacterOutline : UECSScriptSystem
         int local_12 = 0;
         if (!(!(local_6)) && local_12)
         {
-            AActor local_16;
-            ::CharacterOutline::UpdatePawnOutline(local_12.LogicEntity, local_16);
+            ::CharacterOutline::UpdatePawnOutline(local_12.LogicEntity, local_6.Actor.Get());
         }
         return;
     }

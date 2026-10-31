@@ -978,8 +978,7 @@ struct FMS_FriendDataModel : FEUIModelSingleton
     {
         if (this.GetFriendUidToIndex().Contains(Uid))
         {
-            int local_2 = this.GetFriendUidToIndex()[Uid];
-            bOnline.ResetOnlineState();
+            this.GetModify_FriendList()[this.GetFriendUidToIndex()[Uid]].Get().ResetOnlineState(bOnline);
             this.SortFriendListByOnlineThenCreateTimeAsc();
             this.NotifyFriendDataUpdated();
         }
@@ -991,7 +990,7 @@ struct FMS_FriendDataModel : FEUIModelSingleton
         int local_1 = Idx;
         for (; local_1 < this.GetFriendList().Num(); ++local_1)
         {
-            local_4 = GetBrief().GetUid();
+            local_4 = this.GetFriendList()[local_1].Get().GetBrief().GetUid();
             if (local_4 != 0)
             {
                 this.GetModify_FriendUidToIndex().Add(local_4, local_1);
@@ -1005,7 +1004,7 @@ struct FMS_FriendDataModel : FEUIModelSingleton
         int local_1 = Idx;
         for (; local_1 < this.GetApplyList().Num(); ++local_1)
         {
-            local_4 = GetBrief().GetUid();
+            local_4 = this.GetApplyList()[local_1].Get().GetBrief().GetUid();
             if (local_4 != 0)
             {
                 this.GetModify_ApplyUidToIndex().Add(local_4, local_1);
@@ -1023,11 +1022,13 @@ struct FMS_FriendDataModel : FEUIModelSingleton
     void SortApplyListByCreatedTimeDesc()
     {
         int local_7;
+        __Lambda_UI_Private_Model_Friend_M_FriendData_792 local_2;
+        this.GetModify_ApplyList().Sort(local_2);
         this.GetModify_ApplyUidToIndex().Empty(0);
         int local_4 = 0;
         for (; local_4 < this.GetApplyList().Num(); ++local_4)
         {
-            local_7 = GetBrief().GetUid();
+            local_7 = this.GetApplyList()[local_4].Get().GetBrief().GetUid();
             if (local_7 != 0)
             {
                 this.GetModify_ApplyUidToIndex().Add(local_7, local_4);
@@ -1045,11 +1046,13 @@ struct FMS_FriendDataModel : FEUIModelSingleton
     void SortFriendListByOnlineThenCreateTimeAsc()
     {
         int local_7;
+        __Lambda_UI_Private_Model_Friend_M_FriendData_817 local_2;
+        this.GetModify_FriendList().Sort(local_2);
         this.GetModify_FriendUidToIndex().Empty(0);
         int local_4 = 0;
         for (; local_4 < this.GetFriendList().Num(); ++local_4)
         {
-            local_7 = GetBrief().GetUid();
+            local_7 = this.GetFriendList()[local_4].Get().GetBrief().GetUid();
             if (local_7 != 0)
             {
                 this.GetModify_FriendUidToIndex().Add(local_7, local_4);
@@ -1092,6 +1095,7 @@ struct FMS_FriendDataModel : FEUIModelSingleton
             return;
         }
         int local_4 = this.GetFriendUidToIndex()[Uid];
+        this.GetModify_FriendUidToIndex().Remove(Uid);
         this.GetModify_FriendList().RemoveAt(local_4);
         this.PatchFriendUidIndexAfterRemoveAt(local_4);
         this.NotifyFriendDataUpdated();
@@ -1119,8 +1123,7 @@ struct FMS_FriendDataModel : FEUIModelSingleton
         local_35 = local_20.GetUid();
         if (this.GetFriendUidToIndex().Contains(local_35))
         {
-            int local_37 = this.GetFriendUidToIndex()[local_35];
-            E.FillFromFriendEntry(this.GetContext().Manager);
+            this.GetModify_FriendList()[this.GetFriendUidToIndex()[local_35]].Get().FillFromFriendEntry(E, this.GetContext().Manager);
         }
         else
         {
@@ -1141,7 +1144,7 @@ struct FMS_FriendDataModel : FEUIModelSingleton
         int local_21 = 0;
         for (; local_21 < this.GetFriendList().Num(); ++local_21)
         {
-            int local_26 = GetBrief().GetUid();
+            int local_26 = this.GetFriendList()[local_21].Get().GetBrief().GetUid();
             local_25 = local_26;
             if (local_25 != 0)
             {
@@ -1176,8 +1179,8 @@ struct FMS_FriendDataModel : FEUIModelSingleton
             }
             if (local_24)
             {
-                int local_72 = local_68.GetUid();
-                local_48.FillFromFriendEntry(this.GetContext().Manager);
+                local_20.Remove(local_68.GetUid());
+                local_70.Get().FillFromFriendEntry(local_48, this.GetContext().Manager);
                 this.GetModify_FriendList().Add(local_70);
                 continue;
             }
@@ -1210,8 +1213,7 @@ struct FMS_FriendDataModel : FEUIModelSingleton
         local_25 = local_20.GetUid();
         if (this.GetApplyUidToIndex().Contains(local_25))
         {
-            int local_27 = this.GetApplyUidToIndex()[local_25];
-            E.FillFromFriendApplyEntry(this.GetContext().Manager);
+            this.GetModify_ApplyList()[this.GetApplyUidToIndex()[local_25]].Get().FillFromFriendApplyEntry(E, this.GetContext().Manager);
         }
         else
         {
@@ -1231,6 +1233,7 @@ struct FMS_FriendDataModel : FEUIModelSingleton
         }
         XLog(ELog(74), FString().Append("[FMS_FriendDataModel] RemoveApplyByUid Uid=").Append(Uid).Append(" Index=").Append(this.GetApplyUidToIndex()[Uid]));
         int local_9 = this.GetApplyUidToIndex()[Uid];
+        this.GetModify_ApplyUidToIndex().Remove(Uid);
         this.GetModify_ApplyList().RemoveAt(local_9);
         this.PatchApplyUidIndexAfterRemoveAt(local_9);
         return;
@@ -1642,14 +1645,14 @@ struct __Lambda_UI_Private_Model_Friend_M_FriendData_792
     {
         int local_1;
         int local_3;
-        local_1 = GetCreateTime();
-        local_3 = GetCreateTime();
+        local_1 = A.Get().GetCreateTime();
+        local_3 = B.Get().GetCreateTime();
         if (local_1 != local_3)
         {
             return (local_1 > local_3);
         }
-        int local_2 = GetBrief().GetUid();
-        return (local_2 > GetBrief().GetUid());
+        int local_2 = A.Get().GetBrief().GetUid();
+        return (local_2 > B.Get().GetBrief().GetUid());
     }
 }
 
@@ -1667,21 +1670,21 @@ struct __Lambda_UI_Private_Model_Friend_M_FriendData_817
         int local_7;
         int local_8;
         int local_9;
-        local_1 = GetBrief().GetbIsOnline();
-        local_3 = GetBrief().GetbIsOnline();
+        local_1 = A.Get().GetBrief().GetbIsOnline();
+        local_3 = B.Get().GetBrief().GetbIsOnline();
         bool local_2 = !(local_1);
         if (local_2 != !(local_3))
         {
             return local_1;
         }
-        local_5 = GetCreateTime();
-        local_7 = GetCreateTime();
+        local_5 = A.Get().GetCreateTime();
+        local_7 = B.Get().GetCreateTime();
         if (local_5 != local_7)
         {
             return (local_5 < local_7);
         }
-        local_8 = GetBrief().GetUid();
-        local_9 = GetBrief().GetUid();
+        local_8 = A.Get().GetBrief().GetUid();
+        local_9 = B.Get().GetBrief().GetUid();
         return (local_8 < local_9);
     }
 }
@@ -1692,11 +1695,9 @@ FM_FriendRow& Create(const UObject ContextObject)
 {
     return FM_FriendRow::CreateByManager(EUIInternal::GetContextManager(ContextObject));
 }
-FM_FriendRow CreateByManager(const UEUIManagerSubsystem Manager)
+FM_FriendRow& CreateByManager(const UEUIManagerSubsystem Manager)
 {
-    FM_FriendRow __r;
-    TEUIModelRef<FM_FriendRow> local_6 = TEUIModelRef<FM_FriendRow>(EUIInternal::MakeModelWithManager(Manager, FM_FriendRow::ModelId));
-    return __r;
+    return TEUIModelRef<FM_FriendRow>(EUIInternal::MakeModelWithManager(Manager, FM_FriendRow::ModelId)).Get();
 }
 void GetModelInfo(FEUIModelOnlyMetaInfo &inout Result)
 {
@@ -1743,11 +1744,9 @@ FMS_FriendDataModel& Get(const UObject ContextObject)
 {
     return FMS_FriendDataModel::GetByManager(EUIInternal::GetContextManager(ContextObject));
 }
-FMS_FriendDataModel GetByManager(const UEUIManagerSubsystem Manager)
+FMS_FriendDataModel& GetByManager(const UEUIManagerSubsystem Manager)
 {
-    FMS_FriendDataModel __r;
-    TEUIModelRef<FMS_FriendDataModel> local_6 = TEUIModelRef<FMS_FriendDataModel>(EUIInternal::MakeModelWithManager(Manager, FMS_FriendDataModel::ModelId));
-    return __r;
+    return TEUIModelRef<FMS_FriendDataModel>(EUIInternal::MakeModelWithManager(Manager, FMS_FriendDataModel::ModelId)).Get();
 }
 void GetModelInfo(FEUIModelOnlyMetaInfo &inout Result)
 {

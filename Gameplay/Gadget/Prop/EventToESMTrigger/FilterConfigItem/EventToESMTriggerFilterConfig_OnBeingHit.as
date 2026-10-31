@@ -34,7 +34,6 @@ struct FEventToESMTriggerFilterConfigItem_OnBeingHit : FEventToESMTriggerFilterC
     }
     bool EvaluateAndTrigger(const FCE_HitEvent &inout Event, const FECSEntity &inout Entity) const
     {
-        int local_18 = 0;
         bool local_19;
         bool local_1 = true;
         if (this.ShouldEvaluateAttacker())
@@ -63,7 +62,7 @@ struct FEventToESMTriggerFilterConfigItem_OnBeingHit : FEventToESMTriggerFilterC
         {
             if (Event.AttackData.IsSet())
             {
-                local_1 = local_1 && this.FilterAttackType(EAttackType(local_18));
+                local_1 = local_1 && this.FilterAttackType(EAttackType(Event.AttackData.Get().AttackType));
             }
         }
         bool local_17 = this._base_FEventToESMTriggerFilterConfigItemBase;

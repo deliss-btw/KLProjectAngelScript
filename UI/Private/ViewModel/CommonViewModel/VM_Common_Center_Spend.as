@@ -170,11 +170,9 @@ FVM_Common_Center_Spend& Create(const UObject ContextObject)
 {
     return FVM_Common_Center_Spend::CreateByManager(EUIInternal::GetContextManager(ContextObject));
 }
-FVM_Common_Center_Spend CreateByManager(const UEUIManagerSubsystem Manager)
+FVM_Common_Center_Spend& CreateByManager(const UEUIManagerSubsystem Manager)
 {
-    FVM_Common_Center_Spend __r;
-    TEUIModelRef<FVM_Common_Center_Spend> local_6 = TEUIModelRef<FVM_Common_Center_Spend>(EUIInternal::MakeModelWithManager(Manager, FVM_Common_Center_Spend::ModelId));
-    return __r;
+    return TEUIModelRef<FVM_Common_Center_Spend>(EUIInternal::MakeModelWithManager(Manager, FVM_Common_Center_Spend::ModelId)).Get();
 }
 void GetModelInfo(FEUIViewModelMetaInfo &inout Result)
 {
@@ -268,7 +266,6 @@ namespace __GeneratedProperties_FVM_Common_Center_Spend
 {
 UScriptStruct StaticStruct()
 {
-    UScriptStruct local_2;
-    return local_2;
+    return __GeneratedProperties_FVM_Common_Center_Spend.Get();
 }
 }

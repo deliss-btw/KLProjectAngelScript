@@ -21,7 +21,7 @@ class UWidget_PlayerBasicItem : UEUIUserWidget
     void OnPlayerBasicItemClicked()
     {
         int local_14;
-        XLog(ELog(74), FString().Append("OnPlayerBasicItemClicked: ").Append(GetPlayerUID()));
+        XLog(ELog(74), FString().Append("OnPlayerBasicItemClicked: ").Append(this.PlayerBasicItem.Get().GetPlayerUID()));
         if (!(this.bCanTriggerClick))
         {
             return;
@@ -30,7 +30,7 @@ class UWidget_PlayerBasicItem : UEUIUserWidget
         {
             return;
         }
-        local_14 = GetPlayerUID();
+        local_14 = this.PlayerBasicItem.Get().GetPlayerUID();
         if (local_14 == 0)
         {
             return;

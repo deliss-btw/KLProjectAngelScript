@@ -91,11 +91,9 @@ FMS_ECSWorldLifetimePageManager& Get(const UObject ContextObject)
 {
     return FMS_ECSWorldLifetimePageManager::GetByManager(EUIInternal::GetContextManager(ContextObject));
 }
-FMS_ECSWorldLifetimePageManager GetByManager(const UEUIManagerSubsystem Manager)
+FMS_ECSWorldLifetimePageManager& GetByManager(const UEUIManagerSubsystem Manager)
 {
-    FMS_ECSWorldLifetimePageManager __r;
-    TEUIModelRef<FMS_ECSWorldLifetimePageManager> local_6 = TEUIModelRef<FMS_ECSWorldLifetimePageManager>(EUIInternal::MakeModelWithManager(Manager, FMS_ECSWorldLifetimePageManager::ModelId));
-    return __r;
+    return TEUIModelRef<FMS_ECSWorldLifetimePageManager>(EUIInternal::MakeModelWithManager(Manager, FMS_ECSWorldLifetimePageManager::ModelId)).Get();
 }
 void GetModelInfo(FEUIModelOnlyMetaInfo &inout Result)
 {

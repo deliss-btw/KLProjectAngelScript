@@ -19,7 +19,7 @@ TDataObjectPtr<FMetaBuffConfig> GetMetaBuffBySlot(const FECSEntity &inout Entity
         int local_25 = 0;
         for (; local_25 < local_24.Num(); ++local_25)
         {
-            if (0 == int(MetaBuffSlot))
+            if (int(local_24[local_25].GetMetaBuffConfig().Get().MetaBuffSlot) == int(MetaBuffSlot))
             {
                 return local_24[local_25].GetMetaBuffConfig();
             }
@@ -51,7 +51,7 @@ bool HasMetaBuffBySlot(const FECSEntity &inout Entity, const EMetaBuffSlot MetaB
         int local_27 = 0;
         for (; local_27 < local_24.Num(); ++local_27)
         {
-            if (0 == int(MetaBuffSlot))
+            if (int(local_24[local_27].GetMetaBuffConfig().Get().MetaBuffSlot) == int(MetaBuffSlot))
             {
                 return true;
             }
@@ -81,8 +81,7 @@ bool IsMetaBuff(const FECSEntity &inout Entity, const FBuffConfigRef &inout Buff
         int local_18;
         for (auto& local_36 : local_18.GetMetaBuffs())
         {
-            local_36;
-            if (0 == BuffConfig.GetUniqueID())
+            if (local_36.GetMetaBuffConfig().Get().BuffConfig.GetUniqueID() == BuffConfig.GetUniqueID())
             {
                 return true;
             }
@@ -123,17 +122,15 @@ bool HasMetaBuffByConfig(const FECSEntity &inout Entity, const TDataObjectPtr<FM
 UFUNCTION()
 bool AddMetaBuff(const FECSEntity &inout Entity, const TDataObjectPtr<FMetaBuffConfig> &inout MetaBuffConfig, const TArray<TDataObjectPtr<FGameplayModifierConfig>> &inout Modifiers, const TArray<TDataObjectPtr<FMetaBuffCapabilityConfig>> &inout Capabilities = TArray<TDataObjectPtr<FMetaBuffCapabilityConfig>>())
 {
-    int local_35 = 0;
     FECSEntity local_8 = FASCommonUtils::GetUniquePlayerEntity(Entity);
     if (local_8.IsValid())
     {
-        int local_36 = local_35;
-        if (local_36 == 0)
+        FBuffConfigRef local_34 = FBuffConfigRef(MetaBuffConfig.Get().BuffConfig);
+        if (int(MetaBuffConfig.Get().MetaBuffSlot) == 0)
         {
             XError(ELog(26), FString().Append("MetaBuffConfig.MetaBuffSlot is None, MetaBuffConfig=").Append(MetaBuffConfig.GetDataName()));
             return false;
         }
-        FBuffConfigRef local_34;
         if (!(local_34.IsValid()))
         {
             XError(ELog(26), FString().Append("MetaBuffConfig.BuffConfig is invalid, MetaBuffConfig=").Append(MetaBuffConfig.GetDataName()));
@@ -156,35 +153,31 @@ bool AddMetaBuff(const FECSEntity &inout Entity, const TDataObjectPtr<FMetaBuffC
 }
 bool AddMetaBuffWithStartTime(const FECSEntity &inout PlayerEntity, const TDataObjectPtr<FMetaBuffConfig> &inout MetaBuffConfig, const TArray<TDataObjectPtr<FGameplayModifierConfig>> &inout Modifiers, const TArray<TDataObjectPtr<FMetaBuffCapabilityConfig>> &inout Capabilities, const uint StartUtcTime)
 {
-    int local_9 = 0;
     int local_64 = 0;
-    int local_71 = 0;
-    int local_156 = 0;
-    int local_157 = 0;
+    int local_156;
     if (!(PlayerEntity.IsValid()))
     {
         return false;
     }
     Has local_6;
     local_6.opCall();
-    int64 local_8 = local_9;
+    int64 local_8 = MetaBuffConfig.Get().Duration;
     int64 local_14 = FDateTime::UtcNow().ToUnixTimestamp();
     if (local_14 >= (StartUtcTime + local_8))
     {
         XLog(ELog(26), FString().Append("AddMetaBuffWithStartTime failed: Time expired, MetaBuffConfig=").Append(MetaBuffConfig.GetDataName()).Append(", Duration=").Append(local_8).Append(", StartUtcTime=").Append(StartUtcTime).Append(", CurrentUtcTime=").Append(local_14));
         return false;
     }
+    FBuffConfigRef local_50 = FBuffConfigRef(MetaBuffConfig.Get().BuffConfig);
     Get local_58;
     FECSEntity local_54 = local_58.opCall().GetPlayerPawnEntity();
-    FBuffConfigRef local_50;
     FMetaBuffUtils::AddMetaBuffToPawn(PlayerEntity, local_50);
     TArray<FPlayerMetaBuff>& local_66 = local_64.GetModify_MetaBuffs();
     int local_67 = -1;
     int local_68 = 0;
     for (; local_68 < local_66.Num(); ++local_68)
     {
-        int local_72 = local_71;
-        if (0 == local_72)
+        if (int(local_66[local_68].GetMetaBuffConfig().Get().MetaBuffSlot) == int(MetaBuffConfig.Get().MetaBuffSlot))
         {
             local_67 = local_68;
             break;
@@ -198,19 +191,22 @@ bool AddMetaBuffWithStartTime(const FECSEntity &inout PlayerEntity, const TDataO
         for (auto& local_130 : Modifiers)
         {
             local_116.GetModify_RuntimeGamePlayModifierIDs().Add(FGameplayModifierUtils::AddGameplayModifier(local_54, local_130, FFPTime(-1), true));
+            local_116.GetModify_ModifiersDataIDs().Add(local_130.Get().DataId);
         }
         for (auto& local_146 : Capabilities)
         {
-            if (!(local_146) || !(GetCapabilityConfig()))
+            if (!(local_146) || !(local_146.Get().GetCapabilityConfig()))
             {
                 continue;
             }
-            local_116.GetModify_RuntimeCapabilitiesIDs().Add(FCapabilityUtils::AddCapability(local_54, GetCapabilityConfig(), local_9));
+            int local_9 = local_146.Get().Level;
+            local_116.GetModify_RuntimeCapabilitiesIDs().Add(FCapabilityUtils::AddCapability(local_54, local_146.Get().GetCapabilityConfig(), local_9));
+            local_116.GetModify_CapabilitiesConfigs().Add(local_146.Get().DataId);
         }
         local_66.Add(local_116);
         return true;
     }
-    if (GetUniqueID() == GetUniqueID())
+    if (local_66[local_67].GetMetaBuffConfig().Get().GetUniqueID() == MetaBuffConfig.Get().GetUniqueID())
     {
         bool local_155;
         local_66[local_67].SetStartTime(StartUtcTime);
@@ -221,8 +217,7 @@ bool AddMetaBuffWithStartTime(const FECSEntity &inout PlayerEntity, const TDataO
             local_69 = 0;
             for (; local_69 < Modifiers.Num(); ++local_69)
             {
-                local_157 = local_66[local_67].GetModifiersDataIDs()[local_69];
-                if (local_156 != local_157)
+                if (int(Modifiers[local_69].Get().DataId) != local_66[local_67].GetModifiersDataIDs()[local_69])
                 {
                     local_147 = true;
                     break;
@@ -241,16 +236,24 @@ bool AddMetaBuffWithStartTime(const FECSEntity &inout PlayerEntity, const TDataO
             for (auto& local_130 : Modifiers)
             {
                 local_66[local_67].GetModify_RuntimeGamePlayModifierIDs().Add(FGameplayModifierUtils::AddGameplayModifier(local_54, local_130, FFPTime(-1), true));
+                local_66[local_67].GetModify_ModifiersDataIDs().Add(local_130.Get().DataId);
             }
         }
-        local_68 = Capabilities.Num();
-        local_155 = (local_68 != local_66[local_67].GetCapabilitiesConfigs().Num());
+        local_155 = (Capabilities.Num() != local_66[local_67].GetCapabilitiesConfigs().Num());
         if (!(local_155))
         {
-            int local_72_2 = 0;
-            for (; local_72_2 < Capabilities.Num(); ++local_72_2)
+            int local_72 = 0;
+            for (; local_72 < Capabilities.Num(); ++local_72)
             {
-                if (Capabilities[local_72_2] ? local_157 : 0 != local_66[local_67].GetCapabilitiesConfigs()[local_72_2])
+                if (Capabilities[local_72])
+                {
+                    local_156 = Capabilities[local_72].Get().DataId;
+                }
+                else
+                {
+                    local_156 = 0;
+                }
+                if (local_156 != local_66[local_67].GetCapabilitiesConfigs()[local_72])
                 {
                     local_155 = true;
                     break;
@@ -267,15 +270,18 @@ bool AddMetaBuffWithStartTime(const FECSEntity &inout PlayerEntity, const TDataO
             local_66[local_67].GetModify_CapabilitiesConfigs().Empty(0);
             for (auto& local_146 : Capabilities)
             {
-                if (!(local_146) || !(GetCapabilityConfig()))
+                if (!(local_146) || !(local_146.Get().GetCapabilityConfig()))
                 {
                     continue;
                 }
-                local_66[local_67].GetModify_RuntimeCapabilitiesIDs().Add(FCapabilityUtils::AddCapability(local_54, GetCapabilityConfig(), local_68));
+                int local_68_2 = local_146.Get().Level;
+                local_66[local_67].GetModify_RuntimeCapabilitiesIDs().Add(FCapabilityUtils::AddCapability(local_54, local_146.Get().GetCapabilityConfig(), local_68_2));
+                local_66[local_67].GetModify_CapabilitiesConfigs().Add(local_146.Get().DataId);
             }
         }
         return true;
     }
+    FMetaBuffUtils::RemoveMetaBuffFromPawn(PlayerEntity, local_66[local_67].GetMetaBuffConfig().Get().BuffConfig, local_66[local_67].GetRuntimeGamePlayModifierIDs(), local_66[local_67].GetRuntimeCapabilitiesIDs());
     local_66[local_67].SetMetaBuffConfig(MetaBuffConfig);
     local_66[local_67].SetStartTime(StartUtcTime);
     local_66[local_67].GetModify_RuntimeGamePlayModifierIDs().Empty(0);
@@ -285,14 +291,16 @@ bool AddMetaBuffWithStartTime(const FECSEntity &inout PlayerEntity, const TDataO
     for (auto& local_130 : Modifiers)
     {
         local_66[local_67].GetModify_RuntimeGamePlayModifierIDs().Add(FGameplayModifierUtils::AddGameplayModifier(local_54, local_130, FFPTime(-1), true));
+        local_66[local_67].GetModify_ModifiersDataIDs().Add(local_130.Get().DataId);
     }
     for (auto& local_146 : Capabilities)
     {
-        if (!(local_146) || !(GetCapabilityConfig()))
+        if (!(local_146) || !(local_146.Get().GetCapabilityConfig()))
         {
             continue;
         }
-        local_66[local_67].GetModify_RuntimeCapabilitiesIDs().Add(FCapabilityUtils::AddCapability(local_54, GetCapabilityConfig(), local_68));
+        local_66[local_67].GetModify_RuntimeCapabilitiesIDs().Add(FCapabilityUtils::AddCapability(local_54, local_146.Get().GetCapabilityConfig(), local_146.Get().Level));
+        local_66[local_67].GetModify_CapabilitiesConfigs().Add(local_146.Get().DataId);
     }
     return true;
 }
@@ -301,7 +309,8 @@ void RemoveMetaBuff(const FECSEntity &inout Entity, const TDataObjectPtr<FMetaBu
 {
     bool local_9;
     int local_22 = 0;
-    if (!(FASCommonUtils::GetUniquePlayerEntity(Entity).IsValid()))
+    FECSEntity local_8 = FASCommonUtils::GetUniquePlayerEntity(Entity);
+    if (!(local_8.IsValid()))
     {
         local_9 = false;
     }
@@ -319,6 +328,7 @@ void RemoveMetaBuff(const FECSEntity &inout Entity, const TDataObjectPtr<FMetaBu
             local_50 = local_22.GetMetaBuffs()[local_26].GetMetaBuffConfig();
             if ((local_50 == MetaBuffConfig.opImplConv()))
             {
+                FMetaBuffUtils::RemoveMetaBuffFromPawn(local_8, MetaBuffConfig.Get().BuffConfig, local_22.GetMetaBuffs()[local_26].GetRuntimeGamePlayModifierIDs(), local_22.GetMetaBuffs()[local_26].GetRuntimeCapabilitiesIDs());
                 local_22.GetModify_MetaBuffs().RemoveAt(local_26);
                 break;
             }

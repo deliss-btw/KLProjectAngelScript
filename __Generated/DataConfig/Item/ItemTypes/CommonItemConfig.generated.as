@@ -3,7 +3,6 @@ namespace __FCommonItemConfigFunctions
 UFUNCTION()
 TArray<FInstancedStruct> __FCommonItemConfig_GetGSUseEffects(const TDataObjectPtr<FCommonItemConfig> &inout DataObject)
 {
-    TArray<FInstancedStruct> __r;
     if ((DataObject == nullptr))
     {
         if (!(EUIGlobals::GIsDuringPropertyConversion))
@@ -13,7 +12,7 @@ TArray<FInstancedStruct> __FCommonItemConfig_GetGSUseEffects(const TDataObjectPt
         FCommonItemConfig local_192;
         return local_192.GSUseEffects;
     }
-    return __r;
+    return DataObject.Get().GSUseEffects;
 }
 UFUNCTION()
 FCommonItemConfig CastToFCommonItemConfig(const TDataObjectPtr<FCommonItemConfig> &inout DataObject)

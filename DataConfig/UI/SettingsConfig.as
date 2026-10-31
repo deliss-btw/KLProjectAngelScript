@@ -401,6 +401,7 @@ struct FSettingApply_UpscalingMethod : FSettingApplyBase
         for (auto& local_26 : FSettingApply_UpscalingMethod::MethodTextMap)
         {
             FSettingOption local_32;
+            local_32.Name = local_26.GetValue();
             local_32.Value = 0.0f;
             if (!(local_6.Contains(local_26.GetKey())))
             {
@@ -444,8 +445,8 @@ struct FSettingApply_FrameGeneration : FSettingApplyBase
         OutOptions.Empty(0);
         for (auto& local_22 : FSettingApply_FrameGeneration::FrameGenerationTextMap)
         {
-            local_22;
             FSettingOption local_28;
+            local_28.Name = local_22.GetValue();
             local_28.Value = 0.0f;
             OutOptions.Add(local_28);
         }

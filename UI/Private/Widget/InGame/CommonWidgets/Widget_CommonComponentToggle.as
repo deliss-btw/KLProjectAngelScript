@@ -21,29 +21,29 @@ class UWidget_CommonComponentToggle : UEUIUserWidget
     UFUNCTION()
     void OnMouseLeave_Implementation(const FPointerEvent &inout MouseEvent)
     {
-        int local_2 = GetRightArrowEnabled() ? 0 : 2;
-        local_2.SetRightArrowHoverState();
-        (GetLeftArrowEnabled() ? 0 : 2).SetLeftArrowHoverState();
-        0.SetBtnHoverState();
+        int local_2 = this.ComponentToggle.Get().GetRightArrowEnabled() ? 0 : 2;
+        this.ComponentToggle.Get().SetRightArrowHoverState(local_2);
+        this.ComponentToggle.Get().SetLeftArrowHoverState((this.ComponentToggle.Get().GetLeftArrowEnabled() ? 0 : 2));
+        this.ComponentToggle.Get().SetBtnHoverState(0);
         return;
     }
     UFUNCTION()
     void OnMouseEnter_Implementation(const FGeometry &inout MyGeometry, const FPointerEvent &inout MouseEvent)
     {
-        1.SetBtnHoverState();
+        this.ComponentToggle.Get().SetBtnHoverState(1);
         return;
     }
     UFUNCTION()
     void GenerateEntryDataList()
     {
-        if (GetMultipleSelectionState() == 1)
+        if (this.ComponentToggle.Get().GetMultipleSelectionState() == 1)
         {
             TArray<FEUIDynamicWidgetData> local_8;
             int local_9 = 0;
-            for (; local_9 < GetOptionTexts().Num(); )
+            for (; local_9 < this.ComponentToggle.Get().GetOptionTexts().Num(); )
             {
                 FEUIDynamicWidgetData local_34;
-                local_34.ModelContainer = FEUIModelContainer(::FVM_SegmentBarItem::Create(this, GetOptionTexts()[local_9], (1 != 0)));
+                local_34.ModelContainer = FEUIModelContainer(::FVM_SegmentBarItem::Create(this, this.ComponentToggle.Get().GetOptionTexts()[local_9], (1 != 0)));
                 local_8.Add(local_34);
                 ++local_9;
             }
@@ -55,7 +55,7 @@ class UWidget_CommonComponentToggle : UEUIUserWidget
     void OnSelectedIndexChanged()
     {
         float32 local_10;
-        if (GetMultipleSelectionState() == 0)
+        if (this.ComponentToggle.Get().GetMultipleSelectionState() == 0)
         {
             return;
         }
@@ -63,7 +63,7 @@ class UWidget_CommonComponentToggle : UEUIUserWidget
         int local_9 = 0;
         for (; local_9 < local_8.Num(); )
         {
-            if (local_9 == GetCurrentSelectedIndex())
+            if (local_9 == this.ComponentToggle.Get().GetCurrentSelectedIndex())
             {
                 local_10 = 1.0f;
             }
@@ -96,8 +96,8 @@ class UWidget_CommonComponentToggle : UEUIUserWidget
     }
     void HandleObservedModelChanges(FEUIReactiveSubscriberIterator &inout It)
     {
-        FVM_CommonComponentToggle& local_6;
         TEUIModelRef<FVM_CommonComponentToggle> local_2 = this.ComponentToggle.AsRef();
+        FVM_CommonComponentToggle& local_6 = local_2.Get();
         for (; It; )
         {
             FEUIReactiveSubscriberTrackScope local_56 = FEUIReactiveSubscriberTrackScope(It);

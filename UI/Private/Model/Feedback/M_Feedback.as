@@ -70,11 +70,9 @@ FMS_Feedback& Get(const UObject ContextObject)
 {
     return FMS_Feedback::GetByManager(EUIInternal::GetContextManager(ContextObject));
 }
-FMS_Feedback GetByManager(const UEUIManagerSubsystem Manager)
+FMS_Feedback& GetByManager(const UEUIManagerSubsystem Manager)
 {
-    FMS_Feedback __r;
-    TEUIModelRef<FMS_Feedback> local_6 = TEUIModelRef<FMS_Feedback>(EUIInternal::MakeModelWithManager(Manager, FMS_Feedback::ModelId));
-    return __r;
+    return TEUIModelRef<FMS_Feedback>(EUIInternal::MakeModelWithManager(Manager, FMS_Feedback::ModelId)).Get();
 }
 void GetModelInfo(FEUIModelOnlyMetaInfo &inout Result)
 {

@@ -58,13 +58,12 @@ struct FVM_ForgeWeaponItemMaterialItem : FEUIViewModel
     }
     void PostConstruct()
     {
-        int local_7 = 0;
-        TEUIModelRef<FM_ItemData> local_2 = this.GetInventoryItemData();
-        if (GetConfig())
+        if (this.GetInventoryItemData().Get().GetConfig())
         {
-            TEUIModelRef<FM_ItemData> local_2_2 = this.GetInventoryItemData();
-            if (::UGlobalItemSettings::Get().GetRarityConfig(EItemRarity(local_7)))
+            TDataObjectPtr<FItemRarityConfig> local_32 = ::UGlobalItemSettings::Get().GetRarityConfig(EItemRarity(this.GetInventoryItemData().Get().GetConfig().Get().Rarity));
+            if (local_32)
             {
+                this.SetItemImageBGColor(local_32.Get().DefaultColor);
             }
         }
         return;
@@ -74,8 +73,7 @@ struct FVM_ForgeWeaponItemMaterialItem : FEUIViewModel
         const UUtilitySettings local_6;
         GetGameplaySettings<UUtilitySettings> local_4;
         local_6 = local_4;
-        TEUIModelRef<FM_ItemData> local_8 = this.GetInventoryItemData();
-        if (GetNum() < this.GetCostNum())
+        if (this.GetInventoryItemData().Get().GetNum() < this.GetCostNum())
         {
         }
         else
@@ -85,8 +83,7 @@ struct FVM_ForgeWeaponItemMaterialItem : FEUIViewModel
     }
     int GetInventoryNum() const
     {
-        TEUIModelRef<FM_ItemData> local_2 = this.GetInventoryItemData();
-        return GetNum();
+        return this.GetInventoryItemData().Get().GetNum();
     }
     FEUIModelContainer GetHoverModels() const
     {
@@ -191,11 +188,9 @@ FVM_ForgeWeaponItemMaterialItem& Create(const UObject ContextObject, const TEUIM
 {
     return FVM_ForgeWeaponItemMaterialItem::CreateByManager(EUIInternal::GetContextManager(ContextObject), InventoryItemData, ItemImage, CostNum);
 }
-FVM_ForgeWeaponItemMaterialItem CreateByManager(const UEUIManagerSubsystem Manager, const TEUIModelRef<FM_ItemData> &inout InventoryItemData, const FSoftBrush &inout ItemImage, const int CostNum)
+FVM_ForgeWeaponItemMaterialItem& CreateByManager(const UEUIManagerSubsystem Manager, const TEUIModelRef<FM_ItemData> &inout InventoryItemData, const FSoftBrush &inout ItemImage, const int CostNum)
 {
-    FVM_ForgeWeaponItemMaterialItem __r;
-    TEUIModelRef<FVM_ForgeWeaponItemMaterialItem> local_6 = TEUIModelRef<FVM_ForgeWeaponItemMaterialItem>(EUIInternal::MakeModelWithManager_Generic(Manager, FVM_ForgeWeaponItemMaterialItem::ModelId, 0, InventoryItemData, ItemImage, CostNum));
-    return __r;
+    return TEUIModelRef<FVM_ForgeWeaponItemMaterialItem>(EUIInternal::MakeModelWithManager_Generic(Manager, FVM_ForgeWeaponItemMaterialItem::ModelId, 0, InventoryItemData, ItemImage, CostNum)).Get();
 }
 void GetModelInfo(FEUIViewModelMetaInfo &inout Result)
 {
@@ -295,7 +290,6 @@ namespace __GeneratedProperties_FVM_ForgeWeaponItemMaterialItem
 {
 UScriptStruct StaticStruct()
 {
-    UScriptStruct local_2;
-    return local_2;
+    return __GeneratedProperties_FVM_ForgeWeaponItemMaterialItem.Get();
 }
 }

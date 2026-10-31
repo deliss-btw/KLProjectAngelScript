@@ -85,42 +85,42 @@ class UWidget_SkillInfo_Avatar_ShuiJing : UEUIUserWidget
     UFUNCTION()
     FEUIModelRef SkillInfo_VM_SpecialAttackButton() const
     {
-        FVMS_SkillInfo_Avatar_ShuiJing& local_2;
+        FVMS_SkillInfo_Avatar_ShuiJing& local_2 = this.SkillInfo.Get();
         FEUIModelRef local_8 = local_2 ? local_2.GetVM_SpecialAttackButton() : FEUIModelRef();
         return local_8;
     }
     UFUNCTION()
     FEUIModelRef SkillInfo_VM_SimpleSkillButton() const
     {
-        FVMS_SkillInfo_Avatar_ShuiJing& local_2;
+        FVMS_SkillInfo_Avatar_ShuiJing& local_2 = this.SkillInfo.Get();
         FEUIModelRef local_8 = local_2 ? local_2.GetVM_SimpleSkillButton() : FEUIModelRef();
         return local_8;
     }
     UFUNCTION()
     FEUIModelRef SkillInfo_VM_ExtraSkillButton() const
     {
-        FVMS_SkillInfo_Avatar_ShuiJing& local_2;
+        FVMS_SkillInfo_Avatar_ShuiJing& local_2 = this.SkillInfo.Get();
         FEUIModelRef local_8 = local_2 ? local_2.GetVM_ExtraSkillButton() : FEUIModelRef();
         return local_8;
     }
     UFUNCTION()
     FEUIModelRef SkillInfo_VM_UltraSkillButton() const
     {
-        FVMS_SkillInfo_Avatar_ShuiJing& local_2;
+        FVMS_SkillInfo_Avatar_ShuiJing& local_2 = this.SkillInfo.Get();
         FEUIModelRef local_8 = local_2 ? local_2.GetVM_UltraSkillButton() : FEUIModelRef();
         return local_8;
     }
     UFUNCTION()
     float32 SkillInfo_CustomSkillEnergyRatio() const
     {
-        FVMS_SkillInfo_Avatar_ShuiJing& local_2;
+        FVMS_SkillInfo_Avatar_ShuiJing& local_2 = this.SkillInfo.Get();
         return local_2 ? local_2.GetCustomSkillEnergyRatio() : 0.0f;
     }
     UFUNCTION()
     ESlateVisibility SkillInfo_SlateVisibilityShowArrow() const
     {
-        FVMS_SkillInfo_Avatar_ShuiJing& local_2;
         int local_5;
+        FVMS_SkillInfo_Avatar_ShuiJing& local_2 = this.SkillInfo.Get();
         if (local_2)
         {
             local_5 = int(local_2.ShowArrowAsSlateVisibility());
@@ -134,14 +134,14 @@ class UWidget_SkillInfo_Avatar_ShuiJing : UEUIUserWidget
     UFUNCTION()
     FEUIModelRef LinkSkillInfo_VM_LinkSkillButton() const
     {
-        FVMS_LinkSkillInfo& local_2;
+        FVMS_LinkSkillInfo& local_2 = this.LinkSkillInfo.Get();
         FEUIModelRef local_8 = local_2 ? local_2.GetVM_LinkSkillButton() : FEUIModelRef();
         return local_8;
     }
     void HandleObservedModelChanges(FEUIReactiveSubscriberIterator &inout It)
     {
-        FVMS_SkillInfo_Avatar_ShuiJing& local_6;
         TEUIModelRef<FVMS_SkillInfo_Avatar_ShuiJing> local_2 = this.SkillInfo.AsRef();
+        FVMS_SkillInfo_Avatar_ShuiJing& local_6 = local_2.Get();
         for (; It; )
         {
             FEUIReactiveSubscriberTrackScope local_56 = FEUIReactiveSubscriberTrackScope(It);

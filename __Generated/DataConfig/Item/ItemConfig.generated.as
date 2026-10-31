@@ -3,7 +3,6 @@ namespace __FItemConfigFunctions
 UFUNCTION()
 FText __FItemConfig_GetItemName(const TDataObjectPtr<FItemConfig> &inout DataObject)
 {
-    FText __r;
     if ((DataObject == nullptr))
     {
         if (!(EUIGlobals::GIsDuringPropertyConversion))
@@ -13,12 +12,11 @@ FText __FItemConfig_GetItemName(const TDataObjectPtr<FItemConfig> &inout DataObj
         FItemConfig local_184;
         return local_184.ItemName;
     }
-    return __r;
+    return DataObject.Get().ItemName;
 }
 UFUNCTION()
 FText __FItemConfig_GetItemDescription(const TDataObjectPtr<FItemConfig> &inout DataObject)
 {
-    FText __r;
     if ((DataObject == nullptr))
     {
         if (!(EUIGlobals::GIsDuringPropertyConversion))
@@ -28,12 +26,11 @@ FText __FItemConfig_GetItemDescription(const TDataObjectPtr<FItemConfig> &inout 
         FItemConfig local_184;
         return local_184.ItemDescription;
     }
-    return __r;
+    return DataObject.Get().ItemDescription;
 }
 UFUNCTION()
 FText __FItemConfig_GetItemBackgroundDescription(const TDataObjectPtr<FItemConfig> &inout DataObject)
 {
-    FText __r;
     if ((DataObject == nullptr))
     {
         if (!(EUIGlobals::GIsDuringPropertyConversion))
@@ -43,12 +40,11 @@ FText __FItemConfig_GetItemBackgroundDescription(const TDataObjectPtr<FItemConfi
         FItemConfig local_184;
         return local_184.ItemBackgroundDescription;
     }
-    return __r;
+    return DataObject.Get().ItemBackgroundDescription;
 }
 UFUNCTION()
 EItemType __FItemConfig_GetItemType(const TDataObjectPtr<FItemConfig> &inout DataObject)
 {
-    int local_185 = 0;
     if ((DataObject == nullptr))
     {
         if (!(EUIGlobals::GIsDuringPropertyConversion))
@@ -56,15 +52,13 @@ EItemType __FItemConfig_GetItemType(const TDataObjectPtr<FItemConfig> &inout Dat
             FBlueprintDebugFunctions::ThrowScriptException("Get 'ItemType' from a null 'FItemConfig' DataObject!");
         }
         FItemConfig local_184;
-        local_185 = int(local_184.ItemType);
-        return EItemType(local_185);
+        return local_184.ItemType;
     }
-    return EItemType(local_185);
+    return DataObject.Get().ItemType;
 }
 UFUNCTION()
 EItemTrunk __FItemConfig_GetItemTrunk(const TDataObjectPtr<FItemConfig> &inout DataObject)
 {
-    int local_185 = 0;
     if ((DataObject == nullptr))
     {
         if (!(EUIGlobals::GIsDuringPropertyConversion))
@@ -72,15 +66,13 @@ EItemTrunk __FItemConfig_GetItemTrunk(const TDataObjectPtr<FItemConfig> &inout D
             FBlueprintDebugFunctions::ThrowScriptException("Get 'ItemTrunk' from a null 'FItemConfig' DataObject!");
         }
         FItemConfig local_184;
-        local_185 = int(local_184.ItemTrunk);
-        return EItemTrunk(local_185);
+        return local_184.ItemTrunk;
     }
-    return EItemTrunk(local_185);
+    return DataObject.Get().ItemTrunk;
 }
 UFUNCTION()
 FFilteredGameplayTag __FItemConfig_GetItemCategory(const TDataObjectPtr<FItemConfig> &inout DataObject)
 {
-    FFilteredGameplayTag __r;
     if ((DataObject == nullptr))
     {
         if (!(EUIGlobals::GIsDuringPropertyConversion))
@@ -90,12 +82,11 @@ FFilteredGameplayTag __FItemConfig_GetItemCategory(const TDataObjectPtr<FItemCon
         FItemConfig local_184;
         return local_184.ItemCategory;
     }
-    return __r;
+    return DataObject.Get().ItemCategory;
 }
 UFUNCTION()
 FGameplayTagContainer __FItemConfig_GetItemTags(const TDataObjectPtr<FItemConfig> &inout DataObject)
 {
-    FGameplayTagContainer __r;
     if ((DataObject == nullptr))
     {
         if (!(EUIGlobals::GIsDuringPropertyConversion))
@@ -105,12 +96,11 @@ FGameplayTagContainer __FItemConfig_GetItemTags(const TDataObjectPtr<FItemConfig
         FItemConfig local_184;
         return local_184.ItemTags;
     }
-    return __r;
+    return DataObject.Get().ItemTags;
 }
 UFUNCTION()
 EItemRarity __FItemConfig_GetRarity(const TDataObjectPtr<FItemConfig> &inout DataObject)
 {
-    int local_185 = 0;
     if ((DataObject == nullptr))
     {
         if (!(EUIGlobals::GIsDuringPropertyConversion))
@@ -118,15 +108,13 @@ EItemRarity __FItemConfig_GetRarity(const TDataObjectPtr<FItemConfig> &inout Dat
             FBlueprintDebugFunctions::ThrowScriptException("Get 'Rarity' from a null 'FItemConfig' DataObject!");
         }
         FItemConfig local_184;
-        local_185 = int(local_184.Rarity);
-        return EItemRarity(local_185);
+        return local_184.Rarity;
     }
-    return EItemRarity(local_185);
+    return DataObject.Get().Rarity;
 }
 UFUNCTION()
 FSoftBrush __FItemConfig_GetItemIcon(const TDataObjectPtr<FItemConfig> &inout DataObject)
 {
-    FSoftBrush __r;
     if ((DataObject == nullptr))
     {
         if (!(EUIGlobals::GIsDuringPropertyConversion))
@@ -136,12 +124,11 @@ FSoftBrush __FItemConfig_GetItemIcon(const TDataObjectPtr<FItemConfig> &inout Da
         FItemConfig local_184;
         return local_184.ItemIcon;
     }
-    return __r;
+    return DataObject.Get().ItemIcon;
 }
 UFUNCTION()
 TSoftClassPtr<ACollectionPrefab> __FItemConfig_GetDropPrefab(const TDataObjectPtr<FItemConfig> &inout DataObject)
 {
-    TSoftClassPtr<ACollectionPrefab> __r;
     if ((DataObject == nullptr))
     {
         if (!(EUIGlobals::GIsDuringPropertyConversion))
@@ -151,12 +138,11 @@ TSoftClassPtr<ACollectionPrefab> __FItemConfig_GetDropPrefab(const TDataObjectPt
         FItemConfig local_184;
         return local_184.DropPrefab;
     }
-    return __r;
+    return DataObject.Get().DropPrefab;
 }
 UFUNCTION()
 EDropItemAllocation __FItemConfig_GetDefaultDropAllocation(const TDataObjectPtr<FItemConfig> &inout DataObject)
 {
-    int local_185 = 0;
     if ((DataObject == nullptr))
     {
         if (!(EUIGlobals::GIsDuringPropertyConversion))
@@ -164,15 +150,13 @@ EDropItemAllocation __FItemConfig_GetDefaultDropAllocation(const TDataObjectPtr<
             FBlueprintDebugFunctions::ThrowScriptException("Get 'DefaultDropAllocation' from a null 'FItemConfig' DataObject!");
         }
         FItemConfig local_184;
-        local_185 = int(local_184.DefaultDropAllocation);
-        return EDropItemAllocation(local_185);
+        return local_184.DefaultDropAllocation;
     }
-    return EDropItemAllocation(local_185);
+    return DataObject.Get().DefaultDropAllocation;
 }
 UFUNCTION()
 TMap<EItemActionType, TSubclassOf<UItemActionConfigBase>> __FItemConfig_GetItemActions(const TDataObjectPtr<FItemConfig> &inout DataObject)
 {
-    TMap<EItemActionType, TSubclassOf<UItemActionConfigBase>> __r;
     if ((DataObject == nullptr))
     {
         if (!(EUIGlobals::GIsDuringPropertyConversion))
@@ -182,7 +166,7 @@ TMap<EItemActionType, TSubclassOf<UItemActionConfigBase>> __FItemConfig_GetItemA
         FItemConfig local_184;
         return local_184.ItemActions;
     }
-    return __r;
+    return DataObject.Get().ItemActions;
 }
 UFUNCTION()
 TDataObjectPtr<FDropItemConfigBase> __FItemConfig_GetDecomposeConfig(const TDataObjectPtr<FItemConfig> &inout DataObject)
@@ -196,12 +180,11 @@ TDataObjectPtr<FDropItemConfigBase> __FItemConfig_GetDecomposeConfig(const TData
         FItemConfig local_184;
         return local_184.GetDecomposeConfig();
     }
-    return GetDecomposeConfig();
+    return DataObject.Get().GetDecomposeConfig();
 }
 UFUNCTION()
 bool __FItemConfig_GetbAllowDestroy(const TDataObjectPtr<FItemConfig> &inout DataObject)
 {
-    bool local_1 = false;
     if ((DataObject == nullptr))
     {
         if (!(EUIGlobals::GIsDuringPropertyConversion))
@@ -211,12 +194,11 @@ bool __FItemConfig_GetbAllowDestroy(const TDataObjectPtr<FItemConfig> &inout Dat
         FItemConfig local_184;
         return local_184.bAllowDestroy;
     }
-    return local_1;
+    return DataObject.Get().bAllowDestroy;
 }
 UFUNCTION()
 TArray<FItemGainWayConfig> __FItemConfig_GetGainWays(const TDataObjectPtr<FItemConfig> &inout DataObject)
 {
-    TArray<FItemGainWayConfig> __r;
     if ((DataObject == nullptr))
     {
         if (!(EUIGlobals::GIsDuringPropertyConversion))
@@ -226,7 +208,7 @@ TArray<FItemGainWayConfig> __FItemConfig_GetGainWays(const TDataObjectPtr<FItemC
         FItemConfig local_184;
         return local_184.GainWays;
     }
-    return __r;
+    return DataObject.Get().GainWays;
 }
 UFUNCTION()
 TDataObjectPtr<FMessageHintConfig> __FItemConfig_GetItemShortageTips(const TDataObjectPtr<FItemConfig> &inout DataObject)
@@ -240,7 +222,7 @@ TDataObjectPtr<FMessageHintConfig> __FItemConfig_GetItemShortageTips(const TData
         FItemConfig local_184;
         return local_184.GetItemShortageTips();
     }
-    return GetItemShortageTips();
+    return DataObject.Get().GetItemShortageTips();
 }
 UFUNCTION()
 FItemConfig CastToFItemConfig(const TDataObjectPtr<FItemConfig> &inout DataObject)

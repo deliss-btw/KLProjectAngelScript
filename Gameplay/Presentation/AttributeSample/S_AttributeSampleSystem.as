@@ -7,20 +7,70 @@ class US_AttributeSampleSystem : UECSScriptSystem
     UFUNCTION()
     void Monitor_AttributeSampleChanged(const FECSEntity &inout Entity, const FC_AttributeSample &inout C_AttributeSample) const
     {
-        // body not fully recovered — stub [argmismatch:argtype]
+        int local_8 = 0;
+        if (!(local_8))
+        {
+            return;
+        }
+        FBitSet32 local_10;
+        for (auto& local_28 : C_AttributeSample.AttributeSamples)
+        {
+            TRawPtr<FAttributeSampleInfo> local_30 = local_8.AttributeSamples.Find(local_28.GetKey());
+            if (local_30)
+            {
+                TArray<FECSEntity> local_36;
+                TArray<FECSEntity> local_40;
+                if (local_30.opArrow().DiffSamplers(local_28.GetValue(), local_36, local_40))
+                {
+                    auto local_46 = local_36.Iterator();
+                    for (; local_46.CanProceed;)
+                    {
+                        this.OnAttributeSampleAdd(local_46.Proceed(), Entity.GetId(), EAttributeSampleType(local_28.GetKey()));
+                        local_10.opOrAssign(FBitSet32(int(local_28.GetKey())));
+                    }
+                    auto local_52 = local_40.Iterator();
+                    for (; local_52.CanProceed;)
+                    {
+                        this.OnAttributeSampleRemove(local_52.Proceed(), Entity.GetId(), EAttributeSampleType(local_28.GetKey()));
+                    }
+                }
+                continue;
+            }
+            auto local_68 = local_28.GetValue().GetAllSamplers().Iterator();
+            for (; local_68.CanProceed;)
+            {
+                this.OnAttributeSampleAdd(local_68.Proceed(), Entity.GetId(), EAttributeSampleType(local_28.GetKey()));
+                local_10.opOrAssign(FBitSet32(int(local_28.GetKey())));
+            }
+        }
+        for (auto& local_92 : local_8.AttributeSamples)
+        {
+            if (!(C_AttributeSample.AttributeSamples.Contains(local_92.GetKey())))
+            {
+                auto local_74 = local_92.GetValue().GetAllSamplers().Iterator();
+                for (; local_74.CanProceed;)
+                {
+                    this.OnAttributeSampleRemove(local_74.Proceed(), Entity.GetId(), EAttributeSampleType(local_92.GetKey()));
+                }
+            }
+        }
+        if (!(local_10.IsEmpty()))
+        {
+            this.SyncAttributes(Entity, local_10);
+        }
+        local_8.AttributeSamples = C_AttributeSample.AttributeSamples;
+        return;
     }
     UFUNCTION()
     void Monitor_AttributeSampleRemoved(const FECSEntity &inout Entity, const FC_AttributeSample &inout C_AttributeSample) const
     {
-        TArray<FECSEntity> local_32;
         Get local_6;
         const FC_AttributeSampleSnapshot& local_8 = local_6.opCall();
         if (local_8)
         {
             for (auto& local_28 : local_8.AttributeSamples)
             {
-                local_32.GetAllSamplers();
-                auto local_38 = local_32.Iterator();
+                auto local_38 = local_28.GetValue().GetAllSamplers().Iterator();
                 for (; local_38.CanProceed;)
                 {
                     this.OnAttributeSampleRemove(local_38.Proceed(), Entity.GetId(), local_28.GetKey());
@@ -65,7 +115,57 @@ class US_AttributeSampleSystem : UECSScriptSystem
     }
     void OnAttributeSampleRemove(const FECSEntity &inout Sampler, const FECSEntityId &inout SampledEntityId, const EAttributeSampleType SampledAttribute) const
     {
-        // body not fully recovered — stub [opcode-uncovered]
+        if ((Sampler == ENTITY_NULL))
+        {
+            TMap<FECSEntityId, FBitSet32>& local_12;
+            FECSWorldPtr local_4 = this.GetECSWorld();
+            Modify local_8;
+            FCS_GlobalAttributeSampler& local_10 = local_8.opCall();
+            if (local_10)
+            {
+                local_12 = local_10.GetModify_AttributeSampleEntities();
+                TRawPtr<FBitSet32> local_14 = local_12.Find(SampledEntityId);
+                if (local_14)
+                {
+                    int local_17 = ~int(SampledAttribute);
+                    local_14.Get().opAndAssign(FBitSet32(local_17));
+                    if (local_14.opArrow().IsEmpty())
+                    {
+                        local_12.Remove(SampledEntityId);
+                        if (local_12.IsEmpty())
+                        {
+                            FECSWorldPtr local_20 = this.GetECSWorld();
+                            Remove local_24;
+                            local_24.opCall();
+                        }
+                    }
+                }
+            }
+            return;
+        }
+        Modify local_28;
+        FC_AttributeSampler& local_30 = local_28.opCall();
+        if (local_30)
+        {
+            TMap<FECSEntityId, FBitSet32>& local_12;
+            local_12 = local_30.GetModify_AttributeSampleEntities();
+            TRawPtr<FBitSet32> local_16 = local_12.Find(SampledEntityId);
+            if (local_16)
+            {
+                int local_17_2 = ~int(SampledAttribute);
+                local_16.Get().opAndAssign(FBitSet32(local_17_2));
+                if (local_16.opArrow().IsEmpty())
+                {
+                    local_12.Remove(SampledEntityId);
+                    if (local_12.IsEmpty())
+                    {
+                        Remove local_34;
+                        local_34.opCall();
+                    }
+                }
+            }
+        }
+        return;
     }
     void SyncAttributes(const FECSEntity &inout SampledEntity, const FBitSet32 &inout SampledAttributes) const
     {

@@ -7,7 +7,6 @@ class US_ConditionBodyPartDestroy : UECSScriptSystem
     UFUNCTION()
     void ServerJob_HandleBodyPartDestroyCondition(const FCE_BodyPartDestroyEvent &inout Event, const FCS_BodyPartDestroyConditionManager &inout C_BodyPartDestroyConditionManager) const
     {
-        CastTo local_46;
         if (!((Event.BodyPart == NAME_None)))
         {
             if (C_BodyPartDestroyConditionManager.MonitoredBodyParts.Contains(Event.BodyPart))
@@ -19,12 +18,13 @@ class US_ConditionBodyPartDestroy : UECSScriptSystem
                         continue;
                     }
                     TDataObjectPtr<FConditionConfigBase> local_42 = local_18.GetConditionConfig();
-                    if (local_46.opCall())
+                    CastTo local_46;
+                    TDataObjectPtr<FLocalConditionConfig> local_70 = local_46.opCall();
+                    if (local_70)
                     {
                         bool local_95;
                         local_95 = true;
-                        FInstancedStruct::GetPtr local_100;
-                        TConstRawPtr<FConditionBodyPartDestroyConfig> local_102 = local_100.opCall();
+                        TConstRawPtr<FConditionBodyPartDestroyConfig> local_102 = FInstancedStruct::GetPtr(local_70.Get().ConditionTypeDefineConfig).opCall();
                         if (local_102)
                         {
                             if (local_102.opArrow().PrefabConfig)

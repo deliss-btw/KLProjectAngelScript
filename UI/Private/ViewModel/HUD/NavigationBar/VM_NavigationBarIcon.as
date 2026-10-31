@@ -122,11 +122,9 @@ FVM_NavigationBarIcon& Create(const UObject ContextObject, const TEUIModelRef<FM
 {
     return FVM_NavigationBarIcon::CreateByManager(EUIInternal::GetContextManager(ContextObject), Spot);
 }
-FVM_NavigationBarIcon CreateByManager(const UEUIManagerSubsystem Manager, const TEUIModelRef<FM_Spot> &inout Spot)
+FVM_NavigationBarIcon& CreateByManager(const UEUIManagerSubsystem Manager, const TEUIModelRef<FM_Spot> &inout Spot)
 {
-    FVM_NavigationBarIcon __r;
-    TEUIModelRef<FVM_NavigationBarIcon> local_6 = TEUIModelRef<FVM_NavigationBarIcon>(EUIInternal::MakeModelWithManager_Generic(Manager, FVM_NavigationBarIcon::ModelId, 0, Spot));
-    return __r;
+    return TEUIModelRef<FVM_NavigationBarIcon>(EUIInternal::MakeModelWithManager_Generic(Manager, FVM_NavigationBarIcon::ModelId, 0, Spot)).Get();
 }
 void GetModelInfo(FEUIViewModelMetaInfo &inout Result)
 {
@@ -200,7 +198,6 @@ namespace __GeneratedProperties_FVM_NavigationBarIcon
 {
 UScriptStruct StaticStruct()
 {
-    UScriptStruct local_2;
-    return local_2;
+    return __GeneratedProperties_FVM_NavigationBarIcon.Get();
 }
 }

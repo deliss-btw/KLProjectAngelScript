@@ -205,7 +205,11 @@ class UDialogueSubtitleSubsystem : UScriptWorldSubsystem
     {
         if (this.EntitySoundIdMap.Contains(Entity))
         {
-            FGameAudioUtils::StopSound(this.EntitySoundIdMap[Entity], 100);
+            int local_2;
+            local_2 = this.EntitySoundIdMap[Entity];
+            FGameAudioUtils::StopSound(local_2, 100);
+            this.EntitySoundIdMap.Remove(Entity);
+            this.SoundIdEntityMap.Remove(local_2);
         }
         return;
     }
@@ -256,7 +260,9 @@ class UDialogueSubtitleSubsystem : UScriptWorldSubsystem
         FECSEntity local_6 = FECSEntity(this.SoundIdEntityMap[SoundId]);
         if (this.EntitySoundIdMap.Contains(local_6) && (this.EntitySoundIdMap[local_6] == SoundId))
         {
+            this.EntitySoundIdMap.Remove(local_6);
         }
+        this.SoundIdEntityMap.Remove(SoundId);
         return;
     }
     void StartNarration(const FName &inout DialogueName, const TArray<FDialogueSubtitle> &inout Subtitles, const float32 SubtitleInterval)

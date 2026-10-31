@@ -472,11 +472,9 @@ FVM_PVP_TDM_KDAListEntry& Create(const UObject ContextObject, const FECSEntity &
 {
     return FVM_PVP_TDM_KDAListEntry::CreateByManager(EUIInternal::GetContextManager(ContextObject), PlayerEntity);
 }
-FVM_PVP_TDM_KDAListEntry CreateByManager(const UEUIManagerSubsystem Manager, const FECSEntity &inout PlayerEntity)
+FVM_PVP_TDM_KDAListEntry& CreateByManager(const UEUIManagerSubsystem Manager, const FECSEntity &inout PlayerEntity)
 {
-    FVM_PVP_TDM_KDAListEntry __r;
-    TEUIModelRef<FVM_PVP_TDM_KDAListEntry> local_6 = TEUIModelRef<FVM_PVP_TDM_KDAListEntry>(EUIInternal::MakeModelWithManager_Generic(Manager, FVM_PVP_TDM_KDAListEntry::ModelId, 0, PlayerEntity));
-    return __r;
+    return TEUIModelRef<FVM_PVP_TDM_KDAListEntry>(EUIInternal::MakeModelWithManager_Generic(Manager, FVM_PVP_TDM_KDAListEntry::ModelId, 0, PlayerEntity)).Get();
 }
 void GetModelInfo(FEUIViewModelMetaInfo &inout Result)
 {
@@ -650,7 +648,6 @@ namespace __GeneratedProperties_FVM_PVP_TDM_KDAListEntry
 {
 UScriptStruct StaticStruct()
 {
-    UScriptStruct local_2;
-    return local_2;
+    return __GeneratedProperties_FVM_PVP_TDM_KDAListEntry.Get();
 }
 }

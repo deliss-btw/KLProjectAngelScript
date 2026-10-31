@@ -65,10 +65,10 @@ class UHTNService_UpdateMoveStanceByDistance : UHTNService_ECSScriptBase
     {
         bool local_1 = false;
         float32 local_3 = 0.0f;
-        ECreatureMoveStance local_6 = ECreatureMoveStance(0);
+        ECreatureMoveStance local_6 = ECreatureMoveStance::None;
         bool local_7 = false;
         float32 local_8 = 0.0f;
-        ECreatureMoveStance local_6_2 = ECreatureMoveStance(0);
+        ECreatureMoveStance local_6_2 = ECreatureMoveStance::None;
         for (auto& local_24 : this.DistanceConfigs)
         {
             if (!(local_7) || (local_24.MaxDistance > local_8))

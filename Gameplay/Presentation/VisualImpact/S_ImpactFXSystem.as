@@ -110,8 +110,6 @@ class US_ImpactFXSystem : UECSScriptSystem
     UFUNCTION()
     void Job_HandleImpactEffect(const FCE_ImpactFXEvent &inout Event) const
     {
-        UDataTable local_16;
-        UGamePhysicalMaterial local_44;
         if (!(Event.bHasVFX))
         {
             return;
@@ -122,11 +120,12 @@ class US_ImpactFXSystem : UECSScriptSystem
             XLog(ELog(0), FString().Append("Job_HandleImpactEffect Event sender is not valid. PhysicalMaterial:").Append(Event.PhysicalMaterial.ToString()).Append(", ImpactType:").Append(Event.ImpactType));
             return;
         }
-        if (local_16 == nullptr)
+        if (UGameplayConfigsManager::GetImpactVFXTable().Get() == nullptr)
         {
             return;
         }
         TDataObjectPtr<FImpactConfigVFX> local_40;
+        UGamePhysicalMaterial local_44 = Event.PhysicalMaterial.Get();
         if (local_44 != nullptr)
         {
             UDataTable::FindDataObject local_48;
@@ -144,7 +143,7 @@ class US_ImpactFXSystem : UECSScriptSystem
         }
         if (local_40)
         {
-            const FImpactVFXDataWithStrength& local_100 = int(Event.ImpactType).GetData();
+            const FImpactVFXDataWithStrength& local_100 = local_40.Get().GetData(EImpactType(Event.ImpactType));
             FImpactVFXData local_122;
             switch (int(Event.ImpactStrength))
             {
@@ -174,7 +173,7 @@ class US_ImpactFXSystem : UECSScriptSystem
             }
             if (local_1)
             {
-                const FImpactVFXDataWithStrength& local_128 = int(local_100.FallBack).GetData();
+                const FImpactVFXDataWithStrength& local_128 = local_40.Get().GetData(EImpactType(local_100.FallBack));
                 switch (int(Event.ImpactStrength))
                 {
                 case 1:
@@ -257,8 +256,6 @@ class US_ImpactFXSystem : UECSScriptSystem
     UFUNCTION()
     void Job_HandleImpactSound(const FCE_ImpactFXEvent &inout Event) const
     {
-        UDataTable local_16;
-        UGamePhysicalMaterial local_44;
         if (!(Event.bHasSFX))
         {
             return;
@@ -273,11 +270,12 @@ class US_ImpactFXSystem : UECSScriptSystem
             ::ImpactFXUtils::HandleAttackImpact(Event);
             return;
         }
-        if (local_16 == nullptr)
+        if (UGameplayConfigsManager::GetImpactSFXTable().Get() == nullptr)
         {
             return;
         }
         TDataObjectPtr<FImpactConfigSFX> local_40;
+        UGamePhysicalMaterial local_44 = Event.PhysicalMaterial.Get();
         if (local_44 != nullptr)
         {
             UDataTable::FindDataObject local_48;
@@ -294,7 +292,7 @@ class US_ImpactFXSystem : UECSScriptSystem
         }
         if (local_40)
         {
-            const FImpactSFXData& local_100 = int(Event.ImpactType).GetData();
+            const FImpactSFXData& local_100 = local_40.Get().GetData(EImpactType(Event.ImpactType));
             if (local_100.Event.IsNull())
             {
                 FString local_104 = FString().Append("Job_HandleImpactSound Event is null");

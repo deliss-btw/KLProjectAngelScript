@@ -48,15 +48,11 @@ struct FVM_TraitDetailListItem : FEUIViewModel
     }
     FText GetTraitDescription() const
     {
-        TEUIModelRef<FM_Trait> local_2 = this.GetTraitInfo();
-        FText local_6;
-        local_6.GetTraitDescription();
-        return local_6;
+        return this.GetTraitInfo().Get().GetTraitDescription();
     }
     FText GetTraitLevelText() const
     {
-        TEUIModelRef<FM_Trait> local_2 = this.GetTraitInfo();
-        return FText::Format(FText::AsCultureInvariant("Lv.{0}"), GetTraitLevel());
+        return FText::Format(FText::AsCultureInvariant("Lv.{0}"), this.GetTraitInfo().Get().GetTraitLevel());
     }
     TEUIModelRef<FM_Trait> GetTraitInfo() const property
     {
@@ -113,11 +109,9 @@ FVM_TraitDetailListItem& Create(const UObject ContextObject, const TEUIModelRef<
 {
     return FVM_TraitDetailListItem::CreateByManager(EUIInternal::GetContextManager(ContextObject), TraitInfo, bIsCurrentLevel);
 }
-FVM_TraitDetailListItem CreateByManager(const UEUIManagerSubsystem Manager, const TEUIModelRef<FM_Trait> &inout TraitInfo, const bool bIsCurrentLevel)
+FVM_TraitDetailListItem& CreateByManager(const UEUIManagerSubsystem Manager, const TEUIModelRef<FM_Trait> &inout TraitInfo, const bool bIsCurrentLevel)
 {
-    FVM_TraitDetailListItem __r;
-    TEUIModelRef<FVM_TraitDetailListItem> local_6 = TEUIModelRef<FVM_TraitDetailListItem>(EUIInternal::MakeModelWithManager_Generic(Manager, FVM_TraitDetailListItem::ModelId, 0, TraitInfo, bIsCurrentLevel));
-    return __r;
+    return TEUIModelRef<FVM_TraitDetailListItem>(EUIInternal::MakeModelWithManager_Generic(Manager, FVM_TraitDetailListItem::ModelId, 0, TraitInfo, bIsCurrentLevel)).Get();
 }
 void GetModelInfo(FEUIViewModelMetaInfo &inout Result)
 {
@@ -181,7 +175,6 @@ namespace __GeneratedProperties_FVM_TraitDetailListItem
 {
 UScriptStruct StaticStruct()
 {
-    UScriptStruct local_2;
-    return local_2;
+    return __GeneratedProperties_FVM_TraitDetailListItem.Get();
 }
 }

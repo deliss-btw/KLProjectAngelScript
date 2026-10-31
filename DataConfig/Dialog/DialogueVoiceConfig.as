@@ -43,7 +43,6 @@ struct FDialogueVoiceConfig : FDataObject
     }
     bool IsSame(const FDialogueVoiceConfig &inout Other) const
     {
-        bool local_3 = false;
         if (this.VOSources.Num() != Other.VOSources.Num())
         {
             return false;
@@ -51,8 +50,7 @@ struct FDialogueVoiceConfig : FDataObject
         int local_4 = 0;
         for (; local_4 < this.VOSources.Num(); ++local_4)
         {
-            local_3 = !local_3;
-            if (local_3)
+            if (!(this.VOSources[local_4].IsSame(Other.VOSources[local_4])))
             {
                 return false;
             }

@@ -195,9 +195,7 @@ struct FVM_SuiXiSkillResource : FEUIViewModel
     }
     void PostConstruct()
     {
-        UCombatGlobalSettings local_2 = ::UCombatGlobalSettings::Get();
-        UClass local_4;
-        this.SetIdentifyName_ShuiJing_PowerArrow(FName(local_4.GetPathName(nullptr)));
+        this.SetIdentifyName_ShuiJing_PowerArrow(FName(::UCombatGlobalSettings::Get().Prefab_ShuiJing_PowerArrow.Get().GetPathName(nullptr)));
         return;
     }
     void SyncSuiXiResourceSources()
@@ -219,9 +217,8 @@ struct FVM_SuiXiSkillResource : FEUIViewModel
     }
     void RefreshCustomSkillEnergy()
     {
-        float32 local_1 = this.GetCustomSkillEnergySource().GetMaxValue();
-        this.SetCustomSkillEnergyMax(local_1);
-        this.SetCustomSkillEnergy(local_1);
+        this.SetCustomSkillEnergyMax(this.GetCustomSkillEnergySource().GetMaxValue());
+        this.SetCustomSkillEnergy(this.GetCustomSkillEnergySource().GetValue());
         this.SetLastCustomSkillEnergyRatio(this.GetCustomSkillEnergyRatio());
         this.SetCustomSkillEnergyRatio(this.GetCustomSkillEnergySource().GetRatioValue());
         this.SetbIsDecreasing((this.GetCustomSkillEnergyRatio() < this.GetLastCustomSkillEnergyRatio()));
@@ -233,9 +230,8 @@ struct FVM_SuiXiSkillResource : FEUIViewModel
     }
     void RefreshChargeState()
     {
-        int local_1 = 0;
-        this.SetChargeNum(local_1);
-        if (local_1 > 0 || (this.GetChargeNum() > 2))
+        this.SetChargeNum(this.GetChargeNumSource().GetValue());
+        if (this.GetSuperSwitchModeSource().GetValue() > 0 || (this.GetChargeNum() > 2))
         {
             this.SetChargeState(2);
             return;
@@ -250,9 +246,8 @@ struct FVM_SuiXiSkillResource : FEUIViewModel
     }
     void RefreshChargeEnergySpeed()
     {
-        float32 local_1 = 0.0f;
         this.SetLastChargeEnergySpeed_Charge(this.GetChargeEnergySpeed_Charge());
-        this.SetChargeEnergySpeed_Charge(local_1);
+        this.SetChargeEnergySpeed_Charge(this.GetChargeEnergySpeedChargeSource().GetValue());
         return;
     }
     void RefreshPowerArrowCount()
@@ -733,11 +728,9 @@ FVM_SuiXiSkillResource& Create(const UObject ContextObject)
 {
     return FVM_SuiXiSkillResource::CreateByManager(EUIInternal::GetContextManager(ContextObject));
 }
-FVM_SuiXiSkillResource CreateByManager(const UEUIManagerSubsystem Manager)
+FVM_SuiXiSkillResource& CreateByManager(const UEUIManagerSubsystem Manager)
 {
-    FVM_SuiXiSkillResource __r;
-    TEUIModelRef<FVM_SuiXiSkillResource> local_6 = TEUIModelRef<FVM_SuiXiSkillResource>(EUIInternal::MakeModelWithManager(Manager, FVM_SuiXiSkillResource::ModelId));
-    return __r;
+    return TEUIModelRef<FVM_SuiXiSkillResource>(EUIInternal::MakeModelWithManager(Manager, FVM_SuiXiSkillResource::ModelId)).Get();
 }
 void GetModelInfo(FEUIViewModelMetaInfo &inout Result)
 {
@@ -943,7 +936,6 @@ namespace __GeneratedProperties_FVM_SuiXiSkillResource
 {
 UScriptStruct StaticStruct()
 {
-    UScriptStruct local_2;
-    return local_2;
+    return __GeneratedProperties_FVM_SuiXiSkillResource.Get();
 }
 }

@@ -246,7 +246,7 @@ struct FMarkPool
     }
     bool Remove(const FECSEntity &inout MarkEntity)
     {
-        return (0 > 0);
+        return (this.GetMarkEntities().Remove(MarkEntity) > 0);
     }
     const TArray<FECSEntity>& AllMarks() const
     {

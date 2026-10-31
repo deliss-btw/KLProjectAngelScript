@@ -300,7 +300,7 @@ struct FVM_InputActionList : FEUIViewModel
     {
         for (auto& local_16 : this.GetInputActions())
         {
-            if (local_16.IsValid() && HasExecuted())
+            if (local_16.IsValid() && local_16.Get().HasExecuted())
             {
                 return true;
             }
@@ -371,11 +371,9 @@ FVM_InputAction& Create(const UObject ContextObject, const FEUIInputAction &inou
 {
     return FVM_InputAction::CreateByManager(EUIInternal::GetContextManager(ContextObject), InputAction, OnInputActionExecute);
 }
-FVM_InputAction CreateByManager(const UEUIManagerSubsystem Manager, const FEUIInputAction &inout InputAction, const FSimpleModelEvent &inout OnInputActionExecute)
+FVM_InputAction& CreateByManager(const UEUIManagerSubsystem Manager, const FEUIInputAction &inout InputAction, const FSimpleModelEvent &inout OnInputActionExecute)
 {
-    FVM_InputAction __r;
-    TEUIModelRef<FVM_InputAction> local_6 = TEUIModelRef<FVM_InputAction>(EUIInternal::MakeModelWithManager_Generic(Manager, FVM_InputAction::ModelId, 0, InputAction, OnInputActionExecute));
-    return __r;
+    return TEUIModelRef<FVM_InputAction>(EUIInternal::MakeModelWithManager_Generic(Manager, FVM_InputAction::ModelId, 0, InputAction, OnInputActionExecute)).Get();
 }
 void GetModelInfo(FEUIViewModelMetaInfo &inout Result)
 {
@@ -481,8 +479,7 @@ namespace __GeneratedProperties_FVM_InputAction
 {
 UScriptStruct StaticStruct()
 {
-    UScriptStruct local_2;
-    return local_2;
+    return __GeneratedProperties_FVM_InputAction.Get();
 }
 }
 namespace FVM_InputActionList
@@ -491,21 +488,17 @@ FVM_InputActionList& Create(const UObject ContextObject, const FInputActionListC
 {
     return FVM_InputActionList::CreateByManager(EUIInternal::GetContextManager(ContextObject), InputActionList);
 }
-FVM_InputActionList CreateByManager(const UEUIManagerSubsystem Manager, const FInputActionListConstructParam &inout InputActionList)
+FVM_InputActionList& CreateByManager(const UEUIManagerSubsystem Manager, const FInputActionListConstructParam &inout InputActionList)
 {
-    FVM_InputActionList __r;
-    TEUIModelRef<FVM_InputActionList> local_6 = TEUIModelRef<FVM_InputActionList>(EUIInternal::MakeModelWithManager_Generic(Manager, FVM_InputActionList::ModelId, 0, InputActionList));
-    return __r;
+    return TEUIModelRef<FVM_InputActionList>(EUIInternal::MakeModelWithManager_Generic(Manager, FVM_InputActionList::ModelId, 0, InputActionList)).Get();
 }
 FVM_InputActionList& Create(const UObject ContextObject, const FInputActionListConstructParam &inout InputActionList, const FInputActionListCallback &inout InputActionListCallback)
 {
     return FVM_InputActionList::CreateByManager(EUIInternal::GetContextManager(ContextObject), InputActionList, InputActionListCallback);
 }
-FVM_InputActionList CreateByManager(const UEUIManagerSubsystem Manager, const FInputActionListConstructParam &inout InputActionList, const FInputActionListCallback &inout InputActionListCallback)
+FVM_InputActionList& CreateByManager(const UEUIManagerSubsystem Manager, const FInputActionListConstructParam &inout InputActionList, const FInputActionListCallback &inout InputActionListCallback)
 {
-    FVM_InputActionList __r;
-    TEUIModelRef<FVM_InputActionList> local_6 = TEUIModelRef<FVM_InputActionList>(EUIInternal::MakeModelWithManager_Generic(Manager, FVM_InputActionList::ModelId, 1, InputActionList, InputActionListCallback));
-    return __r;
+    return TEUIModelRef<FVM_InputActionList>(EUIInternal::MakeModelWithManager_Generic(Manager, FVM_InputActionList::ModelId, 1, InputActionList, InputActionListCallback)).Get();
 }
 void GetModelInfo(FEUIViewModelMetaInfo &inout Result)
 {
@@ -547,7 +540,6 @@ namespace __GeneratedProperties_FVM_InputActionList
 {
 UScriptStruct StaticStruct()
 {
-    UScriptStruct local_2;
-    return local_2;
+    return __GeneratedProperties_FVM_InputActionList.Get();
 }
 }

@@ -70,6 +70,7 @@ class UESMAction_AddIgnoreHitAttackTag : UESMBPBaseSpanAction
                 {
                     if (local_23 == 1)
                     {
+                        local_6.GetModify_CountByTagName().Remove(local_22);
                         continue;
                     }
                     int local_24 = local_6.GetModify_CountByTagName()[local_22] - 1;

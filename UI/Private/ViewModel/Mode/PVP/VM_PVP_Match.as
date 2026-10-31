@@ -48,26 +48,16 @@ struct FVM_PVP_Match : FEUIViewModel
     }
     void PostConstruct()
     {
-        int local_57 = 0;
-        bool local_3 = this.GetMode().IsValid();
-        if (!(local_3))
-        {
-            local_3 = false;
-        }
-        else
+        if (this.GetMode().IsValid() && this.GetMode().Get().GetMatchConfig().IsSet())
         {
             TEUIModelWeakRef<FM_ModeItem> local_2 = this.GetMode();
-            local_3 = GetMatchConfig().IsSet();
-        }
-        if (local_3)
-        {
-            TEUIModelWeakRef<FM_ModeItem> local_2_2 = this.GetMode();
             CastTo local_32;
-            if (local_32.opCall())
+            TDataObjectPtr<FPvpMatchConfig> local_56 = local_32.opCall();
+            if (local_56)
             {
-                if (GetLevelConfig().IsSet())
+                if (local_56.Get().GetLevelConfig().IsSet())
                 {
-                    this.SetLevelKey(local_57);
+                    this.SetLevelKey(local_56.Get().GetLevelConfig().Get().DataId);
                 }
             }
         }
@@ -132,11 +122,9 @@ FVM_PVP_Match& Create(const UObject ContextObject, const TEUIModelWeakRef<FM_Mod
 {
     return FVM_PVP_Match::CreateByManager(EUIInternal::GetContextManager(ContextObject), Mode);
 }
-FVM_PVP_Match CreateByManager(const UEUIManagerSubsystem Manager, const TEUIModelWeakRef<FM_ModeItem> &inout Mode)
+FVM_PVP_Match& CreateByManager(const UEUIManagerSubsystem Manager, const TEUIModelWeakRef<FM_ModeItem> &inout Mode)
 {
-    FVM_PVP_Match __r;
-    TEUIModelRef<FVM_PVP_Match> local_6 = TEUIModelRef<FVM_PVP_Match>(EUIInternal::MakeModelWithManager_Generic(Manager, FVM_PVP_Match::ModelId, 0, Mode));
-    return __r;
+    return TEUIModelRef<FVM_PVP_Match>(EUIInternal::MakeModelWithManager_Generic(Manager, FVM_PVP_Match::ModelId, 0, Mode)).Get();
 }
 void GetModelInfo(FEUIViewModelMetaInfo &inout Result)
 {
@@ -174,7 +162,6 @@ namespace __GeneratedProperties_FVM_PVP_Match
 {
 UScriptStruct StaticStruct()
 {
-    UScriptStruct local_2;
-    return local_2;
+    return __GeneratedProperties_FVM_PVP_Match.Get();
 }
 }

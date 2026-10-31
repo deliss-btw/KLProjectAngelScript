@@ -170,7 +170,6 @@ void AddMetaBuffToPlayer(const FPbDsPlayerInfo &inout PlayerInfo, const FECSEnti
         TDataObjectPtr<FMetaBuffConfig> local_46 = FMetaBuffConfig::GetByDataId(local_20.GetFirst());
         if (local_46)
         {
-            FName local_182;
             int local_115;
             int local_75;
             TArray<TDataObjectPtr<FGameplayModifierConfig>> local_74;
@@ -207,11 +206,8 @@ void AddMetaBuffToPlayer(const FPbDsPlayerInfo &inout PlayerInfo, const FECSEnti
                     break;
                 }
             }
-            bool local_17 = FMetaBuffUtils::AddMetaBuffWithStartTime(PlayerEntity, local_46, local_74, local_146, local_20.GetSecond());
-            int local_21 = local_20.GetSecond();
-            local_182.GetDataName();
             Get local_180;
-            XLog(ELog(26), FString().Append("AddMetaBuffToPlayer: PlayerId=").Append(local_180.opCall().GetPlayerId()).Append(", BuffId=").Append(local_20.GetFirst()).Append(", BuffName=").Append(local_182).Append(", StartTime=").Append(local_21).Append(", bAdded=").Append(local_17));
+            XLog(ELog(26), FString().Append("AddMetaBuffToPlayer: PlayerId=").Append(local_180.opCall().GetPlayerId()).Append(", BuffId=").Append(local_20.GetFirst()).Append(", BuffName=").Append(local_46.Get().GetDataName()).Append(", StartTime=").Append(local_20.GetSecond()).Append(", bAdded=").Append(FMetaBuffUtils::AddMetaBuffWithStartTime(PlayerEntity, local_46, local_74, local_146, local_20.GetSecond())));
             continue;
         }
         XError(ELog(26), FString().Append("AddMetaBuffToPlayer failed: MetaBuffConfig is invalid, BuffId=").Append(local_20.GetFirst()));
@@ -281,7 +277,6 @@ void SpawnAvatarsForPlayer(const FECSEntity &inout PlayerProxy, FC_PlayerControl
 bool GetSpawnLocationForPlayer(const FECSEntity &inout PlayerProxy, FC_PlayerController &inout PlayerController, const FCS_PlayerSpawnerIndex &inout SpawnerIndex, const TDataObjectPtr<FLevelInfoConfig> &inout LevelInfoConfig, FVector &inout Position, FQuat &inout Rotation, bool &inout bSpawnFromTeleportKey)
 {
     APlayerStartPIE local_4;
-    bool local_111 = false;
     AECSWorldSettingsBase local_114;
     bool local_1 = false;
     bSpawnFromTeleportKey = false;
@@ -299,7 +294,8 @@ bool GetSpawnLocationForPlayer(const FECSEntity &inout PlayerProxy, FC_PlayerCon
         Rotation = local_42.Rotation.Quaternion();
         local_1 = true;
     }
-    if (!(local_1))
+    bool local_2 = !(local_1);
+    if (local_2)
     {
         int local_67;
         FPbDsPlayerInfo local_66 = UGameDSConnectionSubsystem::Get().GetPlayerInfo(PlayerController.GetPlayerId());
@@ -333,7 +329,15 @@ bool GetSpawnLocationForPlayer(const FECSEntity &inout PlayerProxy, FC_PlayerCon
             }
         }
     }
-    if (!(local_1) && ((LevelInfoConfig.IsSet() && GetGameRuleConfig().IsSet()) && local_111))
+    if (!(LevelInfoConfig.IsSet() && LevelInfoConfig.Get().GetGameRuleConfig().IsSet()))
+    {
+        local_2 = false;
+    }
+    else
+    {
+        local_2 = LevelInfoConfig.Get().GetGameRuleConfig().Get().bCanSavePosition;
+    }
+    if (!(local_1) && local_2)
     {
         int local_67;
         local_67 = 0;
@@ -345,6 +349,7 @@ bool GetSpawnLocationForPlayer(const FECSEntity &inout PlayerProxy, FC_PlayerCon
         FPbDsPlayerInfo local_52 = UGameDSConnectionSubsystem::Get().GetPlayerInfo(PlayerController.GetPlayerId());
         if (local_52.IsValid() && (local_52.GetUid() > 0))
         {
+            bool local_111;
             if (local_52.GetDsMiscInfo().GetTeleportKey() > 0)
             {
                 int local_68 = local_52.GetDsMiscInfo().GetTeleportKey();
@@ -382,11 +387,10 @@ bool GetSpawnLocationForPlayer(const FECSEntity &inout PlayerProxy, FC_PlayerCon
     if (!(local_1))
     {
         int local_256;
-        ESpawnPointSelectionRule local_257 = ESpawnPointSelectionRule(0);
-        local_256 = local_257;
+        local_256 = ESpawnPointSelectionRule::TeamMatchedRandom;
         if (LevelInfoConfig.IsSet())
         {
-            local_256 = local_257;
+            local_256 = LevelInfoConfig.Get().SpawnPointRule;
         }
         local_1 = FGameModeUtils::GetSpawnLocationForPlayerBySpawnPointRule(PlayerProxy, uint8(PlayerController.GetTeam()), SpawnerIndex, ESpawnPointSelectionRule(local_256), Position, Rotation);
     }
@@ -424,7 +428,7 @@ FECSEntity CreateAvatarEntity(const FECSEntity &inout PlayerProxy, FC_PlayerCont
     }
     if (AvatarConfig)
     {
-        local_64.SetConfigPtr(TDataObjectPtr<FBasePrefabConfig>());
+        local_64.SetConfigPtr(TDataObjectPtr<FBasePrefabConfig>(AvatarConfig.Get()));
         local_64.SetPrefabType(EPrefabType(1));
     }
     XLog(ELog(33), FString().Append("Created Pawn: ").Append(local_52).Append(" at ").Append(Position).Append(" for player ").Append(PlayerProxy));
@@ -676,9 +680,9 @@ bool GetSpawnLocationForPlayerBySpawnPointRule(const FECSEntity &inout PlayerPro
     int local_32 = 0;
     int local_62 = 0;
     FECSEntityId local_1 = FECSEntityId(ENTITY_ID_NULL);
-    switch (int(SpawnPointRule))
+    switch (SpawnPointRule)
     {
-    case 0:
+    case ESpawnPointSelectionRule::TeamMatchedRandom:
     {
         local_3 = PlayerTeamId;
         local_8 = SpawnerIndex.GetTeamSpawners(local_3);
@@ -688,7 +692,7 @@ bool GetSpawnLocationForPlayerBySpawnPointRule(const FECSEntity &inout PlayerPro
         }
         break;
     }
-    case 1:
+    case ESpawnPointSelectionRule::SameSpotPerTeam:
     {
         FECSWorldPtr local_16 = ECS::GetECSWorld();
         Get local_20;
@@ -718,7 +722,7 @@ bool GetSpawnLocationForPlayerBySpawnPointRule(const FECSEntity &inout PlayerPro
         }
         break;
     }
-    case 2:
+    case ESpawnPointSelectionRule::RandomPerPlayer:
     {
         local_8 = SpawnerIndex.GetAllSpawners();
         if (local_8.Num() > 0)
@@ -728,7 +732,7 @@ bool GetSpawnLocationForPlayerBySpawnPointRule(const FECSEntity &inout PlayerPro
         }
         break;
     }
-    case 3:
+    case ESpawnPointSelectionRule::TeamMatchedBalanced:
     {
         int local_2_5 = PlayerTeamId;
         local_12 = SpawnerIndex.GetTeamSpawners(local_2_5);
@@ -801,7 +805,6 @@ bool GetSpawnLocationForPlayerBySpawnPointRule(const FECSEntity &inout PlayerPro
 void SpwanAvatarAt(const FECSEntity &inout PlayerProxy, FC_PlayerController &inout PlayerController, const FVector &inout Position, const FQuat &inout Rotation, const TDataObjectPtr<FLevelInfoConfig> &inout LevelInfoConfig, const bool bSpawnFromTeleportKey = false)
 {
     bool local_55;
-    int local_144 = 0;
     UDataTable local_190;
     UClass local_880;
     UClass local_882;
@@ -874,9 +877,9 @@ void SpwanAvatarAt(const FECSEntity &inout PlayerProxy, FC_PlayerController &ino
         int local_24 = local_2.DefaultAvatars.Num();
         if (local_24 > 0)
         {
-            if (LevelInfoConfig.IsSet() && GetGameRuleConfig().IsSet())
+            if (LevelInfoConfig.IsSet() && LevelInfoConfig.Get().GetGameRuleConfig().IsSet())
             {
-                local_24 = local_144;
+                local_24 = LevelInfoConfig.Get().GetGameRuleConfig().Get().SquadNum;
             }
             int local_146 = 0;
             for (; local_146 < local_24; ++local_146)
@@ -1030,14 +1033,16 @@ void TryInitStartPlayerUids()
     }
     else
     {
-        if (!(FLevelUtils::GetCurrentLevelInfoConfig(nullptr).IsSet()))
+        TDataObjectPtr<FLevelInfoConfig> local_32 = FLevelUtils::GetCurrentLevelInfoConfig(nullptr);
+        if (!(local_32.IsSet()))
         {
             return;
         }
         else
         {
-            ELevelType local_58;
-            int local_59 = int(local_58);
+            ELevelType local_57;
+            local_57 = local_32.Get().LevelType;
+            int local_59 = int(local_57);
             if (local_59 <= 3)
             {
                 if (local_59 != 3)

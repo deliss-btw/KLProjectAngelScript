@@ -17,7 +17,7 @@ class UESMTransitFailedCallback_CombatHint : UESMTransitFailedCallback
         if (this.Attribute.IsValid())
         {
             Get local_6;
-            if (local_6.opCall().GetAttributeValue(this.Attribute, Context.GetECSRuntime().Time) > 0.0f)
+            if (local_6.opCall().GetAttributeValue(this.Attribute, Context.GetECSRuntime().Time) > this.AttributeThreshold.GetValue(Context.GetEntityBB()))
             {
                 return;
             }

@@ -328,11 +328,9 @@ FVMS_ExitLevel& Get(const UObject ContextObject)
 {
     return FVMS_ExitLevel::GetByManager(EUIInternal::GetContextManager(ContextObject));
 }
-FVMS_ExitLevel GetByManager(const UEUIManagerSubsystem Manager)
+FVMS_ExitLevel& GetByManager(const UEUIManagerSubsystem Manager)
 {
-    FVMS_ExitLevel __r;
-    TEUIModelRef<FVMS_ExitLevel> local_6 = TEUIModelRef<FVMS_ExitLevel>(EUIInternal::MakeModelWithManager(Manager, FVMS_ExitLevel::ModelId));
-    return __r;
+    return TEUIModelRef<FVMS_ExitLevel>(EUIInternal::MakeModelWithManager(Manager, FVMS_ExitLevel::ModelId)).Get();
 }
 void GetModelInfo(FEUIViewModelMetaInfo &inout Result)
 {
@@ -424,7 +422,6 @@ namespace __GeneratedProperties_FVMS_ExitLevel
 {
 UScriptStruct StaticStruct()
 {
-    UScriptStruct local_2;
-    return local_2;
+    return __GeneratedProperties_FVMS_ExitLevel.Get();
 }
 }

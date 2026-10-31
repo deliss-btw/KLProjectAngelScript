@@ -125,11 +125,9 @@ FVM_CommonNewsTicker& Create(const UObject ContextObject, const FText &inout Con
 {
     return FVM_CommonNewsTicker::CreateByManager(EUIInternal::GetContextManager(ContextObject), Content, RepeatCount);
 }
-FVM_CommonNewsTicker CreateByManager(const UEUIManagerSubsystem Manager, const FText &inout Content, const int RepeatCount)
+FVM_CommonNewsTicker& CreateByManager(const UEUIManagerSubsystem Manager, const FText &inout Content, const int RepeatCount)
 {
-    FVM_CommonNewsTicker __r;
-    TEUIModelRef<FVM_CommonNewsTicker> local_6 = TEUIModelRef<FVM_CommonNewsTicker>(EUIInternal::MakeModelWithManager_Generic(Manager, FVM_CommonNewsTicker::ModelId, 0, Content, RepeatCount));
-    return __r;
+    return TEUIModelRef<FVM_CommonNewsTicker>(EUIInternal::MakeModelWithManager_Generic(Manager, FVM_CommonNewsTicker::ModelId, 0, Content, RepeatCount)).Get();
 }
 void GetModelInfo(FEUIViewModelMetaInfo &inout Result)
 {
@@ -179,7 +177,6 @@ namespace __GeneratedProperties_FVM_CommonNewsTicker
 {
 UScriptStruct StaticStruct()
 {
-    UScriptStruct local_2;
-    return local_2;
+    return __GeneratedProperties_FVM_CommonNewsTicker.Get();
 }
 }

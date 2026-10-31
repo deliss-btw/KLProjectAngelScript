@@ -134,8 +134,7 @@ class UESMAction_ToggleComponentsWithCondition : UESMBPBaseSpanTickAction
             this.UpdateHidden(Context, Time, local_3);
             return;
         }
-        bool local_2 = !(bExiting);
-        if (!(local_2))
+        if (!(!(bExiting)))
         {
             local_3 = false;
         }
@@ -143,10 +142,10 @@ class UESMAction_ToggleComponentsWithCondition : UESMBPBaseSpanTickAction
         {
             local_3 = this.ActiveCondition.Evaluate(Context.GetBlackboard());
         }
-        bool local_5 = local_2;
+        bool local_5 = this.GetInstanceData(Context).bActive;
         bool local_4 = !(local_3);
-        bool local_2_2 = !(local_5);
-        if (local_4 == local_2_2)
+        bool local_2 = !(local_5);
+        if (local_4 == local_2)
         {
             return;
         }

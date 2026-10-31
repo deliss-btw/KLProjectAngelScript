@@ -168,11 +168,9 @@ FVM_ForgeWeaponTitle& Create(const UObject ContextObject, const int WeaponIndex,
 {
     return FVM_ForgeWeaponTitle::CreateByManager(EUIInternal::GetContextManager(ContextObject), WeaponIndex, Image, DisplayName, WidthOverride);
 }
-FVM_ForgeWeaponTitle CreateByManager(const UEUIManagerSubsystem Manager, const int WeaponIndex, const FSoftBrush &inout Image, const FText &inout DisplayName, const float32 WidthOverride)
+FVM_ForgeWeaponTitle& CreateByManager(const UEUIManagerSubsystem Manager, const int WeaponIndex, const FSoftBrush &inout Image, const FText &inout DisplayName, const float32 WidthOverride)
 {
-    FVM_ForgeWeaponTitle __r;
-    TEUIModelRef<FVM_ForgeWeaponTitle> local_6 = TEUIModelRef<FVM_ForgeWeaponTitle>(EUIInternal::MakeModelWithManager_Generic(Manager, FVM_ForgeWeaponTitle::ModelId, 0, WeaponIndex, Image, DisplayName, WidthOverride));
-    return __r;
+    return TEUIModelRef<FVM_ForgeWeaponTitle>(EUIInternal::MakeModelWithManager_Generic(Manager, FVM_ForgeWeaponTitle::ModelId, 0, WeaponIndex, Image, DisplayName, WidthOverride)).Get();
 }
 void GetModelInfo(FEUIViewModelMetaInfo &inout Result)
 {
@@ -254,7 +252,6 @@ namespace __GeneratedProperties_FVM_ForgeWeaponTitle
 {
 UScriptStruct StaticStruct()
 {
-    UScriptStruct local_2;
-    return local_2;
+    return __GeneratedProperties_FVM_ForgeWeaponTitle.Get();
 }
 }

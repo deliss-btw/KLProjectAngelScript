@@ -18,14 +18,11 @@ class ARandomMonsterSpawnerPrefab : AKLLevelPrefabBase
     UFUNCTION()
     void DrawVisualisationOnSelected_Implementation() const
     {
-        AActor local_18;
         for (auto& local_16 : this.RandomMonsterSpawner.Config_FC_RandomMonsterSpawner.CandidatePoints)
         {
-            local_16;
-            if (local_18 != nullptr)
+            if (local_16.Get() != nullptr)
             {
-                AActor local_26;
-                FVector local_32 = local_26.GetActorLocation();
+                FVector local_32 = local_16.Get().GetActorLocation();
                 DebugDraw::DrawDebugLine(this.GetWorld(), this.GetActorLocation(), local_32, FColor::Blue, false, -1.0f, uint8(0), 5.0f);
             }
         }

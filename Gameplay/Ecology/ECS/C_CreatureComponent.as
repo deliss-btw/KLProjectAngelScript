@@ -114,15 +114,11 @@ struct FRuntimeSlotData
     }
     TObjectPtr<UEcologyBehaviorDefine> GetBehaviorDefine() const
     {
-        TObjectPtr<UEcologyBehaviorDefine> __return;
         if (this.BehaviorRef)
         {
+            return this.BehaviorRef.Get().BehaviorDefine;
         }
-        else
-        {
-            __return = TObjectPtr<UEcologyBehaviorDefine>(nullptr);
-        }
-        return __return;
+        return TObjectPtr<UEcologyBehaviorDefine>(nullptr);
     }
 }
 
@@ -171,6 +167,7 @@ struct FCreatureActivityData
         TObjectPtr<UEcologyBehaviorDefine> local_30;
         if (this.ActivityRowData)
         {
+            local_30 = this.ActivityRowData.Get().BehaviorDefine;
         }
         else
         {
@@ -368,15 +365,13 @@ struct FFlockChangeAreaTaskInstance
 
     bool IsValid() const
     {
-        UCommonChangeAreaTriggerDefinitionAsset local_2;
-        UResourceRequestFilterConfigAsset local_8;
-        if ((!((local_2 != nullptr))))
+        if ((!((this.Definition.Get() != nullptr))))
         {
             return false;
         }
-        if ((!((local_8 != nullptr))))
+        if ((!((this.Definition.Get().ChangeAreaRequestFilter.Get() != nullptr))))
         {
-            UCommonChangeAreaTriggerDefinitionAsset local_6;
+            UCommonChangeAreaTriggerDefinitionAsset local_6 = this.Definition.Get();
             XLog(ELog(30), FString().Append("FFlockChangeAreaTaskInstance::IsValid - ChangeAreaRequestFilter is null. ").Append(local_6.ChangeAreaRequestFilter.ToString()));
             return false;
         }

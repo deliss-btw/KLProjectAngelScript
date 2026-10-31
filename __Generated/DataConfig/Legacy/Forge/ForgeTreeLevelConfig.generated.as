@@ -27,7 +27,7 @@ TArray<TDataObjectPtr<FConditionConfig>> __FForgeTreeLevelConfig_GetShowConditio
         FForgeTreeLevelConfig local_20;
         return local_20.GetShowCondition();
     }
-    return GetShowCondition();
+    return DataObject.Get().GetShowCondition();
 }
 UFUNCTION()
 FForgeTreeLevelConfig CastToFForgeTreeLevelConfig(const TDataObjectPtr<FForgeTreeLevelConfig> &inout DataObject)

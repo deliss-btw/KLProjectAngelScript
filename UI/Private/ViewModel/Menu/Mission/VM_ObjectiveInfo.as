@@ -223,11 +223,9 @@ FVM_ObjectiveInfo& Create(const UObject ContextObject, const uint ObjectiveInsta
 {
     return FVM_ObjectiveInfo::CreateByManager(EUIInternal::GetContextManager(ContextObject), ObjectiveInstanceId, ObjectiveConfig);
 }
-FVM_ObjectiveInfo CreateByManager(const UEUIManagerSubsystem Manager, const uint ObjectiveInstanceId, const TDataObjectPtr<FObjectiveConfig> &inout ObjectiveConfig)
+FVM_ObjectiveInfo& CreateByManager(const UEUIManagerSubsystem Manager, const uint ObjectiveInstanceId, const TDataObjectPtr<FObjectiveConfig> &inout ObjectiveConfig)
 {
-    FVM_ObjectiveInfo __r;
-    TEUIModelRef<FVM_ObjectiveInfo> local_6 = TEUIModelRef<FVM_ObjectiveInfo>(EUIInternal::MakeModelWithManager_Generic(Manager, FVM_ObjectiveInfo::ModelId, 0, ObjectiveInstanceId, ObjectiveConfig));
-    return __r;
+    return TEUIModelRef<FVM_ObjectiveInfo>(EUIInternal::MakeModelWithManager_Generic(Manager, FVM_ObjectiveInfo::ModelId, 0, ObjectiveInstanceId, ObjectiveConfig)).Get();
 }
 void GetModelInfo(FEUIViewModelMetaInfo &inout Result)
 {
@@ -316,7 +314,6 @@ namespace __GeneratedProperties_FVM_ObjectiveInfo
 {
 UScriptStruct StaticStruct()
 {
-    UScriptStruct local_2;
-    return local_2;
+    return __GeneratedProperties_FVM_ObjectiveInfo.Get();
 }
 }

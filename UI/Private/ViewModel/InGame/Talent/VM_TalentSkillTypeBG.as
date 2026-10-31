@@ -114,11 +114,9 @@ FVM_TalentSkillTypeBG& Create(const UObject ContextObject, const ESkillType Skil
 {
     return FVM_TalentSkillTypeBG::CreateByManager(EUIInternal::GetContextManager(ContextObject), ESkillType(SkillType));
 }
-FVM_TalentSkillTypeBG CreateByManager(const UEUIManagerSubsystem Manager, const ESkillType SkillType)
+FVM_TalentSkillTypeBG& CreateByManager(const UEUIManagerSubsystem Manager, const ESkillType SkillType)
 {
-    FVM_TalentSkillTypeBG __r;
-    TEUIModelRef<FVM_TalentSkillTypeBG> local_6 = TEUIModelRef<FVM_TalentSkillTypeBG>(EUIInternal::MakeModelWithManager_Generic(Manager, FVM_TalentSkillTypeBG::ModelId, 0, SkillType));
-    return __r;
+    return TEUIModelRef<FVM_TalentSkillTypeBG>(EUIInternal::MakeModelWithManager_Generic(Manager, FVM_TalentSkillTypeBG::ModelId, 0, SkillType)).Get();
 }
 void GetModelInfo(FEUIViewModelMetaInfo &inout Result)
 {
@@ -179,7 +177,6 @@ namespace __GeneratedProperties_FVM_TalentSkillTypeBG
 {
 UScriptStruct StaticStruct()
 {
-    UScriptStruct local_2;
-    return local_2;
+    return __GeneratedProperties_FVM_TalentSkillTypeBG.Get();
 }
 }

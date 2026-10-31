@@ -53,9 +53,8 @@ class AAS_ECSWorldSettings : AECSGameWorldSettings
             TDataObjectPtr<FLevelInfoConfig> local_44 = ::FLevelInfoConfig::GetByDataId(int(this.LevelKey));
             if (local_44)
             {
-                FName local_70;
                 this.LevelInfoConfig = local_44;
-                XLog(ELog(22), FString().Append("InitLevelInfo WorldSettings - LevelKey: ").Append(local_70.GetDataName()).Append(", LevelInfoConfig: ").Append(local_70));
+                XLog(ELog(22), FString().Append("InitLevelInfo WorldSettings - LevelKey: ").Append(this.LevelKey).Append(", LevelInfoConfig: ").Append(this.LevelInfoConfig.Get().GetDataName()));
             }
             else
             {

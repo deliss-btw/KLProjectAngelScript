@@ -165,6 +165,7 @@ class UESMAction_ExtraDeathState : UESMBPBaseSpanAction
         {
             return;
         }
+        FECSEntity local_6 = FECSEntity(this.GetInstanceData(Context).TargetEntity);
         if (this.bHasExtraState)
         {
             Modify local_10;

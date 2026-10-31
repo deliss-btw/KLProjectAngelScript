@@ -43,7 +43,7 @@ class UWidget_SkillBtns : UEUIUserWidget
     UFUNCTION()
     void OnTriggerRightShoulderPress()
     {
-        1.SetbGamepadRightShoulderInputPress();
+        this.SkillBts.Get().SetbGamepadRightShoulderInputPress(true);
         FECSEntity local_6 = ::FASCommonUtils::GetLocalPlayerPawnEntity();
         if (local_6.IsValid())
         {
@@ -57,7 +57,7 @@ class UWidget_SkillBtns : UEUIUserWidget
     UFUNCTION()
     void OnTriggerRightShoulderRelease()
     {
-        0.SetbGamepadRightShoulderInputPress();
+        this.SkillBts.Get().SetbGamepadRightShoulderInputPress(false);
         FECSEntity local_6 = ::FASCommonUtils::GetLocalPlayerPawnEntity();
         if (local_6.IsValid())
         {
@@ -97,8 +97,8 @@ class UWidget_SkillBtns : UEUIUserWidget
     UFUNCTION()
     ESlateVisibility SkillBts_SkillBtnsPanelVisibility() const
     {
-        FVMS_SkillBtns& local_2;
         int local_5;
+        FVMS_SkillBtns& local_2 = this.SkillBts.Get();
         if (local_2)
         {
             local_5 = int(local_2.SkillBtnsPanelVisibility());
@@ -111,8 +111,8 @@ class UWidget_SkillBtns : UEUIUserWidget
     }
     void HandleObservedModelChanges(FEUIReactiveSubscriberIterator &inout It)
     {
-        FVMS_SkillBtns& local_6;
         TEUIModelRef<FVMS_SkillBtns> local_2 = this.SkillBts.AsRef();
+        FVMS_SkillBtns& local_6 = local_2.Get();
         for (; It; )
         {
             FEUIReactiveSubscriberTrackScope local_56 = FEUIReactiveSubscriberTrackScope(It);

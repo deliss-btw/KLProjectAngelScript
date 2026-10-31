@@ -42,26 +42,16 @@ struct FVM_ItemFeature_SpecialBg : FEUIViewModel
     }
     void PostConstruct()
     {
-        bool local_3 = !(this.GetCommonItemVM().IsValid());
-        if (local_3)
-        {
-            local_3 = true;
-        }
-        else
-        {
-            TEUIModelRef<FVM_CommonItem> local_2 = this.GetCommonItemVM();
-            local_3 = !(GetItemConfig().IsSet());
-        }
-        if (local_3)
+        if (!(this.GetCommonItemVM().IsValid()) || !(this.GetCommonItemVM().Get().GetItemConfig().IsSet()))
         {
             return;
         }
-        TEUIModelRef<FVM_CommonItem> local_2_2 = this.GetCommonItemVM();
-        TDataObjectPtr<FItemFeatureConfig> local_76 = TDataObjectPtr<FItemFeatureConfig>(::FItemFeatureConfig::FindByKey(GetItemConfig()));
-        if (!(local_76.IsSet()))
+        TDataObjectPtr<FItemFeatureConfig> local_28 = TDataObjectPtr<FItemFeatureConfig>(::FItemFeatureConfig::FindByKey(this.GetCommonItemVM().Get().GetItemConfig()));
+        if (!(local_28.IsSet()))
         {
             return;
         }
+        this.SetSpecialBgImage(local_28.Get().SpecialBgImage);
         return;
     }
     TEUIModelRef<FVM_CommonItem> GetCommonItemVM() const property
@@ -119,18 +109,17 @@ class UItemFeatureCondition_SpecialBg : UItemFeatureConditionBase
         {
             return false;
         }
-        TDataObjectPtr<FItemConfig> local_26 = GetConfig();
+        TDataObjectPtr<FItemConfig> local_26 = ItemData.Get().GetConfig();
         if (!(local_26.IsSet()))
         {
             return false;
         }
-        TDataObjectPtr<FItemFeatureConfig> local_122 = TDataObjectPtr<FItemFeatureConfig>(::FItemFeatureConfig::FindByKey(local_26));
-        bool local_1 = !(local_122.IsSet());
-        if (local_1)
+        TDataObjectPtr<FItemFeatureConfig> local_74 = TDataObjectPtr<FItemFeatureConfig>(::FItemFeatureConfig::FindByKey(local_26));
+        if (!(local_74.IsSet()))
         {
             return false;
         }
-        return local_1;
+        return local_74.Get().bSpecialBg;
     }
 }
 
@@ -149,28 +138,16 @@ namespace ItemFeature_SpecialBg_Util
 {
 FSoftBrush GetSpecialBgImage(const TDataObjectPtr<FItemConfig> &inout ItemConfig)
 {
-    bool local_145 = false;
-    FSoftBrush __r;
     if (!(ItemConfig.IsSet()))
     {
         return FSoftBrush();
     }
-    TDataObjectPtr<FItemFeatureConfig> local_120 = TDataObjectPtr<FItemFeatureConfig>(FItemFeatureConfig::FindByKey(ItemConfig));
-    bool local_1 = !(local_120.IsSet());
-    if (local_1)
-    {
-        local_1 = true;
-    }
-    else
-    {
-        local_145 = !local_145;
-        local_1 = local_145;
-    }
-    if (local_1)
+    TDataObjectPtr<FItemFeatureConfig> local_72 = TDataObjectPtr<FItemFeatureConfig>(FItemFeatureConfig::FindByKey(ItemConfig));
+    if (!(local_72.IsSet()) || !(local_72.Get().bSpecialBg))
     {
         return FSoftBrush();
     }
-    return __r;
+    return local_72.Get().SpecialBgImage;
 }
 void SetSpecialBgImage(const FEUIModelContainer &inout ItemModelContainer, const FSoftBrush &inout InSpecialBgImage)
 {
@@ -188,11 +165,9 @@ FVM_ItemFeature_SpecialBg& Create(const UObject ContextObject, const TEUIModelRe
 {
     return FVM_ItemFeature_SpecialBg::CreateByManager(EUIInternal::GetContextManager(ContextObject), CommonItemVM);
 }
-FVM_ItemFeature_SpecialBg CreateByManager(const UEUIManagerSubsystem Manager, const TEUIModelRef<FVM_CommonItem> &inout CommonItemVM)
+FVM_ItemFeature_SpecialBg& CreateByManager(const UEUIManagerSubsystem Manager, const TEUIModelRef<FVM_CommonItem> &inout CommonItemVM)
 {
-    FVM_ItemFeature_SpecialBg __r;
-    TEUIModelRef<FVM_ItemFeature_SpecialBg> local_6 = TEUIModelRef<FVM_ItemFeature_SpecialBg>(EUIInternal::MakeModelWithManager_Generic(Manager, FVM_ItemFeature_SpecialBg::ModelId, 0, CommonItemVM));
-    return __r;
+    return TEUIModelRef<FVM_ItemFeature_SpecialBg>(EUIInternal::MakeModelWithManager_Generic(Manager, FVM_ItemFeature_SpecialBg::ModelId, 0, CommonItemVM)).Get();
 }
 void GetModelInfo(FEUIViewModelMetaInfo &inout Result)
 {
@@ -239,7 +214,6 @@ namespace __GeneratedProperties_FVM_ItemFeature_SpecialBg
 {
 UScriptStruct StaticStruct()
 {
-    UScriptStruct local_2;
-    return local_2;
+    return __GeneratedProperties_FVM_ItemFeature_SpecialBg.Get();
 }
 }

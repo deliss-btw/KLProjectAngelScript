@@ -18,6 +18,8 @@ struct FAICommand_FindNextTarget : FAICommandScript
 {
     FAICommandScript _base_FAICommandScript;
 
+    default m_ScriptOverrideMeta = Cast<UASStruct>(FAICommand_FindNextTarget.Get());
+
     FAICommand_FindNextTarget()
     {
         this.__InitDefaults();
@@ -60,6 +62,8 @@ class UBTService_FindNextTarget : UBTService_AICommandScript
     float32 IdealDistance;
     UPROPERTY()
     FBlackboardKeySelector FoundNextTarget;
+
+    default SetNodeName("搜寻其他可能的目标");
 
     UBTService_FindNextTarget()
     {

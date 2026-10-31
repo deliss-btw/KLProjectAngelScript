@@ -3,7 +3,6 @@ namespace __FBasePrefabConfigFunctions
 UFUNCTION()
 FText __FBasePrefabConfig_GetDisplayName(const TDataObjectPtr<FBasePrefabConfig> &inout DataObject)
 {
-    FText __r;
     if ((DataObject == nullptr))
     {
         if (!(EUIGlobals::GIsDuringPropertyConversion))
@@ -13,12 +12,11 @@ FText __FBasePrefabConfig_GetDisplayName(const TDataObjectPtr<FBasePrefabConfig>
         FBasePrefabConfig local_76;
         return local_76.DisplayName;
     }
-    return __r;
+    return DataObject.Get().DisplayName;
 }
 UFUNCTION()
 FSoftBrush __FBasePrefabConfig_GetDisplayIcon(const TDataObjectPtr<FBasePrefabConfig> &inout DataObject)
 {
-    FSoftBrush __r;
     if ((DataObject == nullptr))
     {
         if (!(EUIGlobals::GIsDuringPropertyConversion))
@@ -28,12 +26,11 @@ FSoftBrush __FBasePrefabConfig_GetDisplayIcon(const TDataObjectPtr<FBasePrefabCo
         FBasePrefabConfig local_76;
         return local_76.DisplayIcon;
     }
-    return __r;
+    return DataObject.Get().DisplayIcon;
 }
 UFUNCTION()
 EPrefabSize __FBasePrefabConfig_GetSize(const TDataObjectPtr<FBasePrefabConfig> &inout DataObject)
 {
-    int local_77 = 0;
     if ((DataObject == nullptr))
     {
         if (!(EUIGlobals::GIsDuringPropertyConversion))
@@ -41,15 +38,13 @@ EPrefabSize __FBasePrefabConfig_GetSize(const TDataObjectPtr<FBasePrefabConfig> 
             FBlueprintDebugFunctions::ThrowScriptException("Get 'Size' from a null 'FBasePrefabConfig' DataObject!");
         }
         FBasePrefabConfig local_76;
-        local_77 = int(local_76.Size);
-        return EPrefabSize(local_77);
+        return local_76.Size;
     }
-    return EPrefabSize(local_77);
+    return DataObject.Get().Size;
 }
 UFUNCTION()
 TSoftClassPtr<UEUIUserWidget> __FBasePrefabConfig_GetUI_CustomSkillInfo(const TDataObjectPtr<FBasePrefabConfig> &inout DataObject)
 {
-    TSoftClassPtr<UEUIUserWidget> __r;
     if ((DataObject == nullptr))
     {
         if (!(EUIGlobals::GIsDuringPropertyConversion))
@@ -59,7 +54,7 @@ TSoftClassPtr<UEUIUserWidget> __FBasePrefabConfig_GetUI_CustomSkillInfo(const TD
         FBasePrefabConfig local_76;
         return local_76.UI_CustomSkillInfo;
     }
-    return __r;
+    return DataObject.Get().UI_CustomSkillInfo;
 }
 UFUNCTION()
 FBasePrefabConfig CastToFBasePrefabConfig(const TDataObjectPtr<FBasePrefabConfig> &inout DataObject)

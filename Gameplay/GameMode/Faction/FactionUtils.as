@@ -34,10 +34,10 @@ UFUNCTION()
 void InitFactionRelationForEntity(const FECSEntity &inout Entity, const FC_Faction &inout Faction)
 {
     int local_22 = 0;
-    UDataTable local_24;
     if (int(Faction.GetFactionId()) != 0)
     {
         FString local_12 = UEnum::GetEnumType(n"EFaction").GetNameStringByValue(int(Faction.GetFactionId()));
+        UDataTable local_24 = UGameplayConfigsManager::GetDamageFactionTable().Get();
         if (local_24 != nullptr)
         {
             FDamageFactionRelationConfig local_34;

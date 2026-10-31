@@ -16,7 +16,6 @@ class US_LevelObjectStatSystem : UECSScriptSystem
     UFUNCTION()
     void Monitor_RegisterLevelObjectStatObject(const FECSEntity &inout Entity, const FC_LevelObjectStatConfig &inout LevelObjectStatConfig) const
     {
-        int local_11 = 0;
         if (!(LevelObjectStatConfig.LevelObjectStatConfig.IsSet()))
         {
             return;
@@ -26,6 +25,7 @@ class US_LevelObjectStatSystem : UECSScriptSystem
         FCS_LevelObjectStatIdToEntityMap& local_10 = local_8.opCall();
         if (local_10)
         {
+            int local_11 = LevelObjectStatConfig.LevelObjectStatConfig.Get().DataId;
             local_10.LevelObjectStatIdToEntityMap.Add(local_11, Entity.GetId());
         }
         return;
@@ -33,7 +33,6 @@ class US_LevelObjectStatSystem : UECSScriptSystem
     UFUNCTION()
     void Monitor_UnregisterLevelObjectStatObject(const FECSEntity &inout Entity, const FC_LevelObjectStatConfig &inout LevelObjectStatConfig) const
     {
-        int local_11 = 0;
         if (!(LevelObjectStatConfig.LevelObjectStatConfig.IsSet()))
         {
             return;
@@ -43,8 +42,11 @@ class US_LevelObjectStatSystem : UECSScriptSystem
         FCS_LevelObjectStatIdToEntityMap& local_10 = local_8.opCall();
         if (local_10)
         {
+            int local_11 = LevelObjectStatConfig.LevelObjectStatConfig.Get().DataId;
             if (local_10.LevelObjectStatIdToEntityMap.Contains(local_11))
             {
+                local_11 = LevelObjectStatConfig.LevelObjectStatConfig.Get().DataId;
+                local_10.LevelObjectStatIdToEntityMap.Remove(local_11);
             }
         }
         return;

@@ -40,8 +40,7 @@ class UEQG_FindCurrentCombatAreaNearestInnerVolumePoint : UEnvQueryGenerator_ECS
             {
                 continue;
             }
-            AActor local_52;
-            local_50 = Cast<AECSCombatRegionVolume>(local_52);
+            local_50 = Cast<AECSCombatRegionVolume>(local_48.RegionVolume.Get());
             if (local_50 == nullptr)
             {
                 continue;

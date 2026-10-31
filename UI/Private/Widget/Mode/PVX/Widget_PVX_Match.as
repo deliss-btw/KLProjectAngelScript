@@ -54,12 +54,12 @@ class UWidget_PVX_Match : UEUIActivatableWidget
     UFUNCTION()
     void OnViewBind_Implementation()
     {
-        TEUIModelRef<FVM_TeamPanel> local_2;
-        local_2.Setup();
+        TEUIModelRef<FVM_TeamPanel> local_2 = TEUIModelRef<FVM_TeamPanel>(this.TeamPanel.Get());
+        this.PVX_Match.Get().Setup(local_2);
         this.ApplyMatchActionDisabled();
         TEUIModelRef<FVM_AvatarShowcase> local_4;
         local_4;
-        local_4.SetCurrentShowcase();
+        this.PVX_Match.Get().SetCurrentShowcase(local_4);
         return;
     }
     UFUNCTION()
@@ -94,8 +94,8 @@ class UWidget_PVX_Match : UEUIActivatableWidget
     {
         bool local_1;
         bool local_3;
-        local_1 = GetbInOpenPeriod();
-        local_3 = GetbMatching();
+        local_1 = this.PVX_Match.Get().GetbInOpenPeriod();
+        local_3 = this.PVX_Match.Get().GetbMatching();
         this.MatchActionBinding.SetDisabled(!(local_1) && !(local_3));
         return;
     }
@@ -156,8 +156,8 @@ class UWidget_PVX_Match : UEUIActivatableWidget
     }
     void HandleObservedModelChanges(FEUIReactiveSubscriberIterator &inout It)
     {
-        FVM_PVX_Match& local_6;
         TEUIModelRef<FVM_PVX_Match> local_2 = this.PVX_Match.AsRef();
+        FVM_PVX_Match& local_6 = local_2.Get();
         for (; It; )
         {
             FEUIReactiveSubscriberTrackScope local_56 = FEUIReactiveSubscriberTrackScope(It);

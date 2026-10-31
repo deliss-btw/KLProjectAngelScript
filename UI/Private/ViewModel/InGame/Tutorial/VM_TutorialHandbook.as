@@ -72,19 +72,17 @@ struct FVM_TutorialHandbook : FEUIViewModel
     {
         if (this.GetHoveredEntry().IsValid())
         {
-            TEUIModelWeakRef<FVM_TutorialHandbookEntry> local_2 = this.GetHoveredEntry();
-            OnClicked();
+            this.GetHoveredEntry().Get().OnClicked();
         }
         return;
     }
     bool CheckTabHasUnfinished(FMS_GuideManual &inout GuideModel, const EGuideManualTab Tab)
     {
         TDataObjectIterator<FGuideGroupConfig> local_16;
-        int local_86 = 0;
         for (; local_16; )
         {
             TDataObjectPtr<FGuideGroupConfig> local_58 = local_16.GetDataPtr();
-            if (0 != int(Tab))
+            if (int(local_58.Get().ManualTab) != int(Tab))
             {
             }
             else
@@ -94,7 +92,7 @@ struct FVM_TutorialHandbook : FEUIViewModel
                 }
                 else
                 {
-                    if (!(GuideModel.IsGuideFinished(local_86)))
+                    if (!(GuideModel.IsGuideFinished(local_58.Get().DataId)))
                     {
                         return true;
                     }
@@ -178,11 +176,9 @@ FVM_TutorialHandbook& Create(const UObject ContextObject)
 {
     return FVM_TutorialHandbook::CreateByManager(EUIInternal::GetContextManager(ContextObject));
 }
-FVM_TutorialHandbook CreateByManager(const UEUIManagerSubsystem Manager)
+FVM_TutorialHandbook& CreateByManager(const UEUIManagerSubsystem Manager)
 {
-    FVM_TutorialHandbook __r;
-    TEUIModelRef<FVM_TutorialHandbook> local_6 = TEUIModelRef<FVM_TutorialHandbook>(EUIInternal::MakeModelWithManager(Manager, FVM_TutorialHandbook::ModelId));
-    return __r;
+    return TEUIModelRef<FVM_TutorialHandbook>(EUIInternal::MakeModelWithManager(Manager, FVM_TutorialHandbook::ModelId)).Get();
 }
 void GetModelInfo(FEUIViewModelMetaInfo &inout Result)
 {
@@ -252,7 +248,6 @@ namespace __GeneratedProperties_FVM_TutorialHandbook
 {
 UScriptStruct StaticStruct()
 {
-    UScriptStruct local_2;
-    return local_2;
+    return __GeneratedProperties_FVM_TutorialHandbook.Get();
 }
 }

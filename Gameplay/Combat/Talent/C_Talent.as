@@ -153,19 +153,18 @@ struct FC_CharacterTalent : FECSComponent
     }
     EAvatarIllustrate GetFoundationTalentIllustrate() const
     {
-        int local_101 = 0;
         int local_1 = this.GetFoundationTalentId();
         if (local_1 != 0)
         {
             int local_1_2 = this.GetFoundationTalentId();
             GetDataObjectByGSDataId<FTalentConfig> local_52;
-            TDataObjectPtr<FTalentConfig> local_76 = local_52.opImplConv();
-            if (local_76)
+            TDataObjectPtr<FTalentConfig> local_28 = local_52.opImplConv();
+            if (local_28)
             {
-                return ::FASCommonUtils::TalentDivisionToIllustrate(ETalentDivision(local_101));
+                return ::FASCommonUtils::TalentDivisionToIllustrate(local_28.Get().TalentDivision);
             }
         }
-        return EAvatarIllustrate(3);
+        return EAvatarIllustrate::MaxCount;
     }
     uint GetFoundationTalentId() const property
     {

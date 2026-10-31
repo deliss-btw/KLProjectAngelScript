@@ -26,7 +26,7 @@ struct FLayerConduitCamera : FCameraRuntimeDataBasic
             this.CameraConfig = local_20.opCall().AnimData;
             if ((TDataObjectPtr<FAnimCameraData>(this.CameraConfig)))
             {
-                TDataObjectPtr<FAnimCameraData> local_44 = TDataObjectPtr<FAnimCameraData>(this.CameraConfig);
+                this.Blend.CameraBlendType = TDataObjectPtr<FAnimCameraData>(this.CameraConfig).Get().FadeInType;
             }
         }
         else
@@ -43,7 +43,7 @@ struct FLayerConduitCamera : FCameraRuntimeDataBasic
                     this.CameraConfig = local_52.TargetConfigRef;
                     if ((TDataObjectPtr<FTPCameraStateConfig>(this.CameraConfig)))
                     {
-                        TDataObjectPtr<FTPCameraStateConfig> local_76 = TDataObjectPtr<FTPCameraStateConfig>(this.CameraConfig);
+                        this.Blend.CameraBlendType = TDataObjectPtr<FTPCameraStateConfig>(this.CameraConfig).Get().BlendInEasing;
                     }
                 }
             }

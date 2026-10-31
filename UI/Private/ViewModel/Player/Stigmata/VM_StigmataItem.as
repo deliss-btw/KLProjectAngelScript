@@ -101,7 +101,7 @@ struct FVM_StigmataItem : FEUIViewModel
             this.SetConfig(local_28.opImplConv());
             if (this.GetConfig().IsSet())
             {
-                const FStigmataConfig& local_54;
+                const FStigmataConfig& local_54 = this.GetConfig().Get();
                 this.SetHoverTips(TEUIModelRef<FVM_TitleAndDescAndStatus>(::FVM_TitleAndDescAndStatus::Create(this.GetContext().Manager, local_54.Name, local_54.Instructions)));
                 if (local_54.UnlockCost.Num() == 0)
                 {
@@ -465,11 +465,9 @@ FVM_StigmataItem& Create(const UObject ContextObject, const int StigmataId, cons
 {
     return FVM_StigmataItem::CreateByManager(EUIInternal::GetContextManager(ContextObject), StigmataId, bIsFake, OwnerStigmataLevel, bForceFullOpacity);
 }
-FVM_StigmataItem CreateByManager(const UEUIManagerSubsystem Manager, const int StigmataId, const bool bIsFake, const int OwnerStigmataLevel, const bool bForceFullOpacity)
+FVM_StigmataItem& CreateByManager(const UEUIManagerSubsystem Manager, const int StigmataId, const bool bIsFake, const int OwnerStigmataLevel, const bool bForceFullOpacity)
 {
-    FVM_StigmataItem __r;
-    TEUIModelRef<FVM_StigmataItem> local_6 = TEUIModelRef<FVM_StigmataItem>(EUIInternal::MakeModelWithManager_Generic(Manager, FVM_StigmataItem::ModelId, 0, StigmataId, bIsFake, OwnerStigmataLevel, bForceFullOpacity));
-    return __r;
+    return TEUIModelRef<FVM_StigmataItem>(EUIInternal::MakeModelWithManager_Generic(Manager, FVM_StigmataItem::ModelId, 0, StigmataId, bIsFake, OwnerStigmataLevel, bForceFullOpacity)).Get();
 }
 void GetModelInfo(FEUIViewModelMetaInfo &inout Result)
 {
@@ -675,7 +673,6 @@ namespace __GeneratedProperties_FVM_StigmataItem
 {
 UScriptStruct StaticStruct()
 {
-    UScriptStruct local_2;
-    return local_2;
+    return __GeneratedProperties_FVM_StigmataItem.Get();
 }
 }

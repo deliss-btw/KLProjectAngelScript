@@ -12,44 +12,39 @@ TDataObjectPtr<FItemConfig> __FItemFeatureConfig_GetItemConfig(const TDataObject
         FItemFeatureConfig local_88;
         return local_88.GetItemConfig();
     }
-    return GetItemConfig();
+    return DataObject.Get().GetItemConfig();
 }
 UFUNCTION()
 bool __FItemFeatureConfig_GetbSpecialProps(const TDataObjectPtr<FItemFeatureConfig> &inout DataObject)
 {
-    bool local_1 = false;
     if ((DataObject == nullptr))
     {
-        local_1 = !(EUIGlobals::GIsDuringPropertyConversion);
-        if (local_1)
+        if (!(EUIGlobals::GIsDuringPropertyConversion))
         {
             FBlueprintDebugFunctions::ThrowScriptException("Get 'bSpecialProps' from a null 'FItemFeatureConfig' DataObject!");
         }
         FItemFeatureConfig local_88;
         return local_88.bSpecialProps;
     }
-    return local_1;
+    return DataObject.Get().bSpecialProps;
 }
 UFUNCTION()
 bool __FItemFeatureConfig_GetbSpecialBg(const TDataObjectPtr<FItemFeatureConfig> &inout DataObject)
 {
-    bool local_1 = false;
     if ((DataObject == nullptr))
     {
-        local_1 = !(EUIGlobals::GIsDuringPropertyConversion);
-        if (local_1)
+        if (!(EUIGlobals::GIsDuringPropertyConversion))
         {
             FBlueprintDebugFunctions::ThrowScriptException("Get 'bSpecialBg' from a null 'FItemFeatureConfig' DataObject!");
         }
         FItemFeatureConfig local_88;
         return local_88.bSpecialBg;
     }
-    return local_1;
+    return DataObject.Get().bSpecialBg;
 }
 UFUNCTION()
 FSoftBrush __FItemFeatureConfig_GetSpecialBgImage(const TDataObjectPtr<FItemFeatureConfig> &inout DataObject)
 {
-    FSoftBrush __r;
     if ((DataObject == nullptr))
     {
         if (!(EUIGlobals::GIsDuringPropertyConversion))
@@ -59,7 +54,7 @@ FSoftBrush __FItemFeatureConfig_GetSpecialBgImage(const TDataObjectPtr<FItemFeat
         FItemFeatureConfig local_88;
         return local_88.SpecialBgImage;
     }
-    return __r;
+    return DataObject.Get().SpecialBgImage;
 }
 UFUNCTION()
 FItemFeatureConfig CastToFItemFeatureConfig(const TDataObjectPtr<FItemFeatureConfig> &inout DataObject)

@@ -42,24 +42,14 @@ struct FVM_ItemFeature_Grade : FEUIViewModel
     }
     void PostConstruct()
     {
-        int local_31 = 0;
-        bool local_3 = !(this.GetCommonItemVM().IsValid());
-        if (local_3)
-        {
-            local_3 = true;
-        }
-        else
-        {
-            TEUIModelRef<FVM_CommonItem> local_2 = this.GetCommonItemVM();
-            local_3 = !(GetItemConfig().IsSet());
-        }
-        if (local_3)
+        if (!(this.GetCommonItemVM().IsValid()) || !(this.GetCommonItemVM().Get().GetItemConfig().IsSet()))
         {
             return;
         }
-        TEUIModelRef<FVM_CommonItem> local_2_2 = this.GetCommonItemVM();
-        if (::UGlobalItemSettings::Get().GetRarityConfig(EItemRarity(local_31)).IsSet())
+        TDataObjectPtr<FItemRarityConfig> local_56 = ::UGlobalItemSettings::Get().GetRarityConfig(EItemRarity(this.GetCommonItemVM().Get().GetItemConfig().Get().Rarity));
+        if (local_56.IsSet())
         {
+            this.SetItemRarityImage(local_56.Get().RarityImage);
         }
         return;
     }
@@ -134,11 +124,9 @@ FVM_ItemFeature_Grade& Create(const UObject ContextObject, const TEUIModelRef<FV
 {
     return FVM_ItemFeature_Grade::CreateByManager(EUIInternal::GetContextManager(ContextObject), CommonItemVM);
 }
-FVM_ItemFeature_Grade CreateByManager(const UEUIManagerSubsystem Manager, const TEUIModelRef<FVM_CommonItem> &inout CommonItemVM)
+FVM_ItemFeature_Grade& CreateByManager(const UEUIManagerSubsystem Manager, const TEUIModelRef<FVM_CommonItem> &inout CommonItemVM)
 {
-    FVM_ItemFeature_Grade __r;
-    TEUIModelRef<FVM_ItemFeature_Grade> local_6 = TEUIModelRef<FVM_ItemFeature_Grade>(EUIInternal::MakeModelWithManager_Generic(Manager, FVM_ItemFeature_Grade::ModelId, 0, CommonItemVM));
-    return __r;
+    return TEUIModelRef<FVM_ItemFeature_Grade>(EUIInternal::MakeModelWithManager_Generic(Manager, FVM_ItemFeature_Grade::ModelId, 0, CommonItemVM)).Get();
 }
 void GetModelInfo(FEUIViewModelMetaInfo &inout Result)
 {
@@ -185,7 +173,6 @@ namespace __GeneratedProperties_FVM_ItemFeature_Grade
 {
 UScriptStruct StaticStruct()
 {
-    UScriptStruct local_2;
-    return local_2;
+    return __GeneratedProperties_FVM_ItemFeature_Grade.Get();
 }
 }

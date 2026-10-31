@@ -246,11 +246,9 @@ FVM_PresentationDisplayRule& Create(const UObject ContextObject, const TEUIModel
 {
     return FVM_PresentationDisplayRule::CreateByManager(EUIInternal::GetContextManager(ContextObject), Spot, EPresentationDisplayRuleIndex(Index));
 }
-FVM_PresentationDisplayRule CreateByManager(const UEUIManagerSubsystem Manager, const TEUIModelRef<FM_Spot> &inout Spot, const EPresentationDisplayRuleIndex Index)
+FVM_PresentationDisplayRule& CreateByManager(const UEUIManagerSubsystem Manager, const TEUIModelRef<FM_Spot> &inout Spot, const EPresentationDisplayRuleIndex Index)
 {
-    FVM_PresentationDisplayRule __r;
-    TEUIModelRef<FVM_PresentationDisplayRule> local_6 = TEUIModelRef<FVM_PresentationDisplayRule>(EUIInternal::MakeModelWithManager_Generic(Manager, FVM_PresentationDisplayRule::ModelId, 0, Spot, Index));
-    return __r;
+    return TEUIModelRef<FVM_PresentationDisplayRule>(EUIInternal::MakeModelWithManager_Generic(Manager, FVM_PresentationDisplayRule::ModelId, 0, Spot, Index)).Get();
 }
 void GetModelInfo(FEUIViewModelMetaInfo &inout Result)
 {
@@ -300,7 +298,6 @@ namespace __GeneratedProperties_FVM_PresentationDisplayRule
 {
 UScriptStruct StaticStruct()
 {
-    UScriptStruct local_2;
-    return local_2;
+    return __GeneratedProperties_FVM_PresentationDisplayRule.Get();
 }
 }

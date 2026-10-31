@@ -32,13 +32,12 @@ class UWidget_MissionInfoTitle : UEUIUserWidget
         }
         if (this.TitleInfo.IsValid())
         {
-            if (GetbHide() && GetbCheckHide() && !(this.IsFadingOut()))
+            if (this.TitleInfo.Get().GetbHide() && this.TitleInfo.Get().GetbCheckHide() && !(this.IsFadingOut()))
             {
-                bool local_4 = false;
-                local_4.SetVisiable();
+                this.TitleInfo.Get().SetVisiable(false);
                 return;
             }
-            true.SetVisiable();
+            this.TitleInfo.Get().SetVisiable(true);
         }
         return;
     }
@@ -47,7 +46,7 @@ class UWidget_MissionInfoTitle : UEUIUserWidget
     {
         if (bPlay)
         {
-            0.SetbPlayIn();
+            this.TitleInfo.Get().SetbPlayIn(false);
             this.PlayFadeIn(0.0f);
         }
         return;
@@ -57,7 +56,7 @@ class UWidget_MissionInfoTitle : UEUIUserWidget
     {
         if (bHide)
         {
-            1.SetbCheckHide();
+            this.TitleInfo.Get().SetbCheckHide(true);
             this.PlayFadeOut(0.0f);
             return;
         }
@@ -66,8 +65,8 @@ class UWidget_MissionInfoTitle : UEUIUserWidget
     }
     void HandleObservedModelChanges(FEUIReactiveSubscriberIterator &inout It)
     {
-        FVM_MissionInfoTitle& local_6;
         TEUIModelRef<FVM_MissionInfoTitle> local_2 = this.TitleInfo.AsRef();
+        FVM_MissionInfoTitle& local_6 = local_2.Get();
         for (; It; )
         {
             FEUIReactiveSubscriberTrackScope local_56 = FEUIReactiveSubscriberTrackScope(It);

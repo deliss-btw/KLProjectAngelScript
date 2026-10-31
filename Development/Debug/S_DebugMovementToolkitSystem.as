@@ -582,7 +582,6 @@ void DumpPostCollision(const FECSEntity &inout Entity)
     int local_66 = 0;
     int local_78 = 0;
     int local_102 = 0;
-    float32 local_108 = 0.0f;
     int local_126 = 0;
     int local_168 = 0;
     int local_178 = 0;
@@ -811,7 +810,7 @@ void DumpPostCollision(const FECSEntity &inout Entity)
         local_109 = 1.0f;
         for (auto& local_144 : local_126.GetESMSpeedModifiers())
         {
-            local_109 = local_109 * local_108;
+            local_109 = local_109 * local_144.GetValue();
         }
         FString local_4_18 = FString();
         MovementStopDiagnosis::Log(local_4_18.Append("[DumpMove]   TotalESMSpeedModifier = ").Append(FString::ApplyFormat(local_109, ".4f")));
@@ -822,12 +821,11 @@ void DumpPostCollision(const FECSEntity &inout Entity)
         for (auto& local_144_2 : local_126.GetESMSpeedModifiers())
         {
             FString local_72_13 = FString();
-            MovementStopDiagnosis::Log(local_72_13.Append("[DumpMove]     ESMSpeedModifiers[").Append(local_144_2.GetKey()).Append("] = ").Append());
+            MovementStopDiagnosis::Log(local_72_13.Append("[DumpMove]     ESMSpeedModifiers[").Append(local_144_2.GetKey()).Append("] = ").Append(local_144_2.GetValue()));
         }
-        local_108 = local_109 * local_126.GetAttributeSpeedModifier();
-        float32 local_107 = local_126.GetSpecialSystemSpeedModifier();
+        float32 local_108 = local_109 * local_126.GetAttributeSpeedModifier();
         FString local_4_21 = FString();
-        MovementStopDiagnosis::Log(local_4_21.Append("[DumpMove]   >> Product = ").Append(FString::ApplyFormat((local_108 * local_107), ".4f")));
+        MovementStopDiagnosis::Log(local_4_21.Append("[DumpMove]   >> Product = ").Append(FString::ApplyFormat((local_108 * local_126.GetSpecialSystemSpeedModifier()), ".4f")));
         if (local_109 <= 0.0f)
         {
             MovementStopDiagnosis::Warn(FString().Append("[DumpMove]   >>> ISSUE: TotalESMSpeedModifier=").Append(local_109).Append(" <= 0!"));
@@ -840,15 +838,14 @@ void DumpPostCollision(const FECSEntity &inout Entity)
         }
         if (local_126.GetSpecialSystemSpeedModifier() <= 0.0f)
         {
-            local_107 = local_126.GetSpecialSystemSpeedModifier();
-            MovementStopDiagnosis::Warn(FString().Append("[DumpMove]   >>> ISSUE: SpecialSystemSpeedModifier=").Append(local_107).Append(" <= 0!"));
+            MovementStopDiagnosis::Warn(FString().Append("[DumpMove]   >>> ISSUE: SpecialSystemSpeedModifier=").Append(local_126.GetSpecialSystemSpeedModifier()).Append(" <= 0!"));
             ++local_5;
         }
         for (auto& local_144_3 : local_126.GetESMSpeedModifiers())
         {
-            if (local_107 <= 0.0f)
+            if (local_144_3.GetValue() <= 0.0f)
             {
-                MovementStopDiagnosis::Warn(FString().Append("[DumpMove]   >>> ISSUE: ESMSpeedModifiers[").Append(local_144_3.GetKey()).Append("]=").Append().Append(" <= 0!"));
+                MovementStopDiagnosis::Warn(FString().Append("[DumpMove]   >>> ISSUE: ESMSpeedModifiers[").Append(local_144_3.GetKey()).Append("]=").Append(local_144_3.GetValue()).Append(" <= 0!"));
                 ++local_5;
             }
         }
@@ -1140,9 +1137,9 @@ void DumpPostCollision(const FECSEntity &inout Entity)
         {
             float32 local_105 = local_294.GetStepUpHeight() * local_78.GetStepHeightScale();
             float32 local_103_2 = local_78.GetStepHeightScale();
-            local_108 = local_294.GetStepUpHeight();
+            float32 local_108_2 = local_294.GetStepUpHeight();
             FString local_72_31 = FString();
-            MovementStopDiagnosis::Log(local_72_31.Append("[DumpMove]   >> EffectiveStepHeight = ").Append(FString::ApplyFormat(local_105, ".2f")).Append(" (base=").Append(FString::ApplyFormat(local_108, ".2f")).Append(" * scale=").Append(FString::ApplyFormat(local_103_2, ".4f")).Append(")"));
+            MovementStopDiagnosis::Log(local_72_31.Append("[DumpMove]   >> EffectiveStepHeight = ").Append(FString::ApplyFormat(local_105, ".2f")).Append(" (base=").Append(FString::ApplyFormat(local_108_2, ".2f")).Append(" * scale=").Append(FString::ApplyFormat(local_103_2, ".4f")).Append(")"));
             if (local_78.GetStepHeightScale() < 1.0f)
             {
                 MovementStopDiagnosis::Warn(FString().Append("[DumpMove]   >>> NOTE: StepHeightScale=").Append(FString::ApplyFormat(local_78.GetStepHeightScale(), ".4f")).Append(" < 1 - step height reduced, may fail to climb small obstacles!"));
@@ -1150,14 +1147,14 @@ void DumpPostCollision(const FECSEntity &inout Entity)
         }
         if (local_31)
         {
-            float32 local_107_2 = local_116.WalkableSlopDegree * local_78.GetWalkableSlopDegreeScale();
+            float32 local_107 = local_116.WalkableSlopDegree * local_78.GetWalkableSlopDegreeScale();
             float32 local_145 = local_78.GetWalkableSlopDegreeScale();
             float32 local_105_2 = local_116.WalkableSlopDegree;
             FString local_298_5 = FString();
-            MovementStopDiagnosis::Log(local_298_5.Append("[DumpMove]   >> EffectiveWalkableSlopDegree = ").Append(FString::ApplyFormat(local_107_2, ".2f")).Append(" (base=").Append(FString::ApplyFormat(local_105_2, ".2f")).Append(" * scale=").Append(FString::ApplyFormat(local_145, ".4f")).Append(")"));
+            MovementStopDiagnosis::Log(local_298_5.Append("[DumpMove]   >> EffectiveWalkableSlopDegree = ").Append(FString::ApplyFormat(local_107, ".2f")).Append(" (base=").Append(FString::ApplyFormat(local_105_2, ".2f")).Append(" * scale=").Append(FString::ApplyFormat(local_145, ".4f")).Append(")"));
             if (local_78.GetWalkableSlopDegreeScale() < 1.0f)
             {
-                MovementStopDiagnosis::Warn(FString().Append("[DumpMove]   >>> NOTE: WalkableSlopDegreeScale=").Append(FString::ApplyFormat(local_78.GetWalkableSlopDegreeScale(), ".4f")).Append(" < 1 - slope limit tightened to ").Append(FString::ApplyFormat(local_107_2, ".1f")).Append("°, may be blocked by mild slopes!"));
+                MovementStopDiagnosis::Warn(FString().Append("[DumpMove]   >>> NOTE: WalkableSlopDegreeScale=").Append(FString::ApplyFormat(local_78.GetWalkableSlopDegreeScale(), ".4f")).Append(" < 1 - slope limit tightened to ").Append(FString::ApplyFormat(local_107, ".1f")).Append("°, may be blocked by mild slopes!"));
             }
         }
     }

@@ -33,6 +33,7 @@ struct FC_RelativeDesiredRotationHistory : FECSComponent
     }
     void Clear()
     {
+        this.History.Clear();
         return;
     }
     bool GetInterpoValue(const FFPTime &inout WorldTime, FC_RelativeDesiredRotation &inout OutValue) const

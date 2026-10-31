@@ -106,7 +106,7 @@ class US_CombatZoneSystem : UECSScriptSystem
                 local_112 = local_110.opCall();
                 if (local_112)
                 {
-                    FECSEntity local_96_2 = FECSEntity(local_22.EntityId);
+                    local_112.Members.Remove(FECSEntity(local_22.EntityId));
                     if (local_112.Members.Num() == 0)
                     {
                         local_38 = FECSEntity(local_112.Zone);
@@ -118,6 +118,7 @@ class US_CombatZoneSystem : UECSScriptSystem
                             {
                                 if (local_86.CombatGroups.Num() == 0)
                                 {
+                                    Manager.CombatZones.Remove(local_38);
                                     local_38.DestroyDeferred();
                                 }
                             }
@@ -160,7 +161,7 @@ class US_CombatZoneSystem : UECSScriptSystem
         GetDefaulted local_146;
         if (local_16)
         {
-            const FAISpecialCombatTokenConfig& local_20;
+            const FAISpecialCombatTokenConfig& local_20 = SpecialTokenGen.TokenConfg.Get();
             bool local_17 = !(local_20.FilterByTags.IsEmpty());
             local_27 = int(local_20.FilterByTokenType) == 1 || !(local_20.GetFilterByTokens().IsEmpty());
             TInlineArray<FECSEntity, auto> local_64;
@@ -248,6 +249,7 @@ class US_CombatZoneSystem : UECSScriptSystem
                         local_170.Score = local_171;
                         ++local_151_2;
                     }
+                    local_168.Sort(false);
                     local_151_2 = 0;
                     for (; local_151_2 < local_25; )
                     {
@@ -414,8 +416,8 @@ class US_CombatZoneSystem : UECSScriptSystem
         for (; local_166.CanProceed;)
         {
             local_166.Proceed();
-            AActor local_196;
-            local_200 = Cast<AECSRegionVolume>(local_196);
+            GetDefaulted local_194;
+            local_200 = Cast<AECSRegionVolume>(local_194.opCall().RegionVolume.Get());
             if (local_200 != nullptr && local_200.bAffectCombat && local_200.GetBounds().GetBox().IsInsideXY(local_50))
             {
                 local_38.CombatVolumes.Add(local_200);

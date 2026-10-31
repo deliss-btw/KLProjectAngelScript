@@ -82,7 +82,7 @@ struct FVMS_AbnormalInfo : FEUIViewModelSingleton
             {
                 continue;
             }
-            if (ShouldDisplayInList())
+            if (local_6.Get().ShouldDisplayInList())
             {
                 this.GetModify_AbnormalModels().Add(local_6);
             }
@@ -172,11 +172,9 @@ FVMS_AbnormalInfo& Get(const UObject ContextObject)
 {
     return FVMS_AbnormalInfo::GetByManager(EUIInternal::GetContextManager(ContextObject));
 }
-FVMS_AbnormalInfo GetByManager(const UEUIManagerSubsystem Manager)
+FVMS_AbnormalInfo& GetByManager(const UEUIManagerSubsystem Manager)
 {
-    FVMS_AbnormalInfo __r;
-    TEUIModelRef<FVMS_AbnormalInfo> local_6 = TEUIModelRef<FVMS_AbnormalInfo>(EUIInternal::MakeModelWithManager(Manager, FVMS_AbnormalInfo::ModelId));
-    return __r;
+    return TEUIModelRef<FVMS_AbnormalInfo>(EUIInternal::MakeModelWithManager(Manager, FVMS_AbnormalInfo::ModelId)).Get();
 }
 void GetModelInfo(FEUIViewModelMetaInfo &inout Result)
 {
@@ -239,7 +237,6 @@ namespace __GeneratedProperties_FVMS_AbnormalInfo
 {
 UScriptStruct StaticStruct()
 {
-    UScriptStruct local_2;
-    return local_2;
+    return __GeneratedProperties_FVMS_AbnormalInfo.Get();
 }
 }

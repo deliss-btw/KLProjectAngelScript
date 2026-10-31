@@ -11,6 +11,8 @@ struct FEUIActionBindingHandleVisibility : FEUIActionBindingCustom
     UPROPERTY()
     bool bHidden;
 
+    default m_ScriptOverrideMeta = Cast<UASStruct>(FEUIActionBindingHandleVisibility.Get());
+
     FEUIActionBindingHandleVisibility()
     {
         this.bHidden = false;
@@ -94,11 +96,9 @@ FMS_HUDVisibilityManager& Get(const UObject ContextObject)
 {
     return FMS_HUDVisibilityManager::GetByManager(EUIInternal::GetContextManager(ContextObject));
 }
-FMS_HUDVisibilityManager GetByManager(const UEUIManagerSubsystem Manager)
+FMS_HUDVisibilityManager& GetByManager(const UEUIManagerSubsystem Manager)
 {
-    FMS_HUDVisibilityManager __r;
-    TEUIModelRef<FMS_HUDVisibilityManager> local_6 = TEUIModelRef<FMS_HUDVisibilityManager>(EUIInternal::MakeModelWithManager(Manager, FMS_HUDVisibilityManager::ModelId));
-    return __r;
+    return TEUIModelRef<FMS_HUDVisibilityManager>(EUIInternal::MakeModelWithManager(Manager, FMS_HUDVisibilityManager::ModelId)).Get();
 }
 void GetModelInfo(FEUIModelOnlyMetaInfo &inout Result)
 {

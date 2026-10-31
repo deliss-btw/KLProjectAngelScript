@@ -28,11 +28,11 @@ class UWidget_ForgeWeaponItem : UEUIUserWidget
         {
             return;
         }
-        if (!(this.Item.IsValid()) || GetbSelected())
+        if (!(this.Item.IsValid()) || this.Item.Get().GetbSelected())
         {
             return;
         }
-        OnItemClicked();
+        this.Item.Get().OnItemClicked();
         return;
     }
     UWidget GetAutoLineAnchorWidget()
@@ -46,22 +46,9 @@ class UWidget_ForgeWeaponItem : UEUIUserWidget
     UFUNCTION()
     void HandleItemSelectedChanged(const bool bSelected)
     {
-        bool local_1;
-        if (!(this.Item.IsValid()))
+        if (this.Item.IsValid() && this.Item.Get().GetComposableItemVM().IsValid())
         {
-            local_1 = false;
-        }
-        else
-        {
-            TEUIModelRef<FVM_ComposableItem> local_4;
-            local_4.GetComposableItemVM();
-            local_1 = local_4.IsValid();
-        }
-        if (local_1)
-        {
-            TEUIModelRef<FVM_ComposableItem> local_4;
-            local_4.GetComposableItemVM();
-            ::ComposableItemUtility::SetItemCustomSelection(FEUIModelContainer(), bSelected);
+            ::ComposableItemUtility::SetItemCustomSelection(FEUIModelContainer(this.Item.Get().GetComposableItemVM().Get()), bSelected);
         }
         return;
     }
@@ -76,8 +63,8 @@ class UWidget_ForgeWeaponItem : UEUIUserWidget
     }
     void HandleObservedModelChanges(FEUIReactiveSubscriberIterator &inout It)
     {
-        FVM_ForgeWeaponItem& local_6;
         TEUIModelRef<FVM_ForgeWeaponItem> local_2 = this.Item.AsRef();
+        FVM_ForgeWeaponItem& local_6 = local_2.Get();
         for (; It; )
         {
             FEUIReactiveSubscriberTrackScope local_56 = FEUIReactiveSubscriberTrackScope(It);

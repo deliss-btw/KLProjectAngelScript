@@ -98,8 +98,7 @@ struct FVM_PVX_CombatPreparation : FEUIViewModel
         }
         this.SetPlayerOwnedAvatarInfo(TEUIModelRef<FVMS_PlayerOwnedAvatarInfo>(::FVMS_PlayerOwnedAvatarInfo::Get(this.GetManager())));
         this.SetAvatarDetailInfo(TEUIModelRef<FVM_AvatarDetailInfo>(::FVM_AvatarDetailInfo::Create(this.GetManager())));
-        TEUIModelRef<FVM_AvatarDetailInfo> local_200 = this.GetAvatarDetailInfo();
-        1.SetPanelGameMode();
+        this.GetAvatarDetailInfo().Get().SetPanelGameMode(EGameModeType(1));
         return;
     }
     void SetCurrentShowcase(const TEUIModelRef<FVM_AvatarShowcase> &inout InShowcase)
@@ -120,18 +119,14 @@ struct FVM_PVX_CombatPreparation : FEUIViewModel
         {
             this.SetSelectedAvatar(this.GetFilteredAvatars()[this.GetSelectedAvatarIndex()]);
             this.RefreshShowcaseAvatars();
-            if (this.GetSelectedAvatarInfo().IsValid())
+            TEUIModelRef<FVM_AvatarInfo> local_12 = this.GetSelectedAvatarInfo();
+            if (local_12.IsValid())
             {
-                TEUIModelRef<FM_Avatar> local_16;
-                local_16.GetAvatar();
-                TEUIModelRef<FVM_AvatarDetailInfo> local_14 = this.GetAvatarDetailInfo();
-                local_16.SetCurrentAvatar();
-                int local_7 = 1;
-                TEUIModelRef<FVM_AvatarDetailInfo> local_14_2 = this.GetAvatarDetailInfo();
-                local_7.TrySetShowAttributeOrSkill();
-                if (GetAvatarConfig())
+                this.GetAvatarDetailInfo().Get().SetCurrentAvatar(local_12.Get().GetAvatar());
+                this.GetAvatarDetailInfo().Get().TrySetShowAttributeOrSkill(true);
+                if (local_12.Get().GetAvatarConfig())
                 {
-                    ::FMS_PvpModeState::Get(this.GetManager()).SetCurrentPvpAvatarId(GetAvatarConfig().opArrow().DataId);
+                    ::FMS_PvpModeState::Get(this.GetManager()).SetCurrentPvpAvatarId(local_12.Get().GetAvatarConfig().opArrow().DataId);
                 }
             }
         }
@@ -143,15 +138,15 @@ struct FVM_PVX_CombatPreparation : FEUIViewModel
         if (this.GetShowcase())
         {
             TArray<TDataObjectPtr<FAvatarPrefabConfig>> local_14;
-            if (this.GetSelectedAvatarInfo().IsValid())
+            TEUIModelRef<FVM_AvatarInfo> local_18 = this.GetSelectedAvatarInfo();
+            if (local_18.IsValid())
             {
-                local_14.Add(GetAvatarConfig());
+                local_14.Add(local_18.Get().GetAvatarConfig());
             }
             if (!(local_14.IsEmpty()))
             {
                 XLog(ELog(70), FString().Append("[PVX_CombatPreparation]RefreshShowcaseAvatars. SetAvatars."));
-                TEUIModelRef<FVM_AvatarShowcase> local_8 = this.GetShowcase();
-                local_14.SetNextAvatars();
+                this.GetShowcase().Get().SetNextAvatars(local_14);
             }
         }
         return;
@@ -177,28 +172,17 @@ struct FVM_PVX_CombatPreparation : FEUIViewModel
     }
     void RefreshFilteredAvatarList()
     {
-        FVM_AvatarInfo& local_24;
-        bool local_28;
         if (!(this.GetPlayerOwnedAvatarInfo().IsValid()))
         {
             this.SetPlayerOwnedAvatarInfo(TEUIModelRef<FVMS_PlayerOwnedAvatarInfo>(::FVMS_PlayerOwnedAvatarInfo::Get(this.GetManager())));
         }
         this.GetModify_FilteredAvatars().Reset(0);
-        TEUIModelRef<FVMS_PlayerOwnedAvatarInfo> local_2 = this.GetPlayerOwnedAvatarInfo();
-        for (auto& local_22 : GetUnLockAvatarList())
+        for (auto& local_22 : this.GetPlayerOwnedAvatarInfo().Get().GetUnLockAvatarList())
         {
+            FVM_AvatarInfo& local_24 = local_22.Get();
             if (local_24)
             {
-                if (!(local_24.GetAvatarConfig()))
-                {
-                    local_28 = false;
-                }
-                else
-                {
-                    EAvatarIllustrate local_26;
-                    local_28 = int(local_26) == int(this.GetFilterByIllustrate()) || (int(this.GetFilterByIllustrate()) == 3);
-                }
-                if (local_28)
+                if (local_24.GetAvatarConfig() && (int(local_24.GetAvatarConfig().Get().AvatarIllustrate) == int(this.GetFilterByIllustrate()) || (int(this.GetFilterByIllustrate()) == 3)))
                 {
                     FEUIModelContainer local_44;
                     local_44.AddModel(local_22.opImplConv(), false);
@@ -387,11 +371,9 @@ FVM_PVX_CombatPreparation& Create(const UObject ContextObject)
 {
     return FVM_PVX_CombatPreparation::CreateByManager(EUIInternal::GetContextManager(ContextObject));
 }
-FVM_PVX_CombatPreparation CreateByManager(const UEUIManagerSubsystem Manager)
+FVM_PVX_CombatPreparation& CreateByManager(const UEUIManagerSubsystem Manager)
 {
-    FVM_PVX_CombatPreparation __r;
-    TEUIModelRef<FVM_PVX_CombatPreparation> local_6 = TEUIModelRef<FVM_PVX_CombatPreparation>(EUIInternal::MakeModelWithManager(Manager, FVM_PVX_CombatPreparation::ModelId));
-    return __r;
+    return TEUIModelRef<FVM_PVX_CombatPreparation>(EUIInternal::MakeModelWithManager(Manager, FVM_PVX_CombatPreparation::ModelId)).Get();
 }
 void GetModelInfo(FEUIViewModelMetaInfo &inout Result)
 {
@@ -527,7 +509,6 @@ namespace __GeneratedProperties_FVM_PVX_CombatPreparation
 {
 UScriptStruct StaticStruct()
 {
-    UScriptStruct local_2;
-    return local_2;
+    return __GeneratedProperties_FVM_PVX_CombatPreparation.Get();
 }
 }

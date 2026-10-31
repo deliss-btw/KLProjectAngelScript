@@ -77,9 +77,7 @@ struct FVM_CommonComponentDropDown : FEUIViewModel
         FOnCommonDropdownSelected local_70;
         local_70.Add(this, FVM_CommonComponentDropDown::OnInnerDropdownSelected);
         this.SetCommonDropdownVM(TEUIModelRef<FVM_CommonDropdown>(::FVM_CommonDropdown::Create(this.GetContext().Manager, local_18, FCommonDropdownDefaultOption(this.GetDefaultIndex()), local_70)));
-        bool local_13 = false;
-        TEUIModelRef<FVM_CommonDropdown> local_76 = this.GetCommonDropdownVM();
-        local_13.SetbWithIcon();
+        this.GetCommonDropdownVM().Get().SetbWithIcon(false);
         return;
     }
     void OnOptionTextsChanged()
@@ -89,20 +87,17 @@ struct FVM_CommonComponentDropDown : FEUIViewModel
         {
             local_4.Add(FEUIModelContainer(::FVM_Text::Create(this.GetManager(), local_20)));
         }
-        TEUIModelRef<FVM_CommonDropdown> local_40 = this.GetCommonDropdownVM();
-        local_4.SetOptionDatas();
+        this.GetCommonDropdownVM().Get().SetOptionDatas(local_4);
         return;
     }
     void SelectByIndex(const int Index, const bool _bBroadcast = true)
     {
-        TEUIModelRef<FVM_CommonDropdown> local_2 = this.GetCommonDropdownVM();
-        Index.SelectByIndex(_bBroadcast);
+        this.GetCommonDropdownVM().Get().SelectByIndex(Index, _bBroadcast);
         return;
     }
     void UpdateOptionDisabledIndices(const TArray<int> &inout OptionDisabledIndices)
     {
-        TEUIModelRef<FVM_CommonDropdown> local_2 = this.GetCommonDropdownVM();
-        OptionDisabledIndices.SetOptionDisabledIndices();
+        this.GetCommonDropdownVM().Get().SetOptionDisabledIndices(OptionDisabledIndices);
         return;
     }
     void OnInnerDropdownSelected(const int Index)
@@ -211,11 +206,9 @@ FVM_CommonComponentDropDown& Create(const UObject ContextObject, const TArray<FT
 {
     return FVM_CommonComponentDropDown::CreateByManager(EUIInternal::GetContextManager(ContextObject), OptionTexts, DefaultIndex, OnComponentDropDownSelected);
 }
-FVM_CommonComponentDropDown CreateByManager(const UEUIManagerSubsystem Manager, const TArray<FText> &inout OptionTexts, const int DefaultIndex, const FOnCommonComponentDropDownSelected &inout OnComponentDropDownSelected)
+FVM_CommonComponentDropDown& CreateByManager(const UEUIManagerSubsystem Manager, const TArray<FText> &inout OptionTexts, const int DefaultIndex, const FOnCommonComponentDropDownSelected &inout OnComponentDropDownSelected)
 {
-    FVM_CommonComponentDropDown __r;
-    TEUIModelRef<FVM_CommonComponentDropDown> local_6 = TEUIModelRef<FVM_CommonComponentDropDown>(EUIInternal::MakeModelWithManager_Generic(Manager, FVM_CommonComponentDropDown::ModelId, 0, OptionTexts, DefaultIndex, OnComponentDropDownSelected));
-    return __r;
+    return TEUIModelRef<FVM_CommonComponentDropDown>(EUIInternal::MakeModelWithManager_Generic(Manager, FVM_CommonComponentDropDown::ModelId, 0, OptionTexts, DefaultIndex, OnComponentDropDownSelected)).Get();
 }
 void GetModelInfo(FEUIViewModelMetaInfo &inout Result)
 {
@@ -279,7 +272,6 @@ namespace __GeneratedProperties_FVM_CommonComponentDropDown
 {
 UScriptStruct StaticStruct()
 {
-    UScriptStruct local_2;
-    return local_2;
+    return __GeneratedProperties_FVM_CommonComponentDropDown.Get();
 }
 }

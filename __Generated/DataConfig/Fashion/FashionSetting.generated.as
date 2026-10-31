@@ -3,7 +3,6 @@ namespace __FFashionSlotConfigFunctions
 UFUNCTION()
 FSoftBrush __FFashionSlotConfig_GetSlotIcon(const TDataObjectPtr<FFashionSlotConfig> &inout DataObject)
 {
-    FSoftBrush __r;
     if ((DataObject == nullptr))
     {
         if (!(EUIGlobals::GIsDuringPropertyConversion))
@@ -13,12 +12,11 @@ FSoftBrush __FFashionSlotConfig_GetSlotIcon(const TDataObjectPtr<FFashionSlotCon
         FFashionSlotConfig local_92;
         return local_92.SlotIcon;
     }
-    return __r;
+    return DataObject.Get().SlotIcon;
 }
 UFUNCTION()
 FText __FFashionSlotConfig_GetSlotName(const TDataObjectPtr<FFashionSlotConfig> &inout DataObject)
 {
-    FText __r;
     if ((DataObject == nullptr))
     {
         if (!(EUIGlobals::GIsDuringPropertyConversion))
@@ -28,12 +26,11 @@ FText __FFashionSlotConfig_GetSlotName(const TDataObjectPtr<FFashionSlotConfig> 
         FFashionSlotConfig local_92;
         return local_92.SlotName;
     }
-    return __r;
+    return DataObject.Get().SlotName;
 }
 UFUNCTION()
 EFashionSlotMainTab __FFashionSlotConfig_GetMainTab(const TDataObjectPtr<FFashionSlotConfig> &inout DataObject)
 {
-    int local_93 = 0;
     if ((DataObject == nullptr))
     {
         if (!(EUIGlobals::GIsDuringPropertyConversion))
@@ -41,15 +38,13 @@ EFashionSlotMainTab __FFashionSlotConfig_GetMainTab(const TDataObjectPtr<FFashio
             FBlueprintDebugFunctions::ThrowScriptException("Get 'MainTab' from a null 'FFashionSlotConfig' DataObject!");
         }
         FFashionSlotConfig local_92;
-        local_93 = int(local_92.MainTab);
-        return EFashionSlotMainTab(local_93);
+        return local_92.MainTab;
     }
-    return EFashionSlotMainTab(local_93);
+    return DataObject.Get().MainTab;
 }
 UFUNCTION()
 EFashionSlotSubTab __FFashionSlotConfig_GetSubTab(const TDataObjectPtr<FFashionSlotConfig> &inout DataObject)
 {
-    int local_93 = 0;
     if ((DataObject == nullptr))
     {
         if (!(EUIGlobals::GIsDuringPropertyConversion))
@@ -57,10 +52,9 @@ EFashionSlotSubTab __FFashionSlotConfig_GetSubTab(const TDataObjectPtr<FFashionS
             FBlueprintDebugFunctions::ThrowScriptException("Get 'SubTab' from a null 'FFashionSlotConfig' DataObject!");
         }
         FFashionSlotConfig local_92;
-        local_93 = int(local_92.SubTab);
-        return EFashionSlotSubTab(local_93);
+        return local_92.SubTab;
     }
-    return EFashionSlotSubTab(local_93);
+    return DataObject.Get().SubTab;
 }
 UFUNCTION()
 int __FFashionSlotConfig_GetPriority(const TDataObjectPtr<FFashionSlotConfig> &inout DataObject)
@@ -80,18 +74,16 @@ int __FFashionSlotConfig_GetPriority(const TDataObjectPtr<FFashionSlotConfig> &i
 UFUNCTION()
 bool __FFashionSlotConfig_GetbAllowUnequip(const TDataObjectPtr<FFashionSlotConfig> &inout DataObject)
 {
-    bool local_1 = false;
     if ((DataObject == nullptr))
     {
-        local_1 = !(EUIGlobals::GIsDuringPropertyConversion);
-        if (local_1)
+        if (!(EUIGlobals::GIsDuringPropertyConversion))
         {
             FBlueprintDebugFunctions::ThrowScriptException("Get 'bAllowUnequip' from a null 'FFashionSlotConfig' DataObject!");
         }
         FFashionSlotConfig local_92;
         return local_92.bAllowUnequip;
     }
-    return local_1;
+    return DataObject.Get().bAllowUnequip;
 }
 UFUNCTION()
 TDataObjectPtr<FUIShowcaseConfig> __FFashionSlotConfig_GetShowcaseConfig(const TDataObjectPtr<FFashionSlotConfig> &inout DataObject)
@@ -105,7 +97,7 @@ TDataObjectPtr<FUIShowcaseConfig> __FFashionSlotConfig_GetShowcaseConfig(const T
         FFashionSlotConfig local_92;
         return local_92.GetShowcaseConfig();
     }
-    return GetShowcaseConfig();
+    return DataObject.Get().GetShowcaseConfig();
 }
 UFUNCTION()
 FFashionSlotConfig CastToFFashionSlotConfig(const TDataObjectPtr<FFashionSlotConfig> &inout DataObject)

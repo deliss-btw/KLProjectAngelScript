@@ -18,7 +18,7 @@ class UWidget_PendingConfirmQueue : UEUIActivatableWidget
     {
         if (this.QueueVM.IsValid())
         {
-            Collapse();
+            this.QueueVM.Get().Collapse();
         }
         return;
     }
@@ -27,7 +27,7 @@ class UWidget_PendingConfirmQueue : UEUIActivatableWidget
     {
         if (this.QueueVM.IsValid())
         {
-            ToggleExpanded();
+            this.QueueVM.Get().ToggleExpanded();
         }
         return;
     }

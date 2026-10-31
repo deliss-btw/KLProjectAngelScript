@@ -121,11 +121,9 @@ FVM_MinimapTempMarkDialog& Create(const UObject ContextObject, const FVector2D &
 {
     return FVM_MinimapTempMarkDialog::CreateByManager(EUIInternal::GetContextManager(ContextObject), MarkWorldPosition, HoverPosition);
 }
-FVM_MinimapTempMarkDialog CreateByManager(const UEUIManagerSubsystem Manager, const FVector2D &inout MarkWorldPosition, const FVector2D &inout HoverPosition)
+FVM_MinimapTempMarkDialog& CreateByManager(const UEUIManagerSubsystem Manager, const FVector2D &inout MarkWorldPosition, const FVector2D &inout HoverPosition)
 {
-    FVM_MinimapTempMarkDialog __r;
-    TEUIModelRef<FVM_MinimapTempMarkDialog> local_6 = TEUIModelRef<FVM_MinimapTempMarkDialog>(EUIInternal::MakeModelWithManager_Generic(Manager, FVM_MinimapTempMarkDialog::ModelId, 0, MarkWorldPosition, HoverPosition));
-    return __r;
+    return TEUIModelRef<FVM_MinimapTempMarkDialog>(EUIInternal::MakeModelWithManager_Generic(Manager, FVM_MinimapTempMarkDialog::ModelId, 0, MarkWorldPosition, HoverPosition)).Get();
 }
 void GetModelInfo(FEUIViewModelMetaInfo &inout Result)
 {
@@ -162,7 +160,6 @@ namespace __GeneratedProperties_FVM_MinimapTempMarkDialog
 {
 UScriptStruct StaticStruct()
 {
-    UScriptStruct local_2;
-    return local_2;
+    return __GeneratedProperties_FVM_MinimapTempMarkDialog.Get();
 }
 }

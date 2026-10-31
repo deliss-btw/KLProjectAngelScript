@@ -92,10 +92,10 @@ class UWidget_MailPanel : UEUIActivatableWidget
     UFUNCTION()
     void OnMailItemClicked(const FEUIModelContainer &inout Item)
     {
-        TEUIModelRef<FVM_MailBriefItem> local_8 = TEUIModelRef<FVM_MailBriefItem>(FEUIModelContainer::GetModel(Item).opCall());
-        if (local_8)
+        TEUIModelRef<FVM_MailBriefItem> local_2 = TEUIModelRef<FVM_MailBriefItem>(FEUIModelContainer::GetModel(Item).opCall());
+        if (local_2)
         {
-            this.MailPanel.opArrow().SelectMail(GetMailId());
+            this.MailPanel.opArrow().SelectMail(local_2.Get().GetMailId());
         }
         return;
     }
@@ -105,10 +105,10 @@ class UWidget_MailPanel : UEUIActivatableWidget
         if ((bIsSelected && !(this.bIsUpdatingView)))
         {
             this.RefreshActionBindingVisibility();
-            TEUIModelRef<FVM_MailBriefItem> local_10 = TEUIModelRef<FVM_MailBriefItem>(FEUIModelContainer::GetModel(Item).opCall());
-            if (local_10)
+            TEUIModelRef<FVM_MailBriefItem> local_4 = TEUIModelRef<FVM_MailBriefItem>(FEUIModelContainer::GetModel(Item).opCall());
+            if (local_4)
             {
-                this.MailPanel.opArrow().SelectMail(GetMailId());
+                this.MailPanel.opArrow().SelectMail(local_4.Get().GetMailId());
             }
         }
         return;
@@ -271,7 +271,7 @@ class UWidget_MailPanel : UEUIActivatableWidget
         FString local_22 = FString(Info.Href);
         if (local_4)
         {
-            int local_24 = GetPlayerUid();
+            int local_24 = local_10.Get().GetPlayerUid();
             if (local_24 == 0)
             {
                 XWarning(ELog(16), FString().Append("Mail hyperlink skipped: local player uid is 0, href=").Append(Info.Href));
@@ -281,7 +281,7 @@ class UWidget_MailPanel : UEUIActivatableWidget
         }
         if (local_1)
         {
-            int local_30 = GetLevel();
+            int local_30 = local_10.Get().GetLevel();
             if (local_30 <= 0)
             {
                 XWarning(ELog(16), FString().Append("Mail hyperlink skipped: local player level is invalid, href=").Append(Info.Href));
@@ -557,10 +557,10 @@ class UWidget_MailPanel : UEUIActivatableWidget
     }
     void HandleObservedModelChanges(FEUIReactiveSubscriberIterator &inout It)
     {
-        FVM_MailPanel& local_6;
-        FVM_MailDetail& local_12;
         TEUIModelRef<FVM_MailPanel> local_2 = this.MailPanel.AsRef();
+        FVM_MailPanel& local_6 = local_2.Get();
         TEUIModelRef<FVM_MailDetail> local_8 = this.SelectedMailDetail.AsRef();
+        FVM_MailDetail& local_12 = local_8.Get();
         for (; It; )
         {
             FEUIReactiveSubscriberTrackScope local_62 = FEUIReactiveSubscriberTrackScope(It);

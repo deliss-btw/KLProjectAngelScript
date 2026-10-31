@@ -133,18 +133,20 @@ struct FNetworkLatencyPair
     }
     float GetOutgoingLatency() const
     {
-        return 0.0;
+        return this.GetValue().X;
     }
     void SetOutgoingLatency(const float NewValue)
     {
+        this.GetValue().X = NewValue;
         return;
     }
     float GetIncomingLatency() const
     {
-        return 0.0;
+        return this.GetValue().Y;
     }
     void SetIncomingLatency(const float NewValue)
     {
+        this.GetValue().Y = NewValue;
         return;
     }
     FVector2D GetValue() const property

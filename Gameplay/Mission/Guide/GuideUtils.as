@@ -28,10 +28,10 @@ bool IsGuideStarted(const uint CustomUniqueId, const FECSEntity &inout Requester
 }
 bool TryGetGuideBehavior(const FInstancedStruct &inout GuideData, UGuideBehavior &inout OutGuideBehavior)
 {
-    if (FInstancedStruct::GetPtr(GuideData).opCall())
+    TConstRawPtr<FGuideDataBase> local_6 = FInstancedStruct::GetPtr(GuideData).opCall();
+    if (local_6)
     {
-        UGuideBehavior local_12;
-        OutGuideBehavior = local_12;
+        OutGuideBehavior = local_6.Get().GuideBehavior.GetDefaultObject();
         return true;
     }
     return false;
@@ -96,6 +96,7 @@ bool StopGuideForPlayer(const uint CustomUniqueId, const FInstancedStruct &inout
     if (local_8.GuideToStart.Contains(CustomUniqueId))
     {
         XLog(ELog(62), FString().Append("Remove guide from GuideToStart to stop guide id ").Append(CustomUniqueId).Append(" for player ").Append(PlayerEntity.GetEntityName()));
+        local_8.GuideToStart.Remove(CustomUniqueId);
     }
     else
     {
@@ -115,6 +116,7 @@ bool StopGuideForPlayer(const uint CustomUniqueId, const FInstancedStruct &inout
     FC_DeferredGuideList& local_22 = local_20.opCall();
     if (local_22)
     {
+        local_22.DeferredGuides.Remove(CustomUniqueId);
         if (local_22.DeferredGuides.IsEmpty())
         {
             Remove local_26;
@@ -179,13 +181,13 @@ bool TryFindGuideContextBySource(const FECSEntity &inout PlayerEntity, const FGu
     {
         for (auto& local_166 : local_148.GetGuideInfoMap())
         {
-            local_166;
-            const FGuideDataSourceConfig& local_168 = GetDataSourceConfig();
+            const FGuideDataSourceConfig& local_168 = local_166.GetValue().GetDataSourceConfig();
             TDataObjectPtr<FObjectiveSingleConfig> local_192;
             local_192 = local_168.GetObjectiveConfig();
             local_240;
             if ((local_192 == local_240) && (local_168.GetGuideIndex() == DataSource.GetGuideIndex()))
             {
+                Context = local_166.GetValue();
                 return true;
             }
         }
@@ -194,10 +196,11 @@ bool TryFindGuideContextBySource(const FECSEntity &inout PlayerEntity, const FGu
 }
 bool TryCalculateGuideDistance(const FInstancedStruct &inout GuideData, const FECSEntity &inout PlayerEntity, float &out Distance)
 {
-    UGuideBehavior local_16;
     Distance = 0.0;
-    if (FInstancedStruct::GetPtr(GuideData).opCall())
+    TConstRawPtr<FGuideDataBase> local_8 = FInstancedStruct::GetPtr(GuideData).opCall();
+    if (local_8)
     {
+        UGuideBehavior local_16 = local_8.Get().GuideBehavior.GetDefaultObject();
         if (local_16 != nullptr)
         {
             return local_16.TryCalculateDistance(GuideData, PlayerEntity, Distance);
@@ -230,7 +233,7 @@ bool ShouldShowGuideOnTargetLevelMinimap(const FGuideContext &inout GuideInfo, c
     {
         return false;
     }
-    bool local_1_3 = CurrentLevelInfo.IsSet() && GetMapConfig().IsSet();
+    bool local_1_3 = CurrentLevelInfo.IsSet() && GuideInfo.GetLevelInfo().Get().GetMapConfig().IsSet();
     if (!(local_1_3))
     {
         local_1_3 = false;
@@ -239,7 +242,7 @@ bool ShouldShowGuideOnTargetLevelMinimap(const FGuideContext &inout GuideInfo, c
     {
         FDataObjectPtr local_74;
         TDataObjectPtr<FMapConfig> local_124;
-        local_124 = GetMapConfig();
+        local_124 = GuideInfo.GetLevelInfo().Get().GetMapConfig();
         local_74;
         local_1_3 = (local_124 == local_74);
     }

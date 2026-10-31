@@ -590,8 +590,7 @@ struct FC_SplineInfo : FECSComponent
         ASplinePointPrefab local_4;
         if (this.SplinePrefab.IsValid())
         {
-            AECSPrefab local_6;
-            local_4 = (Cast<ASplinePointPrefab>(local_6));
+            local_4 = (Cast<ASplinePointPrefab>(this.SplinePrefab.Get()));
             if (local_4 != nullptr)
             {
                 return local_4.Spline;

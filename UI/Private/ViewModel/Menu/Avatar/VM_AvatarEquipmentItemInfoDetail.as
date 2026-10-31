@@ -67,35 +67,28 @@ struct FVM_AvatarEquipmentItemInfoDetail : FEUIViewModel
     void PostConstruct()
     {
         int local_52 = 0;
-        TEUIModelRef<FVM_EquipmentInfo> local_2 = this.GetEquipmentInfo();
-        for (auto& local_18 : GetEquipmentAttributes())
+        for (auto& local_18 : this.GetEquipmentInfo().Get().GetEquipmentAttributes())
         {
             FEUIModelContainer local_32;
             local_32.AddModel(local_18, false);
             this.GetModify_CurrentAttributeList().Add(local_32);
         }
-        TEUIModelRef<FVM_EquipmentInfo> local_2_2 = this.GetEquipmentInfo();
-        for (auto& local_48 : GetEquipmentTraits())
+        for (auto& local_48 : this.GetEquipmentInfo().Get().GetEquipmentTraits())
         {
-            local_48;
-            TEUIModelRef<FM_Trait> local_50;
-            local_50.GetTrait();
+            TEUIModelRef<FM_Trait> local_50 = local_48.Get().GetTrait();
             this.GetModify_CurrentTraitList().Add(TEUIModelRef<FVM_TraitInfoHover>(local_52));
         }
         return;
     }
     void EnableShowRandomTraitText()
     {
-        int local_53 = 0;
-        TEUIModelRef<FVM_EquipmentInfo> local_2 = this.GetEquipmentInfo();
-        TDataObjectPtr<FEquipmentConfig> local_26;
-        local_26.GetEquipmentConfig();
+        TDataObjectPtr<FEquipmentConfig> local_26 = this.GetEquipmentInfo().Get().GetEquipmentConfig();
         if (local_26)
         {
-            this.SetbCanShowRandomTraitText((0 > 0));
+            this.SetbCanShowRandomTraitText((local_26.Get().TrailDepot.Num() > 0));
             if (this.GetbCanShowRandomTraitText())
             {
-                this.SetEquipmentRandomTraitText(FText::Format(NSLOCTEXT("RandomTraitText", "随机{0}个词条"), local_53));
+                this.SetEquipmentRandomTraitText(FText::Format(NSLOCTEXT("RandomTraitText", "随机{0}个词条"), local_26.Get().TrailDepot.Num()));
             }
         }
         return;
@@ -112,9 +105,7 @@ struct FVM_AvatarEquipmentItemInfoDetail : FEUIViewModel
     }
     FText GetEquipmentDescription() const
     {
-        TEUIModelRef<FVM_EquipmentInfo> local_2 = this.GetEquipmentInfo();
-        TDataObjectPtr<FEquipmentConfig> local_26;
-        local_26.GetEquipmentConfig();
+        TDataObjectPtr<FEquipmentConfig> local_26 = this.GetEquipmentInfo().Get().GetEquipmentConfig();
         if (local_26)
         {
             return local_26.opArrow().ItemBackgroundDescription;
@@ -258,11 +249,9 @@ FVM_AvatarEquipmentItemInfoDetail& Create(const UObject ContextObject, const TEU
 {
     return FVM_AvatarEquipmentItemInfoDetail::CreateByManager(EUIInternal::GetContextManager(ContextObject), EquipmentInfo);
 }
-FVM_AvatarEquipmentItemInfoDetail CreateByManager(const UEUIManagerSubsystem Manager, const TEUIModelRef<FVM_EquipmentInfo> &inout EquipmentInfo)
+FVM_AvatarEquipmentItemInfoDetail& CreateByManager(const UEUIManagerSubsystem Manager, const TEUIModelRef<FVM_EquipmentInfo> &inout EquipmentInfo)
 {
-    FVM_AvatarEquipmentItemInfoDetail __r;
-    TEUIModelRef<FVM_AvatarEquipmentItemInfoDetail> local_6 = TEUIModelRef<FVM_AvatarEquipmentItemInfoDetail>(EUIInternal::MakeModelWithManager_Generic(Manager, FVM_AvatarEquipmentItemInfoDetail::ModelId, 0, EquipmentInfo));
-    return __r;
+    return TEUIModelRef<FVM_AvatarEquipmentItemInfoDetail>(EUIInternal::MakeModelWithManager_Generic(Manager, FVM_AvatarEquipmentItemInfoDetail::ModelId, 0, EquipmentInfo)).Get();
 }
 void GetModelInfo(FEUIViewModelMetaInfo &inout Result)
 {
@@ -370,7 +359,6 @@ namespace __GeneratedProperties_FVM_AvatarEquipmentItemInfoDetail
 {
 UScriptStruct StaticStruct()
 {
-    UScriptStruct local_2;
-    return local_2;
+    return __GeneratedProperties_FVM_AvatarEquipmentItemInfoDetail.Get();
 }
 }

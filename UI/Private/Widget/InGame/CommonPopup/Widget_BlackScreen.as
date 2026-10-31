@@ -26,13 +26,13 @@ class UWidget_BlackScreen : UEUIUserWidget
     UFUNCTION()
     float32 LoadingPage_RenderOpacity() const
     {
-        FVMS_CommonLoading& local_2;
+        FVMS_CommonLoading& local_2 = this.LoadingPage.Get();
         return local_2 ? local_2.GetRenderOpacity() : 0.0f;
     }
     void HandleObservedModelChanges(FEUIReactiveSubscriberIterator &inout It)
     {
-        FVMS_CommonLoading& local_6;
         TEUIModelRef<FVMS_CommonLoading> local_2 = this.LoadingPage.AsRef();
+        FVMS_CommonLoading& local_6 = local_2.Get();
         for (; It; )
         {
             FEUIReactiveSubscriberTrackScope local_56 = FEUIReactiveSubscriberTrackScope(It);

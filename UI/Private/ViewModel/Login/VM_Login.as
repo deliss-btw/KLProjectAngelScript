@@ -697,8 +697,7 @@ struct FVMS_Login : FEUIViewModelSingleton
         int local_4;
         if (this.GetStartGameButton().IsValid())
         {
-            TEUIModelRef<FVM_LoginButton> local_2 = this.GetStartGameButton();
-            if (GetbIsVisible())
+            if (this.GetStartGameButton().Get().GetbIsVisible())
             {
                 local_4 = 0;
             }
@@ -715,8 +714,7 @@ struct FVMS_Login : FEUIViewModelSingleton
         int local_4;
         if (this.GetContinueGameButton().IsValid())
         {
-            TEUIModelRef<FVM_LoginButton> local_2 = this.GetContinueGameButton();
-            if (GetbIsVisible())
+            if (this.GetContinueGameButton().Get().GetbIsVisible())
             {
                 local_4 = 0;
             }
@@ -733,8 +731,7 @@ struct FVMS_Login : FEUIViewModelSingleton
         int local_4;
         if (this.GetSwitchAccountButton().IsValid())
         {
-            TEUIModelRef<FVM_LoginButton> local_2 = this.GetSwitchAccountButton();
-            if (GetbIsVisible())
+            if (this.GetSwitchAccountButton().Get().GetbIsVisible())
             {
                 local_4 = 0;
             }
@@ -751,8 +748,7 @@ struct FVMS_Login : FEUIViewModelSingleton
         int local_4;
         if (this.GetNoticeButton().IsValid())
         {
-            TEUIModelRef<FVM_LoginButton> local_2 = this.GetNoticeButton();
-            if (GetbIsVisible())
+            if (this.GetNoticeButton().Get().GetbIsVisible())
             {
                 local_4 = 0;
             }
@@ -769,8 +765,7 @@ struct FVMS_Login : FEUIViewModelSingleton
         int local_4;
         if (this.GetSettingsButton().IsValid())
         {
-            TEUIModelRef<FVM_LoginButton> local_2 = this.GetSettingsButton();
-            if (GetbIsVisible())
+            if (this.GetSettingsButton().Get().GetbIsVisible())
             {
                 local_4 = 0;
             }
@@ -787,8 +782,7 @@ struct FVMS_Login : FEUIViewModelSingleton
         int local_4;
         if (this.GetExitGameButton().IsValid())
         {
-            TEUIModelRef<FVM_LoginButton> local_2 = this.GetExitGameButton();
-            if (GetbIsVisible())
+            if (this.GetExitGameButton().Get().GetbIsVisible())
             {
                 local_4 = 0;
             }
@@ -828,7 +822,7 @@ struct FVMS_Login : FEUIViewModelSingleton
         int local_5 = 0;
         for (; local_5 < this.GetRegionInfos().Num(); ++local_5)
         {
-            if ((FString(GetName()) == local_4))
+            if ((FString(this.GetRegionInfos()[local_5].Get().GetName()) == local_4))
             {
                 this.SetSelectRegionIndex(local_5);
                 break;
@@ -841,14 +835,11 @@ struct FVMS_Login : FEUIViewModelSingleton
     {
         if (this.GetStartGameButton().IsValid())
         {
-            TEUIModelRef<FVM_LoginButton> local_2 = this.GetStartGameButton();
-            !(this.GetbIsSDKLoginSucc()).SetVisible();
+            this.GetStartGameButton().Get().SetVisible(!(this.GetbIsSDKLoginSucc()));
         }
         if (this.GetContinueGameButton().IsValid())
         {
-            bool local_3_2 = this.GetbIsSDKLoginSucc();
-            TEUIModelRef<FVM_LoginButton> local_2_2 = this.GetContinueGameButton();
-            local_3_2.SetVisible();
+            this.GetContinueGameButton().Get().SetVisible(this.GetbIsSDKLoginSucc());
         }
         return;
     }
@@ -856,10 +847,8 @@ struct FVMS_Login : FEUIViewModelSingleton
     {
         if (this.GetRegionInfos().IsValidIndex(this.GetSelectRegionIndex()))
         {
-            int local_1 = this.GetSelectRegionIndex();
-            this.SetSelectServerName(GetName());
-            int local_1_2 = this.GetSelectRegionIndex();
-            this.SetSelectServerTitle(GetTitle());
+            this.SetSelectServerName(this.GetRegionInfos()[this.GetSelectRegionIndex()].Get().GetName());
+            this.SetSelectServerTitle(this.GetRegionInfos()[this.GetSelectRegionIndex()].Get().GetTitle());
         }
         return;
     }
@@ -1061,8 +1050,7 @@ struct FVMS_Login : FEUIViewModelSingleton
     {
         for (auto& local_16 : this.GetRegionInfos())
         {
-            local_16;
-            if (GetbValid() && !(GetLoginDownloadInfo().ClientVersion.IsEmpty()))
+            if (local_16.Get().GetbValid() && !(local_16.Get().GetLoginDownloadInfo().ClientVersion.IsEmpty()))
             {
                 return true;
             }
@@ -1084,8 +1072,7 @@ struct FVMS_Login : FEUIViewModelSingleton
         this.SetLoginState(ELoginState(2));
         for (auto& local_18 : this.GetRegionInfos())
         {
-            local_18;
-            this.GetClientConnectionSubsystem().RequestForGateAddress(GetDispatchURL(), true, RspDelegate);
+            this.GetClientConnectionSubsystem().RequestForGateAddress(local_18.Get().GetDispatchURL(), true, RspDelegate);
         }
         return;
     }
@@ -1125,7 +1112,7 @@ struct FVMS_Login : FEUIViewModelSingleton
         int local_3 = 0;
         for (; local_3 < this.GetRegionInfos().Num(); ++local_3)
         {
-            if (ReqURL.StartsWith(GetDispatchURL(), ESearchCase(1)))
+            if (ReqURL.StartsWith(this.GetRegionInfos()[local_3].Get().GetDispatchURL(), ESearchCase(1)))
             {
                 local_1 = local_3;
                 break;
@@ -1136,7 +1123,7 @@ struct FVMS_Login : FEUIViewModelSingleton
             XWarning(ELog(78), FString().Append("OnRecievedGateAddress: no region matched ReqURL ").Append(ReqURL));
             return;
         }
-        FVM_RegionInfo local_14;
+        FVM_RegionInfo& local_14 = this.GetModify_RegionInfos()[local_1].Get();
         local_14.SetbGateAddressReceived(true);
         if (bSuccess)
         {
@@ -1207,8 +1194,7 @@ struct FVMS_Login : FEUIViewModelSingleton
     {
         for (auto& local_16 : this.GetRegionInfos())
         {
-            local_16;
-            if (!(GetbGateAddressReceived()))
+            if (!(local_16.Get().GetbGateAddressReceived()))
             {
                 return;
             }
@@ -1216,9 +1202,9 @@ struct FVMS_Login : FEUIViewModelSingleton
         int local_20 = this.GetRegionInfos().Num() - 1;
         for (; local_20 >= 0; --local_20)
         {
-            if (!(GetbValid()))
+            if (!(this.GetRegionInfos()[local_20].Get().GetbValid()))
             {
-                XLog(ELog(78), FString().Append("Remove invalid region after gate query: ").Append(GetName()));
+                XLog(ELog(78), FString().Append("Remove invalid region after gate query: ").Append(this.GetRegionInfos()[local_20].Get().GetName()));
                 this.GetModify_RegionInfos().RemoveAt(local_20);
             }
         }
@@ -1240,7 +1226,7 @@ struct FVMS_Login : FEUIViewModelSingleton
             int local_3 = 0;
             for (; local_3 < this.GetRegionInfos().Num(); ++local_3)
             {
-                if ((FString(GetName()) == this.GetRecentServerName()))
+                if ((FString(this.GetRegionInfos()[local_3].Get().GetName()) == this.GetRecentServerName()))
                 {
                     this.SetSelectRegionIndex(local_3);
                 }
@@ -1256,8 +1242,7 @@ struct FVMS_Login : FEUIViewModelSingleton
             XError(ELog(78), "SelectRegionIndex is out of range");
             return;
         }
-        int local_1 = this.GetSelectRegionIndex();
-        this.SetRecentServerName(GetName());
+        this.SetRecentServerName(this.GetRegionInfos()[this.GetSelectRegionIndex()].Get().GetName());
         FString local_16 = (FPlatformProcess::UserSettingsDir() + "/Login/recent_server.txt");
         bool local_2 = FFileHelper::SaveStringToFile(this.GetRecentServerName(), local_16, FFileHelper::EEncodingOptions(4), 0);
         if (!(local_2))
@@ -1268,13 +1253,12 @@ struct FVMS_Login : FEUIViewModelSingleton
     }
     bool CheckRegionInfo()
     {
-        FVM_RegionInfo& local_6;
         if (!(this.GetRegionInfos().IsValidIndex(this.GetSelectRegionIndex())))
         {
             XError(ELog(78), "TryStartDownloadStep: SelectRegionIndex is out of range");
             return false;
         }
-        int local_1 = this.GetSelectRegionIndex();
+        FVM_RegionInfo& local_6 = this.GetRegionInfos()[this.GetSelectRegionIndex()].Get();
         if (!(local_6.GetbValid()))
         {
             XError(ELog(78), FString().Append("TryStartDownloadStep: selected region ").Append(local_6.GetName()).Append(" is invalid"));
@@ -1290,8 +1274,7 @@ struct FVMS_Login : FEUIViewModelSingleton
             FLoginDownloadInfo local_22;
             for (auto& local_36 : this.GetRegionInfos())
             {
-                local_36;
-                if (GetbValid() && !(GetLoginDownloadInfo().ClientVersion.IsEmpty()))
+                if (local_36.Get().GetbValid() && !(local_36.Get().GetLoginDownloadInfo().ClientVersion.IsEmpty()))
                 {
                     break;
                 }
@@ -2279,11 +2262,9 @@ FVM_RegionInfo& Create(const UObject ContextObject)
 {
     return FVM_RegionInfo::CreateByManager(EUIInternal::GetContextManager(ContextObject));
 }
-FVM_RegionInfo CreateByManager(const UEUIManagerSubsystem Manager)
+FVM_RegionInfo& CreateByManager(const UEUIManagerSubsystem Manager)
 {
-    FVM_RegionInfo __r;
-    TEUIModelRef<FVM_RegionInfo> local_6 = TEUIModelRef<FVM_RegionInfo>(EUIInternal::MakeModelWithManager(Manager, FVM_RegionInfo::ModelId));
-    return __r;
+    return TEUIModelRef<FVM_RegionInfo>(EUIInternal::MakeModelWithManager(Manager, FVM_RegionInfo::ModelId)).Get();
 }
 void GetModelInfo(FEUIViewModelMetaInfo &inout Result)
 {
@@ -2397,8 +2378,7 @@ namespace __GeneratedProperties_FVM_RegionInfo
 {
 UScriptStruct StaticStruct()
 {
-    UScriptStruct local_2;
-    return local_2;
+    return __GeneratedProperties_FVM_RegionInfo.Get();
 }
 }
 namespace FVMS_Login
@@ -2407,11 +2387,9 @@ FVMS_Login& Get(const UObject ContextObject)
 {
     return FVMS_Login::GetByManager(EUIInternal::GetContextManager(ContextObject));
 }
-FVMS_Login GetByManager(const UEUIManagerSubsystem Manager)
+FVMS_Login& GetByManager(const UEUIManagerSubsystem Manager)
 {
-    FVMS_Login __r;
-    TEUIModelRef<FVMS_Login> local_6 = TEUIModelRef<FVMS_Login>(EUIInternal::MakeModelWithManager(Manager, FVMS_Login::ModelId));
-    return __r;
+    return TEUIModelRef<FVMS_Login>(EUIInternal::MakeModelWithManager(Manager, FVMS_Login::ModelId)).Get();
 }
 void GetModelInfo(FEUIViewModelMetaInfo &inout Result)
 {
@@ -2844,7 +2822,6 @@ namespace __GeneratedProperties_FVMS_Login
 {
 UScriptStruct StaticStruct()
 {
-    UScriptStruct local_2;
-    return local_2;
+    return __GeneratedProperties_FVMS_Login.Get();
 }
 }

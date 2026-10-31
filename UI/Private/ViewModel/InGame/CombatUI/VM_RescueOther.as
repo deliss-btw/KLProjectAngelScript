@@ -89,9 +89,7 @@ struct FVM_RescueOther : FEUIViewModel
     }
     void Tick()
     {
-        float32 local_1 = this.GetRescuedProgress();
-        TEUIModelRef<FVM_RevivalTimeProgressBar> local_4 = this.GetRescuedProgressModel();
-        local_1.SetProgress();
+        this.GetRescuedProgressModel().Get().SetProgress(this.GetRescuedProgress());
         return;
     }
     float32 GetRescuedProgress() const
@@ -210,11 +208,9 @@ FVM_RevivalTimeProgressBar& Create(const UObject ContextObject)
 {
     return FVM_RevivalTimeProgressBar::CreateByManager(EUIInternal::GetContextManager(ContextObject));
 }
-FVM_RevivalTimeProgressBar CreateByManager(const UEUIManagerSubsystem Manager)
+FVM_RevivalTimeProgressBar& CreateByManager(const UEUIManagerSubsystem Manager)
 {
-    FVM_RevivalTimeProgressBar __r;
-    TEUIModelRef<FVM_RevivalTimeProgressBar> local_6 = TEUIModelRef<FVM_RevivalTimeProgressBar>(EUIInternal::MakeModelWithManager(Manager, FVM_RevivalTimeProgressBar::ModelId));
-    return __r;
+    return TEUIModelRef<FVM_RevivalTimeProgressBar>(EUIInternal::MakeModelWithManager(Manager, FVM_RevivalTimeProgressBar::ModelId)).Get();
 }
 void GetModelInfo(FEUIViewModelMetaInfo &inout Result)
 {
@@ -261,8 +257,7 @@ namespace __GeneratedProperties_FVM_RevivalTimeProgressBar
 {
 UScriptStruct StaticStruct()
 {
-    UScriptStruct local_2;
-    return local_2;
+    return __GeneratedProperties_FVM_RevivalTimeProgressBar.Get();
 }
 }
 namespace FVM_RescueOther
@@ -271,11 +266,9 @@ FVM_RescueOther& Create(const UObject ContextObject)
 {
     return FVM_RescueOther::CreateByManager(EUIInternal::GetContextManager(ContextObject));
 }
-FVM_RescueOther CreateByManager(const UEUIManagerSubsystem Manager)
+FVM_RescueOther& CreateByManager(const UEUIManagerSubsystem Manager)
 {
-    FVM_RescueOther __r;
-    TEUIModelRef<FVM_RescueOther> local_6 = TEUIModelRef<FVM_RescueOther>(EUIInternal::MakeModelWithManager(Manager, FVM_RescueOther::ModelId));
-    return __r;
+    return TEUIModelRef<FVM_RescueOther>(EUIInternal::MakeModelWithManager(Manager, FVM_RescueOther::ModelId)).Get();
 }
 void GetModelInfo(FEUIViewModelMetaInfo &inout Result)
 {
@@ -342,7 +335,6 @@ namespace __GeneratedProperties_FVM_RescueOther
 {
 UScriptStruct StaticStruct()
 {
-    UScriptStruct local_2;
-    return local_2;
+    return __GeneratedProperties_FVM_RescueOther.Get();
 }
 }

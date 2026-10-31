@@ -29,7 +29,6 @@ FName RaySceneInteract(bool &inout bTraceResult, const FECSEntity &inout PawnEnt
     const AActor local_272;
     USceneComponent local_274;
     int local_310 = 0;
-    UPrimitiveComponent local_468;
     bTraceResult = false;
     FName local_5 = FGamePhysicsUtils::GetDefaultPhysicalSurfaceName();
     FVector local_12(SurfaceContactInfo.GetTraceDir());
@@ -361,7 +360,7 @@ FName RaySceneInteract(bool &inout bTraceResult, const FECSEntity &inout PawnEnt
         else
         {
         }
-        if (local_408.GetbBlockingHit() && (local_468 != nullptr))
+        if (local_408.GetbBlockingHit() && (local_408.GetComponent() != nullptr))
         {
             local_5 = FSceneInteractUtils::GetPhysicalMaterialNameFromHitResult(local_408);
             if (local_37)
@@ -371,8 +370,7 @@ FName RaySceneInteract(bool &inout bTraceResult, const FECSEntity &inout PawnEnt
             if (PawnEntity.IsValid())
             {
                 local_116.opCall().PhysicalSurfaceName = local_5;
-                UPrimitiveComponent local_470;
-                local_116.opCall().HitPrimitiveComponent = local_470;
+                local_116.opCall().HitPrimitiveComponent = local_408.GetComponent();
             }
             BlockLocation = local_408.ImpactPoint;
             HitNormal = local_408.Normal;
@@ -413,15 +411,14 @@ FName GetPhysicalMaterialNameFromHitResult(const FHitResult &inout HitResult)
 UFUNCTION()
 bool FilterInvalidHitResult(const FHitResult &inout HitResult)
 {
-    UPrimitiveComponent local_2;
-    bool local_5 = false;
-    UPrimitiveComponent local_16;
-    if ((local_2 != nullptr && local_5))
+    bool local_5;
+    if (HitResult.GetComponent() != nullptr && HitResult.GetComponent().IsA(UBrushComponent))
     {
         return false;
     }
     if (HitResult.GetActor() != nullptr)
     {
+        UPrimitiveComponent local_16 = HitResult.GetComponent();
         FName local_22(local_16.GetCollisionProfileName());
         if ((int(local_16.GetCollisionResponseToChannel(ECollisionChannel(4)))) != 2)
         {

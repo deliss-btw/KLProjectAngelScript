@@ -33,6 +33,7 @@ struct FC_CharacterFootLockInfoHistory : FECSComponent
     }
     void Clear()
     {
+        this.History.Clear();
         return;
     }
     bool GetInterpoValue(const FFPTime &inout WorldTime, FC_CharacterFootLockInfo &inout OutValue) const

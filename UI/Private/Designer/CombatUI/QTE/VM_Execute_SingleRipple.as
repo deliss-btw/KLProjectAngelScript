@@ -214,11 +214,9 @@ FVM_Execute_SingleRipple& Create(const UObject ContextObject)
 {
     return FVM_Execute_SingleRipple::CreateByManager(EUIInternal::GetContextManager(ContextObject));
 }
-FVM_Execute_SingleRipple CreateByManager(const UEUIManagerSubsystem Manager)
+FVM_Execute_SingleRipple& CreateByManager(const UEUIManagerSubsystem Manager)
 {
-    FVM_Execute_SingleRipple __r;
-    TEUIModelRef<FVM_Execute_SingleRipple> local_6 = TEUIModelRef<FVM_Execute_SingleRipple>(EUIInternal::MakeModelWithManager(Manager, FVM_Execute_SingleRipple::ModelId));
-    return __r;
+    return TEUIModelRef<FVM_Execute_SingleRipple>(EUIInternal::MakeModelWithManager(Manager, FVM_Execute_SingleRipple::ModelId)).Get();
 }
 void GetModelInfo(FEUIViewModelMetaInfo &inout Result)
 {
@@ -279,7 +277,6 @@ namespace __GeneratedProperties_FVM_Execute_SingleRipple
 {
 UScriptStruct StaticStruct()
 {
-    UScriptStruct local_2;
-    return local_2;
+    return __GeneratedProperties_FVM_Execute_SingleRipple.Get();
 }
 }

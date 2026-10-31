@@ -546,11 +546,9 @@ FVM_MinimapMarkDialogOption& Create(const UObject ContextObject, const int Optio
 {
     return FVM_MinimapMarkDialogOption::CreateByManager(EUIInternal::GetContextManager(ContextObject), OptionIndex);
 }
-FVM_MinimapMarkDialogOption CreateByManager(const UEUIManagerSubsystem Manager, const int OptionIndex)
+FVM_MinimapMarkDialogOption& CreateByManager(const UEUIManagerSubsystem Manager, const int OptionIndex)
 {
-    FVM_MinimapMarkDialogOption __r;
-    TEUIModelRef<FVM_MinimapMarkDialogOption> local_6 = TEUIModelRef<FVM_MinimapMarkDialogOption>(EUIInternal::MakeModelWithManager_Generic(Manager, FVM_MinimapMarkDialogOption::ModelId, 0, OptionIndex));
-    return __r;
+    return TEUIModelRef<FVM_MinimapMarkDialogOption>(EUIInternal::MakeModelWithManager_Generic(Manager, FVM_MinimapMarkDialogOption::ModelId, 0, OptionIndex)).Get();
 }
 void GetModelInfo(FEUIViewModelMetaInfo &inout Result)
 {
@@ -610,8 +608,7 @@ namespace __GeneratedProperties_FVM_MinimapMarkDialogOption
 {
 UScriptStruct StaticStruct()
 {
-    UScriptStruct local_2;
-    return local_2;
+    return __GeneratedProperties_FVM_MinimapMarkDialogOption.Get();
 }
 }
 namespace FVM_MinimapMarkDialog
@@ -620,11 +617,9 @@ FVM_MinimapMarkDialog& Create(const UObject ContextObject, const FECSEntityId &i
 {
     return FVM_MinimapMarkDialog::CreateByManager(EUIInternal::GetContextManager(ContextObject), MarkEntityID, MarkWorldPosition);
 }
-FVM_MinimapMarkDialog CreateByManager(const UEUIManagerSubsystem Manager, const FECSEntityId &inout MarkEntityID, const FVector2D &inout MarkWorldPosition)
+FVM_MinimapMarkDialog& CreateByManager(const UEUIManagerSubsystem Manager, const FECSEntityId &inout MarkEntityID, const FVector2D &inout MarkWorldPosition)
 {
-    FVM_MinimapMarkDialog __r;
-    TEUIModelRef<FVM_MinimapMarkDialog> local_6 = TEUIModelRef<FVM_MinimapMarkDialog>(EUIInternal::MakeModelWithManager_Generic(Manager, FVM_MinimapMarkDialog::ModelId, 0, MarkEntityID, MarkWorldPosition));
-    return __r;
+    return TEUIModelRef<FVM_MinimapMarkDialog>(EUIInternal::MakeModelWithManager_Generic(Manager, FVM_MinimapMarkDialog::ModelId, 0, MarkEntityID, MarkWorldPosition)).Get();
 }
 void GetModelInfo(FEUIViewModelMetaInfo &inout Result)
 {
@@ -714,7 +709,6 @@ namespace __GeneratedProperties_FVM_MinimapMarkDialog
 {
 UScriptStruct StaticStruct()
 {
-    UScriptStruct local_2;
-    return local_2;
+    return __GeneratedProperties_FVM_MinimapMarkDialog.Get();
 }
 }

@@ -40,8 +40,8 @@ class UWidget_ItemFeature_EquipMark : UEUIUserWidget
     }
     void HandleObservedModelChanges(FEUIReactiveSubscriberIterator &inout It)
     {
-        FVM_ItemFeature_EquipMark& local_6;
         TEUIModelRef<FVM_ItemFeature_EquipMark> local_2 = this.EquipMarkFeature.AsRef();
+        FVM_ItemFeature_EquipMark& local_6 = local_2.Get();
         for (; It; )
         {
             FEUIReactiveSubscriberTrackScope local_56 = FEUIReactiveSubscriberTrackScope(It);

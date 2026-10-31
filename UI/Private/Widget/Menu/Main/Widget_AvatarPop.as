@@ -22,19 +22,17 @@ class UWidget_AvatarPop : UEUIActivatableWidget
     UFUNCTION()
     void OnViewBind_Implementation()
     {
-        FVM_AvatarInfo& local_4;
-        TEUIModelRef<FVM_AvatarInfo> local_2;
-        local_2.GetAvatarInfo();
+        FVM_AvatarInfo& local_4 = this.AvatarDetailPopInfo.Get().GetAvatarInfo().Get();
         if (local_4)
         {
-            local_4.GetAvatar().SetCurrentAvatar();
+            this.AvatarDetails.Get().SetCurrentAvatar(local_4.GetAvatar());
         }
         return;
     }
     UFUNCTION()
     TArray<FEUIModelWeakRef> AvatarDetails_AvatarTraitList() const
     {
-        FVM_AvatarDetailInfo& local_2;
+        FVM_AvatarDetailInfo& local_2 = this.AvatarDetails.Get();
         TArray<FEUIModelWeakRef> local_16;
         if (local_2)
         {
@@ -49,7 +47,7 @@ class UWidget_AvatarPop : UEUIActivatableWidget
     UFUNCTION()
     TArray<FEUIModelWeakRef> AvatarDetails_TraitHoverList() const
     {
-        FVM_AvatarDetailInfo& local_2;
+        FVM_AvatarDetailInfo& local_2 = this.AvatarDetails.Get();
         TArray<FEUIModelWeakRef> local_16;
         if (local_2)
         {
@@ -64,7 +62,7 @@ class UWidget_AvatarPop : UEUIActivatableWidget
     UFUNCTION()
     TArray<FEUIModelWeakRef> AvatarDetails_AvatarAttributeList() const
     {
-        FVM_AvatarDetailInfo& local_2;
+        FVM_AvatarDetailInfo& local_2 = this.AvatarDetails.Get();
         TArray<FEUIModelWeakRef> local_16;
         if (local_2)
         {
@@ -79,8 +77,8 @@ class UWidget_AvatarPop : UEUIActivatableWidget
     UFUNCTION()
     bool AvatarDetails_bCanDisplayAttribute() const
     {
-        FVM_AvatarDetailInfo& local_2;
         bool local_5;
+        FVM_AvatarDetailInfo& local_2 = this.AvatarDetails.Get();
         if (local_2)
         {
             local_5 = local_2.GetbCanDisplayAttribute();
@@ -94,8 +92,8 @@ class UWidget_AvatarPop : UEUIActivatableWidget
     UFUNCTION()
     bool AvatarDetails_bCanDisplayTrait() const
     {
-        FVM_AvatarDetailInfo& local_2;
         bool local_5;
+        FVM_AvatarDetailInfo& local_2 = this.AvatarDetails.Get();
         if (local_2)
         {
             local_5 = local_2.GetbCanDisplayTrait();

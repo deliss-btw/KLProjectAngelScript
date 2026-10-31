@@ -68,11 +68,9 @@ FM_Dungeon& Create(const UObject ContextObject)
 {
     return FM_Dungeon::CreateByManager(EUIInternal::GetContextManager(ContextObject));
 }
-FM_Dungeon CreateByManager(const UEUIManagerSubsystem Manager)
+FM_Dungeon& CreateByManager(const UEUIManagerSubsystem Manager)
 {
-    FM_Dungeon __r;
-    TEUIModelRef<FM_Dungeon> local_6 = TEUIModelRef<FM_Dungeon>(EUIInternal::MakeModelWithManager(Manager, FM_Dungeon::ModelId));
-    return __r;
+    return TEUIModelRef<FM_Dungeon>(EUIInternal::MakeModelWithManager(Manager, FM_Dungeon::ModelId)).Get();
 }
 void GetModelInfo(FEUIModelOnlyMetaInfo &inout Result)
 {

@@ -3,7 +3,6 @@ namespace __FCraftConfigFunctions
 UFUNCTION()
 ECraftType __FCraftConfig_GetCraftType(const TDataObjectPtr<FCraftConfig> &inout DataObject)
 {
-    int local_77 = 0;
     if ((DataObject == nullptr))
     {
         if (!(EUIGlobals::GIsDuringPropertyConversion))
@@ -11,10 +10,9 @@ ECraftType __FCraftConfig_GetCraftType(const TDataObjectPtr<FCraftConfig> &inout
             FBlueprintDebugFunctions::ThrowScriptException("Get 'CraftType' from a null 'FCraftConfig' DataObject!");
         }
         FCraftConfig local_76;
-        local_77 = int(local_76.CraftType);
-        return ECraftType(local_77);
+        return local_76.CraftType;
     }
-    return ECraftType(local_77);
+    return DataObject.Get().CraftType;
 }
 UFUNCTION()
 FItemParamConfig __FCraftConfig_GetProduct(const TDataObjectPtr<FCraftConfig> &inout DataObject)
@@ -35,7 +33,6 @@ FItemParamConfig __FCraftConfig_GetProduct(const TDataObjectPtr<FCraftConfig> &i
 UFUNCTION()
 TArray<FItemParamConfig> __FCraftConfig_GetCost(const TDataObjectPtr<FCraftConfig> &inout DataObject)
 {
-    TArray<FItemParamConfig> __r;
     if ((DataObject == nullptr))
     {
         if (!(EUIGlobals::GIsDuringPropertyConversion))
@@ -45,39 +42,35 @@ TArray<FItemParamConfig> __FCraftConfig_GetCost(const TDataObjectPtr<FCraftConfi
         FCraftConfig local_76;
         return local_76.Cost;
     }
-    return __r;
+    return DataObject.Get().Cost;
 }
 UFUNCTION()
 bool __FCraftConfig_GetbCanBatch(const TDataObjectPtr<FCraftConfig> &inout DataObject)
 {
-    bool local_1 = false;
     if ((DataObject == nullptr))
     {
-        local_1 = !(EUIGlobals::GIsDuringPropertyConversion);
-        if (local_1)
+        if (!(EUIGlobals::GIsDuringPropertyConversion))
         {
             FBlueprintDebugFunctions::ThrowScriptException("Get 'bCanBatch' from a null 'FCraftConfig' DataObject!");
         }
         FCraftConfig local_76;
         return local_76.bCanBatch;
     }
-    return local_1;
+    return DataObject.Get().bCanBatch;
 }
 UFUNCTION()
 bool __FCraftConfig_GetbDefaultUnlock(const TDataObjectPtr<FCraftConfig> &inout DataObject)
 {
-    bool local_1 = false;
     if ((DataObject == nullptr))
     {
-        local_1 = !(EUIGlobals::GIsDuringPropertyConversion);
-        if (local_1)
+        if (!(EUIGlobals::GIsDuringPropertyConversion))
         {
             FBlueprintDebugFunctions::ThrowScriptException("Get 'bDefaultUnlock' from a null 'FCraftConfig' DataObject!");
         }
         FCraftConfig local_76;
         return local_76.bDefaultUnlock;
     }
-    return local_1;
+    return DataObject.Get().bDefaultUnlock;
 }
 UFUNCTION()
 TDataObjectPtr<FConditionConfig> __FCraftConfig_GetUnlockCond(const TDataObjectPtr<FCraftConfig> &inout DataObject)
@@ -91,12 +84,11 @@ TDataObjectPtr<FConditionConfig> __FCraftConfig_GetUnlockCond(const TDataObjectP
         FCraftConfig local_76;
         return local_76.GetUnlockCond();
     }
-    return GetUnlockCond();
+    return DataObject.Get().GetUnlockCond();
 }
 UFUNCTION()
 FText __FCraftConfig_GetNote(const TDataObjectPtr<FCraftConfig> &inout DataObject)
 {
-    FText __r;
     if ((DataObject == nullptr))
     {
         if (!(EUIGlobals::GIsDuringPropertyConversion))
@@ -106,7 +98,7 @@ FText __FCraftConfig_GetNote(const TDataObjectPtr<FCraftConfig> &inout DataObjec
         FCraftConfig local_76;
         return local_76.Note;
     }
-    return __r;
+    return DataObject.Get().Note;
 }
 UFUNCTION()
 FCraftConfig CastToFCraftConfig(const TDataObjectPtr<FCraftConfig> &inout DataObject)

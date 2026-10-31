@@ -3,7 +3,6 @@ namespace __FShopCategoryConfigFunctions
 UFUNCTION()
 FSoftBrush __FShopCategoryConfig_GetDisplayIcon(const TDataObjectPtr<FShopCategoryConfig> &inout DataObject)
 {
-    FSoftBrush __r;
     if ((DataObject == nullptr))
     {
         if (!(EUIGlobals::GIsDuringPropertyConversion))
@@ -13,12 +12,11 @@ FSoftBrush __FShopCategoryConfig_GetDisplayIcon(const TDataObjectPtr<FShopCatego
         FShopCategoryConfig local_68;
         return local_68.DisplayIcon;
     }
-    return __r;
+    return DataObject.Get().DisplayIcon;
 }
 UFUNCTION()
 FText __FShopCategoryConfig_GetDisplayName(const TDataObjectPtr<FShopCategoryConfig> &inout DataObject)
 {
-    FText __r;
     if ((DataObject == nullptr))
     {
         if (!(EUIGlobals::GIsDuringPropertyConversion))
@@ -28,7 +26,7 @@ FText __FShopCategoryConfig_GetDisplayName(const TDataObjectPtr<FShopCategoryCon
         FShopCategoryConfig local_68;
         return local_68.DisplayName;
     }
-    return __r;
+    return DataObject.Get().DisplayName;
 }
 UFUNCTION()
 int __FShopCategoryConfig_GetDisplayPriority(const TDataObjectPtr<FShopCategoryConfig> &inout DataObject)

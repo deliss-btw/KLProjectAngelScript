@@ -3,7 +3,6 @@ namespace __FPresentationConfigFunctions
 UFUNCTION()
 FText __FPresentationConfig_GetName(const TDataObjectPtr<FPresentationConfig> &inout DataObject)
 {
-    FText __r;
     if ((DataObject == nullptr))
     {
         if (!(EUIGlobals::GIsDuringPropertyConversion))
@@ -13,12 +12,11 @@ FText __FPresentationConfig_GetName(const TDataObjectPtr<FPresentationConfig> &i
         FPresentationConfig local_102;
         return local_102.Name;
     }
-    return __r;
+    return DataObject.Get().Name;
 }
 UFUNCTION()
 FGameplayTag __FPresentationConfig_GetSpotType(const TDataObjectPtr<FPresentationConfig> &inout DataObject)
 {
-    FGameplayTag __r;
     if ((DataObject == nullptr))
     {
         if (!(EUIGlobals::GIsDuringPropertyConversion))
@@ -28,12 +26,11 @@ FGameplayTag __FPresentationConfig_GetSpotType(const TDataObjectPtr<FPresentatio
         FPresentationConfig local_102;
         return local_102.SpotType;
     }
-    return __r;
+    return DataObject.Get().SpotType;
 }
 UFUNCTION()
 TMap<EPresentationIconType, FSoftBrush> __FPresentationConfig_GetIcons(const TDataObjectPtr<FPresentationConfig> &inout DataObject)
 {
-    TMap<EPresentationIconType, FSoftBrush> __r;
     if ((DataObject == nullptr))
     {
         if (!(EUIGlobals::GIsDuringPropertyConversion))
@@ -43,12 +40,11 @@ TMap<EPresentationIconType, FSoftBrush> __FPresentationConfig_GetIcons(const TDa
         FPresentationConfig local_102;
         return local_102.Icons;
     }
-    return __r;
+    return DataObject.Get().Icons;
 }
 UFUNCTION()
 FText __FPresentationConfig_GetDescription(const TDataObjectPtr<FPresentationConfig> &inout DataObject)
 {
-    FText __r;
     if ((DataObject == nullptr))
     {
         if (!(EUIGlobals::GIsDuringPropertyConversion))
@@ -58,12 +54,11 @@ FText __FPresentationConfig_GetDescription(const TDataObjectPtr<FPresentationCon
         FPresentationConfig local_102;
         return local_102.Description;
     }
-    return __r;
+    return DataObject.Get().Description;
 }
 UFUNCTION()
 FPresentationSpotOffset __FPresentationConfig_GetSpotOffset(const TDataObjectPtr<FPresentationConfig> &inout DataObject)
 {
-    FPresentationSpotOffset __r;
     if ((DataObject == nullptr))
     {
         if (!(EUIGlobals::GIsDuringPropertyConversion))
@@ -73,12 +68,11 @@ FPresentationSpotOffset __FPresentationConfig_GetSpotOffset(const TDataObjectPtr
         FPresentationConfig local_102;
         return local_102.SpotOffset;
     }
-    return __r;
+    return DataObject.Get().SpotOffset;
 }
 UFUNCTION()
 bool __FPresentationConfig_GetbSupportMark(const TDataObjectPtr<FPresentationConfig> &inout DataObject)
 {
-    bool local_1 = false;
     if ((DataObject == nullptr))
     {
         if (!(EUIGlobals::GIsDuringPropertyConversion))
@@ -88,12 +82,11 @@ bool __FPresentationConfig_GetbSupportMark(const TDataObjectPtr<FPresentationCon
         FPresentationConfig local_102;
         return local_102.bSupportMark;
     }
-    return local_1;
+    return DataObject.Get().bSupportMark;
 }
 UFUNCTION()
 TMap<EPresentationIconType, FMargin> __FPresentationConfig_GetIconsPadding(const TDataObjectPtr<FPresentationConfig> &inout DataObject)
 {
-    TMap<EPresentationIconType, FMargin> __r;
     if ((DataObject == nullptr))
     {
         if (!(EUIGlobals::GIsDuringPropertyConversion))
@@ -103,7 +96,7 @@ TMap<EPresentationIconType, FMargin> __FPresentationConfig_GetIconsPadding(const
         FPresentationConfig local_102;
         return local_102.IconsPadding;
     }
-    return __r;
+    return DataObject.Get().IconsPadding;
 }
 UFUNCTION()
 TDataObjectPtr<FDropItemConfigBase> __FPresentationConfig_GetDropReward(const TDataObjectPtr<FPresentationConfig> &inout DataObject)
@@ -117,12 +110,11 @@ TDataObjectPtr<FDropItemConfigBase> __FPresentationConfig_GetDropReward(const TD
         FPresentationConfig local_102;
         return local_102.GetDropReward();
     }
-    return GetDropReward();
+    return DataObject.Get().GetDropReward();
 }
 UFUNCTION()
 FText __FPresentationConfig_GetTextReward(const TDataObjectPtr<FPresentationConfig> &inout DataObject)
 {
-    FText __r;
     if ((DataObject == nullptr))
     {
         if (!(EUIGlobals::GIsDuringPropertyConversion))
@@ -132,7 +124,7 @@ FText __FPresentationConfig_GetTextReward(const TDataObjectPtr<FPresentationConf
         FPresentationConfig local_102;
         return local_102.TextReward;
     }
-    return __r;
+    return DataObject.Get().TextReward;
 }
 UFUNCTION()
 FPresentationConfig CastToFPresentationConfig(const TDataObjectPtr<FPresentationConfig> &inout DataObject)

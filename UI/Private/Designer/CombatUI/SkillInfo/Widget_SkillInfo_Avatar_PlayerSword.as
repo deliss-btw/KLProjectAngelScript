@@ -318,48 +318,48 @@ class UWidget_SkillInfo_Avatar_PlayerSword : UEUIUserWidget
     UFUNCTION()
     FEUIModelRef SkillInfo_VM_SpecialAttackButton() const
     {
-        FVMS_SkillInfo_Avatar_PlayerSword& local_2;
+        FVMS_SkillInfo_Avatar_PlayerSword& local_2 = this.SkillInfo.Get();
         FEUIModelRef local_8 = local_2 ? local_2.GetVM_SpecialAttackButton() : FEUIModelRef();
         return local_8;
     }
     UFUNCTION()
     FEUIModelRef SkillInfo_VM_SimpleSkillButton() const
     {
-        FVMS_SkillInfo_Avatar_PlayerSword& local_2;
+        FVMS_SkillInfo_Avatar_PlayerSword& local_2 = this.SkillInfo.Get();
         FEUIModelRef local_8 = local_2 ? local_2.GetVM_SimpleSkillButton() : FEUIModelRef();
         return local_8;
     }
     UFUNCTION()
     FEUIModelRef SkillInfo_VM_ExtraSkillButton() const
     {
-        FVMS_SkillInfo_Avatar_PlayerSword& local_2;
+        FVMS_SkillInfo_Avatar_PlayerSword& local_2 = this.SkillInfo.Get();
         FEUIModelRef local_8 = local_2 ? local_2.GetVM_ExtraSkillButton() : FEUIModelRef();
         return local_8;
     }
     UFUNCTION()
     FEUIModelRef SkillInfo_VM_UltraSkillButton() const
     {
-        FVMS_SkillInfo_Avatar_PlayerSword& local_2;
+        FVMS_SkillInfo_Avatar_PlayerSword& local_2 = this.SkillInfo.Get();
         FEUIModelRef local_8 = local_2 ? local_2.GetVM_UltraSkillButton() : FEUIModelRef();
         return local_8;
     }
     UFUNCTION()
     float32 SkillInfo_CustomSkillEnergyRatio() const
     {
-        FVMS_SkillInfo_Avatar_PlayerSword& local_2;
+        FVMS_SkillInfo_Avatar_PlayerSword& local_2 = this.SkillInfo.Get();
         return local_2 ? local_2.GetCustomSkillEnergyRatio() : 0.0f;
     }
     UFUNCTION()
     float32 SkillInfo_LineMarkProgressRatio() const
     {
-        FVMS_SkillInfo_Avatar_PlayerSword& local_2;
+        FVMS_SkillInfo_Avatar_PlayerSword& local_2 = this.SkillInfo.Get();
         return local_2 ? local_2.GetLineMarkProgressRatio() : 0.0f;
     }
     UFUNCTION()
     bool SkillInfo_bMarkA() const
     {
-        FVMS_SkillInfo_Avatar_PlayerSword& local_2;
         bool local_5;
+        FVMS_SkillInfo_Avatar_PlayerSword& local_2 = this.SkillInfo.Get();
         if (local_2)
         {
             local_5 = local_2.GetbMarkA();
@@ -373,8 +373,8 @@ class UWidget_SkillInfo_Avatar_PlayerSword : UEUIUserWidget
     UFUNCTION()
     bool SkillInfo_bMarkB() const
     {
-        FVMS_SkillInfo_Avatar_PlayerSword& local_2;
         bool local_5;
+        FVMS_SkillInfo_Avatar_PlayerSword& local_2 = this.SkillInfo.Get();
         if (local_2)
         {
             local_5 = local_2.GetbMarkB();
@@ -388,8 +388,8 @@ class UWidget_SkillInfo_Avatar_PlayerSword : UEUIUserWidget
     UFUNCTION()
     bool SkillInfo_bMarkC() const
     {
-        FVMS_SkillInfo_Avatar_PlayerSword& local_2;
         bool local_5;
+        FVMS_SkillInfo_Avatar_PlayerSword& local_2 = this.SkillInfo.Get();
         if (local_2)
         {
             local_5 = local_2.GetbMarkC();
@@ -403,8 +403,8 @@ class UWidget_SkillInfo_Avatar_PlayerSword : UEUIUserWidget
     UFUNCTION()
     bool SkillInfo_bMarkD() const
     {
-        FVMS_SkillInfo_Avatar_PlayerSword& local_2;
         bool local_5;
+        FVMS_SkillInfo_Avatar_PlayerSword& local_2 = this.SkillInfo.Get();
         if (local_2)
         {
             local_5 = local_2.GetbMarkD();
@@ -418,8 +418,8 @@ class UWidget_SkillInfo_Avatar_PlayerSword : UEUIUserWidget
     UFUNCTION()
     bool SkillInfo_bMarkE() const
     {
-        FVMS_SkillInfo_Avatar_PlayerSword& local_2;
         bool local_5;
+        FVMS_SkillInfo_Avatar_PlayerSword& local_2 = this.SkillInfo.Get();
         if (local_2)
         {
             local_5 = local_2.GetbMarkE();
@@ -433,14 +433,14 @@ class UWidget_SkillInfo_Avatar_PlayerSword : UEUIUserWidget
     UFUNCTION()
     int SkillInfo_SpuerSwitch() const
     {
-        FVMS_SkillInfo_Avatar_PlayerSword& local_2;
+        FVMS_SkillInfo_Avatar_PlayerSword& local_2 = this.SkillInfo.Get();
         return local_2 ? local_2.GetSpuerSwitch() : 0;
     }
     UFUNCTION()
     bool SkillInfo_UltraOn() const
     {
-        FVMS_SkillInfo_Avatar_PlayerSword& local_2;
         bool local_5;
+        FVMS_SkillInfo_Avatar_PlayerSword& local_2 = this.SkillInfo.Get();
         if (local_2)
         {
             local_5 = local_2.GetUltraOn();
@@ -454,14 +454,14 @@ class UWidget_SkillInfo_Avatar_PlayerSword : UEUIUserWidget
     UFUNCTION()
     FEUIModelRef LinkSkillInfo_VM_LinkSkillButton() const
     {
-        FVMS_LinkSkillInfo& local_2;
+        FVMS_LinkSkillInfo& local_2 = this.LinkSkillInfo.Get();
         FEUIModelRef local_8 = local_2 ? local_2.GetVM_LinkSkillButton() : FEUIModelRef();
         return local_8;
     }
     void HandleObservedModelChanges(FEUIReactiveSubscriberIterator &inout It)
     {
-        FVMS_SkillInfo_Avatar_PlayerSword& local_6;
         TEUIModelRef<FVMS_SkillInfo_Avatar_PlayerSword> local_2 = this.SkillInfo.AsRef();
+        FVMS_SkillInfo_Avatar_PlayerSword& local_6 = local_2.Get();
         for (; It; )
         {
             FEUIReactiveSubscriberTrackScope local_56 = FEUIReactiveSubscriberTrackScope(It);

@@ -17,8 +17,10 @@ class US_CommonTips : UECSScriptSystem
             if (this.FindDisplayingTypeByPopupId(Manager, int(local_16), local_17))
             {
                 ::CommonPopup_Internal::CloseTipsByViewRef(Manager.DisplayingTips[local_17].ViewRef);
+                Manager.DisplayingTips.Remove(local_17);
                 continue;
             }
+            Manager.PendingTips.Remove(local_16);
         }
         ULocalPlayer local_20 = C_LocalPlayer.UEPlayerController.GetLocalPlayer();
         for (auto local_23 : Event.NewDisplayingPopupIds)
@@ -51,7 +53,7 @@ class US_CommonTips : UECSScriptSystem
     {
         for (auto& local_20 : Manager.DisplayingTips)
         {
-            if (0 == PopupId)
+            if ((local_20.GetValue().PopupId) == PopupId)
             {
                 OutType = ECommonTipsType(local_20.GetKey());
                 return true;
@@ -62,24 +64,22 @@ class US_CommonTips : UECSScriptSystem
     UFUNCTION()
     void ClientJob_TickCommonTips(FCS_CommonTipsManager &inout Manager, const FCS_LocalPlayer &inout LocalPlayer) const
     {
-        FFPTime local_4;
-        int local_35 = 0;
         if (!(Manager.DisplayingTips.IsEmpty()))
         {
-            ECS::GetContextTime();
+            FFPTime local_6 = ECS::GetContextTime();
             TArray<ECommonTipsType> local_10;
             for (auto& local_28 : Manager.DisplayingTips)
             {
-                if (local_4.ToSeconds() > 0.0f)
+                if ((local_6 - local_28.GetValue().OpenTime).ToSeconds() > local_28.GetValue().Lifetime)
                 {
                     local_10.Add(local_28.GetKey());
-                    ::CommonPopupUtils::DequeuePopupInternal(local_35);
+                    ::CommonPopup_Internal::CloseTipsByViewRef(local_28.GetValue().ViewRef);
+                    ::CommonPopupUtils::DequeuePopupInternal(local_28.GetValue().PopupId);
                 }
             }
-            auto local_42 = local_10.Iterator();
-            for (; local_42.CanProceed;)
+            for (auto& local_50 : local_10)
             {
-                int& local_50 = int(local_42.Proceed());
+                Manager.DisplayingTips.Remove(int(local_50));
             }
         }
         if (Manager.PendingTips.IsEmpty() && Manager.DisplayingTips.IsEmpty())

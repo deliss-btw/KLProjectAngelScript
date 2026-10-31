@@ -59,19 +59,19 @@ class UWidget_MiniHpBarV2 : UEUIUserWidget
     UFUNCTION()
     float32 MiniHpBar_DisplayHpBarRatio() const
     {
-        FVM_MiniHPBarV2& local_2;
+        FVM_MiniHPBarV2& local_2 = this.MiniHpBar.Get();
         return local_2 ? local_2.GetDisplayHpBarRatio() : 0.0f;
     }
     UFUNCTION()
     float32 MiniHpBar_DisplayPreviewHpBarRatio() const
     {
-        FVM_MiniHPBarV2& local_2;
+        FVM_MiniHPBarV2& local_2 = this.MiniHpBar.Get();
         return local_2 ? local_2.GetDisplayPreviewHpBarRatio() : 0.0f;
     }
     void HandleObservedModelChanges(FEUIReactiveSubscriberIterator &inout It)
     {
-        FVM_MiniHPBarV2& local_6;
         TEUIModelRef<FVM_MiniHPBarV2> local_2 = this.MiniHpBar.AsRef();
+        FVM_MiniHPBarV2& local_6 = local_2.Get();
         for (; It; )
         {
             FEUIReactiveSubscriberTrackScope local_56 = FEUIReactiveSubscriberTrackScope(It);

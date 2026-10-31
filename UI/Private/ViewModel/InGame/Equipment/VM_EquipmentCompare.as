@@ -52,16 +52,13 @@ struct FVM_EquipmentCompare : FEUIViewModel
         int local_101;
         GetGameplaySettings<UAvatarBuildSettings> local_4;
         local_2 = local_4;
-        TEUIModelRef<FM_Equipment> local_8 = this.GetEquipment();
-        TDataObjectPtr<FEquipmentConfig> local_32 = GetEquipmentConfig();
+        TDataObjectPtr<FEquipmentConfig> local_32 = this.GetEquipment().Get().GetEquipmentConfig();
         TEUIModelRef<FM_Equipment> local_8_2 = this.GetCompareTarget();
-        TDataObjectPtr<FEquipmentConfig> local_80 = GetEquipmentConfig();
+        TDataObjectPtr<FEquipmentConfig> local_80 = local_8_2.Get().GetEquipmentConfig();
         for (auto& local_96 : local_2.EquipmentDetailDisplayAttributes)
         {
-            TEUIModelRef<FM_Equipment> local_8_3 = this.GetEquipment();
-            float32 local_98 = ::FEquipmentUtils::FindAttributeValue(GetEquipmentConfig(), local_96.Attribute);
-            TEUIModelRef<FM_Equipment> local_8_4 = this.GetCompareTarget();
-            float32 local_97 = ::FEquipmentUtils::FindAttributeValue(GetEquipmentConfig(), local_96.Attribute);
+            float32 local_98 = ::FEquipmentUtils::FindAttributeValue(this.GetEquipment().Get().GetEquipmentConfig(), local_96.Attribute);
+            float32 local_97 = ::FEquipmentUtils::FindAttributeValue(this.GetCompareTarget().Get().GetEquipmentConfig(), local_96.Attribute);
             if (local_98 > local_97)
             {
                 local_101 = 1;
@@ -160,11 +157,9 @@ FVM_EquipmentCompare& Create(const UObject ContextObject, const TEUIModelRef<FM_
 {
     return FVM_EquipmentCompare::CreateByManager(EUIInternal::GetContextManager(ContextObject), Equipment, CompareTarget);
 }
-FVM_EquipmentCompare CreateByManager(const UEUIManagerSubsystem Manager, const TEUIModelRef<FM_Equipment> &inout Equipment, const TEUIModelRef<FM_Equipment> &inout CompareTarget)
+FVM_EquipmentCompare& CreateByManager(const UEUIManagerSubsystem Manager, const TEUIModelRef<FM_Equipment> &inout Equipment, const TEUIModelRef<FM_Equipment> &inout CompareTarget)
 {
-    FVM_EquipmentCompare __r;
-    TEUIModelRef<FVM_EquipmentCompare> local_6 = TEUIModelRef<FVM_EquipmentCompare>(EUIInternal::MakeModelWithManager_Generic(Manager, FVM_EquipmentCompare::ModelId, 0, Equipment, CompareTarget));
-    return __r;
+    return TEUIModelRef<FVM_EquipmentCompare>(EUIInternal::MakeModelWithManager_Generic(Manager, FVM_EquipmentCompare::ModelId, 0, Equipment, CompareTarget)).Get();
 }
 void GetModelInfo(FEUIViewModelMetaInfo &inout Result)
 {
@@ -215,7 +210,6 @@ namespace __GeneratedProperties_FVM_EquipmentCompare
 {
 UScriptStruct StaticStruct()
 {
-    UScriptStruct local_2;
-    return local_2;
+    return __GeneratedProperties_FVM_EquipmentCompare.Get();
 }
 }

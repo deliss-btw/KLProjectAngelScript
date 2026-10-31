@@ -49,13 +49,12 @@ class UESMAction_HitState : UESMBPBaseSpanAction
     UFUNCTION()
     void Exit_Implementation(const FESMContext &inout Context, const FESMActionTime &inout Time) const
     {
-        int local_10 = 0;
         const FECSEntity& local_2 = Context.GetEntity();
         Modify local_8;
         FC_HitReaction& local_4 = local_8.opCall();
         if (local_4)
         {
-            local_4.DiscardHitState(local_10);
+            local_4.DiscardHitState(this.GetInstanceData(Context).HitStateIndex);
         }
         this.ModifyInstanceData(Context).HitStateIndex = -1;
         return;

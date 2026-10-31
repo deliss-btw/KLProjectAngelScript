@@ -150,7 +150,7 @@ TArray<TDataObjectPtr<FItemConfig>> GetAllItemConfigs(const FECSEntity &inout Pl
 int GetItemNumToReachInventoryAndBankLimit(const FECSEntity &inout Player, const TDataObjectPtr<FItemConfig> &inout ItemConfig)
 {
     int local_4 = FMath::Min(GameplayInventoryUtils::GetItemNumToReachInventoryMax(Player, ItemConfig), GameplayInventoryUtils::GetItemNumToReachTrunkMax(Player, ItemConfig));
-    if (0 > 0)
+    if (ItemConfig.Get().BringMax > 0)
     {
         int local_8;
         local_8 = 0;
@@ -159,7 +159,7 @@ int GetItemNumToReachInventoryAndBankLimit(const FECSEntity &inout Player, const
         if (local_14)
         {
             int local_15 = 0;
-            int local_3 = GetBankMax();
+            int local_3 = ItemConfig.Get().GetBankMax();
             if (local_14.GetItems().Find(ItemConfig, local_15))
             {
                 local_8 = FMath::Max(local_3 - local_15, 0);
@@ -241,13 +241,11 @@ void SaveGameplayInventoryToGSData(const FECSEntity &inout Player)
     int local_6 = 0;
     int local_44 = 0;
     FC_GameplayInventoryUidGenerator local_50;
-    int local_137 = 0;
     if (!(!(!(local_6))))
     {
         return;
     }
-    int local_21 = local_6.GetPlayerId();
-    FPbDsPlayerInfo local_32 = UGameDSConnectionSubsystem::Get().GetPlayerInfo(local_21);
+    FPbDsPlayerInfo local_32 = UGameDSConnectionSubsystem::Get().GetPlayerInfo(local_6.GetPlayerId());
     if (!(local_32.IsValid()))
     {
         XError(ELog(27), FString().Append("Failed to get player info for player ").Append(Player));
@@ -266,28 +264,26 @@ void SaveGameplayInventoryToGSData(const FECSEntity &inout Player)
     local_70.ClearItemList();
     for (auto& local_88 : local_44.GetItems())
     {
-        if (ItemConfigUtils::IsDSItem(GetConfig()))
+        if (ItemConfigUtils::IsDSItem(local_88.GetValue().GetConfig()))
         {
             FPbItemBin local_108 = local_70.AddItemList();
-            GameplayInventoryUtils_Internal::SaveGameplayItemToPB(local_108, local_88.GetKey());
+            GameplayInventoryUtils_Internal::SaveGameplayItemToPB(local_108, local_88.GetKey(), local_88.GetValue());
         }
     }
-    int local_111 = int(local_50.NextSeqId);
-    local_70.SetGuidSeqId(local_111);
+    local_70.SetGuidSeqId(int(local_50.NextSeqId));
     Get local_116;
     const FC_GameplayItemBank& local_118 = local_116.opCall();
     if (local_118)
     {
         for (auto& local_136 : local_118.GetItems())
         {
-            local_136;
-            if (local_21 > 0)
+            if (local_136.GetValue() > 0)
             {
                 FPbItemBin local_98 = local_70.AddItemList();
-                local_98.SetId(local_111);
+                local_98.SetId(local_136.GetKey().Get().DataId);
                 local_98.SetGuid(0);
                 local_98.SetTime(0);
-                local_98.GetStackableItem().SetCount(NumericUtils::AsUInt32(local_137));
+                local_98.GetStackableItem().SetCount(NumericUtils::AsUInt32(local_136.GetValue()));
             }
         }
     }
@@ -350,7 +346,8 @@ void InitGameplayInventory(const FECSEntity &inout Player)
         }
         for (auto& local_204 : local_20.ConfigToUidList)
         {
-            local_204;
+            __Lambda_Gameplay_Item_GameplayInventoryUtils_503 local_208;
+            local_204.GetValue().GetUids().Sort(local_208);
         }
         local_80 = 0;
         for (; local_80 < local_70.GetDsItemMsgList_Num(); ++local_80)
@@ -360,12 +357,13 @@ void InitGameplayInventory(const FECSEntity &inout Player)
             for (; local_229 < local_228.GetOpList_Num(); ++local_229)
             {
                 FPbAddItemOp local_250 = local_228.GetOpList_Index(local_229);
-                if (!(FItemConfig::GetByDataId(local_250.GetItemId())))
+                TDataObjectPtr<FItemConfig> local_154 = FItemConfig::GetByDataId(local_250.GetItemId());
+                if (!(local_154))
                 {
                     XWarning(ELog(27), FString().Append("RecvPacket OnDSAddItemReq ItemMsg=").Append(local_228.GetIndex()).Append(" Op=").Append(local_250.GetItemId()).Append(" ").Append(local_250.GetCount()).Append(" ItemConfig not found"));
                     continue;
                 }
-                int local_27 = InventoryUtils::LowLevelAddInventoryItem(false, false, local_250.GetCount(), Player);
+                int local_27 = InventoryUtils::LowLevelAddInventoryItem(Player, local_154.Get(), local_250.GetCount(), false, false);
                 if (local_27 > 0)
                 {
                     XWarning(ELog(27), FString().Append("RecvPacket OnDSAddItemReq ItemMsg=").Append(local_228.GetIndex()).Append(" Op=").Append(local_250.GetItemId()).Append(" ").Append(local_250.GetCount()).Append(" RemainItemCount=").Append(local_27).Append(" send mail"));
@@ -448,6 +446,7 @@ void AddItemInternal(const FECSEntity &inout Player, const TDataObjectPtr<FItemC
 void RemoveItemInternal(const FECSEntity &inout Player, const TDataObjectPtr<FItemConfig> &inout Config, const int Number)
 {
     int local_6 = 0;
+    int local_20;
     int local_30 = 0;
     int local_7 = Number;
     TArray<uint64> local_12;
@@ -456,10 +455,12 @@ void RemoveItemInternal(const FECSEntity &inout Player, const TDataObjectPtr<FIt
         int local_17 = local_12.Num() - 1;
         for (; local_17 >= 0; --local_17)
         {
-            FGameplayInventoryItemData& local_24 = local_6.GetModify_Items()[local_12[local_17]];
+            local_20 = local_12[local_17];
+            FGameplayInventoryItemData& local_24 = local_6.GetModify_Items()[local_20];
             if (local_7 >= local_24.GetNum())
             {
                 local_7 = local_7 - local_24.GetNum();
+                local_6.GetModify_Items().Remove(local_20);
                 local_30.ConfigToUidList[Config].GetUids().RemoveAt(local_17);
                 if (local_7 <= 0)
                 {
@@ -482,12 +483,15 @@ void RemoveAllItemsInternal(const FECSEntity &inout Player, const TDataObjectPtr
         if (local_6.ConfigToUidList.Contains(Config))
         {
             Modify local_12;
-            if (local_12.opCall())
+            FC_GameplayInventory& local_14 = local_12.opCall();
+            if (local_14)
             {
                 for (auto local_28 : local_6.ConfigToUidList[Config].GetUids())
                 {
+                    local_14.GetModify_Items().Remove(local_28);
                 }
             }
+            local_6.ConfigToUidList.Remove(Config);
         }
     }
     return;
@@ -567,7 +571,7 @@ int GetGameplayItemUidNumForTrunk(const FECSEntity &inout Player, const EItemTru
         {
             if (int(local_28.GetKey().opArrow().ItemTrunk) == int(ItemTrunk))
             {
-                local_1 = local_1 + GetUids().Num();
+                local_1 = local_1 + local_28.GetValue().GetUids().Num();
             }
         }
     }

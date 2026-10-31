@@ -33,9 +33,8 @@ struct FC_FloatInterpolation : FECSComponent
     }
     FC_FloatInterpolation opAssign(const FC_FloatInterpolation &inout Other)
     {
-        float32 local_1 = 0.0f;
         FC_FloatInterpolation __r;
-        this.SetValue(local_1);
+        this.SetValue(Other.GetValue());
         return __r;
     }
     float32 GetValue() const property
@@ -113,9 +112,7 @@ namespace FC_FloatInterpolation
 FC_FloatInterpolation Interpolate(const FC_FloatInterpolation &inout A, const FC_FloatInterpolation &inout B, const float32 T, const float32 DeltaTime)
 {
     FC_FloatInterpolation local_2;
-    float32 local_3 = 0.0f;
-    float32 local_4 = 0.0f;
-    local_2.SetValue((FMath::Lerp(local_4, local_3, T)));
+    local_2.SetValue((FMath::Lerp(A.GetValue(), B.GetValue(), T)));
     return local_2;
 }
 }

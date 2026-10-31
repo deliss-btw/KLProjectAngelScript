@@ -3,7 +3,6 @@ namespace __FCustomVolumeAudioConfigFunctions
 UFUNCTION()
 FName __FCustomVolumeAudioConfig_GetAreaTypeName(const TDataObjectPtr<FCustomVolumeAudioConfig> &inout DataObject)
 {
-    FName __r;
     if ((DataObject == nullptr))
     {
         if (!(EUIGlobals::GIsDuringPropertyConversion))
@@ -13,7 +12,7 @@ FName __FCustomVolumeAudioConfig_GetAreaTypeName(const TDataObjectPtr<FCustomVol
         FCustomVolumeAudioConfig local_74;
         return local_74.AreaTypeName;
     }
-    return __r;
+    return DataObject.Get().AreaTypeName;
 }
 UFUNCTION()
 FSimpleAudioSet __FCustomVolumeAudioConfig_GetAudioSet(const TDataObjectPtr<FCustomVolumeAudioConfig> &inout DataObject)
@@ -34,7 +33,6 @@ FSimpleAudioSet __FCustomVolumeAudioConfig_GetAudioSet(const TDataObjectPtr<FCus
 UFUNCTION()
 FText __FCustomVolumeAudioConfig_GetDescription(const TDataObjectPtr<FCustomVolumeAudioConfig> &inout DataObject)
 {
-    FText __r;
     if ((DataObject == nullptr))
     {
         if (!(EUIGlobals::GIsDuringPropertyConversion))
@@ -44,12 +42,11 @@ FText __FCustomVolumeAudioConfig_GetDescription(const TDataObjectPtr<FCustomVolu
         FCustomVolumeAudioConfig local_74;
         return local_74.Description;
     }
-    return __r;
+    return DataObject.Get().Description;
 }
 UFUNCTION()
 FText __FCustomVolumeAudioConfig_GetDisplayName(const TDataObjectPtr<FCustomVolumeAudioConfig> &inout DataObject)
 {
-    FText __r;
     if ((DataObject == nullptr))
     {
         if (!(EUIGlobals::GIsDuringPropertyConversion))
@@ -59,7 +56,7 @@ FText __FCustomVolumeAudioConfig_GetDisplayName(const TDataObjectPtr<FCustomVolu
         FCustomVolumeAudioConfig local_74;
         return local_74.DisplayName;
     }
-    return __r;
+    return DataObject.Get().DisplayName;
 }
 UFUNCTION()
 FCustomVolumeAudioConfig CastToFCustomVolumeAudioConfig(const TDataObjectPtr<FCustomVolumeAudioConfig> &inout DataObject)

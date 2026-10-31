@@ -117,7 +117,8 @@ struct FC_ItemAction : FECSComponent
     }
     int ExecuteNewAction(const FItemActionSource &inout ActionSource, const FItemActionConfigPtr &inout ActionConfigPtr)
     {
-        UItemActionConfigBase local_56;
+        FItemActionConfigPtr local_26;
+        UItemActionConfigBase local_56 = local_26.Get();
         if (!(IsValid(local_56)))
         {
             return INDEX_NONE;

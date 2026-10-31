@@ -157,11 +157,9 @@ FVM_LoginButton& Create(const UObject ContextObject, const ELoginButtonType Butt
 {
     return FVM_LoginButton::CreateByManager(EUIInternal::GetContextManager(ContextObject), ELoginButtonType(ButtonType));
 }
-FVM_LoginButton CreateByManager(const UEUIManagerSubsystem Manager, const ELoginButtonType ButtonType)
+FVM_LoginButton& CreateByManager(const UEUIManagerSubsystem Manager, const ELoginButtonType ButtonType)
 {
-    FVM_LoginButton __r;
-    TEUIModelRef<FVM_LoginButton> local_6 = TEUIModelRef<FVM_LoginButton>(EUIInternal::MakeModelWithManager_Generic(Manager, FVM_LoginButton::ModelId, 0, ButtonType));
-    return __r;
+    return TEUIModelRef<FVM_LoginButton>(EUIInternal::MakeModelWithManager_Generic(Manager, FVM_LoginButton::ModelId, 0, ButtonType)).Get();
 }
 void GetModelInfo(FEUIViewModelMetaInfo &inout Result)
 {
@@ -220,7 +218,6 @@ namespace __GeneratedProperties_FVM_LoginButton
 {
 UScriptStruct StaticStruct()
 {
-    UScriptStruct local_2;
-    return local_2;
+    return __GeneratedProperties_FVM_LoginButton.Get();
 }
 }

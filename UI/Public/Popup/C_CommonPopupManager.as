@@ -131,7 +131,6 @@ struct FCS_CommonPopupManager : FECSSingleton
     void EnsureInitialized()
     {
         FCommonPopupQueueRuleList local_36;
-        TArrayIterator<FFilteredGameplayTag> local_42;
         if (this.bInitialized)
         {
             return;
@@ -140,9 +139,8 @@ struct FCS_CommonPopupManager : FECSSingleton
         for (auto& local_24 : ::CommonPopupSettings::Get().ShardQueueRules)
         {
             this.QueuedPopups.Add(local_24.GetKey(), local_36);
-            for (; local_42.CanProceed;)
+            for (auto& local_50 : local_24.GetValue().PopupTypes)
             {
-                FFilteredGameplayTag& local_50 = local_42.Proceed();
                 if (!(this.CachedPopupTypes.Contains(local_50.opImplConv())))
                 {
                     FCommonPopupQueueTypeList local_56;
@@ -179,7 +177,7 @@ struct FCS_CommonPopupManager : FECSSingleton
         this.GetQueueTypesForTag(PopupType, local_4);
         if (local_4.IsEmpty())
         {
-            local_8 = ECommonPopupQueueType(0);
+            local_8 = ECommonPopupQueueType::Default;
         }
         else
         {

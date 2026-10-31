@@ -31,6 +31,7 @@ class US_AttachmentSystem : UECSScriptSystem
             {
                 if (local_22)
                 {
+                    local_22.GetModify_Children().Remove(ChildEntity);
                     if (local_22.GetChildren().Num() == 0)
                     {
                         Remove local_28;
@@ -147,6 +148,7 @@ class US_AttachmentSystem : UECSScriptSystem
                 FC_CharacterMovement& local_236 = local_234.opCall();
                 if (local_236)
                 {
+                    local_236.GetModify_AttachIgnoreCollisionEntities().Remove(ChildEntity);
                     local_236.GetModify_PostDetachEntities().AddUnique(ChildEntity.GetId());
                 }
             }
@@ -155,6 +157,7 @@ class US_AttachmentSystem : UECSScriptSystem
                 FC_CharacterMovement& local_236_2 = local_234.opCall();
                 if (local_236_2)
                 {
+                    local_236_2.GetModify_AttachIgnoreCollisionEntities().Remove(local_14);
                     local_236_2.GetModify_PostDetachEntities().AddUnique(local_14.GetId());
                 }
             }
@@ -378,6 +381,7 @@ class US_AttachmentSystem : UECSScriptSystem
             FC_AttachmentChildren& local_18 = local_16.opCall();
             if (local_18)
             {
+                local_18.GetModify_Children().Remove(Entity);
                 if (local_18.GetChildren().Num() == 0)
                 {
                     Remove local_24;
@@ -486,7 +490,6 @@ class US_AttachmentSystem : UECSScriptSystem
     UFUNCTION()
     void ClientJob_UpdateDetachBlend(const FECSEntity &inout Entity, FC_ViewEntityManager &inout ViewEntityManager, FC_ViewDetachBlend &inout DetachBlend) const
     {
-        AActor local_62;
         int local_114 = 0;
         if (!(Entity.IsValid()))
         {
@@ -524,8 +527,10 @@ class US_AttachmentSystem : UECSScriptSystem
             if (local_10.IsValid())
             {
                 Get local_56;
-                if (local_56.opCall())
+                const FC_Actor& local_58 = local_56.opCall();
+                if (local_58)
                 {
+                    AActor local_62 = local_58.Actor.Get();
                     if (local_62 != nullptr)
                     {
                         local_42 = local_62.GetActorLocation();
@@ -603,7 +608,6 @@ class US_AttachmentSystem : UECSScriptSystem
     {
         Assign local_34;
         FC_ViewTransformAttachmentPresentation& local_58;
-        AActor local_130;
         int local_226 = 0;
         if (CVar_DisableAttachPresentation.GetBool())
         {
@@ -647,8 +651,10 @@ class US_AttachmentSystem : UECSScriptSystem
                     FFPTime local_4_2 = FECSInterpoUtils::GetInterpoTime(TransformAttachment.GetAttachToEntity());
                     FTransform local_120 = FTransformUtils::GetSocketTransformInGameMesh(TransformAttachment.GetAttachToEntity(), TransformAttachment.GetSocketName(), local_4_2, local_1_2, FDownsampleConfig());
                     Get local_124;
-                    if (local_124.opCall())
+                    const FC_Actor& local_126 = local_124.opCall();
+                    if (local_126)
                     {
+                        AActor local_130 = local_126.Actor.Get();
                         if (local_130 != nullptr)
                         {
                             FVector local_142 = local_130.GetActorLocation();

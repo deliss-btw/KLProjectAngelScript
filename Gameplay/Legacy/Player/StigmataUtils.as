@@ -22,9 +22,10 @@ int ComputeHealItemMaxFromStigmata(const TArray<uint> &inout UnlockedStigmataIds
             else
             {
                 CastTo local_28;
-                if (local_28.opCall().IsSet())
+                TDataObjectPtr<FStigmataAddHealLimitConfig> local_52 = local_28.opCall();
+                if (local_52.IsSet())
                 {
-                    local_1 = local_1 + 0;
+                    local_1 = local_1 + local_52.Get().Value;
                 }
                 else
                 {
@@ -43,8 +44,7 @@ int ComputeHealItemMaxByLevel(const int PlayerLevel)
     for (; local_18; )
     {
         const FStigmataConfig& local_22 = local_18.GetData();
-        int local_2 = int(local_22.NodeType);
-        if (local_2 != 3)
+        if (int(local_22.NodeType) != 3)
         {
         }
         else
@@ -54,15 +54,16 @@ int ComputeHealItemMaxByLevel(const int PlayerLevel)
             }
             else
             {
-                if (local_22.UnlockCost.Num() > 0 || ((local_22.GetUnlockCondition().Num() > 0)))
+                if (local_22.UnlockCost.Num() > 0 || (local_22.GetUnlockCondition().Num() > 0))
                 {
                 }
                 else
                 {
                     CastTo local_30;
-                    if (local_30.opCall().IsSet())
+                    TDataObjectPtr<FStigmataAddHealLimitConfig> local_54 = local_30.opCall();
+                    if (local_54.IsSet())
                     {
-                        local_1 = local_1 + local_2;
+                        local_1 = local_1 + local_54.Get().Value;
                     }
                     else
                     {

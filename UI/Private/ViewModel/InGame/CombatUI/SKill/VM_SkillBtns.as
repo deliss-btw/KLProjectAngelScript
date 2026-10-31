@@ -248,36 +248,31 @@ struct FVMS_SkillBtns : FEUIViewModelSingleton
     TArray<FEUIDynamicWidgetData> GetSimpleSkillEntryDataList() const
     {
         TArray<FEUIDynamicWidgetData> local_4;
-        TEUIModelRef<FVM_NormalSkillBtn> local_6 = this.GetSpecialESkillBtnVM();
-        if (GetCachedVisibility())
+        if (this.GetSpecialESkillBtnVM().Get().GetCachedVisibility())
         {
             FEUIDynamicWidgetData local_32;
             local_32.ModelContainer = FEUIModelContainer(this.GetSpecialESkillBtnVM().opImplConv());
             local_4.Add(local_32);
         }
-        TEUIModelRef<FVM_NormalSkillBtn> local_6_2 = this.GetUltraSkillBtnVM();
-        if (GetCachedVisibility())
+        if (this.GetUltraSkillBtnVM().Get().GetCachedVisibility())
         {
             FEUIDynamicWidgetData local_32;
             local_32.ModelContainer = FEUIModelContainer(this.GetUltraSkillBtnVM().opImplConv());
             local_4.Add(local_32);
         }
-        TEUIModelRef<FVM_NormalSkillBtn> local_6_3 = this.GetQSkillBtnVM();
-        if (GetCachedVisibility())
+        if (this.GetQSkillBtnVM().Get().GetCachedVisibility())
         {
             FEUIDynamicWidgetData local_32;
             local_32.ModelContainer = FEUIModelContainer(this.GetQSkillBtnVM().opImplConv());
             local_4.Add(local_32);
         }
-        TEUIModelRef<FVM_NormalSkillBtn> local_6_4 = this.GetESkillBtnVM();
-        if (GetCachedVisibility())
+        if (this.GetESkillBtnVM().Get().GetCachedVisibility())
         {
             FEUIDynamicWidgetData local_32;
             local_32.ModelContainer = FEUIModelContainer(this.GetESkillBtnVM().opImplConv());
             local_4.Add(local_32);
         }
-        TEUIModelRef<FVM_NormalSkillBtn> local_6_5 = this.GetRSkillBtnVM();
-        if (GetCachedVisibility())
+        if (this.GetRSkillBtnVM().Get().GetCachedVisibility())
         {
             FEUIDynamicWidgetData local_32;
             local_32.ModelContainer = FEUIModelContainer(this.GetRSkillBtnVM().opImplConv());
@@ -301,12 +296,11 @@ struct FVMS_SkillBtns : FEUIViewModelSingleton
     ESlateVisibility IsExclusiveVisibility() const
     {
         int local_2;
-        bool local_1 = !(this.GetCurSkillBtnConfig().IsSet());
-        if (local_1)
+        if (!(this.GetCurSkillBtnConfig().IsSet()))
         {
             return ESlateVisibility(1);
         }
-        if (local_1)
+        if (this.GetCurSkillBtnConfig().Get().bEnableExclusiveSkill)
         {
             local_2 = 3;
         }
@@ -364,10 +358,9 @@ struct FVMS_SkillBtns : FEUIViewModelSingleton
     void RefreshSkillBtnModels()
     {
         int64 local_16;
-        bool local_70 = false;
+        bool local_69;
         int local_76 = 0;
         int local_142 = 0;
-        bool local_150 = false;
         int local_151;
         int local_152;
         FECSEntity local_4 = FECSEntity(this.GetContext().GetLocalPlayerPawn());
@@ -396,7 +389,14 @@ struct FVMS_SkillBtns : FEUIViewModelSingleton
             local_44 = this.GetCurSkillBtnConfig();
             local_9 = !((local_44 == nullptr));
         }
-        bool local_69 = local_9 && local_70;
+        if (!(local_9))
+        {
+            local_69 = false;
+        }
+        else
+        {
+            local_69 = this.GetCurSkillBtnConfig().Get().bRebuildSkillResourceWidgetOnExit;
+        }
         this.SetCurPawnEntity(local_4);
         if (!(local_76))
         {
@@ -412,19 +412,17 @@ struct FVMS_SkillBtns : FEUIViewModelSingleton
             this.SetSkillBtnsCharacterType(ESkillBtnsCharacterType(0));
             local_81 = false;
         }
-        local_70 = local_81 && ::FASCommonUtils::IsAvatarPrefab(this.GetCurPawnEntity());
+        bool local_70 = local_81 && ::FASCommonUtils::IsAvatarPrefab(this.GetCurPawnEntity());
         if (local_70)
         {
-            TDataObjectPtr<FAvatarPrefabConfig> local_114 = ::GetAvatarConfig(this.GetCurPawnEntity());
-            this.SetCurSkillBtnConfig(GetSkillBtnConfig());
+            this.SetCurSkillBtnConfig(::GetAvatarConfig(this.GetCurPawnEntity()).Get().GetSkillBtnConfig());
             this.SetSkillBtnsCharacterType(ESkillBtnsCharacterType(0));
         }
         else
         {
             if (local_81 && ::FASCommonUtils::IsMonsterPrefab(this.GetCurPawnEntity()))
             {
-                TDataObjectPtr<FMonsterPrefabConfig> local_138 = ::GetMonsterConfig(this.GetCurPawnEntity());
-                this.SetCurSkillBtnConfig(GetSkillBtnConfig());
+                this.SetCurSkillBtnConfig(::GetMonsterConfig(this.GetCurPawnEntity()).Get().GetSkillBtnConfig());
                 this.SetSkillBtnsCharacterType(ESkillBtnsCharacterType(1));
                 this.SetbIsPVXControlFakeCharacter(this.GetCurPawnEntity().MatchGameplayTag(GameplayTags::CombatState_ControlMonster_PVX));
             }
@@ -434,8 +432,7 @@ struct FVMS_SkillBtns : FEUIViewModelSingleton
             this.ClearTimer(this.GetModify_RebuildHUDTimer());
             this.ScheduleCall(this.GetModify_RebuildHUDTimer(), n"RebuildSkillBtnsHUDDeferred", 0.0f);
         }
-        bool local_19 = !(this.GetCurSkillBtnConfig().IsSet());
-        if (local_19)
+        if (!(this.GetCurSkillBtnConfig().IsSet()))
         {
             local_70 = true;
         }
@@ -449,14 +446,11 @@ struct FVMS_SkillBtns : FEUIViewModelSingleton
         {
             return;
         }
-        TEUIModelRef<FVM_NormalSkillBtn> local_148 = this.GetUltraSkillBtnVM();
-        TEUIModelRef<FVM_NormalSkillBtn> local_148_2 = this.GetUltraSkillBtnVM();
-        local_19.SetCachedVisibility();
-        bool local_9_2 = true;
-        TEUIModelRef<FVM_NormalSkillBtn> local_148_3 = this.GetUltraSkillBtnVM();
-        local_9_2.SetbEnableTouchTriggerSkill();
-        local_70 = local_150 && !(local_142 && local_142.IsHidden(ENormalSSkillBtnUIType(0)));
-        if (local_70)
+        this.GetUltraSkillBtnVM().Get().SetSkillBtnConfig(this.GetCurSkillBtnConfig().Get().UltraSkillBtnConfig);
+        bool local_19 = this.GetCurSkillBtnConfig().Get().bHasUltraSkill;
+        this.GetUltraSkillBtnVM().Get().SetCachedVisibility(local_19);
+        this.GetUltraSkillBtnVM().Get().SetbEnableTouchTriggerSkill(true);
+        if (this.GetCurSkillBtnConfig().Get().bHasUltraSkill && !(local_142 && local_142.IsHidden(ENormalSSkillBtnUIType(0))))
         {
             local_151 = 0;
         }
@@ -465,22 +459,12 @@ struct FVMS_SkillBtns : FEUIViewModelSingleton
             local_151 = 1;
         }
         this.SetUltraVisibility(ESlateVisibility(local_151));
-        TEUIModelRef<FVM_NormalSkillBtn> local_148_4 = this.GetSpecialESkillBtnVM();
-        TEUIModelRef<FVM_NormalSkillBtn> local_148_5 = this.GetSpecialESkillBtnVM();
-        local_150.SetCachedVisibility();
+        this.GetSpecialESkillBtnVM().Get().SetSkillBtnConfig(this.GetCurSkillBtnConfig().Get().SpecialAttackSkillBtnConfig);
+        this.GetSpecialESkillBtnVM().Get().SetCachedVisibility(this.GetCurSkillBtnConfig().Get().bHasSpecialAttack);
         bool local_19_2 = true;
-        TEUIModelRef<FVM_NormalSkillBtn> local_148_6 = this.GetSpecialESkillBtnVM();
-        local_19_2.SetbEnableTouchTriggerSkill();
-        if (!(local_70))
-        {
-            local_19_2 = false;
-        }
-        else
-        {
-            local_9_2 = !(local_142 && local_142.IsHidden(ENormalSSkillBtnUIType(1)));
-            local_19_2 = local_9_2;
-        }
-        if (local_19_2)
+        this.GetSpecialESkillBtnVM().Get().SetbEnableTouchTriggerSkill(local_19_2);
+        bool local_70_2 = this.GetCurSkillBtnConfig().Get().bHasSpecialAttack;
+        if (local_70_2 && !(local_142 && local_142.IsHidden(ENormalSSkillBtnUIType(1))))
         {
             local_151 = 0;
         }
@@ -489,13 +473,12 @@ struct FVMS_SkillBtns : FEUIViewModelSingleton
             local_151 = 1;
         }
         this.SetSpecialEVisibility(ESlateVisibility(local_151));
-        TEUIModelRef<FVM_NormalSkillBtn> local_148_7 = this.GetQSkillBtnVM();
-        TEUIModelRef<FVM_NormalSkillBtn> local_148_8 = this.GetQSkillBtnVM();
-        local_9_2.SetCachedVisibility();
+        this.GetQSkillBtnVM().Get().SetSkillBtnConfig(this.GetCurSkillBtnConfig().Get().SimpleSkill1BtnConfig);
+        this.GetQSkillBtnVM().Get().SetCachedVisibility(this.GetCurSkillBtnConfig().Get().bHasSimpleSkill1);
         bool local_19_3 = true;
-        TEUIModelRef<FVM_NormalSkillBtn> local_148_9 = this.GetQSkillBtnVM();
-        local_19_3.SetbEnableTouchTriggerSkill();
-        if (local_150 && !(local_142 && local_142.IsHidden(ENormalSSkillBtnUIType(2))))
+        this.GetQSkillBtnVM().Get().SetbEnableTouchTriggerSkill(local_19_3);
+        bool local_150_3 = this.GetCurSkillBtnConfig().Get().bHasSimpleSkill1;
+        if (local_150_3 && !(local_142 && local_142.IsHidden(ENormalSSkillBtnUIType(2))))
         {
             local_152 = 0;
         }
@@ -504,13 +487,13 @@ struct FVMS_SkillBtns : FEUIViewModelSingleton
             local_152 = 1;
         }
         this.SetQVisibility(ESlateVisibility(local_152));
-        TEUIModelRef<FVM_NormalSkillBtn> local_148_10 = this.GetESkillBtnVM();
-        TEUIModelRef<FVM_NormalSkillBtn> local_148_11 = this.GetESkillBtnVM();
-        local_70.SetCachedVisibility();
+        this.GetESkillBtnVM().Get().SetSkillBtnConfig(this.GetCurSkillBtnConfig().Get().SimpleSkill2BtnConfig);
+        bool local_70_3 = this.GetCurSkillBtnConfig().Get().bHasSimpleSkill2;
+        this.GetESkillBtnVM().Get().SetCachedVisibility(local_70_3);
         bool local_19_4 = true;
-        TEUIModelRef<FVM_NormalSkillBtn> local_148_12 = this.GetESkillBtnVM();
-        local_19_4.SetbEnableTouchTriggerSkill();
-        if (local_9_2 && !(local_142 && local_142.IsHidden(ENormalSSkillBtnUIType(3))))
+        this.GetESkillBtnVM().Get().SetbEnableTouchTriggerSkill(local_19_4);
+        bool local_9_3 = this.GetCurSkillBtnConfig().Get().bHasSimpleSkill2;
+        if (local_9_3 && !(local_142 && local_142.IsHidden(ENormalSSkillBtnUIType(3))))
         {
             local_151 = 0;
         }
@@ -519,22 +502,10 @@ struct FVMS_SkillBtns : FEUIViewModelSingleton
             local_151 = 1;
         }
         this.SetEVisibility(ESlateVisibility(local_151));
-        TEUIModelRef<FVM_NormalSkillBtn> local_148_13 = this.GetRSkillBtnVM();
-        TEUIModelRef<FVM_NormalSkillBtn> local_148_14 = this.GetRSkillBtnVM();
-        local_150.SetCachedVisibility();
-        bool local_19_5 = true;
-        TEUIModelRef<FVM_NormalSkillBtn> local_148_15 = this.GetRSkillBtnVM();
-        local_19_5.SetbEnableTouchTriggerSkill();
-        if (!(local_70))
-        {
-            local_19_5 = false;
-        }
-        else
-        {
-            local_9_2 = !(local_142 && local_142.IsHidden(ENormalSSkillBtnUIType(4)));
-            local_19_5 = local_9_2;
-        }
-        if (local_19_5)
+        this.GetRSkillBtnVM().Get().SetSkillBtnConfig(this.GetCurSkillBtnConfig().Get().SimpleSkill3BtnConfig);
+        this.GetRSkillBtnVM().Get().SetCachedVisibility(this.GetCurSkillBtnConfig().Get().bHasSimpleSkill3);
+        this.GetRSkillBtnVM().Get().SetbEnableTouchTriggerSkill(true);
+        if (this.GetCurSkillBtnConfig().Get().bHasSimpleSkill3 && !(local_142 && local_142.IsHidden(ENormalSSkillBtnUIType(4))))
         {
             local_152 = 0;
         }
@@ -543,13 +514,11 @@ struct FVMS_SkillBtns : FEUIViewModelSingleton
             local_152 = 1;
         }
         this.SetRVisibility(ESlateVisibility(local_152));
-        TEUIModelRef<FVM_NormalSkillBtn> local_148_16 = this.GetTSkillBtnVM();
-        TEUIModelRef<FVM_NormalSkillBtn> local_148_17 = this.GetTSkillBtnVM();
-        local_9_2.SetCachedVisibility();
-        bool local_19_6 = true;
-        TEUIModelRef<FVM_NormalSkillBtn> local_148_18 = this.GetTSkillBtnVM();
-        local_19_6.SetbEnableTouchTriggerSkill();
-        if (local_150 && !(local_142 && local_142.IsHidden(ENormalSSkillBtnUIType(5))))
+        this.GetTSkillBtnVM().Get().SetSkillBtnConfig(this.GetCurSkillBtnConfig().Get().DivineSkillBtnConfig);
+        this.GetTSkillBtnVM().Get().SetCachedVisibility(this.GetCurSkillBtnConfig().Get().bHasDivineSkill);
+        this.GetTSkillBtnVM().Get().SetbEnableTouchTriggerSkill(true);
+        bool local_150_5 = this.GetCurSkillBtnConfig().Get().bHasDivineSkill;
+        if (local_150_5 && !(local_142 && local_142.IsHidden(ENormalSSkillBtnUIType(5))))
         {
             local_151 = 0;
         }
@@ -561,77 +530,41 @@ struct FVMS_SkillBtns : FEUIViewModelSingleton
         FNormalSkillBtnConfig local_180;
         local_180.SkillSlot = ESkillSlot(1);
         local_180.SkillButtonType = ESkillButtonType(1);
-        TEUIModelRef<FVM_NormalSkillBtn> local_148_19 = this.GetAttackBtnVM();
-        local_180.SetSkillBtnConfig();
-        local_70 = true && !(local_142 && local_142.IsHidden(ENormalSSkillBtnUIType(6)));
-        TEUIModelRef<FVM_NormalSkillBtn> local_148_20 = this.GetAttackBtnVM();
-        local_70.SetCachedVisibility();
-        local_150 = true;
-        TEUIModelRef<FVM_NormalSkillBtn> local_148_21 = this.GetAttackBtnVM();
-        local_150.SetbEnableTouchTriggerSkill();
-        local_70 = true;
-        TEUIModelRef<FVM_NormalSkillBtn> local_148_22 = this.GetAimBtnVM();
-        local_70.SetbOverrideInputAction();
-        bool local_19_7 = true;
-        TEUIModelRef<FVM_NormalSkillBtn> local_148_23 = this.GetAimBtnVM();
-        local_19_7.SetbToggleMode();
-        FEUIInputAction local_190 = FEUIInputAction(FCharacterInputUtils::GetInputActionByMainInputName(this.GetCurPawnEntity(), n"CharacterAim"));
-        TEUIModelRef<FVM_NormalSkillBtn> local_148_24 = this.GetAimBtnVM();
-        local_190.SetInputAction();
-        local_70 = true && !(local_142 && local_142.IsHidden(ENormalSSkillBtnUIType(7)));
-        TEUIModelRef<FVM_NormalSkillBtn> local_148_25 = this.GetAimBtnVM();
-        local_70.SetCachedVisibility();
-        local_150 = true;
-        TEUIModelRef<FVM_NormalSkillBtn> local_148_26 = this.GetAimBtnVM();
-        local_150.SetbEnableTouchTriggerSkill();
-        local_70 = true;
-        TEUIModelRef<FVM_NormalSkillBtn> local_148_27 = this.GetJumpBtnVM();
-        local_70.SetbOverrideInputAction();
-        FEUIInputAction local_190_2 = FEUIInputAction(FCharacterInputUtils::GetInputActionByMainInputName(this.GetCurPawnEntity(), n"CharacterJump"));
-        TEUIModelRef<FVM_NormalSkillBtn> local_148_28 = this.GetJumpBtnVM();
-        local_190_2.SetInputAction();
-        local_70 = true && !(local_142 && local_142.IsHidden(ENormalSSkillBtnUIType(8)));
-        TEUIModelRef<FVM_NormalSkillBtn> local_148_29 = this.GetJumpBtnVM();
-        local_70.SetCachedVisibility();
-        bool local_9_3 = true;
-        TEUIModelRef<FVM_NormalSkillBtn> local_148_30 = this.GetJumpBtnVM();
-        local_9_3.SetbEnableTouchTriggerSkill();
-        local_70 = true;
-        TEUIModelRef<FVM_NormalSkillBtn> local_148_31 = this.GetDodgeBtnVM();
-        local_70.SetbOverrideInputAction();
-        FEUIInputAction local_190_3 = FEUIInputAction(FCharacterInputUtils::GetInputActionByMainInputName(this.GetCurPawnEntity(), n"CharacterSprint"));
-        TEUIModelRef<FVM_NormalSkillBtn> local_148_32 = this.GetDodgeBtnVM();
-        local_190_3.SetInputAction();
-        local_9_3 = true && !(local_142 && local_142.IsHidden(ENormalSSkillBtnUIType(9)));
-        TEUIModelRef<FVM_NormalSkillBtn> local_148_33 = this.GetDodgeBtnVM();
-        local_9_3.SetCachedVisibility();
-        local_150 = true;
-        TEUIModelRef<FVM_NormalSkillBtn> local_148_34 = this.GetDodgeBtnVM();
-        local_150.SetbEnableTouchTriggerSkill();
-        bool local_9_4 = true;
-        TEUIModelRef<FVM_NormalSkillBtn> local_148_35 = this.GetLockTargetBtnVM();
-        local_9_4.SetbOverrideInputAction();
-        FEUIInputAction local_190_4 = FEUIInputAction(FCharacterInputUtils::GetInputActionByMainInputName(this.GetCurPawnEntity(), n"LockTarget"));
-        TEUIModelRef<FVM_NormalSkillBtn> local_148_36 = this.GetLockTargetBtnVM();
-        local_190_4.SetInputAction();
-        local_150 = true && !(local_142 && local_142.IsHidden(ENormalSSkillBtnUIType(10)));
-        TEUIModelRef<FVM_NormalSkillBtn> local_148_37 = this.GetLockTargetBtnVM();
-        local_150.SetCachedVisibility();
-        local_70 = true;
-        TEUIModelRef<FVM_NormalSkillBtn> local_148_38 = this.GetLockTargetBtnVM();
-        local_70.SetbEnableTouchTriggerSkill();
-        local_150 = true;
-        TEUIModelRef<FVM_NormalSkillBtn> local_148_39 = this.GetSwitchAvatarBtnVM();
-        local_150.SetbOverrideInputAction();
-        FEUIInputAction local_190_5 = FEUIInputAction(FCharacterInputUtils::GetInputActionByMainInputName(this.GetCurPawnEntity(), n"SwitchAvatar"));
-        TEUIModelRef<FVM_NormalSkillBtn> local_148_40 = this.GetSwitchAvatarBtnVM();
-        local_190_5.SetInputAction();
-        local_70 = true && !(local_142 && local_142.IsHidden(ENormalSSkillBtnUIType(11)));
-        TEUIModelRef<FVM_NormalSkillBtn> local_148_41 = this.GetSwitchAvatarBtnVM();
-        local_70.SetCachedVisibility();
+        this.GetAttackBtnVM().Get().SetSkillBtnConfig(local_180);
+        this.GetAttackBtnVM().Get().SetCachedVisibility((true && !(local_142 && local_142.IsHidden(ENormalSSkillBtnUIType(6)))));
+        this.GetAttackBtnVM().Get().SetbEnableTouchTriggerSkill(true);
+        bool local_70_5 = true;
+        this.GetAimBtnVM().Get().SetbOverrideInputAction(local_70_5);
+        this.GetAimBtnVM().Get().SetbToggleMode(true);
+        this.GetAimBtnVM().Get().SetInputAction(FEUIInputAction(FCharacterInputUtils::GetInputActionByMainInputName(this.GetCurPawnEntity(), n"CharacterAim")));
+        local_70_5 = true && !(local_142 && local_142.IsHidden(ENormalSSkillBtnUIType(7)));
+        this.GetAimBtnVM().Get().SetCachedVisibility(local_70_5);
+        this.GetAimBtnVM().Get().SetbEnableTouchTriggerSkill(true);
+        bool local_70_6 = true;
+        this.GetJumpBtnVM().Get().SetbOverrideInputAction(local_70_6);
+        this.GetJumpBtnVM().Get().SetInputAction(FEUIInputAction(FCharacterInputUtils::GetInputActionByMainInputName(this.GetCurPawnEntity(), n"CharacterJump")));
+        local_70_6 = true && !(local_142 && local_142.IsHidden(ENormalSSkillBtnUIType(8)));
+        this.GetJumpBtnVM().Get().SetCachedVisibility(local_70_6);
         bool local_9_5 = true;
-        TEUIModelRef<FVM_NormalSkillBtn> local_148_42 = this.GetSwitchAvatarBtnVM();
-        local_9_5.SetbEnableTouchTriggerSkill();
+        this.GetJumpBtnVM().Get().SetbEnableTouchTriggerSkill(local_9_5);
+        this.GetDodgeBtnVM().Get().SetbOverrideInputAction(true);
+        this.GetDodgeBtnVM().Get().SetInputAction(FEUIInputAction(FCharacterInputUtils::GetInputActionByMainInputName(this.GetCurPawnEntity(), n"CharacterSprint")));
+        local_9_5 = true && !(local_142 && local_142.IsHidden(ENormalSSkillBtnUIType(9)));
+        this.GetDodgeBtnVM().Get().SetCachedVisibility(local_9_5);
+        bool local_150_6 = true;
+        this.GetDodgeBtnVM().Get().SetbEnableTouchTriggerSkill(local_150_6);
+        this.GetLockTargetBtnVM().Get().SetbOverrideInputAction(true);
+        this.GetLockTargetBtnVM().Get().SetInputAction(FEUIInputAction(FCharacterInputUtils::GetInputActionByMainInputName(this.GetCurPawnEntity(), n"LockTarget")));
+        local_150_6 = true && !(local_142 && local_142.IsHidden(ENormalSSkillBtnUIType(10)));
+        this.GetLockTargetBtnVM().Get().SetCachedVisibility(local_150_6);
+        bool local_70_7 = true;
+        this.GetLockTargetBtnVM().Get().SetbEnableTouchTriggerSkill(local_70_7);
+        this.GetSwitchAvatarBtnVM().Get().SetbOverrideInputAction(true);
+        this.GetSwitchAvatarBtnVM().Get().SetInputAction(FEUIInputAction(FCharacterInputUtils::GetInputActionByMainInputName(this.GetCurPawnEntity(), n"SwitchAvatar")));
+        local_70_7 = true && !(local_142 && local_142.IsHidden(ENormalSSkillBtnUIType(11)));
+        this.GetSwitchAvatarBtnVM().Get().SetCachedVisibility(local_70_7);
+        bool local_9_6 = true;
+        this.GetSwitchAvatarBtnVM().Get().SetbEnableTouchTriggerSkill(local_9_6);
         bool local_191 = this.GetCurSkillBtnConfig().opArrow().bEnableGamepadRightShoulderAnim;
         if (local_142 && local_142.IsHidden(ENormalSSkillBtnUIType(12)))
         {
@@ -646,21 +579,22 @@ struct FVMS_SkillBtns : FEUIViewModelSingleton
             local_152 = 2;
         }
         this.SetRBVisibility(ESlateVisibility(local_152));
+        bool local_19_7 = this.GetCurSkillBtnConfig().Get().bEnableExclusiveSkill;
         if (!(local_19_7))
         {
-            local_9_5 = false;
+            local_9_6 = false;
         }
         else
         {
-            local_9_5 = !((FECSEntity(this.GetCurPawnEntity()) == local_14));
-            local_9_5 = local_9_5 || (local_16 != this.GetCurSkillBtnConfig().GetUniqueID());
+            local_9_6 = !((FECSEntity(this.GetCurPawnEntity()) == local_14));
+            local_9_6 = local_9_6 || (local_16 != this.GetCurSkillBtnConfig().GetUniqueID());
         }
-        if (local_9_5)
+        if (local_9_6)
         {
             if (int(this.GetSkillBtnsCharacterType()) == 0)
             {
-                UExclusiveSkillModelAdapterBase local_194;
-                this.SetExclusiveSkill(local_194.MakeViewModels(this.GetContext()));
+                this.SetExclusiveSkill(this.GetCurSkillBtnConfig().Get().ExclusiveSkillModelAdapter.GetDefaultObject().MakeViewModels(this.GetContext()));
+                this.SetExclusiveSkillWidget(this.GetCurSkillBtnConfig().Get().ExclusiveSkillWidget);
             }
         }
         return;
@@ -679,25 +613,14 @@ struct FVMS_SkillBtns : FEUIViewModelSingleton
     {
         if ((int(::UICommonUtil::GetCurrentInputType(nullptr))) == 1)
         {
-            TEUIModelRef<FVM_NormalSkillBtn> local_6 = this.GetSpecialESkillBtnVM();
-            1.SetbOverrideInputActionVisibility();
-            int local_7 = 0;
-            TEUIModelRef<FVM_NormalSkillBtn> local_6_2 = this.GetSpecialESkillBtnVM();
-            local_7.SetOverrideInputActionVisibility();
-            int local_4 = 1;
-            TEUIModelRef<FVM_NormalSkillBtn> local_6_3 = this.GetESkillBtnVM();
-            local_4.SetbOverrideInputActionVisibility();
-            local_7 = 0;
-            TEUIModelRef<FVM_NormalSkillBtn> local_6_4 = this.GetESkillBtnVM();
-            local_7.SetOverrideInputActionVisibility();
+            this.GetSpecialESkillBtnVM().Get().SetbOverrideInputActionVisibility(true);
+            this.GetSpecialESkillBtnVM().Get().SetOverrideInputActionVisibility(ESlateVisibility(0));
+            this.GetESkillBtnVM().Get().SetbOverrideInputActionVisibility(true);
+            this.GetESkillBtnVM().Get().SetOverrideInputActionVisibility(ESlateVisibility(0));
             return;
         }
-        int local_4_2 = 0;
-        TEUIModelRef<FVM_NormalSkillBtn> local_6_5 = this.GetSpecialESkillBtnVM();
-        local_4_2.SetbOverrideInputActionVisibility();
-        local_4_2 = 0;
-        TEUIModelRef<FVM_NormalSkillBtn> local_6_6 = this.GetESkillBtnVM();
-        local_4_2.SetbOverrideInputActionVisibility();
+        this.GetSpecialESkillBtnVM().Get().SetbOverrideInputActionVisibility(false);
+        this.GetESkillBtnVM().Get().SetbOverrideInputActionVisibility(false);
         return;
     }
     void RefreshSkillBtnsPanelVisibility()
@@ -1279,11 +1202,9 @@ FVMS_SkillBtns& Get(const UObject ContextObject)
 {
     return FVMS_SkillBtns::GetByManager(EUIInternal::GetContextManager(ContextObject));
 }
-FVMS_SkillBtns GetByManager(const UEUIManagerSubsystem Manager)
+FVMS_SkillBtns& GetByManager(const UEUIManagerSubsystem Manager)
 {
-    FVMS_SkillBtns __r;
-    TEUIModelRef<FVMS_SkillBtns> local_6 = TEUIModelRef<FVMS_SkillBtns>(EUIInternal::MakeModelWithManager(Manager, FVMS_SkillBtns::ModelId));
-    return __r;
+    return TEUIModelRef<FVMS_SkillBtns>(EUIInternal::MakeModelWithManager(Manager, FVMS_SkillBtns::ModelId)).Get();
 }
 void GetModelInfo(FEUIViewModelMetaInfo &inout Result)
 {
@@ -1730,7 +1651,6 @@ namespace __GeneratedProperties_FVMS_SkillBtns
 {
 UScriptStruct StaticStruct()
 {
-    UScriptStruct local_2;
-    return local_2;
+    return __GeneratedProperties_FVMS_SkillBtns.Get();
 }
 }

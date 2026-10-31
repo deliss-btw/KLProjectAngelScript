@@ -33,6 +33,7 @@ struct FC_LongNeckIKControlHistory : FECSComponent
     }
     void Clear()
     {
+        this.History.Clear();
         return;
     }
     bool GetInterpoValue(const FFPTime &inout WorldTime, FC_LongNeckIKControl &inout OutValue) const

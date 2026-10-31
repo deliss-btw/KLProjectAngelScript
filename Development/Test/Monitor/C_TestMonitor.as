@@ -44,9 +44,8 @@ struct FCS_TestMonitor0 : FECSSingleton
     }
     FCS_TestMonitor0 opAssign(const FCS_TestMonitor0 &inout Other)
     {
-        int local_1 = 0;
         FCS_TestMonitor0 __r;
-        this.SetValue(local_1);
+        this.SetValue(Other.GetValue());
         return __r;
     }
     int GetValue() const property
@@ -105,9 +104,8 @@ struct FC_TestMonitorData0 : FECSComponent
     }
     FC_TestMonitorData0 opAssign(const FC_TestMonitorData0 &inout Other)
     {
-        int local_1 = 0;
         FC_TestMonitorData0 __r;
-        this.SetValue(local_1);
+        this.SetValue(Other.GetValue());
         return __r;
     }
     int GetValue() const property

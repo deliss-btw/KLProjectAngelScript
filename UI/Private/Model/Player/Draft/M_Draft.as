@@ -190,11 +190,9 @@ FM_Draft& Create(const UObject ContextObject, const uint64 InstId)
 {
     return FM_Draft::CreateByManager(EUIInternal::GetContextManager(ContextObject), InstId);
 }
-FM_Draft CreateByManager(const UEUIManagerSubsystem Manager, const uint64 InstId)
+FM_Draft& CreateByManager(const UEUIManagerSubsystem Manager, const uint64 InstId)
 {
-    FM_Draft __r;
-    TEUIModelRef<FM_Draft> local_6 = TEUIModelRef<FM_Draft>(EUIInternal::MakeModelWithManager_Generic(Manager, FM_Draft::ModelId, 0, InstId));
-    return __r;
+    return TEUIModelRef<FM_Draft>(EUIInternal::MakeModelWithManager_Generic(Manager, FM_Draft::ModelId, 0, InstId)).Get();
 }
 void GetModelInfo(FEUIModelOnlyMetaInfo &inout Result)
 {

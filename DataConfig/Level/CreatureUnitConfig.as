@@ -144,25 +144,23 @@ struct FCreatureUnitConfig : FDataObject
         {
             return TSubclassOf<ACharacterPrefab>(nullptr);
         }
-        if (unresolved.Prefab.IsNull())
+        if (this.GetCombatConfig().Get().Prefab.IsNull())
         {
             return TSubclassOf<ACharacterPrefab>(nullptr);
         }
-        if (unresolved.Prefab.IsPending())
+        if (this.GetCombatConfig().Get().Prefab.IsPending())
         {
-            FSoftObjectPath local_12;
-            local_12.TryLoad();
+            this.GetCombatConfig().Get().Prefab.ToSoftObjectPath().TryLoad();
         }
-        return TSubclassOf<ACharacterPrefab>();
+        return this.GetCombatConfig().Get().Prefab.Get();
     }
     TSoftClassPtr<ACharacterPrefab> GetSoftCombatPrefab() const
     {
-        TSoftClassPtr<ACharacterPrefab> __r;
         if (!(this.GetCombatConfig()))
         {
             return TSoftClassPtr<ACharacterPrefab>(nullptr);
         }
-        return __r;
+        return this.GetCombatConfig().Get().Prefab;
     }
     const TDataObjectPtr<FCombatUnitBaseConfig> GetCombatConfig() const property
     {

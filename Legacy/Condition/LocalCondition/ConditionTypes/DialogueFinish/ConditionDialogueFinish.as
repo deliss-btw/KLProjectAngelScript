@@ -16,9 +16,7 @@ class UConditionDialogueFinish : ULocalConditionTypeDefineBase
             TDataObjectPtr<FDialogueConfig> local_12;
             if (local_12.IsSet())
             {
-                FName local_14;
-                local_14.GetDataName();
-                OutKeys.Add(local_14);
+                OutKeys.Add(local_12.Get().GetDataName());
             }
         }
         return;

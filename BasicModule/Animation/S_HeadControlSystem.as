@@ -89,6 +89,7 @@ class US_HeadControlSystemAS : UECSScriptSystem
         }
         if (HeadControl.Weight > 0.0f)
         {
+            HeadControl.Clear();
             return;
         }
         Get local_8;
@@ -109,12 +110,14 @@ class US_HeadControlSystemAS : UECSScriptSystem
     {
         if (!(AimTargetControl.GetbDataValid()) || !(Entity.MatchGameplayTag(GameplayTags::ESM_Enable_HeadControl)))
         {
+            HeadControl.Clear();
             return;
         }
         FVector local_8 = Transform.GetRotation().RotateVector(AimTargetControl.GetAimTarget().GetSafeNormal(9.99999993922529e-9, FVector::ZeroVector));
         float32 local_24 = FMath::RadiansToDegrees(FMath::Asin(FMath::Clamp(float32(local_8.Z), -1.0f, 1.0f)));
         if (FMath::Abs(local_24) > HeadControlConfig.GetEnableMaxVerticalAngle())
         {
+            HeadControl.Clear();
             return;
         }
         float32 local_28 = local_24;
@@ -125,6 +128,7 @@ class US_HeadControlSystemAS : UECSScriptSystem
         float32 local_25 = FMath::Abs(local_59);
         if (local_25 > HeadControlConfig.GetEnableMaxHorizontalAngle())
         {
+            HeadControl.Clear();
             return;
         }
         if (local_52.CrossProduct(local_40).Z > 0.0)

@@ -10,7 +10,6 @@ class US_PlayerRebornSystem : UECSScriptSystem
         bool local_5;
         Has local_16;
         int local_24 = 0;
-        int local_28 = 0;
         UAS_GameModeSettingsPVP local_108;
         FECSEntity local_4 = FECSEntity(Event.Sender);
         if (!(local_4.IsValid()))
@@ -36,7 +35,7 @@ class US_PlayerRebornSystem : UECSScriptSystem
         }
         if (local_5)
         {
-            local_25 = float32((local_28 / 100.0));
+            local_25 = float32((local_24.GetReviveData().Get().ReviveHp / 100.0));
         }
         FFPTime local_40 = ECS::GetContextTime();
         FCE_Reborn local_34;
@@ -58,11 +57,11 @@ class US_PlayerRebornSystem : UECSScriptSystem
         }
         else
         {
-            local_5 = local_24.GetReviveData();
-            local_27 = local_5;
+            local_27 = local_24.GetReviveData();
         }
         if (local_27)
         {
+            local_5 = local_24.GetReviveData().Get().bIsReplyPotion;
             if (local_5)
             {
                 int local_90;
@@ -70,7 +69,7 @@ class US_PlayerRebornSystem : UECSScriptSystem
                 FNameHandle_EntityBBVarInt local_60;
                 FECSEntity local_54 = ::FASCommonUtils::GetUniquePlayerEntity(local_4);
                 local_60;
-                local_28 = local_54.GetBB_Int(local_60);
+                int local_28 = local_54.GetBB_Int(local_60);
                 XLog(ELog(0), FString().Append("PlayerReborn consume refill timer, Operate resurlt ").Append(local_28));
                 int local_55 = ::InventoryUtils::GetInventoryItemNumber(local_54, TDataObjectPtr<FItemConfig>(::NearDeathSettings::Get().PotionItemConfig));
                 local_60;
@@ -196,10 +195,11 @@ class US_PlayerRebornSystem : UECSScriptSystem
                 {
                     if (local_14.GetReviveData())
                     {
+                        const FReviveData& local_16 = local_14.GetReviveData().Get();
                         FECSEntity local_20 = FECSEntity(Event.Sender);
-                        int local_45 = local_22.GetPunishDeathEndTime().Num() * 0;
-                        local_44.SetWaitEndTime(FFPTime(0 + local_45));
+                        local_44.SetWaitEndTime(FFPTime(local_14.GetReviveData().Get().ReviveCD + (local_22.GetPunishDeathEndTime().Num() * local_14.GetReviveData().Get().RevivePunishCD)));
                         local_44.SetKilledByEntity(Event.KilledByEntity);
+                        local_44.SetAvailableReviveTypes(local_14.GetReviveData().Get().ReviveType);
                         const FC_DeathInfo& local_56 = local_54.opCall();
                         if (local_56)
                         {
@@ -209,7 +209,8 @@ class US_PlayerRebornSystem : UECSScriptSystem
                         {
                             local_44.SetDeathReason(EDeathReason(0));
                         }
-                        local_22.GetModify_PunishDeathEndTime().Add((FFPTime(Event.Time) + FFPTime(local_45)));
+                        int local_45_2 = local_14.GetReviveData().Get().RevivePunishTime;
+                        local_22.GetModify_PunishDeathEndTime().Add((FFPTime(Event.Time) + FFPTime(local_45_2)));
                         return;
                     }
                 }

@@ -160,27 +160,29 @@ struct FC_FashionState : FECSComponent
     }
     void AddFashion(const uint DataId)
     {
-        int local_50 = 0;
-        if (!(::FFashionConfig::GetByDataId(DataId)))
+        TDataObjectPtr<FFashionConfig> local_48 = ::FFashionConfig::GetByDataId(DataId);
+        if (!(local_48))
         {
             return;
         }
-        bool local_49 = !(::FFashionConfig::IsPlayerFashionSlot(EFashionSlotType(local_50)));
+        bool local_49 = !(::FFashionConfig::IsPlayerFashionSlot(local_48.Get().SlotType));
         this.GetFashionInfo().GetModify_FashionIds().AddUnique(DataId);
         return;
     }
     void RemoveFashion(const uint DataId)
     {
+        this.GetFashionInfo().GetModify_FashionIds().Remove(DataId);
+        this.GetFashionInfo().GetModify_DecoAttachOffsets().Remove(DataId);
         return;
     }
     void AddDeco(const uint DataId, const FVector3f &inout Location, const FRotator3f &inout Rotation, const float32 Scale)
     {
-        int local_50 = 0;
-        if (!(::FFashionConfig::GetByDataId(DataId)))
+        TDataObjectPtr<FFashionConfig> local_48 = ::FFashionConfig::GetByDataId(DataId);
+        if (!(local_48))
         {
             return;
         }
-        bool local_49 = !(::FFashionConfig::IsPlayerFashionSlot(EFashionSlotType(local_50)));
+        bool local_49 = !(::FFashionConfig::IsPlayerFashionSlot(local_48.Get().SlotType));
         this.GetFashionInfo().GetModify_FashionIds().AddUnique(DataId);
         FDecoAttachOffset local_58;
         local_58.SetLocation(Location);
@@ -235,17 +237,18 @@ struct FC_PlayerFashionState : FECSComponent
     }
     void AddFashion(const uint DataId)
     {
-        int local_50 = 0;
-        if (!(::FFashionConfig::GetByDataId(DataId)))
+        TDataObjectPtr<FFashionConfig> local_48 = ::FFashionConfig::GetByDataId(DataId);
+        if (!(local_48))
         {
             return;
         }
-        ::FFashionConfig::IsPlayerFashionSlot(EFashionSlotType(local_50));
+        ::FFashionConfig::IsPlayerFashionSlot(local_48.Get().SlotType);
         this.GetModify_FashionIds().AddUnique(DataId);
         return;
     }
     void RemoveFashion(const uint DataId)
     {
+        this.GetModify_FashionIds().Remove(DataId);
         return;
     }
     const TArray<uint> GetFashionIds() const property

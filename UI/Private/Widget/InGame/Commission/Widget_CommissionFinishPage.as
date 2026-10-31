@@ -60,14 +60,14 @@ class UWidget_CommissionFinishPage : UEUIActivatableWidget
     {
         if (this.CommissionFinish.IsValid())
         {
-            OnSkipWaitPhase();
+            this.CommissionFinish.Get().OnSkipWaitPhase();
         }
         return;
     }
     UFUNCTION()
     TArray<FEUIModelWeakRef> CommissionFinish_RewardsData() const
     {
-        FVM_CommissionFinish& local_2;
+        FVM_CommissionFinish& local_2 = this.CommissionFinish.Get();
         TArray<FEUIModelWeakRef> local_16;
         if (local_2)
         {
@@ -99,8 +99,8 @@ class UWidget_CommissionFinishPage : UEUIActivatableWidget
     }
     void HandleObservedModelChanges(FEUIReactiveSubscriberIterator &inout It)
     {
-        FVM_CommissionFinish& local_6;
         TEUIModelRef<FVM_CommissionFinish> local_2 = this.CommissionFinish.AsRef();
+        FVM_CommissionFinish& local_6 = local_2.Get();
         for (; It; )
         {
             FEUIReactiveSubscriberTrackScope local_56 = FEUIReactiveSubscriberTrackScope(It);
@@ -217,7 +217,7 @@ class UWidget_CommissionFinishWidget : UEUIUserWidget
     UFUNCTION()
     TArray<FEUIModelWeakRef> CommissionFinish_RewardsData() const
     {
-        FVM_CommissionFinish& local_2;
+        FVM_CommissionFinish& local_2 = this.CommissionFinish.Get();
         TArray<FEUIModelWeakRef> local_16;
         if (local_2)
         {

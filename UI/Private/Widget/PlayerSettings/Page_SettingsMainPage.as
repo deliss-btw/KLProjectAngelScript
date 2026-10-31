@@ -77,10 +77,10 @@ class UPage_SettingsMainPage : UEUIActivatableWidget
         {
             this.Settings = FEUIModelRef(::FVMS_SettingPage::Get(this));
         }
-        InitData();
+        this.Settings.Get().InitData();
         if (this.w_list_tab != nullptr)
         {
-            this.w_list_tab.SetSelectedIndex(GetSelectedCategoryIndex());
+            this.w_list_tab.SetSelectedIndex(this.Settings.Get().GetSelectedCategoryIndex());
             this.RuleSetUserFocus(this.w_list_tab);
             this.w_list_tab.SetFocus();
         }
@@ -102,10 +102,10 @@ class UPage_SettingsMainPage : UEUIActivatableWidget
         {
             local_14 = 1.0f;
         }
-        local_14.SetItemsOpacity();
+        this.Settings.Get().SetItemsOpacity(local_14);
         if (this.IsPartOfFocusPath(this.EUICustomEntryListView))
         {
-            this.EUICustomEntryListView.GetSelectedItem().SetPrevSelectedItem();
+            this.Settings.Get().SetPrevSelectedItem(this.EUICustomEntryListView.GetSelectedItem());
         }
         if ((this.bWasTabFocused && !(local_5)) && local_1)
         {
@@ -128,7 +128,7 @@ class UPage_SettingsMainPage : UEUIActivatableWidget
         }
         if (this.Settings.IsValid())
         {
-            UpdateResolutionDropDownOptions();
+            this.Settings.Get().UpdateResolutionDropDownOptions();
         }
         return;
     }
@@ -139,14 +139,12 @@ class UPage_SettingsMainPage : UEUIActivatableWidget
         {
             return;
         }
-        TEUIModelRef<FVMS_PlayerKeyMappings> local_4;
-        local_4.GetKeyMappings();
-        if (!(local_4.IsValid()))
+        if (!(this.Settings.Get().GetKeyMappings().IsValid()))
         {
-            TEUIModelRef<FVMS_PlayerKeyMappings>(::FVMS_PlayerKeyMappings::Get(this)).SetKeyMappings();
+            this.Settings.Get().SetKeyMappings(TEUIModelRef<FVMS_PlayerKeyMappings>(::FVMS_PlayerKeyMappings::Get(this)));
             return;
         }
-        if (CheckHasValueActuallyChanged())
+        if (this.Settings.Get().CheckHasValueActuallyChanged())
         {
             FDialogDynamicCallback local_8;
             local_8.BindUFunction(this, n"HandleRequireSwitchCategoryAnswer");
@@ -163,9 +161,9 @@ class UPage_SettingsMainPage : UEUIActivatableWidget
     {
         if (int(Answer.AnswerType) == 0)
         {
-            this.w_list_tab.SetSelectedIndex(GetSelectedCategoryIndex());
+            this.w_list_tab.SetSelectedIndex(this.Settings.Get().GetSelectedCategoryIndex());
         }
-        int(Answer.AnswerType).CheckHasSettingsChangedForSwitch();
+        this.Settings.Get().CheckHasSettingsChangedForSwitch(Answer.AnswerType);
         return true;
     }
     UFUNCTION()
@@ -183,26 +181,26 @@ class UPage_SettingsMainPage : UEUIActivatableWidget
     UFUNCTION()
     bool HandleRequireResetAnswer(const FCommonDialogAnswer &inout Answer) const
     {
-        int(Answer.AnswerType).CheckHasSettingsReset();
+        this.Settings.Get().CheckHasSettingsReset(Answer.AnswerType);
         return true;
     }
     UFUNCTION()
     void WatchSettingValue()
     {
-        if (GetItems().Contains(this.ItemTagToWatch) && IsDisplayCategory())
+        if (this.Settings.Get().GetItems().Contains(this.ItemTagToWatch) && this.Settings.Get().IsDisplayCategory())
         {
-            if (TEUIModelRef<FVM_SettingItem>(GetItems()[this.ItemTagToWatch]))
+            TEUIModelRef<FVM_SettingItem> local_4 = TEUIModelRef<FVM_SettingItem>(this.Settings.Get().GetItems()[this.ItemTagToWatch]);
+            if (local_4)
             {
-                float32 local_5 = ::SettingUtils::GetCurrentValue(GetApplyEffect(), this.ItemTagToWatch.IsDisplayOrGraphicsItem());
-                if (local_5 != GetCurrentValue())
+                float32 local_5 = ::SettingUtils::GetCurrentValue(local_4.Get().GetApplyEffect(), this.Settings.Get().IsDisplayOrGraphicsItem(this.ItemTagToWatch));
+                if (local_5 != local_4.Get().GetCurrentValue())
                 {
-                    local_5.UpdateCurrentValue();
-                    local_5.UpdateComponentValue(false);
-                    SyncPreviousValue();
-                    for (auto& local_24 : GetItems())
+                    local_4.Get().UpdateCurrentValue(local_5);
+                    local_4.Get().UpdateComponentValue(local_5, false);
+                    local_4.Get().SyncPreviousValue();
+                    for (auto& local_24 : this.Settings.Get().GetItems())
                     {
-                        local_24;
-                        false.SetbIsHovered();
+                        TEUIModelRef<FVM_SettingItem>(local_24.GetValue()).Get().SetbIsHovered(false);
                     }
                 }
             }
@@ -212,31 +210,24 @@ class UPage_SettingsMainPage : UEUIActivatableWidget
     UFUNCTION()
     void ApplyRevert()
     {
-        TEUIModelRef<FVMS_PlayerKeyMappings> local_2;
-        local_2.GetKeyMappings();
-        if (!(local_2.IsValid()))
+        if (!(this.Settings.Get().GetKeyMappings().IsValid()))
         {
             return;
         }
-        local_2.GetKeyMappings();
-        if (local_2.opArrow().CanRevert())
+        if (this.Settings.Get().GetKeyMappings().opArrow().CanRevert())
         {
-            local_2.GetKeyMappings();
-            local_2.opArrow().RevertKey();
+            this.Settings.Get().GetKeyMappings().opArrow().RevertKey();
         }
         return;
     }
     UFUNCTION()
     void ApplyExitKeySelecting()
     {
-        TEUIModelRef<FVMS_PlayerKeyMappings> local_2;
-        local_2.GetKeyMappings();
-        if (!(local_2.IsValid()))
+        if (!(this.Settings.Get().GetKeyMappings().IsValid()))
         {
             return;
         }
-        local_2.GetKeyMappings();
-        local_2.opArrow().ExitKeySelecting();
+        this.Settings.Get().GetKeyMappings().opArrow().ExitKeySelecting();
         return;
     }
     UFUNCTION()
@@ -253,9 +244,7 @@ class UPage_SettingsMainPage : UEUIActivatableWidget
     UFUNCTION()
     void OnKeyMappingsCanRevertChanged()
     {
-        TEUIModelRef<FVMS_PlayerKeyMappings> local_2;
-        local_2.GetKeyMappings();
-        if (!(local_2.IsValid()))
+        if (!(this.Settings.Get().GetKeyMappings().IsValid()))
         {
             return;
         }
@@ -271,11 +260,11 @@ class UPage_SettingsMainPage : UEUIActivatableWidget
         {
             return;
         }
-        if (GetFirstItem().IsEmpty())
+        if (this.Settings.Get().GetFirstItem().IsEmpty())
         {
             return;
         }
-        this.EUICustomEntryListView.NavigateToItem(GetFirstItem());
+        this.EUICustomEntryListView.NavigateToItem(this.Settings.Get().GetFirstItem());
         return;
     }
     void ListViewNavigatForReturn()
@@ -288,11 +277,11 @@ class UPage_SettingsMainPage : UEUIActivatableWidget
         {
             return;
         }
-        if (GetPrevSelectedItem().IsEmpty())
+        if (this.Settings.Get().GetPrevSelectedItem().IsEmpty())
         {
             return;
         }
-        this.EUICustomEntryListView.NavigateToItem(GetPrevSelectedItem());
+        this.EUICustomEntryListView.NavigateToItem(this.Settings.Get().GetPrevSelectedItem());
         return;
     }
     void GamepadActionbarRegister(const bool bLeftFocused)
@@ -312,7 +301,7 @@ class UPage_SettingsMainPage : UEUIActivatableWidget
         this.Exit.SetOverrideDisplayText(NSLOCTEXT("Settings", "Return", "返回"));
         this.Save.SetCollapsed(false);
         this.ResetCurrentPage.SetCollapsed(false);
-        bool local_6 = IsGamepadCategory();
+        bool local_6 = this.Settings.Get().IsGamepadCategory();
         if (!(local_6))
         {
             this.Bind.SetCollapsed(true);
@@ -328,7 +317,7 @@ class UPage_SettingsMainPage : UEUIActivatableWidget
             return;
         }
         this.Bind.SetCollapsed(true);
-        if (GetbIsKeyMapping() && GetbIsKeySelecting())
+        if (this.Settings.Get().GetbIsKeyMapping() && this.Settings.Get().GetbIsKeySelecting())
         {
             this.Exit.SetOverrideDisplayText(NSLOCTEXT("Settings", "ExitKeySelecting", "取消设置"));
             this.Save.SetCollapsed(true);
@@ -347,7 +336,7 @@ class UPage_SettingsMainPage : UEUIActivatableWidget
         {
             if (!(this.IsPartOfFocusPath(this.w_list_tab)))
             {
-                this.w_list_tab.SetSelectedIndex(GetSelectedCategoryIndex());
+                this.w_list_tab.SetSelectedIndex(this.Settings.Get().GetSelectedCategoryIndex());
                 this.RuleSetUserFocus(this.w_list_tab);
                 this.w_list_tab.SetFocus();
             }
@@ -357,7 +346,7 @@ class UPage_SettingsMainPage : UEUIActivatableWidget
             }
             return;
         }
-        if (GetbIsKeyMapping() && GetbIsKeySelecting())
+        if (this.Settings.Get().GetbIsKeyMapping() && this.Settings.Get().GetbIsKeySelecting())
         {
             this.ApplyExitKeySelecting();
             return;
@@ -368,13 +357,11 @@ class UPage_SettingsMainPage : UEUIActivatableWidget
     UFUNCTION()
     void RequireClose()
     {
-        TEUIModelRef<FVMS_PlayerKeyMappings> local_2;
-        local_2.GetKeyMappings();
-        if (!(local_2.IsValid()))
+        if (!(this.Settings.Get().GetKeyMappings().IsValid()))
         {
             return;
         }
-        if (CheckHasValueActuallyChanged())
+        if (this.Settings.Get().CheckHasValueActuallyChanged())
         {
             FDialogDynamicCallback local_8;
             local_8.BindUFunction(this, n"HandleRequireCloseAnswer");
@@ -392,7 +379,7 @@ class UPage_SettingsMainPage : UEUIActivatableWidget
     UFUNCTION()
     bool HandleRequireCloseAnswer(const FCommonDialogAnswer &inout Answer)
     {
-        int(Answer.AnswerType).CheckHasSettingsChangedForClose();
+        this.Settings.Get().CheckHasSettingsChangedForClose(Answer.AnswerType);
         if (int(Answer.AnswerType) != 0)
         {
             ::FMS_SettingMain::Get(this).PrevIndex = 0;
@@ -421,7 +408,7 @@ class UPage_SettingsMainPage : UEUIActivatableWidget
     UFUNCTION()
     TEUIModelRef<FVMS_PlayerKeyMappings> Settings_KeyMappings() const
     {
-        FVMS_SettingPage& local_2;
+        FVMS_SettingPage& local_2 = this.Settings.Get();
         TEUIModelRef<FVMS_PlayerKeyMappings> local_10;
         if (local_2)
         {
@@ -436,7 +423,7 @@ class UPage_SettingsMainPage : UEUIActivatableWidget
     UFUNCTION()
     TArray<FEUIModelContainer> Settings_CategoryListItems() const
     {
-        FVMS_SettingPage& local_2;
+        FVMS_SettingPage& local_2 = this.Settings.Get();
         TArray<FEUIModelContainer> local_12;
         if (local_2)
         {
@@ -451,7 +438,7 @@ class UPage_SettingsMainPage : UEUIActivatableWidget
     UFUNCTION()
     TArray<FEUIDynamicWidgetData> Settings_SelectedListItems() const
     {
-        FVMS_SettingPage& local_2;
+        FVMS_SettingPage& local_2 = this.Settings.Get();
         TArray<FEUIDynamicWidgetData> local_12;
         if (local_2)
         {
@@ -466,21 +453,21 @@ class UPage_SettingsMainPage : UEUIActivatableWidget
     UFUNCTION()
     FEUIDynamicWidgetData Settings_FirstItem() const
     {
-        FVMS_SettingPage& local_2;
+        FVMS_SettingPage& local_2 = this.Settings.Get();
         FEUIDynamicWidgetData local_52 = local_2 ? local_2.GetFirstItem() : FEUIDynamicWidgetData();
         return local_52;
     }
     UFUNCTION()
     FEUIDynamicWidgetData Settings_PrevSelectedItem() const
     {
-        FVMS_SettingPage& local_2;
+        FVMS_SettingPage& local_2 = this.Settings.Get();
         FEUIDynamicWidgetData local_52 = local_2 ? local_2.GetPrevSelectedItem() : FEUIDynamicWidgetData();
         return local_52;
     }
     UFUNCTION()
     TDataObjectPtr<FSettingItemConfig> Settings_SelectedItemConfig() const
     {
-        FVMS_SettingPage& local_2;
+        FVMS_SettingPage& local_2 = this.Settings.Get();
         TDataObjectPtr<FSettingItemConfig> local_52;
         if (local_2)
         {
@@ -552,8 +539,8 @@ class UPage_SettingsMainPage : UEUIActivatableWidget
     }
     void HandleObservedModelChanges(FEUIReactiveSubscriberIterator &inout It)
     {
-        FVMS_SettingPage& local_6;
         TEUIModelRef<FVMS_SettingPage> local_2 = this.Settings.AsRef();
+        FVMS_SettingPage& local_6 = local_2.Get();
         for (; It; )
         {
             FEUIReactiveSubscriberTrackScope local_56 = FEUIReactiveSubscriberTrackScope(It);

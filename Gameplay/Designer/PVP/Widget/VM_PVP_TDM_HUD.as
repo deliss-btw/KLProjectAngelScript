@@ -407,11 +407,11 @@ struct FVMS_PVP_TDM_HUD : FEUIViewModelSingleton
                 for (auto& local_104 : local_86.GetPlayerStatMap())
                 {
                     FGameModePlayerScoreDataBase local_110;
-                    local_110.SetKills(GetKills());
-                    local_110.SetDeaths(GetDeaths());
-                    local_110.SetAssists(GetAssists());
-                    local_110.SetDamageDealt(GetDamageDealt());
-                    local_110.SetDamageTaken(GetDamageTaken());
+                    local_110.SetKills(local_104.GetValue().GetKills());
+                    local_110.SetDeaths(local_104.GetValue().GetDeaths());
+                    local_110.SetAssists(local_104.GetValue().GetAssists());
+                    local_110.SetDamageDealt(local_104.GetValue().GetDamageDealt());
+                    local_110.SetDamageTaken(local_104.GetValue().GetDamageTaken());
                     local_68.Add(local_104.GetKey(), local_110);
                 }
             }
@@ -425,11 +425,11 @@ struct FVMS_PVP_TDM_HUD : FEUIViewModelSingleton
                     for (auto& local_104_2 : local_122.GetPlayerStatMap())
                     {
                         FGameModePlayerScoreDataBase local_110;
-                        local_110.SetKills(GetKills());
-                        local_110.SetDeaths(GetDeaths());
-                        local_110.SetAssists(GetAssists());
-                        local_110.SetDamageDealt(GetDamageDealt());
-                        local_110.SetDamageTaken(GetDamageTaken());
+                        local_110.SetKills(local_104_2.GetValue().GetKills());
+                        local_110.SetDeaths(local_104_2.GetValue().GetDeaths());
+                        local_110.SetAssists(local_104_2.GetValue().GetAssists());
+                        local_110.SetDamageDealt(local_104_2.GetValue().GetDamageDealt());
+                        local_110.SetDamageTaken(local_104_2.GetValue().GetDamageTaken());
                         local_68.Add(local_104_2.GetKey(), local_110);
                     }
                 }
@@ -438,9 +438,9 @@ struct FVMS_PVP_TDM_HUD : FEUIViewModelSingleton
         local_7 = -1;
         for (auto& local_140 : local_68)
         {
-            if (GetKills() > local_7)
+            if (local_140.GetValue().GetKills() > local_7)
             {
-                local_7 = GetKills();
+                local_7 = local_140.GetValue().GetKills();
             }
         }
         if (local_7 < 0)
@@ -450,7 +450,7 @@ struct FVMS_PVP_TDM_HUD : FEUIViewModelSingleton
         int local_145 = -1;
         for (auto& local_140_2 : local_68)
         {
-            if (GetKills() != local_7)
+            if (local_140_2.GetValue().GetKills() != local_7)
             {
                 continue;
             }
@@ -520,11 +520,11 @@ struct FVMS_PVP_TDM_HUD : FEUIViewModelSingleton
                 for (auto& local_66 : local_48.GetPlayerStatMap())
                 {
                     FGameModePlayerScoreDataBase local_72;
-                    local_72.SetKills(GetKills());
-                    local_72.SetDeaths(GetDeaths());
-                    local_72.SetAssists(GetAssists());
-                    local_72.SetDamageDealt(GetDamageDealt());
-                    local_72.SetDamageTaken(GetDamageTaken());
+                    local_72.SetKills(local_66.GetValue().GetKills());
+                    local_72.SetDeaths(local_66.GetValue().GetDeaths());
+                    local_72.SetAssists(local_66.GetValue().GetAssists());
+                    local_72.SetDamageDealt(local_66.GetValue().GetDamageDealt());
+                    local_72.SetDamageTaken(local_66.GetValue().GetDamageTaken());
                     local_32.Add(local_66.GetKey(), local_72);
                 }
             }
@@ -538,11 +538,11 @@ struct FVMS_PVP_TDM_HUD : FEUIViewModelSingleton
                     for (auto& local_66_2 : local_84.GetPlayerStatMap())
                     {
                         FGameModePlayerScoreDataBase local_72;
-                        local_72.SetKills(GetKills());
-                        local_72.SetDeaths(GetDeaths());
-                        local_72.SetAssists(GetAssists());
-                        local_72.SetDamageDealt(GetDamageDealt());
-                        local_72.SetDamageTaken(GetDamageTaken());
+                        local_72.SetKills(local_66_2.GetValue().GetKills());
+                        local_72.SetDeaths(local_66_2.GetValue().GetDeaths());
+                        local_72.SetAssists(local_66_2.GetValue().GetAssists());
+                        local_72.SetDamageDealt(local_66_2.GetValue().GetDamageDealt());
+                        local_72.SetDamageTaken(local_66_2.GetValue().GetDamageTaken());
                         local_32.Add(local_66_2.GetKey(), local_72);
                     }
                 }
@@ -1916,11 +1916,9 @@ FVMS_PVP_TDM_HUD& Get(const UObject ContextObject)
 {
     return FVMS_PVP_TDM_HUD::GetByManager(EUIInternal::GetContextManager(ContextObject));
 }
-FVMS_PVP_TDM_HUD GetByManager(const UEUIManagerSubsystem Manager)
+FVMS_PVP_TDM_HUD& GetByManager(const UEUIManagerSubsystem Manager)
 {
-    FVMS_PVP_TDM_HUD __r;
-    TEUIModelRef<FVMS_PVP_TDM_HUD> local_6 = TEUIModelRef<FVMS_PVP_TDM_HUD>(EUIInternal::MakeModelWithManager(Manager, FVMS_PVP_TDM_HUD::ModelId));
-    return __r;
+    return TEUIModelRef<FVMS_PVP_TDM_HUD>(EUIInternal::MakeModelWithManager(Manager, FVMS_PVP_TDM_HUD::ModelId)).Get();
 }
 void GetModelInfo(FEUIViewModelMetaInfo &inout Result)
 {
@@ -2532,7 +2530,6 @@ namespace __GeneratedProperties_FVMS_PVP_TDM_HUD
 {
 UScriptStruct StaticStruct()
 {
-    UScriptStruct local_2;
-    return local_2;
+    return __GeneratedProperties_FVMS_PVP_TDM_HUD.Get();
 }
 }

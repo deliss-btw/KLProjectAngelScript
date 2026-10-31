@@ -72,6 +72,7 @@ class US_CompanionBehaviorSystem : UECSScriptSystem
                 {
                     continue;
                 }
+                CompanionBehaviorInfo.GetModify_DistCloseEntities().Remove(local_120);
                 ::FPrologUtils::RetractFact2("entity_dist_close", local_150, local_146);
             }
             if (local_141 <= local_142)
@@ -87,8 +88,6 @@ class US_CompanionBehaviorSystem : UECSScriptSystem
     UFUNCTION()
     void ServerJob_HandleEventTriggerCompanionBehavior(const FCE_TriggerCompanionBehavior &inout Event) const
     {
-        FString local_76;
-        FString local_80;
         FString local_146;
         FECSEntity local_4 = FECSEntity(Event.Sender);
         FString local_12 = ::FASCommonUtils::GetEntityLowerName(local_4);
@@ -103,6 +102,8 @@ class US_CompanionBehaviorSystem : UECSScriptSystem
         int local_69 = 0;
         for (; local_69 < int(local_62.Num); )
         {
+            FString local_76 = FString(local_62.Get(2, local_69));
+            FString local_80 = FString(local_62.Get(3, local_69));
             local_28.Add(local_76);
             local_24.Add(local_80);
             ++local_69;
@@ -110,8 +111,8 @@ class US_CompanionBehaviorSystem : UECSScriptSystem
         if (!(local_28.IsEmpty()))
         {
             int local_81 = FMath::RandRange(0, (local_28.Num() - 1));
-            local_76 = local_28[local_81];
-            local_80 = local_24[local_81];
+            FString local_76_2 = local_28[local_81];
+            FString local_80_2 = local_24[local_81];
             FEntityFactExtraInfo local_86;
             bool local_72 = ::FFactUtils::GetPawnEntityFactExtraInfo(local_16, local_86);
             if (local_72)
@@ -122,10 +123,10 @@ class US_CompanionBehaviorSystem : UECSScriptSystem
                 TMap<FString, FString> local_116;
                 local_116.Add("{$Memory}", ::FEntityMemoryUtils::ConstructMemoryPromptFragment(local_4));
                 FString local_120 = FString().Append("城主女儿在野外遇到").Append(local_92);
-                if (::FPrologUtils::Is(FString().Append("entity_action_memory(").Append(local_12).Append(", ").Append(local_8).Append(", ").Append(local_76).Append(")"), false))
+                if (::FPrologUtils::Is(FString().Append("entity_action_memory(").Append(local_12).Append(", ").Append(local_8).Append(", ").Append(local_76_2).Append(")"), false))
                 {
                     TMap<FString, FString> local_142;
-                    if (::FPrologUtils::GetFirstQueryMapResult(FString().Append("action_emotion(").Append(local_76).Append(", Emotion)"), local_142))
+                    if (::FPrologUtils::GetFirstQueryMapResult(FString().Append("action_emotion(").Append(local_76_2).Append(", Emotion)"), local_142))
                     {
                         local_142.Find("Emotion", local_146);
                         FString local_150 = "take_a_glance";
@@ -141,29 +142,29 @@ class US_CompanionBehaviorSystem : UECSScriptSystem
                 }
                 else
                 {
-                    FString local_158_2 = FString().Append("entity_action_memory(").Append(local_12).Append(", ").Append(local_8).Append(", ").Append(local_76).Append(")");
-                    local_146 = FString(FString().Append(local_12).Append(" ").Append(local_8).Append(" ").Append(local_76).Append(" ").Append(local_80));
+                    FString local_158_2 = FString().Append("entity_action_memory(").Append(local_12).Append(", ").Append(local_8).Append(", ").Append(local_76_2).Append(")");
+                    local_146 = FString(FString().Append(local_12).Append(" ").Append(local_8).Append(" ").Append(local_76_2).Append(" ").Append(local_80_2));
                     XLog(ELog(0), FString().Append("CompanionBehaviorLog: ").Append(local_146));
                     ::FCompanionBehaviorUitls::ShowBehaviorStringOnHead(local_4, local_146);
                     if (!(::FPrologUtils::Is(local_158_2, false)))
                     {
                         ::FPrologUtils::AddFact(local_158_2, true, true);
                     }
-                    if ((local_76 == "say_hi"))
+                    if ((local_76_2 == "say_hi"))
                     {
                         local_116.Add("{$Task}", FString().Append(local_120).Append("，用一句话开心的对").Append(local_92).Append("口语化地打招呼。\n根据行动历史说出不一样的话"));
                         ::FLLMUtils::RequestChatForGPT(local_4, ::FLLMUtils::PromptFormat(local_96.PromptContent, local_116));
                     }
                     else
                     {
-                        if ((local_76 == "scared"))
+                        if ((local_76_2 == "scared"))
                         {
                             local_116.Add("{$Task}", FString().Append(local_120).Append("，用一句话害怕地对").Append(local_92).Append("口语化地让它走开。\n根据行动历史说出不一样的话"));
                             ::FLLMUtils::RequestChatForGPT(local_4, ::FLLMUtils::PromptFormat(local_96.PromptContent, local_116));
                         }
                         else
                         {
-                            if ((local_76 == "poor_for"))
+                            if ((local_76_2 == "poor_for"))
                             {
                                 FString local_150_2 = FString();
                                 local_116.Add("{$Task}", local_150_2.Append(local_120).Append("，用一句话难过地对").Append(local_92).Append("口语化地表达很可怜它。\n根据行动历史说出不一样的话"));
@@ -172,16 +173,16 @@ class US_CompanionBehaviorSystem : UECSScriptSystem
                             }
                             else
                             {
-                                if ((local_76 == "like"))
+                                if ((local_76_2 == "like"))
                                 {
                                     local_116.Add("{$Task}", FString().Append(local_120).Append("，用一句话开心地对").Append(local_92).Append("口语化地表达它漂亮。\n根据行动历史说出不一样的话"));
                                     ::FLLMUtils::RequestChatForGPT(local_4, ::FLLMUtils::PromptFormat(local_96.PromptContent, local_116));
                                 }
                                 else
                                 {
-                                    if ((local_76 == "admire"))
+                                    if ((local_76_2 == "admire"))
                                     {
-                                        local_116.Add("{$Task}", local_76.Append(local_120).Append("，用一句话开心地对").Append(local_92).Append("口语化地表达它很酷。\n根据行动历史说出不一样的话"));
+                                        local_116.Add("{$Task}", FString().Append(local_120).Append("，用一句话开心地对").Append(local_92).Append("口语化地表达它很酷。\n根据行动历史说出不一样的话"));
                                         ::FLLMUtils::RequestChatForGPT(local_4, ::FLLMUtils::PromptFormat(local_96.PromptContent, local_116));
                                     }
                                 }

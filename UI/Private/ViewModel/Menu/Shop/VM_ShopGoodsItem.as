@@ -88,29 +88,29 @@ struct FVM_ShopGoodsItem : FEUIViewModel
         if (this.GetShopGoods().opArrow().HasPersonalLimit())
         {
             TEUIModelRef<FVM_ComposableItem> local_12_2 = this.GetComposableItem();
+            ::ComposableItemUtility::SetItemEquipMarkState(local_12_2.Get(), 0);
         }
         TEUIModelRef<FVM_ComposableItem> local_12_3 = this.GetComposableItem();
+        ::ComposableItemUtility::SetItemMaskType(local_12_3.Get(), 0);
         TEUIModelRef<FM_ShopGoods> local_4 = this.GetShopGoods();
         CastTo local_42;
         TDataObjectPtr<FEquipmentConfig> local_66 = local_42.opCall();
         if (local_66)
         {
             this.SetbCanShowEquipmentInfo(true);
-            FText::AsCultureInvariant("Lv.{0}");
-            FText local_74;
-            this.SetEquipmentLevelText(local_74);
+            this.SetEquipmentLevelText(FText::Format(FText::AsCultureInvariant("Lv.{0}"), local_66.Get().Level));
             TEUIModelRef<FVM_EquipmentInfo> local_78 = TEUIModelRef<FVM_EquipmentInfo>(::FVM_EquipmentInfo::Create(this.GetContext().Manager, ::FMS_EquipmentDataCache::Get(this.GetContext().Manager).CreateFromConfig(local_66)));
             this.SetEquipmentInfo(local_78);
             int local_14 = local_66.opArrow().GetMaxRandomTrait();
             TEUIModelRef<FVM_EquipmentInfo> local_78_2 = this.GetEquipmentInfo();
-            local_14.SetPreviewMaxRandomTraitNum();
+            local_78_2.Get().SetPreviewMaxRandomTraitNum(local_14);
             TEUIModelRef<FVM_EquipmentInfo> local_78_3 = this.GetEquipmentInfo();
             this.SetCurEquipItemInfoTitle(TEUIModelRef<FVM_AvatarEquipmentItemInfoTitle>(::FVM_AvatarEquipmentItemInfoTitle::Create(this.GetContext().Manager, local_78_3)));
             TEUIModelRef<FVM_EquipmentInfo> local_78_4 = this.GetEquipmentInfo();
             TEUIModelRef<FVM_AvatarEquipmentItemInfoDetail> local_82 = TEUIModelRef<FVM_AvatarEquipmentItemInfoDetail>(::FVM_AvatarEquipmentItemInfoDetail::Create(this.GetContext().Manager, local_78_4));
             this.SetCurEquipItemInfoDetail(local_82);
             TEUIModelRef<FVM_AvatarEquipmentItemInfoDetail> local_82_2 = this.GetCurEquipItemInfoDetail();
-            EnableShowRandomTraitText();
+            local_82_2.Get().EnableShowRandomTraitText();
         }
         return;
     }
@@ -166,11 +166,8 @@ struct FVM_ShopGoodsItem : FEUIViewModel
         }
         if (this.GetComposableItem())
         {
-            int local_7 = this.GetShopGoods().opArrow().GetRemainingCount();
-            TEUIModelRef<FVM_ComposableItem> local_14 = this.GetComposableItem();
-            bool local_3 = this.CannotPurchase();
-            TEUIModelRef<FVM_ComposableItem> local_14_2 = this.GetComposableItem();
-            ::ComposableItemUtility::SetItemMaskEnable(local_3);
+            ::ComposableItemUtility::SetItemEquipMarkLimitCount(this.GetComposableItem().Get(), this.GetShopGoods().opArrow().GetRemainingCount());
+            ::ComposableItemUtility::SetItemMaskEnable(this.GetComposableItem().Get(), this.CannotPurchase());
         }
         return;
     }
@@ -395,11 +392,9 @@ FVM_ShopGoodsItem& Create(const UObject ContextObject, const TEUIModelRef<FM_Sho
 {
     return FVM_ShopGoodsItem::CreateByManager(EUIInternal::GetContextManager(ContextObject), ShopGoods);
 }
-FVM_ShopGoodsItem CreateByManager(const UEUIManagerSubsystem Manager, const TEUIModelRef<FM_ShopGoods> &inout ShopGoods)
+FVM_ShopGoodsItem& CreateByManager(const UEUIManagerSubsystem Manager, const TEUIModelRef<FM_ShopGoods> &inout ShopGoods)
 {
-    FVM_ShopGoodsItem __r;
-    TEUIModelRef<FVM_ShopGoodsItem> local_6 = TEUIModelRef<FVM_ShopGoodsItem>(EUIInternal::MakeModelWithManager_Generic(Manager, FVM_ShopGoodsItem::ModelId, 0, ShopGoods));
-    return __r;
+    return TEUIModelRef<FVM_ShopGoodsItem>(EUIInternal::MakeModelWithManager_Generic(Manager, FVM_ShopGoodsItem::ModelId, 0, ShopGoods)).Get();
 }
 void GetModelInfo(FEUIViewModelMetaInfo &inout Result)
 {
@@ -568,7 +563,6 @@ namespace __GeneratedProperties_FVM_ShopGoodsItem
 {
 UScriptStruct StaticStruct()
 {
-    UScriptStruct local_2;
-    return local_2;
+    return __GeneratedProperties_FVM_ShopGoodsItem.Get();
 }
 }

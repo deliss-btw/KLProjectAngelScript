@@ -46,7 +46,7 @@ class UWidget_AvatarItem : UEUIUserListItemWidget
     {
         if (this.HoverBtn != nullptr)
         {
-            FVM_CommonHoverProvider& local_6;
+            FVM_CommonHoverProvider& local_6 = this.HoverProvider.Get();
             if (!(local_6.GetbIsForbidHover()))
             {
                 local_6.SetHoverForWidget(this.HoverBtn);
@@ -71,9 +71,8 @@ class UWidget_AvatarItem : UEUIUserListItemWidget
         {
             if (this.Avatar.IsValid())
             {
-                FEUIModelRef local_8;
-                local_8.ResetHoverModel();
-                NotifyMouseEnter();
+                this.HoverProvider.Get().ResetHoverModel(FEUIModelRef(this.Avatar.Get()));
+                this.HoverProvider.Get().NotifyMouseEnter();
             }
         }
         return;
@@ -83,7 +82,7 @@ class UWidget_AvatarItem : UEUIUserListItemWidget
     {
         if (this.HoverBtn != nullptr && this.HoverProvider.IsValid())
         {
-            FVM_CommonHoverProvider& local_8;
+            FVM_CommonHoverProvider& local_8 = this.HoverProvider.Get();
             if (!(local_8.GetbIsForbidHover()))
             {
                 local_8.NotifyMouseLeave();

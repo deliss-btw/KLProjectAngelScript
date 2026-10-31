@@ -449,8 +449,7 @@ struct FMS_CombatSettingData : FEUIModelSingleton
     {
         if (this.GetCombatSettingPreset().IsValid())
         {
-            TEUIModelRef<FM_AvatarCombatSetting> local_6 = this.GetCombatSettingPreset().opArrow().GetMainAvatarCombatSetting();
-            return (0 == 0);
+            return (this.GetCombatSettingPreset().opArrow().GetMainAvatarCombatSetting().opArrow().GetAvatarConfig().Get().DataId == AvatarConfig.Get().DataId);
         }
         return false;
     }
@@ -460,8 +459,7 @@ struct FMS_CombatSettingData : FEUIModelSingleton
         {
             if (this.GetCombatSettingPreset().opArrow().GetAssistAvatarCombatSetting().IsValid())
             {
-                TEUIModelRef<FM_AvatarCombatSetting> local_6 = this.GetCombatSettingPreset().opArrow().GetAssistAvatarCombatSetting();
-                return (0 == 0);
+                return (this.GetCombatSettingPreset().opArrow().GetAssistAvatarCombatSetting().opArrow().GetAvatarConfig().Get().DataId == AvatarConfig.Get().DataId);
             }
         }
         return false;
@@ -494,7 +492,7 @@ struct FMS_CombatSettingData : FEUIModelSingleton
     }
     void SaveEditingDivineSkillSetting(const TDataObjectPtr<FDivineSkillConfig> &inout DivineSkillConfig)
     {
-        FString local_4 = FString();
+        XLog(ELog(28), FString().Append("xxxxxx [SaveEditingDivineSkillSetting] DivineSkillConfig:  ").Append(DivineSkillConfig.Get().DataId));
         this.GetCombatSettingPreset().opArrow().GetPlayerCombatSetting().opArrow().SetDivineSkillConfig(DivineSkillConfig);
         return;
     }
@@ -586,25 +584,19 @@ struct FMS_CombatSettingData : FEUIModelSingleton
             FMsg_SpeicaltyChanged local_22;
             if (this.GetCombatSettingPreset().IsValid())
             {
-                TEUIModelRef<FM_CombatSettingPreset> local_6 = this.GetCombatSettingPreset();
                 int local_7;
-                local_7 = GetMainAvatarID();
-                TEUIModelRef<FM_CombatSettingPreset> local_6_2 = this.GetCombatSettingPreset();
+                local_7 = this.GetCombatSettingPreset().Get().GetMainAvatarID();
                 int local_9;
-                local_9 = GetAssistAvatarID();
+                local_9 = this.GetCombatSettingPreset().Get().GetAssistAvatarID();
                 if (Rsp.GetFromAvatarId() == local_7)
                 {
-                    int local_8 = Rsp.GetToAvatarId();
-                    TEUIModelRef<FM_CombatSettingPreset> local_6_3 = this.GetCombatSettingPreset();
-                    local_8.SetupFromAvatarID(local_9);
+                    this.GetCombatSettingPreset().Get().SetupFromAvatarID(Rsp.GetToAvatarId(), local_9);
                 }
                 else
                 {
                     if (local_9 != 0 && (Rsp.GetFromAvatarId() == local_9))
                     {
-                        int local_8_2 = Rsp.GetToAvatarId();
-                        TEUIModelRef<FM_CombatSettingPreset> local_6_4 = this.GetCombatSettingPreset();
-                        local_7.SetupFromAvatarID(local_8_2);
+                        this.GetCombatSettingPreset().Get().SetupFromAvatarID(local_7, Rsp.GetToAvatarId());
                     }
                 }
                 FEUIModelRef local_16 = FEUIModelRef(this);
@@ -702,11 +694,9 @@ FM_AvatarCombatSetting& Create(const UObject ContextObject)
 {
     return FM_AvatarCombatSetting::CreateByManager(EUIInternal::GetContextManager(ContextObject));
 }
-FM_AvatarCombatSetting CreateByManager(const UEUIManagerSubsystem Manager)
+FM_AvatarCombatSetting& CreateByManager(const UEUIManagerSubsystem Manager)
 {
-    FM_AvatarCombatSetting __r;
-    TEUIModelRef<FM_AvatarCombatSetting> local_6 = TEUIModelRef<FM_AvatarCombatSetting>(EUIInternal::MakeModelWithManager(Manager, FM_AvatarCombatSetting::ModelId));
-    return __r;
+    return TEUIModelRef<FM_AvatarCombatSetting>(EUIInternal::MakeModelWithManager(Manager, FM_AvatarCombatSetting::ModelId)).Get();
 }
 void GetModelInfo(FEUIModelOnlyMetaInfo &inout Result)
 {
@@ -733,11 +723,9 @@ FM_PlayerCombatSetting& Create(const UObject ContextObject)
 {
     return FM_PlayerCombatSetting::CreateByManager(EUIInternal::GetContextManager(ContextObject));
 }
-FM_PlayerCombatSetting CreateByManager(const UEUIManagerSubsystem Manager)
+FM_PlayerCombatSetting& CreateByManager(const UEUIManagerSubsystem Manager)
 {
-    FM_PlayerCombatSetting __r;
-    TEUIModelRef<FM_PlayerCombatSetting> local_6 = TEUIModelRef<FM_PlayerCombatSetting>(EUIInternal::MakeModelWithManager(Manager, FM_PlayerCombatSetting::ModelId));
-    return __r;
+    return TEUIModelRef<FM_PlayerCombatSetting>(EUIInternal::MakeModelWithManager(Manager, FM_PlayerCombatSetting::ModelId)).Get();
 }
 void GetModelInfo(FEUIModelOnlyMetaInfo &inout Result)
 {
@@ -760,11 +748,9 @@ FM_CombatSettingPreset& Create(const UObject ContextObject)
 {
     return FM_CombatSettingPreset::CreateByManager(EUIInternal::GetContextManager(ContextObject));
 }
-FM_CombatSettingPreset CreateByManager(const UEUIManagerSubsystem Manager)
+FM_CombatSettingPreset& CreateByManager(const UEUIManagerSubsystem Manager)
 {
-    FM_CombatSettingPreset __r;
-    TEUIModelRef<FM_CombatSettingPreset> local_6 = TEUIModelRef<FM_CombatSettingPreset>(EUIInternal::MakeModelWithManager(Manager, FM_CombatSettingPreset::ModelId));
-    return __r;
+    return TEUIModelRef<FM_CombatSettingPreset>(EUIInternal::MakeModelWithManager(Manager, FM_CombatSettingPreset::ModelId)).Get();
 }
 void GetModelInfo(FEUIModelOnlyMetaInfo &inout Result)
 {
@@ -803,11 +789,9 @@ FMS_CombatSettingData& Get(const UObject ContextObject)
 {
     return FMS_CombatSettingData::GetByManager(EUIInternal::GetContextManager(ContextObject));
 }
-FMS_CombatSettingData GetByManager(const UEUIManagerSubsystem Manager)
+FMS_CombatSettingData& GetByManager(const UEUIManagerSubsystem Manager)
 {
-    FMS_CombatSettingData __r;
-    TEUIModelRef<FMS_CombatSettingData> local_6 = TEUIModelRef<FMS_CombatSettingData>(EUIInternal::MakeModelWithManager(Manager, FMS_CombatSettingData::ModelId));
-    return __r;
+    return TEUIModelRef<FMS_CombatSettingData>(EUIInternal::MakeModelWithManager(Manager, FMS_CombatSettingData::ModelId)).Get();
 }
 void GetModelInfo(FEUIModelOnlyMetaInfo &inout Result)
 {

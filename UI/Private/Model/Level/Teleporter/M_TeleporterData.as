@@ -97,10 +97,9 @@ struct FMS_TeleporterData : FEUIModelSingleton
     }
     void OnPlayerLevelObjectStatChanged(const FC_PlayerLevelObjectStat &inout PlayerLevelObjectStat)
     {
-        TSet<TDataObjectPtr<FTeleporterConfig>> local_20;
-        ETeleporterState local_167 = ETeleporterState(0);
         ETeleporterState local_207;
         FMsg_TeleporterStateChanged local_236;
+        TSet<TDataObjectPtr<FTeleporterConfig>> local_20;
         TSet<TDataObjectPtr<FTeleporterConfig>> local_40;
         if (PlayerLevelObjectStat)
         {
@@ -122,15 +121,13 @@ struct FMS_TeleporterData : FEUIModelSingleton
         TMap<TDataObjectPtr<FTeleporterConfig>, ETeleporterState> local_148;
         for (auto& local_166 : local_20)
         {
-            local_167 = ETeleporterState(2);
-            local_148.Add(local_166, local_167);
+            local_148.Add(local_166, ETeleporterState::Active);
         }
         for (auto& local_166 : local_40)
         {
             if (!(local_20.Contains(local_166)))
             {
-                local_167 = ETeleporterState(1);
-                local_148.Add(local_166, local_167);
+                local_148.Add(local_166, ETeleporterState::Unlocked);
             }
         }
         if (this.GetTeleporterStates().OrderIndependentCompareEqual(local_148))
@@ -140,7 +137,7 @@ struct FMS_TeleporterData : FEUIModelSingleton
         TSet<TDataObjectPtr<FTeleporterConfig>> local_188;
         for (auto& local_206 : local_148)
         {
-            if (!(this.GetTeleporterStates().Find(local_206.GetKey(), local_207)) || (int(local_207) != int(local_167)))
+            if (!(this.GetTeleporterStates().Find(local_206.GetKey(), local_207)) || (int(local_207) != int(local_206.GetValue())))
             {
                 local_188.Add(local_206.GetKey());
             }
@@ -155,14 +152,14 @@ struct FMS_TeleporterData : FEUIModelSingleton
         this.GetModify_TeleporterStates().Empty(0);
         for (auto& local_206_2 : local_148)
         {
-            this.GetModify_TeleporterStates().Add(local_206_2.GetKey());
+            this.GetModify_TeleporterStates().Add(local_206_2.GetKey(), local_206_2.GetValue());
         }
         for (auto& local_166 : local_188)
         {
             FEUIModelRef local_234 = FEUIModelRef(this);
             FEUIMessageBus::Publish(EUIMessageBus);
             local_236.TeleporterConfig = local_166;
-            local_167 = this.GetTeleporterState(local_166);
+            ETeleporterState local_167 = this.GetTeleporterState(local_166);
             local_236.TeleporterState = ETeleporterState(local_167);
         }
         FEUIModelRef local_234_2 = FEUIModelRef(this);
@@ -215,11 +212,9 @@ FMS_TeleporterData& Get(const UObject ContextObject)
 {
     return FMS_TeleporterData::GetByManager(EUIInternal::GetContextManager(ContextObject));
 }
-FMS_TeleporterData GetByManager(const UEUIManagerSubsystem Manager)
+FMS_TeleporterData& GetByManager(const UEUIManagerSubsystem Manager)
 {
-    FMS_TeleporterData __r;
-    TEUIModelRef<FMS_TeleporterData> local_6 = TEUIModelRef<FMS_TeleporterData>(EUIInternal::MakeModelWithManager(Manager, FMS_TeleporterData::ModelId));
-    return __r;
+    return TEUIModelRef<FMS_TeleporterData>(EUIInternal::MakeModelWithManager(Manager, FMS_TeleporterData::ModelId)).Get();
 }
 void GetModelInfo(FEUIModelOnlyMetaInfo &inout Result)
 {

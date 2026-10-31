@@ -93,11 +93,9 @@ FM_SocialTeam& Create(const UObject ContextObject, const uint64 TeamId)
 {
     return FM_SocialTeam::CreateByManager(EUIInternal::GetContextManager(ContextObject), TeamId);
 }
-FM_SocialTeam CreateByManager(const UEUIManagerSubsystem Manager, const uint64 TeamId)
+FM_SocialTeam& CreateByManager(const UEUIManagerSubsystem Manager, const uint64 TeamId)
 {
-    FM_SocialTeam __r;
-    TEUIModelRef<FM_SocialTeam> local_6 = TEUIModelRef<FM_SocialTeam>(EUIInternal::MakeModelWithManager_Generic(Manager, FM_SocialTeam::ModelId, 0, TeamId));
-    return __r;
+    return TEUIModelRef<FM_SocialTeam>(EUIInternal::MakeModelWithManager_Generic(Manager, FM_SocialTeam::ModelId, 0, TeamId)).Get();
 }
 void GetModelInfo(FEUIModelOnlyMetaInfo &inout Result)
 {

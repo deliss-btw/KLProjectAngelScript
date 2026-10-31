@@ -12,7 +12,7 @@ TDataObjectPtr<FAvatarMappingConfig> __FTalentConfig_GetAvatar(const TDataObject
         FTalentConfig local_364;
         return local_364.GetAvatar();
     }
-    return GetAvatar();
+    return DataObject.Get().GetAvatar();
 }
 UFUNCTION()
 TDataObjectPtr<FSkillInitConfig> __FTalentConfig_GetSkillConfig(const TDataObjectPtr<FTalentConfig> &inout DataObject)
@@ -26,7 +26,7 @@ TDataObjectPtr<FSkillInitConfig> __FTalentConfig_GetSkillConfig(const TDataObjec
         FTalentConfig local_364;
         return local_364.GetSkillConfig();
     }
-    return GetSkillConfig();
+    return DataObject.Get().GetSkillConfig();
 }
 UFUNCTION()
 int __FTalentConfig_GetSkillCapabilityLevel(const TDataObjectPtr<FTalentConfig> &inout DataObject)
@@ -46,7 +46,6 @@ int __FTalentConfig_GetSkillCapabilityLevel(const TDataObjectPtr<FTalentConfig> 
 UFUNCTION()
 ESkillType __FTalentConfig_GetTalentSkillType(const TDataObjectPtr<FTalentConfig> &inout DataObject)
 {
-    int local_365 = 0;
     if ((DataObject == nullptr))
     {
         if (!(EUIGlobals::GIsDuringPropertyConversion))
@@ -54,10 +53,9 @@ ESkillType __FTalentConfig_GetTalentSkillType(const TDataObjectPtr<FTalentConfig
             FBlueprintDebugFunctions::ThrowScriptException("Get 'TalentSkillType' from a null 'FTalentConfig' DataObject!");
         }
         FTalentConfig local_364;
-        local_365 = int(local_364.TalentSkillType);
-        return ESkillType(local_365);
+        return local_364.TalentSkillType;
     }
-    return ESkillType(local_365);
+    return DataObject.Get().TalentSkillType;
 }
 UFUNCTION()
 float32 __FTalentConfig_GetTalentSkillCDSeconds(const TDataObjectPtr<FTalentConfig> &inout DataObject)
@@ -86,7 +84,7 @@ TDataObjectPtr<FCapabilityConfig> __FTalentConfig_GetCapabilityConfig(const TDat
         FTalentConfig local_364;
         return local_364.GetCapabilityConfig();
     }
-    return GetCapabilityConfig();
+    return DataObject.Get().GetCapabilityConfig();
 }
 UFUNCTION()
 int __FTalentConfig_GetCapabilityLevel(const TDataObjectPtr<FTalentConfig> &inout DataObject)
@@ -106,7 +104,6 @@ int __FTalentConfig_GetCapabilityLevel(const TDataObjectPtr<FTalentConfig> &inou
 UFUNCTION()
 TArray<FCapabilityParamModifier> __FTalentConfig_GetCapabilityParamModifiers(const TDataObjectPtr<FTalentConfig> &inout DataObject)
 {
-    TArray<FCapabilityParamModifier> __r;
     if ((DataObject == nullptr))
     {
         if (!(EUIGlobals::GIsDuringPropertyConversion))
@@ -116,12 +113,11 @@ TArray<FCapabilityParamModifier> __FTalentConfig_GetCapabilityParamModifiers(con
         FTalentConfig local_364;
         return local_364.CapabilityParamModifiers;
     }
-    return __r;
+    return DataObject.Get().CapabilityParamModifiers;
 }
 UFUNCTION()
 ETalentType __FTalentConfig_GetTalentType(const TDataObjectPtr<FTalentConfig> &inout DataObject)
 {
-    int local_365 = 0;
     if ((DataObject == nullptr))
     {
         if (!(EUIGlobals::GIsDuringPropertyConversion))
@@ -129,15 +125,13 @@ ETalentType __FTalentConfig_GetTalentType(const TDataObjectPtr<FTalentConfig> &i
             FBlueprintDebugFunctions::ThrowScriptException("Get 'TalentType' from a null 'FTalentConfig' DataObject!");
         }
         FTalentConfig local_364;
-        local_365 = int(local_364.TalentType);
-        return ETalentType(local_365);
+        return local_364.TalentType;
     }
-    return ETalentType(local_365);
+    return DataObject.Get().TalentType;
 }
 UFUNCTION()
 FNameHandle_EntityBBVarInt __FTalentConfig_GetFoundationTalentBBKey(const TDataObjectPtr<FTalentConfig> &inout DataObject)
 {
-    FNameHandle_EntityBBVarInt __r;
     if ((DataObject == nullptr))
     {
         if (!(EUIGlobals::GIsDuringPropertyConversion))
@@ -147,7 +141,7 @@ FNameHandle_EntityBBVarInt __FTalentConfig_GetFoundationTalentBBKey(const TDataO
         FTalentConfig local_364;
         return local_364.FoundationTalentBBKey;
     }
-    return __r;
+    return DataObject.Get().FoundationTalentBBKey;
 }
 UFUNCTION()
 int __FTalentConfig_GetFoundationTalentBBValue(const TDataObjectPtr<FTalentConfig> &inout DataObject)
@@ -176,12 +170,11 @@ TDataObjectPtr<FTalentConfig> __FTalentConfig_GetFoundationTalent(const TDataObj
         FTalentConfig local_364;
         return local_364.GetFoundationTalent();
     }
-    return GetFoundationTalent();
+    return DataObject.Get().GetFoundationTalent();
 }
 UFUNCTION()
 ETalentDivision __FTalentConfig_GetTalentDivision(const TDataObjectPtr<FTalentConfig> &inout DataObject)
 {
-    int local_365 = 0;
     if ((DataObject == nullptr))
     {
         if (!(EUIGlobals::GIsDuringPropertyConversion))
@@ -189,10 +182,9 @@ ETalentDivision __FTalentConfig_GetTalentDivision(const TDataObjectPtr<FTalentCo
             FBlueprintDebugFunctions::ThrowScriptException("Get 'TalentDivision' from a null 'FTalentConfig' DataObject!");
         }
         FTalentConfig local_364;
-        local_365 = int(local_364.TalentDivision);
-        return ETalentDivision(local_365);
+        return local_364.TalentDivision;
     }
-    return ETalentDivision(local_365);
+    return DataObject.Get().TalentDivision;
 }
 UFUNCTION()
 TArray<TDataObjectPtr<FServerConditionConfigBase>> __FTalentConfig_GetUnlockCondition(const TDataObjectPtr<FTalentConfig> &inout DataObject)
@@ -206,12 +198,11 @@ TArray<TDataObjectPtr<FServerConditionConfigBase>> __FTalentConfig_GetUnlockCond
         FTalentConfig local_364;
         return local_364.GetUnlockCondition();
     }
-    return GetUnlockCondition();
+    return DataObject.Get().GetUnlockCondition();
 }
 UFUNCTION()
 TArray<FItemParamConfig> __FTalentConfig_GetUnlockCost(const TDataObjectPtr<FTalentConfig> &inout DataObject)
 {
-    TArray<FItemParamConfig> __r;
     if ((DataObject == nullptr))
     {
         if (!(EUIGlobals::GIsDuringPropertyConversion))
@@ -221,7 +212,7 @@ TArray<FItemParamConfig> __FTalentConfig_GetUnlockCost(const TDataObjectPtr<FTal
         FTalentConfig local_364;
         return local_364.UnlockCost;
     }
-    return __r;
+    return DataObject.Get().UnlockCost;
 }
 UFUNCTION()
 TArray<TDataObjectPtr<FTalentConfig>> __FTalentConfig_GetUnlockFrontTalent(const TDataObjectPtr<FTalentConfig> &inout DataObject)
@@ -235,12 +226,11 @@ TArray<TDataObjectPtr<FTalentConfig>> __FTalentConfig_GetUnlockFrontTalent(const
         FTalentConfig local_364;
         return local_364.GetUnlockFrontTalent();
     }
-    return GetUnlockFrontTalent();
+    return DataObject.Get().GetUnlockFrontTalent();
 }
 UFUNCTION()
 EUnlockType __FTalentConfig_GetUnlockType(const TDataObjectPtr<FTalentConfig> &inout DataObject)
 {
-    int local_365 = 0;
     if ((DataObject == nullptr))
     {
         if (!(EUIGlobals::GIsDuringPropertyConversion))
@@ -248,10 +238,9 @@ EUnlockType __FTalentConfig_GetUnlockType(const TDataObjectPtr<FTalentConfig> &i
             FBlueprintDebugFunctions::ThrowScriptException("Get 'UnlockType' from a null 'FTalentConfig' DataObject!");
         }
         FTalentConfig local_364;
-        local_365 = int(local_364.UnlockType);
-        return EUnlockType(local_365);
+        return local_364.UnlockType;
     }
-    return EUnlockType(local_365);
+    return DataObject.Get().UnlockType;
 }
 UFUNCTION()
 TDataObjectPtr<FTalentConfig> __FTalentConfig_GetBaseTalent(const TDataObjectPtr<FTalentConfig> &inout DataObject)
@@ -265,7 +254,7 @@ TDataObjectPtr<FTalentConfig> __FTalentConfig_GetBaseTalent(const TDataObjectPtr
         FTalentConfig local_364;
         return local_364.GetBaseTalent();
     }
-    return GetBaseTalent();
+    return DataObject.Get().GetBaseTalent();
 }
 UFUNCTION()
 TDataObjectPtr<FTalentConfig> __FTalentConfig_GetChooseTalent(const TDataObjectPtr<FTalentConfig> &inout DataObject)
@@ -279,7 +268,7 @@ TDataObjectPtr<FTalentConfig> __FTalentConfig_GetChooseTalent(const TDataObjectP
         FTalentConfig local_364;
         return local_364.GetChooseTalent();
     }
-    return GetChooseTalent();
+    return DataObject.Get().GetChooseTalent();
 }
 UFUNCTION()
 TDataObjectPtr<FTalentConfig> __FTalentConfig_GetDoubleFormTalent(const TDataObjectPtr<FTalentConfig> &inout DataObject)
@@ -293,12 +282,11 @@ TDataObjectPtr<FTalentConfig> __FTalentConfig_GetDoubleFormTalent(const TDataObj
         FTalentConfig local_364;
         return local_364.GetDoubleFormTalent();
     }
-    return GetDoubleFormTalent();
+    return DataObject.Get().GetDoubleFormTalent();
 }
 UFUNCTION()
 FText __FTalentConfig_GetTalentName(const TDataObjectPtr<FTalentConfig> &inout DataObject)
 {
-    FText __r;
     if ((DataObject == nullptr))
     {
         if (!(EUIGlobals::GIsDuringPropertyConversion))
@@ -308,12 +296,11 @@ FText __FTalentConfig_GetTalentName(const TDataObjectPtr<FTalentConfig> &inout D
         FTalentConfig local_364;
         return local_364.TalentName;
     }
-    return __r;
+    return DataObject.Get().TalentName;
 }
 UFUNCTION()
 FText __FTalentConfig_GetShotDesc(const TDataObjectPtr<FTalentConfig> &inout DataObject)
 {
-    FText __r;
     if ((DataObject == nullptr))
     {
         if (!(EUIGlobals::GIsDuringPropertyConversion))
@@ -323,12 +310,11 @@ FText __FTalentConfig_GetShotDesc(const TDataObjectPtr<FTalentConfig> &inout Dat
         FTalentConfig local_364;
         return local_364.ShotDesc;
     }
-    return __r;
+    return DataObject.Get().ShotDesc;
 }
 UFUNCTION()
 FText __FTalentConfig_GetTalentDesc(const TDataObjectPtr<FTalentConfig> &inout DataObject)
 {
-    FText __r;
     if ((DataObject == nullptr))
     {
         if (!(EUIGlobals::GIsDuringPropertyConversion))
@@ -338,12 +324,11 @@ FText __FTalentConfig_GetTalentDesc(const TDataObjectPtr<FTalentConfig> &inout D
         FTalentConfig local_364;
         return local_364.TalentDesc;
     }
-    return __r;
+    return DataObject.Get().TalentDesc;
 }
 UFUNCTION()
 FText __FTalentConfig_GetTalentUpgradeDesc(const TDataObjectPtr<FTalentConfig> &inout DataObject)
 {
-    FText __r;
     if ((DataObject == nullptr))
     {
         if (!(EUIGlobals::GIsDuringPropertyConversion))
@@ -353,12 +338,11 @@ FText __FTalentConfig_GetTalentUpgradeDesc(const TDataObjectPtr<FTalentConfig> &
         FTalentConfig local_364;
         return local_364.TalentUpgradeDesc;
     }
-    return __r;
+    return DataObject.Get().TalentUpgradeDesc;
 }
 UFUNCTION()
 FSoftBrush __FTalentConfig_GetIcon(const TDataObjectPtr<FTalentConfig> &inout DataObject)
 {
-    FSoftBrush __r;
     if ((DataObject == nullptr))
     {
         if (!(EUIGlobals::GIsDuringPropertyConversion))
@@ -368,7 +352,7 @@ FSoftBrush __FTalentConfig_GetIcon(const TDataObjectPtr<FTalentConfig> &inout Da
         FTalentConfig local_364;
         return local_364.Icon;
     }
-    return __r;
+    return DataObject.Get().Icon;
 }
 UFUNCTION()
 UMediaSource __FTalentConfig_GetPreviewMovie(const TDataObjectPtr<FTalentConfig> &inout DataObject)
@@ -388,7 +372,6 @@ UMediaSource __FTalentConfig_GetPreviewMovie(const TDataObjectPtr<FTalentConfig>
 UFUNCTION()
 FSoftBrush __FTalentConfig_GetPreviewImage(const TDataObjectPtr<FTalentConfig> &inout DataObject)
 {
-    FSoftBrush __r;
     if ((DataObject == nullptr))
     {
         if (!(EUIGlobals::GIsDuringPropertyConversion))
@@ -398,7 +381,7 @@ FSoftBrush __FTalentConfig_GetPreviewImage(const TDataObjectPtr<FTalentConfig> &
         FTalentConfig local_364;
         return local_364.PreviewImage;
     }
-    return __r;
+    return DataObject.Get().PreviewImage;
 }
 UFUNCTION()
 TDataObjectPtr<FTalentConfig> __FTalentConfig_GetFoundationTalentUnlockTalent(const TDataObjectPtr<FTalentConfig> &inout DataObject)
@@ -412,7 +395,7 @@ TDataObjectPtr<FTalentConfig> __FTalentConfig_GetFoundationTalentUnlockTalent(co
         FTalentConfig local_364;
         return local_364.GetFoundationTalentUnlockTalent();
     }
-    return GetFoundationTalentUnlockTalent();
+    return DataObject.Get().GetFoundationTalentUnlockTalent();
 }
 UFUNCTION()
 TArray<TDataObjectPtr<FTalentConfig>> __FTalentConfig_GetPassiveLinkedTalentArray(const TDataObjectPtr<FTalentConfig> &inout DataObject)
@@ -426,23 +409,21 @@ TArray<TDataObjectPtr<FTalentConfig>> __FTalentConfig_GetPassiveLinkedTalentArra
         FTalentConfig local_364;
         return local_364.GetPassiveLinkedTalentArray();
     }
-    return GetPassiveLinkedTalentArray();
+    return DataObject.Get().GetPassiveLinkedTalentArray();
 }
 UFUNCTION()
 bool __FTalentConfig_GetbHide(const TDataObjectPtr<FTalentConfig> &inout DataObject)
 {
-    bool local_1 = false;
     if ((DataObject == nullptr))
     {
-        local_1 = !(EUIGlobals::GIsDuringPropertyConversion);
-        if (local_1)
+        if (!(EUIGlobals::GIsDuringPropertyConversion))
         {
             FBlueprintDebugFunctions::ThrowScriptException("Get 'bHide' from a null 'FTalentConfig' DataObject!");
         }
         FTalentConfig local_364;
         return local_364.bHide;
     }
-    return local_1;
+    return DataObject.Get().bHide;
 }
 UFUNCTION()
 FTalentConfig CastToFTalentConfig(const TDataObjectPtr<FTalentConfig> &inout DataObject)

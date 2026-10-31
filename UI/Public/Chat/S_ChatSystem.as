@@ -194,6 +194,7 @@ class US_ChatSystem : UECSScriptSystem
         }
         if (local_16 != 0 && (local_14 != 7) && local_38.Contains(local_16))
         {
+            local_38.Remove(local_16);
         }
         int local_231 = 0;
         for (; local_231 < local_38.Num(); ++local_231)

@@ -61,6 +61,7 @@ struct FVMS_DynamicHUDManager : FEUIViewModelSingleton
         TSoftClassPtr<UEUIUserWidget> local_64;
         if (local_30)
         {
+            local_64 = local_30.Get().SelectUMG;
         }
         else
         {
@@ -238,11 +239,9 @@ FVMS_DynamicHUDManager& Get(const UObject ContextObject)
 {
     return FVMS_DynamicHUDManager::GetByManager(EUIInternal::GetContextManager(ContextObject));
 }
-FVMS_DynamicHUDManager GetByManager(const UEUIManagerSubsystem Manager)
+FVMS_DynamicHUDManager& GetByManager(const UEUIManagerSubsystem Manager)
 {
-    FVMS_DynamicHUDManager __r;
-    TEUIModelRef<FVMS_DynamicHUDManager> local_6 = TEUIModelRef<FVMS_DynamicHUDManager>(EUIInternal::MakeModelWithManager(Manager, FVMS_DynamicHUDManager::ModelId));
-    return __r;
+    return TEUIModelRef<FVMS_DynamicHUDManager>(EUIInternal::MakeModelWithManager(Manager, FVMS_DynamicHUDManager::ModelId)).Get();
 }
 void GetModelInfo(FEUIViewModelMetaInfo &inout Result)
 {
@@ -331,7 +330,6 @@ namespace __GeneratedProperties_FVMS_DynamicHUDManager
 {
 UScriptStruct StaticStruct()
 {
-    UScriptStruct local_2;
-    return local_2;
+    return __GeneratedProperties_FVMS_DynamicHUDManager.Get();
 }
 }

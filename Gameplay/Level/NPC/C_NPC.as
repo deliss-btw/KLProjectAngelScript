@@ -274,9 +274,9 @@ bool TryGetRouteConfig(const FECSEntity &inout Entity, TDataObjectPtr<FNPCDailyR
     const FC_NPCInfo& local_110 = local_108.opCall();
     if (local_110)
     {
-        if (local_110.GetMainConfig().IsSet() && GetDailyRouteConfig().IsSet())
+        if (local_110.GetMainConfig().IsSet() && local_110.GetMainConfig().Get().GetDailyRouteConfig().IsSet())
         {
-            OutRouteConfig = GetDailyRouteConfig();
+            OutRouteConfig = local_110.GetMainConfig().Get().GetDailyRouteConfig();
             return true;
         }
     }
@@ -293,8 +293,9 @@ void InitializeRouteState(const FECSEntity &inout Entity, const TDataObjectPtr<F
     local_4.CurrentNodeIndex = CurrentNodeIndex;
     local_4.PendingTargetNodeIndex = -1;
     FName local_35;
-    if (unresolved.Nodes.IsValidIndex(CurrentNodeIndex))
+    if (RouteConfig.Get().Nodes.IsValidIndex(CurrentNodeIndex))
     {
+        local_35 = RouteConfig.Get().Nodes[CurrentNodeIndex].PointId;
     }
     else
     {
@@ -320,8 +321,7 @@ float32 SelectStayTime(const FNPCDailyRouteStayTimeConfig &inout StayTime)
 }
 bool TryGetPreparedTarget(const FECSEntity &inout Entity, FC_NPCDailyRouteRuntime &out OutRuntime)
 {
-    bool local_39 = !(Entity.IsValid());
-    if (local_39)
+    if (!(Entity.IsValid()))
     {
         return false;
     }
@@ -329,7 +329,7 @@ bool TryGetPreparedTarget(const FECSEntity &inout Entity, FC_NPCDailyRouteRuntim
     const FC_NPCDailyRouteRuntime& local_46 = local_44.opCall();
     if (local_46)
     {
-        if (local_46.bHasPreparedTarget && local_46.RouteConfig.IsSet() && local_39 && !(local_46.TargetPointId.IsNone()))
+        if (local_46.bHasPreparedTarget && local_46.RouteConfig.IsSet() && local_46.RouteConfig.Get().Nodes.IsValidIndex(int(local_46.PendingTargetNodeIndex)) && !(local_46.TargetPointId.IsNone()))
         {
             return true;
         }
@@ -363,7 +363,6 @@ void ClearPreparedTarget(const FECSEntity &inout Entity)
 }
 void AdvancePreparedTarget(const FECSEntity &inout Entity)
 {
-    bool local_9 = false;
     if (!(Entity.IsValid()))
     {
         return;
@@ -372,19 +371,7 @@ void AdvancePreparedTarget(const FECSEntity &inout Entity)
     FC_NPCDailyRouteRuntime& local_8 = local_6.opCall();
     if (local_8)
     {
-        bool local_1 = !(local_8.bHasPreparedTarget) || !(local_8.RouteConfig.IsSet());
-        if (local_1)
-        {
-            local_1 = true;
-        }
-        else
-        {
-            int local_10 = int(local_8.PendingTargetNodeIndex);
-            local_9 = !local_9;
-            local_1 = local_9;
-        }
-        local_1 = local_1 || local_8.TargetPointId.IsNone();
-        if (local_1)
+        if (!(local_8.bHasPreparedTarget) || !(local_8.RouteConfig.IsSet()) || !(local_8.RouteConfig.Get().Nodes.IsValidIndex(int(local_8.PendingTargetNodeIndex))) || local_8.TargetPointId.IsNone())
         {
             FNPCDailyRouteUtils::ClearPreparedRuntime(local_8);
             return;
@@ -406,7 +393,7 @@ ENPCCombatPriority GetCombatPriority(const FECSEntity &inout Entity)
     {
         return local_6.GetCombatPriority();
     }
-    return ENPCCombatPriority(0);
+    return ENPCCombatPriority::Low;
 }
 void SetCombatPriority(const FECSEntity &inout Entity, const ENPCCombatPriority Priority)
 {
@@ -489,23 +476,24 @@ bool TryGetNPCSpawnLocationFromLevelConfig(const TDataObjectPtr<FNPCMainConfig> 
         return false;
     }
     const TArray<FConfigGUID>& local_12 = LevelConfig::GetGroupChildUnitIds(local_10.GUID);
-    FInstancedStruct::GetPtr local_40;
     for (auto& local_26 : local_12)
     {
         const FLevelConfigInstance& local_28 = LevelConfig::FindLevelUnitConfig(local_26);
-        if (!(FInstancedStruct::GetPtr(local_28.GetConfigData()).opCall()))
+        TConstRawPtr<FCommonEcologyUnitConfig> local_34 = FInstancedStruct::GetPtr(local_28.GetConfigData()).opCall();
+        if (!(local_34))
         {
             continue;
         }
-        if (!(local_40.opCall()))
+        TConstRawPtr<FConstNPCSpawnerConfig> local_42 = FInstancedStruct::GetPtr(local_34.Get().ConfigData.GetConfigData()).opCall();
+        if (!(local_42))
         {
             continue;
         }
         TDataObjectPtr<FNPCMainConfig> local_68;
+        local_68 = local_42.Get().NPCConfig;
         if ((local_68 == NPCConfig.opImplConv()))
         {
-            FVector local_122;
-            OutLocation = local_122;
+            OutLocation = local_34.Get().Transform.GetLocation();
             return true;
         }
     }

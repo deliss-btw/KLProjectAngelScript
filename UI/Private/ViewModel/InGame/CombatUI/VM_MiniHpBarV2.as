@@ -225,7 +225,7 @@ struct FVM_MiniHPBarV2 : FEUIViewModel
     }
     void RefreshPreviewHpBarRatio()
     {
-        this.SetDisplayPreviewHpBarRatio(0.0f);
+        this.SetDisplayPreviewHpBarRatio(this.GetPreviewHpBarRatioSource().GetValue());
         this.CachedPreviewHpBarRatioForLogic = this.GetDisplayPreviewHpBarRatio();
         return;
     }
@@ -809,11 +809,9 @@ FVM_MiniHPBarV2& Create(const UObject ContextObject, const FECSEntity &inout Ent
 {
     return FVM_MiniHPBarV2::CreateByManager(EUIInternal::GetContextManager(ContextObject), Entity, PreviewHpBarChaseSeconds);
 }
-FVM_MiniHPBarV2 CreateByManager(const UEUIManagerSubsystem Manager, const FECSEntity &inout Entity, const float32 PreviewHpBarChaseSeconds)
+FVM_MiniHPBarV2& CreateByManager(const UEUIManagerSubsystem Manager, const FECSEntity &inout Entity, const float32 PreviewHpBarChaseSeconds)
 {
-    FVM_MiniHPBarV2 __r;
-    TEUIModelRef<FVM_MiniHPBarV2> local_6 = TEUIModelRef<FVM_MiniHPBarV2>(EUIInternal::MakeModelWithManager_Generic(Manager, FVM_MiniHPBarV2::ModelId, 0, Entity, PreviewHpBarChaseSeconds));
-    return __r;
+    return TEUIModelRef<FVM_MiniHPBarV2>(EUIInternal::MakeModelWithManager_Generic(Manager, FVM_MiniHPBarV2::ModelId, 0, Entity, PreviewHpBarChaseSeconds)).Get();
 }
 void GetModelInfo(FEUIViewModelMetaInfo &inout Result)
 {
@@ -974,7 +972,6 @@ namespace __GeneratedProperties_FVM_MiniHPBarV2
 {
 UScriptStruct StaticStruct()
 {
-    UScriptStruct local_2;
-    return local_2;
+    return __GeneratedProperties_FVM_MiniHPBarV2.Get();
 }
 }

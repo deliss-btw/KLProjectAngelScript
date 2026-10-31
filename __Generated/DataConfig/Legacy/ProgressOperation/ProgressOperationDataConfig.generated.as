@@ -3,7 +3,6 @@ namespace __FProgressOperationConfigFunctions
 UFUNCTION()
 EProgressOperationBaseType __FProgressOperationConfig_GetProgressOperationBaseType(const TDataObjectPtr<FProgressOperationConfig> &inout DataObject)
 {
-    int local_165 = 0;
     if ((DataObject == nullptr))
     {
         if (!(EUIGlobals::GIsDuringPropertyConversion))
@@ -11,15 +10,13 @@ EProgressOperationBaseType __FProgressOperationConfig_GetProgressOperationBaseTy
             FBlueprintDebugFunctions::ThrowScriptException("Get 'ProgressOperationBaseType' from a null 'FProgressOperationConfig' DataObject!");
         }
         FProgressOperationConfig local_164;
-        local_165 = int(local_164.ProgressOperationBaseType);
-        return EProgressOperationBaseType(local_165);
+        return local_164.ProgressOperationBaseType;
     }
-    return EProgressOperationBaseType(local_165);
+    return DataObject.Get().ProgressOperationBaseType;
 }
 UFUNCTION()
 TSubclassOf<UProgressOperationBase> __FProgressOperationConfig_GetOperation(const TDataObjectPtr<FProgressOperationConfig> &inout DataObject)
 {
-    TSubclassOf<UProgressOperationBase> __r;
     if ((DataObject == nullptr))
     {
         if (!(EUIGlobals::GIsDuringPropertyConversion))
@@ -29,7 +26,7 @@ TSubclassOf<UProgressOperationBase> __FProgressOperationConfig_GetOperation(cons
         FProgressOperationConfig local_164;
         return local_164.Operation;
     }
-    return __r;
+    return DataObject.Get().Operation;
 }
 UFUNCTION()
 float32 __FProgressOperationConfig_GetProgressMaxValue(const TDataObjectPtr<FProgressOperationConfig> &inout DataObject)
@@ -49,7 +46,6 @@ float32 __FProgressOperationConfig_GetProgressMaxValue(const TDataObjectPtr<FPro
 UFUNCTION()
 bool __FProgressOperationConfig_GetbAutoSuccessOnProgressDone(const TDataObjectPtr<FProgressOperationConfig> &inout DataObject)
 {
-    bool local_1 = false;
     if ((DataObject == nullptr))
     {
         if (!(EUIGlobals::GIsDuringPropertyConversion))
@@ -59,12 +55,11 @@ bool __FProgressOperationConfig_GetbAutoSuccessOnProgressDone(const TDataObjectP
         FProgressOperationConfig local_164;
         return local_164.bAutoSuccessOnProgressDone;
     }
-    return local_1;
+    return DataObject.Get().bAutoSuccessOnProgressDone;
 }
 UFUNCTION()
 FFPTime __FProgressOperationConfig_GetOperationTotalTime(const TDataObjectPtr<FProgressOperationConfig> &inout DataObject)
 {
-    FFPTime __r;
     if ((DataObject == nullptr))
     {
         if (!(EUIGlobals::GIsDuringPropertyConversion))
@@ -74,7 +69,7 @@ FFPTime __FProgressOperationConfig_GetOperationTotalTime(const TDataObjectPtr<FP
         FProgressOperationConfig local_164;
         return local_164.OperationTotalTime;
     }
-    return __r;
+    return DataObject.Get().OperationTotalTime;
 }
 UFUNCTION()
 float32 __FProgressOperationConfig_GetInitProgressIncreaseSpeed(const TDataObjectPtr<FProgressOperationConfig> &inout DataObject)
@@ -124,7 +119,6 @@ float32 __FProgressOperationConfig_GetRangeEndRatio(const TDataObjectPtr<FProgre
 UFUNCTION()
 bool __FProgressOperationConfig_GetbInputAcceptDetermin(const TDataObjectPtr<FProgressOperationConfig> &inout DataObject)
 {
-    bool local_1 = false;
     if ((DataObject == nullptr))
     {
         if (!(EUIGlobals::GIsDuringPropertyConversion))
@@ -134,12 +128,11 @@ bool __FProgressOperationConfig_GetbInputAcceptDetermin(const TDataObjectPtr<FPr
         FProgressOperationConfig local_164;
         return local_164.bInputAcceptDetermin;
     }
-    return local_1;
+    return DataObject.Get().bInputAcceptDetermin;
 }
 UFUNCTION()
 FRuntimeFloatCurve __FProgressOperationConfig_GetInputPushProgressDifficulty(const TDataObjectPtr<FProgressOperationConfig> &inout DataObject)
 {
-    FRuntimeFloatCurve __r;
     if ((DataObject == nullptr))
     {
         if (!(EUIGlobals::GIsDuringPropertyConversion))
@@ -149,12 +142,11 @@ FRuntimeFloatCurve __FProgressOperationConfig_GetInputPushProgressDifficulty(con
         FProgressOperationConfig local_164;
         return local_164.InputPushProgressDifficulty;
     }
-    return __r;
+    return DataObject.Get().InputPushProgressDifficulty;
 }
 UFUNCTION()
 FRuntimeFloatCurve __FProgressOperationConfig_GetReversePushProgressForceByTime(const TDataObjectPtr<FProgressOperationConfig> &inout DataObject)
 {
-    FRuntimeFloatCurve __r;
     if ((DataObject == nullptr))
     {
         if (!(EUIGlobals::GIsDuringPropertyConversion))
@@ -164,12 +156,11 @@ FRuntimeFloatCurve __FProgressOperationConfig_GetReversePushProgressForceByTime(
         FProgressOperationConfig local_164;
         return local_164.ReversePushProgressForceByTime;
     }
-    return __r;
+    return DataObject.Get().ReversePushProgressForceByTime;
 }
 UFUNCTION()
 FRuntimeFloatCurve __FProgressOperationConfig_GetReversePushProgressForceByPos(const TDataObjectPtr<FProgressOperationConfig> &inout DataObject)
 {
-    FRuntimeFloatCurve __r;
     if ((DataObject == nullptr))
     {
         if (!(EUIGlobals::GIsDuringPropertyConversion))
@@ -179,7 +170,7 @@ FRuntimeFloatCurve __FProgressOperationConfig_GetReversePushProgressForceByPos(c
         FProgressOperationConfig local_164;
         return local_164.ReversePushProgressForceByPos;
     }
-    return __r;
+    return DataObject.Get().ReversePushProgressForceByPos;
 }
 UFUNCTION()
 float32 __FProgressOperationConfig_GetInitProgressValue(const TDataObjectPtr<FProgressOperationConfig> &inout DataObject)
@@ -214,7 +205,6 @@ int __FProgressOperationConfig_GetMaxOperationMemberNum(const TDataObjectPtr<FPr
 UFUNCTION()
 TMap<EProgressOperationActionTime, FProgressOperationActionArray> __FProgressOperationConfig_GetActions(const TDataObjectPtr<FProgressOperationConfig> &inout DataObject)
 {
-    TMap<EProgressOperationActionTime, FProgressOperationActionArray> __r;
     if ((DataObject == nullptr))
     {
         if (!(EUIGlobals::GIsDuringPropertyConversion))
@@ -224,12 +214,11 @@ TMap<EProgressOperationActionTime, FProgressOperationActionArray> __FProgressOpe
         FProgressOperationConfig local_164;
         return local_164.Actions;
     }
-    return __r;
+    return DataObject.Get().Actions;
 }
 UFUNCTION()
 TArray<FProgressOperationInputAction> __FProgressOperationConfig_GetInputActions(const TDataObjectPtr<FProgressOperationConfig> &inout DataObject)
 {
-    TArray<FProgressOperationInputAction> __r;
     if ((DataObject == nullptr))
     {
         if (!(EUIGlobals::GIsDuringPropertyConversion))
@@ -239,12 +228,11 @@ TArray<FProgressOperationInputAction> __FProgressOperationConfig_GetInputActions
         FProgressOperationConfig local_164;
         return local_164.InputActions;
     }
-    return __r;
+    return DataObject.Get().InputActions;
 }
 UFUNCTION()
 TSoftClassPtr<UEUIUserWidget> __FProgressOperationConfig_GetUISoftWidgetClass(const TDataObjectPtr<FProgressOperationConfig> &inout DataObject)
 {
-    TSoftClassPtr<UEUIUserWidget> __r;
     if ((DataObject == nullptr))
     {
         if (!(EUIGlobals::GIsDuringPropertyConversion))
@@ -254,7 +242,7 @@ TSoftClassPtr<UEUIUserWidget> __FProgressOperationConfig_GetUISoftWidgetClass(co
         FProgressOperationConfig local_164;
         return local_164.UISoftWidgetClass;
     }
-    return __r;
+    return DataObject.Get().UISoftWidgetClass;
 }
 UFUNCTION()
 FProgressOperationConfig CastToFProgressOperationConfig(const TDataObjectPtr<FProgressOperationConfig> &inout DataObject)

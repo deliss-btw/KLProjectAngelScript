@@ -12,7 +12,7 @@ TDataObjectPtr<FShopCategoryConfig> __FShopGoodsListConfig_GetCategory(const TDa
         FShopGoodsListConfig local_44;
         return local_44.GetCategory();
     }
-    return GetCategory();
+    return DataObject.Get().GetCategory();
 }
 UFUNCTION()
 TArray<TDataObjectPtr<FShopGoodsConfig>> __FShopGoodsListConfig_GetGoodsList(const TDataObjectPtr<FShopGoodsListConfig> &inout DataObject)
@@ -26,7 +26,7 @@ TArray<TDataObjectPtr<FShopGoodsConfig>> __FShopGoodsListConfig_GetGoodsList(con
         FShopGoodsListConfig local_44;
         return local_44.GetGoodsList();
     }
-    return GetGoodsList();
+    return DataObject.Get().GetGoodsList();
 }
 UFUNCTION()
 FShopGoodsListConfig CastToFShopGoodsListConfig(const TDataObjectPtr<FShopGoodsListConfig> &inout DataObject)

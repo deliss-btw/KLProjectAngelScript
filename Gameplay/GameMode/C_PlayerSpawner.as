@@ -133,8 +133,7 @@ struct FCS_PlayerSpawnerIndex : FECSSingleton
         TArray<FECSEntityId> local_4;
         for (auto& local_24 : this.GetTeamSpawners())
         {
-            local_24;
-            for (auto& local_38 : GetSpawners())
+            for (auto& local_38 : local_24.GetValue().GetSpawners())
             {
                 local_4.AddUnique(local_38);
             }

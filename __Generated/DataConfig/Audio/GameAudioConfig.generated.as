@@ -85,7 +85,6 @@ namespace __FTimeOfDayStageAudioConfigFunctions
 UFUNCTION()
 TSoftObjectPtr<UAkStateValue> __FTimeOfDayStageAudioConfig_GetTimeOfDayState(const TDataObjectPtr<FTimeOfDayStageAudioConfig> &inout DataObject)
 {
-    TSoftObjectPtr<UAkStateValue> __r;
     if ((DataObject == nullptr))
     {
         if (!(EUIGlobals::GIsDuringPropertyConversion))
@@ -95,7 +94,7 @@ TSoftObjectPtr<UAkStateValue> __FTimeOfDayStageAudioConfig_GetTimeOfDayState(con
         FTimeOfDayStageAudioConfig local_24;
         return local_24.TimeOfDayState;
     }
-    return __r;
+    return DataObject.Get().TimeOfDayState;
 }
 UFUNCTION()
 FTimeOfDayStageAudioConfig CastToFTimeOfDayStageAudioConfig(const TDataObjectPtr<FTimeOfDayStageAudioConfig> &inout DataObject)
@@ -109,7 +108,6 @@ namespace __FInstrumentAudioConfigFunctions
 UFUNCTION()
 FName __FInstrumentAudioConfig_GetInstrumentId(const TDataObjectPtr<FInstrumentAudioConfig> &inout DataObject)
 {
-    FName __r;
     if ((DataObject == nullptr))
     {
         if (!(EUIGlobals::GIsDuringPropertyConversion))
@@ -119,12 +117,11 @@ FName __FInstrumentAudioConfig_GetInstrumentId(const TDataObjectPtr<FInstrumentA
         FInstrumentAudioConfig local_60;
         return local_60.InstrumentId;
     }
-    return __r;
+    return DataObject.Get().InstrumentId;
 }
 UFUNCTION()
 FName __FInstrumentAudioConfig_GetPrefabClassName(const TDataObjectPtr<FInstrumentAudioConfig> &inout DataObject)
 {
-    FName __r;
     if ((DataObject == nullptr))
     {
         if (!(EUIGlobals::GIsDuringPropertyConversion))
@@ -134,12 +131,11 @@ FName __FInstrumentAudioConfig_GetPrefabClassName(const TDataObjectPtr<FInstrume
         FInstrumentAudioConfig local_60;
         return local_60.PrefabClassName;
     }
-    return __r;
+    return DataObject.Get().PrefabClassName;
 }
 UFUNCTION()
 FName __FInstrumentAudioConfig_GetSwitchGroupName(const TDataObjectPtr<FInstrumentAudioConfig> &inout DataObject)
 {
-    FName __r;
     if ((DataObject == nullptr))
     {
         if (!(EUIGlobals::GIsDuringPropertyConversion))
@@ -149,12 +145,11 @@ FName __FInstrumentAudioConfig_GetSwitchGroupName(const TDataObjectPtr<FInstrume
         FInstrumentAudioConfig local_60;
         return local_60.SwitchGroupName;
     }
-    return __r;
+    return DataObject.Get().SwitchGroupName;
 }
 UFUNCTION()
 FName __FInstrumentAudioConfig_GetSwitchValueName(const TDataObjectPtr<FInstrumentAudioConfig> &inout DataObject)
 {
-    FName __r;
     if ((DataObject == nullptr))
     {
         if (!(EUIGlobals::GIsDuringPropertyConversion))
@@ -164,12 +159,11 @@ FName __FInstrumentAudioConfig_GetSwitchValueName(const TDataObjectPtr<FInstrume
         FInstrumentAudioConfig local_60;
         return local_60.SwitchValueName;
     }
-    return __r;
+    return DataObject.Get().SwitchValueName;
 }
 UFUNCTION()
 TSoftObjectPtr<UAkSwitchValue> __FInstrumentAudioConfig_GetDefaultSwitchValue(const TDataObjectPtr<FInstrumentAudioConfig> &inout DataObject)
 {
-    TSoftObjectPtr<UAkSwitchValue> __r;
     if ((DataObject == nullptr))
     {
         if (!(EUIGlobals::GIsDuringPropertyConversion))
@@ -179,12 +173,11 @@ TSoftObjectPtr<UAkSwitchValue> __FInstrumentAudioConfig_GetDefaultSwitchValue(co
         FInstrumentAudioConfig local_60;
         return local_60.DefaultSwitchValue;
     }
-    return __r;
+    return DataObject.Get().DefaultSwitchValue;
 }
 UFUNCTION()
 TSoftObjectPtr<UAkAudioEvent> __FInstrumentAudioConfig_GetPlayEvent(const TDataObjectPtr<FInstrumentAudioConfig> &inout DataObject)
 {
-    TSoftObjectPtr<UAkAudioEvent> __r;
     if ((DataObject == nullptr))
     {
         if (!(EUIGlobals::GIsDuringPropertyConversion))
@@ -194,12 +187,11 @@ TSoftObjectPtr<UAkAudioEvent> __FInstrumentAudioConfig_GetPlayEvent(const TDataO
         FInstrumentAudioConfig local_60;
         return local_60.PlayEvent;
     }
-    return __r;
+    return DataObject.Get().PlayEvent;
 }
 UFUNCTION()
 TSoftObjectPtr<UAkAudioEvent> __FInstrumentAudioConfig_GetStopEvent(const TDataObjectPtr<FInstrumentAudioConfig> &inout DataObject)
 {
-    TSoftObjectPtr<UAkAudioEvent> __r;
     if ((DataObject == nullptr))
     {
         if (!(EUIGlobals::GIsDuringPropertyConversion))
@@ -209,12 +201,11 @@ TSoftObjectPtr<UAkAudioEvent> __FInstrumentAudioConfig_GetStopEvent(const TDataO
         FInstrumentAudioConfig local_60;
         return local_60.StopEvent;
     }
-    return __r;
+    return DataObject.Get().StopEvent;
 }
 UFUNCTION()
 TArray<int> __FInstrumentAudioConfig_GetKeyIndexToMidiNotes(const TDataObjectPtr<FInstrumentAudioConfig> &inout DataObject)
 {
-    TArray<int> __r;
     if ((DataObject == nullptr))
     {
         if (!(EUIGlobals::GIsDuringPropertyConversion))
@@ -224,7 +215,7 @@ TArray<int> __FInstrumentAudioConfig_GetKeyIndexToMidiNotes(const TDataObjectPtr
         FInstrumentAudioConfig local_60;
         return local_60.KeyIndexToMidiNotes;
     }
-    return __r;
+    return DataObject.Get().KeyIndexToMidiNotes;
 }
 UFUNCTION()
 int __FInstrumentAudioConfig_GetPreloadMinKey(const TDataObjectPtr<FInstrumentAudioConfig> &inout DataObject)
@@ -259,34 +250,30 @@ int __FInstrumentAudioConfig_GetPreloadMaxKey(const TDataObjectPtr<FInstrumentAu
 UFUNCTION()
 bool __FInstrumentAudioConfig_GetbPreloadKeySwitches(const TDataObjectPtr<FInstrumentAudioConfig> &inout DataObject)
 {
-    bool local_1 = false;
     if ((DataObject == nullptr))
     {
-        local_1 = !(EUIGlobals::GIsDuringPropertyConversion);
-        if (local_1)
+        if (!(EUIGlobals::GIsDuringPropertyConversion))
         {
             FBlueprintDebugFunctions::ThrowScriptException("Get 'bPreloadKeySwitches' from a null 'FInstrumentAudioConfig' DataObject!");
         }
         FInstrumentAudioConfig local_60;
         return local_60.bPreloadKeySwitches;
     }
-    return local_1;
+    return DataObject.Get().bPreloadKeySwitches;
 }
 UFUNCTION()
 bool __FInstrumentAudioConfig_GetbUseStopEvent(const TDataObjectPtr<FInstrumentAudioConfig> &inout DataObject)
 {
-    bool local_1 = false;
     if ((DataObject == nullptr))
     {
-        local_1 = !(EUIGlobals::GIsDuringPropertyConversion);
-        if (local_1)
+        if (!(EUIGlobals::GIsDuringPropertyConversion))
         {
             FBlueprintDebugFunctions::ThrowScriptException("Get 'bUseStopEvent' from a null 'FInstrumentAudioConfig' DataObject!");
         }
         FInstrumentAudioConfig local_60;
         return local_60.bUseStopEvent;
     }
-    return local_1;
+    return DataObject.Get().bUseStopEvent;
 }
 UFUNCTION()
 FInstrumentAudioConfig CastToFInstrumentAudioConfig(const TDataObjectPtr<FInstrumentAudioConfig> &inout DataObject)

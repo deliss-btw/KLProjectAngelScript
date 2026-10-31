@@ -27,7 +27,7 @@ TDataObjectPtr<FAvatarMappingConfig> __FTalentLayoutTreeConfig_GetAvatar(const T
         FTalentLayoutTreeConfig local_120;
         return local_120.GetAvatar();
     }
-    return GetAvatar();
+    return DataObject.Get().GetAvatar();
 }
 UFUNCTION()
 TDataObjectPtr<FTalentConfig> __FTalentLayoutTreeConfig_GetTalentBaseData(const TDataObjectPtr<FTalentLayoutTreeConfig> &inout DataObject)
@@ -41,12 +41,11 @@ TDataObjectPtr<FTalentConfig> __FTalentLayoutTreeConfig_GetTalentBaseData(const 
         FTalentLayoutTreeConfig local_120;
         return local_120.GetTalentBaseData();
     }
-    return GetTalentBaseData();
+    return DataObject.Get().GetTalentBaseData();
 }
 UFUNCTION()
 FText __FTalentLayoutTreeConfig_GetTitleName(const TDataObjectPtr<FTalentLayoutTreeConfig> &inout DataObject)
 {
-    FText __r;
     if ((DataObject == nullptr))
     {
         if (!(EUIGlobals::GIsDuringPropertyConversion))
@@ -56,12 +55,11 @@ FText __FTalentLayoutTreeConfig_GetTitleName(const TDataObjectPtr<FTalentLayoutT
         FTalentLayoutTreeConfig local_120;
         return local_120.TitleName;
     }
-    return __r;
+    return DataObject.Get().TitleName;
 }
 UFUNCTION()
 FSoftBrush __FTalentLayoutTreeConfig_GetTitleImage(const TDataObjectPtr<FTalentLayoutTreeConfig> &inout DataObject)
 {
-    FSoftBrush __r;
     if ((DataObject == nullptr))
     {
         if (!(EUIGlobals::GIsDuringPropertyConversion))
@@ -71,12 +69,11 @@ FSoftBrush __FTalentLayoutTreeConfig_GetTitleImage(const TDataObjectPtr<FTalentL
         FTalentLayoutTreeConfig local_120;
         return local_120.TitleImage;
     }
-    return __r;
+    return DataObject.Get().TitleImage;
 }
 UFUNCTION()
 TArray<FTalentTreeNode> __FTalentLayoutTreeConfig_GetTalentTreeArray(const TDataObjectPtr<FTalentLayoutTreeConfig> &inout DataObject)
 {
-    TArray<FTalentTreeNode> __r;
     if ((DataObject == nullptr))
     {
         if (!(EUIGlobals::GIsDuringPropertyConversion))
@@ -86,7 +83,7 @@ TArray<FTalentTreeNode> __FTalentLayoutTreeConfig_GetTalentTreeArray(const TData
         FTalentLayoutTreeConfig local_120;
         return local_120.TalentTreeArray;
     }
-    return __r;
+    return DataObject.Get().TalentTreeArray;
 }
 UFUNCTION()
 FTalentLayoutTreeConfig CastToFTalentLayoutTreeConfig(const TDataObjectPtr<FTalentLayoutTreeConfig> &inout DataObject)

@@ -97,11 +97,9 @@ FVM_PageDot& Create(const UObject ContextObject, const int PageIndex)
 {
     return FVM_PageDot::CreateByManager(EUIInternal::GetContextManager(ContextObject), PageIndex);
 }
-FVM_PageDot CreateByManager(const UEUIManagerSubsystem Manager, const int PageIndex)
+FVM_PageDot& CreateByManager(const UEUIManagerSubsystem Manager, const int PageIndex)
 {
-    FVM_PageDot __r;
-    TEUIModelRef<FVM_PageDot> local_6 = TEUIModelRef<FVM_PageDot>(EUIInternal::MakeModelWithManager_Generic(Manager, FVM_PageDot::ModelId, 0, PageIndex));
-    return __r;
+    return TEUIModelRef<FVM_PageDot>(EUIInternal::MakeModelWithManager_Generic(Manager, FVM_PageDot::ModelId, 0, PageIndex)).Get();
 }
 void GetModelInfo(FEUIViewModelMetaInfo &inout Result)
 {
@@ -156,7 +154,6 @@ namespace __GeneratedProperties_FVM_PageDot
 {
 UScriptStruct StaticStruct()
 {
-    UScriptStruct local_2;
-    return local_2;
+    return __GeneratedProperties_FVM_PageDot.Get();
 }
 }

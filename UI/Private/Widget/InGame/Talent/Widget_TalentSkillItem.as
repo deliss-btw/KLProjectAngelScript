@@ -50,7 +50,7 @@ class UWidget_TalentSkillItem : UEUIUserWidget
     {
         if ((this.w_size_Icon != nullptr && ((this.w_spacer_large != nullptr))))
         {
-            if (this.bNeedBigIconState && GetbIsBigButton())
+            if (this.bNeedBigIconState && this.SkillIcon.Get().GetbIsBigButton())
             {
                 this.w_size_Icon.SetHeightOverride(120.0f);
                 this.w_size_Icon.SetWidthOverride(120.0f);
@@ -83,8 +83,8 @@ class UWidget_TalentSkillItem : UEUIUserWidget
     }
     void HandleObservedModelChanges(FEUIReactiveSubscriberIterator &inout It)
     {
-        FVM_TalentEditSkillBtn& local_6;
         TEUIModelRef<FVM_TalentEditSkillBtn> local_2 = this.SkillIcon.AsRef();
+        FVM_TalentEditSkillBtn& local_6 = local_2.Get();
         for (; It; )
         {
             FEUIReactiveSubscriberTrackScope local_56 = FEUIReactiveSubscriberTrackScope(It);

@@ -18,11 +18,10 @@ class US_WeatherSystem : UECSScriptSystem
         local_16.GlobalWeatherTemplate = local_8.GlobalWeatherTemplate;
         local_16.GlobalWeatherAreaConfig = local_8.GlobalWeatherAreaConfig;
         TDataObjectPtr<FLevelInfoConfig> local_88 = ::FLevelUtils::GetCurrentLevelInfoConfig(nullptr);
-        EInitWeatherPolicy local_114 = EInitWeatherPolicy(0);
-        EInitWeatherPolicy local_113 = local_114;
+        EInitWeatherPolicy local_113 = EInitWeatherPolicy::None;
         if (local_88.IsSet())
         {
-            local_113 = local_114;
+            local_113 = local_88.Get().InitWeatherPolicy;
         }
         int local_116 = int(local_113);
         if (local_116 <= 2)
@@ -98,10 +97,10 @@ class US_WeatherSystem : UECSScriptSystem
         else
         {
             Get local_158;
-            if (local_158.opCall())
+            const FC_RegionVolume& local_160 = local_158.opCall();
+            if (local_160)
             {
-                AActor local_162;
-                local_166 = (Cast<AECSRegionVolume>(local_162));
+                local_166 = (Cast<AECSRegionVolume>(local_160.RegionVolume.Get()));
                 if ((local_166 == nullptr || !(local_166.bAffectWeather)))
                 {
                     return;
@@ -177,9 +176,10 @@ class US_WeatherSystem : UECSScriptSystem
                         ::FWeatherUtils::DebugWeatherLog((FString("removed expired override weather,  RegionEntity:") + Entity));
                     }
                     TDataObjectPtr<FWeatherGenerateTemplate> local_168 = RegionWeatherData.GetUsingWeatherTemplate();
-                    if (::FWeatherUtils::GetRandomWeatherIndexForRegion(Entity, local_168, local_24, FixedTime.Time) >= 0)
+                    int local_194 = ::FWeatherUtils::GetRandomWeatherIndexForRegion(Entity, local_168, local_24, FixedTime.Time);
+                    if (local_194 >= 0)
                     {
-                        const FWeatherChanceConfig& local_196;
+                        const FWeatherChanceConfig& local_196 = local_168.Get().WeatherChances[local_194];
                         float32 local_198 = FMath::RandRange(local_196.MinDuration, local_196.MaxDuration);
                         local_100 = local_196.WeatherName;
                         local_105 = local_198;
@@ -203,13 +203,13 @@ class US_WeatherSystem : UECSScriptSystem
     UFUNCTION()
     void ServerJob_HandleRegionWeatherChanged(const FCE_RegionWeatherChanged &inout Event) const
     {
-        Get local_4;
         AECSRegionVolume local_14;
+        Get local_4;
+        const FC_RegionVolume& local_6 = local_4.opCall();
         FName local_18;
-        if (local_4.opCall())
+        if (local_6)
         {
-            AActor local_10;
-            local_14 = (Cast<AECSRegionVolume>(local_10));
+            local_14 = (Cast<AECSRegionVolume>(local_6.RegionVolume.Get()));
             if (local_14 != nullptr)
             {
                 FName local_20;
@@ -262,8 +262,10 @@ class US_WeatherSystem : UECSScriptSystem
             FECSEntity local_150_2 = local_156.Proceed();
             if (!(local_4.Contains(local_150_2)))
             {
+                WeatherTint.GetModify_OverlappingEntities().Remove(local_150_2);
                 if (local_150_2.IsValid())
                 {
+                    local_170.GetModify_DynamicWeatherTintEntities().Remove(Entity);
                     ::FWeatherUtils::CheckAssignCharacterNeedUpdateWeatherTag(local_150_2);
                 }
             }
@@ -281,10 +283,9 @@ class US_WeatherSystem : UECSScriptSystem
     UFUNCTION()
     void ServerJob_InitWeatherAbility(const FECSEntity &inout WeatherEntity, const FC_WeatherEffect &inout WeatherEffect) const
     {
-        UDataTable local_4;
         bool local_5;
         int local_36 = 0;
-        if (local_4 == nullptr)
+        if (UGameplayConfigsManager::GetWeatherConfigTable().Get() == nullptr)
         {
             XWarning(ELog(44), "Cannot found Weather datatable!");
             return;
@@ -296,6 +297,7 @@ class US_WeatherSystem : UECSScriptSystem
         else
         {
             TSoftClassPtr<UEASAbility> local_16;
+            local_16 = WeatherEffect.GetWeatherConfig().Get().Ability;
             local_5 = !((local_16 == nullptr));
         }
         if (local_5)
@@ -311,8 +313,7 @@ class US_WeatherSystem : UECSScriptSystem
             FC_NetRelevancePolicy local_61;
             Assign local_60;
             local_60.opCall(local_61).RelevancePolicyType = (3 != 0);
-            TSubclassOf<UEASAbility> local_64;
-            FAbilityUtils::AddAbility(local_30, local_64, false, n"WeatherAbility", false, false, true, false, FFPTime(0));
+            FAbilityUtils::AddAbility(local_30, WeatherEffect.GetWeatherConfig().Get().Ability.Get(), false, n"WeatherAbility", false, false, true, false, FFPTime(0));
         }
         return;
     }
@@ -327,6 +328,7 @@ class US_WeatherSystem : UECSScriptSystem
         }
         for (auto& local_22 : local_8.GetOverlappingEntities())
         {
+            local_28.GetModify_DynamicWeatherTintEntities().Remove(Request.Entity);
             ::FWeatherUtils::CheckAssignCharacterNeedUpdateWeatherTag(local_22);
             if (local_28.GetDynamicWeatherTintEntities().Num() == 0)
             {
@@ -514,6 +516,7 @@ class US_WeatherSystem : UECSScriptSystem
                 local_96 = local_94.opCall();
                 if (local_96)
                 {
+                    local_96.OverlappingEntities.Remove(CharacterEntity);
                 }
             }
             if (local_40.IsValid())
@@ -595,8 +598,10 @@ class US_WeatherSystem : UECSScriptSystem
     UFUNCTION()
     void Monitor_OnInactiveCharacterRegionEntity(const FECSEntity &inout Entity, const FC_CharacterWeatherRegionEntity &inout CharacterRegionEntity) const
     {
+        int local_8 = 0;
         if (CharacterRegionEntity.GetRegionEntity().IsValid())
         {
+            local_8.OverlappingEntities.Remove(Entity);
         }
         return;
     }
@@ -774,17 +779,14 @@ class US_WeatherSystem : UECSScriptSystem
     UFUNCTION()
     void ServerJob_CheckPlayerControllerWeatherChange(const FECSEntity &inout PlayerEntity, const FCS_FixedTime &inout FixedTime, const FC_PlayerController &inout C_PlayerController, const FC_PlayerControllerWeatherChangeChecker &inout PlayerControllerWeatherChangeChecker) const
     {
-        bool local_9;
         GetDefaulted local_14;
         TDataObjectPtr<FWeatherConfig> local_38;
         int local_236 = 0;
-        float32 local_237 = 0.0f;
         Has local_242;
         Remove local_246;
         Remove local_250;
         int local_296 = 0;
         int local_312 = 0;
-        bool local_313 = false;
         FECSEntity local_4 = PlayerControllerWeatherChangeChecker.PrevWeatherEntity;
         FECSEntity local_8 = PlayerControllerWeatherChangeChecker.NewWeatherEntity;
         if (!((local_4 == local_8)))
@@ -812,12 +814,11 @@ class US_WeatherSystem : UECSScriptSystem
                 if (local_8.IsValid())
                 {
                     local_236.SetWeatherEntity(local_8);
-                    local_237 = PlayerControllerWeatherChangeChecker.OverrideBlendTime;
-                    local_236.SetOverrideBlendTime(local_237);
+                    local_236.SetOverrideBlendTime(PlayerControllerWeatherChangeChecker.OverrideBlendTime);
                 }
                 else
                 {
-                    local_9 = local_242.opCall();
+                    bool local_9 = local_242.opCall();
                     if (local_9)
                     {
                         local_246.opCall();
@@ -827,8 +828,7 @@ class US_WeatherSystem : UECSScriptSystem
                 return;
             }
             TDataObjectPtr<FWeatherConfig> local_274 = TDataObjectPtr<FWeatherConfig>(nullptr);
-            local_9 = false;
-            local_275 = local_9;
+            local_275 = false;
             Get local_280;
             const FC_PendingAddWeatherBuff& local_282 = local_280.opCall();
             if (local_282)
@@ -860,16 +860,14 @@ class US_WeatherSystem : UECSScriptSystem
                 local_312.PlayerControllerEntity = PlayerEntity;
                 local_312.PlayerPawnEntity = ::FASCommonUtils::GetUniqueAvatarPawnEntity(PlayerEntity);
                 local_312.WeatherConfig = local_38;
-                local_9 = !((local_38 == local_274.opImplConv()));
-                if (local_9)
+                if (!((local_38 == local_274.opImplConv())))
                 {
-                    local_9 = local_38.IsSet() && local_313;
-                    if (local_9)
+                    if (local_38.IsSet() && local_38.Get().BuffConfig.IsValid())
                     {
                         float32 local_319;
                         local_282.WeatherConfig = local_38;
                         local_282.PrevWeatherConfig = local_274;
-                        local_319 = local_237;
+                        local_319 = local_38.Get().BuffConfigAddDelay;
                         local_282.BuffStartTime = (FFPTime(FixedTime.Time) + FFPTime(local_319));
                         FString local_334_2 = (((FString(" Delay add weather buff: ") + PlayerEntity) + " WeatherConfig:") + local_38.GetDataName());
                         FString local_330_2 = (local_334_2 + " BuffConfigAddDelay:");
@@ -877,8 +875,7 @@ class US_WeatherSystem : UECSScriptSystem
                     }
                     else
                     {
-                        local_9 = local_274.IsSet() && local_313;
-                        if (local_9)
+                        if (local_274.IsSet() && local_274.Get().BuffConfig.IsValid())
                         {
                             FString local_334_3 = (FString(" Remove weather buff (no new buff): ") + PlayerEntity);
                             FString local_330_3 = (local_334_3 + " WeatherConfig:");
@@ -892,7 +889,8 @@ class US_WeatherSystem : UECSScriptSystem
             }
             else
             {
-                if (local_274.IsSet() && local_9)
+                bool local_313;
+                if (local_274.IsSet() && local_274.Get().BuffConfig.IsValid())
                 {
                     FString local_330_4 = (FString(" Remove weather buff (no new weather): ") + PlayerEntity);
                     FString local_334_4 = (local_330_4 + " WeatherConfig:");
@@ -915,16 +913,14 @@ class US_WeatherSystem : UECSScriptSystem
     UFUNCTION()
     void ServerJob_DelayAddWeatherBuff(const FECSEntity &inout PlayerEntity, const FCS_FixedTime &inout FixedTime, const FC_PendingAddWeatherBuff &inout PendingAddWeatherBuff) const
     {
-        bool local_5 = false;
         if (PendingAddWeatherBuff.BuffStartTime.opCmp(FixedTime.Time) <= 0)
         {
-            bool local_4 = PendingAddWeatherBuff.PrevWeatherConfig.IsSet() && local_5;
-            if (local_4)
+            if (PendingAddWeatherBuff.PrevWeatherConfig.IsSet() && PendingAddWeatherBuff.PrevWeatherConfig.Get().BuffConfig.IsValid())
             {
                 ::FWeatherUtils::DebugWeatherLog((((FString(" Remove prev weather buff: ") + PlayerEntity) + " WeatherConfig:") + PendingAddWeatherBuff.PrevWeatherConfig.GetDataName()));
                 ::FWeatherUtils::RemoveWeatherBuffFromPlayer(PlayerEntity, PendingAddWeatherBuff.PrevWeatherConfig, FixedTime.Time);
             }
-            if (PendingAddWeatherBuff.WeatherConfig.IsSet() && local_4)
+            if (PendingAddWeatherBuff.WeatherConfig.IsSet() && PendingAddWeatherBuff.WeatherConfig.Get().BuffConfig.IsValid())
             {
                 FString local_10_2 = (FString(" Add weather buff: ") + PlayerEntity);
                 FString local_14_2 = (local_10_2 + " WeatherConfig:");

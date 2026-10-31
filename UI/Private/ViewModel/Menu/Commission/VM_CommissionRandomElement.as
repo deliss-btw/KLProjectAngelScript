@@ -199,11 +199,9 @@ FVM_CommissionRandomElement& Create(const UObject ContextObject, const FSoftBrus
 {
     return FVM_CommissionRandomElement::CreateByManager(EUIInternal::GetContextManager(ContextObject), Image, Title, Desc, AdditionalDesc);
 }
-FVM_CommissionRandomElement CreateByManager(const UEUIManagerSubsystem Manager, const FSoftBrush &inout Image, const FText &inout Title, const FText &inout Desc, const FText &inout AdditionalDesc)
+FVM_CommissionRandomElement& CreateByManager(const UEUIManagerSubsystem Manager, const FSoftBrush &inout Image, const FText &inout Title, const FText &inout Desc, const FText &inout AdditionalDesc)
 {
-    FVM_CommissionRandomElement __r;
-    TEUIModelRef<FVM_CommissionRandomElement> local_6 = TEUIModelRef<FVM_CommissionRandomElement>(EUIInternal::MakeModelWithManager_Generic(Manager, FVM_CommissionRandomElement::ModelId, 0, Image, Title, Desc, AdditionalDesc));
-    return __r;
+    return TEUIModelRef<FVM_CommissionRandomElement>(EUIInternal::MakeModelWithManager_Generic(Manager, FVM_CommissionRandomElement::ModelId, 0, Image, Title, Desc, AdditionalDesc)).Get();
 }
 void GetModelInfo(FEUIViewModelMetaInfo &inout Result)
 {
@@ -298,7 +296,6 @@ namespace __GeneratedProperties_FVM_CommissionRandomElement
 {
 UScriptStruct StaticStruct()
 {
-    UScriptStruct local_2;
-    return local_2;
+    return __GeneratedProperties_FVM_CommissionRandomElement.Get();
 }
 }

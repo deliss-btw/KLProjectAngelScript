@@ -120,9 +120,10 @@ void DestoryShield(const FECSEntity &inout ShieldEntity, FC_Shield &inout Shield
     Shield.SetbShieldActive(false);
     ShieldEntity.DestroyDeferred();
     Modify local_6;
-    if (local_6.opCall())
+    FC_ShieldOwner& local_8 = local_6.opCall();
+    if (local_8)
     {
-        FName local_10 = Shield.GetShieldName();
+        local_8.GetModify_NamedInherentShields().Remove(Shield.GetShieldName());
     }
     return;
 }

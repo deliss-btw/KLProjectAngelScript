@@ -124,9 +124,7 @@ struct FVM_CommissionTeamerItem : FEUIViewModel
         {
             if (this.GetAvatarPrefabConfig())
             {
-            }
-            else
-            {
+                return this.GetAvatarPrefabConfig().Get().AvatarIcon;
             }
         }
         return FSoftBrush();
@@ -416,11 +414,9 @@ FVM_CommissionTeamerItem& Create(const UObject ContextObject, const FString &ino
 {
     return FVM_CommissionTeamerItem::CreateByManager(EUIInternal::GetContextManager(ContextObject), PlayerNameCached, AvatarPrefabConfig, TeamIndex, PlayerID);
 }
-FVM_CommissionTeamerItem CreateByManager(const UEUIManagerSubsystem Manager, const FString &inout PlayerNameCached, const TDataObjectPtr<FAvatarPrefabConfig> &inout AvatarPrefabConfig, const int TeamIndex, const uint PlayerID)
+FVM_CommissionTeamerItem& CreateByManager(const UEUIManagerSubsystem Manager, const FString &inout PlayerNameCached, const TDataObjectPtr<FAvatarPrefabConfig> &inout AvatarPrefabConfig, const int TeamIndex, const uint PlayerID)
 {
-    FVM_CommissionTeamerItem __r;
-    TEUIModelRef<FVM_CommissionTeamerItem> local_6 = TEUIModelRef<FVM_CommissionTeamerItem>(EUIInternal::MakeModelWithManager_Generic(Manager, FVM_CommissionTeamerItem::ModelId, 0, PlayerNameCached, AvatarPrefabConfig, TeamIndex, PlayerID));
-    return __r;
+    return TEUIModelRef<FVM_CommissionTeamerItem>(EUIInternal::MakeModelWithManager_Generic(Manager, FVM_CommissionTeamerItem::ModelId, 0, PlayerNameCached, AvatarPrefabConfig, TeamIndex, PlayerID)).Get();
 }
 void GetModelInfo(FEUIViewModelMetaInfo &inout Result)
 {
@@ -627,7 +623,6 @@ namespace __GeneratedProperties_FVM_CommissionTeamerItem
 {
 UScriptStruct StaticStruct()
 {
-    UScriptStruct local_2;
-    return local_2;
+    return __GeneratedProperties_FVM_CommissionTeamerItem.Get();
 }
 }

@@ -439,11 +439,9 @@ FVM_PlayerHitStunDetachBar& Create(const UObject ContextObject, const FECSEntity
 {
     return FVM_PlayerHitStunDetachBar::CreateByManager(EUIInternal::GetContextManager(ContextObject), Entity);
 }
-FVM_PlayerHitStunDetachBar CreateByManager(const UEUIManagerSubsystem Manager, const FECSEntity &inout Entity)
+FVM_PlayerHitStunDetachBar& CreateByManager(const UEUIManagerSubsystem Manager, const FECSEntity &inout Entity)
 {
-    FVM_PlayerHitStunDetachBar __r;
-    TEUIModelRef<FVM_PlayerHitStunDetachBar> local_6 = TEUIModelRef<FVM_PlayerHitStunDetachBar>(EUIInternal::MakeModelWithManager_Generic(Manager, FVM_PlayerHitStunDetachBar::ModelId, 0, Entity));
-    return __r;
+    return TEUIModelRef<FVM_PlayerHitStunDetachBar>(EUIInternal::MakeModelWithManager_Generic(Manager, FVM_PlayerHitStunDetachBar::ModelId, 0, Entity)).Get();
 }
 void GetModelInfo(FEUIViewModelMetaInfo &inout Result)
 {
@@ -569,7 +567,6 @@ namespace __GeneratedProperties_FVM_PlayerHitStunDetachBar
 {
 UScriptStruct StaticStruct()
 {
-    UScriptStruct local_2;
-    return local_2;
+    return __GeneratedProperties_FVM_PlayerHitStunDetachBar.Get();
 }
 }

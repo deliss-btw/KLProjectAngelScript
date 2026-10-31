@@ -20,7 +20,7 @@ class UWidget_ItemHoverTips : UEUIActivatableWidget
     {
         if (this.EquipHoverTips.IsValid())
         {
-            OnClickGoTo();
+            this.EquipHoverTips.Get().OnClickGoTo();
         }
         return;
     }

@@ -80,11 +80,9 @@ FVM_ForgeWeaponItemUnlockCondItem& Create(const UObject ContextObject, const FTe
 {
     return FVM_ForgeWeaponItemUnlockCondItem::CreateByManager(EUIInternal::GetContextManager(ContextObject), ConditionText);
 }
-FVM_ForgeWeaponItemUnlockCondItem CreateByManager(const UEUIManagerSubsystem Manager, const FText &inout ConditionText)
+FVM_ForgeWeaponItemUnlockCondItem& CreateByManager(const UEUIManagerSubsystem Manager, const FText &inout ConditionText)
 {
-    FVM_ForgeWeaponItemUnlockCondItem __r;
-    TEUIModelRef<FVM_ForgeWeaponItemUnlockCondItem> local_6 = TEUIModelRef<FVM_ForgeWeaponItemUnlockCondItem>(EUIInternal::MakeModelWithManager_Generic(Manager, FVM_ForgeWeaponItemUnlockCondItem::ModelId, 0, ConditionText));
-    return __r;
+    return TEUIModelRef<FVM_ForgeWeaponItemUnlockCondItem>(EUIInternal::MakeModelWithManager_Generic(Manager, FVM_ForgeWeaponItemUnlockCondItem::ModelId, 0, ConditionText)).Get();
 }
 void GetModelInfo(FEUIViewModelMetaInfo &inout Result)
 {
@@ -135,7 +133,6 @@ namespace __GeneratedProperties_FVM_ForgeWeaponItemUnlockCondItem
 {
 UScriptStruct StaticStruct()
 {
-    UScriptStruct local_2;
-    return local_2;
+    return __GeneratedProperties_FVM_ForgeWeaponItemUnlockCondItem.Get();
 }
 }

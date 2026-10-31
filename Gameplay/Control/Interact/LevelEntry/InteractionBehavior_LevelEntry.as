@@ -24,14 +24,13 @@ class UInteractionBehavior_LevelEntry : UInteractionBehaviorBase
     void ExecuteBeginAction(const FECSEntity &inout InteractSource, const FECSEntity &inout InteractTarget, const FInteractionPointAndBehaviorIndex &inout InteractTargetPointAndBehaviorIndex, const bool bPresentationOnly = false)
     {
         int local_6 = 0;
-        int local_27 = 0;
         bool local_7 = !(local_6.DungeonConfig.IsSet());
         if (local_7)
         {
             return;
         }
         Super::ExecuteBeginAction(InteractSource, InteractTarget, InteractTargetPointAndBehaviorIndex, bPresentationOnly);
-        if (0 != 2)
+        if (int(local_6.DungeonConfig.Get().DungeonType) != 2)
         {
             local_7 = false;
         }
@@ -50,7 +49,7 @@ class UInteractionBehavior_LevelEntry : UInteractionBehaviorBase
             UGameClientConnectionSubsystem local_26 = ::UGameClientConnectionSubsystem::Get();
             if (local_26 != nullptr)
             {
-                local_26.SendStartDungeonReq(local_27);
+                local_26.SendStartDungeonReq(local_6.DungeonConfig.Get().DataId);
             }
         }
         return;

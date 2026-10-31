@@ -17,6 +17,8 @@ struct FEcologyPointUnitConfig : FEcologyUnitConfig
     UPROPERTY()
     FEcologyPointData ConfigData;
 
+    default m_ScriptOverrideMeta = Cast<UASStruct>(FEcologyPointUnitConfig.Get());
+
     FEcologyPointUnitConfig()
     {
         this.__InitDefaults();

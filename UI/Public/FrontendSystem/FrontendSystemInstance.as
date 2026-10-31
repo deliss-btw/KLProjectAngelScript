@@ -81,6 +81,7 @@ struct FFrontendSystemBehaviorContainer
         for (auto& local_34 : this.InstancedBehaviors)
         {
             TConstRawPtr<FFrontendSystemBehaviorInstance> local_40 = FInstancedStruct::GetPtr(local_34).opCall();
+            local_40.Get().Behavior.OnEnter(SystemContext, local_34);
         }
         return;
     }
@@ -94,6 +95,7 @@ struct FFrontendSystemBehaviorContainer
         for (auto& local_34 : this.InstancedBehaviors)
         {
             TConstRawPtr<FFrontendSystemBehaviorInstance> local_40 = FInstancedStruct::GetPtr(local_34).opCall();
+            local_40.Get().Behavior.OnExit(SystemContext, local_34);
         }
         return;
     }

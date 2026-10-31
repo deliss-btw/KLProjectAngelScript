@@ -125,7 +125,7 @@ class UProgressOperation_SimpleProgress : UProgressOperationBase
     }
     bool NeedEndOperation(const FC_ProgressOperationRuntime &inout Runtime) const
     {
-        if (false)
+        if (Runtime.GetConfig().Get().bAutoSuccessOnProgressDone)
         {
             return (int(Runtime.GetState())) >= 3 || (int(Runtime.GetState()) == 2);
         }
@@ -137,7 +137,7 @@ class UProgressOperation_SimpleProgress : UProgressOperationBase
     }
     void Tick(FC_ProgressOperationRuntime &inout Runtime, const FFPTime &inout DeltaTime) const
     {
-        const FProgressOperationConfig& local_2;
+        const FProgressOperationConfig& local_2 = Runtime.GetConfig().Get();
         if (int(Runtime.GetState()) == 0)
         {
             FProgressOperationActionArray local_10;
@@ -245,7 +245,7 @@ class UProgressOperation_SingleRangeProgress : UProgressOperationBase
     }
     bool NeedEndOperation(const FC_ProgressOperationRuntime &inout Runtime) const
     {
-        if (false)
+        if (Runtime.GetConfig().Get().bAutoSuccessOnProgressDone)
         {
             return (int(Runtime.GetState())) >= 3 || (int(Runtime.GetState()) == 2);
         }
@@ -257,7 +257,7 @@ class UProgressOperation_SingleRangeProgress : UProgressOperationBase
     }
     void Tick(FC_ProgressOperationRuntime &inout Runtime, const FFPTime &inout DeltaTime) const
     {
-        const FProgressOperationConfig& local_2;
+        const FProgressOperationConfig& local_2 = Runtime.GetConfig().Get();
         if (int(Runtime.GetState()) == 0)
         {
             FProgressOperationActionArray local_10;
@@ -394,7 +394,7 @@ class UProgressOperation_InputPushProgress : UProgressOperationBase
     }
     bool NeedEndOperation(const FC_ProgressOperationRuntime &inout Runtime) const
     {
-        if (false)
+        if (Runtime.GetConfig().Get().bAutoSuccessOnProgressDone)
         {
             return (int(Runtime.GetState())) >= 3 || (int(Runtime.GetState()) == 2);
         }
@@ -406,7 +406,7 @@ class UProgressOperation_InputPushProgress : UProgressOperationBase
     }
     void Tick(FC_ProgressOperationRuntime &inout Runtime, const FFPTime &inout DeltaTime) const
     {
-        const FProgressOperationConfig& local_2;
+        const FProgressOperationConfig& local_2 = Runtime.GetConfig().Get();
         if (int(Runtime.GetState()) == 0)
         {
             FProgressOperationActionArray local_10;

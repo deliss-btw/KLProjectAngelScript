@@ -76,7 +76,7 @@ class UWidget_TeamOperatorBtnItem : UEUIUserWidget
         else
         {
             ETeamOperatorBtnType local_8;
-            local_8 = GetButtonType();
+            local_8 = this.BunttonItem.Get().GetButtonType();
             if (local_2.OperatorPlayerIconConfigs.Contains(local_8))
             {
                 this.SetIconAndHover(local_2.OperatorPlayerIconConfigs[local_8]);
@@ -94,8 +94,7 @@ class UWidget_TeamOperatorBtnItem : UEUIUserWidget
                 else
                 {
                     TEUIModelWeakRef<FVM_TeamPanel> local_14;
-                    TEUIModelWeakRef<FVM_TeamPanel> local_16;
-                    local_16.GetTeamPanel();
+                    TEUIModelWeakRef<FVM_TeamPanel> local_16 = this.BunttonItem.Get().GetTeamPanel();
                     if (!(local_14.IsValid()))
                     {
                         return;
@@ -103,12 +102,12 @@ class UWidget_TeamOperatorBtnItem : UEUIUserWidget
                     else
                     {
                         ETeamListenState local_17;
-                        int local_18 = int(GetListenState());
+                        int local_18 = int(local_14.Get().GetListenState());
                         local_17 = ETeamListenState(local_18);
-                        bool local_7 = IsSpecialMapForVoice();
+                        bool local_7 = local_14.Get().IsSpecialMapForVoice();
                         if (local_7 && (int(local_17) != 0))
                         {
-                            if (::FTeamUtils::GetIsInCityTeamState() || !(HasSocialTeam()))
+                            if (::FTeamUtils::GetIsInCityTeamState() || !(local_14.Get().HasSocialTeam()))
                             {
                                 local_18 = 3;
                                 local_21 = local_18;
@@ -148,8 +147,8 @@ class UWidget_TeamOperatorBtnItem : UEUIUserWidget
     }
     void HandleObservedModelChanges(FEUIReactiveSubscriberIterator &inout It)
     {
-        FVM_TeamOperatorBtnItem& local_6;
         TEUIModelRef<FVM_TeamOperatorBtnItem> local_2 = this.BunttonItem.AsRef();
+        FVM_TeamOperatorBtnItem& local_6 = local_2.Get();
         for (; It; )
         {
             FEUIReactiveSubscriberTrackScope local_56 = FEUIReactiveSubscriberTrackScope(It);

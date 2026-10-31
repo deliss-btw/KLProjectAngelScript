@@ -18,14 +18,14 @@ class UWidget_AvatarAttributeListEntry : UEUIUserListItemWidget
     UFUNCTION()
     FEUIModelRef AttributeItem_InnerModel() const
     {
-        FVM_AvatarAttributeItem& local_2;
+        FVM_AvatarAttributeItem& local_2 = this.AttributeItem.Get();
         FEUIModelRef local_8 = local_2 ? local_2.GetInnerModel() : FEUIModelRef();
         return local_8;
     }
     UFUNCTION()
     TSoftClassPtr<UUserWidget> AttributeItem_WidgetClass() const
     {
-        FVM_AvatarAttributeItem& local_2;
+        FVM_AvatarAttributeItem& local_2 = this.AttributeItem.Get();
         TSoftClassPtr<UUserWidget> local_34;
         if (local_2)
         {

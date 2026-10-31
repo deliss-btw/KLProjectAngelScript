@@ -99,6 +99,7 @@ struct FVM_MissionInfoTitle : FEUIViewModel
     {
         if (!(this.GetbHasTimer()))
         {
+            this.GetModify_RemainCounterDown().Clear();
             return;
         }
         float local_12 = FMath::Max((FFPTime(this.GetEndTime()) - this.GetContext().Time).ToSeconds(), 0.0);
@@ -349,11 +350,9 @@ FVM_MissionInfoTitle& Create(const UObject ContextObject, const FText &inout Tit
 {
     return FVM_MissionInfoTitle::CreateByManager(EUIInternal::GetContextManager(ContextObject), Title, bHasTimer, CustomIconBrush, bShowTimer);
 }
-FVM_MissionInfoTitle CreateByManager(const UEUIManagerSubsystem Manager, const FText &inout Title, const bool bHasTimer, const FSoftBrush &inout CustomIconBrush, const bool bShowTimer)
+FVM_MissionInfoTitle& CreateByManager(const UEUIManagerSubsystem Manager, const FText &inout Title, const bool bHasTimer, const FSoftBrush &inout CustomIconBrush, const bool bShowTimer)
 {
-    FVM_MissionInfoTitle __r;
-    TEUIModelRef<FVM_MissionInfoTitle> local_6 = TEUIModelRef<FVM_MissionInfoTitle>(EUIInternal::MakeModelWithManager_Generic(Manager, FVM_MissionInfoTitle::ModelId, 0, Title, bHasTimer, CustomIconBrush, bShowTimer));
-    return __r;
+    return TEUIModelRef<FVM_MissionInfoTitle>(EUIInternal::MakeModelWithManager_Generic(Manager, FVM_MissionInfoTitle::ModelId, 0, Title, bHasTimer, CustomIconBrush, bShowTimer)).Get();
 }
 void GetModelInfo(FEUIViewModelMetaInfo &inout Result)
 {
@@ -511,7 +510,6 @@ namespace __GeneratedProperties_FVM_MissionInfoTitle
 {
 UScriptStruct StaticStruct()
 {
-    UScriptStruct local_2;
-    return local_2;
+    return __GeneratedProperties_FVM_MissionInfoTitle.Get();
 }
 }

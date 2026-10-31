@@ -3,7 +3,6 @@ namespace __FLevelEventInfoConfigBaseFunctions
 UFUNCTION()
 ELevelEventType __FLevelEventInfoConfigBase_GetEventType(const TDataObjectPtr<FLevelEventInfoConfigBase> &inout DataObject)
 {
-    int local_141 = 0;
     if ((DataObject == nullptr))
     {
         if (!(EUIGlobals::GIsDuringPropertyConversion))
@@ -11,10 +10,9 @@ ELevelEventType __FLevelEventInfoConfigBase_GetEventType(const TDataObjectPtr<FL
             FBlueprintDebugFunctions::ThrowScriptException("Get 'EventType' from a null 'FLevelEventInfoConfigBase' DataObject!");
         }
         FLevelEventInfoConfigBase local_140;
-        local_141 = int(local_140.EventType);
-        return ELevelEventType(local_141);
+        return local_140.EventType;
     }
-    return ELevelEventType(local_141);
+    return DataObject.Get().EventType;
 }
 UFUNCTION()
 TDataObjectPtr<FPresentationConfig> __FLevelEventInfoConfigBase_GetPresentationConfig(const TDataObjectPtr<FLevelEventInfoConfigBase> &inout DataObject)
@@ -28,12 +26,11 @@ TDataObjectPtr<FPresentationConfig> __FLevelEventInfoConfigBase_GetPresentationC
         FLevelEventInfoConfigBase local_140;
         return local_140.GetPresentationConfig();
     }
-    return GetPresentationConfig();
+    return DataObject.Get().GetPresentationConfig();
 }
 UFUNCTION()
 FText __FLevelEventInfoConfigBase_GetEventTargetTitle(const TDataObjectPtr<FLevelEventInfoConfigBase> &inout DataObject)
 {
-    FText __r;
     if ((DataObject == nullptr))
     {
         if (!(EUIGlobals::GIsDuringPropertyConversion))
@@ -43,12 +40,11 @@ FText __FLevelEventInfoConfigBase_GetEventTargetTitle(const TDataObjectPtr<FLeve
         FLevelEventInfoConfigBase local_140;
         return local_140.EventTargetTitle;
     }
-    return __r;
+    return DataObject.Get().EventTargetTitle;
 }
 UFUNCTION()
 FText __FLevelEventInfoConfigBase_GetEventDescription(const TDataObjectPtr<FLevelEventInfoConfigBase> &inout DataObject)
 {
-    FText __r;
     if ((DataObject == nullptr))
     {
         if (!(EUIGlobals::GIsDuringPropertyConversion))
@@ -58,7 +54,7 @@ FText __FLevelEventInfoConfigBase_GetEventDescription(const TDataObjectPtr<FLeve
         FLevelEventInfoConfigBase local_140;
         return local_140.EventDescription;
     }
-    return __r;
+    return DataObject.Get().EventDescription;
 }
 UFUNCTION()
 TArray<TDataObjectPtr<FObjectiveConfig>> __FLevelEventInfoConfigBase_GetLevelObjectives(const TDataObjectPtr<FLevelEventInfoConfigBase> &inout DataObject)
@@ -72,7 +68,7 @@ TArray<TDataObjectPtr<FObjectiveConfig>> __FLevelEventInfoConfigBase_GetLevelObj
         FLevelEventInfoConfigBase local_140;
         return local_140.GetLevelObjectives();
     }
-    return GetLevelObjectives();
+    return DataObject.Get().GetLevelObjectives();
 }
 UFUNCTION()
 TDataObjectPtr<FDropItemConfigBase> __FLevelEventInfoConfigBase_GetDropRewardView(const TDataObjectPtr<FLevelEventInfoConfigBase> &inout DataObject)
@@ -86,7 +82,7 @@ TDataObjectPtr<FDropItemConfigBase> __FLevelEventInfoConfigBase_GetDropRewardVie
         FLevelEventInfoConfigBase local_140;
         return local_140.GetDropRewardView();
     }
-    return GetDropRewardView();
+    return DataObject.Get().GetDropRewardView();
 }
 UFUNCTION()
 FLevelEventInfoConfigBase CastToFLevelEventInfoConfigBase(const TDataObjectPtr<FLevelEventInfoConfigBase> &inout DataObject)
@@ -100,7 +96,6 @@ namespace __FEventScoreModifierConfigFunctions
 UFUNCTION()
 FName __FEventScoreModifierConfig_GetName(const TDataObjectPtr<FEventScoreModifierConfig> &inout DataObject)
 {
-    FName __r;
     if ((DataObject == nullptr))
     {
         if (!(EUIGlobals::GIsDuringPropertyConversion))
@@ -110,7 +105,7 @@ FName __FEventScoreModifierConfig_GetName(const TDataObjectPtr<FEventScoreModifi
         FEventScoreModifierConfig local_96;
         return local_96.Name;
     }
-    return __r;
+    return DataObject.Get().Name;
 }
 UFUNCTION()
 TMap<TDataObjectPtr<FWeatherConfig>, float32> __FEventScoreModifierConfig_GetWeatherModifier(const TDataObjectPtr<FEventScoreModifierConfig> &inout DataObject)
@@ -124,7 +119,7 @@ TMap<TDataObjectPtr<FWeatherConfig>, float32> __FEventScoreModifierConfig_GetWea
         FEventScoreModifierConfig local_96;
         return local_96.GetWeatherModifier();
     }
-    return GetWeatherModifier();
+    return DataObject.Get().GetWeatherModifier();
 }
 UFUNCTION()
 TMap<TDataObjectPtr<FMonsterMainConfig>, float32> __FEventScoreModifierConfig_GetCommissionBossModifier(const TDataObjectPtr<FEventScoreModifierConfig> &inout DataObject)
@@ -138,7 +133,7 @@ TMap<TDataObjectPtr<FMonsterMainConfig>, float32> __FEventScoreModifierConfig_Ge
         FEventScoreModifierConfig local_96;
         return local_96.GetCommissionBossModifier();
     }
-    return GetCommissionBossModifier();
+    return DataObject.Get().GetCommissionBossModifier();
 }
 UFUNCTION()
 TMap<TDataObjectPtr<FNPCMainConfig>, float32> __FEventScoreModifierConfig_GetCommissionNPCModifier(const TDataObjectPtr<FEventScoreModifierConfig> &inout DataObject)
@@ -152,7 +147,7 @@ TMap<TDataObjectPtr<FNPCMainConfig>, float32> __FEventScoreModifierConfig_GetCom
         FEventScoreModifierConfig local_96;
         return local_96.GetCommissionNPCModifier();
     }
-    return GetCommissionNPCModifier();
+    return DataObject.Get().GetCommissionNPCModifier();
 }
 UFUNCTION()
 TMap<TDataObjectPtr<FCommissionTimeConfig>, float32> __FEventScoreModifierConfig_GetCommissionTimeModifier(const TDataObjectPtr<FEventScoreModifierConfig> &inout DataObject)
@@ -166,7 +161,7 @@ TMap<TDataObjectPtr<FCommissionTimeConfig>, float32> __FEventScoreModifierConfig
         FEventScoreModifierConfig local_96;
         return local_96.GetCommissionTimeModifier();
     }
-    return GetCommissionTimeModifier();
+    return DataObject.Get().GetCommissionTimeModifier();
 }
 UFUNCTION()
 FEventScoreModifierConfig CastToFEventScoreModifierConfig(const TDataObjectPtr<FEventScoreModifierConfig> &inout DataObject)
@@ -180,7 +175,6 @@ namespace __FLevelRandomEventInfoConfigFunctions
 UFUNCTION()
 ELevelRandomEventType __FLevelRandomEventInfoConfig_GetLevelRandomEventType(const TDataObjectPtr<FLevelRandomEventInfoConfig> &inout DataObject)
 {
-    int local_189 = 0;
     if ((DataObject == nullptr))
     {
         if (!(EUIGlobals::GIsDuringPropertyConversion))
@@ -188,15 +182,13 @@ ELevelRandomEventType __FLevelRandomEventInfoConfig_GetLevelRandomEventType(cons
             FBlueprintDebugFunctions::ThrowScriptException("Get 'LevelRandomEventType' from a null 'FLevelRandomEventInfoConfig' DataObject!");
         }
         FLevelRandomEventInfoConfig local_188;
-        local_189 = int(local_188.LevelRandomEventType);
-        return ELevelRandomEventType(local_189);
+        return local_188.LevelRandomEventType;
     }
-    return ELevelRandomEventType(local_189);
+    return DataObject.Get().LevelRandomEventType;
 }
 UFUNCTION()
 FGameplayTag __FLevelRandomEventInfoConfig_GetEventFamilyTag(const TDataObjectPtr<FLevelRandomEventInfoConfig> &inout DataObject)
 {
-    FGameplayTag __r;
     if ((DataObject == nullptr))
     {
         if (!(EUIGlobals::GIsDuringPropertyConversion))
@@ -206,7 +198,7 @@ FGameplayTag __FLevelRandomEventInfoConfig_GetEventFamilyTag(const TDataObjectPt
         FLevelRandomEventInfoConfig local_188;
         return local_188.EventFamilyTag;
     }
-    return __r;
+    return DataObject.Get().EventFamilyTag;
 }
 UFUNCTION()
 float32 __FLevelRandomEventInfoConfig_GetBaseScore(const TDataObjectPtr<FLevelRandomEventInfoConfig> &inout DataObject)
@@ -235,12 +227,11 @@ TDataObjectPtr<FEventScoreModifierConfig> __FLevelRandomEventInfoConfig_GetScore
         FLevelRandomEventInfoConfig local_188;
         return local_188.GetScoreModifierConfig();
     }
-    return GetScoreModifierConfig();
+    return DataObject.Get().GetScoreModifierConfig();
 }
 UFUNCTION()
 FText __FLevelRandomEventInfoConfig_GetEventRewardBuffDesc(const TDataObjectPtr<FLevelRandomEventInfoConfig> &inout DataObject)
 {
-    FText __r;
     if ((DataObject == nullptr))
     {
         if (!(EUIGlobals::GIsDuringPropertyConversion))
@@ -250,12 +241,11 @@ FText __FLevelRandomEventInfoConfig_GetEventRewardBuffDesc(const TDataObjectPtr<
         FLevelRandomEventInfoConfig local_188;
         return local_188.EventRewardBuffDesc;
     }
-    return __r;
+    return DataObject.Get().EventRewardBuffDesc;
 }
 UFUNCTION()
 FText __FLevelRandomEventInfoConfig_GetEventRewardBriefDesc(const TDataObjectPtr<FLevelRandomEventInfoConfig> &inout DataObject)
 {
-    FText __r;
     if ((DataObject == nullptr))
     {
         if (!(EUIGlobals::GIsDuringPropertyConversion))
@@ -265,12 +255,11 @@ FText __FLevelRandomEventInfoConfig_GetEventRewardBriefDesc(const TDataObjectPtr
         FLevelRandomEventInfoConfig local_188;
         return local_188.EventRewardBriefDesc;
     }
-    return __r;
+    return DataObject.Get().EventRewardBriefDesc;
 }
 UFUNCTION()
 TSoftObjectPtr<ULevelEventAttribute> __FLevelRandomEventInfoConfig_GetLevelEventAttribute(const TDataObjectPtr<FLevelRandomEventInfoConfig> &inout DataObject)
 {
-    TSoftObjectPtr<ULevelEventAttribute> __r;
     if ((DataObject == nullptr))
     {
         if (!(EUIGlobals::GIsDuringPropertyConversion))
@@ -280,7 +269,7 @@ TSoftObjectPtr<ULevelEventAttribute> __FLevelRandomEventInfoConfig_GetLevelEvent
         FLevelRandomEventInfoConfig local_188;
         return local_188.LevelEventAttribute;
     }
-    return __r;
+    return DataObject.Get().LevelEventAttribute;
 }
 UFUNCTION()
 FLevelRandomEventInfoConfig CastToFLevelRandomEventInfoConfig(const TDataObjectPtr<FLevelRandomEventInfoConfig> &inout DataObject)
@@ -414,7 +403,6 @@ int __FLevelPublicEventInfoConfig_GetPriority(const TDataObjectPtr<FLevelPublicE
 UFUNCTION()
 FText __FLevelPublicEventInfoConfig_GetEventRewardBuffDesc(const TDataObjectPtr<FLevelPublicEventInfoConfig> &inout DataObject)
 {
-    FText __r;
     if ((DataObject == nullptr))
     {
         if (!(EUIGlobals::GIsDuringPropertyConversion))
@@ -424,7 +412,7 @@ FText __FLevelPublicEventInfoConfig_GetEventRewardBuffDesc(const TDataObjectPtr<
         FLevelPublicEventInfoConfig local_152;
         return local_152.EventRewardBuffDesc;
     }
-    return __r;
+    return DataObject.Get().EventRewardBuffDesc;
 }
 UFUNCTION()
 FLevelPublicEventInfoConfig CastToFLevelPublicEventInfoConfig(const TDataObjectPtr<FLevelPublicEventInfoConfig> &inout DataObject)

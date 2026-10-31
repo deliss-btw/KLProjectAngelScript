@@ -47,8 +47,8 @@ class UWidget_PVX_Settlement_Main : UEUIActivatableWidget
     {
         if (bAllPhasesCompleted)
         {
-            ClosePage();
-            ::FGameConnectionUtils::UICallLeaveCurrentLevel(GetContext().GetLocalPlayer());
+            this.Page.Get().ClosePage();
+            ::FGameConnectionUtils::UICallLeaveCurrentLevel(this.PVX_Settlement_Main.Get().GetContext().GetLocalPlayer());
         }
         return;
     }
@@ -68,7 +68,7 @@ class UWidget_PVX_Settlement_Main : UEUIActivatableWidget
     {
         if (this.PVX_Settlement_Main.IsValid())
         {
-            OnPlayerAdvancePhase();
+            this.PVX_Settlement_Main.Get().OnPlayerAdvancePhase();
         }
         return;
     }
@@ -101,8 +101,8 @@ class UWidget_PVX_Settlement_Main : UEUIActivatableWidget
     }
     void HandleObservedModelChanges(FEUIReactiveSubscriberIterator &inout It)
     {
-        FVM_PVX_Settlement_Main& local_6;
         TEUIModelRef<FVM_PVX_Settlement_Main> local_2 = this.PVX_Settlement_Main.AsRef();
+        FVM_PVX_Settlement_Main& local_6 = local_2.Get();
         for (; It; )
         {
             FEUIReactiveSubscriberTrackScope local_56 = FEUIReactiveSubscriberTrackScope(It);

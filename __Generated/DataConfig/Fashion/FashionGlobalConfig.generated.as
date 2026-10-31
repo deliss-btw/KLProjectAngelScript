@@ -12,7 +12,7 @@ TDataObjectPtr<FMountFashionConfig> __FFashionGlobalConfig_GetDefaultMount(const
         FFashionGlobalConfig local_40;
         return local_40.GetDefaultMount();
     }
-    return GetDefaultMount();
+    return DataObject.Get().GetDefaultMount();
 }
 UFUNCTION()
 FFashionGlobalConfig CastToFFashionGlobalConfig(const TDataObjectPtr<FFashionGlobalConfig> &inout DataObject)

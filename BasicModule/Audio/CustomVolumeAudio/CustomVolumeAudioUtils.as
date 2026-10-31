@@ -261,7 +261,6 @@ UFUNCTION()
 bool FindNearestCustomVolume(const FVector &inout Position, const TArray<TWeakObjectPtr<ACustomConvexVolume>> &inout Volumes, ACustomConvexVolume &inout OutNearestVolume, float32 &inout OutDistance)
 {
     ACustomConvexVolume local_8;
-    ACustomConvexVolume local_24;
     if (Volumes.Num() == 0)
     {
         return false;
@@ -269,7 +268,7 @@ bool FindNearestCustomVolume(const FVector &inout Position, const TArray<TWeakOb
     float32 local_4 = 1000000.0f;
     for (auto& local_22 : Volumes)
     {
-        local_22;
+        ACustomConvexVolume local_24 = local_22.Get();
         if (local_24 == nullptr)
         {
             continue;
@@ -332,8 +331,7 @@ void CalculateAudioPosition(const FECSEntity &inout Entity, FC_CustomVolumeAudio
         return;
     }
     XLogIf(FCustomVolumeAudioUtils::EnableVerboseLog(), ELog(1), FString().Append("CalculateAudioPosition: Player at (").Append(FString::ApplyFormat(PlayerLocation.X, ".2f")).Append(", ").Append(FString::ApplyFormat(PlayerLocation.Y, ".2f")).Append(", ").Append(FString::ApplyFormat(PlayerLocation.Z, ".2f")).Append(")"));
-    ACustomConvexVolume local_26;
-    bool local_3 = FCustomVolumeAudioUtils::IsPointInCustomVolume(PlayerLocation, local_26);
+    bool local_3 = FCustomVolumeAudioUtils::IsPointInCustomVolume(PlayerLocation, VolumeAudio.TargetVolume.Get());
     XLogIf(FCustomVolumeAudioUtils::EnableVerboseLog(), ELog(1), FString().Append("CalculateAudioPosition: IsInsideVolume = ").Append(local_3));
     if (local_3)
     {
@@ -347,7 +345,7 @@ void CalculateAudioPosition(const FECSEntity &inout Entity, FC_CustomVolumeAudio
     VolumeAudio.AudioState = ECustomVolumeAudioState(0);
     XLogIf(FCustomVolumeAudioUtils::EnableLog(), ELog(1), FString().Append("CalculateAudioPosition: Setting state to Outside"));
     FVector local_34;
-    float32 local_28_2 = FCustomVolumeAudioUtils::CalculateDistanceToCustomVolume(PlayerLocation, local_26, local_34);
+    float32 local_28_2 = FCustomVolumeAudioUtils::CalculateDistanceToCustomVolume(PlayerLocation, VolumeAudio.TargetVolume.Get(), local_34);
     VolumeAudio.NearestVolumePoint = local_34;
     VolumeAudio.AudioPosition = local_34;
     VolumeAudio.DistanceToVolume = local_28_2;
@@ -380,7 +378,6 @@ int PlayCustomVolumeAudio(const FECSEntity &inout Entity, const FVector &inout P
 UFUNCTION()
 int PlayCustomVolumeAudioSet(const FECSEntity &inout Entity, const FVector &inout Position, const FSimpleAudioSet &inout AudioSet)
 {
-    float32 local_34 = 0.0f;
     if (!(AudioSet.State.IsNull()))
     {
         FGameAudioUtils::SetAudioState(AudioSet.State, FOnLoadEventCallbackWithEntity(), true, FGameAudioUtils::GetCachedAudioWorld());
@@ -391,7 +388,7 @@ int PlayCustomVolumeAudioSet(const FECSEntity &inout Entity, const FVector &inou
     }
     for (auto& local_32 : AudioSet.RtpcMap)
     {
-        FGameAudioUtils::SetAudioRtpc(local_32.GetKey(), Entity, local_34, 0, FOnLoadEventCallbackWithEntity(), true, FGameAudioUtils::GetCachedAudioWorld());
+        FGameAudioUtils::SetAudioRtpc(local_32.GetKey(), Entity, local_32.GetValue(), 0, FOnLoadEventCallbackWithEntity(), true, FGameAudioUtils::GetCachedAudioWorld());
     }
     if (!(AudioSet.Event.IsNull()))
     {

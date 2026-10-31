@@ -38,13 +38,29 @@ struct FVM_SubmitRechargeTier : FEUIViewModel
     }
     int GetTierId() const
     {
-        int local_3 = 0;
-        return this.GetConfig().IsSet() ? local_3 : 0;
+        int local_2;
+        if (this.GetConfig().IsSet())
+        {
+            local_2 = this.GetConfig().Get().TierId;
+        }
+        else
+        {
+            local_2 = 0;
+        }
+        return local_2;
     }
     int GetCurrencyAmount() const
     {
-        int local_3 = 0;
-        return this.GetConfig().IsSet() ? local_3 : 0;
+        int local_2;
+        if (this.GetConfig().IsSet())
+        {
+            local_2 = this.GetConfig().Get().CurrencyAmount;
+        }
+        else
+        {
+            local_2 = 0;
+        }
+        return local_2;
     }
     FText GetCurrencyAmountText() const
     {
@@ -52,8 +68,16 @@ struct FVM_SubmitRechargeTier : FEUIViewModel
     }
     int GetPriceAmount() const
     {
-        int local_3 = 0;
-        return this.GetConfig().IsSet() ? local_3 : 0;
+        int local_2;
+        if (this.GetConfig().IsSet())
+        {
+            local_2 = this.GetConfig().Get().PriceAmount;
+        }
+        else
+        {
+            local_2 = 0;
+        }
+        return local_2;
     }
     FText GetPriceAmountText() const
     {
@@ -64,6 +88,7 @@ struct FVM_SubmitRechargeTier : FEUIViewModel
         FSoftBrush local_92;
         if (this.GetConfig().IsSet())
         {
+            local_92 = this.GetConfig().Get().Icon;
         }
         else
         {
@@ -77,6 +102,7 @@ struct FVM_SubmitRechargeTier : FEUIViewModel
         FSoftBrush local_96;
         if (local_4.IsSet())
         {
+            local_96 = local_4.Get().ItemIcon;
         }
         else
         {
@@ -86,11 +112,11 @@ struct FVM_SubmitRechargeTier : FEUIViewModel
     }
     void GrantVoucherReward()
     {
-        int local_8 = 0;
-        int local_10 = 0;
         TDataObjectPtr<FItemConfig> local_4 = ::UGlobalItemSettings::Get().VoucherConfig;
         if (local_4.IsSet() && this.GetConfig().IsSet())
         {
+            int local_8 = local_4.Get().DataId;
+            int local_10 = this.GetConfig().Get().CurrencyAmount;
             System::ExecuteConsoleCommand(__GetWorldContext(), FString().Append("ClientGmTalk Item Add ").Append(local_8).Append(" ").Append(local_10), nullptr);
         }
         return;
@@ -147,11 +173,9 @@ FVM_SubmitRechargeTier& Create(const UObject ContextObject, const TDataObjectPtr
 {
     return FVM_SubmitRechargeTier::CreateByManager(EUIInternal::GetContextManager(ContextObject), Config);
 }
-FVM_SubmitRechargeTier CreateByManager(const UEUIManagerSubsystem Manager, const TDataObjectPtr<FSubmitRechargeTierConfig> &inout Config)
+FVM_SubmitRechargeTier& CreateByManager(const UEUIManagerSubsystem Manager, const TDataObjectPtr<FSubmitRechargeTierConfig> &inout Config)
 {
-    FVM_SubmitRechargeTier __r;
-    TEUIModelRef<FVM_SubmitRechargeTier> local_6 = TEUIModelRef<FVM_SubmitRechargeTier>(EUIInternal::MakeModelWithManager_Generic(Manager, FVM_SubmitRechargeTier::ModelId, 0, Config));
-    return __r;
+    return TEUIModelRef<FVM_SubmitRechargeTier>(EUIInternal::MakeModelWithManager_Generic(Manager, FVM_SubmitRechargeTier::ModelId, 0, Config)).Get();
 }
 void GetModelInfo(FEUIViewModelMetaInfo &inout Result)
 {
@@ -247,7 +271,6 @@ namespace __GeneratedProperties_FVM_SubmitRechargeTier
 {
 UScriptStruct StaticStruct()
 {
-    UScriptStruct local_2;
-    return local_2;
+    return __GeneratedProperties_FVM_SubmitRechargeTier.Get();
 }
 }

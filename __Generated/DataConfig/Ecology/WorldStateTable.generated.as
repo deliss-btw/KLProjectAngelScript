@@ -3,7 +3,6 @@ namespace __FTODTagDefinitionRowFunctions
 UFUNCTION()
 EHour __FTODTagDefinitionRow_GetStartHour(const TDataObjectPtr<FTODTagDefinitionRow> &inout DataObject)
 {
-    int local_29 = 0;
     if ((DataObject == nullptr))
     {
         if (!(EUIGlobals::GIsDuringPropertyConversion))
@@ -11,15 +10,13 @@ EHour __FTODTagDefinitionRow_GetStartHour(const TDataObjectPtr<FTODTagDefinition
             FBlueprintDebugFunctions::ThrowScriptException("Get 'StartHour' from a null 'FTODTagDefinitionRow' DataObject!");
         }
         FTODTagDefinitionRow local_28;
-        local_29 = int(local_28.StartHour);
-        return EHour(local_29);
+        return local_28.StartHour;
     }
-    return EHour(local_29);
+    return DataObject.Get().StartHour;
 }
 UFUNCTION()
 EMinute __FTODTagDefinitionRow_GetStartMinute(const TDataObjectPtr<FTODTagDefinitionRow> &inout DataObject)
 {
-    int local_29 = 0;
     if ((DataObject == nullptr))
     {
         if (!(EUIGlobals::GIsDuringPropertyConversion))
@@ -27,15 +24,13 @@ EMinute __FTODTagDefinitionRow_GetStartMinute(const TDataObjectPtr<FTODTagDefini
             FBlueprintDebugFunctions::ThrowScriptException("Get 'StartMinute' from a null 'FTODTagDefinitionRow' DataObject!");
         }
         FTODTagDefinitionRow local_28;
-        local_29 = int(local_28.StartMinute);
-        return EMinute(local_29);
+        return local_28.StartMinute;
     }
-    return EMinute(local_29);
+    return DataObject.Get().StartMinute;
 }
 UFUNCTION()
 EHour __FTODTagDefinitionRow_GetEndHour(const TDataObjectPtr<FTODTagDefinitionRow> &inout DataObject)
 {
-    int local_29 = 0;
     if ((DataObject == nullptr))
     {
         if (!(EUIGlobals::GIsDuringPropertyConversion))
@@ -43,15 +38,13 @@ EHour __FTODTagDefinitionRow_GetEndHour(const TDataObjectPtr<FTODTagDefinitionRo
             FBlueprintDebugFunctions::ThrowScriptException("Get 'EndHour' from a null 'FTODTagDefinitionRow' DataObject!");
         }
         FTODTagDefinitionRow local_28;
-        local_29 = int(local_28.EndHour);
-        return EHour(local_29);
+        return local_28.EndHour;
     }
-    return EHour(local_29);
+    return DataObject.Get().EndHour;
 }
 UFUNCTION()
 EMinute __FTODTagDefinitionRow_GetEndMinute(const TDataObjectPtr<FTODTagDefinitionRow> &inout DataObject)
 {
-    int local_29 = 0;
     if ((DataObject == nullptr))
     {
         if (!(EUIGlobals::GIsDuringPropertyConversion))
@@ -59,15 +52,13 @@ EMinute __FTODTagDefinitionRow_GetEndMinute(const TDataObjectPtr<FTODTagDefiniti
             FBlueprintDebugFunctions::ThrowScriptException("Get 'EndMinute' from a null 'FTODTagDefinitionRow' DataObject!");
         }
         FTODTagDefinitionRow local_28;
-        local_29 = int(local_28.EndMinute);
-        return EMinute(local_29);
+        return local_28.EndMinute;
     }
-    return EMinute(local_29);
+    return DataObject.Get().EndMinute;
 }
 UFUNCTION()
 FGameplayTagContainer __FTODTagDefinitionRow_GetTags(const TDataObjectPtr<FTODTagDefinitionRow> &inout DataObject)
 {
-    FGameplayTagContainer __r;
     if ((DataObject == nullptr))
     {
         if (!(EUIGlobals::GIsDuringPropertyConversion))
@@ -77,7 +68,7 @@ FGameplayTagContainer __FTODTagDefinitionRow_GetTags(const TDataObjectPtr<FTODTa
         FTODTagDefinitionRow local_28;
         return local_28.Tags;
     }
-    return __r;
+    return DataObject.Get().Tags;
 }
 UFUNCTION()
 FTODTagDefinitionRow CastToFTODTagDefinitionRow(const TDataObjectPtr<FTODTagDefinitionRow> &inout DataObject)
@@ -100,7 +91,7 @@ TDataObjectPtr<FCreatureDefinitionRow> __FSpawnerCountRatioDefinitionRow_GetCrea
         FSpawnerCountRatioDefinitionRow local_90;
         return local_90.GetCreature();
     }
-    return GetCreature();
+    return DataObject.Get().GetCreature();
 }
 UFUNCTION()
 TDataObjectPtr<FEcologyResourceDefinitionRow> __FSpawnerCountRatioDefinitionRow_GetResource(const TDataObjectPtr<FSpawnerCountRatioDefinitionRow> &inout DataObject)
@@ -114,12 +105,11 @@ TDataObjectPtr<FEcologyResourceDefinitionRow> __FSpawnerCountRatioDefinitionRow_
         FSpawnerCountRatioDefinitionRow local_90;
         return local_90.GetResource();
     }
-    return GetResource();
+    return DataObject.Get().GetResource();
 }
 UFUNCTION()
 FGameplayTagContainer __FSpawnerCountRatioDefinitionRow_GetWeatherElementTag(const TDataObjectPtr<FSpawnerCountRatioDefinitionRow> &inout DataObject)
 {
-    FGameplayTagContainer __r;
     if ((DataObject == nullptr))
     {
         if (!(EUIGlobals::GIsDuringPropertyConversion))
@@ -129,12 +119,11 @@ FGameplayTagContainer __FSpawnerCountRatioDefinitionRow_GetWeatherElementTag(con
         FSpawnerCountRatioDefinitionRow local_90;
         return local_90.WeatherElementTag;
     }
-    return __r;
+    return DataObject.Get().WeatherElementTag;
 }
 UFUNCTION()
 FGameplayTagContainer __FSpawnerCountRatioDefinitionRow_GetDaySegmentsTag(const TDataObjectPtr<FSpawnerCountRatioDefinitionRow> &inout DataObject)
 {
-    FGameplayTagContainer __r;
     if ((DataObject == nullptr))
     {
         if (!(EUIGlobals::GIsDuringPropertyConversion))
@@ -144,7 +133,7 @@ FGameplayTagContainer __FSpawnerCountRatioDefinitionRow_GetDaySegmentsTag(const 
         FSpawnerCountRatioDefinitionRow local_90;
         return local_90.DaySegmentsTag;
     }
-    return __r;
+    return DataObject.Get().DaySegmentsTag;
 }
 UFUNCTION()
 int __FSpawnerCountRatioDefinitionRow_GetPriority(const TDataObjectPtr<FSpawnerCountRatioDefinitionRow> &inout DataObject)

@@ -24,7 +24,6 @@ class US_CommonPopupSystem : US_EUIGroupScriptSystemBase
     {
         int local_12 = 0;
         const FCommonPopupInfo& local_52;
-        TArrayConstIterator<FCommonPopupInfo> local_98;
         if (this.bLoadingScreenVisible)
         {
             return;
@@ -46,7 +45,7 @@ class US_CommonPopupSystem : US_EUIGroupScriptSystemBase
         TSet<int> local_74;
         for (auto& local_92 : Record.RemovedPopups)
         {
-            local_92;
+            auto local_98 = local_92.GetValue().QueuedPopups.Iterator();
             for (; local_98.CanProceed;)
             {
                 local_52 = local_98.Proceed();
@@ -66,7 +65,7 @@ class US_CommonPopupSystem : US_EUIGroupScriptSystemBase
     UFUNCTION()
     void ClientJob_ReleaseCollectedPopups(FCS_CommonPopupManager &inout Manager) const
     {
-        FFPTime local_6;
+        int local_50;
         if (Manager.CollectStartTime.IsEmpty())
         {
             return;
@@ -76,8 +75,7 @@ class US_CommonPopupSystem : US_EUIGroupScriptSystemBase
         TArray<ECommonPopupQueueType> local_12;
         for (auto& local_30 : Manager.CollectStartTime)
         {
-            (local_8 - local_6);
-            if (local_6.ToSeconds() >= 0.20000000298023224)
+            if ((local_8 - local_30.GetValue()).ToSeconds() >= 0.20000000298023224)
             {
                 local_12.Add(local_30.GetKey());
             }
@@ -89,14 +87,17 @@ class US_CommonPopupSystem : US_EUIGroupScriptSystemBase
         auto local_42 = local_12.Iterator();
         for (; local_42.CanProceed;)
         {
-            if (Manager.QueuedPopups.Contains(int(local_42.Proceed())))
+            local_50 = int(local_42.Proceed());
+            if (Manager.QueuedPopups.Contains(Manager.CollectStartTime.Remove(local_50)))
             {
+                FCommonPopupInfoSorter local_52;
+                Manager.QueuedPopups[local_50].QueuedPopups.Sort(local_52);
             }
         }
         auto local_48 = local_12.Iterator();
         for (; local_48.CanProceed;)
         {
-            int& local_50 = int(local_48.Proceed());
+            local_50 = int(local_48.Proceed());
             ::CommonPopupDisplayingUtils_Internal::TryPromoteQueue(Manager, local_50);
         }
         return;

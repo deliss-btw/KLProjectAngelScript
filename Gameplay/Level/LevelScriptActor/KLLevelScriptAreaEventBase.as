@@ -32,13 +32,12 @@ class AKLLevelScriptAreaEventBase : AKLLevelScriptBaseActor
         if (this.EventInfo && !(local_4.opCall()))
         {
             FC_PrefabConfig local_12;
-            TDataObjectPtr<FBasePrefabConfig> local_36;
-            local_12.ConfigPtr = local_36;
+            local_12.ConfigPtr = TDataObjectPtr<FBasePrefabConfig>(this.EventInfo.Get());
             local_12.PrefabType = EPrefabType(5);
             bool local_5 = ECS::GetRuntimeInfo().IsServer;
             if (local_5)
             {
-                local_68.SetEventInfo(TDataObjectPtr<FLevelEventInfoConfigBase>());
+                local_68.SetEventInfo(TDataObjectPtr<FLevelEventInfoConfigBase>(this.EventInfo.Get()));
             }
         }
         return;
@@ -46,8 +45,8 @@ class AKLLevelScriptAreaEventBase : AKLLevelScriptBaseActor
     UFUNCTION()
     void PreLevelBeginPlay_Implementation()
     {
-        AECSRegionVolume local_2;
         Super::PreLevelBeginPlay_Implementation();
+        AECSRegionVolume local_2 = this.EventArea.Get();
         if (local_2 != nullptr)
         {
             local_2.OnECSPlayerControllerBeginOverlap.AddUFunction(this, n"OnPlayerBeginOverlapAreaVolume");
@@ -145,7 +144,7 @@ class AKLLevelScriptAreaEventBase : AKLLevelScriptBaseActor
         if (this.EventInfo)
         {
             this.LevelScriptEntity.IsValid();
-            if (GetLevelObjectives().Num() > 0)
+            if (this.EventInfo.Get().GetLevelObjectives().Num() > 0)
             {
                 FC_PendingInitAreaEventObjectiveTag local_10;
                 Assign local_8;
@@ -256,7 +255,6 @@ class AKLLevelScriptAreaEventBase : AKLLevelScriptBaseActor
     }
     void LevelEventSuccess(const TArray<FECSEntity> &inout TriggeredPlayers)
     {
-        int local_15 = 0;
         this.OnEventSuccess(TriggeredPlayers);
         ModifyOrAdd local_4;
         local_4.opCall().SetbIsSuccess(true);
@@ -265,8 +263,7 @@ class AKLLevelScriptAreaEventBase : AKLLevelScriptBaseActor
         FCS_CommissionInfo& local_14 = local_12.opCall();
         if (local_14)
         {
-            int local_16 = local_15;
-            if (local_16 == 0)
+            if (int(this.EventInfo.Get().EventType) == 0)
             {
                 ++local_14.RandomEventSuccessNum;
             }
@@ -309,8 +306,7 @@ class AKLLevelScriptAreaEventBase : AKLLevelScriptBaseActor
         if (local_24 && !(local_60.opCall()))
         {
             FC_PrefabConfig local_68;
-            TDataObjectPtr<FBasePrefabConfig> local_92;
-            local_68.ConfigPtr = local_92;
+            local_68.ConfigPtr = TDataObjectPtr<FBasePrefabConfig>(local_24.Get());
             local_68.PrefabType = EPrefabType(5);
         }
         return;
@@ -589,7 +585,7 @@ class AKLLevelScriptAreaEventBase : AKLLevelScriptBaseActor
     void ActivateLevelObjective(const TDataObjectPtr<FObjectiveConfig> &inout Objective)
     {
         int local_20 = 0;
-        if (this.EventInfo.IsSet() && (GetLevelObjectives().Num() > 0))
+        if (this.EventInfo.IsSet() && (this.EventInfo.Get().GetLevelObjectives().Num() > 0))
         {
             XError(ELog(22), FString().Append(this.GetName()).Append(" LevelObjectives is not empty, cannot activate objective manually"));
             return;
@@ -599,9 +595,7 @@ class AKLLevelScriptAreaEventBase : AKLLevelScriptBaseActor
         FObjectiveContext local_26;
         local_20.SetCurrentObjectiveInstanceId(::ObjectiveUtils::ActivateObjective(Objective, local_26));
         local_20.SetCurrentObjective(Objective);
-        FName local_29;
-        local_29.GetDataName();
-        XLog(ELog(22), FString().Append(this.GetName()).Append(" ActivateLevelObjective: ").Append(local_29));
+        XLog(ELog(22), FString().Append(this.GetName()).Append(" ActivateLevelObjective: ").Append(Objective.Get().GetDataName()));
         return;
     }
     UFUNCTION()
@@ -615,10 +609,8 @@ class AKLLevelScriptAreaEventBase : AKLLevelScriptBaseActor
             local_32 = local_6.GetCurrentObjective();
             if ((local_32 == Objective.opImplConv()))
             {
-                FName local_96;
                 ::ObjectiveUtils::DeactivateObjectives(local_6.GetCurrentObjectiveInstanceId());
-                local_96.GetDataName();
-                XLog(ELog(22), FString().Append(this.GetName()).Append(" DeactivateLevelObjective: ").Append(local_96));
+                XLog(ELog(22), FString().Append(this.GetName()).Append(" DeactivateLevelObjective: ").Append(Objective.Get().GetDataName()));
                 Remove local_102;
                 local_102.opCall();
             }
@@ -634,9 +626,7 @@ class AKLLevelScriptAreaEventBase : AKLLevelScriptBaseActor
         {
             if (local_6.GetCurrentObjectiveInstanceId() > 0)
             {
-                FName local_20;
-                local_20.GetDataName();
-                XLog(ELog(22), FString().Append(this.GetName()).Append(" FinishCurrentEventObjective: ").Append(local_20));
+                XLog(ELog(22), FString().Append(this.GetName()).Append(" FinishCurrentEventObjective: ").Append(local_6.GetCurrentObjective().Get().GetDataName()));
                 ::ObjectiveUtils::SetObjectiveStatusManually(local_6.GetCurrentObjectiveInstanceId(), EObjectiveStatus(2));
             }
         }
@@ -678,9 +668,7 @@ class AKLLevelScriptAreaEventBase : AKLLevelScriptBaseActor
         {
             return;
         }
-        FName local_16;
-        local_16.GetDataName();
-        XLog(ELog(22), FString().Append(this.GetName()).Append(" LevelObjective Status changed: Idx:").Append(ObjectiveIndex).Append(" Obj:").Append(local_16).Append(" Status:").Append(Status));
+        XLog(ELog(22), FString().Append(this.GetName()).Append(" LevelObjective Status changed: Idx:").Append(ObjectiveIndex).Append(" Obj:").Append(Objective.Get().GetDataName()).Append(" Status:").Append(Status));
         this.SetObjectiveGuideEnabled(ObjectiveInstanceId, (int(Status) == 1));
         if (int(Status) == 2)
         {

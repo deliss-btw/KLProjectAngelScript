@@ -1112,11 +1112,9 @@ FM_SpotFilter& Create(const UObject ContextObject, const USpotDisplayConfigBase 
 {
     return FM_SpotFilter::CreateByManager(EUIInternal::GetContextManager(ContextObject), DisplayConfig);
 }
-FM_SpotFilter CreateByManager(const UEUIManagerSubsystem Manager, const USpotDisplayConfigBase DisplayConfig)
+FM_SpotFilter& CreateByManager(const UEUIManagerSubsystem Manager, const USpotDisplayConfigBase DisplayConfig)
 {
-    FM_SpotFilter __r;
-    TEUIModelRef<FM_SpotFilter> local_6 = TEUIModelRef<FM_SpotFilter>(EUIInternal::MakeModelWithManager_Generic(Manager, FM_SpotFilter::ModelId, 0, DisplayConfig));
-    return __r;
+    return TEUIModelRef<FM_SpotFilter>(EUIInternal::MakeModelWithManager_Generic(Manager, FM_SpotFilter::ModelId, 0, DisplayConfig)).Get();
 }
 void GetModelInfo(FEUIModelOnlyMetaInfo &inout Result)
 {
@@ -1203,11 +1201,9 @@ FMS_CommonSpotFilters& Get(const UObject ContextObject)
 {
     return FMS_CommonSpotFilters::GetByManager(EUIInternal::GetContextManager(ContextObject));
 }
-FMS_CommonSpotFilters GetByManager(const UEUIManagerSubsystem Manager)
+FMS_CommonSpotFilters& GetByManager(const UEUIManagerSubsystem Manager)
 {
-    FMS_CommonSpotFilters __r;
-    TEUIModelRef<FMS_CommonSpotFilters> local_6 = TEUIModelRef<FMS_CommonSpotFilters>(EUIInternal::MakeModelWithManager(Manager, FMS_CommonSpotFilters::ModelId));
-    return __r;
+    return TEUIModelRef<FMS_CommonSpotFilters>(EUIInternal::MakeModelWithManager(Manager, FMS_CommonSpotFilters::ModelId)).Get();
 }
 void GetModelInfo(FEUIModelOnlyMetaInfo &inout Result)
 {

@@ -127,6 +127,7 @@ struct FVMS_SideHint : FEUIViewModelSingleton
                         FText local_50;
                         if (local_46.GetWeatherConfig().IsSet())
                         {
+                            local_50 = local_46.GetWeatherConfig().Get().DisplayName;
                         }
                         local_8.Add(local_50);
                     }
@@ -163,7 +164,7 @@ struct FVMS_SideHint : FEUIViewModelSingleton
                         }
                         else
                         {
-                            ::GetPrefabConfigPtr(local_38);
+                            local_34 += ::GetPrefabConfigPtr(local_38).Get().DisplayName;
                         }
                         local_34 += "</>";
                         local_8.Add(FText::FromString(local_34));
@@ -349,11 +350,9 @@ FVMS_SideHint& Get(const UObject ContextObject)
 {
     return FVMS_SideHint::GetByManager(EUIInternal::GetContextManager(ContextObject));
 }
-FVMS_SideHint GetByManager(const UEUIManagerSubsystem Manager)
+FVMS_SideHint& GetByManager(const UEUIManagerSubsystem Manager)
 {
-    FVMS_SideHint __r;
-    TEUIModelRef<FVMS_SideHint> local_6 = TEUIModelRef<FVMS_SideHint>(EUIInternal::MakeModelWithManager(Manager, FVMS_SideHint::ModelId));
-    return __r;
+    return TEUIModelRef<FVMS_SideHint>(EUIInternal::MakeModelWithManager(Manager, FVMS_SideHint::ModelId)).Get();
 }
 void GetModelInfo(FEUIViewModelMetaInfo &inout Result)
 {
@@ -430,7 +429,6 @@ namespace __GeneratedProperties_FVMS_SideHint
 {
 UScriptStruct StaticStruct()
 {
-    UScriptStruct local_2;
-    return local_2;
+    return __GeneratedProperties_FVMS_SideHint.Get();
 }
 }

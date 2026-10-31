@@ -277,11 +277,9 @@ FVM_CommonDialog& Create(const UObject ContextObject, const FText &inout Title, 
 {
     return FVM_CommonDialog::CreateByManager(EUIInternal::GetContextManager(ContextObject), Title, Message, Options, Callback);
 }
-FVM_CommonDialog CreateByManager(const UEUIManagerSubsystem Manager, const FText &inout Title, const FText &inout Message, const TArray<FCommonDialogOption> &inout Options, const FDialogCallback &inout Callback)
+FVM_CommonDialog& CreateByManager(const UEUIManagerSubsystem Manager, const FText &inout Title, const FText &inout Message, const TArray<FCommonDialogOption> &inout Options, const FDialogCallback &inout Callback)
 {
-    FVM_CommonDialog __r;
-    TEUIModelRef<FVM_CommonDialog> local_6 = TEUIModelRef<FVM_CommonDialog>(EUIInternal::MakeModelWithManager_Generic(Manager, FVM_CommonDialog::ModelId, 0, Title, Message, Options, Callback));
-    return __r;
+    return TEUIModelRef<FVM_CommonDialog>(EUIInternal::MakeModelWithManager_Generic(Manager, FVM_CommonDialog::ModelId, 0, Title, Message, Options, Callback)).Get();
 }
 void GetModelInfo(FEUIViewModelMetaInfo &inout Result)
 {
@@ -366,7 +364,6 @@ namespace __GeneratedProperties_FVM_CommonDialog
 {
 UScriptStruct StaticStruct()
 {
-    UScriptStruct local_2;
-    return local_2;
+    return __GeneratedProperties_FVM_CommonDialog.Get();
 }
 }

@@ -18,7 +18,6 @@ int __FForgeTreeConfig_GetPriority(const TDataObjectPtr<FForgeTreeConfig> &inout
 UFUNCTION()
 FText __FForgeTreeConfig_GetForgeTreeName(const TDataObjectPtr<FForgeTreeConfig> &inout DataObject)
 {
-    FText __r;
     if ((DataObject == nullptr))
     {
         if (!(EUIGlobals::GIsDuringPropertyConversion))
@@ -28,12 +27,11 @@ FText __FForgeTreeConfig_GetForgeTreeName(const TDataObjectPtr<FForgeTreeConfig>
         FForgeTreeConfig local_136;
         return local_136.ForgeTreeName;
     }
-    return __r;
+    return DataObject.Get().ForgeTreeName;
 }
 UFUNCTION()
 FSoftBrush __FForgeTreeConfig_GetForgeTreeImage(const TDataObjectPtr<FForgeTreeConfig> &inout DataObject)
 {
-    FSoftBrush __r;
     if ((DataObject == nullptr))
     {
         if (!(EUIGlobals::GIsDuringPropertyConversion))
@@ -43,12 +41,11 @@ FSoftBrush __FForgeTreeConfig_GetForgeTreeImage(const TDataObjectPtr<FForgeTreeC
         FForgeTreeConfig local_136;
         return local_136.ForgeTreeImage;
     }
-    return __r;
+    return DataObject.Get().ForgeTreeImage;
 }
 UFUNCTION()
 FSoftBrush __FForgeTreeConfig_GetForgeTreeHiddenImage(const TDataObjectPtr<FForgeTreeConfig> &inout DataObject)
 {
-    FSoftBrush __r;
     if ((DataObject == nullptr))
     {
         if (!(EUIGlobals::GIsDuringPropertyConversion))
@@ -58,12 +55,11 @@ FSoftBrush __FForgeTreeConfig_GetForgeTreeHiddenImage(const TDataObjectPtr<FForg
         FForgeTreeConfig local_136;
         return local_136.ForgeTreeHiddenImage;
     }
-    return __r;
+    return DataObject.Get().ForgeTreeHiddenImage;
 }
 UFUNCTION()
 EWeaponType __FForgeTreeConfig_GetWeaponType(const TDataObjectPtr<FForgeTreeConfig> &inout DataObject)
 {
-    int local_137 = 0;
     if ((DataObject == nullptr))
     {
         if (!(EUIGlobals::GIsDuringPropertyConversion))
@@ -71,10 +67,9 @@ EWeaponType __FForgeTreeConfig_GetWeaponType(const TDataObjectPtr<FForgeTreeConf
             FBlueprintDebugFunctions::ThrowScriptException("Get 'WeaponType' from a null 'FForgeTreeConfig' DataObject!");
         }
         FForgeTreeConfig local_136;
-        local_137 = int(local_136.WeaponType);
-        return EWeaponType(local_137);
+        return local_136.WeaponType;
     }
-    return EWeaponType(local_137);
+    return DataObject.Get().WeaponType;
 }
 UFUNCTION()
 TArray<TDataObjectPtr<FConditionConfig>> __FForgeTreeConfig_GetShowCondition(const TDataObjectPtr<FForgeTreeConfig> &inout DataObject)
@@ -88,7 +83,7 @@ TArray<TDataObjectPtr<FConditionConfig>> __FForgeTreeConfig_GetShowCondition(con
         FForgeTreeConfig local_136;
         return local_136.GetShowCondition();
     }
-    return GetShowCondition();
+    return DataObject.Get().GetShowCondition();
 }
 UFUNCTION()
 TArray<TDataObjectPtr<FConditionConfig>> __FForgeTreeConfig_GetUnlockCondition(const TDataObjectPtr<FForgeTreeConfig> &inout DataObject)
@@ -102,12 +97,11 @@ TArray<TDataObjectPtr<FConditionConfig>> __FForgeTreeConfig_GetUnlockCondition(c
         FForgeTreeConfig local_136;
         return local_136.GetUnlockCondition();
     }
-    return GetUnlockCondition();
+    return DataObject.Get().GetUnlockCondition();
 }
 UFUNCTION()
 TArray<FForgeTreeData> __FForgeTreeConfig_GetBranchArray1(const TDataObjectPtr<FForgeTreeConfig> &inout DataObject)
 {
-    TArray<FForgeTreeData> __r;
     if ((DataObject == nullptr))
     {
         if (!(EUIGlobals::GIsDuringPropertyConversion))
@@ -117,12 +111,11 @@ TArray<FForgeTreeData> __FForgeTreeConfig_GetBranchArray1(const TDataObjectPtr<F
         FForgeTreeConfig local_136;
         return local_136.BranchArray1;
     }
-    return __r;
+    return DataObject.Get().BranchArray1;
 }
 UFUNCTION()
 TArray<FForgeTreeData> __FForgeTreeConfig_GetBranchArray2(const TDataObjectPtr<FForgeTreeConfig> &inout DataObject)
 {
-    TArray<FForgeTreeData> __r;
     if ((DataObject == nullptr))
     {
         if (!(EUIGlobals::GIsDuringPropertyConversion))
@@ -132,12 +125,11 @@ TArray<FForgeTreeData> __FForgeTreeConfig_GetBranchArray2(const TDataObjectPtr<F
         FForgeTreeConfig local_136;
         return local_136.BranchArray2;
     }
-    return __r;
+    return DataObject.Get().BranchArray2;
 }
 UFUNCTION()
 TArray<FForgeTreeData> __FForgeTreeConfig_GetBranchArray3(const TDataObjectPtr<FForgeTreeConfig> &inout DataObject)
 {
-    TArray<FForgeTreeData> __r;
     if ((DataObject == nullptr))
     {
         if (!(EUIGlobals::GIsDuringPropertyConversion))
@@ -147,7 +139,7 @@ TArray<FForgeTreeData> __FForgeTreeConfig_GetBranchArray3(const TDataObjectPtr<F
         FForgeTreeConfig local_136;
         return local_136.BranchArray3;
     }
-    return __r;
+    return DataObject.Get().BranchArray3;
 }
 UFUNCTION()
 FForgeTreeConfig CastToFForgeTreeConfig(const TDataObjectPtr<FForgeTreeConfig> &inout DataObject)

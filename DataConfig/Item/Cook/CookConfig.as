@@ -122,7 +122,7 @@ struct FFoodCraftConfig : FDataObject
         {
             int local_21 = 0;
             InvestedTagSums.Find(local_20.GetKey(), local_21);
-            if (local_21 < 0)
+            if (local_21 < local_20.GetValue())
             {
                 return false;
             }

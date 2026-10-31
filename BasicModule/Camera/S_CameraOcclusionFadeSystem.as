@@ -37,7 +37,8 @@ class US_CameraOcclusionFadeSystem : UECSScriptSystem
     {
         for (auto& local_20 : FadeStorage.FadeObjects)
         {
-            local_20;
+            local_20.GetValue().PrevOcclusionTargetFadeWeight = int(local_20.GetValue().OcclusionFadeTargetWeight);
+            local_20.GetValue().OcclusionFadeTargetWeight = 0.0f;
         }
         return;
     }
@@ -55,8 +56,7 @@ class US_CameraOcclusionFadeSystem : UECSScriptSystem
         FVector local_84 = local_6;
         FVector local_90(FVector::ZeroVector);
         FVector local_96(local_18.GetForwardVector());
-        float32 local_29 = this.DefaultNearCameraFadeRange;
-        float32 local_97 = local_29;
+        float32 local_97 = this.DefaultNearCameraFadeRange;
         FECSEntity local_102 = Player.GetPlayerPawnEntity();
         if (local_102.IsValid())
         {
@@ -65,10 +65,7 @@ class US_CameraOcclusionFadeSystem : UECSScriptSystem
             const FC_Collision& local_108 = local_106.opCall();
             if (local_108)
             {
-                FVector local_12 = FTransformUtils::GetLocation(Player.GetPlayerPawnEntity(), FFPTime(-1));
-                local_29 = local_108.GetScaledHalfHeight();
-                local_29 = local_29 * 0.5f;
-                local_90 = (local_12 + FVector::UpVector.opMul_r(local_29));
+                local_90 = ((FTransformUtils::GetLocation(Player.GetPlayerPawnEntity(), FFPTime(-1))) + FVector::UpVector.opMul_r((local_108.GetScaledHalfHeight() * 0.5f)));
                 FVector local_114 = (local_90 - local_6);
                 local_96 = local_114.GetSafeNormal(9.99999993922529e-9, FVector::ZeroVector);
                 local_123 = this.DefaultNearCameraMaxSweepDistance;
@@ -128,8 +125,7 @@ class US_CameraOcclusionFadeSystem : UECSScriptSystem
             }
             if (local_219 > 0.0f)
             {
-                local_29 = 0.0f;
-                float32 local_220_2 = local_180.FindOrAdd(local_206.GetActor(), local_29);
+                float32 local_220_2 = local_180.FindOrAdd(local_206.GetActor(), 0.0f);
                 float32 local_222 = FMath::Max(local_220_2, local_219);
                 local_206.GetActor().GetAttachedActors(local_184, true, true);
                 for (auto local_236 : local_184)
@@ -143,7 +139,7 @@ class US_CameraOcclusionFadeSystem : UECSScriptSystem
         {
             TWeakObjectPtr<AActor> local_256 = TWeakObjectPtr<AActor>(local_254.GetKey());
             FCameraOcclusionFadeItem local_258;
-            local_258.OcclusionFadeTargetWeight = local_29;
+            local_258.OcclusionFadeTargetWeight = local_254.GetValue();
         }
         UMaterialParameterCollection local_262 = ::UCombatGlobalSettings::Get().GlobalEnvStateMPC;
         if (local_262 != nullptr)
@@ -310,19 +306,18 @@ class US_CameraOcclusionFadeSystem : UECSScriptSystem
     UFUNCTION()
     void Client_UpdateFinalFadeValue(FCS_CameraOcclusionFade &inout FadeStorage) const
     {
-        const AActor local_28;
-        FCameraOcclusionFadeItem& local_30;
         float local_6 = ECS::GetContextDeltaTime().ToSeconds();
         float32 local_7 = float32(local_6);
         auto local_16 = FadeStorage.FadeObjects.Iterator();
         for (; local_16.CanProceed;)
         {
             local_16.Proceed();
-            if (local_28 == nullptr)
+            if (local_16.GetKey().Get() == nullptr)
             {
                 local_16.RemoveCurrent();
                 continue;
             }
+            FCameraOcclusionFadeItem& local_30 = local_16.GetValue();
             if (local_30.bFreezeOcclusionFadeWeight)
             {
                 local_30.OcclusionFadeWeightFreezeTimer -= local_7;
@@ -356,7 +351,6 @@ class US_CameraOcclusionFadeSystem : UECSScriptSystem
         int local_8 = 0;
         bool local_21;
         bool local_27;
-        const AActor local_30;
         UPrimitiveComponent local_46;
         FECSWorldPtr local_2 = ECS::GetECSWorld();
         for (auto& local_24 : Updated.Actor)
@@ -366,7 +360,7 @@ class US_CameraOcclusionFadeSystem : UECSScriptSystem
             local_27 = !(false);
             if (local_21 == local_27)
             {
-                local_26.CachedFadeComponents = local_30.GetComponentsByClass(UPrimitiveComponent);
+                local_26.CachedFadeComponents = local_24.Get().GetComponentsByClass(UPrimitiveComponent);
                 int local_38 = local_26.CachedFadeComponents.Num() - 1;
                 for (; local_38 >= 0; --local_38)
                 {
@@ -385,7 +379,7 @@ class US_CameraOcclusionFadeSystem : UECSScriptSystem
                 for (; local_38_2 < local_26.CachedFadeComponents.Num(); )
                 {
                     local_46 = local_26.CachedFadeComponents[local_38_2];
-                    TWeakObjectPtr<UActorComponent> local_48 = TWeakObjectPtr<UActorComponent>(local_46);
+                    local_8.Components.Remove(TWeakObjectPtr<UActorComponent>(local_46));
                     if (local_26.SetEnableDynamicMaskedMaterialByFades[local_38_2])
                     {
                         local_46.SetEnableDynamicMaskedMaterial(false);
@@ -395,6 +389,7 @@ class US_CameraOcclusionFadeSystem : UECSScriptSystem
                     local_46.SetCustomPrimitiveDataFloat(1, 0.0f);
                     ++local_38_2;
                 }
+                FadeStorage.FadeObjects.Remove(local_24);
                 continue;
             }
             int local_38_3 = 0;

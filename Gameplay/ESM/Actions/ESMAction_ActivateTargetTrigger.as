@@ -50,7 +50,7 @@ class UESMAction_ActivateTargetTrigger : UESMBPBaseSpanAction
     UFUNCTION()
     void Exit_Implementation(const FESMContext &inout Context, const FESMActionTime &inout Time) const
     {
-        FECSEntity local_4;
+        FECSEntity local_4 = FECSEntity(this.GetInstanceData(Context).TargetEntity);
         if (local_4.IsValid())
         {
             Modify local_10;

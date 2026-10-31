@@ -99,30 +99,31 @@ struct FVM_RedDot : FEUIViewModel
     }
     void RefreshRedDotDisplayState()
     {
-        if (!((this.GetWeakRedDotNodeModel().IsValid() ? this.GetWeakRedDotNodeModel() : ::FMS_RedDotSystem::Get(this.GetContext().Manager).TryGetRedDotNodeModel(this.GetNodeData())).IsValid()))
+        TEUIModelWeakRef<FM_RedDotNode> local_10 = this.GetWeakRedDotNodeModel().IsValid() ? this.GetWeakRedDotNodeModel() : ::FMS_RedDotSystem::Get(this.GetContext().Manager).TryGetRedDotNodeModel(this.GetNodeData());
+        if (!(local_10.IsValid()))
         {
             this.SetbDisplayHasRedDot(false);
             this.SetDisplayRedDotNumSwitchIndex(0);
             this.SetDisplayRedDotNum(0);
             return;
         }
-        int local_11 = GetCount();
+        int local_11 = local_10.Get().GetCount();
         this.SetbDisplayHasRedDot((local_11 > 0));
         this.SetDisplayRedDotNum(local_11);
-        if (int(GetDisplayType()) == 0)
+        if (int(local_10.Get().GetDisplayType()) == 0)
         {
             this.SetDisplayRedDotNumSwitchIndex(0);
         }
         else
         {
-            if (int(GetDisplayType()) == 1)
+            if (int(local_10.Get().GetDisplayType()) == 1)
             {
                 int local_14 = local_11 <= this.GetLimitDisplayCount() ? 1 : 2;
                 this.SetDisplayRedDotNumSwitchIndex(local_14);
             }
             else
             {
-                if (int(GetDisplayType()) == 2)
+                if (int(local_10.Get().GetDisplayType()) == 2)
                 {
                     this.SetDisplayRedDotNumSwitchIndex(3);
                 }
@@ -254,11 +255,9 @@ FVM_RedDot& Create(const UObject ContextObject, const FRedDotNodeData &inout Nod
 {
     return FVM_RedDot::CreateByManager(EUIInternal::GetContextManager(ContextObject), NodeData);
 }
-FVM_RedDot CreateByManager(const UEUIManagerSubsystem Manager, const FRedDotNodeData &inout NodeData)
+FVM_RedDot& CreateByManager(const UEUIManagerSubsystem Manager, const FRedDotNodeData &inout NodeData)
 {
-    FVM_RedDot __r;
-    TEUIModelRef<FVM_RedDot> local_6 = TEUIModelRef<FVM_RedDot>(EUIInternal::MakeModelWithManager_Generic(Manager, FVM_RedDot::ModelId, 0, NodeData));
-    return __r;
+    return TEUIModelRef<FVM_RedDot>(EUIInternal::MakeModelWithManager_Generic(Manager, FVM_RedDot::ModelId, 0, NodeData)).Get();
 }
 void GetModelInfo(FEUIViewModelMetaInfo &inout Result)
 {
@@ -342,7 +341,6 @@ namespace __GeneratedProperties_FVM_RedDot
 {
 UScriptStruct StaticStruct()
 {
-    UScriptStruct local_2;
-    return local_2;
+    return __GeneratedProperties_FVM_RedDot.Get();
 }
 }

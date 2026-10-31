@@ -124,6 +124,8 @@ struct FSpawnerCountRatioDefinitionRow : FDataObject
     UPROPERTY()
     float32 CreatureCountSpawnRatio;
 
+    default m_ScriptOverrideMeta = Cast<UASStruct>(FSpawnerCountRatioDefinitionRow.Get());
+
     FSpawnerCountRatioDefinitionRow()
     {
         this.Priority = 1;

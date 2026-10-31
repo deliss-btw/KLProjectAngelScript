@@ -16,7 +16,7 @@ class UPageWidget_MiniHpBarV2Panel : UEUIUserWidget
     UFUNCTION()
     TArray<FECSEntity> MiniHpBarPanel_Entities() const
     {
-        FVMS_MiniHpBarV2Panel& local_2;
+        FVMS_MiniHpBarV2Panel& local_2 = this.MiniHpBarPanel.Get();
         TArray<FECSEntity> local_12;
         if (local_2)
         {
@@ -31,8 +31,8 @@ class UPageWidget_MiniHpBarV2Panel : UEUIUserWidget
     UFUNCTION()
     ESlateVisibility MiniHpBarPanel_MiniHpBarV2Visibility() const
     {
-        FVMS_MiniHpBarV2Panel& local_2;
         int local_5;
+        FVMS_MiniHpBarV2Panel& local_2 = this.MiniHpBarPanel.Get();
         if (local_2)
         {
             local_5 = int(local_2.MiniHpBarV2Visibility());

@@ -59,7 +59,7 @@ class US_AITargetingSystemV2 : UECSScriptSystem
             EAIThreatType local_19;
             FC_AIThreatConfig local_18;
             FVector local_12 = SelfTransform.GetPosition();
-            local_19 = EAIThreatType(0);
+            local_19 = EAIThreatType::Low;
             if (local_18)
             {
                 local_19 = local_18.AIThreatType;
@@ -134,6 +134,7 @@ class US_AITargetingSystemV2 : UECSScriptSystem
                 float32 local_159 = FMath::Max(0.0f, local_157 - local_214_2);
                 if (local_159 <= 0.0f)
                 {
+                    AITargetingV2.EntityAlertnessMap.Remove(local_216_2);
                 }
                 else
                 {
@@ -148,21 +149,10 @@ class US_AITargetingSystemV2 : UECSScriptSystem
     {
         for (auto& local_16 : AITargeting.CurrentQueryOutput)
         {
-            FECSEntityId local_17;
-            bool local_13 = !((local_17 == ENTITY_ID_NULL));
-            if (!(local_13))
+            if (!((FECSEntityId(local_16.GetValue()) == ENTITY_ID_NULL)) && !(::FAIKnowledgeUtils::CanEntityBeTarget((FECSEntity(Entity.GetWorld(), local_16.GetValue())))))
             {
-                local_13 = false;
-            }
-            else
-            {
-                FECSWorldPtr local_20 = Entity.GetWorld();
-                local_13 = !(::FAIKnowledgeUtils::CanEntityBeTarget(FECSEntity()));
-            }
-            if (local_13)
-            {
-                FECSWorldPtr local_20_2 = Entity.GetWorld();
-                FTargetEntity local_29 = FTargetEntity(FECSEntity());
+                FECSEntity local_24 = FECSEntity(Entity.GetWorld(), local_16.GetValue());
+                FTargetEntity local_29 = FTargetEntity(local_24);
                 local_16.SetValue(ENTITY_ID_NULL);
                 ::FAITargetingUtils::SetSmartEntityIdValueForEntity(Entity, local_16.GetTargetId(), ENTITY_ID_NULL);
                 ::FAITargetingUtils::SendAITargetChangedEventV2(Entity, local_29, FTargetEntity(), local_16.GetTargetId());
@@ -341,6 +331,8 @@ class US_AITargetingSystemV2 : UECSScriptSystem
                 }
             }
         }
+        __Lambda_Gameplay_AI_S_AITargetingSystemV2_338 local_200;
+        local_160.Sort(local_200);
         for (auto& local_214 : local_160)
         {
             local_4 = ::FAIKnowledgeUtils::CheckTargetInSightCone(local_24, local_36, local_214.TargetPos, local_50);
@@ -362,7 +354,6 @@ class US_AITargetingSystemV2 : UECSScriptSystem
     {
         bool local_35 = false;
         float local_38;
-        FFPTime local_48;
         float32 local_3 = FMath::Square(::FAIPerceptionUtils::GetOutOfCombatDistance(Entity));
         for (auto& local_24 : AITargetingV2.EntityAlertnessMap)
         {
@@ -379,14 +370,14 @@ class US_AITargetingSystemV2 : UECSScriptSystem
             local_38 = SelfTransform.GetPosition().DistSquared2D(local_44.opCall().GetPosition());
             if ((local_38 > local_3))
             {
-                local_48 = ECS::GetContextTime();
-                FFPTime local_46 = local_48;
-                if (local_48.opCmp(0.0) < 0)
+                FFPTime local_46 = FFPTime(ECS::GetContextTime());
+                if (FFPTime(local_24.GetValue().OutOfRangeStartTime).opCmp(0.0) < 0)
                 {
+                    local_24.GetValue().OutOfRangeStartTime = local_46;
                 }
                 else
                 {
-                    bool local_21 = local_48.opCmp(::FAIPerceptionUtils::GetOutOfCombatDelay(Entity)) > 0 || (local_38 >= FMath::Square(::FAIPerceptionUtils::GetOutOfCombatMaxDistance(Entity)));
+                    bool local_21 = (local_46 - local_24.GetValue().OutOfRangeStartTime).opCmp(::FAIPerceptionUtils::GetOutOfCombatDelay(Entity)) > 0 || (local_38 >= FMath::Square(::FAIPerceptionUtils::GetOutOfCombatMaxDistance(Entity)));
                     if (local_21)
                     {
                         local_21 = true;
@@ -406,10 +397,12 @@ class US_AITargetingSystemV2 : UECSScriptSystem
             }
             else
             {
-                if (local_48.opCmp(0.0) > 0)
+                if (FFPTime(local_24.GetValue().OutOfRangeStartTime).opCmp(0.0) > 0)
                 {
-                    if (FFPTime(1).opCmp(ECS::GetContextTime()) >= 0)
+                    local_24.GetValue().OutOfRangeStartTime += FFPTime(1);
+                    if (FFPTime(local_24.GetValue().OutOfRangeStartTime).opCmp(ECS::GetContextTime()) >= 0)
                     {
+                        local_24.GetValue().OutOfRangeStartTime = -1;
                     }
                 }
             }
@@ -554,9 +547,7 @@ class US_AITargetingSystemV2 : UECSScriptSystem
     UFUNCTION()
     void Job_AIHostilityDeclineV2(const FECSEntity &inout Entity, FC_AITargetingV2 &inout AITargetingV2) const
     {
-        float32 local_5 = 0.0f;
-        FFPTime local_4 = ECS::GetContextTime();
-        FFPTime local_2 = local_4;
+        FFPTime local_2 = FFPTime(ECS::GetContextTime());
         float32 local_6 = ::FAIPerceptionUtils::GetOutOfCombatDistance(Entity);
         GetDefaulted local_32;
         GetDefaulted local_40;
@@ -565,13 +556,13 @@ class US_AITargetingSystemV2 : UECSScriptSystem
             FECSEntity local_36 = local_26.GetKey().GetEntity();
             if ((local_32.opCall().GetPosition().Distance(local_40.opCall().GetPosition()) > local_6))
             {
-                if (local_4.opCmp(0.0) < 0)
+                if (FFPTime(local_26.GetValue().OutOfRangeStartTime).opCmp(0.0) < 0)
                 {
+                    local_26.GetValue().OutOfRangeStartTime = local_2;
                 }
                 else
                 {
-                    local_5 = ::FAIPerceptionUtils::GetHostilityRemainTime(Entity);
-                    if (local_4.opCmp(local_5) > 0)
+                    if ((local_2 - local_26.GetValue().OutOfRangeStartTime).opCmp(::FAIPerceptionUtils::GetHostilityRemainTime(Entity)) > 0)
                     {
                         local_26.RemoveCurrent();
                         continue;
@@ -580,14 +571,16 @@ class US_AITargetingSystemV2 : UECSScriptSystem
             }
             else
             {
-                if (local_4.opCmp(0.0) > 0)
+                if (FFPTime(local_26.GetValue().OutOfRangeStartTime).opCmp(0.0) > 0)
                 {
-                    if (FFPTime(1).opCmp(ECS::GetContextTime()) >= 0)
+                    local_26.GetValue().OutOfRangeStartTime += FFPTime(1);
+                    if (FFPTime(local_26.GetValue().OutOfRangeStartTime).opCmp(ECS::GetContextTime()) >= 0)
                     {
+                        local_26.GetValue().OutOfRangeStartTime = -1;
                     }
                 }
             }
-            if (local_5 <= 0.0f)
+            if (local_26.GetValue().Hostility <= 0.0f)
             {
                 local_26.RemoveCurrent();
                 continue;
@@ -618,7 +611,7 @@ class US_AITargetingSystemV2 : UECSScriptSystem
             }
             for (auto& local_84 : local_66.EntityAlertnessMap)
             {
-                if (0.0f >= local_66.AlertnessMax)
+                if (local_84.GetValue().AlertnessValue >= local_66.AlertnessMax)
                 {
                     ::FAITargetingUtils::TryAddToAllTarget(AITargetingV2, local_84.GetKey().GetEntity());
                 }

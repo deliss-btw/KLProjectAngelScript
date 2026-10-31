@@ -37,14 +37,14 @@ class UWidget_CommissionLeaderBoardEntry : UEUIUserWidget
     UFUNCTION()
     FEUIModelRef CommissionInfo_CommissionRewardList() const
     {
-        FVM_CommissionInfo& local_2;
+        FVM_CommissionInfo& local_2 = this.CommissionInfo.Get();
         FEUIModelRef local_8 = local_2 ? local_2.GetCommissionRewardList() : FEUIModelRef();
         return local_8;
     }
     UFUNCTION()
     FEUIModelRef CommissionInfo_CommissionFirstTimeRewardList() const
     {
-        FVM_CommissionInfo& local_2;
+        FVM_CommissionInfo& local_2 = this.CommissionInfo.Get();
         FEUIModelRef local_8 = local_2 ? local_2.GetCommissionFirstTimeRewardList() : FEUIModelRef();
         return local_8;
     }
@@ -59,8 +59,8 @@ class UWidget_CommissionLeaderBoardEntry : UEUIUserWidget
     }
     void HandleObservedModelChanges(FEUIReactiveSubscriberIterator &inout It)
     {
-        FVM_CommissionInfo& local_6;
         TEUIModelRef<FVM_CommissionInfo> local_2 = this.CommissionInfo.AsRef();
+        FVM_CommissionInfo& local_6 = local_2.Get();
         for (; It; )
         {
             FEUIReactiveSubscriberTrackScope local_56 = FEUIReactiveSubscriberTrackScope(It);

@@ -6,13 +6,10 @@ class US_CutScene : UECSScriptSystem
     }
     void ApplyEndEntityInfo(const FECSEntity &inout Entity, const FCutSceneEntityInfo &inout EntityInfo) const
     {
-        if (::UTagTargetPointManager::Get().GetTagTransform(EntityInfo.EndLocationTag).IsSet())
+        TOptional<FTransform> local_32 = ::UTagTargetPointManager::Get().GetTagTransform(EntityInfo.EndLocationTag);
+        if (local_32.IsSet())
         {
-            FVector local_74;
-            FRotator local_68;
-            local_68.Rotator();
-            local_74.GetLocation();
-            ::BlueprintFunctions_Common::TeleportEntityToLocation(FECSEntityAdapter(Entity), ::CutSceneUtils::GetOffsetFloorLocation(Entity, local_74), local_68, true, EntityInfo.EndCameraRotation, true, true, ELoadingScreenAction(0), true);
+            ::BlueprintFunctions_Common::TeleportEntityToLocation(FECSEntityAdapter(Entity), ::CutSceneUtils::GetOffsetFloorLocation(Entity, local_32.GetValue().GetLocation()), local_32.GetValue().Rotator(), true, EntityInfo.EndCameraRotation, true, true, ELoadingScreenAction(0), true);
         }
         if ((!((EntityInfo.ESMStateName == NAME_None))))
         {
@@ -28,22 +25,23 @@ class US_CutScene : UECSScriptSystem
     }
     void ForceToEndState(const FECSEntity &inout PlayerEntity, FC_CutSceneLogicData &inout CutSceneLogicData) const
     {
-        const FCutSceneData& local_2;
-        FECSEntity local_14;
-        if (local_2.EntityInfos.Find(CutSceneLogicData.GetPlayerTag()))
+        const FCutSceneData& local_2 = CutSceneLogicData.GetCutSceneData().Get();
+        TConstRawPtr<FCutSceneEntityInfo> local_6 = local_2.EntityInfos.Find(CutSceneLogicData.GetPlayerTag());
+        if (local_6)
         {
-            local_14 = ::FASCommonUtils::GetUniqueAvatarPawnEntity(PlayerEntity);
+            FECSEntity local_14 = ::FASCommonUtils::GetUniqueAvatarPawnEntity(PlayerEntity);
             if (local_14)
             {
-                this.ApplyEndEntityInfo(local_14);
+                this.ApplyEndEntityInfo(local_14, local_6.Get());
             }
         }
         for (auto& local_36 : CutSceneLogicData.GetEntities())
         {
+            FECSEntity local_14_2 = FECSEntity(local_36.GetValue());
             TConstRawPtr<FCutSceneEntityInfo> local_8 = local_2.EntityInfos.Find(local_36.GetKey());
-            if (!(!(local_14)) && local_8)
+            if (!(!(local_14_2)) && local_8)
             {
-                this.ApplyEndEntityInfo(local_14);
+                this.ApplyEndEntityInfo(local_14_2, local_8.Get());
             }
         }
         return;
@@ -59,18 +57,15 @@ class US_CutScene : UECSScriptSystem
             bool local_2_2 = !(CutSceneLogicData.GetbPrevTeleported());
             local_1 = !(false);
             CutSceneLogicData.SetbPrevTeleported(true);
+            const FCutSceneData& local_16 = CutSceneLogicData.GetCutSceneData().Get();
             FECSEntity local_20 = ::FASCommonUtils::GetUniqueAvatarPawnEntity(Entity);
-            FCutSceneData local_16;
             TConstRawPtr<FCutSceneEntityInfo> local_28 = local_16.EntityInfos.Find(CutSceneLogicData.GetPlayerTag());
             if (local_28)
             {
-                if (::UTagTargetPointManager::Get().GetTagTransform(local_28.opArrow().EndLocationTag).IsSet())
+                TOptional<FTransform> local_60 = ::UTagTargetPointManager::Get().GetTagTransform(local_28.opArrow().EndLocationTag);
+                if (local_60.IsSet())
                 {
-                    FVector local_100;
-                    FRotator local_94;
-                    local_94.Rotator();
-                    local_100.GetLocation();
-                    ::BlueprintFunctions_Common::TeleportEntityToLocation(FECSEntityAdapter(local_20), ::CutSceneUtils::GetOffsetFloorLocation(local_20, local_100), local_94, true, local_28.opArrow().EndCameraRotation, true, true, ELoadingScreenAction(0), true);
+                    ::BlueprintFunctions_Common::TeleportEntityToLocation(FECSEntityAdapter(local_20), ::CutSceneUtils::GetOffsetFloorLocation(local_20, local_60.GetValue().GetLocation()), local_60.GetValue().Rotator(), true, local_28.opArrow().EndCameraRotation, true, true, ELoadingScreenAction(0), true);
                 }
             }
         }
@@ -92,7 +87,56 @@ class US_CutScene : UECSScriptSystem
     UFUNCTION()
     void ClientJob_StopCutScene(const FECSEntity &inout PlayerEntity, FCS_CutSceneViewData &inout CutSceneViewData) const
     {
-        // body not fully recovered — stub [argmismatch:argtype]
+        Remove local_50;
+        FECSWorldPtr local_2 = ECS::GetECSWorld();
+        ModifyOrAdd local_6;
+        int local_8 = int(local_6.opCall().Counter);
+        int local_7 = (local_8 - 1);
+        local_6.opCall().Counter = (local_7 != 0);
+        ::FASCommonUtils::GetUniqueAvatarPawnEntity(PlayerEntity);
+        UECSUEContext local_24 = AECSGameManagerActor::GetUEContext(ECS::GetUEWorld());
+        Has local_28;
+        bool local_29 = local_28.opCall();
+        if (!(local_29))
+        {
+        }
+        else
+        {
+            Has local_34;
+            local_34.opCall();
+        }
+        Get local_40;
+        const FC_ViewEntityManager& local_42 = local_40.opCall();
+        if (local_42)
+        {
+            if (local_42.GetGameActorEntity().IsValid())
+            {
+                local_50.opCall();
+            }
+        }
+        for (auto& local_68 : CutSceneViewData.Entities)
+        {
+            const FC_ViewEntityManager& local_42_2 = local_40.opCall();
+            if (local_42_2)
+            {
+                if (local_42_2.GetGameActorEntity().IsValid())
+                {
+                    local_50.opCall();
+                }
+            }
+            local_24.ReuseAndRemoveClientTravelKeepingActor(local_68.GetValue(), local_68.GetKey());
+        }
+        XLog(ELog(9), "StopCutScene");
+        ALevelSequenceActor local_76 = CutSceneViewData.LevelSequenceActor.Get();
+        if (local_76 != nullptr)
+        {
+            local_76.DestroyActor();
+        }
+        FECSWorldPtr local_2_2 = PlayerEntity.GetWorld();
+        Remove local_80;
+        local_80.opCall();
+        FEUIHideConfig::Release(ECS::GetUEWorld(), n"CutScene", ::UCombatGlobalSettings::Get().CutSceneWidgetHiddenConfig);
+        return;
     }
     UFUNCTION()
     void Job_OnCrossServerCutScenePlayerSpawned(const FCE_CrossServerCutScenePlayerSpawned &inout CrossServerCutScenePlayerSpawned) const

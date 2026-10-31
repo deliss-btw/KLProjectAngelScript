@@ -105,8 +105,8 @@ class UWidget_TeamInvitationPage : UEUIActivatableWidget
     }
     void HandleObservedModelChanges(FEUIReactiveSubscriberIterator &inout It)
     {
-        FVM_TeamInvitationPage& local_6;
         TEUIModelRef<FVM_TeamInvitationPage> local_2 = this.TeamInvitationPage.AsRef();
+        FVM_TeamInvitationPage& local_6 = local_2.Get();
         for (; It; )
         {
             FEUIReactiveSubscriberTrackScope local_56 = FEUIReactiveSubscriberTrackScope(It);

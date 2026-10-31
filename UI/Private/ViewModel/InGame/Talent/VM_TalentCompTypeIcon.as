@@ -95,11 +95,9 @@ FVM_TalentDivisionTypeIcon& Create(const UObject ContextObject, const ETalentDiv
 {
     return FVM_TalentDivisionTypeIcon::CreateByManager(EUIInternal::GetContextManager(ContextObject), ETalentDivision(DivisionType));
 }
-FVM_TalentDivisionTypeIcon CreateByManager(const UEUIManagerSubsystem Manager, const ETalentDivision DivisionType)
+FVM_TalentDivisionTypeIcon& CreateByManager(const UEUIManagerSubsystem Manager, const ETalentDivision DivisionType)
 {
-    FVM_TalentDivisionTypeIcon __r;
-    TEUIModelRef<FVM_TalentDivisionTypeIcon> local_6 = TEUIModelRef<FVM_TalentDivisionTypeIcon>(EUIInternal::MakeModelWithManager_Generic(Manager, FVM_TalentDivisionTypeIcon::ModelId, 0, DivisionType));
-    return __r;
+    return TEUIModelRef<FVM_TalentDivisionTypeIcon>(EUIInternal::MakeModelWithManager_Generic(Manager, FVM_TalentDivisionTypeIcon::ModelId, 0, DivisionType)).Get();
 }
 void GetModelInfo(FEUIViewModelMetaInfo &inout Result)
 {
@@ -150,7 +148,6 @@ namespace __GeneratedProperties_FVM_TalentDivisionTypeIcon
 {
 UScriptStruct StaticStruct()
 {
-    UScriptStruct local_2;
-    return local_2;
+    return __GeneratedProperties_FVM_TalentDivisionTypeIcon.Get();
 }
 }

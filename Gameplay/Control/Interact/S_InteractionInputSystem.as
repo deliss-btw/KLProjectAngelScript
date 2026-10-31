@@ -209,8 +209,7 @@ class US_InteractionInputSystem : UECSScriptSystem
                     TObjectPtr<UESMInputTriggerAsset> local_14;
                     if (!((local_12.InputTriggerBegin == nullptr)))
                     {
-                        UESMInputTriggerAsset local_26 = local_12.InputTriggerBegin.opArrow();
-                        FActiveTriggerResult local_24_3 = local_26.TestTrigger(Input.State, LocalTime.LastTime, LocalTime.Time, ESMTrigger.Storage);
+                        FActiveTriggerResult local_24_3 = local_12.InputTriggerBegin.opArrow().TestTrigger(Input.State, LocalTime.LastTime, LocalTime.Time, ESMTrigger.Storage);
                         Get local_82;
                         const FC_AutoInteractHoldInput& local_84 = local_82.opCall();
                         if (local_84)
@@ -242,7 +241,7 @@ class US_InteractionInputSystem : UECSScriptSystem
                                 else
                                 {
                                     local_94.TriggerTime = local_24_3.TriggerTime;
-                                    local_94.ExpireTime = (FFPTime(local_24_3.TriggerTime) + FFPTime(local_26.CoreTriggerItem.ValidateTime));
+                                    local_94.ExpireTime = (FFPTime(local_24_3.TriggerTime) + FFPTime(local_12.InputTriggerBegin.Get().CoreTriggerItem.ValidateTime));
                                 }
                             }
                         }

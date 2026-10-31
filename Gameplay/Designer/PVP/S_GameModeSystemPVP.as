@@ -35,7 +35,7 @@ class US_ASGameModeSystemPVP : US_ECSScriptGameModeSystemBase
         }
         else
         {
-            local_13 = EPVPGameRuleType(1);
+            local_13 = EPVPGameRuleType::Brawl;
         }
         return local_13;
     }
@@ -202,7 +202,7 @@ class US_ASGameModeSystemPVP : US_ECSScriptGameModeSystemBase
         TArray<uint> local_148;
         for (auto& local_166 : local_8.GetPlayerMatchDatas())
         {
-            if (GetbIsBot())
+            if (local_166.GetValue().GetbIsBot())
             {
                 continue;
             }
@@ -551,7 +551,7 @@ class US_ASGameModeSystemPVP : US_ECSScriptGameModeSystemBase
         Has local_52;
         for (auto& local_40 : local_8.GetBotPlayerEntities())
         {
-            FECSEntity local_44;
+            FECSEntity local_44 = local_40.GetValue();
             if (!(local_44.IsValid()))
             {
                 continue;
@@ -722,7 +722,7 @@ class US_ASGameModeSystemPVP : US_ECSScriptGameModeSystemBase
         }
         for (auto& local_176 : local_20.GetBotPlayerEntities())
         {
-            FECSEntity local_180;
+            FECSEntity local_180 = local_176.GetValue();
             if (!(local_180.IsValid()))
             {
                 continue;
@@ -779,10 +779,9 @@ class US_ASGameModeSystemPVP : US_ECSScriptGameModeSystemBase
         FECSWorldPtr local_20 = this.GetECSWorld();
         for (auto& local_164 : local_146.GetBotPlayerEntities())
         {
-            local_164;
-            if (IsValid())
+            if (local_164.GetValue().IsValid())
             {
-                this.ReviveSinglePawn();
+                this.ReviveSinglePawn(local_164.GetValue());
             }
         }
         return;
@@ -836,11 +835,10 @@ class US_ASGameModeSystemPVP : US_ECSScriptGameModeSystemBase
     bool TryGetTeamSpawnLocation(const FECSEntity &inout PlayerProxy, const uint8 Team, const FCS_PlayerSpawnerIndex &inout SpawnerIndex, FVector &inout Position, FQuat &inout Rotation) const
     {
         TDataObjectPtr<FLevelInfoConfig> local_48 = ::FLevelUtils::GetCurrentLevelInfoConfig(nullptr);
-        ESpawnPointSelectionRule local_50 = ESpawnPointSelectionRule(0);
-        int local_49 = local_50;
+        int local_49 = ESpawnPointSelectionRule::TeamMatchedRandom;
         if (local_48.IsSet())
         {
-            local_49 = local_50;
+            local_49 = local_48.Get().SpawnPointRule;
         }
         return ::FGameModeUtils::GetSpawnLocationForPlayerBySpawnPointRule(PlayerProxy, uint8(Team), SpawnerIndex, ESpawnPointSelectionRule(local_49), Position, Rotation);
     }
@@ -995,7 +993,6 @@ class US_ASGameModeSystemPVP : US_ECSScriptGameModeSystemBase
         bool local_123;
         int local_132 = 0;
         int local_133;
-        FECSEntity local_142;
         Has local_146;
         Has local_150;
         Has local_158;
@@ -1018,8 +1015,7 @@ class US_ASGameModeSystemPVP : US_ECSScriptGameModeSystemBase
         {
             local_88.Proceed();
             local_133 = local_132.GetTeam();
-            local_142 = FECSEntity(local_132.GetPlayerPawnEntity());
-            if (!(local_142.IsValid()))
+            if (!(FECSEntity(local_132.GetPlayerPawnEntity()).IsValid()))
             {
                 continue;
             }
@@ -1063,7 +1059,7 @@ class US_ASGameModeSystemPVP : US_ECSScriptGameModeSystemBase
         FECSWorldPtr local_26 = this.GetECSWorld();
         for (auto& local_190 : local_172.GetBotPlayerEntities())
         {
-            if (!(local_142.IsValid()))
+            if (!(FECSEntity(local_190.GetValue()).IsValid()))
             {
                 local_123 = true;
             }
@@ -1274,8 +1270,7 @@ class US_ASGameModeSystemPVP : US_ECSScriptGameModeSystemBase
         bool local_45 = false;
         for (auto& local_64 : local_44.GetPlayerMatchDatas())
         {
-            local_64;
-            if (GetbWantsBackToRoom())
+            if (local_64.GetValue().GetbWantsBackToRoom())
             {
                 local_45 = true;
                 break;
@@ -1396,19 +1391,18 @@ class US_ASGameModeSystemPVP : US_ECSScriptGameModeSystemBase
         TArray<uint> local_24;
         for (auto& local_42 : local_20.GetPlayerMatchDatas())
         {
-            if (GetbIsBot())
+            if (local_42.GetValue().GetbIsBot())
             {
                 continue;
             }
-            if (!(GetbWantsBackToRoom()))
+            if (!(local_42.GetValue().GetbWantsBackToRoom()))
             {
                 local_24.Add(local_42.GetKey());
             }
         }
-        auto local_48 = local_24.Iterator();
-        for (; local_48.CanProceed;)
+        for (auto local_55 : local_24)
         {
-            int local_56 = local_48.Proceed();
+            local_20.GetModify_PlayerMatchDatas().Remove(local_55);
         }
         if (local_24.Num() > 0)
         {
@@ -1420,7 +1414,7 @@ class US_ASGameModeSystemPVP : US_ECSScriptGameModeSystemBase
             TArray<uint> local_62;
             for (auto& local_42_2 : local_20.GetPlayerMatchDatas())
             {
-                if (!(GetbIsBot()))
+                if (!(local_42_2.GetValue().GetbIsBot()))
                 {
                     local_62.Add(local_42_2.GetKey());
                 }
@@ -1432,7 +1426,7 @@ class US_ASGameModeSystemPVP : US_ECSScriptGameModeSystemBase
         }
         for (auto& local_42_3 : local_20.GetPlayerMatchDatas())
         {
-            if (!(GetbIsBot()))
+            if (!(local_42_3.GetValue().GetbIsBot()))
             {
                 local_20.GetModify_PlayerMatchDatas()[local_42_3.GetKey()].SetbWantsBackToRoom(false);
             }
@@ -1495,7 +1489,6 @@ class US_ASGameModeSystemPVP : US_ECSScriptGameModeSystemBase
     {
         int local_14 = 0;
         int local_30 = 0;
-        UClass local_44;
         AAS_ECSPlayerController local_4 = ::FASCommonUtils::GetASECSProxyPlayerController();
         if (local_4 == nullptr)
         {
@@ -1533,7 +1526,7 @@ class US_ASGameModeSystemPVP : US_ECSScriptGameModeSystemBase
             return;
         }
         TSubclassOf<UUserWidget> local_42 = TSubclassOf<UUserWidget>(::GameModeSettings::GetGameModeSettings(local_4).EntryUIClass);
-        if (local_42.IsValid() && local_44.IsChildOf(UEUIUserWidget))
+        if (local_42.IsValid() && local_42.Get().IsChildOf(UEUIUserWidget))
         {
             FEUIWidget::AddWidgetByClass(local_4.GetLocalPlayer(), TSoftClassPtr<UEUIUserWidget>(local_42));
         }
@@ -1591,10 +1584,9 @@ class US_ASGameModeSystemPVP : US_ECSScriptGameModeSystemBase
     {
         for (auto& local_20 : MatchData.GetBotPlayerEntities())
         {
-            local_20;
-            if (IsValid())
+            if (local_20.GetValue().IsValid())
             {
-                ::FASCommonUtils::DestroyEntity();
+                ::FASCommonUtils::DestroyEntity(local_20.GetValue());
             }
         }
         MatchData.GetModify_BotPlayerEntities().Empty(0);
@@ -1602,11 +1594,9 @@ class US_ASGameModeSystemPVP : US_ECSScriptGameModeSystemBase
     }
     uint FindBotUIDByPawn(const FCS_PVP_MatchData &inout MatchData, const FECSEntity &inout Pawn) const
     {
-        FECSEntityId local_21;
         for (auto& local_20 : MatchData.GetBotPlayerEntities())
         {
-            local_21.GetId();
-            if ((local_21 == Pawn.GetId()))
+            if ((local_20.GetValue().GetId() == Pawn.GetId()))
             {
                 return local_20.GetKey();
             }
@@ -1693,7 +1683,7 @@ class US_ASGameModeSystemPVP : US_ECSScriptGameModeSystemBase
                 }
             }
         }
-        return EFaction(1);
+        return EFaction::Player;
     }
     void SetupPVPCombatTeams() const
     {
@@ -1858,10 +1848,9 @@ class US_ASGameModeSystemPVP : US_ECSScriptGameModeSystemBase
         FECSWorldPtr local_20 = this.GetECSWorld();
         for (auto& local_164 : local_146.GetBotPlayerEntities())
         {
-            local_164;
-            if (IsValid())
+            if (local_164.GetValue().IsValid())
             {
-                this.TDM_RecordSinglePawnDeathIfNeeded(RD);
+                this.TDM_RecordSinglePawnDeathIfNeeded(RD, local_164.GetValue());
             }
         }
         return;
@@ -2227,11 +2216,10 @@ class US_ASGameModeSystemPVP : US_ECSScriptGameModeSystemBase
         }
         FECSWorldPtr local_2_4 = this.GetECSWorld();
         TDataObjectPtr<FLevelInfoConfig> local_102 = ::FLevelUtils::GetCurrentLevelInfoConfig(nullptr);
-        ESpawnPointSelectionRule local_104 = ESpawnPointSelectionRule(0);
-        int local_103 = local_104;
+        int local_103 = ESpawnPointSelectionRule::TeamMatchedRandom;
         if (local_102.IsSet())
         {
-            local_103 = local_104;
+            local_103 = local_102.Get().SpawnPointRule;
         }
         FVector local_110(FVector::ZeroVector);
         FQuat local_120 = FQuat(FQuat::Identity);

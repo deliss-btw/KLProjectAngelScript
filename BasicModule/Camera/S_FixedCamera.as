@@ -44,13 +44,13 @@ class US_FixedCameraSystem : UECSScriptSystem
         {
             return;
         }
+        const FFixedCameraConfig& local_16 = local_14.Params.CameraConfig.Get();
         FTransform local_40 = FTransform(FTransform::Identity);
         if (local_14.Params.FollowTarget.IsValid())
         {
             Get local_44;
             local_40 = local_44.opCall().ToFTransform();
         }
-        FFixedCameraConfig local_16;
         local_14.CameraRuntimeData._base_FFixedCameraData.Position = FVector3f((local_40.GetLocation() + local_40.GetRotation().RotateVector(local_16.OffsetPosition)));
         if (local_16.bAbsoluteRotation)
         {

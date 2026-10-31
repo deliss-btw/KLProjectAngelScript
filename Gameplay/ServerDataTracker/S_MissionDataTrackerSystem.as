@@ -7,17 +7,15 @@ class US_MissionDataTrackerSystem : UECSScriptSystem
     UFUNCTION()
     void ServerJob_TrackMissionAccept(const FCE_OnMissionAccepted &inout Event) const
     {
-        int local_17 = 0;
-        int local_18 = 0;
         FECSEntity local_4 = FECSEntity(Event.Sender);
         if (!(local_4.IsValid()) || !(Event.MissionConfig.IsSet()))
         {
             return;
         }
         FPbPlayerLogDsMissionAccept local_16;
+        int local_17 = Event.MissionConfig.Get().DataId;
         local_16.SetMissionId(local_17);
-        int local_19 = local_18;
-        local_16.SetMissionType(local_19);
+        local_16.SetMissionType(int(Event.MissionConfig.Get().MissionType));
         XLog(ELog(63), FString().Append("[MissionDataTracker] MISSION_ACCEPT report: mission_id=").Append(local_16.GetMissionId()).Append(" mission_type=").Append(local_16.GetMissionType()));
         ::MissionDataTrackerHelper::LogMissionEvent(local_4, 101001, local_16.ToWrapper());
         return;
@@ -183,7 +181,6 @@ void LogMissionEvent(const FECSEntity &inout PlayerEntity, const uint ActionType
 }
 bool TryGetMissionDialogueChapterKey(const FECSEntity &inout PlayerEntity, const FName &inout DialogueName, FString &out ChapterKey)
 {
-    const FMissionDetail& local_32;
     FString local_4;
     ChapterKey = local_4;
     ChapterKey = "";
@@ -197,12 +194,12 @@ bool TryGetMissionDialogueChapterKey(const FECSEntity &inout PlayerEntity, const
     {
         for (auto& local_30 : local_12.GetActiveMissionStatus())
         {
-            local_30;
+            const FMissionDetail& local_32 = local_30.GetValue();
             if (local_32.GetActiveDialogueMap().Contains(DialogueName))
             {
-                if (local_32.GetMissionConfig().IsSet() && GetBelongChapter().IsSet())
+                if (local_32.GetMissionConfig().IsSet() && local_32.GetMissionConfig().Get().GetBelongChapter().IsSet())
                 {
-                    ChapterKey = GetBelongChapter().GetDataName().ToString();
+                    ChapterKey = local_32.GetMissionConfig().Get().GetBelongChapter().GetDataName().ToString();
                 }
                 return true;
             }
@@ -212,9 +209,9 @@ bool TryGetMissionDialogueChapterKey(const FECSEntity &inout PlayerEntity, const
 }
 FString GetDialogueNpcKey(const TDataObjectPtr<FDialogueConfig> &inout DialogueConfig)
 {
-    if (DialogueConfig.IsSet() && GetInteractTargetNPC().IsSet())
+    if (DialogueConfig.IsSet() && DialogueConfig.Get().GetInteractTargetNPC().IsSet())
     {
-        return GetInteractTargetNPC().GetDataName().ToString();
+        return DialogueConfig.Get().GetInteractTargetNPC().GetDataName().ToString();
     }
     return "";
 }

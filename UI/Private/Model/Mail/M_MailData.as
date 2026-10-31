@@ -570,11 +570,9 @@ FM_MailData& Create(const UObject ContextObject, const uint MailId)
 {
     return FM_MailData::CreateByManager(EUIInternal::GetContextManager(ContextObject), MailId);
 }
-FM_MailData CreateByManager(const UEUIManagerSubsystem Manager, const uint MailId)
+FM_MailData& CreateByManager(const UEUIManagerSubsystem Manager, const uint MailId)
 {
-    FM_MailData __r;
-    TEUIModelRef<FM_MailData> local_6 = TEUIModelRef<FM_MailData>(EUIInternal::MakeModelWithManager_Generic(Manager, FM_MailData::ModelId, 0, MailId));
-    return __r;
+    return TEUIModelRef<FM_MailData>(EUIInternal::MakeModelWithManager_Generic(Manager, FM_MailData::ModelId, 0, MailId)).Get();
 }
 void GetModelInfo(FEUIModelOnlyMetaInfo &inout Result)
 {

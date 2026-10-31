@@ -77,7 +77,7 @@ class UWidget_CommissionEntrance : UEUIActivatableWidget
     {
         if (bActive)
         {
-            FVM_SimpleLevelSequence& local_2;
+            FVM_SimpleLevelSequence& local_2 = this.CommissionLevelSequence.Get();
             TSet<FECSEntity> local_22;
             if (local_2.GetCachedTargetEntity())
             {
@@ -108,8 +108,8 @@ class UWidget_CommissionEntrance : UEUIActivatableWidget
         {
             return;
         }
-        Widget.SetBoundWidget();
-        Widget.GetRenderTransform().SetRenderTransform();
+        VM.Get().SetBoundWidget(Widget);
+        VM.Get().SetRenderTransform(Widget.GetRenderTransform());
         return;
     }
     UFUNCTION()
@@ -132,8 +132,8 @@ class UWidget_CommissionEntrance : UEUIActivatableWidget
     }
     void HandleObservedModelChanges(FEUIReactiveSubscriberIterator &inout It)
     {
-        FVM_SimpleLevelSequence& local_6;
         TEUIModelRef<FVM_SimpleLevelSequence> local_2 = this.CommissionLevelSequence.AsRef();
+        FVM_SimpleLevelSequence& local_6 = local_2.Get();
         for (; It; )
         {
             FEUIReactiveSubscriberTrackScope local_56 = FEUIReactiveSubscriberTrackScope(It);

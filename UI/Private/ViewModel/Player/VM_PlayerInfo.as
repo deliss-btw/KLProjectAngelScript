@@ -39,13 +39,11 @@ struct FVM_PlayerInfo : FEUIViewModel
     }
     TDataObjectPtr<FAvatarPrefabConfig> GetPlayerAvatar() const property
     {
-        TEUIModelRef<FM_Player> local_2 = this.GetPlayer();
-        return TDataObjectPtr<FAvatarPrefabConfig>();
+        return this.GetPlayer().opArrow().GetCurrentAvatarAttr().Get();
     }
     FText GetPlayerName() const property
     {
-        TEUIModelRef<FM_Player> local_2 = this.GetPlayer();
-        return FText::FromString();
+        return FText::FromString(this.GetPlayer().opArrow().GetNickNameAttr().Get());
     }
     int GetPlayerLevel() const property
     {
@@ -194,11 +192,9 @@ FVM_PlayerInfo& Create(const UObject ContextObject, const TEUIModelRef<FM_Player
 {
     return FVM_PlayerInfo::CreateByManager(EUIInternal::GetContextManager(ContextObject), Player);
 }
-FVM_PlayerInfo CreateByManager(const UEUIManagerSubsystem Manager, const TEUIModelRef<FM_Player> &inout Player)
+FVM_PlayerInfo& CreateByManager(const UEUIManagerSubsystem Manager, const TEUIModelRef<FM_Player> &inout Player)
 {
-    FVM_PlayerInfo __r;
-    TEUIModelRef<FVM_PlayerInfo> local_6 = TEUIModelRef<FVM_PlayerInfo>(EUIInternal::MakeModelWithManager_Generic(Manager, FVM_PlayerInfo::ModelId, 0, Player));
-    return __r;
+    return TEUIModelRef<FVM_PlayerInfo>(EUIInternal::MakeModelWithManager_Generic(Manager, FVM_PlayerInfo::ModelId, 0, Player)).Get();
 }
 void GetModelInfo(FEUIViewModelMetaInfo &inout Result)
 {
@@ -348,7 +344,6 @@ namespace __GeneratedProperties_FVM_PlayerInfo
 {
 UScriptStruct StaticStruct()
 {
-    UScriptStruct local_2;
-    return local_2;
+    return __GeneratedProperties_FVM_PlayerInfo.Get();
 }
 }

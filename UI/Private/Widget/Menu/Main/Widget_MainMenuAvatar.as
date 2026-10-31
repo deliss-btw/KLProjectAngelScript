@@ -34,7 +34,7 @@ class UWidget_AvatarBuildTypeEntry : UEUIActivatableWidget
     {
         if (this.HoverProvider.IsValid())
         {
-            FVM_CommonHoverProvider& local_4;
+            FVM_CommonHoverProvider& local_4 = this.HoverProvider.Get();
             if (this.HoverBtn != nullptr && !(local_4.GetbIsForbidHover()))
             {
                 local_4.SetHoverForWidget(this.HoverBtn);
@@ -50,10 +50,9 @@ class UWidget_AvatarBuildTypeEntry : UEUIActivatableWidget
         {
             if (this.EntryDesc.IsValid())
             {
-                FEUIModelRef local_4;
-                local_4.GetHoverTips();
-                local_4.ResetHoverModel();
-                NotifyMouseEnter();
+                FEUIModelRef local_4 = this.EntryDesc.Get().GetHoverTips();
+                this.HoverProvider.Get().ResetHoverModel(local_4);
+                this.HoverProvider.Get().NotifyMouseEnter();
             }
         }
         return;
@@ -63,7 +62,7 @@ class UWidget_AvatarBuildTypeEntry : UEUIActivatableWidget
     {
         if (this.HoverProvider.IsValid())
         {
-            FVM_CommonHoverProvider& local_4;
+            FVM_CommonHoverProvider& local_4 = this.HoverProvider.Get();
             if (!(local_4.GetbIsForbidHover()))
             {
                 local_4.NotifyMouseLeave();
@@ -228,26 +227,19 @@ class UWidget_MainMenuAvatar : UEUIActivatableWidget
     {
         TEUIModelRef<FVM_AvatarShowcase> local_2;
         local_2;
-        local_2.SetCurrentShowcase();
-        this.bIsShowAttr = GetbDisplayAttributeOrSkill();
-        TEUIModelRef<FVM_AvatarInfo> local_6;
-        local_6.GetSelectedAvatar();
-        if (local_6.IsValid())
+        this.MainMenuAvatar.Get().SetCurrentShowcase(local_2);
+        this.bIsShowAttr = this.MainMenuAvatar.Get().GetbDisplayAttributeOrSkill();
+        if (this.MainMenuAvatar.Get().GetSelectedAvatar().IsValid())
         {
-            TEUIModelRef<FM_Avatar> local_8;
-            local_6.GetSelectedAvatar();
-            local_8.GetAvatar();
-            if (local_8.IsValid())
+            if (this.MainMenuAvatar.Get().GetSelectedAvatar().Get().GetAvatar().IsValid())
             {
-                local_6.GetSelectedAvatar();
-                local_8.GetAvatar();
-                this.bIsAvatarUnLocked = GetbIsUnlocked();
+                this.bIsAvatarUnLocked = this.MainMenuAvatar.Get().GetSelectedAvatar().Get().GetAvatar().Get().GetbIsUnlocked();
             }
         }
         this.RefreshActionBinding();
         if (this.AvatarList != nullptr)
         {
-            this.AvatarList.SetSelectedIndex(GetSelectedAvatarIndex());
+            this.AvatarList.SetSelectedIndex(this.MainMenuAvatar.Get().GetSelectedAvatarIndex());
         }
         return;
     }
@@ -260,25 +252,18 @@ class UWidget_MainMenuAvatar : UEUIActivatableWidget
     UFUNCTION()
     void OnDisplayAttributeOrSkillChanged()
     {
-        this.bIsShowAttr = GetbDisplayAttributeOrSkill();
+        this.bIsShowAttr = this.MainMenuAvatar.Get().GetbDisplayAttributeOrSkill();
         this.RefreshActionBinding();
         return;
     }
     UFUNCTION()
     void OnAvatarTraitListChanged()
     {
-        TEUIModelRef<FVM_AvatarInfo> local_2;
-        local_2.GetSelectedAvatar();
-        if (local_2.IsValid())
+        if (this.MainMenuAvatar.Get().GetSelectedAvatar().IsValid())
         {
-            TEUIModelRef<FM_Avatar> local_6;
-            local_2.GetSelectedAvatar();
-            local_6.GetAvatar();
-            if (local_6.IsValid())
+            if (this.MainMenuAvatar.Get().GetSelectedAvatar().Get().GetAvatar().IsValid())
             {
-                local_2.GetSelectedAvatar();
-                local_6.GetAvatar();
-                this.bIsAvatarUnLocked = GetbIsUnlocked();
+                this.bIsAvatarUnLocked = this.MainMenuAvatar.Get().GetSelectedAvatar().Get().GetAvatar().Get().GetbIsUnlocked();
                 this.RefreshActionBinding();
             }
         }
@@ -301,10 +286,7 @@ class UWidget_MainMenuAvatar : UEUIActivatableWidget
         {
             return;
         }
-        TEUIModelRef<FVM_AvatarInfo> local_6;
-        local_6.GetSelectedAvatar();
-        TEUIModelRef<FM_Avatar> local_8;
-        local_8.GetAvatar();
+        TEUIModelRef<FM_Avatar> local_8 = this.MainMenuAvatar.Get().GetSelectedAvatar().Get().GetAvatar();
         TEUIModelRef<FM_Avatar> local_4;
         if (local_4)
         {
@@ -323,7 +305,7 @@ class UWidget_MainMenuAvatar : UEUIActivatableWidget
         {
             return;
         }
-        OnAvatarTrainingClick();
+        this.MainMenuAvatar.Get().OnAvatarTrainingClick();
         return;
     }
     UFUNCTION()
@@ -354,8 +336,7 @@ class UWidget_MainMenuAvatar : UEUIActivatableWidget
         {
             FEUIWidget::RemoveWidget(local_4);
         }
-        TEUIModelRef<FVM_AvatarInfo> local_10;
-        local_10.GetSelectedAvatar();
+        TEUIModelRef<FVM_AvatarInfo> local_12 = TEUIModelRef<FVM_AvatarInfo>(this.MainMenuAvatar.Get().GetSelectedAvatar().Get());
         local_14.SetPopIndex(PopIndex);
         FEUIWidget::AddWidget(this.GetOwningLocalPlayer(), GameplayTags::UI_Type_Avatar_DetailPop, FEUIModelRef(local_14));
         return;
@@ -378,7 +359,7 @@ class UWidget_MainMenuAvatar : UEUIActivatableWidget
             this.AvatarTrainingActionBinding.SetCollapsed(true);
             return;
         }
-        local_2 = GetbAvatarHasUnlockedTraining();
+        local_2 = this.MainMenuAvatar.Get().GetbAvatarHasUnlockedTraining();
         this.AvatarUnLockActionBinding.SetCollapsed(this.bIsAvatarUnLocked);
         bool local_5 = ::FMS_SystemControl::Get(this).IsSystemUnlock(ESystemModule(103), false);
         this.AvatarTrainingActionBinding.SetCollapsed(!(this.bIsAvatarUnLocked) || !(local_2) || !(local_5));
@@ -387,7 +368,7 @@ class UWidget_MainMenuAvatar : UEUIActivatableWidget
     UFUNCTION()
     TArray<FEUIModelContainer> MainMenuAvatar_AvatarList() const
     {
-        FVM_MainMenuAvatar& local_2;
+        FVM_MainMenuAvatar& local_2 = this.MainMenuAvatar.Get();
         TArray<FEUIModelContainer> local_12;
         if (local_2)
         {
@@ -430,8 +411,8 @@ class UWidget_MainMenuAvatar : UEUIActivatableWidget
     }
     void HandleObservedModelChanges(FEUIReactiveSubscriberIterator &inout It)
     {
-        FVM_MainMenuAvatar& local_6;
         TEUIModelRef<FVM_MainMenuAvatar> local_2 = this.MainMenuAvatar.AsRef();
+        FVM_MainMenuAvatar& local_6 = local_2.Get();
         for (; It; )
         {
             FEUIReactiveSubscriberTrackScope local_56 = FEUIReactiveSubscriberTrackScope(It);

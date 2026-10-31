@@ -3,7 +3,6 @@ namespace __FDefaultDivineSkillConfigFunctions
 UFUNCTION()
 EDivineSkillType __FDefaultDivineSkillConfig_GetDivineSkillType(const TDataObjectPtr<FDefaultDivineSkillConfig> &inout DataObject)
 {
-    int local_41 = 0;
     if ((DataObject == nullptr))
     {
         if (!(EUIGlobals::GIsDuringPropertyConversion))
@@ -11,10 +10,9 @@ EDivineSkillType __FDefaultDivineSkillConfig_GetDivineSkillType(const TDataObjec
             FBlueprintDebugFunctions::ThrowScriptException("Get 'DivineSkillType' from a null 'FDefaultDivineSkillConfig' DataObject!");
         }
         FDefaultDivineSkillConfig local_40;
-        local_41 = int(local_40.DivineSkillType);
-        return EDivineSkillType(local_41);
+        return local_40.DivineSkillType;
     }
-    return EDivineSkillType(local_41);
+    return DataObject.Get().DivineSkillType;
 }
 UFUNCTION()
 TDataObjectPtr<FDivineSkillConfig> __FDefaultDivineSkillConfig_GetDivineSkill(const TDataObjectPtr<FDefaultDivineSkillConfig> &inout DataObject)
@@ -28,7 +26,7 @@ TDataObjectPtr<FDivineSkillConfig> __FDefaultDivineSkillConfig_GetDivineSkill(co
         FDefaultDivineSkillConfig local_40;
         return local_40.GetDivineSkill();
     }
-    return GetDivineSkill();
+    return DataObject.Get().GetDivineSkill();
 }
 UFUNCTION()
 FDefaultDivineSkillConfig CastToFDefaultDivineSkillConfig(const TDataObjectPtr<FDefaultDivineSkillConfig> &inout DataObject)

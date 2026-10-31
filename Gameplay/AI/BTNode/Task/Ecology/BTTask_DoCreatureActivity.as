@@ -35,13 +35,13 @@ class UBTTask_EcologySyncCreatureActivityData : UBTTask_ECSScriptBase
     EBTNodeResult ExecuteTask_Implementation(const FAIBehaviorTreeContext &inout Context, const FBTNodeMemory &inout NodeMemory) const
     {
         FC_CreatureEcologyState local_10;
-        UEcologyBehaviorDefine local_28;
         FECSEntity local_4 = FECSEntity(Context.PawnEntity);
         if (!(local_10))
         {
             return EBTNodeResult(1);
         }
         FCreatureActivityData local_14 = local_10.ActivityData;
+        TObjectPtr<UEcologyBehaviorDefine> local_16 = local_14.BehaviorDefine;
         UBlackboardComponent local_18 = Context.GetBlackboardComponent();
         bool local_11 = FECSEntity(local_14.RuntimeSlotData.TargetResourceId).IsValid();
         local_18.SetValueAsBool(this.ResourceAllocated.SelectedKeyName, local_11);
@@ -51,10 +51,9 @@ class UBTTask_EcologySyncCreatureActivityData : UBTTask_ECSScriptBase
         }
         local_18.SetValueAsBool(this.HasConfigSlot.SelectedKeyName, local_14.RuntimeSlotData.bHasSlotConfig);
         FName local_32;
-        if (local_28 != nullptr)
+        if (local_16.Get() != nullptr)
         {
-            UEcologyBehaviorDefine local_30;
-            local_32 = local_30.BehaviorName;
+            local_32 = local_16.Get().BehaviorName;
         }
         else
         {
@@ -117,19 +116,17 @@ class UBTTask_EcologyDoCreatureActivity : UBTTask_ECSScriptBase
     EBTNodeResult ExecuteTask_Implementation(const FAIBehaviorTreeContext &inout Context, const FBTNodeMemory &inout NodeMemory) const
     {
         FC_CreatureEcologyState local_10;
-        UEcologyBehaviorDefine local_18;
         FECSEntity local_4 = FECSEntity(Context.PawnEntity);
         if (!(local_10))
         {
             return EBTNodeResult(1);
         }
-        FCreatureActivityData local_14 = local_10.ActivityData;
-        if ((!((local_18 != nullptr))))
+        TObjectPtr<UEcologyBehaviorDefine> local_16 = local_10.ActivityData.BehaviorDefine;
+        if ((!((local_16.Get() != nullptr))))
         {
             return EBTNodeResult(1);
         }
-        UEcologyBehaviorDefine local_20;
-        local_4.SetBB_Name(this.BehaviorNameKey, local_20.LegacyBehaviorName);
+        local_4.SetBB_Name(this.BehaviorNameKey, local_16.Get().LegacyBehaviorName);
         return EBTNodeResult(0);
     }
     UFUNCTION()

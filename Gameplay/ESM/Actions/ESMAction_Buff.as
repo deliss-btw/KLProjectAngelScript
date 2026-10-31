@@ -146,7 +146,6 @@ class UESMAction_AddBuff : UESMBPBaseSpanAction
     {
         int local_31;
         int local_32;
-        const FESMAddBuffInstanceData& local_34;
         bool local_2 = !(false);
         if (!(this.BuffConfig.IsValid()) == local_2)
         {
@@ -167,6 +166,7 @@ class UESMAction_AddBuff : UESMBPBaseSpanAction
                 FBuffUtils::RemoveBuff(Context.GetEntity(), this.BuffConfig, Time.WorldTime, EBuffEndType(local_31));
                 return;
             }
+            const FESMAddBuffInstanceData& local_34 = this.GetInstanceData(Context);
             if (TDataObjectPtr<FBuffConfig>(this.BuffConfig).opArrow().GetMaxBuffInstanceCount() > 1)
             {
                 if (Time.IsEnd())

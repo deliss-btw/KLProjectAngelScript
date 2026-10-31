@@ -331,11 +331,9 @@ FVM_ArmWrestle_Progress& Create(const UObject ContextObject)
 {
     return FVM_ArmWrestle_Progress::CreateByManager(EUIInternal::GetContextManager(ContextObject));
 }
-FVM_ArmWrestle_Progress CreateByManager(const UEUIManagerSubsystem Manager)
+FVM_ArmWrestle_Progress& CreateByManager(const UEUIManagerSubsystem Manager)
 {
-    FVM_ArmWrestle_Progress __r;
-    TEUIModelRef<FVM_ArmWrestle_Progress> local_6 = TEUIModelRef<FVM_ArmWrestle_Progress>(EUIInternal::MakeModelWithManager(Manager, FVM_ArmWrestle_Progress::ModelId));
-    return __r;
+    return TEUIModelRef<FVM_ArmWrestle_Progress>(EUIInternal::MakeModelWithManager(Manager, FVM_ArmWrestle_Progress::ModelId)).Get();
 }
 void GetModelInfo(FEUIViewModelMetaInfo &inout Result)
 {
@@ -483,7 +481,6 @@ namespace __GeneratedProperties_FVM_ArmWrestle_Progress
 {
 UScriptStruct StaticStruct()
 {
-    UScriptStruct local_2;
-    return local_2;
+    return __GeneratedProperties_FVM_ArmWrestle_Progress.Get();
 }
 }

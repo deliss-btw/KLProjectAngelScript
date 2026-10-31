@@ -307,8 +307,7 @@ class UESMAction_KeepSwitchValue : UESMSwitchBaseSpanAction
             FGameAudioUtils::SetAudioSwitch(this.KeepSwitchValue, Context.GetEntity(), FOnLoadEventCallbackWithEntity(), true, Context.GetWorld());
             return;
         }
-        UAkSwitchValue local_10;
-        FGameAudioUtils::SetSwitch(Context.GetEntity(), local_10);
+        FGameAudioUtils::SetSwitch(Context.GetEntity(), this.KeepSwitchValue.Get());
         return;
     }
     UFUNCTION()
@@ -323,23 +322,19 @@ class UESMAction_KeepSwitchValue : UESMSwitchBaseSpanAction
             FGameAudioUtils::SetAudioSwitch(this.ResetSwitchValue, Context.GetEntity(), FOnLoadEventCallbackWithEntity(), true, Context.GetWorld());
             return;
         }
-        UAkSwitchValue local_10;
-        FGameAudioUtils::SetSwitch(Context.GetEntity(), local_10);
+        FGameAudioUtils::SetSwitch(Context.GetEntity(), this.ResetSwitchValue.Get());
         return;
     }
     UFUNCTION()
     void OnDataValidate_Implementation(const FESMDataHierarchyInfo &inout Info)
     {
-        UAkSwitchValue local_2;
-        UAkSwitchValue local_8;
-        UAkSwitchValue local_10;
-        if (local_2 != nullptr && (local_2 == nullptr))
+        if (this.KeepSwitchValue.Get() != nullptr && (this.ResetSwitchValue.Get() == nullptr))
         {
             Info.AddDataInvalidComment(EESMDataValidType(2), "Reset switch value not set");
         }
-        if (local_2 != nullptr && (local_8 != nullptr))
+        if (this.KeepSwitchValue.Get() != nullptr && (this.ResetSwitchValue.Get() != nullptr))
         {
-            if (FGameAudioUtils::GetSwitchGroupId(local_10) != FGameAudioUtils::GetSwitchGroupId(local_10))
+            if (FGameAudioUtils::GetSwitchGroupId(this.KeepSwitchValue.Get()) != FGameAudioUtils::GetSwitchGroupId(this.ResetSwitchValue.Get()))
             {
                 Info.AddDataInvalidComment(EESMDataValidType(2), "Reset switch group is not paired with Keep switch group");
             }
@@ -358,8 +353,7 @@ class UESMAction_KeepSwitchValue : UESMSwitchBaseSpanAction
     {
         if (this.CheckEventValied(this.KeepSwitchValue))
         {
-            UAkSwitchValue local_4;
-            OutParam.IdentifyName = FName(n"AkSwitchGroup", FGameAudioUtils::GetSwitchGroupId(local_4));
+            OutParam.IdentifyName = FName(n"AkSwitchGroup", FGameAudioUtils::GetSwitchGroupId(this.KeepSwitchValue.Get()));
         }
         return;
     }
@@ -422,7 +416,6 @@ class UESMAction_KeepRtpcValue : UESMRtpcBaseSpanAction
     UFUNCTION()
     void ViewEnter_Implementation(const FESMViewContext &inout Context, const FESMActionTime &inout Time) const
     {
-        float32 local_3 = 0.0f;
         float32 local_6;
         if (this.CheckEventValied(this.Rtpc))
         {
@@ -432,7 +425,7 @@ class UESMAction_KeepRtpcValue : UESMRtpcBaseSpanAction
             }
             else
             {
-                local_6 = local_3;
+                local_6 = this.Value.GetValue(Context.GetEntityBB());
             }
             if (FAsGameAudioUtils::CVar_UseNewAsynLoad.GetBool())
             {
@@ -441,8 +434,7 @@ class UESMAction_KeepRtpcValue : UESMRtpcBaseSpanAction
                 return;
             }
             float32 local_5 = this.InterpolateTime * 1000.0f;
-            UAkRtpc local_16;
-            FGameAudioUtils::SetRTPC(Context.GetEntity(), local_16, local_6, FMath::RoundToInt(local_5));
+            FGameAudioUtils::SetRTPC(Context.GetEntity(), this.Rtpc.Get(), local_6, FMath::RoundToInt(local_5));
         }
         return;
     }
@@ -457,8 +449,7 @@ class UESMAction_KeepRtpcValue : UESMRtpcBaseSpanAction
                 FGameAudioUtils::SetAudioRtpc(this.Rtpc, Context.GetEntity(), local_6, FMath::RoundToInt(this.InterpolateTime * 1000.0f), FOnLoadEventCallbackWithEntity(), true, Context.GetWorld());
                 return;
             }
-            UAkRtpc local_16;
-            FGameAudioUtils::SetRTPC(Context.GetEntity(), local_16, local_6, FMath::RoundToInt(this.InterpolateTime * 1000.0f));
+            FGameAudioUtils::SetRTPC(Context.GetEntity(), this.Rtpc.Get(), local_6, FMath::RoundToInt(this.InterpolateTime * 1000.0f));
         }
         return;
     }
@@ -472,8 +463,7 @@ class UESMAction_KeepRtpcValue : UESMRtpcBaseSpanAction
                 FGameAudioUtils::SetAudioRtpc(this.Rtpc, Context.GetEntity(), this.ResetValue, FMath::RoundToInt((this.InterpolateTime * 1000.0f)), FOnLoadEventCallbackWithEntity(), true, Context.GetWorld());
                 return;
             }
-            UAkRtpc local_14;
-            FGameAudioUtils::SetRTPC(Context.GetEntity(), local_14, this.ResetValue, FMath::RoundToInt((this.InterpolateTime * 1000.0f)));
+            FGameAudioUtils::SetRTPC(Context.GetEntity(), this.Rtpc.Get(), this.ResetValue, FMath::RoundToInt((this.InterpolateTime * 1000.0f)));
         }
         return;
     }
@@ -482,8 +472,7 @@ class UESMAction_KeepRtpcValue : UESMRtpcBaseSpanAction
     {
         if (this.CheckEventValied(this.Rtpc))
         {
-            UAkRtpc local_4;
-            OutParam.IdentifyName = FName(n"AkRtpc", local_4.GetWwiseShortID());
+            OutParam.IdentifyName = FName(n"AkRtpc", this.Rtpc.Get().GetWwiseShortID());
         }
         return;
     }

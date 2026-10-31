@@ -12,7 +12,6 @@ namespace __FPropPrefabConfigFunctions
 UFUNCTION()
 EPropType __FPropPrefabConfig_GetPropType(const TDataObjectPtr<FPropPrefabConfig> &inout DataObject)
 {
-    int local_81 = 0;
     if ((DataObject == nullptr))
     {
         if (!(EUIGlobals::GIsDuringPropertyConversion))
@@ -20,15 +19,13 @@ EPropType __FPropPrefabConfig_GetPropType(const TDataObjectPtr<FPropPrefabConfig
             FBlueprintDebugFunctions::ThrowScriptException("Get 'PropType' from a null 'FPropPrefabConfig' DataObject!");
         }
         FPropPrefabConfig local_80;
-        local_81 = int(local_80.PropType);
-        return EPropType(local_81);
+        return local_80.PropType;
     }
-    return EPropType(local_81);
+    return DataObject.Get().PropType;
 }
 UFUNCTION()
 ECombatPropType __FPropPrefabConfig_GetCombatPropType(const TDataObjectPtr<FPropPrefabConfig> &inout DataObject)
 {
-    int local_81 = 0;
     if ((DataObject == nullptr))
     {
         if (!(EUIGlobals::GIsDuringPropertyConversion))
@@ -36,10 +33,9 @@ ECombatPropType __FPropPrefabConfig_GetCombatPropType(const TDataObjectPtr<FProp
             FBlueprintDebugFunctions::ThrowScriptException("Get 'CombatPropType' from a null 'FPropPrefabConfig' DataObject!");
         }
         FPropPrefabConfig local_80;
-        local_81 = int(local_80.CombatPropType);
-        return ECombatPropType(local_81);
+        return local_80.CombatPropType;
     }
-    return ECombatPropType(local_81);
+    return DataObject.Get().CombatPropType;
 }
 UFUNCTION()
 FPropPrefabConfig CastToFPropPrefabConfig(const TDataObjectPtr<FPropPrefabConfig> &inout DataObject)

@@ -113,7 +113,6 @@ class USPT_PoseJiggleBase : USkeletalPoseTweaker
     UFUNCTION()
     void EvaluatePose_Implementation()
     {
-        FTransform local_176;
         bool local_5 = (int(this.DynamicsSourceType) == 0);
         bool local_1 = (int(this.DynamicsSourceType) == 1);
         auto local_12 = this.RuntimeJiggleInfos.Iterator();
@@ -166,8 +165,7 @@ class USPT_PoseJiggleBase : USkeletalPoseTweaker
             TMap<EBodyChainType, FTransform> local_108;
             for (auto& local_126 : this.BodyBoneChains)
             {
-                local_176.GetTailTM();
-                local_108.FindOrAdd(local_126.GetKey()) = FTransform(local_176);
+                local_108.FindOrAdd(local_126.GetKey()) = FTransform(local_126.GetValue().GetTailTM());
             }
             if (local_88.Pelvis_Weight > 0.0f)
             {

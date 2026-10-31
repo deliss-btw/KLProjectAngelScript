@@ -162,11 +162,9 @@ FVM_MissionSpotInfo& Create(const UObject ContextObject, const TEUIModelRef<FM_S
 {
     return FVM_MissionSpotInfo::CreateByManager(EUIInternal::GetContextManager(ContextObject), Spot);
 }
-FVM_MissionSpotInfo CreateByManager(const UEUIManagerSubsystem Manager, const TEUIModelRef<FM_Spot> &inout Spot)
+FVM_MissionSpotInfo& CreateByManager(const UEUIManagerSubsystem Manager, const TEUIModelRef<FM_Spot> &inout Spot)
 {
-    FVM_MissionSpotInfo __r;
-    TEUIModelRef<FVM_MissionSpotInfo> local_6 = TEUIModelRef<FVM_MissionSpotInfo>(EUIInternal::MakeModelWithManager_Generic(Manager, FVM_MissionSpotInfo::ModelId, 0, Spot));
-    return __r;
+    return TEUIModelRef<FVM_MissionSpotInfo>(EUIInternal::MakeModelWithManager_Generic(Manager, FVM_MissionSpotInfo::ModelId, 0, Spot)).Get();
 }
 void GetModelInfo(FEUIViewModelMetaInfo &inout Result)
 {
@@ -221,7 +219,6 @@ namespace __GeneratedProperties_FVM_MissionSpotInfo
 {
 UScriptStruct StaticStruct()
 {
-    UScriptStruct local_2;
-    return local_2;
+    return __GeneratedProperties_FVM_MissionSpotInfo.Get();
 }
 }

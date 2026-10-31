@@ -3,7 +3,6 @@ namespace __FRefreshRuleConfigFunctions
 UFUNCTION()
 ERefreshRuleType __FRefreshRuleConfig_GetRuleType(const TDataObjectPtr<FRefreshRuleConfig> &inout DataObject)
 {
-    int local_33 = 0;
     if ((DataObject == nullptr))
     {
         if (!(EUIGlobals::GIsDuringPropertyConversion))
@@ -11,15 +10,13 @@ ERefreshRuleType __FRefreshRuleConfig_GetRuleType(const TDataObjectPtr<FRefreshR
             FBlueprintDebugFunctions::ThrowScriptException("Get 'RuleType' from a null 'FRefreshRuleConfig' DataObject!");
         }
         FRefreshRuleConfig local_32;
-        local_33 = int(local_32.RuleType);
-        return ERefreshRuleType(local_33);
+        return local_32.RuleType;
     }
-    return ERefreshRuleType(local_33);
+    return DataObject.Get().RuleType;
 }
 UFUNCTION()
 FText __FRefreshRuleConfig_GetDescription(const TDataObjectPtr<FRefreshRuleConfig> &inout DataObject)
 {
-    FText __r;
     if ((DataObject == nullptr))
     {
         if (!(EUIGlobals::GIsDuringPropertyConversion))
@@ -29,12 +26,11 @@ FText __FRefreshRuleConfig_GetDescription(const TDataObjectPtr<FRefreshRuleConfi
         FRefreshRuleConfig local_32;
         return local_32.Description;
     }
-    return __r;
+    return DataObject.Get().Description;
 }
 UFUNCTION()
 FString __FRefreshRuleConfig_GetDateParam(const TDataObjectPtr<FRefreshRuleConfig> &inout DataObject)
 {
-    FString __r;
     if ((DataObject == nullptr))
     {
         if (!(EUIGlobals::GIsDuringPropertyConversion))
@@ -44,12 +40,11 @@ FString __FRefreshRuleConfig_GetDateParam(const TDataObjectPtr<FRefreshRuleConfi
         FRefreshRuleConfig local_32;
         return local_32.DateParam;
     }
-    return __r;
+    return DataObject.Get().DateParam;
 }
 UFUNCTION()
 FString __FRefreshRuleConfig_GetIntervalTime(const TDataObjectPtr<FRefreshRuleConfig> &inout DataObject)
 {
-    FString __r;
     if ((DataObject == nullptr))
     {
         if (!(EUIGlobals::GIsDuringPropertyConversion))
@@ -59,7 +54,7 @@ FString __FRefreshRuleConfig_GetIntervalTime(const TDataObjectPtr<FRefreshRuleCo
         FRefreshRuleConfig local_32;
         return local_32.IntervalTime;
     }
-    return __r;
+    return DataObject.Get().IntervalTime;
 }
 UFUNCTION()
 FRefreshRuleConfig CastToFRefreshRuleConfig(const TDataObjectPtr<FRefreshRuleConfig> &inout DataObject)

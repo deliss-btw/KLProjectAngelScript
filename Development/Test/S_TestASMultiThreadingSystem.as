@@ -31,6 +31,8 @@ class US_TestASMultiThreadingSystem : UECSScriptSystem
     UFUNCTION()
     void Init_Implementation()
     {
+        FTestASMultiThreadingStorage local_8;
+        this.TestLocalStorage.InitializeAs(local_8);
         return;
     }
     TRawPtr<FTestASMultiThreadingStorage> GetTestStorage() const
@@ -40,14 +42,11 @@ class US_TestASMultiThreadingSystem : UECSScriptSystem
     UFUNCTION()
     void ClientJob_PrepareParallelContext() const
     {
-        bool local_3 = false;
-        TRawPtr<FTestASMultiThreadingStorage> local_2 = this.GetTestStorage();
-        if (local_3)
+        if (this.GetTestStorage().Get().bParallelContextPrepared)
         {
             return;
         }
-        local_3 = true;
-        TRawPtr<FTestASMultiThreadingStorage> local_2_2 = this.GetTestStorage();
+        this.GetTestStorage().Get().bParallelContextPrepared = true;
         int local_4 = 0;
         for (; local_4 < 256; )
         {
@@ -57,15 +56,13 @@ class US_TestASMultiThreadingSystem : UECSScriptSystem
             local_22.opCall(local_24).TestData0 = local_4;
             Assign local_28;
             local_28.opCall(FC_LocalTag());
-            TRawPtr<FTestASMultiThreadingStorage> local_2_3 = this.GetTestStorage();
-            FECSEntityId local_30;
-            if ((local_30 == ENTITY_ID_NULL))
+            if ((FECSEntityId(this.GetTestStorage().Get().FirstPreparedEntityId) == ENTITY_ID_NULL))
             {
-                local_30 = local_14.GetId();
-                TRawPtr<FTestASMultiThreadingStorage> local_2_4 = this.GetTestStorage();
+                TRawPtr<FTestASMultiThreadingStorage> local_2_2 = this.GetTestStorage();
+                local_2_2.Get().FirstPreparedEntityId = local_14.GetId();
             }
-            local_30 = local_14.GetId();
-            TRawPtr<FTestASMultiThreadingStorage> local_2_5 = this.GetTestStorage();
+            TRawPtr<FTestASMultiThreadingStorage> local_2_3 = this.GetTestStorage();
+            local_2_3.Get().LastPreparedEntityId = local_14.GetId();
             ++local_4;
         }
         XLog(ELog(0), "TestASMultiThreading: prepared context entities");
@@ -102,49 +99,39 @@ class US_TestASMultiThreadingSystem : UECSScriptSystem
     void ClientJob_TestAsyncDispatchFrameEndWait60ms() const
     {
         int local_2 = FECSThreadPool::GetCurrentThreadId();
-        FECSThreadPool::GetCurrentThreadName();
+        FString local_10 = FECSThreadPool::GetCurrentThreadName();
         FDateTime local_14 = FDateTime::Now();
         while (((FDateTime::Now() - local_14).GetTotalMilliseconds()) < 60.0)
         {
         }
-        TRawPtr<FTestASMultiThreadingStorage> local_26 = this.GetTestStorage();
-        TRawPtr<FTestASMultiThreadingStorage> local_24 = this.GetTestStorage();
-        FString local_6 = FString();
+        XLog(ELog(0), FString().Append("TestASMultiThreading AsyncDispatch wait job finished after 60ms busy wait: ThreadId=").Append(local_2).Append(" ThreadName=").Append(local_10).Append(" SchedulerThreadId=").Append(this.GetTestStorage().Get().SchedulerThreadId).Append(" SchedulerThreadName=").Append(this.GetTestStorage().Get().SchedulerThreadName));
         return;
     }
     UFUNCTION()
     void ClientJob_TestAsyncDispatchDependencySerialA(const FCS_FixedTime &inout FixedFrame) const
     {
-        int local_2 = int(FixedFrame.Frame);
-        int local_2_2 = FECSThreadPool::GetCurrentThreadId();
-        FECSThreadPool::GetCurrentThreadName();
+        int local_1 = int(FixedFrame.Frame);
+        int local_2 = FECSThreadPool::GetCurrentThreadId();
+        FString local_12 = FECSThreadPool::GetCurrentThreadName();
         FDateTime local_16 = FDateTime::Now();
-        TRawPtr<FTestASMultiThreadingStorage> local_20 = this.GetTestStorage();
-        TRawPtr<FTestASMultiThreadingStorage> local_18 = this.GetTestStorage();
-        FString local_8 = FString();
+        XLog(ELog(0), FString().Append("TestASMultiThreading AsyncDispatch dependency multi A(Test0) begin: Frame=").Append(local_1).Append(" ThreadId=").Append(local_2).Append(" ThreadName=").Append(local_12).Append(" SchedulerThreadId=").Append(this.GetTestStorage().Get().SchedulerThreadId).Append(" SchedulerThreadName=").Append(this.GetTestStorage().Get().SchedulerThreadName));
         while (((FDateTime::Now() - local_16).GetTotalMilliseconds()) < 3.0)
         {
         }
-        TRawPtr<FTestASMultiThreadingStorage> local_18_2 = this.GetTestStorage();
-        TRawPtr<FTestASMultiThreadingStorage> local_20_2 = this.GetTestStorage();
-        FString local_8_2 = FString();
+        XLog(ELog(0), FString().Append("TestASMultiThreading AsyncDispatch dependency multi A(Test0) end: Frame=").Append(local_1).Append(" ThreadId=").Append(local_2).Append(" ThreadName=").Append(local_12).Append(" SchedulerThreadId=").Append(this.GetTestStorage().Get().SchedulerThreadId).Append(" SchedulerThreadName=").Append(this.GetTestStorage().Get().SchedulerThreadName));
         return;
     }
     UFUNCTION()
     void ClientJob_TestAsyncDispatchDependencySerialB() const
     {
         int local_2 = FECSThreadPool::GetCurrentThreadId();
-        FECSThreadPool::GetCurrentThreadName();
+        FString local_10 = FECSThreadPool::GetCurrentThreadName();
         FDateTime local_14 = FDateTime::Now();
-        TRawPtr<FTestASMultiThreadingStorage> local_18 = this.GetTestStorage();
-        TRawPtr<FTestASMultiThreadingStorage> local_16 = this.GetTestStorage();
-        FString local_6 = FString();
+        XLog(ELog(0), FString().Append("TestASMultiThreading AsyncDispatch dependency multi B(Test0) begin: ThreadId=").Append(local_2).Append(" ThreadName=").Append(local_10).Append(" SchedulerThreadId=").Append(this.GetTestStorage().Get().SchedulerThreadId).Append(" SchedulerThreadName=").Append(this.GetTestStorage().Get().SchedulerThreadName));
         while (((FDateTime::Now() - local_14).GetTotalMilliseconds()) < 3.0)
         {
         }
-        TRawPtr<FTestASMultiThreadingStorage> local_16_2 = this.GetTestStorage();
-        TRawPtr<FTestASMultiThreadingStorage> local_18_2 = this.GetTestStorage();
-        FString local_6_2 = FString();
+        XLog(ELog(0), FString().Append("TestASMultiThreading AsyncDispatch dependency multi B(Test0) end: ThreadId=").Append(local_2).Append(" ThreadName=").Append(local_10).Append(" SchedulerThreadId=").Append(this.GetTestStorage().Get().SchedulerThreadId).Append(" SchedulerThreadName=").Append(this.GetTestStorage().Get().SchedulerThreadName));
         return;
     }
     UFUNCTION()
@@ -153,11 +140,9 @@ class US_TestASMultiThreadingSystem : UECSScriptSystem
         FCS_FixedTime local_30;
         FCS_FixedTime local_40;
         int local_2 = FECSThreadPool::GetCurrentThreadId();
-        FECSThreadPool::GetCurrentThreadName();
+        FString local_10 = FECSThreadPool::GetCurrentThreadName();
         FDateTime local_14 = FDateTime::Now();
-        TRawPtr<FTestASMultiThreadingStorage> local_18 = this.GetTestStorage();
-        TRawPtr<FTestASMultiThreadingStorage> local_16 = this.GetTestStorage();
-        FString local_6 = FString();
+        XLog(ELog(0), FString().Append("TestASMultiThreading AsyncDispatch dependency multi C(Test1) begin: ThreadId=").Append(local_2).Append(" ThreadName=").Append(local_10).Append(" SchedulerThreadId=").Append(this.GetTestStorage().Get().SchedulerThreadId).Append(" SchedulerThreadName=").Append(this.GetTestStorage().Get().SchedulerThreadName));
         while (((FDateTime::Now() - local_14).GetTotalMilliseconds()) < 3.0)
         {
         }
@@ -171,89 +156,65 @@ class US_TestASMultiThreadingSystem : UECSScriptSystem
         {
             XLog(ELog(0), FString().Append("TestASMultiThreading AsyncDispatch dependency multi C(Test1) cached FixedTime differs from World Modify : CachedFrame=").Append(FixedTime.Frame).Append(" WorldFrame=").Append(local_30.Frame));
         }
-        TRawPtr<FTestASMultiThreadingStorage> local_16_2 = this.GetTestStorage();
-        TRawPtr<FTestASMultiThreadingStorage> local_18_2 = this.GetTestStorage();
-        FString local_6_2 = FString();
+        XLog(ELog(0), FString().Append("TestASMultiThreading AsyncDispatch dependency multi C(Test1) end: ThreadId=").Append(local_2).Append(" ThreadName=").Append(local_10).Append(" SchedulerThreadId=").Append(this.GetTestStorage().Get().SchedulerThreadId).Append(" SchedulerThreadName=").Append(this.GetTestStorage().Get().SchedulerThreadName));
         return;
     }
     UFUNCTION()
     void ClientJob_TestAsyncDispatchDependencySerialD() const
     {
         int local_2 = FECSThreadPool::GetCurrentThreadId();
-        FECSThreadPool::GetCurrentThreadName();
+        FString local_10 = FECSThreadPool::GetCurrentThreadName();
         FDateTime local_14 = FDateTime::Now();
-        TRawPtr<FTestASMultiThreadingStorage> local_18 = this.GetTestStorage();
-        TRawPtr<FTestASMultiThreadingStorage> local_16 = this.GetTestStorage();
-        FString local_6 = FString();
+        XLog(ELog(0), FString().Append("TestASMultiThreading AsyncDispatch dependency multi D(Test2) begin: ThreadId=").Append(local_2).Append(" ThreadName=").Append(local_10).Append(" SchedulerThreadId=").Append(this.GetTestStorage().Get().SchedulerThreadId).Append(" SchedulerThreadName=").Append(this.GetTestStorage().Get().SchedulerThreadName));
         while (((FDateTime::Now() - local_14).GetTotalMilliseconds()) < 1.0)
         {
         }
-        TRawPtr<FTestASMultiThreadingStorage> local_16_2 = this.GetTestStorage();
-        TRawPtr<FTestASMultiThreadingStorage> local_18_2 = this.GetTestStorage();
-        FString local_6_2 = FString();
+        XLog(ELog(0), FString().Append("TestASMultiThreading AsyncDispatch dependency multi D(Test2) end: ThreadId=").Append(local_2).Append(" ThreadName=").Append(local_10).Append(" SchedulerThreadId=").Append(this.GetTestStorage().Get().SchedulerThreadId).Append(" SchedulerThreadName=").Append(this.GetTestStorage().Get().SchedulerThreadName));
         return;
     }
     UFUNCTION()
     void ClientJob_TestAsyncDispatchDependencySerialE() const
     {
         int local_2 = FECSThreadPool::GetCurrentThreadId();
-        FECSThreadPool::GetCurrentThreadName();
+        FString local_10 = FECSThreadPool::GetCurrentThreadName();
         FDateTime local_14 = FDateTime::Now();
-        TRawPtr<FTestASMultiThreadingStorage> local_18 = this.GetTestStorage();
-        TRawPtr<FTestASMultiThreadingStorage> local_16 = this.GetTestStorage();
-        FString local_6 = FString();
+        XLog(ELog(0), FString().Append("TestASMultiThreading AsyncDispatch dependency multi E(Test1+Test2) begin: ThreadId=").Append(local_2).Append(" ThreadName=").Append(local_10).Append(" SchedulerThreadId=").Append(this.GetTestStorage().Get().SchedulerThreadId).Append(" SchedulerThreadName=").Append(this.GetTestStorage().Get().SchedulerThreadName));
         while (((FDateTime::Now() - local_14).GetTotalMilliseconds()) < 1.0)
         {
         }
-        TRawPtr<FTestASMultiThreadingStorage> local_16_2 = this.GetTestStorage();
-        TRawPtr<FTestASMultiThreadingStorage> local_18_2 = this.GetTestStorage();
-        FString local_6_2 = FString();
+        XLog(ELog(0), FString().Append("TestASMultiThreading AsyncDispatch dependency multi E(Test1+Test2) end: ThreadId=").Append(local_2).Append(" ThreadName=").Append(local_10).Append(" SchedulerThreadId=").Append(this.GetTestStorage().Get().SchedulerThreadId).Append(" SchedulerThreadName=").Append(this.GetTestStorage().Get().SchedulerThreadName));
         return;
     }
     UFUNCTION()
     void ClientJob_TestAsyncDispatchDependencySerialF() const
     {
         int local_2 = FECSThreadPool::GetCurrentThreadId();
-        FECSThreadPool::GetCurrentThreadName();
+        FString local_10 = FECSThreadPool::GetCurrentThreadName();
         FDateTime local_14 = FDateTime::Now();
-        TRawPtr<FTestASMultiThreadingStorage> local_18 = this.GetTestStorage();
-        TRawPtr<FTestASMultiThreadingStorage> local_16 = this.GetTestStorage();
-        FString local_6 = FString();
+        XLog(ELog(0), FString().Append("TestASMultiThreading AsyncDispatch dependency multi F(Test1+Test2) begin: ThreadId=").Append(local_2).Append(" ThreadName=").Append(local_10).Append(" SchedulerThreadId=").Append(this.GetTestStorage().Get().SchedulerThreadId).Append(" SchedulerThreadName=").Append(this.GetTestStorage().Get().SchedulerThreadName));
         while (((FDateTime::Now() - local_14).GetTotalMilliseconds()) < 1.0)
         {
         }
-        TRawPtr<FTestASMultiThreadingStorage> local_16_2 = this.GetTestStorage();
-        TRawPtr<FTestASMultiThreadingStorage> local_18_2 = this.GetTestStorage();
-        FString local_6_2 = FString();
+        XLog(ELog(0), FString().Append("TestASMultiThreading AsyncDispatch dependency multi F(Test1+Test2) end: ThreadId=").Append(local_2).Append(" ThreadName=").Append(local_10).Append(" SchedulerThreadId=").Append(this.GetTestStorage().Get().SchedulerThreadId).Append(" SchedulerThreadName=").Append(this.GetTestStorage().Get().SchedulerThreadName));
         return;
     }
     UFUNCTION()
     void ClientJob_TestWaitAsyncDispatch() const
     {
-        int local_1 = FECSThreadPool::GetCurrentThreadId();
-        TRawPtr<FTestASMultiThreadingStorage> local_4 = this.GetTestStorage();
-        FString local_8 = FECSThreadPool::GetCurrentThreadName();
+        this.GetTestStorage().Get().SchedulerThreadId = FECSThreadPool::GetCurrentThreadId();
         TRawPtr<FTestASMultiThreadingStorage> local_4_2 = this.GetTestStorage();
-        TRawPtr<FTestASMultiThreadingStorage> local_14 = this.GetTestStorage();
-        TRawPtr<FTestASMultiThreadingStorage> local_12 = this.GetTestStorage();
-        TRawPtr<FTestASMultiThreadingStorage> local_10 = this.GetTestStorage();
-        TRawPtr<FTestASMultiThreadingStorage> local_4_3 = this.GetTestStorage();
-        FString local_8_2 = FString();
+        local_4_2.Get().SchedulerThreadName = FECSThreadPool::GetCurrentThreadName();
+        XLog(ELog(0), FString().Append("TestASMultiThreading WaitAsyncDispatch after dependency multi jobs(Test0+Test1+Test2): ThreadId=").Append(this.GetTestStorage().Get().SchedulerThreadId).Append(" ThreadName=").Append(this.GetTestStorage().Get().SchedulerThreadName).Append(" SchedulerThreadId=").Append(this.GetTestStorage().Get().SchedulerThreadId).Append(" SchedulerThreadName=").Append(this.GetTestStorage().Get().SchedulerThreadName));
         return;
     }
     UFUNCTION()
     void ClientJob_TestParallelSpecifierSample_AccessErrorPath(const FECSEntity &inout Entity, const FC_TestASData &inout TestComp) const
     {
-        bool local_4 = false;
-        FECSEntityId local_3 = Entity.GetId();
-        TRawPtr<FTestASMultiThreadingStorage> local_2 = this.GetTestStorage();
-        local_4 = !local_4;
-        if (local_4)
+        if (!((Entity.GetId() == this.GetTestStorage().Get().LastPreparedEntityId)))
         {
             return;
         }
-        TRawPtr<FTestASMultiThreadingStorage> local_2_2 = this.GetTestStorage();
-        FECSEntityId local_5;
+        FECSEntityId local_5 = FECSEntityId(this.GetTestStorage().Get().FirstPreparedEntityId);
         if (!((local_5 == ENTITY_ID_NULL)) && !((local_5 == Entity.GetId())))
         {
             FECSWorldPtr local_12 = ECS::GetECSWorld();
@@ -281,8 +242,9 @@ class US_TestASMultiThreadingSystem : UECSScriptSystem
         {
             return;
         }
-        TRawPtr<FTestASMultiThreadingStorage> local_8 = this.GetTestStorage();
+        this.GetTestStorage().Get().bParallelContextPrepared = false;
         TRawPtr<FTestASMultiThreadingStorage> local_8_2 = this.GetTestStorage();
+        local_8_2.Get().bAccessErrorCheckTriggered = false;
         Entity.DestroyDeferred();
         return;
     }

@@ -13,6 +13,8 @@ struct FAICommand_ReturnToHome : FAICommandScript
 {
     FAICommandScript _base_FAICommandScript;
 
+    default m_ScriptOverrideMeta = Cast<UASStruct>(FAICommand_ReturnToHome.Get());
+
     FAICommand_ReturnToHome()
     {
         this.__InitDefaults();
@@ -30,11 +32,13 @@ struct FAICommand_ReturnToHome : FAICommandScript
     }
     void Execute_Implementation(const FAICommandParams &inout Params, const FFPTime &inout WorldTime) const
     {
+        const FAICommand_ReturnToHomeData& local_2 = this.GetInstanceData(Params);
         ::FAIQuitCombatUtils::BeginReturnToHome(Params.GetPawnProxy());
         return;
     }
     void Finish_Implementation(const FAICommandParams &inout Params, const FFPTime &inout WorldTime) const
     {
+        const FAICommand_ReturnToHomeData& local_2 = this.GetInstanceData(Params);
         ::FAIQuitCombatUtils::EndReturnToHome(Params.GetPawnProxy());
         return;
     }
@@ -46,6 +50,8 @@ class UBTService_ReturnToHome : UBTService_AICommandScript
     FAISmart_Vector HomeLocation = FAISmart_Vector(n"HomeLocation", EAISmartValue(0));
     UPROPERTY()
     FAICommand_ReturnToHome AICommand;
+
+    default SetNodeName("脱战回Home位置");
 
     UBTService_ReturnToHome()
     {

@@ -83,16 +83,15 @@ FECSEntity GetPawnEntityByAvatarConfig(const TDataObjectPtr<FAvatarPrefabConfig>
 }
 TArray<ESkillSlot> GetAvatarAllSkillSlots(const TDataObjectPtr<FAvatarPrefabConfig> &inout AvatarConfig)
 {
-    TArrayConstIterator<FAvatarSkillSlotConfig> local_64;
     if (!(AvatarConfig))
     {
         return TArray<ESkillSlot>();
     }
     TArray<ESkillSlot> local_10;
-    TDataObjectPtr<FAvatarSkillConfig> local_34 = GetSkillConfig();
-    for (; local_64.CanProceed;)
+    TDataObjectPtr<FAvatarSkillConfig> local_34 = AvatarConfig.Get().GetSkillConfig();
+    for (auto& local_72 : local_34.Get().SkillInitConfigs)
     {
-        local_10.AddUnique(local_64.Proceed().SkillSlot);
+        local_10.AddUnique(local_72.SkillSlot);
     }
     return local_10;
 }
@@ -125,14 +124,10 @@ FEUIInputAction GetSkillInputAction(const FECSEntity &inout Entity, const FSkill
 }
 FText GetSkillCastHintText(const FSkillCastHintData &inout SkillCastHintData)
 {
-    FText __return;
     if (SkillCastHintData.OverrideTextRow.IsSet())
     {
+        return SkillCastHintData.OverrideTextRow.Get().Text;
     }
-    else
-    {
-        __return = FText();
-    }
-    return __return;
+    return FText();
 }
 }

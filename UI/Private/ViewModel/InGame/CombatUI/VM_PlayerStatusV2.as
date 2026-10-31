@@ -182,9 +182,9 @@ struct FVMS_PlayerStatusV2 : FEUIViewModelSingleton
     }
     void RefreshHpBarScale()
     {
-        float32 local_2 = 0.0f;
         int local_10 = 0;
         float32 local_13;
+        float32 local_2 = this.GetHpMaxSource().GetValue();
         if (local_2 <= 0.0f)
         {
             return;
@@ -238,7 +238,18 @@ struct FVMS_PlayerStatusV2 : FEUIViewModelSingleton
     }
     void RefreshStaminaRecoverState()
     {
-        // body not fully recovered — stub [unresolved-operand]
+        if (this.GetStaminaRecoverFasterTag().GetValue())
+        {
+            this.SetPlayerStaminaRecoverState(1);
+            return;
+        }
+        if (this.GetStaminaRecoverLowerTag().GetValue())
+        {
+            this.SetPlayerStaminaRecoverState(2);
+            return;
+        }
+        this.SetPlayerStaminaRecoverState(0);
+        return;
     }
     void MonitorPlayerControllerChanged(const FC_PlayerController &inout PlayerController)
     {
@@ -271,15 +282,12 @@ struct FVMS_PlayerStatusV2 : FEUIViewModelSingleton
             this.SetAllPlayerPawnEntities(PlayerController.GetAllPlayerPawnEntities());
             FECSEntity local_12 = this.GetPawnEntityByIndex(0);
             FECSEntity local_16 = this.GetPawnEntityByIndex(1);
-            TEUIModelRef<FVM_PlayerAvatarIcon> local_22 = this.GetPlayerAvatarIconFirst();
-            local_12.SetTargetEntity();
-            TEUIModelRef<FVM_PlayerAvatarIcon> local_22_2 = this.GetPlayerAvatarIconSecond();
-            local_16.SetTargetEntity();
+            this.GetPlayerAvatarIconFirst().Get().SetTargetEntity(local_12);
+            this.GetPlayerAvatarIconSecond().Get().SetTargetEntity(local_16);
             this.SetBuffInfoForPlayer1(TEUIModelRef<FVM_BuffInfo>(::FVM_BuffInfo::Create(this.GetContext().Manager, local_12)));
             this.SetBuffInfoForPlayer2(TEUIModelRef<FVM_BuffInfo>(::FVM_BuffInfo::Create(this.GetContext().Manager, local_16)));
         }
-        TEUIModelRef<FVM_PlayerAvatarIcon> local_22_3 = this.GetPlayerAvatarIconSecond();
-        this.SetbHasNextAvatarIcon(GetTargetEntity().IsValid());
+        this.SetbHasNextAvatarIcon(this.GetPlayerAvatarIconSecond().Get().GetTargetEntity().IsValid());
         bool local_23 = false;
         if (!((FECSEntity(this.GetPlayerPawnEntity()) == PlayerController.GetPlayerPawnEntity())))
         {
@@ -289,13 +297,11 @@ struct FVMS_PlayerStatusV2 : FEUIViewModelSingleton
                 this.SetPlayerPawnEntity(PlayerController.GetPlayerPawnEntity());
                 if (this.GetPlayerHpBar().IsValid())
                 {
-                    TEUIModelRef<FVM_PlayerHpBar> local_26 = this.GetPlayerHpBar();
-                    this.GetPlayerPawnEntity().SetEntity();
+                    this.GetPlayerHpBar().Get().SetEntity(this.GetPlayerPawnEntity());
                 }
                 if (this.GetPlayerHitStunDetachBar().IsValid())
                 {
-                    TEUIModelRef<FVM_PlayerHitStunDetachBar> local_28 = this.GetPlayerHitStunDetachBar();
-                    this.GetPlayerPawnEntity().SetEntity();
+                    this.GetPlayerHitStunDetachBar().Get().SetEntity(this.GetPlayerPawnEntity());
                 }
             }
         }
@@ -323,8 +329,7 @@ struct FVMS_PlayerStatusV2 : FEUIViewModelSingleton
     {
         if (this.GetPlayerHpBar().IsValid())
         {
-            TEUIModelRef<FVM_PlayerHpBar> local_2 = this.GetPlayerHpBar();
-            return GetHpNumberText();
+            return this.GetPlayerHpBar().Get().GetHpNumberText();
         }
         return FText();
     }
@@ -340,10 +345,8 @@ struct FVMS_PlayerStatusV2 : FEUIViewModelSingleton
     {
         if (this.GetBuffInfoForPlayer1().IsValid())
         {
-            TEUIModelRef<FVM_BuffInfo> local_2 = this.GetBuffInfoForPlayer1();
-            FECSEntity local_12 = ::FASCommonUtils::GetUniqueAvatarPawnEntity(GetTargetEntity());
-            TEUIModelRef<FVM_BuffInfo> local_2_2 = this.GetBuffInfoForPlayer1();
-            if ((local_12 == GetTargetEntity()))
+            FECSEntity local_12 = ::FASCommonUtils::GetUniqueAvatarPawnEntity(this.GetBuffInfoForPlayer1().Get().GetTargetEntity());
+            if ((local_12 == this.GetBuffInfoForPlayer1().Get().GetTargetEntity()))
             {
                 return ESlateVisibility(4);
             }
@@ -354,10 +357,8 @@ struct FVMS_PlayerStatusV2 : FEUIViewModelSingleton
     {
         if (this.GetBuffInfoForPlayer2().IsValid())
         {
-            TEUIModelRef<FVM_BuffInfo> local_2 = this.GetBuffInfoForPlayer2();
-            FECSEntity local_12 = ::FASCommonUtils::GetUniqueAvatarPawnEntity(GetTargetEntity());
-            TEUIModelRef<FVM_BuffInfo> local_2_2 = this.GetBuffInfoForPlayer2();
-            if ((local_12 == GetTargetEntity()))
+            FECSEntity local_12 = ::FASCommonUtils::GetUniqueAvatarPawnEntity(this.GetBuffInfoForPlayer2().Get().GetTargetEntity());
+            if ((local_12 == this.GetBuffInfoForPlayer2().Get().GetTargetEntity()))
             {
                 return ESlateVisibility(4);
             }
@@ -842,11 +843,9 @@ FVMS_PlayerStatusV2& Get(const UObject ContextObject)
 {
     return FVMS_PlayerStatusV2::GetByManager(EUIInternal::GetContextManager(ContextObject));
 }
-FVMS_PlayerStatusV2 GetByManager(const UEUIManagerSubsystem Manager)
+FVMS_PlayerStatusV2& GetByManager(const UEUIManagerSubsystem Manager)
 {
-    FVMS_PlayerStatusV2 __r;
-    TEUIModelRef<FVMS_PlayerStatusV2> local_6 = TEUIModelRef<FVMS_PlayerStatusV2>(EUIInternal::MakeModelWithManager(Manager, FVMS_PlayerStatusV2::ModelId));
-    return __r;
+    return TEUIModelRef<FVMS_PlayerStatusV2>(EUIInternal::MakeModelWithManager(Manager, FVMS_PlayerStatusV2::ModelId)).Get();
 }
 void GetModelInfo(FEUIViewModelMetaInfo &inout Result)
 {
@@ -1140,7 +1139,6 @@ namespace __GeneratedProperties_FVMS_PlayerStatusV2
 {
 UScriptStruct StaticStruct()
 {
-    UScriptStruct local_2;
-    return local_2;
+    return __GeneratedProperties_FVMS_PlayerStatusV2.Get();
 }
 }

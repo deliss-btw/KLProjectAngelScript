@@ -142,11 +142,9 @@ FVMS_BonfirePage& Get(const UObject ContextObject)
 {
     return FVMS_BonfirePage::GetByManager(EUIInternal::GetContextManager(ContextObject));
 }
-FVMS_BonfirePage GetByManager(const UEUIManagerSubsystem Manager)
+FVMS_BonfirePage& GetByManager(const UEUIManagerSubsystem Manager)
 {
-    FVMS_BonfirePage __r;
-    TEUIModelRef<FVMS_BonfirePage> local_6 = TEUIModelRef<FVMS_BonfirePage>(EUIInternal::MakeModelWithManager(Manager, FVMS_BonfirePage::ModelId));
-    return __r;
+    return TEUIModelRef<FVMS_BonfirePage>(EUIInternal::MakeModelWithManager(Manager, FVMS_BonfirePage::ModelId)).Get();
 }
 void GetModelInfo(FEUIViewModelMetaInfo &inout Result)
 {
@@ -200,7 +198,6 @@ namespace __GeneratedProperties_FVMS_BonfirePage
 {
 UScriptStruct StaticStruct()
 {
-    UScriptStruct local_2;
-    return local_2;
+    return __GeneratedProperties_FVMS_BonfirePage.Get();
 }
 }

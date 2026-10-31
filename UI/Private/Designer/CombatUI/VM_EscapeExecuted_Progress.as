@@ -73,11 +73,9 @@ FVM_EscapeExecuted_Progress& Create(const UObject ContextObject)
 {
     return FVM_EscapeExecuted_Progress::CreateByManager(EUIInternal::GetContextManager(ContextObject));
 }
-FVM_EscapeExecuted_Progress CreateByManager(const UEUIManagerSubsystem Manager)
+FVM_EscapeExecuted_Progress& CreateByManager(const UEUIManagerSubsystem Manager)
 {
-    FVM_EscapeExecuted_Progress __r;
-    TEUIModelRef<FVM_EscapeExecuted_Progress> local_6 = TEUIModelRef<FVM_EscapeExecuted_Progress>(EUIInternal::MakeModelWithManager(Manager, FVM_EscapeExecuted_Progress::ModelId));
-    return __r;
+    return TEUIModelRef<FVM_EscapeExecuted_Progress>(EUIInternal::MakeModelWithManager(Manager, FVM_EscapeExecuted_Progress::ModelId)).Get();
 }
 void GetModelInfo(FEUIViewModelMetaInfo &inout Result)
 {
@@ -120,7 +118,6 @@ namespace __GeneratedProperties_FVM_EscapeExecuted_Progress
 {
 UScriptStruct StaticStruct()
 {
-    UScriptStruct local_2;
-    return local_2;
+    return __GeneratedProperties_FVM_EscapeExecuted_Progress.Get();
 }
 }

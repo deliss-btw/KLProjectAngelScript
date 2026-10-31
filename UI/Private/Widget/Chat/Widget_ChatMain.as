@@ -46,7 +46,7 @@ class UWidget_ChatMain : UEUIActivatableWidget
     {
         if (this.ChatMain.IsValid())
         {
-            OnChatMainOpened();
+            this.ChatMain.Get().OnChatMainOpened();
         }
         if (this.ChatList != nullptr)
         {
@@ -63,12 +63,12 @@ class UWidget_ChatMain : UEUIActivatableWidget
         ::FMS_ChatDataModel::Get(this).GS_RequestOfflineChatMsg();
         if (this.ItemTipsProvider)
         {
-            this.ForItemTipsWidget.SetHoverForWidget();
-            this.HoverWidgetClass.SetHoverWidgetClass();
+            this.ItemTipsProvider.Get().SetHoverForWidget(this.ForItemTipsWidget);
+            this.ItemTipsProvider.Get().SetHoverWidgetClass(this.HoverWidgetClass);
         }
         TEUIModelRef<FVM_CommonHoverProvider> local_8;
         local_8;
-        local_8.SetItemHoverProvider();
+        this.ChatMain.Get().SetItemHoverProvider(local_8);
         return;
     }
     UFUNCTION()
@@ -76,7 +76,7 @@ class UWidget_ChatMain : UEUIActivatableWidget
     {
         if (this.ChatMain.IsValid())
         {
-            TEUIModelRef<FVM_CommonHoverProvider>(nullptr).SetItemHoverProvider();
+            this.ChatMain.Get().SetItemHoverProvider(TEUIModelRef<FVM_CommonHoverProvider>(nullptr));
         }
         return;
     }
@@ -98,13 +98,13 @@ class UWidget_ChatMain : UEUIActivatableWidget
         {
             return;
         }
-        local_4 = GetPendingChatScrollToItemIndex();
-        if (local_4 >= 0 && (local_4 < GetCurrentMessages().Num()))
+        local_4 = this.ChatMain.Get().GetPendingChatScrollToItemIndex();
+        if (local_4 >= 0 && (local_4 < this.ChatMain.Get().GetCurrentMessages().Num()))
         {
             FEUIModelRef local_22;
             local_22;
             this.ChatList.ScrollItemIntoView(FEUIModelContainer(local_22));
-            ClearPendingChatListScroll();
+            this.ChatMain.Get().ClearPendingChatListScroll();
             return;
         }
         this.ChatList.ScrollToBottom();
@@ -268,8 +268,8 @@ class UWidget_ChatMain : UEUIActivatableWidget
     }
     void HandleObservedModelChanges(FEUIReactiveSubscriberIterator &inout It)
     {
-        FVMS_ChatMain& local_6;
         TEUIModelRef<FVMS_ChatMain> local_2 = this.ChatMain.AsRef();
+        FVMS_ChatMain& local_6 = local_2.Get();
         for (; It; )
         {
             FEUIReactiveSubscriberTrackScope local_56 = FEUIReactiveSubscriberTrackScope(It);

@@ -18,7 +18,7 @@ class UWidget_EquipmentCompare : UEUIUserWidget
     UFUNCTION()
     TArray<FEUIModelWeakRef> EquipmentCompare_CompareAttributes() const
     {
-        FVM_EquipmentCompare& local_2;
+        FVM_EquipmentCompare& local_2 = this.EquipmentCompare.Get();
         TArray<FEUIModelWeakRef> local_16;
         if (local_2)
         {

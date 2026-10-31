@@ -75,7 +75,7 @@ struct FVM_Teleporter : FEUIViewModel
         }
         if (!(!(this.GetTeleporterConfig())) && this.GetTeleporterConfig().opArrow().GetTargetDungeonInfoConfig())
         {
-            TDataObjectPtr<FDropItemConfigBase> local_40 = GetTempRewardView();
+            TDataObjectPtr<FDropItemConfigBase> local_40 = this.GetTeleporterConfig().Get().GetTargetDungeonInfoConfig().Get().GetTempRewardView();
             if (local_40)
             {
                 this.SetRewardList(TEUIModelRef<FVM_CommonRewardList>(::FVM_CommonRewardList::Create(this.GetContext().Manager, ::FCommonRewardListBuilder::BuildFromDropConfig(local_40))));
@@ -98,9 +98,9 @@ struct FVM_Teleporter : FEUIViewModel
     }
     FText GetDynamicInfo() const
     {
-        if (GetTargetDungeonInfoConfig())
+        if (this.GetTeleporterConfig().Get().GetTargetDungeonInfoConfig())
         {
-            TDataObjectPtr<FDungeonConfig> local_26 = GetTargetDungeonInfoConfig();
+            TDataObjectPtr<FDungeonConfig> local_26 = this.GetTeleporterConfig().Get().GetTargetDungeonInfoConfig();
             if (local_26)
             {
                 return local_26.opArrow().DungeonDesc;
@@ -328,11 +328,9 @@ FVM_Teleporter& Create(const UObject ContextObject, const TEUIModelRef<FM_Spot> 
 {
     return FVM_Teleporter::CreateByManager(EUIInternal::GetContextManager(ContextObject), Spot, EPresentationSpotUsage(SpotUsage));
 }
-FVM_Teleporter CreateByManager(const UEUIManagerSubsystem Manager, const TEUIModelRef<FM_Spot> &inout Spot, const EPresentationSpotUsage SpotUsage)
+FVM_Teleporter& CreateByManager(const UEUIManagerSubsystem Manager, const TEUIModelRef<FM_Spot> &inout Spot, const EPresentationSpotUsage SpotUsage)
 {
-    FVM_Teleporter __r;
-    TEUIModelRef<FVM_Teleporter> local_6 = TEUIModelRef<FVM_Teleporter>(EUIInternal::MakeModelWithManager_Generic(Manager, FVM_Teleporter::ModelId, 0, Spot, SpotUsage));
-    return __r;
+    return TEUIModelRef<FVM_Teleporter>(EUIInternal::MakeModelWithManager_Generic(Manager, FVM_Teleporter::ModelId, 0, Spot, SpotUsage)).Get();
 }
 void GetModelInfo(FEUIViewModelMetaInfo &inout Result)
 {
@@ -448,8 +446,7 @@ namespace __GeneratedProperties_FVM_Teleporter
 {
 UScriptStruct StaticStruct()
 {
-    UScriptStruct local_2;
-    return local_2;
+    return __GeneratedProperties_FVM_Teleporter.Get();
 }
 }
 namespace FVM_TeleporterConfig
@@ -458,11 +455,9 @@ FVM_TeleporterConfig& Create(const UObject ContextObject, const TDataObjectPtr<F
 {
     return FVM_TeleporterConfig::CreateByManager(EUIInternal::GetContextManager(ContextObject), TeleporterConfig);
 }
-FVM_TeleporterConfig CreateByManager(const UEUIManagerSubsystem Manager, const TDataObjectPtr<FTeleporterConfig> &inout TeleporterConfig)
+FVM_TeleporterConfig& CreateByManager(const UEUIManagerSubsystem Manager, const TDataObjectPtr<FTeleporterConfig> &inout TeleporterConfig)
 {
-    FVM_TeleporterConfig __r;
-    TEUIModelRef<FVM_TeleporterConfig> local_6 = TEUIModelRef<FVM_TeleporterConfig>(EUIInternal::MakeModelWithManager_Generic(Manager, FVM_TeleporterConfig::ModelId, 0, TeleporterConfig));
-    return __r;
+    return TEUIModelRef<FVM_TeleporterConfig>(EUIInternal::MakeModelWithManager_Generic(Manager, FVM_TeleporterConfig::ModelId, 0, TeleporterConfig)).Get();
 }
 void GetModelInfo(FEUIViewModelMetaInfo &inout Result)
 {
@@ -513,7 +508,6 @@ namespace __GeneratedProperties_FVM_TeleporterConfig
 {
 UScriptStruct StaticStruct()
 {
-    UScriptStruct local_2;
-    return local_2;
+    return __GeneratedProperties_FVM_TeleporterConfig.Get();
 }
 }

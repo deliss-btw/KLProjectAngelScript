@@ -195,9 +195,7 @@ struct FVM_CommonActionEntry : FEUIViewModel
     }
     UWidget ResolveSharedHoverAnchorWidget() const
     {
-        TWeakObjectPtr<UWidget> local_2 = this.GetSharedHoverAnchor();
-        UWidget local_4;
-        return local_4;
+        return this.GetSharedHoverAnchor().Get();
     }
     const FText GetNameText() const property
     {
@@ -378,11 +376,9 @@ FVM_CommonActionEntry& Create(const UObject ContextObject)
 {
     return FVM_CommonActionEntry::CreateByManager(EUIInternal::GetContextManager(ContextObject));
 }
-FVM_CommonActionEntry CreateByManager(const UEUIManagerSubsystem Manager)
+FVM_CommonActionEntry& CreateByManager(const UEUIManagerSubsystem Manager)
 {
-    FVM_CommonActionEntry __r;
-    TEUIModelRef<FVM_CommonActionEntry> local_6 = TEUIModelRef<FVM_CommonActionEntry>(EUIInternal::MakeModelWithManager(Manager, FVM_CommonActionEntry::ModelId));
-    return __r;
+    return TEUIModelRef<FVM_CommonActionEntry>(EUIInternal::MakeModelWithManager(Manager, FVM_CommonActionEntry::ModelId)).Get();
 }
 void GetModelInfo(FEUIViewModelMetaInfo &inout Result)
 {
@@ -565,7 +561,6 @@ namespace __GeneratedProperties_FVM_CommonActionEntry
 {
 UScriptStruct StaticStruct()
 {
-    UScriptStruct local_2;
-    return local_2;
+    return __GeneratedProperties_FVM_CommonActionEntry.Get();
 }
 }

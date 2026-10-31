@@ -549,6 +549,7 @@ struct FC_TuneESMBBFloat : FECSComponent
         {
             return true;
         }
+        this.GetModify_DataMap().Remove(ParamName);
         return false;
     }
     bool HasOption(const FName &inout ParamName, const ETuneFloatOptions Option) const

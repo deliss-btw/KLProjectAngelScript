@@ -170,11 +170,9 @@ FVM_MarkIcon& Create(const UObject ContextObject, const TDataObjectPtr<FPresenta
 {
     return FVM_MarkIcon::CreateByManager(EUIInternal::GetContextManager(ContextObject), PresentationConfig, bIsSelfCreate);
 }
-FVM_MarkIcon CreateByManager(const UEUIManagerSubsystem Manager, const TDataObjectPtr<FPresentationConfig> &inout PresentationConfig, const bool bIsSelfCreate)
+FVM_MarkIcon& CreateByManager(const UEUIManagerSubsystem Manager, const TDataObjectPtr<FPresentationConfig> &inout PresentationConfig, const bool bIsSelfCreate)
 {
-    FVM_MarkIcon __r;
-    TEUIModelRef<FVM_MarkIcon> local_6 = TEUIModelRef<FVM_MarkIcon>(EUIInternal::MakeModelWithManager_Generic(Manager, FVM_MarkIcon::ModelId, 0, PresentationConfig, bIsSelfCreate));
-    return __r;
+    return TEUIModelRef<FVM_MarkIcon>(EUIInternal::MakeModelWithManager_Generic(Manager, FVM_MarkIcon::ModelId, 0, PresentationConfig, bIsSelfCreate)).Get();
 }
 void GetModelInfo(FEUIViewModelMetaInfo &inout Result)
 {
@@ -238,7 +236,6 @@ namespace __GeneratedProperties_FVM_MarkIcon
 {
 UScriptStruct StaticStruct()
 {
-    UScriptStruct local_2;
-    return local_2;
+    return __GeneratedProperties_FVM_MarkIcon.Get();
 }
 }

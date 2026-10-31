@@ -197,8 +197,7 @@ class UESMAction_PostProcessAnim : UESMBPBaseSpanTickAction
                             }
                         }
                     }
-                    UMaterialInstanceDynamic local_142;
-                    this.AnimConfig.PostProcessAnim.UpdateAnim(local_142, local_6.AttachLocation, Context.GetEntity(), Time.ActionTime.ToSeconds(), Time.ActionDuration.ToSeconds(), Time.WorldTime);
+                    this.AnimConfig.PostProcessAnim.UpdateAnim(local_30.Get(), local_6.AttachLocation, Context.GetEntity(), Time.ActionTime.ToSeconds(), Time.ActionDuration.ToSeconds(), Time.WorldTime);
                 }
             }
         }
@@ -228,8 +227,7 @@ class UESMAction_PostProcessAnim : UESMBPBaseSpanTickAction
                 bool local_7 = local_36.EsmMaterialsMap.RemoveAndCopyValue(TWeakObjectPtr<UCameraPostProcessAnimConfig>(this.AnimConfig), local_38);
                 if (local_7)
                 {
-                    UMaterialInstanceDynamic local_42;
-                    local_30.RemoveBlendable(local_42);
+                    local_30.RemoveBlendable(local_38.Get());
                 }
             }
         }

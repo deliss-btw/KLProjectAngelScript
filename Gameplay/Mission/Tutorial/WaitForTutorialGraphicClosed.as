@@ -8,6 +8,8 @@ struct FASWaitForTutorialGraphicClosed : FECSAsyncAction
     UPROPERTY()
     FECSAsyncActionDelegate OnClosed;
 
+    default m_ScriptOverrideMeta = Cast<UASStruct>(FASWaitForTutorialGraphicClosed.Get());
+
     FASWaitForTutorialGraphicClosed()
     {
         this.__InitDefaults();

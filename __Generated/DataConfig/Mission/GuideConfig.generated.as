@@ -12,7 +12,7 @@ TDataObjectPtr<FPresentationConfig> __FGuidePresentationConfig_GetPresentationCo
         FGuidePresentationConfig local_68;
         return local_68.GetPresentationConfig();
     }
-    return GetPresentationConfig();
+    return DataObject.Get().GetPresentationConfig();
 }
 UFUNCTION()
 TDataObjectPtr<FPresentationRuleConfig> __FGuidePresentationConfig_GetPresentationRule(const TDataObjectPtr<FGuidePresentationConfig> &inout DataObject)
@@ -26,12 +26,11 @@ TDataObjectPtr<FPresentationRuleConfig> __FGuidePresentationConfig_GetPresentati
         FGuidePresentationConfig local_68;
         return local_68.GetPresentationRule();
     }
-    return GetPresentationRule();
+    return DataObject.Get().GetPresentationRule();
 }
 UFUNCTION()
 FLinearColor __FGuidePresentationConfig_GetGuideColor(const TDataObjectPtr<FGuidePresentationConfig> &inout DataObject)
 {
-    FLinearColor __r;
     if ((DataObject == nullptr))
     {
         if (!(EUIGlobals::GIsDuringPropertyConversion))
@@ -41,12 +40,11 @@ FLinearColor __FGuidePresentationConfig_GetGuideColor(const TDataObjectPtr<FGuid
         FGuidePresentationConfig local_68;
         return local_68.GuideColor;
     }
-    return __r;
+    return DataObject.Get().GuideColor;
 }
 UFUNCTION()
 EGuideRegionStyleType __FGuidePresentationConfig_GetRegionStyleType(const TDataObjectPtr<FGuidePresentationConfig> &inout DataObject)
 {
-    int local_69 = 0;
     if ((DataObject == nullptr))
     {
         if (!(EUIGlobals::GIsDuringPropertyConversion))
@@ -54,10 +52,9 @@ EGuideRegionStyleType __FGuidePresentationConfig_GetRegionStyleType(const TDataO
             FBlueprintDebugFunctions::ThrowScriptException("Get 'RegionStyleType' from a null 'FGuidePresentationConfig' DataObject!");
         }
         FGuidePresentationConfig local_68;
-        local_69 = int(local_68.RegionStyleType);
-        return EGuideRegionStyleType(local_69);
+        return local_68.RegionStyleType;
     }
-    return EGuideRegionStyleType(local_69);
+    return DataObject.Get().RegionStyleType;
 }
 UFUNCTION()
 FGuidePresentationConfig CastToFGuidePresentationConfig(const TDataObjectPtr<FGuidePresentationConfig> &inout DataObject)

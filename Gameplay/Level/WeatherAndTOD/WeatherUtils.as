@@ -44,8 +44,8 @@ FName GetWeatherNameFromRegionEntity(const FECSEntity &inout RegionEntity)
 }
 TDataObjectPtr<FWeatherConfig> GetWeatherConfig(const FName &inout WeatherName)
 {
-    UDataTable local_276;
     FWeatherConfig local_272;
+    UDataTable local_276 = UGameplayConfigsManager::GetWeatherConfigTable().Get();
     if (local_276.FindRow(WeatherName, local_272))
     {
         return TDataObjectPtr<FWeatherConfig>();
@@ -378,7 +378,6 @@ TDataObjectPtr<FWorldAreaConfig> GetWorldAreaConfigFromRegionEntity(const FECSEn
 }
 void BuildWeatherInitConfigFromCommission(FCS_WeatherInitConfig &inout Config)
 {
-    FName local_44;
     FECSWorldPtr local_2 = ECS::GetECSWorld();
     Get local_8;
     const FCS_CommissionDSGlobalInfo& local_10 = local_8.opCall();
@@ -387,56 +386,34 @@ void BuildWeatherInitConfigFromCommission(FCS_WeatherInitConfig &inout Config)
         if (local_10.SpawnAreaConfig.IsSet() && local_10.StartWeatherConfig.IsSet())
         {
             Config.AreaOverrides.FindOrAdd(local_10.SpawnAreaConfig).StartWeatherConfig = local_10.StartWeatherConfig;
-            FString local_42 = "BuildWeatherInitConfig Commission: StartWeather for area:";
-            local_44.GetDataName();
-            FString local_42_2 = ((local_42 + local_44) + " Weather:");
-            local_44 = local_10.StartWeatherConfig.GetDataName();
-            FWeatherUtils::DebugWeatherLog((local_42_2 + local_44));
+            FString local_42 = ((FString("BuildWeatherInitConfig Commission: StartWeather for area:") + local_10.SpawnAreaConfig.Get().GetDataName()) + " Weather:");
+            FWeatherUtils::DebugWeatherLog((local_42 + local_10.StartWeatherConfig.GetDataName()));
         }
         for (auto& local_66 : local_10.WeatherTemplateMap)
         {
-            FWeatherInitOverrideEntry& local_14_2 = Config.AreaOverrides.FindOrAdd(local_66.GetKey());
-            TDataObjectPtr<FWeatherGenerateTemplate> local_90;
-            local_14_2.WeatherTemplate = local_90;
-            FString local_42_3 = "BuildWeatherInitConfig Commission: WeatherTemplate for area:";
-            local_44.GetDataName();
-            FString local_48_2 = (local_42_3 + local_44);
-            local_42_3 = (local_48_2 + " Template:");
-            local_44.GetDataName();
-            FWeatherUtils::DebugWeatherLog((local_42_3 + local_44));
+            Config.AreaOverrides.FindOrAdd(local_66.GetKey()).WeatherTemplate = local_66.GetValue();
+            FString local_48_2 = (FString("BuildWeatherInitConfig Commission: WeatherTemplate for area:") + local_66.GetKey().Get().GetDataName());
+            FString local_42_2 = (local_48_2 + " Template:");
+            FWeatherUtils::DebugWeatherLog((local_42_2 + local_66.GetValue().GetDataName()));
         }
     }
     return;
 }
 void BuildWeatherInitConfigFromOverride(FCS_WeatherInitConfig &inout Config, const TDataObjectPtr<FAreaWeatherTemplateConfig> &inout WeatherAreaTemplate)
 {
-    bool local_21 = false;
-    FName local_54;
     if (!(WeatherAreaTemplate.IsSet()))
     {
         return;
     }
-    for (auto& local_20 : GetWeatherTemplateByRegion())
+    for (auto& local_20 : WeatherAreaTemplate.Get().GetWeatherTemplateByRegion())
     {
-        bool local_1 = !(local_20.GetKey().IsSet());
-        if (local_1)
-        {
-            local_1 = true;
-        }
-        else
-        {
-            local_21 = !local_21;
-            local_1 = local_21;
-        }
-        if (local_1)
+        if (!(local_20.GetKey().IsSet()) || !(local_20.GetValue().WeatherTemplate.IsSet()))
         {
             continue;
         }
-        Config.AreaOverrides.FindOrAdd(local_20.GetKey());
-        FString local_52 = "BuildWeatherInitConfig Override: area:";
-        local_54.GetDataName();
-        local_52 = ((local_52 + local_54) + " Template:");
-        FWeatherUtils::DebugWeatherLog((local_52 + local_54));
+        Config.AreaOverrides.FindOrAdd(local_20.GetKey()).WeatherTemplate = local_20.GetValue().WeatherTemplate;
+        FString local_52 = ((FString("BuildWeatherInitConfig Override: area:") + local_20.GetKey().Get().GetDataName()) + " Template:");
+        FWeatherUtils::DebugWeatherLog((local_52 + local_20.GetValue().WeatherTemplate.GetDataName()));
     }
     return;
 }
@@ -463,21 +440,21 @@ void InitWeatherForRegion(const FECSEntity &inout RegionEntity, const TDataObjec
     }
     if (local_80.IsSet())
     {
-        const FWeatherChanceConfig& local_154;
-        if (local_80.GetWeatherChanceConfigIndex() < 0)
+        int local_147 = local_24.Get().GetWeatherChanceConfigIndex(local_80);
+        if (local_147 < 0)
         {
-            FName local_151;
-            local_151.GetDataName();
-            XError(ELog(44), FString().Append("StartWeatherConfig ").Append(local_80.GetDataName()).Append(" not found in WeatherTemplate: ").Append(local_151).Append(", Region:").Append(RegionEntity).Append(" !"));
+            XError(ELog(44), FString().Append("StartWeatherConfig ").Append(local_80.GetDataName()).Append(" not found in WeatherTemplate: ").Append(local_24.Get().GetDataName()).Append(", Region:").Append(RegionEntity).Append(" !"));
             return;
         }
+        const FWeatherChanceConfig& local_154 = local_24.Get().WeatherChances[local_147];
         FWeatherUtils::CreateNewWeatherForRegion(RegionEntity, local_80, local_24, FMath::RandRange(local_154.MinDuration, local_154.MaxDuration), local_56.Time);
         return;
     }
-    if (FWeatherUtils::GetRandomWeatherIndexForRegion(RegionEntity, local_24, (TDataObjectPtr<FWeatherConfig>(nullptr)), local_56.Time) >= 0)
+    int local_146 = FWeatherUtils::GetRandomWeatherIndexForRegion(RegionEntity, local_24, TDataObjectPtr<FWeatherConfig>(nullptr), local_56.Time);
+    if (local_146 >= 0)
     {
-        const FWeatherChanceConfig& local_154;
-        FWeatherUtils::CreateNewWeatherForRegion(RegionEntity, local_154.WeatherName, local_24, FMath::RandRange(local_154.MinDuration, local_154.MaxDuration), local_56.Time);
+        const FWeatherChanceConfig& local_154_2 = local_24.Get().WeatherChances[local_146];
+        FWeatherUtils::CreateNewWeatherForRegion(RegionEntity, local_154_2.WeatherName, local_24, FMath::RandRange(local_154_2.MinDuration, local_154_2.MaxDuration), local_56.Time);
     }
     return;
 }
@@ -572,9 +549,6 @@ FECSEntity CreateNewWeatherForRegion(const FECSEntity &inout RegionEntity, const
 }
 int GetRandomWeatherIndexForRegion(const FECSEntity &inout RegionEntity, const TDataObjectPtr<FWeatherGenerateTemplate> &inout WeatherTemplate, const TDataObjectPtr<FWeatherConfig> &inout CurrentWeatherConfig, const FFPTime &inout TimeStamp)
 {
-    int local_2 = 0;
-    int local_10 = 0;
-    const FWeatherChanceConfig& local_12;
     if (!(RegionEntity.IsValid()))
     {
         return -1;
@@ -587,8 +561,9 @@ int GetRandomWeatherIndexForRegion(const FECSEntity &inout RegionEntity, const T
     int local_7 = 0;
     bool local_8 = false;
     int local_9 = 0;
-    for (; local_9 < local_10; ++local_9)
+    for (; local_9 < WeatherTemplate.Get().WeatherChances.Num(); ++local_9)
     {
+        const FWeatherChanceConfig& local_12 = WeatherTemplate.Get().WeatherChances[local_9];
         TDataObjectPtr<FWeatherConfig> local_36;
         local_36 = local_12.WeatherName;
         if ((local_36 == CurrentWeatherConfig.opImplConv()))
@@ -606,11 +581,10 @@ int GetRandomWeatherIndexForRegion(const FECSEntity &inout RegionEntity, const T
     {
         return local_8 ? 0 : -1;
     }
-    local_10 = FMath::RandRange(1, local_7);
+    int local_10 = FMath::RandRange(1, local_7);
     for (auto local_100 : local_6)
     {
-        int local_85 = int(local_100);
-        local_10 = local_10 - local_2;
+        local_10 = local_10 - WeatherTemplate.Get().WeatherChances[int(local_100)].Weight;
         if (local_10 <= 0)
         {
             return int(local_100);
@@ -634,10 +608,10 @@ void DestroyWeatherEntity(const FECSEntity &inout WeatherEntity)
 }
 FECSEntity CreateWeatherEntity(const TDataObjectPtr<FWeatherConfig> &inout WeatherConfig, const TDataObjectPtr<FWeatherGenerateTemplate> &inout WeatherTemplate, const FECSEntity &inout SourceEntity)
 {
-    TSubclassOf<AECSPrefab> local_4;
     int local_36 = 0;
     int local_42 = 0;
     WeatherConfig.IsSet();
+    TSubclassOf<AECSPrefab> local_4 = WeatherConfig.Get().Prefab.Get();
     if ((local_4 == nullptr))
     {
         XWarning(ELog(0), (FString("Weather Prefab is null ") + WeatherConfig.ToString()));
@@ -653,9 +627,7 @@ FECSEntity CreateWeatherEntity(const TDataObjectPtr<FWeatherConfig> &inout Weath
     FName local_52;
     if (WeatherTemplate.IsSet())
     {
-        FName local_50;
-        local_50.GetDataName();
-        local_52 = local_50;
+        local_52 = WeatherTemplate.Get().GetDataName();
     }
     else
     {
@@ -769,26 +741,21 @@ void CheckAssignCharacterNeedUpdateWeatherTag(const FECSEntity &inout Entity)
 }
 void AddWeatherBuffToPlayer(const FECSEntity &inout PlayerEntity, const TDataObjectPtr<FWeatherConfig> &inout WeatherConfig, const FFPTime &inout TimeStamp)
 {
-    bool local_1 = false;
-    bool local_2 = false;
-    if (PlayerEntity.IsValid() && WeatherConfig.IsSet() && local_2)
+    if (PlayerEntity.IsValid() && WeatherConfig.IsSet() && WeatherConfig.Get().BuffConfig.IsValid())
     {
-        FASCommonUtils::GetUniqueAvatarPawnEntity(PlayerEntity);
-        local_2 = false;
-        local_1 = false;
-        if (GetBuffMessageHintConfig().IsSet())
+        FBuffUtils::AddBuff(FASCommonUtils::GetUniqueAvatarPawnEntity(PlayerEntity), WeatherConfig.Get().BuffConfig, TimeStamp, ENTITY_NULL, false, 0.0f, 1, false);
+        if (WeatherConfig.Get().GetBuffMessageHintConfig().IsSet())
         {
-            MessageHintUtils::ShowMessageHint(PlayerEntity, GetBuffMessageHintConfig(), TArray<FTextArgument>());
+            MessageHintUtils::ShowMessageHint(PlayerEntity, WeatherConfig.Get().GetBuffMessageHintConfig(), TArray<FTextArgument>());
         }
     }
     return;
 }
 void RemoveWeatherBuffFromPlayer(const FECSEntity &inout PlayerEntity, const TDataObjectPtr<FWeatherConfig> &inout WeatherConfig, const FFPTime &inout TimeStamp)
 {
-    bool local_2 = false;
-    if (PlayerEntity.IsValid() && WeatherConfig.IsSet() && local_2)
+    if (PlayerEntity.IsValid() && WeatherConfig.IsSet() && WeatherConfig.Get().BuffConfig.IsValid())
     {
-        FASCommonUtils::GetUniqueAvatarPawnEntity(PlayerEntity);
+        FBuffUtils::RemoveBuff(FASCommonUtils::GetUniqueAvatarPawnEntity(PlayerEntity), WeatherConfig.Get().BuffConfig, TimeStamp, EBuffEndType(0));
     }
     return;
 }

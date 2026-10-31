@@ -70,10 +70,9 @@ struct FVM_BonfireProvisionPage : FEUIViewModel
     }
     void UpdateCoinsConsume()
     {
-        int local_70 = 0;
-        this.GetDisplayCoinConfig();
+        TDataObjectPtr<FItemConfig> local_24 = this.GetDisplayCoinConfig();
         TArray<FRewardItemEntry> local_52;
-        local_52.Add(FRewardItemEntry(local_70, this.GetCoinsCost()));
+        local_52.Add(FRewardItemEntry(local_24.Get().DataId, this.GetCoinsCost()));
         this.SetCoinsConsume(TEUIModelRef<FVM_CommonConsume>(::FVM_CommonConsume::Create(this.GetContext().Manager, local_52)));
         return;
     }
@@ -82,8 +81,7 @@ struct FVM_BonfireProvisionPage : FEUIViewModel
         this.SetCoinsAmountBar(TEUIModelRef<FVM_CommonItemBar>(::FVM_CommonItemBar::Create(this.GetContext().Manager)));
         TDataObjectPtr<FItemConfig> local_34 = this.GetDisplayCoinConfig();
         this.SetCoinsAmount(::InventoryUtils::GetInventoryItemNumber(FECSEntity(this.GetContext().GetLocalPlayerPawn()), local_34));
-        TEUIModelRef<FVM_CommonItemBar> local_2 = this.GetCoinsAmountBar();
-        local_34.SetupItemConfig();
+        this.GetCoinsAmountBar().Get().SetupItemConfig(local_34);
         return;
     }
     FText GetTitleText() const property
@@ -192,11 +190,9 @@ FVM_BonfireProvisionPage& Create(const UObject ContextObject)
 {
     return FVM_BonfireProvisionPage::CreateByManager(EUIInternal::GetContextManager(ContextObject));
 }
-FVM_BonfireProvisionPage CreateByManager(const UEUIManagerSubsystem Manager)
+FVM_BonfireProvisionPage& CreateByManager(const UEUIManagerSubsystem Manager)
 {
-    FVM_BonfireProvisionPage __r;
-    TEUIModelRef<FVM_BonfireProvisionPage> local_6 = TEUIModelRef<FVM_BonfireProvisionPage>(EUIInternal::MakeModelWithManager(Manager, FVM_BonfireProvisionPage::ModelId));
-    return __r;
+    return TEUIModelRef<FVM_BonfireProvisionPage>(EUIInternal::MakeModelWithManager(Manager, FVM_BonfireProvisionPage::ModelId)).Get();
 }
 void GetModelInfo(FEUIViewModelMetaInfo &inout Result)
 {
@@ -291,7 +287,6 @@ namespace __GeneratedProperties_FVM_BonfireProvisionPage
 {
 UScriptStruct StaticStruct()
 {
-    UScriptStruct local_2;
-    return local_2;
+    return __GeneratedProperties_FVM_BonfireProvisionPage.Get();
 }
 }

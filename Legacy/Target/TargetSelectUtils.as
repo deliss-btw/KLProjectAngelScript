@@ -10,7 +10,7 @@ void AddSelectTargetEntityByViewportRequest(const FECSEntity &inout Entity, cons
     FSelectTargetRuntimeData& local_10 = local_8.GetModify_DataByRequestName().FindOrAdd(RequestName);
     local_10.SetMethod(ESelectTargetMethod(0));
     local_10.SetRequestType(ESelectTargetRequestType(RequestType));
-    local_10.SetConfirmInputContextConfig(GetConfirmInputContextConfig());
+    local_10.SetConfirmInputContextConfig(Params.Get().GetConfirmInputContextConfig());
     local_10.SetViewportSelectTargetParams(Params);
     return;
 }
@@ -22,9 +22,10 @@ void RemoveSelectTargetEntityByViewportRequest(const FECSEntity &inout Entity, c
     {
         if (bClearTarget)
         {
-            if (local_6.GetDataByRequestName().Find(RequestName))
+            TConstRawPtr<FSelectTargetRuntimeData> local_12 = local_6.GetDataByRequestName().Find(RequestName);
+            if (local_12)
             {
-                int local_14 = int(GetRequestType());
+                int local_14 = int(local_12.Get().GetRequestType());
                 if (local_14 <= 1)
                 {
                     if (local_14 != 0)
@@ -63,6 +64,7 @@ void RemoveSelectTargetEntityByViewportRequest(const FECSEntity &inout Entity, c
                 }
             }
         }
+        local_6.GetModify_DataByRequestName().Remove(RequestName);
     }
     return;
 }
@@ -74,9 +76,10 @@ TArray<FECSEntity> GetSelectTargetEntitiesByRequestType(const FECSEntity &inout 
         const FC_SelectTargetResult& local_10 = local_8.opCall();
         if (local_10)
         {
-            if (local_10.GetTargetEntitiesByRequestName().Find(RequestName))
+            TConstRawPtr<FSelectTargetResult> local_12 = local_10.GetTargetEntitiesByRequestName().Find(RequestName);
+            if (local_12)
             {
-                return GetEntities();
+                return local_12.Get().GetEntities();
             }
         }
     }

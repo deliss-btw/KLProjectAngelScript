@@ -79,6 +79,7 @@ struct FC_EcologyResourceSlot : FECSComponent
     {
         if (bForceClaim || (TargetEntity == this.GetClaimEntity(SlotIndex)))
         {
+            this.ClaimedMap.Remove(SlotIndex);
             return true;
         }
         return false;

@@ -107,12 +107,13 @@ struct FVMS_MiniHpBarV2Panel : FEUIViewModelSingleton
     void ResetDelayHideTime(const FECSEntity &inout Entity)
     {
         FMsg_ChangeMiniHpBarActive local_16;
-        bool local_5 = !((this.GetModify_DelayHideEntities().Find(Entity) == nullptr));
-        if (local_5)
+        TRawPtr<FMiniHpBarEntityHideState> local_4 = this.GetModify_DelayHideEntities().Find(Entity);
+        if ((!((local_4 == nullptr))))
         {
-            local_5 = !local_5;
-            if (local_5)
+            local_4.Get().HideTime = -1.0;
+            if (!(local_4.Get().bBarActive))
             {
+                local_4.Get().bBarActive = true;
                 FEUIModelRef local_14 = FEUIModelRef(this);
                 FEUIMessageBus::Publish(EUIMessageBus);
                 local_16.Entity = Entity;
@@ -132,8 +133,10 @@ struct FVMS_MiniHpBarV2Panel : FEUIViewModelSingleton
     }
     void AddOrSetDelayHideTime(const FECSEntity &inout Entity, const float HideTime)
     {
-        if ((!((this.GetModify_DelayHideEntities().Find(Entity) == nullptr))))
+        TRawPtr<FMiniHpBarEntityHideState> local_4 = this.GetModify_DelayHideEntities().Find(Entity);
+        if ((!((local_4 == nullptr))))
         {
+            local_4.Get().HideTime = HideTime;
             return;
         }
         FMiniHpBarEntityHideState local_10;
@@ -144,29 +147,26 @@ struct FVMS_MiniHpBarV2Panel : FEUIViewModelSingleton
     }
     void TickHideHpBar()
     {
+        bool local_9;
         float local_22;
-        bool local_49 = false;
         if (!(::FASCommonUtils::GetLocalPlayerPawnEntity()))
         {
             return;
         }
         Get local_20;
         FVector local_16 = local_20.opCall().GetPosition();
-        float local_26 = ECS::GetUEWorld().GetTimeSeconds();
-        local_22 = local_26;
+        local_22 = ECS::GetUEWorld().GetTimeSeconds();
         float32 local_28 = (this.GetDelayHideMiniHpBarSeconds() + this.GetAnimFadeOutSeconds());
         for (auto& local_44 : this.GetEntities())
         {
-            bool local_9 = !(local_44.IsValid());
-            if (local_9)
+            if (!(local_44.IsValid()))
             {
                 local_9 = true;
             }
             else
             {
                 Has local_48;
-                local_49 = local_48.opCall();
-                local_9 = local_49;
+                local_9 = local_48.opCall();
             }
             if (local_9)
             {
@@ -182,10 +182,11 @@ struct FVMS_MiniHpBarV2Panel : FEUIViewModelSingleton
             {
                 float local_52;
                 local_52 = -1.0;
-                if ((!((this.GetModify_DelayHideEntities().Find(local_44) == nullptr))))
+                TRawPtr<FMiniHpBarEntityHideState> local_56 = this.GetModify_DelayHideEntities().Find(local_44);
+                if ((!((local_56 == nullptr))))
                 {
-                    local_52 = local_26;
-                    local_26 = 0.0;
+                    local_52 = local_56.Get().HideTime;
+                    float local_26 = 0.0;
                     if (local_52 > local_26)
                     {
                         if (local_22 >= local_52)
@@ -198,10 +199,11 @@ struct FVMS_MiniHpBarV2Panel : FEUIViewModelSingleton
                             local_26 = local_52 - local_26;
                             if (local_22 >= local_26)
                             {
+                                bool local_49 = local_56.Get().bBarActive;
                                 if (local_49)
                                 {
                                     FMsg_ChangeMiniHpBarActive local_64;
-                                    local_9 = false;
+                                    local_56.Get().bBarActive = false;
                                     FEUIModelRef local_62 = FEUIModelRef(this);
                                     FEUIMessageBus::Publish(EUIMessageBus);
                                     local_64.Entity = local_44;
@@ -212,12 +214,12 @@ struct FVMS_MiniHpBarV2Panel : FEUIViewModelSingleton
                         }
                     }
                 }
-                local_26 = 0.0;
-                if (local_52 < local_26)
+                float local_26_2 = 0.0;
+                if (local_52 < local_26_2)
                 {
-                    local_26 = local_28;
-                    local_26 = local_22 + local_26;
-                    this.AddOrSetDelayHideTime(local_44, local_26);
+                    local_26_2 = local_28;
+                    local_26_2 = local_22 + local_26_2;
+                    this.AddOrSetDelayHideTime(local_44, local_26_2);
                 }
                 continue;
             }
@@ -226,6 +228,7 @@ struct FVMS_MiniHpBarV2Panel : FEUIViewModelSingleton
         for (auto& local_44 : this.GetPendingDeleteEntities())
         {
             this.RemoveEntity(local_44);
+            this.GetModify_DelayHideEntities().Remove(local_44);
         }
         this.GetModify_PendingDeleteEntities().Reset(0);
         return;
@@ -333,6 +336,8 @@ struct FVMS_MiniHpBarV2Panel : FEUIViewModelSingleton
     }
     void RemoveEntity(const FECSEntity &inout Entity)
     {
+        this.GetModify_Entities().Remove(Entity);
+        this.GetModify_EntitySet().Remove(Entity);
         return;
     }
     void AddEntity(const FECSEntity &inout Entity)
@@ -653,11 +658,9 @@ FVMS_MiniHpBarV2Panel& Get(const UObject ContextObject)
 {
     return FVMS_MiniHpBarV2Panel::GetByManager(EUIInternal::GetContextManager(ContextObject));
 }
-FVMS_MiniHpBarV2Panel GetByManager(const UEUIManagerSubsystem Manager)
+FVMS_MiniHpBarV2Panel& GetByManager(const UEUIManagerSubsystem Manager)
 {
-    FVMS_MiniHpBarV2Panel __r;
-    TEUIModelRef<FVMS_MiniHpBarV2Panel> local_6 = TEUIModelRef<FVMS_MiniHpBarV2Panel>(EUIInternal::MakeModelWithManager(Manager, FVMS_MiniHpBarV2Panel::ModelId));
-    return __r;
+    return TEUIModelRef<FVMS_MiniHpBarV2Panel>(EUIInternal::MakeModelWithManager(Manager, FVMS_MiniHpBarV2Panel::ModelId)).Get();
 }
 void GetModelInfo(FEUIViewModelMetaInfo &inout Result)
 {
@@ -792,7 +795,6 @@ namespace __GeneratedProperties_FVMS_MiniHpBarV2Panel
 {
 UScriptStruct StaticStruct()
 {
-    UScriptStruct local_2;
-    return local_2;
+    return __GeneratedProperties_FVMS_MiniHpBarV2Panel.Get();
 }
 }

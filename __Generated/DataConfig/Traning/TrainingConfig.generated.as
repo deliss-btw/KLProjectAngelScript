@@ -12,7 +12,7 @@ TArray<TDataObjectPtr<FAvatarBuildOverrideConfig>> __FTrainingInfoConfig_GetTrai
         FTrainingInfoConfig local_86;
         return local_86.GetTrainingAvatarConfigs();
     }
-    return GetTrainingAvatarConfigs();
+    return DataObject.Get().GetTrainingAvatarConfigs();
 }
 UFUNCTION()
 TDataObjectPtr<FLevelInfoConfig> __FTrainingInfoConfig_GetLevelInfoConfig(const TDataObjectPtr<FTrainingInfoConfig> &inout DataObject)
@@ -26,12 +26,11 @@ TDataObjectPtr<FLevelInfoConfig> __FTrainingInfoConfig_GetLevelInfoConfig(const 
         FTrainingInfoConfig local_86;
         return local_86.GetLevelInfoConfig();
     }
-    return GetLevelInfoConfig();
+    return DataObject.Get().GetLevelInfoConfig();
 }
 UFUNCTION()
 TSoftClassPtr<AKLLevelScriptActor> __FTrainingInfoConfig_GetLBPClass(const TDataObjectPtr<FTrainingInfoConfig> &inout DataObject)
 {
-    TSoftClassPtr<AKLLevelScriptActor> __r;
     if ((DataObject == nullptr))
     {
         if (!(EUIGlobals::GIsDuringPropertyConversion))
@@ -41,12 +40,11 @@ TSoftClassPtr<AKLLevelScriptActor> __FTrainingInfoConfig_GetLBPClass(const TData
         FTrainingInfoConfig local_86;
         return local_86.LBPClass;
     }
-    return __r;
+    return DataObject.Get().LBPClass;
 }
 UFUNCTION()
 FText __FTrainingInfoConfig_GetTrainingName(const TDataObjectPtr<FTrainingInfoConfig> &inout DataObject)
 {
-    FText __r;
     if ((DataObject == nullptr))
     {
         if (!(EUIGlobals::GIsDuringPropertyConversion))
@@ -56,7 +54,7 @@ FText __FTrainingInfoConfig_GetTrainingName(const TDataObjectPtr<FTrainingInfoCo
         FTrainingInfoConfig local_86;
         return local_86.TrainingName;
     }
-    return __r;
+    return DataObject.Get().TrainingName;
 }
 UFUNCTION()
 TArray<TDataObjectPtr<FServerConditionConfigBase>> __FTrainingInfoConfig_GetUnlockCondition(const TDataObjectPtr<FTrainingInfoConfig> &inout DataObject)
@@ -70,7 +68,7 @@ TArray<TDataObjectPtr<FServerConditionConfigBase>> __FTrainingInfoConfig_GetUnlo
         FTrainingInfoConfig local_86;
         return local_86.GetUnlockCondition();
     }
-    return GetUnlockCondition();
+    return DataObject.Get().GetUnlockCondition();
 }
 UFUNCTION()
 TDataObjectPtr<FRewardConfig> __FTrainingInfoConfig_GetFinishReward(const TDataObjectPtr<FTrainingInfoConfig> &inout DataObject)
@@ -84,7 +82,7 @@ TDataObjectPtr<FRewardConfig> __FTrainingInfoConfig_GetFinishReward(const TDataO
         FTrainingInfoConfig local_86;
         return local_86.GetFinishReward();
     }
-    return GetFinishReward();
+    return DataObject.Get().GetFinishReward();
 }
 UFUNCTION()
 FTrainingInfoConfig CastToFTrainingInfoConfig(const TDataObjectPtr<FTrainingInfoConfig> &inout DataObject)

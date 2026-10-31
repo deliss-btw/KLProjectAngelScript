@@ -125,8 +125,7 @@ struct FVMS_ChatMain : FEUIViewModelSingleton
     {
         if (this.GetChannelPanel().IsValid())
         {
-            TEUIModelRef<FVM_ChatChannelPanel> local_2 = this.GetChannelPanel();
-            TryRebuildChannelTabs();
+            this.GetChannelPanel().Get().TryRebuildChannelTabs();
         }
         return;
     }
@@ -162,8 +161,7 @@ struct FVMS_ChatMain : FEUIViewModelSingleton
     {
         if (this.GetUnReadTips().IsValid())
         {
-            TEUIModelRef<FVM_ChatUnReadTips> local_2 = this.GetUnReadTips();
-            return GetbIsShowUnReadMessageTips();
+            return this.GetUnReadTips().Get().GetbIsShowUnReadMessageTips();
         }
         return false;
     }
@@ -184,7 +182,7 @@ struct FVMS_ChatMain : FEUIViewModelSingleton
         int local_11 = 0;
         for (; local_11 < local_8.Num(); ++local_11)
         {
-            if (local_8[local_11].IsValid() && (GetTabChannelID() == local_6))
+            if (local_8[local_11].IsValid() && (local_8[local_11].Get().GetTabChannelID() == local_6))
             {
                 FEUIModelRef local_30;
                 local_30;
@@ -218,7 +216,7 @@ struct FVMS_ChatMain : FEUIViewModelSingleton
         int local_11 = 0;
         for (; local_11 < local_8.Num(); ++local_11)
         {
-            if (local_8[local_11].IsValid() && (GetTabChannelID() == local_6))
+            if (local_8[local_11].IsValid() && (local_8[local_11].Get().GetTabChannelID() == local_6))
             {
                 FEUIModelRef local_30;
                 local_30;
@@ -233,8 +231,7 @@ struct FVMS_ChatMain : FEUIViewModelSingleton
     }
     void OnChatMainTabSelectedChange()
     {
-        TEUIModelRef<FMS_ChatRuntimeData> local_6 = this.GetChatRuntimeData();
-        XLog(ELog(74), FString().Append("OnChatMainTabSelectedChange: ").Append(int(GetSelectMainTab())));
+        XLog(ELog(74), FString().Append("OnChatMainTabSelectedChange: ").Append(int(this.GetChatRuntimeData().Get().GetSelectMainTab())));
         this.SyncMainTabVisualFromRuntime();
         this.RefreshMainContextStateIndex();
         this.RefreshAggregatedCurrentMessages();
@@ -259,15 +256,12 @@ struct FVMS_ChatMain : FEUIViewModelSingleton
         this.SyncMainTabVisualFromRuntime();
         if (this.GetChannelPanel().IsValid())
         {
-            TEUIModelRef<FVM_ChatChannelPanel> local_2 = this.GetChannelPanel();
-            RefreshChannelTab();
+            this.GetChannelPanel().Get().RefreshChannelTab();
         }
         if (this.GetPrivateChatPanel().IsValid())
         {
-            TEUIModelRef<FVM_ChatPrivateChatPanel> local_6 = this.GetPrivateChatPanel();
-            RebuildPrivatePeerList();
-            TEUIModelRef<FVM_ChatPrivateChatPanel> local_6_2 = this.GetPrivateChatPanel();
-            RefreshPanelMessages();
+            this.GetPrivateChatPanel().Get().RebuildPrivatePeerList();
+            this.GetPrivateChatPanel().Get().RefreshPanelMessages();
         }
         this.RefreshAggregatedCurrentMessages();
         this.RefreshMainContextStateIndex();
@@ -296,8 +290,10 @@ struct FVMS_ChatMain : FEUIViewModelSingleton
             FString local_34 = FString(local_28.GetNickname());
             local_39 = local_28.GetCurAvatarId();
             FSoftBrush local_84;
-            if (::FAvatarPrefabConfig::GetByDataId(local_39).IsSet())
+            TDataObjectPtr<FAvatarPrefabConfig> local_132 = ::FAvatarPrefabConfig::GetByDataId(local_39);
+            if (local_132.IsSet())
             {
+                local_84 = local_132.Get().AvatarIcon;
             }
             FText local_148 = FText::Format(::ChatSystemUtil::ResolveKLTextData(local_6.AddFriendSuccessContentFormatTextData), FText::FromString(local_34));
             FSimpleModelEvent local_170;
@@ -463,16 +459,14 @@ struct FVMS_ChatMain : FEUIViewModelSingleton
         this.TryOpenChatWidget();
         this.GetChatDataModel().opArrow().EnsurePrivatePeerThreadForPlayerEntry(PlayerUid);
         this.GetChatRuntimeData().opArrow().SetSelectedPrivateChatPeerUid(PlayerUid);
-        TEUIModelRef<FMS_ChatRuntimeData> local_6 = this.GetChatRuntimeData();
-        1.SetSelectMainTab();
+        this.GetChatRuntimeData().Get().SetSelectMainTab(EChatMainTab(1));
         this.GetPrivateChatPanel().opArrow().RebuildPrivatePeerList();
         this.GetPrivateChatPanel().opArrow().RefreshPanelMessages();
         this.RefreshAggregatedCurrentMessages();
         this.RefreshMainContextStateIndex();
         if (this.GetChatInputPanel().IsValid())
         {
-            TEUIModelRef<FVM_ChatInputPanel> local_12 = this.GetChatInputPanel();
-            RequestChatInputFocus();
+            this.GetChatInputPanel().Get().RequestChatInputFocus();
         }
         return;
     }
@@ -487,8 +481,7 @@ struct FVMS_ChatMain : FEUIViewModelSingleton
         {
             return;
         }
-        TEUIModelRef<FVM_ChatPrivateChatPanel> local_4 = this.GetPrivateChatPanel();
-        PeerUid.TryConsumeRedDot();
+        this.GetPrivateChatPanel().Get().TryConsumeRedDot(PeerUid);
         return;
     }
     void NavigateOpenAndScrollToHudMessage(const TEUIModelRef<FM_ChatMessage> &inout SourceMessage)
@@ -499,7 +492,7 @@ struct FVMS_ChatMain : FEUIViewModelSingleton
         {
             return;
         }
-        FM_ChatMessage local_4;
+        FM_ChatMessage& local_4 = SourceMessage.Get();
         local_5 = local_4.GetChannelType();
         if (local_5 == 0)
         {
@@ -509,23 +502,16 @@ struct FVMS_ChatMain : FEUIViewModelSingleton
         bool local_1_2 = ::ChatSystemUtil::IsPrivateChatPbChannel(local_5);
         if (local_1_2)
         {
-            TEUIModelRef<FMS_ChatDataModel> local_10 = this.GetChatDataModel();
-            int local_6 = local_4.GetResolvedPrivateChatPeerUidForNavigation();
+            int local_6 = this.GetChatDataModel().Get().GetResolvedPrivateChatPeerUidForNavigation(local_4);
             if (local_6 == 0)
             {
                 return;
             }
-            TEUIModelRef<FMS_ChatDataModel> local_10_2 = this.GetChatDataModel();
-            local_6.EnsurePrivatePeerThreadForPlayerEntry();
-            TEUIModelRef<FMS_ChatRuntimeData> local_12 = this.GetChatRuntimeData();
-            local_6.SetSelectedPrivateChatPeerUid();
-            int local_13 = 1;
-            TEUIModelRef<FMS_ChatRuntimeData> local_12_2 = this.GetChatRuntimeData();
-            local_13.SetSelectMainTab();
-            TEUIModelRef<FVM_ChatPrivateChatPanel> local_16 = this.GetPrivateChatPanel();
-            RebuildPrivatePeerList();
-            TEUIModelRef<FVM_ChatPrivateChatPanel> local_16_2 = this.GetPrivateChatPanel();
-            RefreshPanelMessages();
+            this.GetChatDataModel().Get().EnsurePrivatePeerThreadForPlayerEntry(local_6);
+            this.GetChatRuntimeData().Get().SetSelectedPrivateChatPeerUid(local_6);
+            this.GetChatRuntimeData().Get().SetSelectMainTab(EChatMainTab(1));
+            this.GetPrivateChatPanel().Get().RebuildPrivatePeerList();
+            this.GetPrivateChatPanel().Get().RefreshPanelMessages();
         }
         else
         {
@@ -535,15 +521,12 @@ struct FVMS_ChatMain : FEUIViewModelSingleton
             {
                 return;
             }
-            int local_13_2 = 0;
-            TEUIModelRef<FMS_ChatRuntimeData> local_12_3 = this.GetChatRuntimeData();
-            local_13_2.SetSelectMainTab();
+            this.GetChatRuntimeData().Get().SetSelectMainTab(EChatMainTab(0));
             FEUIModelRef local_26 = FEUIModelRef(this);
             FEUIMessageBus::Publish(EUIMessageBus);
             local_28.ParentType = EChatChannelParentType(0);
             local_28.SelectChannelID = int(local_18);
-            TEUIModelRef<FVM_ChatChannelPanel> local_32 = this.GetChannelPanel();
-            RefreshChannelTab();
+            this.GetChannelPanel().Get().RefreshChannelTab();
         }
         this.SetPendingChatScrollToItemIndex(this.FindPanelRowIndexForSourceMessage(SourceMessage, local_1_2));
         this.RefreshAggregatedCurrentMessages();
@@ -552,28 +535,15 @@ struct FVMS_ChatMain : FEUIViewModelSingleton
     }
     int FindPanelRowIndexForSourceMessage(const TEUIModelRef<FM_ChatMessage> &inout SourceMessage, const bool bPrivatePanel)
     {
-        TEUIModelRef<FM_ChatMessage> local_18;
-        TArray<TEUIModelRef<FVM_ChatMessage>> local_12;
-        if (bPrivatePanel)
-        {
-            TEUIModelRef<FVM_ChatPrivateChatPanel> local_6 = this.GetPrivateChatPanel();
-            local_12 = GetPanelMessages();
-        }
-        else
-        {
-            TEUIModelRef<FVM_ChatChannelPanel> local_8 = this.GetChannelPanel();
-            local_12 = GetPanelMessages();
-        }
+        TArray<TEUIModelRef<FVM_ChatMessage>> local_12 = bPrivatePanel ? this.GetPrivateChatPanel().Get().GetPanelMessages() : this.GetChannelPanel().Get().GetPanelMessages();
         int local_13 = 0;
         for (; local_13 < local_12.Num(); ++local_13)
         {
-            local_18.GetMessage();
-            if (!(local_18.IsValid()))
+            if (!(local_12[local_13].Get().GetMessage().IsValid()))
             {
                 continue;
             }
-            local_18.GetMessage();
-            if ((local_18 == SourceMessage.opImplConv()))
+            if ((local_12[local_13].Get().GetMessage() == SourceMessage.opImplConv()))
             {
                 return local_13;
             }
@@ -717,9 +687,10 @@ struct FVMS_ChatMain : FEUIViewModelSingleton
                 continue;
             }
             bool local_22 = (int(this.MainTabTypes[local_19]) == int(this.GetSelectedMainTab()));
-            if (TEUIModelRef<FVM_SelectableItem>(FEUIModelContainer::GetModel(this.GetMainTabs()[local_19]).opCall()).IsValid())
+            TEUIModelRef<FVM_SelectableItem> local_28 = TEUIModelRef<FVM_SelectableItem>(FEUIModelContainer::GetModel(this.GetMainTabs()[local_19]).opCall());
+            if (local_28.IsValid())
             {
-                local_22.SetbIsSelected();
+                local_28.Get().SetbIsSelected(local_22);
             }
             if (local_22)
             {
@@ -751,8 +722,7 @@ struct FVMS_ChatMain : FEUIViewModelSingleton
     void OpenPlayerBasicInfo(const uint PlayerUid)
     {
         const UChatSettings local_6;
-        TEUIModelRef<FMS_ChatDataModel> local_2 = this.GetChatDataModel();
-        if (PlayerUid == GetPersistedBoundPlayerUid())
+        if (PlayerUid == this.GetChatDataModel().Get().GetPersistedBoundPlayerUid())
         {
             GetGameplaySettings<UChatSettings> local_8;
             local_6 = local_8;
@@ -774,11 +744,11 @@ struct FVMS_ChatMain : FEUIViewModelSingleton
         TEUIModelRef<FM_Player> local_68 = ::FMS_PlayerData::Get(this.GetManager()).UpdateOrCreateByBriefInfo(local_62, EPlayerInfoTrust(1));
         int local_70 = 2;
         int local_69 = local_70;
-        if (::FLevelUtils::GetCurrentLevelInfoConfig(nullptr))
+        TDataObjectPtr<FLevelInfoConfig> local_94 = ::FLevelUtils::GetCurrentLevelInfoConfig(nullptr);
+        if (local_94)
         {
             ELevelType local_119;
-            ELevelType local_120;
-            local_119 = local_120;
+            local_119 = local_94.Get().LevelType;
             if (int(local_119) == 2)
             {
                 int local_70_2 = 2;
@@ -1143,11 +1113,9 @@ FVMS_ChatMain& Get(const UObject ContextObject)
 {
     return FVMS_ChatMain::GetByManager(EUIInternal::GetContextManager(ContextObject));
 }
-FVMS_ChatMain GetByManager(const UEUIManagerSubsystem Manager)
+FVMS_ChatMain& GetByManager(const UEUIManagerSubsystem Manager)
 {
-    FVMS_ChatMain __r;
-    TEUIModelRef<FVMS_ChatMain> local_6 = TEUIModelRef<FVMS_ChatMain>(EUIInternal::MakeModelWithManager(Manager, FVMS_ChatMain::ModelId));
-    return __r;
+    return TEUIModelRef<FVMS_ChatMain>(EUIInternal::MakeModelWithManager(Manager, FVMS_ChatMain::ModelId)).Get();
 }
 void GetModelInfo(FEUIViewModelMetaInfo &inout Result)
 {
@@ -1597,7 +1565,6 @@ namespace __GeneratedProperties_FVMS_ChatMain
 {
 UScriptStruct StaticStruct()
 {
-    UScriptStruct local_2;
-    return local_2;
+    return __GeneratedProperties_FVMS_ChatMain.Get();
 }
 }

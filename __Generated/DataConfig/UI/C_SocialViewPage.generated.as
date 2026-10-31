@@ -3,7 +3,6 @@ namespace __FSocialViewPageButtonConfigFunctions
 UFUNCTION()
 FText __FSocialViewPageButtonConfig_GetName(const TDataObjectPtr<FSocialViewPageButtonConfig> &inout DataObject)
 {
-    FText __r;
     if ((DataObject == nullptr))
     {
         if (!(EUIGlobals::GIsDuringPropertyConversion))
@@ -13,12 +12,11 @@ FText __FSocialViewPageButtonConfig_GetName(const TDataObjectPtr<FSocialViewPage
         FSocialViewPageButtonConfig local_84;
         return local_84.Name;
     }
-    return __r;
+    return DataObject.Get().Name;
 }
 UFUNCTION()
 FSoftBrush __FSocialViewPageButtonConfig_GetIcon(const TDataObjectPtr<FSocialViewPageButtonConfig> &inout DataObject)
 {
-    FSoftBrush __r;
     if ((DataObject == nullptr))
     {
         if (!(EUIGlobals::GIsDuringPropertyConversion))
@@ -28,7 +26,7 @@ FSoftBrush __FSocialViewPageButtonConfig_GetIcon(const TDataObjectPtr<FSocialVie
         FSocialViewPageButtonConfig local_84;
         return local_84.Icon;
     }
-    return __r;
+    return DataObject.Get().Icon;
 }
 UFUNCTION()
 UInputAction __FSocialViewPageButtonConfig_GetInputAction(const TDataObjectPtr<FSocialViewPageButtonConfig> &inout DataObject)
@@ -48,7 +46,6 @@ UInputAction __FSocialViewPageButtonConfig_GetInputAction(const TDataObjectPtr<F
 UFUNCTION()
 ESocialViewPageOperatorType __FSocialViewPageButtonConfig_GetOperatorType(const TDataObjectPtr<FSocialViewPageButtonConfig> &inout DataObject)
 {
-    int local_85 = 0;
     if ((DataObject == nullptr))
     {
         if (!(EUIGlobals::GIsDuringPropertyConversion))
@@ -56,15 +53,13 @@ ESocialViewPageOperatorType __FSocialViewPageButtonConfig_GetOperatorType(const 
             FBlueprintDebugFunctions::ThrowScriptException("Get 'OperatorType' from a null 'FSocialViewPageButtonConfig' DataObject!");
         }
         FSocialViewPageButtonConfig local_84;
-        local_85 = int(local_84.OperatorType);
-        return ESocialViewPageOperatorType(local_85);
+        return local_84.OperatorType;
     }
-    return ESocialViewPageOperatorType(local_85);
+    return DataObject.Get().OperatorType;
 }
 UFUNCTION()
 TSoftClassPtr<UEUIUserWidget> __FSocialViewPageButtonConfig_GetPageWidget(const TDataObjectPtr<FSocialViewPageButtonConfig> &inout DataObject)
 {
-    TSoftClassPtr<UEUIUserWidget> __r;
     if ((DataObject == nullptr))
     {
         if (!(EUIGlobals::GIsDuringPropertyConversion))
@@ -74,7 +69,7 @@ TSoftClassPtr<UEUIUserWidget> __FSocialViewPageButtonConfig_GetPageWidget(const 
         FSocialViewPageButtonConfig local_84;
         return local_84.PageWidget;
     }
-    return __r;
+    return DataObject.Get().PageWidget;
 }
 UFUNCTION()
 FSocialViewPageButtonConfig CastToFSocialViewPageButtonConfig(const TDataObjectPtr<FSocialViewPageButtonConfig> &inout DataObject)
@@ -88,7 +83,6 @@ namespace __FSocialViewPageDataFunctions
 UFUNCTION()
 ESocialViewPageOpenType __FSocialViewPageData_GetEnterPageType(const TDataObjectPtr<FSocialViewPageData> &inout DataObject)
 {
-    int local_29 = 0;
     if ((DataObject == nullptr))
     {
         if (!(EUIGlobals::GIsDuringPropertyConversion))
@@ -96,10 +90,9 @@ ESocialViewPageOpenType __FSocialViewPageData_GetEnterPageType(const TDataObject
             FBlueprintDebugFunctions::ThrowScriptException("Get 'EnterPageType' from a null 'FSocialViewPageData' DataObject!");
         }
         FSocialViewPageData local_28;
-        local_29 = int(local_28.EnterPageType);
-        return ESocialViewPageOpenType(local_29);
+        return local_28.EnterPageType;
     }
-    return ESocialViewPageOpenType(local_29);
+    return DataObject.Get().EnterPageType;
 }
 UFUNCTION()
 TArray<TDataObjectPtr<FSocialViewPageButtonConfig>> __FSocialViewPageData_GetBigButtons(const TDataObjectPtr<FSocialViewPageData> &inout DataObject)
@@ -113,7 +106,7 @@ TArray<TDataObjectPtr<FSocialViewPageButtonConfig>> __FSocialViewPageData_GetBig
         FSocialViewPageData local_28;
         return local_28.GetBigButtons();
     }
-    return GetBigButtons();
+    return DataObject.Get().GetBigButtons();
 }
 UFUNCTION()
 TArray<TDataObjectPtr<FSocialViewPageButtonConfig>> __FSocialViewPageData_GetSmallButtons(const TDataObjectPtr<FSocialViewPageData> &inout DataObject)
@@ -127,7 +120,7 @@ TArray<TDataObjectPtr<FSocialViewPageButtonConfig>> __FSocialViewPageData_GetSma
         FSocialViewPageData local_28;
         return local_28.GetSmallButtons();
     }
-    return GetSmallButtons();
+    return DataObject.Get().GetSmallButtons();
 }
 UFUNCTION()
 TArray<TDataObjectPtr<FSocialViewPageButtonConfig>> __FSocialViewPageData_GetHiddenSmallButtons(const TDataObjectPtr<FSocialViewPageData> &inout DataObject)
@@ -141,7 +134,7 @@ TArray<TDataObjectPtr<FSocialViewPageButtonConfig>> __FSocialViewPageData_GetHid
         FSocialViewPageData local_28;
         return local_28.GetHiddenSmallButtons();
     }
-    return GetHiddenSmallButtons();
+    return DataObject.Get().GetHiddenSmallButtons();
 }
 UFUNCTION()
 FSocialViewPageData CastToFSocialViewPageData(const TDataObjectPtr<FSocialViewPageData> &inout DataObject)

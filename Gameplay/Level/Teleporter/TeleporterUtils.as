@@ -258,7 +258,6 @@ TArray<FECSEntity> GetActiveTeleporterEntities(const FECSEntity &inout InPlayerE
 {
     TArray<FECSEntity> local_4;
     int local_12 = 0;
-    int local_39 = 0;
     FECSWorldPtr local_6 = ECS::GetECSWorld();
     if (!(local_12))
     {
@@ -267,11 +266,11 @@ TArray<FECSEntity> GetActiveTeleporterEntities(const FECSEntity &inout InPlayerE
     for (auto& local_32 : local_12.GetTeleporters())
     {
         FECSEntity local_36 = local_32.GetKey();
-        if (!(local_36.IsValid()) || !(IsSet()))
+        if (!(local_36.IsValid()) || !(local_32.GetValue().IsSet()))
         {
             continue;
         }
-        if (TeleporterUtils::IsTeleporterActive(InPlayerEntity, local_39, local_36))
+        if (TeleporterUtils::IsTeleporterActive(InPlayerEntity, local_32.GetValue().Get().DataId, local_36))
         {
             local_4.Add(local_36);
         }
@@ -301,6 +300,7 @@ bool UnlockTeleporter(const FECSEntity &inout InPlayerEntity, const uint Telepor
         return false;
     }
     local_22.GetModify_UnlockedTeleporterDataIds().AddUnique(TeleporterDataId);
+    local_22.GetModify_TeleporterDataIds().Remove(TeleporterDataId);
     return true;
 }
 bool ActivateTeleporter(const FECSEntity &inout InPlayerEntity, const uint TeleporterDataId, const FECSEntity &inout TeleporterEntity)
@@ -321,6 +321,7 @@ bool ActivateTeleporter(const FECSEntity &inout InPlayerEntity, const uint Telep
     {
         return false;
     }
+    local_22.GetModify_UnlockedTeleporterDataIds().Remove(TeleporterDataId);
     local_22.GetModify_TeleporterDataIds().AddUnique(TeleporterDataId);
     FFPTime local_30 = FFPTime(-1);
     SendEvent local_28;
@@ -428,7 +429,6 @@ bool TeleportPawnToEntity(const FECSEntity &inout PawnEntity, const FECSEntity &
 bool GetTeleporterState(const FECSEntity &inout InPlayerEntity, const uint TeleporterDataId, const FECSEntity &inout TeleporterEntity, ETeleporterState &inout OutTeleporterState)
 {
     int local_16 = 0;
-    int local_17 = 0;
     FECSEntity local_4 = FASCommonUtils::GetUniquePlayerEntity(InPlayerEntity);
     if (!(local_4.IsValid()))
     {
@@ -448,8 +448,7 @@ bool GetTeleporterState(const FECSEntity &inout InPlayerEntity, const uint Telep
     }
     if (local_18)
     {
-        local_17 = 2;
-        OutTeleporterState = ETeleporterState(local_17);
+        OutTeleporterState = ETeleporterState(2);
         return true;
     }
     FECSWorldPtr local_22 = ECS::GetECSWorld();
@@ -461,7 +460,7 @@ bool GetTeleporterState(const FECSEntity &inout InPlayerEntity, const uint Telep
         {
             if (local_28.GetTeleporters()[TeleporterEntity].IsSet())
             {
-                OutTeleporterState = ETeleporterState(local_17);
+                OutTeleporterState = local_28.GetTeleporters()[TeleporterEntity].Get().DefaultState;
                 return true;
             }
         }
@@ -474,7 +473,6 @@ FECSEntity FindNearestActiveTeleporter(const FECSEntity &inout InPlayerEntity, c
     FECSEntity local_4;
     int local_12 = 0;
     int local_42;
-    int local_43 = 0;
     int local_50 = 0;
     FECSWorldPtr local_6 = ECS::GetECSWorld();
     if (!(local_12))
@@ -485,10 +483,11 @@ FECSEntity FindNearestActiveTeleporter(const FECSEntity &inout InPlayerEntity, c
     for (auto& local_36 : local_12.GetTeleporters())
     {
         FECSEntity local_40 = local_36.GetKey();
-        if (!(local_40.IsValid()) || !(IsSet()))
+        if (!(local_40.IsValid()) || !(local_36.GetValue().IsSet()))
         {
             continue;
         }
+        int local_43 = local_36.GetValue().Get().DataId;
         local_42 = local_43;
         if (!(TeleporterUtils::IsTeleporterActive(InPlayerEntity, local_42, local_40)))
         {

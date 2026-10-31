@@ -3,7 +3,6 @@ namespace __FCommissionTierConfigFunctions
 UFUNCTION()
 ECommissionTier __FCommissionTierConfig_GetTier(const TDataObjectPtr<FCommissionTierConfig> &inout DataObject)
 {
-    int local_25 = 0;
     if ((DataObject == nullptr))
     {
         if (!(EUIGlobals::GIsDuringPropertyConversion))
@@ -11,15 +10,13 @@ ECommissionTier __FCommissionTierConfig_GetTier(const TDataObjectPtr<FCommission
             FBlueprintDebugFunctions::ThrowScriptException("Get 'Tier' from a null 'FCommissionTierConfig' DataObject!");
         }
         FCommissionTierConfig local_24;
-        local_25 = int(local_24.Tier);
-        return ECommissionTier(local_25);
+        return local_24.Tier;
     }
-    return ECommissionTier(local_25);
+    return DataObject.Get().Tier;
 }
 UFUNCTION()
 FText __FCommissionTierConfig_GetTierName(const TDataObjectPtr<FCommissionTierConfig> &inout DataObject)
 {
-    FText __r;
     if ((DataObject == nullptr))
     {
         if (!(EUIGlobals::GIsDuringPropertyConversion))
@@ -29,12 +26,11 @@ FText __FCommissionTierConfig_GetTierName(const TDataObjectPtr<FCommissionTierCo
         FCommissionTierConfig local_24;
         return local_24.TierName;
     }
-    return __r;
+    return DataObject.Get().TierName;
 }
 UFUNCTION()
 FLinearColor __FCommissionTierConfig_GetTierColor(const TDataObjectPtr<FCommissionTierConfig> &inout DataObject)
 {
-    FLinearColor __r;
     if ((DataObject == nullptr))
     {
         if (!(EUIGlobals::GIsDuringPropertyConversion))
@@ -44,7 +40,7 @@ FLinearColor __FCommissionTierConfig_GetTierColor(const TDataObjectPtr<FCommissi
         FCommissionTierConfig local_24;
         return local_24.TierColor;
     }
-    return __r;
+    return DataObject.Get().TierColor;
 }
 UFUNCTION()
 FCommissionTierConfig CastToFCommissionTierConfig(const TDataObjectPtr<FCommissionTierConfig> &inout DataObject)

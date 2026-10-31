@@ -113,7 +113,7 @@ struct FVM_CommissionLeaderboard : FEUIViewModel
     }
     void OnLeaderboardUpdated(const FMsg_CommissionLeaderboardUpdated &inout Msg)
     {
-        if (0 != 0)
+        if (Msg.CommissionConfig.Get().DataId != this.GetCommissionConfig().Get().DataId)
         {
             return;
         }
@@ -122,7 +122,7 @@ struct FVM_CommissionLeaderboard : FEUIViewModel
         {
             return;
         }
-        FM_CommissionLeaderboard local_10;
+        FM_CommissionLeaderboard& local_10 = local_6.Get();
         this.SetbIsLoading(local_10.GetbIsLoading());
         this.SetTotalCount(local_10.GetTotalCount());
         this.GetModify_LeaderboardItems().Empty(local_10.GetEntryList().Num());
@@ -133,7 +133,7 @@ struct FVM_CommissionLeaderboard : FEUIViewModel
                 continue;
             }
             FCommissionLeaderboardItemData local_32;
-            local_32.Rank = GetRank();
+            local_32.Rank = local_26.Get().GetRank();
             local_32.EntryModel = local_26;
             local_32.OwnerLeaderboard = TEUIModelWeakRef<FVM_CommissionLeaderboard>(this);
             FEUIModelContainer::MakeCached<FCommissionLeaderboardItemData> local_48;
@@ -163,8 +163,7 @@ struct FVM_CommissionLeaderboard : FEUIViewModel
             return;
         }
         this.SetSelectedPlayer(InPlayerVM);
-        TEUIModelRef<FM_Player> local_6;
-        local_6.GetPlayerModel();
+        TEUIModelRef<FM_Player> local_6 = InPlayerVM.Get().GetPlayerModel();
         TEUIModelRef<FM_Player> local_4;
         if (local_4.IsValid())
         {
@@ -198,15 +197,16 @@ struct FVM_CommissionLeaderboard : FEUIViewModel
     }
     void ApplyDefaultSelection(const TEUIModelRef<FM_CommissionLeaderboard> &inout LeaderboardRef)
     {
-        FM_CommissionLeaderboard& local_4;
         if (!(LeaderboardRef.IsValid()))
         {
             return;
         }
+        FM_CommissionLeaderboard& local_4 = LeaderboardRef.Get();
         int local_5 = 0;
-        if (::FMS_PlayerData::Get(this.GetManager()).GetLocalPlayerData().IsValid())
+        TEUIModelRef<FM_Player> local_10 = ::FMS_PlayerData::Get(this.GetManager()).GetLocalPlayerData();
+        if (local_10.IsValid())
         {
-            local_5 = GetPlayerUid();
+            local_5 = local_10.Get().GetPlayerUid();
         }
         for (auto& local_26 : local_4.GetEntryList())
         {
@@ -214,13 +214,13 @@ struct FVM_CommissionLeaderboard : FEUIViewModel
             {
                 continue;
             }
-            for (auto& local_40 : GetPlayerList())
+            for (auto& local_40 : local_26.Get().GetPlayerList())
             {
                 if (!(local_40.IsValid()))
                 {
                     continue;
                 }
-                if (local_5 != 0 && (GetPlayerUid() == local_5))
+                if (local_5 != 0 && (local_40.Get().GetPlayerUid() == local_5))
                 {
                     continue;
                 }
@@ -433,21 +433,17 @@ FVM_CommissionLeaderboard& Create(const UObject ContextObject)
 {
     return FVM_CommissionLeaderboard::CreateByManager(EUIInternal::GetContextManager(ContextObject));
 }
-FVM_CommissionLeaderboard CreateByManager(const UEUIManagerSubsystem Manager)
+FVM_CommissionLeaderboard& CreateByManager(const UEUIManagerSubsystem Manager)
 {
-    FVM_CommissionLeaderboard __r;
-    TEUIModelRef<FVM_CommissionLeaderboard> local_6 = TEUIModelRef<FVM_CommissionLeaderboard>(EUIInternal::MakeModelWithManager(Manager, FVM_CommissionLeaderboard::ModelId));
-    return __r;
+    return TEUIModelRef<FVM_CommissionLeaderboard>(EUIInternal::MakeModelWithManager(Manager, FVM_CommissionLeaderboard::ModelId)).Get();
 }
 FVM_CommissionLeaderboard& Create(const UObject ContextObject, const TDataObjectPtr<FCommissionConfig> &inout CommissionConfig)
 {
     return FVM_CommissionLeaderboard::CreateByManager(EUIInternal::GetContextManager(ContextObject), CommissionConfig);
 }
-FVM_CommissionLeaderboard CreateByManager(const UEUIManagerSubsystem Manager, const TDataObjectPtr<FCommissionConfig> &inout CommissionConfig)
+FVM_CommissionLeaderboard& CreateByManager(const UEUIManagerSubsystem Manager, const TDataObjectPtr<FCommissionConfig> &inout CommissionConfig)
 {
-    FVM_CommissionLeaderboard __r;
-    TEUIModelRef<FVM_CommissionLeaderboard> local_6 = TEUIModelRef<FVM_CommissionLeaderboard>(EUIInternal::MakeModelWithManager_Generic(Manager, FVM_CommissionLeaderboard::ModelId, 0, CommissionConfig));
-    return __r;
+    return TEUIModelRef<FVM_CommissionLeaderboard>(EUIInternal::MakeModelWithManager_Generic(Manager, FVM_CommissionLeaderboard::ModelId, 0, CommissionConfig)).Get();
 }
 void GetModelInfo(FEUIViewModelMetaInfo &inout Result)
 {
@@ -602,7 +598,6 @@ namespace __GeneratedProperties_FVM_CommissionLeaderboard
 {
 UScriptStruct StaticStruct()
 {
-    UScriptStruct local_2;
-    return local_2;
+    return __GeneratedProperties_FVM_CommissionLeaderboard.Get();
 }
 }

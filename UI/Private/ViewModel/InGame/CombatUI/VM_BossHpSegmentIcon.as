@@ -102,11 +102,9 @@ FVM_BossHpSegmentIcon& Create(const UObject ContextObject, const bool bInitIconA
 {
     return FVM_BossHpSegmentIcon::CreateByManager(EUIInternal::GetContextManager(ContextObject), bInitIconActive);
 }
-FVM_BossHpSegmentIcon CreateByManager(const UEUIManagerSubsystem Manager, const bool bInitIconActive)
+FVM_BossHpSegmentIcon& CreateByManager(const UEUIManagerSubsystem Manager, const bool bInitIconActive)
 {
-    FVM_BossHpSegmentIcon __r;
-    TEUIModelRef<FVM_BossHpSegmentIcon> local_6 = TEUIModelRef<FVM_BossHpSegmentIcon>(EUIInternal::MakeModelWithManager_Generic(Manager, FVM_BossHpSegmentIcon::ModelId, 0, bInitIconActive));
-    return __r;
+    return TEUIModelRef<FVM_BossHpSegmentIcon>(EUIInternal::MakeModelWithManager_Generic(Manager, FVM_BossHpSegmentIcon::ModelId, 0, bInitIconActive)).Get();
 }
 void GetModelInfo(FEUIViewModelMetaInfo &inout Result)
 {
@@ -153,7 +151,6 @@ namespace __GeneratedProperties_FVM_BossHpSegmentIcon
 {
 UScriptStruct StaticStruct()
 {
-    UScriptStruct local_2;
-    return local_2;
+    return __GeneratedProperties_FVM_BossHpSegmentIcon.Get();
 }
 }

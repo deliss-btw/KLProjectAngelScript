@@ -3,13 +3,13 @@ namespace ConditionUtils
 int GetTargetValue(const TDataObjectPtr<FConditionConfigBase> &inout ConditionConfig)
 {
     CastTo local_28;
-    int local_107 = 0;
     if (local_28.opCall())
     {
         CastTo local_82;
-        if (local_82.opCall())
+        TDataObjectPtr<FConditionConfig> local_106 = local_82.opCall();
+        if (local_106)
         {
-            return local_107;
+            return local_106.Get().CmpValue;
         }
         CastTo local_112;
         if (local_112.opCall())
@@ -21,7 +21,7 @@ int GetTargetValue(const TDataObjectPtr<FConditionConfigBase> &inout ConditionCo
     TDataObjectPtr<FLocalConditionConfigBase> local_188 = local_164.opCall();
     if (local_188)
     {
-        local_107 = int(local_188.opArrow().LocalConditionType);
+        int local_107 = int(local_188.opArrow().LocalConditionType);
         if (local_107 <= 2)
         {
             if (local_107 != 1)
@@ -176,11 +176,10 @@ const FLocalConditionInstanceData& FindLocalConditionInstanceData(const int Loca
     {
         FECSWorldPtr local_4 = ECS::GetECSWorld();
         Get local_8;
-        if (local_8.opCall())
+        const FCS_LocalConditionManager& local_10 = local_8.opCall();
+        if (local_10)
         {
-        }
-        else
-        {
+            return local_10.GetInstanceData(LocalConditionInstanceID);
         }
     }
     else
@@ -336,9 +335,9 @@ void UnregisterLocalConditionInstance(const int LocalConditionInstanceID)
     if (local_8)
     {
         ConditionUtils_Internal::AssignUpdateTag(local_8.GetContextEntityByInstanceId(LocalConditionInstanceID));
+        FLocalConditionInstance local_48 = FLocalConditionInstance(LocalConditionInstanceID, local_8.GetInstanceData(LocalConditionInstanceID));
         local_8.RemoveInstance(LocalConditionInstanceID);
         FECSWorldPtr local_50 = ECS::GetECSWorld();
-        FLocalConditionInstance local_48;
         ModifyOrAdd local_54;
         local_54.opCall().RemovedInstances.Add(local_48);
     }
@@ -411,7 +410,7 @@ ECondCmpType GetCmpType(const TDataObjectPtr<FConditionConfigBase> &inout Condit
             return ConditionUtils_Internal::GetCmpType(local_38.opCall());
         }
     }
-    return ECondCmpType(0);
+    return ECondCmpType::None;
 }
 ECondCmpType GetCmpType(const TDataObjectPtr<FLocalConditionConfigBase> &inout ConditionConfig)
 {

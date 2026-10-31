@@ -18,7 +18,7 @@ class UWidget_EquipmentSelectListEntry : UEUIUserListItemWidget
     UFUNCTION()
     FEUIModelRef EquipmentSelectListItem_EquipmentInfo() const
     {
-        FVM_EquipmentSelectListItem& local_2;
+        FVM_EquipmentSelectListItem& local_2 = this.EquipmentSelectListItem.Get();
         FEUIModelRef local_8;
         if (local_2)
         {

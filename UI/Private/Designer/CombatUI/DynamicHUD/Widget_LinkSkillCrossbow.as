@@ -17,20 +17,20 @@ class UWidget_LinkSkillCrossbow : UEUIUserWidget
     UFUNCTION()
     float32 LinkSkillEnergy_EnergyRatio() const
     {
-        FVM_LinkSkillEnergy& local_2;
+        FVM_LinkSkillEnergy& local_2 = this.LinkSkillEnergy.Get();
         return local_2 ? local_2.GetEnergyRatio() : 0.0f;
     }
     UFUNCTION()
     float32 LinkSkillEnergy_HeatRatio() const
     {
-        FVM_LinkSkillEnergy& local_2;
+        FVM_LinkSkillEnergy& local_2 = this.LinkSkillEnergy.Get();
         return local_2 ? local_2.GetHeatRatio() : 0.0f;
     }
     UFUNCTION()
     bool LinkSkillEnergy_bManipulatedPropIsOverHeat() const
     {
-        FVM_LinkSkillEnergy& local_2;
         bool local_5;
+        FVM_LinkSkillEnergy& local_2 = this.LinkSkillEnergy.Get();
         if (local_2)
         {
             local_5 = local_2.GetbManipulatedPropIsOverHeat();
@@ -44,8 +44,8 @@ class UWidget_LinkSkillCrossbow : UEUIUserWidget
     UFUNCTION()
     EProjectileFireResourceType LinkSkillEnergy_ProjectileFireResourceType() const
     {
-        FVM_LinkSkillEnergy& local_2;
         int local_5;
+        FVM_LinkSkillEnergy& local_2 = this.LinkSkillEnergy.Get();
         if (local_2)
         {
             local_5 = int(local_2.GetProjectileFireResourceType());

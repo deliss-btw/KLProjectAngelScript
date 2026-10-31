@@ -137,8 +137,8 @@ class UWidget_LevelInfo : UEUIUserWidget
     }
     void HandleObservedModelChanges(FEUIReactiveSubscriberIterator &inout It)
     {
-        FVMS_CurrentWeather& local_6;
         TEUIModelRef<FVMS_CurrentWeather> local_2 = this.Weather.AsRef();
+        FVMS_CurrentWeather& local_6 = local_2.Get();
         for (; It; )
         {
             FEUIReactiveSubscriberTrackScope local_56 = FEUIReactiveSubscriberTrackScope(It);

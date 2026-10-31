@@ -105,13 +105,12 @@ class UWidget_DamageText : UEUIUserWidget
         {
             return;
         }
-        if (GetbPlayAnim())
+        if (this.DamageTextVM.Get().GetbPlayAnim())
         {
             this.CurTickTime = 0.0f;
             this.StopAnimation(this.Anim_TextOut);
             this.PlayAnimation(this.Anim_TextIn, 0.0f, 1, EUMGSequencePlayMode(0), 1.0f, false);
-            bool local_2 = false;
-            local_2.SetbPlayAnim();
+            this.DamageTextVM.Get().SetbPlayAnim(false);
         }
         return;
     }
@@ -134,7 +133,7 @@ class UWidget_DamageText : UEUIUserWidget
             return;
         }
         this.CurTickTime += InDeltaTime;
-        if (this.CurTickTime >= GetDamageTextAnimDuration())
+        if (this.CurTickTime >= this.DamageTextVM.Get().GetDamageTextAnimDuration())
         {
             this.PlayAnimation(this.Anim_TextOut, 0.0f, 1, EUMGSequencePlayMode(0), 1.0f, false);
             this.CurTickTime = -9999.0f;
@@ -142,7 +141,7 @@ class UWidget_DamageText : UEUIUserWidget
         APlayerController local_14 = this.GetOwningPlayer();
         if (local_14 != nullptr)
         {
-            FVector local_20(GetDamageTextData().HitPosition);
+            FVector local_20(this.DamageTextVM.Get().GetDamageTextData().HitPosition);
             FVector2D local_24;
             if (!(WidgetLayout::ProjectWorldLocationToWidgetPosition(local_14, local_20, local_24, false)))
             {
@@ -150,7 +149,7 @@ class UWidget_DamageText : UEUIUserWidget
                 Cast<UCanvasPanelSlot>(local_28).SetPosition(FVector2D(9999.0, 9999.0));
                 return;
             }
-            FVector2D local_34 = MyGeometry.AbsoluteToLocal(WidgetLayout::GetViewportWidgetGeometry(__GetWorldContext()).LocalToAbsolute((local_24 + GetRandomOffset())));
+            FVector2D local_34 = MyGeometry.AbsoluteToLocal(WidgetLayout::GetViewportWidgetGeometry(__GetWorldContext()).LocalToAbsolute((local_24 + this.DamageTextVM.Get().GetRandomOffset())));
             local_82 = this.SizeBox.Slot;
             Cast<UCanvasPanelSlot>(local_82).SetPosition(local_34);
         }
@@ -249,8 +248,8 @@ class UWidget_DamageText : UEUIUserWidget
     }
     void HandleObservedModelChanges(FEUIReactiveSubscriberIterator &inout It)
     {
-        FVM_DmageText& local_6;
         TEUIModelRef<FVM_DmageText> local_2 = this.DamageTextVM.AsRef();
+        FVM_DmageText& local_6 = local_2.Get();
         for (; It; )
         {
             FEUIReactiveSubscriberTrackScope local_56 = FEUIReactiveSubscriberTrackScope(It);

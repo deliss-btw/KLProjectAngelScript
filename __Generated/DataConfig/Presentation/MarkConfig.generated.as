@@ -3,7 +3,6 @@ namespace __FMarkIconConfigFunctions
 UFUNCTION()
 TSoftClassPtr<UEUIUserWidget> __FMarkIconConfig_GetIconWidget(const TDataObjectPtr<FMarkIconConfig> &inout DataObject)
 {
-    TSoftClassPtr<UEUIUserWidget> __r;
     if ((DataObject == nullptr))
     {
         if (!(EUIGlobals::GIsDuringPropertyConversion))
@@ -13,12 +12,11 @@ TSoftClassPtr<UEUIUserWidget> __FMarkIconConfig_GetIconWidget(const TDataObjectP
         FMarkIconConfig local_88;
         return local_88.IconWidget;
     }
-    return __r;
+    return DataObject.Get().IconWidget;
 }
 UFUNCTION()
 TSoftObjectPtr<UTexture2D> __FMarkIconConfig_GetIconTexture(const TDataObjectPtr<FMarkIconConfig> &inout DataObject)
 {
-    TSoftObjectPtr<UTexture2D> __r;
     if ((DataObject == nullptr))
     {
         if (!(EUIGlobals::GIsDuringPropertyConversion))
@@ -28,12 +26,11 @@ TSoftObjectPtr<UTexture2D> __FMarkIconConfig_GetIconTexture(const TDataObjectPtr
         FMarkIconConfig local_88;
         return local_88.IconTexture;
     }
-    return __r;
+    return DataObject.Get().IconTexture;
 }
 UFUNCTION()
 FSoftBrush __FMarkIconConfig_GetIconBrush(const TDataObjectPtr<FMarkIconConfig> &inout DataObject)
 {
-    FSoftBrush __r;
     if ((DataObject == nullptr))
     {
         if (!(EUIGlobals::GIsDuringPropertyConversion))
@@ -43,12 +40,11 @@ FSoftBrush __FMarkIconConfig_GetIconBrush(const TDataObjectPtr<FMarkIconConfig> 
         FMarkIconConfig local_88;
         return local_88.IconBrush;
     }
-    return __r;
+    return DataObject.Get().IconBrush;
 }
 UFUNCTION()
 FLinearColor __FMarkIconConfig_GetSelfColor(const TDataObjectPtr<FMarkIconConfig> &inout DataObject)
 {
-    FLinearColor __r;
     if ((DataObject == nullptr))
     {
         if (!(EUIGlobals::GIsDuringPropertyConversion))
@@ -58,12 +54,11 @@ FLinearColor __FMarkIconConfig_GetSelfColor(const TDataObjectPtr<FMarkIconConfig
         FMarkIconConfig local_88;
         return local_88.SelfColor;
     }
-    return __r;
+    return DataObject.Get().SelfColor;
 }
 UFUNCTION()
 FLinearColor __FMarkIconConfig_GetTeammateColor(const TDataObjectPtr<FMarkIconConfig> &inout DataObject)
 {
-    FLinearColor __r;
     if ((DataObject == nullptr))
     {
         if (!(EUIGlobals::GIsDuringPropertyConversion))
@@ -73,7 +68,7 @@ FLinearColor __FMarkIconConfig_GetTeammateColor(const TDataObjectPtr<FMarkIconCo
         FMarkIconConfig local_88;
         return local_88.TeammateColor;
     }
-    return __r;
+    return DataObject.Get().TeammateColor;
 }
 UFUNCTION()
 FMarkIconConfig CastToFMarkIconConfig(const TDataObjectPtr<FMarkIconConfig> &inout DataObject)
@@ -120,7 +115,7 @@ TDataObjectPtr<FMarkPoolConfig> __FMarkConfig_GetMarkPool(const TDataObjectPtr<F
         FMarkConfig local_64;
         return local_64.GetMarkPool();
     }
-    return GetMarkPool();
+    return DataObject.Get().GetMarkPool();
 }
 UFUNCTION()
 TDataObjectPtr<FPresentationConfig> __FMarkConfig_GetPresentationConfig(const TDataObjectPtr<FMarkConfig> &inout DataObject)
@@ -134,71 +129,63 @@ TDataObjectPtr<FPresentationConfig> __FMarkConfig_GetPresentationConfig(const TD
         FMarkConfig local_64;
         return local_64.GetPresentationConfig();
     }
-    return GetPresentationConfig();
+    return DataObject.Get().GetPresentationConfig();
 }
 UFUNCTION()
 bool __FMarkConfig_GetbShowDistanceInNavigationBar(const TDataObjectPtr<FMarkConfig> &inout DataObject)
 {
-    bool local_1 = false;
     if ((DataObject == nullptr))
     {
-        local_1 = !(EUIGlobals::GIsDuringPropertyConversion);
-        if (local_1)
+        if (!(EUIGlobals::GIsDuringPropertyConversion))
         {
             FBlueprintDebugFunctions::ThrowScriptException("Get 'bShowDistanceInNavigationBar' from a null 'FMarkConfig' DataObject!");
         }
         FMarkConfig local_64;
         return local_64.bShowDistanceInNavigationBar;
     }
-    return local_1;
+    return DataObject.Get().bShowDistanceInNavigationBar;
 }
 UFUNCTION()
 bool __FMarkConfig_GetbShareWithTeammates(const TDataObjectPtr<FMarkConfig> &inout DataObject)
 {
-    bool local_1 = false;
     if ((DataObject == nullptr))
     {
-        local_1 = !(EUIGlobals::GIsDuringPropertyConversion);
-        if (local_1)
+        if (!(EUIGlobals::GIsDuringPropertyConversion))
         {
             FBlueprintDebugFunctions::ThrowScriptException("Get 'bShareWithTeammates' from a null 'FMarkConfig' DataObject!");
         }
         FMarkConfig local_64;
         return local_64.bShareWithTeammates;
     }
-    return local_1;
+    return DataObject.Get().bShareWithTeammates;
 }
 UFUNCTION()
 bool __FMarkConfig_GetbDisableManuallyRemove(const TDataObjectPtr<FMarkConfig> &inout DataObject)
 {
-    bool local_1 = false;
     if ((DataObject == nullptr))
     {
-        local_1 = !(EUIGlobals::GIsDuringPropertyConversion);
-        if (local_1)
+        if (!(EUIGlobals::GIsDuringPropertyConversion))
         {
             FBlueprintDebugFunctions::ThrowScriptException("Get 'bDisableManuallyRemove' from a null 'FMarkConfig' DataObject!");
         }
         FMarkConfig local_64;
         return local_64.bDisableManuallyRemove;
     }
-    return local_1;
+    return DataObject.Get().bDisableManuallyRemove;
 }
 UFUNCTION()
 bool __FMarkConfig_GetbRemoveWhenNoLongerGuidingTarget(const TDataObjectPtr<FMarkConfig> &inout DataObject)
 {
-    bool local_1 = false;
     if ((DataObject == nullptr))
     {
-        local_1 = !(EUIGlobals::GIsDuringPropertyConversion);
-        if (local_1)
+        if (!(EUIGlobals::GIsDuringPropertyConversion))
         {
             FBlueprintDebugFunctions::ThrowScriptException("Get 'bRemoveWhenNoLongerGuidingTarget' from a null 'FMarkConfig' DataObject!");
         }
         FMarkConfig local_64;
         return local_64.bRemoveWhenNoLongerGuidingTarget;
     }
-    return local_1;
+    return DataObject.Get().bRemoveWhenNoLongerGuidingTarget;
 }
 UFUNCTION()
 float32 __FMarkConfig_GetRemoveWhenCreaterApproachDistance(const TDataObjectPtr<FMarkConfig> &inout DataObject)

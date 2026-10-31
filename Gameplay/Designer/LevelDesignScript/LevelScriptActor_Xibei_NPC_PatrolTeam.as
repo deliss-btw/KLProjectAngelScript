@@ -139,8 +139,6 @@ class ALevelScriptActor_Xibei_NPC_PatrolTeam : AKLLevelScriptBaseActor
     }
     void CreateEntityBatch()
     {
-        TSubclassOf<AECSPrefab> local_44;
-        TSubclassOf<AECSPrefab> local_62;
         if (this.CreateEntityBatchConfig.Num() == 0)
         {
             XWarning(ELog(22), "Xibei_NPC_PatrolTeam: CreateEntityBatchConfig is empty");
@@ -161,8 +159,7 @@ class ALevelScriptActor_Xibei_NPC_PatrolTeam : AKLLevelScriptBaseActor
                     {
                         continue;
                     }
-                    local_44.GetCombatPrefab();
-                    local_8.Add(local_44);
+                    local_8.Add(local_40.Get().GetCombatPrefab());
                 }
             }
             local_25 = 0;
@@ -174,8 +171,7 @@ class ALevelScriptActor_Xibei_NPC_PatrolTeam : AKLLevelScriptBaseActor
                     {
                         continue;
                     }
-                    local_62.GetCombatPrefab();
-                    local_8.Add(local_62);
+                    local_8.Add(local_58.Get().GetCombatPrefab());
                 }
             }
         }
@@ -192,9 +188,7 @@ class ALevelScriptActor_Xibei_NPC_PatrolTeam : AKLLevelScriptBaseActor
             this.SelectedCartMountConfig = this.CartMountList[FMath::RandRange(0, (this.CartMountList.Num() - 1))];
             if (this.SelectedCartMountConfig.IsSet())
             {
-                TSubclassOf<AECSPrefab> local_116;
-                local_116.GetCombatPrefab();
-                local_8.Add(local_116);
+                local_8.Add(this.SelectedCartMountConfig.Get().GetCombatPrefab());
             }
         }
         if (local_8.Num() == 0)

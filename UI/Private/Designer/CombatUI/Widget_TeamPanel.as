@@ -40,8 +40,8 @@ class UWidget_TeamPanel : UEUIUserWidget
     UFUNCTION()
     void Tick_Implementation(const FGeometry &inout MyGeometry, const float32 InDeltaTime)
     {
+        FVMS_TeamPanel& local_2 = this.TeamPanel.Get();
         FECSEntity local_10 = ::FASCommonUtils::GetLocalPlayerPawnEntity();
-        FVMS_TeamPanel local_2;
         bool local_12 = local_2.GetTeamInfoList().IsEmpty();
         if (local_12)
         {
@@ -126,20 +126,20 @@ class UWidget_TeamPanel : UEUIUserWidget
     UFUNCTION()
     float32 TeamPanel_TeamLinkEnergy() const
     {
-        FVMS_TeamPanel& local_2;
+        FVMS_TeamPanel& local_2 = this.TeamPanel.Get();
         return local_2 ? local_2.GetTeamLinkEnergy() : 0.0f;
     }
     UFUNCTION()
     float32 TeamPanel_TeamLinkEnergyRatio() const
     {
-        FVMS_TeamPanel& local_2;
+        FVMS_TeamPanel& local_2 = this.TeamPanel.Get();
         return local_2 ? local_2.GetTeamLinkEnergyRatio() : 0.0f;
     }
     UFUNCTION()
     bool TeamPanel_bCanLeaveTeam() const
     {
-        FVMS_TeamPanel& local_2;
         bool local_5;
+        FVMS_TeamPanel& local_2 = this.TeamPanel.Get();
         if (local_2)
         {
             local_5 = local_2.GetbCanLeaveTeam();
@@ -153,7 +153,7 @@ class UWidget_TeamPanel : UEUIUserWidget
     UFUNCTION()
     TArray<FEUIModelWeakRef> TeamPanel_TeamInfoList() const
     {
-        FVMS_TeamPanel& local_2;
+        FVMS_TeamPanel& local_2 = this.TeamPanel.Get();
         TArray<FEUIModelWeakRef> local_16;
         if (local_2)
         {
@@ -177,14 +177,14 @@ class UWidget_TeamPanel : UEUIUserWidget
     UFUNCTION()
     FEUIModelRef LinkSkillInfo_VM_LinkSkillButton() const
     {
-        FVMS_LinkSkillInfo& local_2;
+        FVMS_LinkSkillInfo& local_2 = this.LinkSkillInfo.Get();
         FEUIModelRef local_8 = local_2 ? local_2.GetVM_LinkSkillButton() : FEUIModelRef();
         return local_8;
     }
     void HandleObservedModelChanges(FEUIReactiveSubscriberIterator &inout It)
     {
-        FVMS_TeamPanel& local_6;
         TEUIModelRef<FVMS_TeamPanel> local_2 = this.TeamPanel.AsRef();
+        FVMS_TeamPanel& local_6 = local_2.Get();
         for (; It; )
         {
             FEUIReactiveSubscriberTrackScope local_56 = FEUIReactiveSubscriberTrackScope(It);

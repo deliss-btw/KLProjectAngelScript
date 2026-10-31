@@ -30,8 +30,8 @@ class UWidget_GuideTargetIcon : UEUIUserWidget
     }
     void HandleObservedModelChanges(FEUIReactiveSubscriberIterator &inout It)
     {
-        FVM_GuideTargetIcon& local_6;
         TEUIModelRef<FVM_GuideTargetIcon> local_2 = this.Icon.AsRef();
+        FVM_GuideTargetIcon& local_6 = local_2.Get();
         for (; It; )
         {
             FEUIReactiveSubscriberTrackScope local_56 = FEUIReactiveSubscriberTrackScope(It);
@@ -126,7 +126,7 @@ class UWidget_GuideTargetMinimapIcon : UEUIUserWidget
     UFUNCTION()
     FEUIModelRef GuideTarget_Icon() const
     {
-        FVM_GuideTargetMinimapIcon& local_2;
+        FVM_GuideTargetMinimapIcon& local_2 = this.GuideTarget.Get();
         FEUIModelRef local_8;
         if (local_2)
         {

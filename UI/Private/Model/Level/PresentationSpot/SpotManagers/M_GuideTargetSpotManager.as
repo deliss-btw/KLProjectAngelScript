@@ -76,6 +76,7 @@ struct FMS_GuideTargetSpotManager : FEUIModelSingleton
                 TEUIModelRef<FM_Spot> local_4_9 = this.GetGuideTargetSpot();
                 ::SetPresentationConfig(local_4_9.opArrow(), local_18.PositionGuideTargetConfig, local_6);
                 TEUIModelRef<FM_Spot> local_4_10 = this.GetGuideTargetSpot();
+                ::PresentationDataUtils::SetupSpotPresentationRuleConfigs(local_4_10.Get(), local_18.PositionGuideTargetRuleConfig, local_6);
             }
             TEUIModelRef<FM_Spot> local_4_11 = this.GetGuideTargetSpot();
             local_4_11.opArrow().GetModify_Transform().SetPosition(GuidingPathPoints.GetTargetLocation());
@@ -145,11 +146,9 @@ FMS_GuideTargetSpotManager& Get(const UObject ContextObject)
 {
     return FMS_GuideTargetSpotManager::GetByManager(EUIInternal::GetContextManager(ContextObject));
 }
-FMS_GuideTargetSpotManager GetByManager(const UEUIManagerSubsystem Manager)
+FMS_GuideTargetSpotManager& GetByManager(const UEUIManagerSubsystem Manager)
 {
-    FMS_GuideTargetSpotManager __r;
-    TEUIModelRef<FMS_GuideTargetSpotManager> local_6 = TEUIModelRef<FMS_GuideTargetSpotManager>(EUIInternal::MakeModelWithManager(Manager, FMS_GuideTargetSpotManager::ModelId));
-    return __r;
+    return TEUIModelRef<FMS_GuideTargetSpotManager>(EUIInternal::MakeModelWithManager(Manager, FMS_GuideTargetSpotManager::ModelId)).Get();
 }
 void GetModelInfo(FEUIModelOnlyMetaInfo &inout Result)
 {

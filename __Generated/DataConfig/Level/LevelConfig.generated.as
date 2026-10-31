@@ -3,7 +3,6 @@ namespace __FLevelInfoConfigFunctions
 UFUNCTION()
 ELevelType __FLevelInfoConfig_GetLevelType(const TDataObjectPtr<FLevelInfoConfig> &inout DataObject)
 {
-    int local_219 = 0;
     if ((DataObject == nullptr))
     {
         if (!(EUIGlobals::GIsDuringPropertyConversion))
@@ -11,15 +10,13 @@ ELevelType __FLevelInfoConfig_GetLevelType(const TDataObjectPtr<FLevelInfoConfig
             FBlueprintDebugFunctions::ThrowScriptException("Get 'LevelType' from a null 'FLevelInfoConfig' DataObject!");
         }
         FLevelInfoConfig local_218;
-        local_219 = int(local_218.LevelType);
-        return ELevelType(local_219);
+        return local_218.LevelType;
     }
-    return ELevelType(local_219);
+    return DataObject.Get().LevelType;
 }
 UFUNCTION()
 FString __FLevelInfoConfig_GetBaseLevelName(const TDataObjectPtr<FLevelInfoConfig> &inout DataObject)
 {
-    FString __r;
     if ((DataObject == nullptr))
     {
         if (!(EUIGlobals::GIsDuringPropertyConversion))
@@ -29,12 +26,11 @@ FString __FLevelInfoConfig_GetBaseLevelName(const TDataObjectPtr<FLevelInfoConfi
         FLevelInfoConfig local_218;
         return local_218.BaseLevelName;
     }
-    return __r;
+    return DataObject.Get().BaseLevelName;
 }
 UFUNCTION()
 FText __FLevelInfoConfig_GetLevelDisplayName(const TDataObjectPtr<FLevelInfoConfig> &inout DataObject)
 {
-    FText __r;
     if ((DataObject == nullptr))
     {
         if (!(EUIGlobals::GIsDuringPropertyConversion))
@@ -44,7 +40,7 @@ FText __FLevelInfoConfig_GetLevelDisplayName(const TDataObjectPtr<FLevelInfoConf
         FLevelInfoConfig local_218;
         return local_218.LevelDisplayName;
     }
-    return __r;
+    return DataObject.Get().LevelDisplayName;
 }
 UFUNCTION()
 TDataObjectPtr<FMapConfig> __FLevelInfoConfig_GetMapConfig(const TDataObjectPtr<FLevelInfoConfig> &inout DataObject)
@@ -58,12 +54,11 @@ TDataObjectPtr<FMapConfig> __FLevelInfoConfig_GetMapConfig(const TDataObjectPtr<
         FLevelInfoConfig local_218;
         return local_218.GetMapConfig();
     }
-    return GetMapConfig();
+    return DataObject.Get().GetMapConfig();
 }
 UFUNCTION()
 TSoftClassPtr<UAS_GameModeSettings> __FLevelInfoConfig_GetGameSettings(const TDataObjectPtr<FLevelInfoConfig> &inout DataObject)
 {
-    TSoftClassPtr<UAS_GameModeSettings> __r;
     if ((DataObject == nullptr))
     {
         if (!(EUIGlobals::GIsDuringPropertyConversion))
@@ -73,12 +68,11 @@ TSoftClassPtr<UAS_GameModeSettings> __FLevelInfoConfig_GetGameSettings(const TDa
         FLevelInfoConfig local_218;
         return local_218.GameSettings;
     }
-    return __r;
+    return DataObject.Get().GameSettings;
 }
 UFUNCTION()
 TSet<EKLDataLayerFilterTags> __FLevelInfoConfig_GetLoadFilterTags(const TDataObjectPtr<FLevelInfoConfig> &inout DataObject)
 {
-    TSet<EKLDataLayerFilterTags> __r;
     if ((DataObject == nullptr))
     {
         if (!(EUIGlobals::GIsDuringPropertyConversion))
@@ -88,12 +82,11 @@ TSet<EKLDataLayerFilterTags> __FLevelInfoConfig_GetLoadFilterTags(const TDataObj
         FLevelInfoConfig local_218;
         return local_218.LoadFilterTags;
     }
-    return __r;
+    return DataObject.Get().LoadFilterTags;
 }
 UFUNCTION()
 TSet<TSoftClassPtr<AKLLevelScriptActor>> __FLevelInfoConfig_GetExtraLoadDatalayerClasses(const TDataObjectPtr<FLevelInfoConfig> &inout DataObject)
 {
-    TSet<TSoftClassPtr<AKLLevelScriptActor>> __r;
     if ((DataObject == nullptr))
     {
         if (!(EUIGlobals::GIsDuringPropertyConversion))
@@ -103,12 +96,11 @@ TSet<TSoftClassPtr<AKLLevelScriptActor>> __FLevelInfoConfig_GetExtraLoadDatalaye
         FLevelInfoConfig local_218;
         return local_218.ExtraLoadDatalayerClasses;
     }
-    return __r;
+    return DataObject.Get().ExtraLoadDatalayerClasses;
 }
 UFUNCTION()
 FKLGameplayTagQuery __FLevelInfoConfig_GetLoadTagQuery(const TDataObjectPtr<FLevelInfoConfig> &inout DataObject)
 {
-    FKLGameplayTagQuery __r;
     if ((DataObject == nullptr))
     {
         if (!(EUIGlobals::GIsDuringPropertyConversion))
@@ -118,12 +110,11 @@ FKLGameplayTagQuery __FLevelInfoConfig_GetLoadTagQuery(const TDataObjectPtr<FLev
         FLevelInfoConfig local_218;
         return local_218.LoadTagQuery;
     }
-    return __r;
+    return DataObject.Get().LoadTagQuery;
 }
 UFUNCTION()
 ESpawnPointSelectionRule __FLevelInfoConfig_GetSpawnPointRule(const TDataObjectPtr<FLevelInfoConfig> &inout DataObject)
 {
-    int local_219 = 0;
     if ((DataObject == nullptr))
     {
         if (!(EUIGlobals::GIsDuringPropertyConversion))
@@ -131,10 +122,9 @@ ESpawnPointSelectionRule __FLevelInfoConfig_GetSpawnPointRule(const TDataObjectP
             FBlueprintDebugFunctions::ThrowScriptException("Get 'SpawnPointRule' from a null 'FLevelInfoConfig' DataObject!");
         }
         FLevelInfoConfig local_218;
-        local_219 = int(local_218.SpawnPointRule);
-        return ESpawnPointSelectionRule(local_219);
+        return local_218.SpawnPointRule;
     }
-    return ESpawnPointSelectionRule(local_219);
+    return DataObject.Get().SpawnPointRule;
 }
 UFUNCTION()
 TDataObjectPtr<FReviveData> __FLevelInfoConfig_GetReviveRule(const TDataObjectPtr<FLevelInfoConfig> &inout DataObject)
@@ -148,7 +138,7 @@ TDataObjectPtr<FReviveData> __FLevelInfoConfig_GetReviveRule(const TDataObjectPt
         FLevelInfoConfig local_218;
         return local_218.GetReviveRule();
     }
-    return GetReviveRule();
+    return DataObject.Get().GetReviveRule();
 }
 UFUNCTION()
 TDataObjectPtr<FGameRuleConfig> __FLevelInfoConfig_GetGameRuleConfig(const TDataObjectPtr<FLevelInfoConfig> &inout DataObject)
@@ -162,7 +152,7 @@ TDataObjectPtr<FGameRuleConfig> __FLevelInfoConfig_GetGameRuleConfig(const TData
         FLevelInfoConfig local_218;
         return local_218.GetGameRuleConfig();
     }
-    return GetGameRuleConfig();
+    return DataObject.Get().GetGameRuleConfig();
 }
 UFUNCTION()
 TDataObjectPtr<FMinimapDisplayConfig> __FLevelInfoConfig_GetMinimapDisplayConfigOverride(const TDataObjectPtr<FLevelInfoConfig> &inout DataObject)
@@ -176,60 +166,53 @@ TDataObjectPtr<FMinimapDisplayConfig> __FLevelInfoConfig_GetMinimapDisplayConfig
         FLevelInfoConfig local_218;
         return local_218.GetMinimapDisplayConfigOverride();
     }
-    return GetMinimapDisplayConfigOverride();
+    return DataObject.Get().GetMinimapDisplayConfigOverride();
 }
 UFUNCTION()
 bool __FLevelInfoConfig_GetbShowAllTeleporters(const TDataObjectPtr<FLevelInfoConfig> &inout DataObject)
 {
-    bool local_1 = false;
     if ((DataObject == nullptr))
     {
-        local_1 = !(EUIGlobals::GIsDuringPropertyConversion);
-        if (local_1)
+        if (!(EUIGlobals::GIsDuringPropertyConversion))
         {
             FBlueprintDebugFunctions::ThrowScriptException("Get 'bShowAllTeleporters' from a null 'FLevelInfoConfig' DataObject!");
         }
         FLevelInfoConfig local_218;
         return local_218.bShowAllTeleporters;
     }
-    return local_1;
+    return DataObject.Get().bShowAllTeleporters;
 }
 UFUNCTION()
 bool __FLevelInfoConfig_GetbIsDevLevel(const TDataObjectPtr<FLevelInfoConfig> &inout DataObject)
 {
-    bool local_1 = false;
     if ((DataObject == nullptr))
     {
-        local_1 = !(EUIGlobals::GIsDuringPropertyConversion);
-        if (local_1)
+        if (!(EUIGlobals::GIsDuringPropertyConversion))
         {
             FBlueprintDebugFunctions::ThrowScriptException("Get 'bIsDevLevel' from a null 'FLevelInfoConfig' DataObject!");
         }
         FLevelInfoConfig local_218;
         return local_218.bIsDevLevel;
     }
-    return local_1;
+    return DataObject.Get().bIsDevLevel;
 }
 UFUNCTION()
 bool __FLevelInfoConfig_GetbIsCommonLevel(const TDataObjectPtr<FLevelInfoConfig> &inout DataObject)
 {
-    bool local_1 = false;
     if ((DataObject == nullptr))
     {
-        local_1 = !(EUIGlobals::GIsDuringPropertyConversion);
-        if (local_1)
+        if (!(EUIGlobals::GIsDuringPropertyConversion))
         {
             FBlueprintDebugFunctions::ThrowScriptException("Get 'bIsCommonLevel' from a null 'FLevelInfoConfig' DataObject!");
         }
         FLevelInfoConfig local_218;
         return local_218.bIsCommonLevel;
     }
-    return local_1;
+    return DataObject.Get().bIsCommonLevel;
 }
 UFUNCTION()
 EInitWeatherPolicy __FLevelInfoConfig_GetInitWeatherPolicy(const TDataObjectPtr<FLevelInfoConfig> &inout DataObject)
 {
-    int local_219 = 0;
     if ((DataObject == nullptr))
     {
         if (!(EUIGlobals::GIsDuringPropertyConversion))
@@ -237,10 +220,9 @@ EInitWeatherPolicy __FLevelInfoConfig_GetInitWeatherPolicy(const TDataObjectPtr<
             FBlueprintDebugFunctions::ThrowScriptException("Get 'InitWeatherPolicy' from a null 'FLevelInfoConfig' DataObject!");
         }
         FLevelInfoConfig local_218;
-        local_219 = int(local_218.InitWeatherPolicy);
-        return EInitWeatherPolicy(local_219);
+        return local_218.InitWeatherPolicy;
     }
-    return EInitWeatherPolicy(local_219);
+    return DataObject.Get().InitWeatherPolicy;
 }
 UFUNCTION()
 TDataObjectPtr<FAreaWeatherTemplateConfig> __FLevelInfoConfig_GetWeatherAreaTemplateOverride(const TDataObjectPtr<FLevelInfoConfig> &inout DataObject)
@@ -254,7 +236,7 @@ TDataObjectPtr<FAreaWeatherTemplateConfig> __FLevelInfoConfig_GetWeatherAreaTemp
         FLevelInfoConfig local_218;
         return local_218.GetWeatherAreaTemplateOverride();
     }
-    return GetWeatherAreaTemplateOverride();
+    return DataObject.Get().GetWeatherAreaTemplateOverride();
 }
 UFUNCTION()
 FLevelInfoConfig CastToFLevelInfoConfig(const TDataObjectPtr<FLevelInfoConfig> &inout DataObject)
@@ -277,7 +259,7 @@ TDataObjectPtr<FLevelInfoConfig> __FLevelTypeConfig_GetLevelInfoConfig(const TDa
         FLevelTypeConfig local_40;
         return local_40.GetLevelInfoConfig();
     }
-    return GetLevelInfoConfig();
+    return DataObject.Get().GetLevelInfoConfig();
 }
 UFUNCTION()
 FLevelTypeConfig CastToFLevelTypeConfig(const TDataObjectPtr<FLevelTypeConfig> &inout DataObject)

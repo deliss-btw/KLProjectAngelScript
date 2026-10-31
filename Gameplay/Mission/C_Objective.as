@@ -66,12 +66,11 @@ struct FObjectiveConditionInfo
     }
     bool IsGSCondition() const
     {
-        int local_2 = 0;
         if (!(this.ConditionConfig.IsSet()))
         {
             return false;
         }
-        return (local_2 == 1);
+        return (int(this.ConditionConfig.Get().ConfigType) == 1);
     }
     bool IsReached() const
     {

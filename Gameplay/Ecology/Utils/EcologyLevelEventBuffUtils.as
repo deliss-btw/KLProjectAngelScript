@@ -39,7 +39,6 @@ AKLLevelScriptAreaEventBase GetContainingActiveLevelEventActor(const FECSEntity 
     AKLLevelScriptAreaEventBase local_10;
     AKLLevelScriptAreaEventBase local_12;
     AKLLevelScriptAreaEventBase local_40;
-    AECSRegionVolume local_46;
     if (!(local_6))
     {
         return nullptr;
@@ -53,6 +52,7 @@ AKLLevelScriptAreaEventBase GetContainingActiveLevelEventActor(const FECSEntity 
         {
             continue;
         }
+        AECSRegionVolume local_46 = local_40.EventArea.Get();
         if (local_46 == nullptr || !(local_46.QuickEncompassesPoint(local_6.GetPosition())))
         {
             continue;
@@ -246,9 +246,10 @@ bool TryGetAttachConditionType(const TDataObjectPtr<FLevelEventInfoConfigBase> &
         return false;
     }
     CastTo local_6;
-    if (local_6.opCall())
+    TDataObjectPtr<FLevelRandomEventInfoConfig> local_30 = local_6.opCall();
+    if (local_30)
     {
-        if (0 == 1)
+        if (int(local_30.Get().LevelRandomEventType) == 1)
         {
             local_58 = 1;
         }
@@ -282,33 +283,21 @@ bool IsMappingUsableForCondition(const FBuffAttachLevelEventMapping &inout Mappi
 }
 bool DoesMappingMatchLevelEvent(const FBuffAttachLevelEventMapping &inout Mapping, const TDataObjectPtr<FLevelEventInfoConfigBase> &inout EventInfo, const EBuffAttachConditionType ConditionType)
 {
-    int local_5 = 0;
     if (!(FEcologyLevelEventBuffUtils::IsMappingUsableForCondition(Mapping, EBuffAttachConditionType(ConditionType))) || !(EventInfo))
     {
         return false;
     }
-    bool local_1 = !(Mapping.bUseSpecificEvent);
-    if (local_1)
+    if (!(Mapping.bUseSpecificEvent))
     {
         return true;
     }
     if (int(ConditionType) == 0)
     {
-        if (!(Mapping.NormalRandomEventInfo))
-        {
-            local_1 = false;
-        }
-        else
-        {
-            int local_4 = local_5;
-            local_1 = (local_4 == 0);
-        }
-        local_1 = local_1 && (Mapping.NormalRandomEventInfo.GetDataName() == EventInfo.GetDataName());
-        return local_1;
+        return Mapping.NormalRandomEventInfo && (int(Mapping.NormalRandomEventInfo.Get().LevelRandomEventType) == 0) && (Mapping.NormalRandomEventInfo.GetDataName() == EventInfo.GetDataName());
     }
     if (int(ConditionType) == 1)
     {
-        return Mapping.HardRandomEventInfo && (local_5 == 1) && (Mapping.HardRandomEventInfo.GetDataName() == EventInfo.GetDataName());
+        return Mapping.HardRandomEventInfo && (int(Mapping.HardRandomEventInfo.Get().LevelRandomEventType) == 1) && (Mapping.HardRandomEventInfo.GetDataName() == EventInfo.GetDataName());
     }
     if (int(ConditionType) == 2)
     {
@@ -366,9 +355,10 @@ TConstRawPtr<FVirtualConfigData> ReadSpawnerConfigData(const FECSEntity &inout S
     if (local_26)
     {
         const FLevelConfigInstance& local_28 = local_26.GetLevelUnitConfigInstance();
-        if (FInstancedStruct::GetPtr(local_28.GetConfigData()).opCall())
+        TConstRawPtr<FCommonEcologyUnitConfig> local_34 = FInstancedStruct::GetPtr(local_28.GetConfigData()).opCall();
+        if (local_34)
         {
-            return TConstRawPtr<FVirtualConfigData>();
+            return TConstRawPtr<FVirtualConfigData>(local_34.Get().ConfigData);
         }
     }
     Get local_40;
@@ -377,7 +367,7 @@ TConstRawPtr<FVirtualConfigData> ReadSpawnerConfigData(const FECSEntity &inout S
     {
         return TConstRawPtr<FVirtualConfigData>(local_42.Config);
     }
-    return TConstRawPtr<FVirtualConfigData>();
+    return local_4;
 }
 void AppendRulesFromSpawnerConfig(const TConstRawPtr<FVirtualConfigData> &inout ConfigDataPtr, TArray<TDataObjectPtr<FBuffAttachRuleConfig>> &inout OutRules)
 {
@@ -385,25 +375,35 @@ void AppendRulesFromSpawnerConfig(const TConstRawPtr<FVirtualConfigData> &inout 
     {
         return;
     }
-    const FInstancedStruct& local_4 = GetConfigData();
-    if (FInstancedStruct::GetPtr<FClassicSpawnerConfig>(local_4).opCall())
+    const FInstancedStruct& local_4 = ConfigDataPtr.Get().GetConfigData();
+    TConstRawPtr<FClassicSpawnerConfig> local_10 = FInstancedStruct::GetPtr<FClassicSpawnerConfig>(local_4).opCall();
+    if (local_10)
     {
+        FEcologyLevelEventBuffUtils::AppendConfiguredRules(local_10.Get().BuffAttachRules, OutRules);
         return;
     }
-    if (FInstancedStruct::GetPtr(local_4).opCall())
+    TConstRawPtr<FMixedRandomBossSpawnerConfig> local_18 = FInstancedStruct::GetPtr(local_4).opCall();
+    if (local_18)
     {
+        FEcologyLevelEventBuffUtils::AppendConfiguredRules(local_18.Get().BuffAttachRules, OutRules);
         return;
     }
-    if (FInstancedStruct::GetPtr(local_4).opCall())
+    TConstRawPtr<FConstFlockSpawnerConfig> local_26 = FInstancedStruct::GetPtr(local_4).opCall();
+    if (local_26)
     {
+        FEcologyLevelEventBuffUtils::AppendConfiguredRules(local_26.Get().BuffAttachRules, OutRules);
         return;
     }
-    if (FInstancedStruct::GetPtr(local_4).opCall())
+    TConstRawPtr<FConstNPCSpawnerConfig> local_34 = FInstancedStruct::GetPtr(local_4).opCall();
+    if (local_34)
     {
+        FEcologyLevelEventBuffUtils::AppendConfiguredRules(local_34.Get().BuffAttachRules, OutRules);
         return;
     }
-    if (FInstancedStruct::GetPtr(local_4).opCall())
+    TConstRawPtr<FBaseMonsterSpawnerConfig> local_42 = FInstancedStruct::GetPtr(local_4).opCall();
+    if (local_42)
     {
+        FEcologyLevelEventBuffUtils::AppendConfiguredRules(local_42.Get().BuffAttachRules, OutRules);
     }
     return;
 }
@@ -433,8 +433,6 @@ void GetSpawnerBuffAttachRules(const FECSEntity &inout CreatureEntity, const FC_
 }
 void AppendLevelEventInitBuffs(const FECSEntity &inout CreatureEntity, const FC_CreatureMeta &inout CreatureMeta)
 {
-    TArrayConstIterator<FBuffAttachLevelEventMapping> local_78;
-    const FBuffAttachListConfig& local_88;
     int local_94 = 0;
     TDataObjectPtr<FLevelEventInfoConfigBase> local_24 = FEcologyLevelEventBuffUtils::GetLevelEventInfoForCreature(CreatureEntity, CreatureMeta);
     if (!(local_24))
@@ -458,13 +456,13 @@ void AppendLevelEventInitBuffs(const FECSEntity &inout CreatureEntity, const FC_
         {
             continue;
         }
-        for (; local_78.CanProceed;)
+        for (auto& local_86 : local_72.Get().LevelEventMappings)
         {
-            const FBuffAttachLevelEventMapping& local_86 = local_78.Proceed();
             if (!(FEcologyLevelEventBuffUtils::DoesMappingMatchLevelEvent(local_86, local_24, EBuffAttachConditionType(local_50))))
             {
                 continue;
             }
+            const FBuffAttachListConfig& local_88 = local_86.BuffList.Get();
             if (local_88.Buffs.Num() <= 0)
             {
                 continue;

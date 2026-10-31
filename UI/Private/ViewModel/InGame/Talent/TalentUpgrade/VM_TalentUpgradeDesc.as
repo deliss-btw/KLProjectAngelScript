@@ -91,11 +91,9 @@ FVM_TalentUpgradeDesc& Create(const UObject ContextObject)
 {
     return FVM_TalentUpgradeDesc::CreateByManager(EUIInternal::GetContextManager(ContextObject));
 }
-FVM_TalentUpgradeDesc CreateByManager(const UEUIManagerSubsystem Manager)
+FVM_TalentUpgradeDesc& CreateByManager(const UEUIManagerSubsystem Manager)
 {
-    FVM_TalentUpgradeDesc __r;
-    TEUIModelRef<FVM_TalentUpgradeDesc> local_6 = TEUIModelRef<FVM_TalentUpgradeDesc>(EUIInternal::MakeModelWithManager(Manager, FVM_TalentUpgradeDesc::ModelId));
-    return __r;
+    return TEUIModelRef<FVM_TalentUpgradeDesc>(EUIInternal::MakeModelWithManager(Manager, FVM_TalentUpgradeDesc::ModelId)).Get();
 }
 void GetModelInfo(FEUIViewModelMetaInfo &inout Result)
 {
@@ -150,7 +148,6 @@ namespace __GeneratedProperties_FVM_TalentUpgradeDesc
 {
 UScriptStruct StaticStruct()
 {
-    UScriptStruct local_2;
-    return local_2;
+    return __GeneratedProperties_FVM_TalentUpgradeDesc.Get();
 }
 }

@@ -25,7 +25,7 @@ class UWidget_MinimapIconDecorator : UEUIUserWidget
     UFUNCTION()
     void OnViewBind_Implementation()
     {
-        this.UpdateDecoratorSlot(GetDecoratorType());
+        this.UpdateDecoratorSlot(this.Decorator.Get().GetDecoratorType());
         return;
     }
     UFUNCTION()
@@ -68,7 +68,7 @@ class UWidget_MinimapIconDecorator : UEUIUserWidget
     UFUNCTION()
     TSoftClassPtr<UUserWidget> Decorator_DecoratorWidgetClass() const
     {
-        FVM_MinimapIconDecorator& local_2;
+        FVM_MinimapIconDecorator& local_2 = this.Decorator.Get();
         TSoftClassPtr<UUserWidget> local_34;
         if (local_2)
         {
@@ -83,14 +83,14 @@ class UWidget_MinimapIconDecorator : UEUIUserWidget
     UFUNCTION()
     FEUIModelRef Decorator_DecoratorWidgetModel() const
     {
-        FVM_MinimapIconDecorator& local_2;
+        FVM_MinimapIconDecorator& local_2 = this.Decorator.Get();
         FEUIModelRef local_8 = local_2 ? local_2.GetDecoratorWidgetModel() : FEUIModelRef();
         return local_8;
     }
     void HandleObservedModelChanges(FEUIReactiveSubscriberIterator &inout It)
     {
-        FVM_MinimapIconDecorator& local_6;
         TEUIModelRef<FVM_MinimapIconDecorator> local_2 = this.Decorator.AsRef();
+        FVM_MinimapIconDecorator& local_6 = local_2.Get();
         for (; It; )
         {
             FEUIReactiveSubscriberTrackScope local_56 = FEUIReactiveSubscriberTrackScope(It);
@@ -160,8 +160,8 @@ class UWidget_MinimapIconDecoratorPanel : UEUIUserWidget
     UFUNCTION()
     bool DecoratorPanel_bAllowGuide() const
     {
-        FVM_MinimapIconHoverProvider& local_2;
         bool local_5;
+        FVM_MinimapIconHoverProvider& local_2 = this.DecoratorPanel.Get();
         if (local_2)
         {
             local_5 = local_2.GetbAllowGuide();
@@ -175,8 +175,8 @@ class UWidget_MinimapIconDecoratorPanel : UEUIUserWidget
     UFUNCTION()
     bool DecoratorPanel_bAllowMark() const
     {
-        FVM_MinimapIconHoverProvider& local_2;
         bool local_5;
+        FVM_MinimapIconHoverProvider& local_2 = this.DecoratorPanel.Get();
         if (local_2)
         {
             local_5 = local_2.GetbAllowMark();
@@ -190,8 +190,8 @@ class UWidget_MinimapIconDecoratorPanel : UEUIUserWidget
     UFUNCTION()
     bool DecoratorPanel_bAllowTeleport() const
     {
-        FVM_MinimapIconHoverProvider& local_2;
         bool local_5;
+        FVM_MinimapIconHoverProvider& local_2 = this.DecoratorPanel.Get();
         if (local_2)
         {
             local_5 = local_2.GetbAllowTeleport();

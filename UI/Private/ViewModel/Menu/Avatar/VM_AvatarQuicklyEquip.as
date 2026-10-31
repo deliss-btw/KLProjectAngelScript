@@ -110,8 +110,7 @@ struct FVM_AvatarQuicklyEquip : FEUIViewModel
                 FAvatarShowcaseEntry local_118 = ::FAvatarShowcaseEntryUtils::FromAvatarInfo(TEUIModelRef<FVM_AvatarInfo>(local_16));
                 if (this.GetCurEquipmentModel().IsValid())
                 {
-                    TEUIModelRef<FM_Equipment> local_120 = this.GetCurEquipmentModel();
-                    if (GetEquipmentConfig().IsSet())
+                    if (this.GetCurEquipmentModel().Get().GetEquipmentConfig().IsSet())
                     {
                         CastTo local_172;
                         TDataObjectPtr<FWeaponConfig> local_196 = local_172.opCall();
@@ -132,8 +131,7 @@ struct FVM_AvatarQuicklyEquip : FEUIViewModel
                 if (!(local_14.IsEmpty()))
                 {
                     XLog(ELog(60), FString().Append("[VM_AvatarQuicklyEquip]RefreshShowcaseAvatars. SetAvatarEntries."));
-                    TEUIModelRef<FVM_AvatarShowcase> local_8 = this.GetShowcase();
-                    this.GetShowCaseAvatarEntries().SetNextAvatarEntries();
+                    this.GetShowcase().Get().SetNextAvatarEntries(this.GetShowCaseAvatarEntries());
                 }
             }
         }
@@ -151,7 +149,7 @@ struct FVM_AvatarQuicklyEquip : FEUIViewModel
             {
                 for (auto& local_80 : local_64.GetAvatarList())
                 {
-                    if (local_80.GetAvatarId() == 0)
+                    if (local_80.GetAvatarId() == CurrentAvatarCfg.Get().DataId)
                     {
                         local_54 = local_80;
                         break;
@@ -161,15 +159,13 @@ struct FVM_AvatarQuicklyEquip : FEUIViewModel
             if (local_54.GetEquipmentInfos().Find(EEquipSlotType(1), local_112))
             {
                 TEUIModelRef<FM_Equipment> local_120 = ::FMS_EquipmentDataCache::Get(this.GetContext().Manager).GetEquipment(local_112.GetGuid());
-                TEUIModelRef<FVM_EquipmentInfo> local_122 = TEUIModelRef<FVM_EquipmentInfo>(::FVM_EquipmentInfo::Create(this.GetContext().Manager, local_120));
-                TEUIModelRef<FVM_AvatarEquipmentItemInfoCompare> local_2 = this.GetInfoCompare();
+                this.GetInfoCompare().Get().SetCompareEquipment(TEUIModelRef<FVM_EquipmentInfo>(::FVM_EquipmentInfo::Create(this.GetContext().Manager, local_120)), CurrentAvatarCfg);
             }
         }
         return;
     }
     void RefreshAvatarInfoCurrentState()
     {
-        int local_2 = 0;
         int local_12 = 0;
         int local_13;
         FDSAvatarEquipmentInfo local_60;
@@ -185,8 +181,7 @@ struct FVM_AvatarQuicklyEquip : FEUIViewModel
                     if (local_16.GetItemUid(this.GetCurEquipmentModel()) == local_60.GetGuid())
                     {
                         this.SetbCurEquipmentEquiped(true);
-                        local_2 = local_30.GetAvatarId();
-                        local_1 = local_2;
+                        local_1 = local_30.GetAvatarId();
                         break;
                     }
                 }
@@ -207,6 +202,7 @@ struct FVM_AvatarQuicklyEquip : FEUIViewModel
                     }
                     else
                     {
+                        int local_2 = local_112.Get().DataId;
                         bool local_143 = (local_1 == local_2);
                         local_13 = local_143;
                     }
@@ -262,28 +258,17 @@ struct FVM_AvatarQuicklyEquip : FEUIViewModel
     }
     void RefreshFilteredAvatarList()
     {
-        FVM_AvatarInfo& local_32;
         XLog(ELog(60), FString().Append("[FVM_AvatarQuicklyEquip]RefreshFilteredAvatarList."));
         TArray<FEUIModelContainer>& local_8 = this.GetModify_FilteredAvatars();
         local_8.Reset(0);
-        bool local_13 = this.GetCurEquipmentModel().IsValid();
-        if (local_13)
+        if (this.GetCurEquipmentModel().IsValid())
         {
-            TEUIModelRef<FVMS_PlayerOwnedAvatarInfo> local_16 = this.GetPlayerOwnedAvatarInfo();
-            for (auto& local_30 : GetUnLockAvatarList())
+            for (auto& local_30 : this.GetPlayerOwnedAvatarInfo().Get().GetUnLockAvatarList())
             {
+                FVM_AvatarInfo& local_32 = local_30.Get();
                 if (local_32)
                 {
-                    if (!(local_32.GetAvatarConfig().IsSet()))
-                    {
-                        local_13 = false;
-                    }
-                    else
-                    {
-                        TEUIModelRef<FM_Equipment> local_12 = this.GetCurEquipmentModel();
-                        local_13 = ::FEquipmentUtils::AvatarCanEquip(local_32.GetAvatarConfig(), GetEquipmentConfig());
-                    }
-                    if (local_13)
+                    if (local_32.GetAvatarConfig().IsSet() && ::FEquipmentUtils::AvatarCanEquip(local_32.GetAvatarConfig(), this.GetCurEquipmentModel().Get().GetEquipmentConfig()))
                     {
                         FEUIModelContainer local_48;
                         local_48.AddModel(local_30.opImplConv(), false);
@@ -297,14 +282,16 @@ struct FVM_AvatarQuicklyEquip : FEUIViewModel
         if (this.GetFilteredAvatars().Num() > 0)
         {
             int local_54 = 0;
-            if (FEUIModelContainer::GetModel(this.GetSelectedAvatar()).opCall())
+            FVM_AvatarInfo& local_32_2 = FEUIModelContainer::GetModel(this.GetSelectedAvatar()).opCall();
+            if (local_32_2)
             {
                 int local_59 = 0;
                 for (; local_59 < this.GetFilteredAvatars().Num(); ++local_59)
                 {
-                    if (FEUIModelContainer::GetModel(this.GetFilteredAvatars()[local_59]).opCall())
+                    FVM_AvatarInfo& local_64 = FEUIModelContainer::GetModel(this.GetFilteredAvatars()[local_59]).opCall();
+                    if (local_64)
                     {
-                        if (0 == 0)
+                        if (local_64.GetAvatarConfig().Get().DataId == local_32_2.GetAvatarConfig().Get().DataId)
                         {
                             local_54 = local_59;
                             break;
@@ -322,8 +309,7 @@ struct FVM_AvatarQuicklyEquip : FEUIViewModel
         if (this.GetInfoCompare().IsValid())
         {
             this.SetbItemTraitCompared(!(this.GetbItemTraitCompared()));
-            TEUIModelRef<FVM_AvatarEquipmentItemInfoCompare> local_8 = this.GetInfoCompare();
-            this.GetbItemTraitCompared().SetIsCompareOverviewShow();
+            this.GetInfoCompare().Get().SetIsCompareOverviewShow(this.GetbItemTraitCompared());
         }
         return;
     }
@@ -341,8 +327,7 @@ struct FVM_AvatarQuicklyEquip : FEUIViewModel
             {
                 return;
             }
-            TEUIModelRef<FM_Equipment> local_16 = this.GetCurEquipmentModel();
-            if (!(::FEquipmentUtils::AvatarCanEquip(local_8.GetAvatarConfig(), GetEquipmentConfig())))
+            if (!(::FEquipmentUtils::AvatarCanEquip(local_8.GetAvatarConfig(), this.GetCurEquipmentModel().Get().GetEquipmentConfig())))
             {
                 return;
             }
@@ -551,11 +536,9 @@ FVM_AvatarQuicklyEquip& Create(const UObject ContextObject, const TEUIModelRef<F
 {
     return FVM_AvatarQuicklyEquip::CreateByManager(EUIInternal::GetContextManager(ContextObject), CurEquipmentModel);
 }
-FVM_AvatarQuicklyEquip CreateByManager(const UEUIManagerSubsystem Manager, const TEUIModelRef<FM_Equipment> &inout CurEquipmentModel)
+FVM_AvatarQuicklyEquip& CreateByManager(const UEUIManagerSubsystem Manager, const TEUIModelRef<FM_Equipment> &inout CurEquipmentModel)
 {
-    FVM_AvatarQuicklyEquip __r;
-    TEUIModelRef<FVM_AvatarQuicklyEquip> local_6 = TEUIModelRef<FVM_AvatarQuicklyEquip>(EUIInternal::MakeModelWithManager_Generic(Manager, FVM_AvatarQuicklyEquip::ModelId, 0, CurEquipmentModel));
-    return __r;
+    return TEUIModelRef<FVM_AvatarQuicklyEquip>(EUIInternal::MakeModelWithManager_Generic(Manager, FVM_AvatarQuicklyEquip::ModelId, 0, CurEquipmentModel)).Get();
 }
 void GetModelInfo(FEUIViewModelMetaInfo &inout Result)
 {
@@ -703,7 +686,6 @@ namespace __GeneratedProperties_FVM_AvatarQuicklyEquip
 {
 UScriptStruct StaticStruct()
 {
-    UScriptStruct local_2;
-    return local_2;
+    return __GeneratedProperties_FVM_AvatarQuicklyEquip.Get();
 }
 }

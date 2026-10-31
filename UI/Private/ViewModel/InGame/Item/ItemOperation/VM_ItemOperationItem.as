@@ -80,12 +80,12 @@ struct FVM_ItemOperationItem : FEUIViewModel
     }
     float32 GetDesiredRenderOpacity() const
     {
-        FVM_ItemOperationList& local_6;
         if (this.IsExpanded())
         {
             return 1.0f;
         }
         TEUIModelWeakRef<FVM_ItemOperationList> local_4 = this.GetOwningList();
+        FVM_ItemOperationList& local_6 = local_4.Get();
         if (local_6)
         {
             if (local_6.HasExpandedItem())
@@ -108,9 +108,7 @@ struct FVM_ItemOperationItem : FEUIViewModel
         if (this.IsExpandable())
         {
             FItemOperationExpandInfo local_30 = this.GetItemOperationConfig().ExpandOperation(this.GetItemData());
-            TWeakObjectPtr<UWidget> local_56 = this.GetMyWidget();
-            UWidget local_58;
-            this.SetExpandHoverHandle(::CommonPopup::HoverCustom(local_58, local_30.ContentWidget, local_30.ContentModels, true, true, ECommonHoverLayout(0), EEUILayoutLayer(0), false));
+            this.SetExpandHoverHandle(::CommonPopup::HoverCustom(this.GetMyWidget().Get(), local_30.ContentWidget, local_30.ContentModels, true, true, ECommonHoverLayout(0), EEUILayoutLayer(0), false));
             FVM_ItemNumOperation& local_70 = FEUIModelContainer::GetModel(local_30.ContentModels).opCall();
             if (local_70)
             {
@@ -129,8 +127,8 @@ struct FVM_ItemOperationItem : FEUIViewModel
     }
     bool HasAnyExpandedItem() const
     {
-        FVM_ItemOperationList& local_4;
         TEUIModelWeakRef<FVM_ItemOperationList> local_2 = this.GetOwningList();
+        FVM_ItemOperationList& local_4 = local_2.Get();
         if (local_4)
         {
             if (local_4.HasExpandedItem())
@@ -252,11 +250,9 @@ FVM_ItemOperationItem& Create(const UObject ContextObject, const UItemOperationC
 {
     return FVM_ItemOperationItem::CreateByManager(EUIInternal::GetContextManager(ContextObject), ItemOperationConfig, ItemData, OwningList);
 }
-FVM_ItemOperationItem CreateByManager(const UEUIManagerSubsystem Manager, const UItemOperationConfigBase ItemOperationConfig, const TEUIModelRef<FM_ItemData> &inout ItemData, const TEUIModelWeakRef<FVM_ItemOperationList> &inout OwningList)
+FVM_ItemOperationItem& CreateByManager(const UEUIManagerSubsystem Manager, const UItemOperationConfigBase ItemOperationConfig, const TEUIModelRef<FM_ItemData> &inout ItemData, const TEUIModelWeakRef<FVM_ItemOperationList> &inout OwningList)
 {
-    FVM_ItemOperationItem __r;
-    TEUIModelRef<FVM_ItemOperationItem> local_6 = TEUIModelRef<FVM_ItemOperationItem>(EUIInternal::MakeModelWithManager_Generic(Manager, FVM_ItemOperationItem::ModelId, 0, ItemOperationConfig, ItemData, OwningList));
-    return __r;
+    return TEUIModelRef<FVM_ItemOperationItem>(EUIInternal::MakeModelWithManager_Generic(Manager, FVM_ItemOperationItem::ModelId, 0, ItemOperationConfig, ItemData, OwningList)).Get();
 }
 void GetModelInfo(FEUIViewModelMetaInfo &inout Result)
 {
@@ -360,7 +356,6 @@ namespace __GeneratedProperties_FVM_ItemOperationItem
 {
 UScriptStruct StaticStruct()
 {
-    UScriptStruct local_2;
-    return local_2;
+    return __GeneratedProperties_FVM_ItemOperationItem.Get();
 }
 }

@@ -221,11 +221,9 @@ FVM_LevelUp& Create(const UObject ContextObject, const int FromLevel, const int 
 {
     return FVM_LevelUp::CreateByManager(EUIInternal::GetContextManager(ContextObject), FromLevel, ToLevel);
 }
-FVM_LevelUp CreateByManager(const UEUIManagerSubsystem Manager, const int FromLevel, const int ToLevel)
+FVM_LevelUp& CreateByManager(const UEUIManagerSubsystem Manager, const int FromLevel, const int ToLevel)
 {
-    FVM_LevelUp __r;
-    TEUIModelRef<FVM_LevelUp> local_6 = TEUIModelRef<FVM_LevelUp>(EUIInternal::MakeModelWithManager_Generic(Manager, FVM_LevelUp::ModelId, 0, FromLevel, ToLevel));
-    return __r;
+    return TEUIModelRef<FVM_LevelUp>(EUIInternal::MakeModelWithManager_Generic(Manager, FVM_LevelUp::ModelId, 0, FromLevel, ToLevel)).Get();
 }
 void GetModelInfo(FEUIViewModelMetaInfo &inout Result)
 {
@@ -406,7 +404,6 @@ namespace __GeneratedProperties_FVM_LevelUp
 {
 UScriptStruct StaticStruct()
 {
-    UScriptStruct local_2;
-    return local_2;
+    return __GeneratedProperties_FVM_LevelUp.Get();
 }
 }

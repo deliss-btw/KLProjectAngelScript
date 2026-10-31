@@ -15,7 +15,7 @@ class UWidget_SkillInfo_Monster_Test : UEUIUserWidget
     UFUNCTION()
     TArray<FEUIModelWeakRef> SkillInfo_SkillList() const
     {
-        FVMS_SkillInfo_Monster_Test& local_2;
+        FVMS_SkillInfo_Monster_Test& local_2 = this.SkillInfo.Get();
         TArray<FEUIModelWeakRef> local_16;
         if (local_2)
         {

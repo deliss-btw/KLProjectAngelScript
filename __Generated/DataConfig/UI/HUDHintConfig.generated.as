@@ -3,7 +3,6 @@ namespace __FSideHintConfigFunctions
 UFUNCTION()
 EHUDSideHintType __FSideHintConfig_GetHUDSideHintType(const TDataObjectPtr<FSideHintConfig> &inout DataObject)
 {
-    int local_29 = 0;
     if ((DataObject == nullptr))
     {
         if (!(EUIGlobals::GIsDuringPropertyConversion))
@@ -11,10 +10,9 @@ EHUDSideHintType __FSideHintConfig_GetHUDSideHintType(const TDataObjectPtr<FSide
             FBlueprintDebugFunctions::ThrowScriptException("Get 'HUDSideHintType' from a null 'FSideHintConfig' DataObject!");
         }
         FSideHintConfig local_28;
-        local_29 = int(local_28.HUDSideHintType);
-        return EHUDSideHintType(local_29);
+        return local_28.HUDSideHintType;
     }
-    return EHUDSideHintType(local_29);
+    return DataObject.Get().HUDSideHintType;
 }
 UFUNCTION()
 UTexture2D __FSideHintConfig_GetIcon(const TDataObjectPtr<FSideHintConfig> &inout DataObject)
@@ -34,7 +32,6 @@ UTexture2D __FSideHintConfig_GetIcon(const TDataObjectPtr<FSideHintConfig> &inou
 UFUNCTION()
 FText __FSideHintConfig_GetTitle(const TDataObjectPtr<FSideHintConfig> &inout DataObject)
 {
-    FText __r;
     if ((DataObject == nullptr))
     {
         if (!(EUIGlobals::GIsDuringPropertyConversion))
@@ -44,12 +41,11 @@ FText __FSideHintConfig_GetTitle(const TDataObjectPtr<FSideHintConfig> &inout Da
         FSideHintConfig local_28;
         return local_28.Title;
     }
-    return __r;
+    return DataObject.Get().Title;
 }
 UFUNCTION()
 TArray<FCombinedText> __FSideHintConfig_GetCombineText(const TDataObjectPtr<FSideHintConfig> &inout DataObject)
 {
-    TArray<FCombinedText> __r;
     if ((DataObject == nullptr))
     {
         if (!(EUIGlobals::GIsDuringPropertyConversion))
@@ -59,7 +55,7 @@ TArray<FCombinedText> __FSideHintConfig_GetCombineText(const TDataObjectPtr<FSid
         FSideHintConfig local_28;
         return local_28.CombineText;
     }
-    return __r;
+    return DataObject.Get().CombineText;
 }
 UFUNCTION()
 float32 __FSideHintConfig_GetShowHintTime(const TDataObjectPtr<FSideHintConfig> &inout DataObject)

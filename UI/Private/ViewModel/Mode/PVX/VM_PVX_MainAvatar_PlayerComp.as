@@ -129,11 +129,9 @@ FVM_PVX_MainAvatar_PlayerComp& Create(const UObject ContextObject, const FText &
 {
     return FVM_PVX_MainAvatar_PlayerComp::CreateByManager(EUIInternal::GetContextManager(ContextObject), Name, bSelf);
 }
-FVM_PVX_MainAvatar_PlayerComp CreateByManager(const UEUIManagerSubsystem Manager, const FText &inout Name, const bool bSelf)
+FVM_PVX_MainAvatar_PlayerComp& CreateByManager(const UEUIManagerSubsystem Manager, const FText &inout Name, const bool bSelf)
 {
-    FVM_PVX_MainAvatar_PlayerComp __r;
-    TEUIModelRef<FVM_PVX_MainAvatar_PlayerComp> local_6 = TEUIModelRef<FVM_PVX_MainAvatar_PlayerComp>(EUIInternal::MakeModelWithManager_Generic(Manager, FVM_PVX_MainAvatar_PlayerComp::ModelId, 0, Name, bSelf));
-    return __r;
+    return TEUIModelRef<FVM_PVX_MainAvatar_PlayerComp>(EUIInternal::MakeModelWithManager_Generic(Manager, FVM_PVX_MainAvatar_PlayerComp::ModelId, 0, Name, bSelf)).Get();
 }
 void GetModelInfo(FEUIViewModelMetaInfo &inout Result)
 {
@@ -202,7 +200,6 @@ namespace __GeneratedProperties_FVM_PVX_MainAvatar_PlayerComp
 {
 UScriptStruct StaticStruct()
 {
-    UScriptStruct local_2;
-    return local_2;
+    return __GeneratedProperties_FVM_PVX_MainAvatar_PlayerComp.Get();
 }
 }

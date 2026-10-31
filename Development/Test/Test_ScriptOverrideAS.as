@@ -8,6 +8,8 @@ struct FTest_ScriptOverrideAS : FTest_ScriptOverride
     UPROPERTY()
     TArray<int> SomeArray;
 
+    default m_ScriptOverrideMeta = Cast<UASStruct>(FTest_ScriptOverrideAS.Get());
+
     FTest_ScriptOverrideAS()
     {
         this.SomeActor = nullptr;
@@ -133,6 +135,8 @@ struct FTest_ScriptOverrideAS : FTest_ScriptOverride
 struct FTest_ScriptOverrideAS_A : FTest_ScriptOverrideNativeDerivedEmpty
 {
     FTest_ScriptOverrideNativeDerivedEmpty _base_FTest_ScriptOverrideNativeDerivedEmpty;
+
+    default m_ScriptOverrideMeta = Cast<UASStruct>(FTest_ScriptOverrideAS_A.Get());
 
     FTest_ScriptOverrideAS_A()
     {

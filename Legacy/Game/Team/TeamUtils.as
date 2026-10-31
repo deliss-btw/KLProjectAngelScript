@@ -117,6 +117,7 @@ FECSEntity CreateTeam(const FECSEntity &inout Leader, const int TeamID = 0)
 }
 void DestroyTeam(const FECSEntity &inout TeamEntity)
 {
+    int local_34 = 0;
     if (TeamEntity.IsValid() == false)
     {
         return;
@@ -133,6 +134,7 @@ void DestroyTeam(const FECSEntity &inout TeamEntity)
         }
     }
     FECSWorldPtr local_28 = TeamEntity.GetWorld();
+    local_34.AllTeams.Remove(TeamEntity);
     TeamEntity.DestroyDeferred();
     return;
 }
@@ -462,17 +464,17 @@ bool IsPVXTeamWorld()
 }
 ECombatTeamRule GetCombatTeamRule()
 {
-    int local_51 = 0;
-    if (FLevelUtils::GetCurrentLevelInfoConfig(nullptr).IsSet() && GetGameRuleConfig().IsSet())
+    TDataObjectPtr<FLevelInfoConfig> local_24 = FLevelUtils::GetCurrentLevelInfoConfig(nullptr);
+    if (local_24.IsSet() && local_24.Get().GetGameRuleConfig().IsSet())
     {
-        return ECombatTeamRule(local_51);
+        return local_24.Get().GetGameRuleConfig().Get().CombatTeamRule;
     }
     return ECombatTeamRule(0);
 }
 bool GetIsInCityTeamState()
 {
-    int local_50 = 0;
-    if (FLevelUtils::GetCurrentLevelInfoConfig(nullptr).IsSet() && (local_50 == 1 || (local_50 == 2)))
+    TDataObjectPtr<FLevelInfoConfig> local_24 = FLevelUtils::GetCurrentLevelInfoConfig(nullptr);
+    if (local_24.IsSet() && (int(local_24.Get().LevelType) == 1 || (int(local_24.Get().LevelType) == 2)))
     {
         return true;
     }
@@ -562,7 +564,7 @@ void HandlePlayerEnterForPVXTeam(const FECSEntity &inout PlayerEntity)
     TArray<uint> local_28;
     for (auto& local_46 : local_14.GetPlayerEntries())
     {
-        if (GetTeamId() != local_17)
+        if (local_46.GetValue().GetTeamId() != local_17)
         {
             continue;
         }

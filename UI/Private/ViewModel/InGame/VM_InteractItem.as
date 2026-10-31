@@ -267,11 +267,9 @@ FVM_InteractItem& Create(const UObject ContextObject, const FName &inout GroupNa
 {
     return FVM_InteractItem::CreateByManager(EUIInternal::GetContextManager(ContextObject), GroupName, Index, TargetEntity, bSetVisibility);
 }
-FVM_InteractItem CreateByManager(const UEUIManagerSubsystem Manager, const FName &inout GroupName, const int Index, const FECSEntity &inout TargetEntity, const bool bSetVisibility)
+FVM_InteractItem& CreateByManager(const UEUIManagerSubsystem Manager, const FName &inout GroupName, const int Index, const FECSEntity &inout TargetEntity, const bool bSetVisibility)
 {
-    FVM_InteractItem __r;
-    TEUIModelRef<FVM_InteractItem> local_6 = TEUIModelRef<FVM_InteractItem>(EUIInternal::MakeModelWithManager_Generic(Manager, FVM_InteractItem::ModelId, 0, GroupName, Index, TargetEntity, bSetVisibility));
-    return __r;
+    return TEUIModelRef<FVM_InteractItem>(EUIInternal::MakeModelWithManager_Generic(Manager, FVM_InteractItem::ModelId, 0, GroupName, Index, TargetEntity, bSetVisibility)).Get();
 }
 void GetModelInfo(FEUIViewModelMetaInfo &inout Result)
 {
@@ -353,7 +351,6 @@ namespace __GeneratedProperties_FVM_InteractItem
 {
 UScriptStruct StaticStruct()
 {
-    UScriptStruct local_2;
-    return local_2;
+    return __GeneratedProperties_FVM_InteractItem.Get();
 }
 }

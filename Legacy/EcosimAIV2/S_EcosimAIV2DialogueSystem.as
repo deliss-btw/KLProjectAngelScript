@@ -15,7 +15,6 @@ class US_EcosimAIV2InteractDialogueSystem : UECSScriptSystem
     UFUNCTION()
     void Job_HandleEcosimAIV2ClientDialogueSelectEvent(const FCE_EcosimAIV2ClientDialogueSelectEvent &inout Event) const
     {
-        int local_33 = 0;
         FECSEntity local_4 = FECSEntity(Event.Sender);
         Has local_8;
         bool local_9 = local_8.opCall();
@@ -34,10 +33,9 @@ class US_EcosimAIV2InteractDialogueSystem : UECSScriptSystem
                     {
                         return;
                     }
-                    if ((Event.CurrentSectionIndex - 1) < local_33)
+                    if ((Event.CurrentSectionIndex - 1) < local_30.CurrentSpeakToAndOption.Get().AdditionalSpeakToContentList.Num())
                     {
-                        local_33 = Event.CurrentSectionIndex;
-                        local_33 = local_33 - 1;
+                        ::FEcosimAIV2Utils::EntityPublicSpeak(local_20, local_30.CurrentSpeakToAndOption.Get().AdditionalSpeakToContentList[(Event.CurrentSectionIndex - 1)], 3.0f);
                     }
                 }
             }
@@ -122,10 +120,7 @@ class US_EcosimAIV2InteractDialogueSystem : UECSScriptSystem
         {
             return;
         }
-        FEcosimAIV2SpeakToMemory& local_34 = local_20.SpeakToMemoryMap.FindOrAdd(FECSEntity(local_28.GetPlayerEntity()));
-        FName local_36;
-        local_36.GetDataName();
-        local_34.SpokenToNameKeyList.Add(local_36);
+        local_20.SpeakToMemoryMap.FindOrAdd(FECSEntity(local_28.GetPlayerEntity())).SpokenToNameKeyList.Add(local_20.CurrentSpeakToAndOption.Get().GetDataName());
         FFPTime local_44 = FFPTime(-1);
         local_46.InteractSource = local_4;
         local_46.InteractTarget = local_8;

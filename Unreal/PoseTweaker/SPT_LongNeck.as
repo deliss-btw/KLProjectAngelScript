@@ -254,15 +254,14 @@ class USPT_LongNeckIKBase : USPT_HeadControlTemplate
             FBoxSphereBounds local_52 = FBoxSphereBounds(this.ChainCompSpaceBounds.TransformBy(this.AnimComponentTransform));
             TArray<FOverlapResult> local_56;
             FCollisionQueryParams local_94;
-            bool local_9 = false;
-            local_94.bTraceComplex = local_9;
+            local_94.bTraceComplex = (false != 0);
             local_94.AddIgnoredComponent(this.OwnerComponent);
             FCollisionResponseParams local_120;
             FPhysicsUtils::OverlapMulti(this.OwnerComponent.GetWorld(), EPhysicsTraceTag(6), local_56, local_52.GetSphere().Center, FQuat::Identity, ECollisionChannel(0), FCollisionShape::MakeSphere(float32(local_52.GetSphere().W)), local_94, local_120);
             for (auto& local_136 : local_56)
             {
                 local_138 = local_136.GetActor();
-                if ((local_138 != nullptr && local_9))
+                if (local_138 != nullptr && local_138.IsA(ALandscape))
                 {
                     local_4.Add(local_136.GetActor());
                 }

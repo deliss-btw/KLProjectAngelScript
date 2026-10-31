@@ -103,13 +103,11 @@ namespace MessageHintUtils_Internal
 FSoftBrush FashionIconFromArgumentConfig(const TDataObjectPtr<FFashionConfig> &inout FashionConfig)
 {
     FFashionDisplayIconByBody local_68;
-    bool local_1 = !(FashionConfig);
-    if (local_1)
+    if (!(FashionConfig))
     {
         return FSoftBrush();
     }
-    local_1 = !local_1;
-    if (local_1)
+    if (!(FashionConfig.Get().DisplayIcons.Find(EDisplayItemIconType(0), local_68)))
     {
         return FSoftBrush();
     }
@@ -141,29 +139,30 @@ FSoftBrush IconFromArgument(const FTextArgument &inout Argument)
     FSoftBrush __return;
     if ((int(Argument.GetType())) == 2)
     {
-        if (FInstancedStruct::GetPtr(Argument.GetStructValue()).opCall())
+        TConstRawPtr<FDataObjectPtr> local_10 = FInstancedStruct::GetPtr(Argument.GetStructValue()).opCall();
+        if (local_10)
         {
-            TDataObjectPtr<FItemConfig> local_36;
+            TDataObjectPtr<FItemConfig> local_36 = TDataObjectPtr<FItemConfig>(local_10.Get());
             if (local_36)
             {
                 return local_36.opArrow().ItemIcon;
             }
-            TDataObjectPtr<FFashionConfig> local_84;
+            TDataObjectPtr<FFashionConfig> local_84 = TDataObjectPtr<FFashionConfig>(local_10.Get());
             if (local_84)
             {
                 return MessageHintUtils_Internal::FashionIconFromArgumentConfig(local_84);
             }
-            TDataObjectPtr<FMotionData> local_176;
+            TDataObjectPtr<FMotionData> local_176 = TDataObjectPtr<FMotionData>(local_10.Get());
             if (local_176)
             {
                 return local_176.opArrow().Icon;
             }
-            TDataObjectPtr<FBuffConfig> local_224;
+            TDataObjectPtr<FBuffConfig> local_224 = TDataObjectPtr<FBuffConfig>(local_10.Get());
             if (local_224)
             {
                 return TDataObjectPtr<FBuffPresentationConfig>(local_224.opArrow().PresentationConfig).opArrow().IconBrush;
             }
-            TDataObjectPtr<FAttributeConfig> local_320;
+            TDataObjectPtr<FAttributeConfig> local_320 = TDataObjectPtr<FAttributeConfig>(local_10.Get());
             if (local_320)
             {
                 if (UICommonUtil::CVar_UI_UseAttributePresentation.GetBool())
@@ -174,7 +173,7 @@ FSoftBrush IconFromArgument(const FTextArgument &inout Argument)
             }
             else
             {
-                TDataObjectPtr<FLevelEventInfoConfigBase> local_368;
+                TDataObjectPtr<FLevelEventInfoConfigBase> local_368 = TDataObjectPtr<FLevelEventInfoConfigBase>(local_10.Get());
                 if (local_368)
                 {
                     const TDataObjectPtr<FPresentationConfig>& local_394 = local_368.opArrow().GetPresentationConfig();
@@ -186,34 +185,35 @@ FSoftBrush IconFromArgument(const FTextArgument &inout Argument)
                 }
                 else
                 {
-                    TDataObjectPtr<FCommissionConfig> local_418;
+                    TDataObjectPtr<FCommissionConfig> local_418 = TDataObjectPtr<FCommissionConfig>(local_10.Get());
                     if (local_418)
                     {
                         return local_418.opArrow().CommissionIcon;
                     }
-                    TDataObjectPtr<FCommissionTypeConfig> local_466;
+                    TDataObjectPtr<FCommissionTypeConfig> local_466 = TDataObjectPtr<FCommissionTypeConfig>(local_10.Get());
                     if (local_466)
                     {
                         return local_466.opArrow().CommissionTypeIcon;
                     }
-                    TDataObjectPtr<FDivineSkillConfig> local_514;
+                    TDataObjectPtr<FDivineSkillConfig> local_514 = TDataObjectPtr<FDivineSkillConfig>(local_10.Get());
                     if (local_514)
                     {
                         return local_514.opArrow().DisplayIcon;
                     }
-                    TDataObjectPtr<FSystemControlConfig> local_562;
+                    TDataObjectPtr<FSystemControlConfig> local_562 = TDataObjectPtr<FSystemControlConfig>(local_10.Get());
                     if (local_562)
                     {
+                        return local_562.Get().UnlockIcon;
                     }
-                    else
+                    TDataObjectPtr<FCraftConfig> local_610 = TDataObjectPtr<FCraftConfig>(local_10.Get());
+                    if (local_610)
                     {
-                        TDataObjectPtr<FCraftConfig> local_610;
-                        if (local_610)
+                        if (local_610.opArrow().Product.Item)
                         {
-                            if (local_610.opArrow().Product.Item)
-                            {
-                                return local_610.opArrow().Product.Item.opArrow().ItemIcon;
-                            }
+                            return local_610.opArrow().Product.Item.opArrow().ItemIcon;
+                        }
+                        else
+                        {
                         }
                     }
                 }

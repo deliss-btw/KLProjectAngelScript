@@ -46,6 +46,8 @@ struct FKLFlowNode_ListenSingleEntity : FKLFlowNode
     UPROPERTY()
     bool bIsActive;
 
+    default m_ScriptOverrideMeta = Cast<UASStruct>(FKLFlowNode_ListenSingleEntity.Get());
+
     FKLFlowNode_ListenSingleEntity()
     {
         this.HandleReady = 0;
@@ -141,16 +143,15 @@ struct FKLFlowNode_ListenSingleEntity : FKLFlowNode
     }
     void OnLoad_Implementation(const FKLFlowNodeSnapshot &inout InSnapshot)
     {
-        int local_10 = 0;
-        bool local_9 = !(FInstancedStruct::GetPtr<FKLFlowNodeMemory_ListenSingleEntity>(InSnapshot.Memory).opCall());
-        if (local_9)
+        TConstRawPtr<FKLFlowNodeMemory_ListenSingleEntity> local_6 = FInstancedStruct::GetPtr<FKLFlowNodeMemory_ListenSingleEntity>(InSnapshot.Memory).opCall();
+        if (!(local_6))
         {
             return;
         }
-        this.HandleReady = local_10;
-        this.HandleDie = local_10;
-        this.HandleDestroy = local_10;
-        this.bIsActive = local_9;
+        this.HandleReady = local_6.Get().HandleReady;
+        this.HandleDie = local_6.Get().HandleDie;
+        this.HandleDestroy = local_6.Get().HandleDestroy;
+        this.bIsActive = local_6.Get().bIsActive;
         return;
     }
     void ActivateListening()
@@ -189,20 +190,20 @@ struct FKLFlowNode_ListenSingleEntity : FKLFlowNode
     bool TryConsumeLifecycleEvent(const int SubscriptionHandle, FKLFlowEvent_EntityLifecycle &inout OutEvent)
     {
         FInstancedStruct local_4;
-        int local_20 = 0;
         if (!(this.ConsumeEvent(SubscriptionHandle, local_4)))
         {
             return false;
         }
         FInstancedStruct::GetPtr local_10;
-        if (!(local_10.opCall()))
+        TConstRawPtr<FKLFlowEvent_EntityLifecycle> local_12 = local_10.opCall();
+        if (!(local_12))
         {
             return false;
         }
         if (this.LevelUnitRef.IsValid())
         {
             FECSEntity local_18;
-            if (!(::KLFlowLibrary::GetEntityByLevelUnitRef(this.LevelUnitRef, local_18)) || !((local_18.GetId() == FECSEntityId(local_20))))
+            if (!(::KLFlowLibrary::GetEntityByLevelUnitRef(this.LevelUnitRef, local_18)) || !((local_18.GetId() == FECSEntityId(int(local_12.Get().TargetEntityId.Value)))))
             {
                 return false;
             }

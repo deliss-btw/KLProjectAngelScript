@@ -217,6 +217,8 @@ class UBTTask_EcologyTriggerChangeAreaByBattleForAreaFail : UBTTask_ECSScriptBas
         {
             if (local_130.CreatureType)
             {
+                FEcologyBossBattleForAreaInfo local_134 = local_130.CreatureType.Get().BossBattleForAreaInfo;
+                UResourceRequestFilterConfigAsset local_136 = local_134.ChangeAreaRequestFilter.Get();
                 ::FEcologyBehaviorUtils::AddFlockChangeAreaRequest(local_18, local_94, FEcologyGameplayTagDefine::Ecology_ChangeAreaReasonBattleForAreaForceFail, FEcologyGameplayTagDefine::Ecology_ChangeAreaSourceBTNode, true, local_120, 25000.0f, 50000.0f, 99, !(local_2.MatchGameplayTag(FEcologyGameplayTagDefine::Ecology_ForbidBattleforAreaHint)), true);
                 return EBTNodeResult(0);
             }

@@ -58,6 +58,7 @@ struct FVM_CommonAnnularProgressBar : FEUIViewModel
     {
         if (this.GetDuration().ToSeconds() <= 0.0)
         {
+            this.GetModify_TimeProgress().Clear();
             return;
         }
         this.GetModify_TimeProgress().EndAtSmooth(this.GetEndTime(), this.GetDuration());
@@ -181,11 +182,9 @@ FVM_CommonAnnularProgressBar& Create(const UObject ContextObject, const FFPTime 
 {
     return FVM_CommonAnnularProgressBar::CreateByManager(EUIInternal::GetContextManager(ContextObject), EndTime, Duration);
 }
-FVM_CommonAnnularProgressBar CreateByManager(const UEUIManagerSubsystem Manager, const FFPTime &inout EndTime, const FFPTime &inout Duration)
+FVM_CommonAnnularProgressBar& CreateByManager(const UEUIManagerSubsystem Manager, const FFPTime &inout EndTime, const FFPTime &inout Duration)
 {
-    FVM_CommonAnnularProgressBar __r;
-    TEUIModelRef<FVM_CommonAnnularProgressBar> local_6 = TEUIModelRef<FVM_CommonAnnularProgressBar>(EUIInternal::MakeModelWithManager_Generic(Manager, FVM_CommonAnnularProgressBar::ModelId, 0, EndTime, Duration));
-    return __r;
+    return TEUIModelRef<FVM_CommonAnnularProgressBar>(EUIInternal::MakeModelWithManager_Generic(Manager, FVM_CommonAnnularProgressBar::ModelId, 0, EndTime, Duration)).Get();
 }
 void GetModelInfo(FEUIViewModelMetaInfo &inout Result)
 {
@@ -252,7 +251,6 @@ namespace __GeneratedProperties_FVM_CommonAnnularProgressBar
 {
 UScriptStruct StaticStruct()
 {
-    UScriptStruct local_2;
-    return local_2;
+    return __GeneratedProperties_FVM_CommonAnnularProgressBar.Get();
 }
 }

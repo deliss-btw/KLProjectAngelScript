@@ -16,7 +16,7 @@ class UPage_EntityDialogPanel : UEUIUserWidget
     UFUNCTION()
     TArray<FECSEntity> EntityDialogPanel_Speakers() const
     {
-        FVMS_EntityDialogPanel& local_2;
+        FVMS_EntityDialogPanel& local_2 = this.EntityDialogPanel.Get();
         TArray<FECSEntity> local_12;
         if (local_2)
         {

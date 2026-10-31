@@ -404,7 +404,6 @@ struct FM_LocalPlayerLevel : FEUIModelSingleton
         const UPlayerInfoSettings local_2;
         GetGameplaySettings<UPlayerInfoSettings> local_4;
         int local_34 = 0;
-        const FStigmataConfig& local_146;
         local_2 = local_4;
         if ((!((local_2 != nullptr))))
         {
@@ -415,6 +414,7 @@ struct FM_LocalPlayerLevel : FEUIModelSingleton
         {
             local_12.Add(local_26);
         }
+        local_12.Sort(false);
         if (!(this.GetPlayerLevelInfoRef().IsValid()))
         {
             this.SetPlayerLevelInfoRef(TEUIModelRef<FVMS_PlayerLevelInfo>(::FVMS_PlayerLevelInfo::Get(this.GetContext().Manager)));
@@ -425,10 +425,12 @@ struct FM_LocalPlayerLevel : FEUIModelSingleton
         {
             int local_29 = local_40.Proceed();
             GetDataObjectByGSDataId<FStigmataConfig> local_96;
-            if (!(local_96.opImplConv().IsSet()))
+            TDataObjectPtr<FStigmataConfig> local_72 = local_96.opImplConv();
+            if (!(local_72.IsSet()))
             {
                 continue;
             }
+            const FStigmataConfig& local_146 = local_72.Get();
             if (local_146.UnlockCost.Num() != 0)
             {
                 continue;
@@ -446,7 +448,6 @@ struct FM_LocalPlayerLevel : FEUIModelSingleton
     void OnWidgetPresenceChanged(const FMsg_WidgetPresence &inout Msg)
     {
         const UPlayerInfoSettings local_8;
-        int local_31 = 0;
         bool local_3 = !((FGameplayTag(Msg.WidgetTag) == GameplayTags::UI_Type_StigmataDetail));
         if (local_3)
         {
@@ -467,7 +468,7 @@ struct FM_LocalPlayerLevel : FEUIModelSingleton
         {
             if (local_30.IsSet())
             {
-                int64 local_34 = local_31;
+                int64 local_34 = local_30.Get().DataId;
                 local_6.ConsumeRedDot(GameplayTags::RedDotSystem_Stigmata_NewStigmata, local_34);
             }
         }
@@ -792,11 +793,9 @@ FM_LocalPlayerLevel& Get(const UObject ContextObject)
 {
     return FM_LocalPlayerLevel::GetByManager(EUIInternal::GetContextManager(ContextObject));
 }
-FM_LocalPlayerLevel GetByManager(const UEUIManagerSubsystem Manager)
+FM_LocalPlayerLevel& GetByManager(const UEUIManagerSubsystem Manager)
 {
-    FM_LocalPlayerLevel __r;
-    TEUIModelRef<FM_LocalPlayerLevel> local_6 = TEUIModelRef<FM_LocalPlayerLevel>(EUIInternal::MakeModelWithManager(Manager, FM_LocalPlayerLevel::ModelId));
-    return __r;
+    return TEUIModelRef<FM_LocalPlayerLevel>(EUIInternal::MakeModelWithManager(Manager, FM_LocalPlayerLevel::ModelId)).Get();
 }
 void GetModelInfo(FEUIModelOnlyMetaInfo &inout Result)
 {

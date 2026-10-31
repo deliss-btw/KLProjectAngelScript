@@ -40,7 +40,7 @@ class UWidget_TalentSkillChangeWidget : UEUIUserWidget
     UFUNCTION()
     void CloseSkillChange()
     {
-        FVM_TalentEditPage& local_2;
+        FVM_TalentEditPage& local_2 = this.TalentEditPage.Get();
         if (local_2)
         {
             local_2.CloseSkillChoice();
@@ -199,8 +199,8 @@ class UWidget_TalentSkillChangeWidget : UEUIUserWidget
     }
     void HandleObservedModelChanges(FEUIReactiveSubscriberIterator &inout It)
     {
-        FVM_TalentEditPageChangeSkill& local_6;
         TEUIModelRef<FVM_TalentEditPageChangeSkill> local_2 = this.TalentSkillChangeEditPage.AsRef();
+        FVM_TalentEditPageChangeSkill& local_6 = local_2.Get();
         for (; It; )
         {
             FEUIReactiveSubscriberTrackScope local_56 = FEUIReactiveSubscriberTrackScope(It);

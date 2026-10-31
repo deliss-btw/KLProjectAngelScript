@@ -97,8 +97,10 @@ class US_LifeCycleSystem : UECSScriptSystem
         if (local_56.opCall())
         {
             Modify local_62;
-            if (local_62.opCall())
+            FC_GameAttributeSharedParent& local_64 = local_62.opCall();
+            if (local_64)
             {
+                local_64.GetModify_SharedEntities().Remove(Event.Sender);
             }
         }
         Get local_68;

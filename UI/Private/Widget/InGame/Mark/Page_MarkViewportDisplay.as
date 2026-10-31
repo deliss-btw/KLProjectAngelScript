@@ -18,7 +18,7 @@ class UPage_MarkViewportDisplay : UEUIUserWidget
     UFUNCTION()
     TArray<FECSEntity> MarkViewportDisplay_AllMarks() const
     {
-        FVM_MarkViewportDisplay& local_2;
+        FVM_MarkViewportDisplay& local_2 = this.MarkViewportDisplay.Get();
         TArray<FECSEntity> local_12;
         if (local_2)
         {

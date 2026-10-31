@@ -1341,9 +1341,7 @@ struct FVM_ShuijingExclusiveSkill : FEUIViewModel
     }
     void PostConstruct()
     {
-        UCombatGlobalSettings local_2 = ::UCombatGlobalSettings::Get();
-        UClass local_4;
-        this.SetIdentifyName_ShuiJing_PowerArrow(FName(local_4.GetPathName(nullptr)));
+        this.SetIdentifyName_ShuiJing_PowerArrow(FName(::UCombatGlobalSettings::Get().Prefab_ShuiJing_PowerArrow.Get().GetPathName(nullptr)));
         return;
     }
     void Tick()
@@ -2511,11 +2509,9 @@ FVM_GramherExclusiveSkill& Create(const UObject ContextObject)
 {
     return FVM_GramherExclusiveSkill::CreateByManager(EUIInternal::GetContextManager(ContextObject));
 }
-FVM_GramherExclusiveSkill CreateByManager(const UEUIManagerSubsystem Manager)
+FVM_GramherExclusiveSkill& CreateByManager(const UEUIManagerSubsystem Manager)
 {
-    FVM_GramherExclusiveSkill __r;
-    TEUIModelRef<FVM_GramherExclusiveSkill> local_6 = TEUIModelRef<FVM_GramherExclusiveSkill>(EUIInternal::MakeModelWithManager(Manager, FVM_GramherExclusiveSkill::ModelId));
-    return __r;
+    return TEUIModelRef<FVM_GramherExclusiveSkill>(EUIInternal::MakeModelWithManager(Manager, FVM_GramherExclusiveSkill::ModelId)).Get();
 }
 void GetModelInfo(FEUIViewModelMetaInfo &inout Result)
 {
@@ -2590,8 +2586,7 @@ namespace __GeneratedProperties_FVM_GramherExclusiveSkill
 {
 UScriptStruct StaticStruct()
 {
-    UScriptStruct local_2;
-    return local_2;
+    return __GeneratedProperties_FVM_GramherExclusiveSkill.Get();
 }
 }
 namespace FVM_SwordExclusiveSkill
@@ -2600,11 +2595,9 @@ FVM_SwordExclusiveSkill& Create(const UObject ContextObject)
 {
     return FVM_SwordExclusiveSkill::CreateByManager(EUIInternal::GetContextManager(ContextObject));
 }
-FVM_SwordExclusiveSkill CreateByManager(const UEUIManagerSubsystem Manager)
+FVM_SwordExclusiveSkill& CreateByManager(const UEUIManagerSubsystem Manager)
 {
-    FVM_SwordExclusiveSkill __r;
-    TEUIModelRef<FVM_SwordExclusiveSkill> local_6 = TEUIModelRef<FVM_SwordExclusiveSkill>(EUIInternal::MakeModelWithManager(Manager, FVM_SwordExclusiveSkill::ModelId));
-    return __r;
+    return TEUIModelRef<FVM_SwordExclusiveSkill>(EUIInternal::MakeModelWithManager(Manager, FVM_SwordExclusiveSkill::ModelId)).Get();
 }
 void GetModelInfo(FEUIViewModelMetaInfo &inout Result)
 {
@@ -2757,8 +2750,7 @@ namespace __GeneratedProperties_FVM_SwordExclusiveSkill
 {
 UScriptStruct StaticStruct()
 {
-    UScriptStruct local_2;
-    return local_2;
+    return __GeneratedProperties_FVM_SwordExclusiveSkill.Get();
 }
 }
 namespace FVM_WizardExclusiveSkill
@@ -2767,11 +2759,9 @@ FVM_WizardExclusiveSkill& Create(const UObject ContextObject)
 {
     return FVM_WizardExclusiveSkill::CreateByManager(EUIInternal::GetContextManager(ContextObject));
 }
-FVM_WizardExclusiveSkill CreateByManager(const UEUIManagerSubsystem Manager)
+FVM_WizardExclusiveSkill& CreateByManager(const UEUIManagerSubsystem Manager)
 {
-    FVM_WizardExclusiveSkill __r;
-    TEUIModelRef<FVM_WizardExclusiveSkill> local_6 = TEUIModelRef<FVM_WizardExclusiveSkill>(EUIInternal::MakeModelWithManager(Manager, FVM_WizardExclusiveSkill::ModelId));
-    return __r;
+    return TEUIModelRef<FVM_WizardExclusiveSkill>(EUIInternal::MakeModelWithManager(Manager, FVM_WizardExclusiveSkill::ModelId)).Get();
 }
 void GetModelInfo(FEUIViewModelMetaInfo &inout Result)
 {
@@ -2914,8 +2904,7 @@ namespace __GeneratedProperties_FVM_WizardExclusiveSkill
 {
 UScriptStruct StaticStruct()
 {
-    UScriptStruct local_2;
-    return local_2;
+    return __GeneratedProperties_FVM_WizardExclusiveSkill.Get();
 }
 }
 namespace FVM_ShuijingExclusiveSkill
@@ -2924,11 +2913,9 @@ FVM_ShuijingExclusiveSkill& Create(const UObject ContextObject)
 {
     return FVM_ShuijingExclusiveSkill::CreateByManager(EUIInternal::GetContextManager(ContextObject));
 }
-FVM_ShuijingExclusiveSkill CreateByManager(const UEUIManagerSubsystem Manager)
+FVM_ShuijingExclusiveSkill& CreateByManager(const UEUIManagerSubsystem Manager)
 {
-    FVM_ShuijingExclusiveSkill __r;
-    TEUIModelRef<FVM_ShuijingExclusiveSkill> local_6 = TEUIModelRef<FVM_ShuijingExclusiveSkill>(EUIInternal::MakeModelWithManager(Manager, FVM_ShuijingExclusiveSkill::ModelId));
-    return __r;
+    return TEUIModelRef<FVM_ShuijingExclusiveSkill>(EUIInternal::MakeModelWithManager(Manager, FVM_ShuijingExclusiveSkill::ModelId)).Get();
 }
 void GetModelInfo(FEUIViewModelMetaInfo &inout Result)
 {
@@ -3011,8 +2998,7 @@ namespace __GeneratedProperties_FVM_ShuijingExclusiveSkill
 {
 UScriptStruct StaticStruct()
 {
-    UScriptStruct local_2;
-    return local_2;
+    return __GeneratedProperties_FVM_ShuijingExclusiveSkill.Get();
 }
 }
 namespace FVM_QiongExclusiveSkill
@@ -3021,11 +3007,9 @@ FVM_QiongExclusiveSkill& Create(const UObject ContextObject)
 {
     return FVM_QiongExclusiveSkill::CreateByManager(EUIInternal::GetContextManager(ContextObject));
 }
-FVM_QiongExclusiveSkill CreateByManager(const UEUIManagerSubsystem Manager)
+FVM_QiongExclusiveSkill& CreateByManager(const UEUIManagerSubsystem Manager)
 {
-    FVM_QiongExclusiveSkill __r;
-    TEUIModelRef<FVM_QiongExclusiveSkill> local_6 = TEUIModelRef<FVM_QiongExclusiveSkill>(EUIInternal::MakeModelWithManager(Manager, FVM_QiongExclusiveSkill::ModelId));
-    return __r;
+    return TEUIModelRef<FVM_QiongExclusiveSkill>(EUIInternal::MakeModelWithManager(Manager, FVM_QiongExclusiveSkill::ModelId)).Get();
 }
 void GetModelInfo(FEUIViewModelMetaInfo &inout Result)
 {
@@ -3297,8 +3281,7 @@ namespace __GeneratedProperties_FVM_QiongExclusiveSkill
 {
 UScriptStruct StaticStruct()
 {
-    UScriptStruct local_2;
-    return local_2;
+    return __GeneratedProperties_FVM_QiongExclusiveSkill.Get();
 }
 }
 namespace FVM_FakeCharacterProgress
@@ -3307,11 +3290,9 @@ FVM_FakeCharacterProgress& Create(const UObject ContextObject)
 {
     return FVM_FakeCharacterProgress::CreateByManager(EUIInternal::GetContextManager(ContextObject));
 }
-FVM_FakeCharacterProgress CreateByManager(const UEUIManagerSubsystem Manager)
+FVM_FakeCharacterProgress& CreateByManager(const UEUIManagerSubsystem Manager)
 {
-    FVM_FakeCharacterProgress __r;
-    TEUIModelRef<FVM_FakeCharacterProgress> local_6 = TEUIModelRef<FVM_FakeCharacterProgress>(EUIInternal::MakeModelWithManager(Manager, FVM_FakeCharacterProgress::ModelId));
-    return __r;
+    return TEUIModelRef<FVM_FakeCharacterProgress>(EUIInternal::MakeModelWithManager(Manager, FVM_FakeCharacterProgress::ModelId)).Get();
 }
 void GetModelInfo(FEUIViewModelMetaInfo &inout Result)
 {
@@ -3360,7 +3341,6 @@ namespace __GeneratedProperties_FVM_FakeCharacterProgress
 {
 UScriptStruct StaticStruct()
 {
-    UScriptStruct local_2;
-    return local_2;
+    return __GeneratedProperties_FVM_FakeCharacterProgress.Get();
 }
 }

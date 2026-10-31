@@ -26,10 +26,12 @@ class ATagTargetPoint : ATargetPoint
     UFUNCTION()
     void EndPlay_Implementation(const EEndPlayReason EndPlayReason)
     {
-        if (::UTagTargetPointManager::Get() == nullptr)
+        UTagTargetPointManager local_4 = ::UTagTargetPointManager::Get();
+        if (local_4 == nullptr)
         {
             return;
         }
+        local_4.TagTargetPoints.Remove(this.Tag);
         return;
     }
 }

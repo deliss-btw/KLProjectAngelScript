@@ -17,8 +17,8 @@ class UWidget_RoleItem : UEUIUserListItemWidget
     UFUNCTION()
     ESlateVisibility Item_SlateVisibilitybIsSelected() const
     {
-        FVM_RoleItem& local_2;
         int local_5;
+        FVM_RoleItem& local_2 = this.Item.Get();
         if (local_2)
         {
             local_5 = int(local_2.bIsSelectedAsSlateVisibility());
@@ -32,8 +32,8 @@ class UWidget_RoleItem : UEUIUserListItemWidget
     UFUNCTION()
     ESlateVisibility Item_SlateVisibilitybIsCurrent() const
     {
-        FVM_RoleItem& local_2;
         int local_5;
+        FVM_RoleItem& local_2 = this.Item.Get();
         if (local_2)
         {
             local_5 = int(local_2.bIsCurrentAsSlateVisibility());
@@ -47,14 +47,14 @@ class UWidget_RoleItem : UEUIUserListItemWidget
     UFUNCTION()
     FText Item_AvatarName() const
     {
-        FVM_RoleItem& local_2;
+        FVM_RoleItem& local_2 = this.Item.Get();
         FText local_16 = local_2 ? local_2.GetAvatarName() : FText();
         return local_16;
     }
     UFUNCTION()
     FSlateBrush Item_AvatarIcon() const
     {
-        FVM_RoleItem& local_2;
+        FVM_RoleItem& local_2 = this.Item.Get();
         FSlateBrush local_136;
         if (local_2)
         {
@@ -69,28 +69,28 @@ class UWidget_RoleItem : UEUIUserListItemWidget
     UFUNCTION()
     FSlateBrush Item_PlayerPowerIcon() const
     {
-        FVM_RoleItem& local_2;
+        FVM_RoleItem& local_2 = this.Item.Get();
         FSlateBrush local_136 = local_2 ? local_2.GetPlayerPowerIcon() : FSlateBrush();
         return local_136;
     }
     UFUNCTION()
     FSlateBrush Item_PlayerTachie() const
     {
-        FVM_RoleItem& local_2;
+        FVM_RoleItem& local_2 = this.Item.Get();
         FSlateBrush local_136 = local_2 ? local_2.GetPlayerTachie() : FSlateBrush();
         return local_136;
     }
     UFUNCTION()
     FText Item_PlayerIllustrate1() const
     {
-        FVM_RoleItem& local_2;
+        FVM_RoleItem& local_2 = this.Item.Get();
         FText local_16 = local_2 ? local_2.GetPlayerIllustrate1() : FText();
         return local_16;
     }
     UFUNCTION()
     FText Item_PlayerIllustrate2() const
     {
-        FVM_RoleItem& local_2;
+        FVM_RoleItem& local_2 = this.Item.Get();
         FText local_16 = local_2 ? local_2.GetPlayerIllustrate2() : FText();
         return local_16;
     }

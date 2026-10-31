@@ -109,11 +109,9 @@ FMS_MotionUnlock& Get(const UObject ContextObject)
 {
     return FMS_MotionUnlock::GetByManager(EUIInternal::GetContextManager(ContextObject));
 }
-FMS_MotionUnlock GetByManager(const UEUIManagerSubsystem Manager)
+FMS_MotionUnlock& GetByManager(const UEUIManagerSubsystem Manager)
 {
-    FMS_MotionUnlock __r;
-    TEUIModelRef<FMS_MotionUnlock> local_6 = TEUIModelRef<FMS_MotionUnlock>(EUIInternal::MakeModelWithManager(Manager, FMS_MotionUnlock::ModelId));
-    return __r;
+    return TEUIModelRef<FMS_MotionUnlock>(EUIInternal::MakeModelWithManager(Manager, FMS_MotionUnlock::ModelId)).Get();
 }
 void GetModelInfo(FEUIModelOnlyMetaInfo &inout Result)
 {

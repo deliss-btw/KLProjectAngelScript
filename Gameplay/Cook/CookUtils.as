@@ -26,7 +26,6 @@ namespace FCookUtils
 {
 int CalcEnergyTotal(const TArray<TDataObjectPtr<FItemConfig>> &inout Items)
 {
-    FGameplayTag local_20;
     int local_1 = 0;
     for (auto& local_18 : Items)
     {
@@ -34,7 +33,7 @@ int CalcEnergyTotal(const TArray<TDataObjectPtr<FItemConfig>> &inout Items)
         {
             continue;
         }
-        if (!(local_20.MatchesTag(GameplayTags::ItemCategory_Material_Cook)))
+        if (!(local_18.Get().ItemCategory.AsGameplayTag().MatchesTag(GameplayTags::ItemCategory_Material_Cook)))
         {
             continue;
         }
@@ -58,17 +57,15 @@ bool LookupEnergyTier(const TArray<FCookEnergyThresholdConfig> &inout Tiers, con
 }
 TMap<FGameplayTag, int> CollectCookTagSums(const TArray<TDataObjectPtr<FItemConfig>> &inout Items)
 {
-    FGameplayTag local_38;
     int local_88;
     TMap<FGameplayTag, int> local_20;
-    int local_108 = 0;
     for (auto& local_36 : Items)
     {
         if (!(local_36))
         {
             continue;
         }
-        if (!(local_38.MatchesTag(GameplayTags::ItemCategory_Material_Cook)))
+        if (!(local_36.Get().ItemCategory.AsGameplayTag().MatchesTag(GameplayTags::ItemCategory_Material_Cook)))
         {
             continue;
         }
@@ -77,8 +74,7 @@ TMap<FGameplayTag, int> CollectCookTagSums(const TArray<TDataObjectPtr<FItemConf
         {
             int local_107 = 0;
             local_20.Find(local_106.GetKey(), local_107);
-            local_108 = local_107 + local_108;
-            local_20.Add(local_106.GetKey(), local_108);
+            local_20.Add(local_106.GetKey(), (local_107 + local_106.GetValue()));
         }
     }
     return local_20;
@@ -131,7 +127,6 @@ void AppendIngredientTierAttributes(const FCookMaterialConfig &inout Mat, const 
 }
 TMap<ECookStatType, int> SumStatContributions(const TArray<TDataObjectPtr<FItemConfig>> &inout Items, const int TierLevel)
 {
-    FGameplayTag local_38;
     TMap<ECookStatType, int> local_20;
     int local_88 = 0;
     for (auto& local_36 : Items)
@@ -140,7 +135,7 @@ TMap<ECookStatType, int> SumStatContributions(const TArray<TDataObjectPtr<FItemC
         {
             continue;
         }
-        if (!(local_38.MatchesTag(GameplayTags::ItemCategory_Material_Cook)))
+        if (!(local_36.Get().ItemCategory.AsGameplayTag().MatchesTag(GameplayTags::ItemCategory_Material_Cook)))
         {
             continue;
         }
@@ -186,9 +181,9 @@ FCookOutcome ResolveCookOutcome(const TArray<FCookRecipeRuntime> &inout SortedRe
         {
             TMap<ECookStatType, int> local_82 = FCookUtils::SumStatContributions(Items, int(local_32.TierLevel));
             TArray<ECookStatType> local_86;
-            local_86.Add(ECookStatType(0));
-            local_86.Add(ECookStatType(1));
-            local_86.Add(ECookStatType(2));
+            local_86.Add(ECookStatType::HP);
+            local_86.Add(ECookStatType::SP);
+            local_86.Add(ECookStatType::ATK);
             for (auto local_101 : local_86)
             {
                 int local_102 = 0;

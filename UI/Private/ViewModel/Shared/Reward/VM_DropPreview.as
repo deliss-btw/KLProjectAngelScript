@@ -165,14 +165,11 @@ struct FDropItemConfigParser
     }
     void ParseSingleDrop(const TDataObjectPtr<FDropItemConfig> &inout SingleDrop, const bool bProbability = false, const bool bDropIncrease = false)
     {
-        int local_2 = 0;
-        int local_73 = 0;
         bool local_113;
-        bool local_116 = false;
         int local_1 = 0;
         for (auto& local_18 : SingleDrop.opArrow().Drops)
         {
-            local_2 = int(local_18.Weight);
+            int local_2 = int(local_18.Weight);
             local_1 = local_1 + local_2;
         }
         if (local_1 <= 0)
@@ -187,30 +184,38 @@ struct FDropItemConfigParser
             {
                 if (local_72.Item)
                 {
-                    local_73 = int(local_72.Num);
-                    local_2 = local_58.FindOrAdd(local_72.Item);
-                    local_2 = local_2 + local_73;
+                    int local_73 = int(local_72.Num);
+                    int local_2_2 = local_58.FindOrAdd(local_72.Item) + local_73;
                 }
             }
             for (auto& local_92 : local_58)
             {
-                local_73 = int(local_18.Weight);
-                this.AddItemToParsedDropItemWeightData(local_38.FindOrAdd(local_92.GetKey()), local_2, local_73);
+                int local_73_2 = int(local_18.Weight);
+                int local_2_3 = local_92.GetValue();
+                this.AddItemToParsedDropItemWeightData(local_38.FindOrAdd(local_92.GetKey()), local_2_3, local_73_2);
             }
         }
         for (auto& local_110 : local_38)
         {
             FParsedDropItemData& local_112 = this.ParsedDropItemDataMap.FindOrAdd(local_110.GetKey());
-            bool local_15 = (local_73 >= local_1);
-            bool local_115 = bProbability || !(local_15);
-            local_113 = local_115 || local_116;
+            int local_73_3 = local_110.GetValue().TotalWeight;
+            bool local_15 = (local_73_3 >= local_1);
+            if (bProbability || !(local_15))
+            {
+                local_113 = true;
+            }
+            else
+            {
+                local_113 = local_110.GetValue().bQuantityVaries;
+            }
             if ((local_15 && !(bProbability)))
             {
-                local_73 = int(local_112.MinNum);
-                local_73 = local_73 + local_2;
-                local_112.MinNum = local_73;
+                int local_2_4 = local_110.GetValue().MinNum;
+                local_73_3 = int(local_112.MinNum);
+                local_73_3 = local_73_3 + local_2_4;
+                local_112.MinNum = local_73_3;
             }
-            local_115 = local_112.bProbability || local_113;
+            bool local_115 = local_112.bProbability || local_113;
             local_112.bProbability = local_115;
             local_115 = local_112.bDropIncrease || bDropIncrease;
             local_112.bDropIncrease = local_115;
@@ -318,24 +323,27 @@ struct FVM_DropPreview : FEUIViewModel
     void PostConstruct()
     {
         FDropItemConfigParser local_20;
-        int local_37 = 0;
-        int local_42 = 0;
-        int local_43 = 0;
         local_20.ParseDropItemConfig(this.GetDropItemConfig());
         for (auto& local_40 : local_20.ParsedDropItemDataMap)
         {
-            if (0 > 0)
+            if (local_40.GetValue().MinNum > 0)
             {
-                local_43 = 0;
-                this.GetModify_BasicDrops().Add(this.CreateDropItemModelContainer(local_40.GetKey(), local_42, (local_43 != 0), (local_37 != 0)));
+                int local_37 = local_40.GetValue().bDropIncrease;
+                this.GetModify_BasicDrops().Add(this.CreateDropItemModelContainer(local_40.GetKey(), local_40.GetValue().MinNum, false, (local_37 != 0)));
                 continue;
             }
-            if (local_37 != 0)
+            int local_37_2 = local_40.GetValue().bProbability;
+            if (local_37_2 != 0)
             {
-                this.GetModify_ExtraDrops().Add(this.CreateDropItemModelContainer(local_40.GetKey(), local_42, true, (local_43 != 0)));
+                int local_43 = local_40.GetValue().bDropIncrease;
+                this.GetModify_ExtraDrops().Add(this.CreateDropItemModelContainer(local_40.GetKey(), local_40.GetValue().MinNum, true, (local_43 != 0)));
                 continue;
             }
         }
+        __Lambda_UI_Private_ViewModel_Shared_Reward_VM_DropPreview_196 local_60;
+        this.GetModify_BasicDrops().Sort(local_60);
+        __Lambda_UI_Private_ViewModel_Shared_Reward_VM_DropPreview_197 local_62;
+        this.GetModify_ExtraDrops().Sort(local_62);
         return;
     }
     FEUIModelContainer CreateDropItemModelContainer(const TDataObjectPtr<FItemConfig> &inout ItemConfig, const int MinNum, const bool bProbability, const bool bDropIncrease)
@@ -511,11 +519,9 @@ FVM_DropPreviewItemMeta& Create(const UObject ContextObject, const TDataObjectPt
 {
     return FVM_DropPreviewItemMeta::CreateByManager(EUIInternal::GetContextManager(ContextObject), ItemConfig, bDropIncrease);
 }
-FVM_DropPreviewItemMeta CreateByManager(const UEUIManagerSubsystem Manager, const TDataObjectPtr<FItemConfig> &inout ItemConfig, const bool bDropIncrease)
+FVM_DropPreviewItemMeta& CreateByManager(const UEUIManagerSubsystem Manager, const TDataObjectPtr<FItemConfig> &inout ItemConfig, const bool bDropIncrease)
 {
-    FVM_DropPreviewItemMeta __r;
-    TEUIModelRef<FVM_DropPreviewItemMeta> local_6 = TEUIModelRef<FVM_DropPreviewItemMeta>(EUIInternal::MakeModelWithManager_Generic(Manager, FVM_DropPreviewItemMeta::ModelId, 0, ItemConfig, bDropIncrease));
-    return __r;
+    return TEUIModelRef<FVM_DropPreviewItemMeta>(EUIInternal::MakeModelWithManager_Generic(Manager, FVM_DropPreviewItemMeta::ModelId, 0, ItemConfig, bDropIncrease)).Get();
 }
 void GetModelInfo(FEUIViewModelMetaInfo &inout Result)
 {
@@ -574,8 +580,7 @@ namespace __GeneratedProperties_FVM_DropPreviewItemMeta
 {
 UScriptStruct StaticStruct()
 {
-    UScriptStruct local_2;
-    return local_2;
+    return __GeneratedProperties_FVM_DropPreviewItemMeta.Get();
 }
 }
 namespace FVM_DropPreview
@@ -584,11 +589,9 @@ FVM_DropPreview& Create(const UObject ContextObject, const TDataObjectPtr<FDropI
 {
     return FVM_DropPreview::CreateByManager(EUIInternal::GetContextManager(ContextObject), DropItemConfig, bShowDropIncrease);
 }
-FVM_DropPreview CreateByManager(const UEUIManagerSubsystem Manager, const TDataObjectPtr<FDropItemConfigBase> &inout DropItemConfig, const bool bShowDropIncrease)
+FVM_DropPreview& CreateByManager(const UEUIManagerSubsystem Manager, const TDataObjectPtr<FDropItemConfigBase> &inout DropItemConfig, const bool bShowDropIncrease)
 {
-    FVM_DropPreview __r;
-    TEUIModelRef<FVM_DropPreview> local_6 = TEUIModelRef<FVM_DropPreview>(EUIInternal::MakeModelWithManager_Generic(Manager, FVM_DropPreview::ModelId, 0, DropItemConfig, bShowDropIncrease));
-    return __r;
+    return TEUIModelRef<FVM_DropPreview>(EUIInternal::MakeModelWithManager_Generic(Manager, FVM_DropPreview::ModelId, 0, DropItemConfig, bShowDropIncrease)).Get();
 }
 void GetModelInfo(FEUIViewModelMetaInfo &inout Result)
 {
@@ -679,7 +682,6 @@ namespace __GeneratedProperties_FVM_DropPreview
 {
 UScriptStruct StaticStruct()
 {
-    UScriptStruct local_2;
-    return local_2;
+    return __GeneratedProperties_FVM_DropPreview.Get();
 }
 }

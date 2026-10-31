@@ -15,7 +15,6 @@ class US_CharacterEnvEffect : UECSScriptSystem
         const AActor local_10;
         const UMeshComponent local_12;
         UGamePhysicalMaterial local_174;
-        FCharacterEnvEffectGroundData& local_208;
         if (EnvEffect.Settings == nullptr)
         {
             return;
@@ -100,6 +99,7 @@ class US_CharacterEnvEffect : UECSScriptSystem
         for (auto& local_202 : EnvEffect.GroundData)
         {
             FCharacterEnvEffectGroundSettings& local_206 = local_6.GroundSettings[local_202.GetKey()];
+            FCharacterEnvEffectGroundData& local_208 = local_202.GetValue();
             if (local_208.MoveWeight > 0.0f)
             {
                 local_208.MoveDurationSeconds = (local_208.MoveDurationSeconds + local_44_2);
@@ -144,7 +144,6 @@ class US_CharacterEnvEffect : UECSScriptSystem
         int local_18 = 0;
         float32 local_67;
         EGlobalEnvEffectWeatherType local_93;
-        FGlobalEnvEffectWeatherSettings& local_96;
         UGlobalEnvEffectSettings local_4 = ::UCombatGlobalSettings::Get().EnvEffectSettings;
         if (local_4 != nullptr)
         {
@@ -169,6 +168,7 @@ class US_CharacterEnvEffect : UECSScriptSystem
         for (auto& local_92 : local_4.EnvEffectWeather)
         {
             local_93 = local_92.GetKey();
+            FGlobalEnvEffectWeatherSettings& local_96 = local_92.GetValue();
             FGlobalEnvEffectWeatherData& local_98 = local_18.WeatherEffectData.FindOrAdd(local_93);
             if (local_42.opArrow().WeatherEffect.Contains(local_93))
             {

@@ -35,10 +35,10 @@ class UWidget_AvatarSelection : UEUIActivatableWidget
     {
         TEUIModelRef<FVM_AvatarShowcase> local_2;
         local_2;
-        local_2.Setup();
+        this.AvatarSelectionShowcase.Get().Setup(local_2);
         if (this.AvatarSelection.IsValid() && ((this.AvatarList != nullptr)))
         {
-            this.AvatarList.SetSelectedIndex(GetSelectedAvatarIndex());
+            this.AvatarList.SetSelectedIndex(this.AvatarSelection.Get().GetSelectedAvatarIndex());
         }
         return;
     }
@@ -47,7 +47,7 @@ class UWidget_AvatarSelection : UEUIActivatableWidget
     {
         if (this.AvatarSelectionShowcase.IsValid())
         {
-            RefreshShowcaseAvatars();
+            this.AvatarSelectionShowcase.Get().RefreshShowcaseAvatars();
         }
         return;
     }
@@ -55,16 +55,14 @@ class UWidget_AvatarSelection : UEUIActivatableWidget
     void GoToSelectedAvatar()
     {
         FVM_MainMenuAvatar& local_2 = ::FVM_MainMenuAvatar::Create(this);
-        TEUIModelRef<FVM_AvatarInfo> local_4;
-        local_4.GetSelectedAvatar();
-        local_2.SetCurrentSelectedAvatar(local_4);
+        local_2.SetCurrentSelectedAvatar(this.AvatarSelection.Get().GetSelectedAvatar());
         FEUIWidget::AddWidget(this.GetOwningLocalPlayer(), GameplayTags::UI_Type_Avatar_Main, FEUIModelRef(local_2));
         return;
     }
     UFUNCTION()
     TArray<FEUIModelContainer> AvatarSelection_FilteredAvatars() const
     {
-        FVM_AvatarSelection& local_2;
+        FVM_AvatarSelection& local_2 = this.AvatarSelection.Get();
         TArray<FEUIModelContainer> local_12;
         if (local_2)
         {
@@ -79,7 +77,7 @@ class UWidget_AvatarSelection : UEUIActivatableWidget
     UFUNCTION()
     TArray<FEUIModelContainer> AvatarSelection_IllustrateTypes() const
     {
-        FVM_AvatarSelection& local_2;
+        FVM_AvatarSelection& local_2 = this.AvatarSelection.Get();
         TArray<FEUIModelContainer> local_12;
         if (local_2)
         {
@@ -133,8 +131,8 @@ class UWidget_AvatarSelection : UEUIActivatableWidget
     }
     void HandleObservedModelChanges(FEUIReactiveSubscriberIterator &inout It)
     {
-        FVM_AvatarSelection& local_6;
         TEUIModelRef<FVM_AvatarSelection> local_2 = this.AvatarSelection.AsRef();
+        FVM_AvatarSelection& local_6 = local_2.Get();
         for (; It; )
         {
             FEUIReactiveSubscriberTrackScope local_56 = FEUIReactiveSubscriberTrackScope(It);

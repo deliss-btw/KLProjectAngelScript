@@ -18,7 +18,7 @@ class UWidget_InvitationPlayerBasicItem : UEUIUserWidget
     UFUNCTION()
     void OnPlayerBasicItemClicked()
     {
-        XLog(ELog(74), FString().Append("OnPlayerBasicItemClicked: ").Append(GetPlayerUid()));
+        XLog(ELog(74), FString().Append("OnPlayerBasicItemClicked: ").Append(this.PlayerInfo.Get().GetPlayerUid()));
         return;
     }
     UFUNCTION()

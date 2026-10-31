@@ -204,11 +204,9 @@ FM_ShopGoods& Create(const UObject ContextObject)
 {
     return FM_ShopGoods::CreateByManager(EUIInternal::GetContextManager(ContextObject));
 }
-FM_ShopGoods CreateByManager(const UEUIManagerSubsystem Manager)
+FM_ShopGoods& CreateByManager(const UEUIManagerSubsystem Manager)
 {
-    FM_ShopGoods __r;
-    TEUIModelRef<FM_ShopGoods> local_6 = TEUIModelRef<FM_ShopGoods>(EUIInternal::MakeModelWithManager(Manager, FM_ShopGoods::ModelId));
-    return __r;
+    return TEUIModelRef<FM_ShopGoods>(EUIInternal::MakeModelWithManager(Manager, FM_ShopGoods::ModelId)).Get();
 }
 void GetModelInfo(FEUIModelOnlyMetaInfo &inout Result)
 {

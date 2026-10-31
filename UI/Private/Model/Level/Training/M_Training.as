@@ -56,8 +56,7 @@ struct FMS_TrainingModel : FEUIModelSingleton
         this.GetModify_TrainingAvatarConfigMap().Empty(0);
         for (auto& local_22 : ::FAvatarPrefabConfig::GetAll())
         {
-            int local_23 = int(local_22.DataId);
-            TDataObjectPtr<FAvatarPrefabConfig> local_48 = ::FAvatarPrefabConfig::GetByDataId(local_23);
+            TDataObjectPtr<FAvatarPrefabConfig> local_48 = ::FAvatarPrefabConfig::GetByDataId(int(local_22.DataId));
             if (!(local_48.IsSet()))
             {
                 continue;
@@ -68,7 +67,7 @@ struct FMS_TrainingModel : FEUIModelSingleton
                 {
                     continue;
                 }
-                local_87 = local_23;
+                local_87 = local_86.Get().DataId;
                 if (this.GetModify_TrainingAvatarConfigMap().Contains(local_87))
                 {
                     XWarning(ELog(16), FString().Append("[M_Training] Duplicate TrainingInfo DataId=").Append(local_87).Append(" in Avatar DataId=").Append(local_22.DataId));
@@ -147,7 +146,6 @@ struct FMS_TrainingModel : FEUIModelSingleton
     }
     void TryGenerateUnlockTrainingRedDot(const uint DataId, const uint State)
     {
-        int local_1 = 0;
         if (State != 1)
         {
             return;
@@ -156,19 +154,21 @@ struct FMS_TrainingModel : FEUIModelSingleton
         {
             return;
         }
-        if (!(this.FindAvatarConfigByTrainingId(DataId).IsSet()))
+        TDataObjectPtr<FAvatarPrefabConfig> local_50 = this.FindAvatarConfigByTrainingId(DataId);
+        if (!(local_50.IsSet()))
         {
             return;
         }
-        int64 local_78 = local_1;
+        int64 local_78 = local_50.Get().DataId;
         FMS_RedDotSystem& local_82 = ::FMS_RedDotSystem::Get(this.GetManager());
         int64 local_76 = DataId;
         local_82.GenerateSpecificRedDot(GameplayTags::RedDotSystem_AvatarTraining_UnlockTraining, local_76, 1, false);
-        if (local_82.TryFindOrAddRedDotNode(FRedDotNodeData(GameplayTags::RedDotSystem_AvatarTraining, local_78)).IsValid())
+        TEUIModelWeakRef<FM_RedDotNode> local_90 = local_82.TryFindOrAddRedDotNode(FRedDotNodeData(GameplayTags::RedDotSystem_AvatarTraining, local_78));
+        if (local_90.IsValid())
         {
             local_82.GenerateSpecificRedDot(GameplayTags::RedDotSystem_AvatarTraining, local_78, 1, false);
             int64 local_76_2 = DataId;
-            FRedDotNodeData(GameplayTags::RedDotSystem_AvatarTraining_UnlockTraining, local_76_2).AddChildNodeData();
+            local_90.Get().AddChildNodeData(FRedDotNodeData(GameplayTags::RedDotSystem_AvatarTraining_UnlockTraining, local_76_2));
         }
         else
         {
@@ -190,12 +190,11 @@ struct FMS_TrainingModel : FEUIModelSingleton
     }
     bool IsTrainingUnlock(const TDataObjectPtr<FTrainingInfoConfig> &inout TrainingInfo)
     {
-        int local_2 = 0;
         if (!(TrainingInfo.IsSet()))
         {
             return false;
         }
-        return (this.GetTrainingState(local_2) >= 1);
+        return (this.GetTrainingState(TrainingInfo.Get().DataId) >= 1);
     }
     int GetUnlockedTrainingCount(const TDataObjectPtr<FAvatarPrefabConfig> &inout AvatarConfig)
     {
@@ -204,7 +203,7 @@ struct FMS_TrainingModel : FEUIModelSingleton
             return 0;
         }
         int local_3 = 0;
-        for (auto& local_18 : GetTrainingInfoConfigs())
+        for (auto& local_18 : AvatarConfig.Get().GetTrainingInfoConfigs())
         {
             if (this.IsTrainingUnlock(local_18))
             {
@@ -219,29 +218,30 @@ struct FMS_TrainingModel : FEUIModelSingleton
     }
     void ConsumeTrainingRedDot(const uint TrainingDataId)
     {
-        int local_53 = 0;
-        if (!(this.FindAvatarConfigByTrainingId(TrainingDataId).IsSet()))
+        TDataObjectPtr<FAvatarPrefabConfig> local_24 = this.FindAvatarConfigByTrainingId(TrainingDataId);
+        if (!(local_24.IsSet()))
         {
             return;
         }
-        int64 local_56 = local_53;
+        int64 local_56 = local_24.Get().DataId;
         FMS_RedDotSystem& local_60 = ::FMS_RedDotSystem::Get(this.GetManager());
         int64 local_52 = TrainingDataId;
         local_60.ConsumeRedDot(FRedDotNodeData(GameplayTags::RedDotSystem_AvatarTraining_UnlockTraining, local_52));
-        if (!(local_60.TryGetRedDotNodeModel(FRedDotNodeData(GameplayTags::RedDotSystem_AvatarTraining, local_56)).IsValid()))
+        TEUIModelWeakRef<FM_RedDotNode> local_66 = local_60.TryGetRedDotNodeModel(FRedDotNodeData(GameplayTags::RedDotSystem_AvatarTraining, local_56));
+        if (!(local_66.IsValid()))
         {
             return;
         }
         int64 local_52_2 = TrainingDataId;
-        FRedDotNodeData(GameplayTags::RedDotSystem_AvatarTraining_UnlockTraining, local_52_2).RemoveChildNodeData();
-        if (!(HasChildActivation()))
+        local_66.Get().RemoveChildNodeData(FRedDotNodeData(GameplayTags::RedDotSystem_AvatarTraining_UnlockTraining, local_52_2));
+        if (!(local_66.Get().HasChildActivation()))
         {
-            GetCount().DecreaseCount();
+            local_66.Get().DecreaseCount(local_66.Get().GetCount());
             local_60.ConsumeRedDot(FRedDotNodeData(GameplayTags::RedDotSystem_AvatarTraining, local_56));
         }
         else
         {
-            1.DecreaseCount();
+            local_66.Get().DecreaseCount(1);
         }
         return;
     }
@@ -299,11 +299,9 @@ FMS_TrainingModel& Get(const UObject ContextObject)
 {
     return FMS_TrainingModel::GetByManager(EUIInternal::GetContextManager(ContextObject));
 }
-FMS_TrainingModel GetByManager(const UEUIManagerSubsystem Manager)
+FMS_TrainingModel& GetByManager(const UEUIManagerSubsystem Manager)
 {
-    FMS_TrainingModel __r;
-    TEUIModelRef<FMS_TrainingModel> local_6 = TEUIModelRef<FMS_TrainingModel>(EUIInternal::MakeModelWithManager(Manager, FMS_TrainingModel::ModelId));
-    return __r;
+    return TEUIModelRef<FMS_TrainingModel>(EUIInternal::MakeModelWithManager(Manager, FMS_TrainingModel::ModelId)).Get();
 }
 void GetModelInfo(FEUIModelOnlyMetaInfo &inout Result)
 {

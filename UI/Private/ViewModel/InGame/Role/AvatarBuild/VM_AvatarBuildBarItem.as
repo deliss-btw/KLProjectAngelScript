@@ -44,8 +44,7 @@ struct FVM_AvatarBuildBarItem : FEUIViewModel
     }
     FSoftBrush GetAvatarIcon() const
     {
-        // body not fully recovered — stub [no-return]
-        FSoftBrush __r; return __r;
+        return this.GetAvatarConfig().Get().AvatarIcon;
     }
     bool IsSelected() const
     {
@@ -58,8 +57,7 @@ struct FVM_AvatarBuildBarItem : FEUIViewModel
     }
     void SelectAvatar()
     {
-        TEUIModelRef<FMS_EditingAvatar> local_2 = this.GetEditingAvatar();
-        this.GetAvatarConfig().SetAvatarConfig();
+        this.GetEditingAvatar().Get().SetAvatarConfig(this.GetAvatarConfig());
         return;
     }
     TDataObjectPtr<FAvatarPrefabConfig> GetAvatarConfig() const property
@@ -121,11 +119,9 @@ FVM_AvatarBuildBarItem& Create(const UObject ContextObject, const TDataObjectPtr
 {
     return FVM_AvatarBuildBarItem::CreateByManager(EUIInternal::GetContextManager(ContextObject), AvatarConfig);
 }
-FVM_AvatarBuildBarItem CreateByManager(const UEUIManagerSubsystem Manager, const TDataObjectPtr<FAvatarPrefabConfig> &inout AvatarConfig)
+FVM_AvatarBuildBarItem& CreateByManager(const UEUIManagerSubsystem Manager, const TDataObjectPtr<FAvatarPrefabConfig> &inout AvatarConfig)
 {
-    FVM_AvatarBuildBarItem __r;
-    TEUIModelRef<FVM_AvatarBuildBarItem> local_6 = TEUIModelRef<FVM_AvatarBuildBarItem>(EUIInternal::MakeModelWithManager_Generic(Manager, FVM_AvatarBuildBarItem::ModelId, 0, AvatarConfig));
-    return __r;
+    return TEUIModelRef<FVM_AvatarBuildBarItem>(EUIInternal::MakeModelWithManager_Generic(Manager, FVM_AvatarBuildBarItem::ModelId, 0, AvatarConfig)).Get();
 }
 void GetModelInfo(FEUIViewModelMetaInfo &inout Result)
 {
@@ -189,7 +185,6 @@ namespace __GeneratedProperties_FVM_AvatarBuildBarItem
 {
 UScriptStruct StaticStruct()
 {
-    UScriptStruct local_2;
-    return local_2;
+    return __GeneratedProperties_FVM_AvatarBuildBarItem.Get();
 }
 }

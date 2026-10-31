@@ -17,6 +17,7 @@ void UpdateSyncSpeakToAndOptionInfoByPlayerEntity(const FECSEntity &inout Entity
         }
         else
         {
+            local_26.GetModify_HasSpeakToAndOptionPlayerEntityList().Remove(local_16);
         }
     }
     return;
@@ -24,7 +25,7 @@ void UpdateSyncSpeakToAndOptionInfoByPlayerEntity(const FECSEntity &inout Entity
 bool ChooseInteractOption(const FECSEntity &inout InteractSource, const FECSEntity &inout InteractTarget, const TDataObjectPtr<FInteractSimpleSpeakToAndOption> &inout Data, const int SelectIndex)
 {
     FEcosimAIV2DialogueOptionConditionBase local_52;
-    if (SelectIndex >= 0)
+    if (SelectIndex >= Data.Get().OptionList.Num())
     {
         return false;
     }
@@ -56,21 +57,18 @@ bool ChooseInteractOption(const FECSEntity &inout InteractSource, const FECSEnti
 }
 bool GetInteractOption(TDataObjectPtr<FInteractSimpleSpeakToAndOption> &inout Data, TArray<FString> &out OptionList)
 {
-    TArrayConstIterator<FEcosimAIV2DialogueOption> local_10;
     TArray<FString> local_4;
     OptionList = local_4;
-    for (; local_10.CanProceed;)
+    for (auto& local_20 : Data.Get().OptionList)
     {
-        const FEcosimAIV2DialogueOption& local_20 = local_10.Proceed();
         FString local_24 = local_20.OptionContent;
         int local_25 = 0;
         for (; local_25 < local_20.ConditionList.Num(); ++local_25)
         {
-            if (FInstancedStruct::GetPtr(local_20.ConditionList[local_25]).opCall())
+            TConstRawPtr<FEcosimAIV2DialogueOptionCondition_ConsumeItem> local_34 = FInstancedStruct::GetPtr(local_20.ConditionList[local_25]).opCall();
+            if (local_34)
             {
-                FString local_40;
-                local_40.ToString();
-                local_24 = local_24.Replace(FString().AppendChar(int16(123)).Append(local_25).AppendChar(int16(125)), local_40, ESearchCase(1));
+                local_24 = local_24.Replace(FString().AppendChar(int16(123)).Append(local_25).AppendChar(int16(125)), local_34.Get().ToString(), ESearchCase(1));
             }
         }
         OptionList.Add(local_24);
@@ -136,20 +134,21 @@ bool UpdateInteractDialogue(const FECSEntity &inout InteractSource, const FECSEn
         TDataObjectPtr<FInteractSimpleSpeakToAndOption>& local_36 = local_24.CurrentSpeakToAndOption;
         if (local_36 && local_36.IsSet())
         {
-            if (SelectIndex >= 0)
+            if (SelectIndex >= local_36.Get().OptionList.Num())
             {
                 return false;
             }
             if (FEcosimAIV2Utils::ChooseInteractOption(InteractSource, InteractTarget, local_36, SelectIndex))
             {
+                local_32 = local_36.Get().OptionList[SelectIndex].SuccessRowName;
             }
             else
             {
+                local_32 = local_36.Get().OptionList[SelectIndex].FailRowName;
             }
         }
     }
-    bool local_25 = !(local_32.IsNone());
-    if (local_25)
+    if (!(local_32.IsNone()))
     {
         UCombatGlobalSettings local_38 = UCombatGlobalSettings::Get();
         UDataTable::FindDataObject local_44;
@@ -162,7 +161,6 @@ bool UpdateInteractDialogue(const FECSEntity &inout InteractSource, const FECSEn
     TArray<TDataObjectPtr<FInteractSimpleSpeakToAndOption>> local_96;
     if (FEcosimAIV2Utils::GetValidInteractSimpleSpeakToAndOptionByTargetPlayerEntity(InteractTarget, local_12, local_30, local_96))
     {
-        TArrayConstIterator<FString> local_116;
         TDataObjectPtr<FInteractSimpleSpeakToAndOption>& local_36_2 = local_96[0];
         local_24.CurrentSpeakToAndOption = local_36_2;
         TArray<FString> local_100;
@@ -171,13 +169,13 @@ bool UpdateInteractDialogue(const FECSEntity &inout InteractSource, const FECSEn
             local_100.Add("离开");
         }
         FStoryDialogInfoBuilder local_110;
-        local_25 = !local_25;
-        if (local_25)
+        if (!(local_36_2.Get().SpeakToContent.IsEmpty()))
         {
+            local_110.EntitySay(InteractTarget, local_36_2.Get().SpeakToContent, "");
         }
-        for (; local_116.CanProceed;)
+        for (auto& local_124 : local_36_2.Get().AdditionalSpeakToContentList)
         {
-            local_110.EntitySay(InteractTarget, local_116.Proceed(), "");
+            local_110.EntitySay(InteractTarget, local_124, "");
         }
         if (!(local_100.IsEmpty()))
         {
@@ -189,6 +187,7 @@ bool UpdateInteractDialogue(const FECSEntity &inout InteractSource, const FECSEn
             FStoryDialogInfo local_140 = local_110.Get();
             local_132.TargetEntity = InteractTarget;
             local_146.OptionList = local_100;
+            FEcosimAIV2Utils::EntityPublicSpeak(InteractTarget, local_96[0].Get().SpeakToContent, 3.0f);
             return true;
         }
     }
@@ -225,35 +224,30 @@ bool GetValidInteractSimpleSpeakToAndOptionByTargetPlayerEntity(const FECSEntity
     int local_10 = 0;
     int local_16 = 0;
     bool local_33;
-    TArrayConstIterator<FInstancedStruct> local_40;
-    TArrayConstIterator<FName> local_74;
     bool local_95 = false;
-    int local_96 = 0;
-    int local_97 = 0;
     FECSEntity local_4 = PlayerEntity;
-    bool local_17 = !(local_10) || !(local_16);
-    if (local_17)
+    if (!(local_10) || !(local_16))
     {
         return false;
     }
     for (auto& local_32 : CandidateDataList)
     {
         local_33 = true;
-        for (; local_40.CanProceed;)
+        for (auto& local_48 : local_32.Get().ConditionList)
         {
-            const FInstancedStruct& local_48 = local_40.Proceed();
-            if (FInstancedStruct::GetPtr(local_48).opCall())
+            TConstRawPtr<FInteractSimpleSpeakToAndOptionCondition_SpeakNumOfTime> local_54 = FInstancedStruct::GetPtr(local_48).opCall();
+            if (local_54)
             {
                 int local_57 = 0;
+                bool local_17 = local_54.Get().bOnlyCountCurrentTarget;
                 if (local_17)
                 {
                     FEcosimAIV2SpeakToMemory local_62;
                     if (local_16.SpeakToMemoryMap.Find(local_4, local_62))
                     {
-                        TArrayConstIterator<FName> local_68;
-                        for (; local_68.CanProceed;)
+                        for (auto& local_76 : local_54.Get()._base_FInteractSimpleSpeakToAndOptionConditionBase)
                         {
-                            if (local_62.SpokenToNameKeyList.Contains(local_68.Proceed()))
+                            if (local_62.SpokenToNameKeyList.Contains(local_76))
                             {
                                 local_57 = local_57 + 1;
                             }
@@ -264,52 +258,45 @@ bool GetValidInteractSimpleSpeakToAndOptionByTargetPlayerEntity(const FECSEntity
                 {
                     for (auto& local_94 : local_16.SpeakToMemoryMap)
                     {
-                        local_94;
-                        for (; local_74.CanProceed;)
+                        for (auto& local_76 : local_54.Get()._base_FInteractSimpleSpeakToAndOptionConditionBase)
                         {
-                            if (unresolved.SpokenToNameKeyList.Contains(local_74.Proceed()))
+                            if (local_94.GetValue().SpokenToNameKeyList.Contains(local_76))
                             {
                                 local_57 = local_57 + 1;
                             }
                         }
                     }
                 }
-                switch (local_96)
+                switch (int(local_54.Get().EcosimAIV2NumberComparison))
                 {
                 case 0:
                 {
-                    local_17 = (local_57 > local_97);
-                    local_95 = local_17;
+                    local_95 = (local_57 > local_54.Get().SpeakNumOfTime);
                     break;
                 }
                 case 1:
                 {
-                    local_17 = (local_57 >= local_97);
-                    local_95 = local_17;
+                    local_95 = (local_57 >= local_54.Get().SpeakNumOfTime);
                     break;
                 }
                 case 2:
                 {
-                    local_17 = (local_57 < local_97);
-                    local_95 = local_17;
+                    local_95 = (local_57 < local_54.Get().SpeakNumOfTime);
                     break;
                 }
                 case 3:
                 {
-                    local_17 = (local_57 <= local_97);
-                    local_95 = local_17;
+                    local_95 = (local_57 <= local_54.Get().SpeakNumOfTime);
                     break;
                 }
                 case 4:
                 {
-                    local_17 = (local_57 == local_97);
-                    local_95 = local_17;
+                    local_95 = (local_57 == local_54.Get().SpeakNumOfTime);
                     break;
                 }
                 case 5:
                 {
-                    local_17 = (local_57 != local_97);
-                    local_95 = local_17;
+                    local_95 = (local_57 != local_54.Get().SpeakNumOfTime);
                     break;
                 }
                 default:
@@ -318,8 +305,7 @@ bool GetValidInteractSimpleSpeakToAndOptionByTargetPlayerEntity(const FECSEntity
                     break;
                 }
                 }
-                local_17 = !(local_95);
-                if (local_17)
+                if (!(local_95))
                 {
                     local_33 = false;
                     break;
@@ -331,9 +317,7 @@ bool GetValidInteractSimpleSpeakToAndOptionByTargetPlayerEntity(const FECSEntity
                 FEcosimAIV2SpeakToMemory local_62;
                 if (local_16.SpeakToMemoryMap.Find(local_4, local_62))
                 {
-                    FName local_108;
-                    local_108.GetDataName();
-                    bool local_18 = local_62.SpokenToNameKeyList.Contains(local_108);
+                    bool local_18 = local_62.SpokenToNameKeyList.Contains(local_32.Get().GetDataName());
                     if (local_18)
                     {
                         local_33 = false;

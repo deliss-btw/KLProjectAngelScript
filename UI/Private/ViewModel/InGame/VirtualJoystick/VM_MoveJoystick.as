@@ -287,11 +287,9 @@ FVM_MoveJoystick& Create(const UObject ContextObject)
 {
     return FVM_MoveJoystick::CreateByManager(EUIInternal::GetContextManager(ContextObject));
 }
-FVM_MoveJoystick CreateByManager(const UEUIManagerSubsystem Manager)
+FVM_MoveJoystick& CreateByManager(const UEUIManagerSubsystem Manager)
 {
-    FVM_MoveJoystick __r;
-    TEUIModelRef<FVM_MoveJoystick> local_6 = TEUIModelRef<FVM_MoveJoystick>(EUIInternal::MakeModelWithManager(Manager, FVM_MoveJoystick::ModelId));
-    return __r;
+    return TEUIModelRef<FVM_MoveJoystick>(EUIInternal::MakeModelWithManager(Manager, FVM_MoveJoystick::ModelId)).Get();
 }
 void GetModelInfo(FEUIViewModelMetaInfo &inout Result)
 {
@@ -385,7 +383,6 @@ namespace __GeneratedProperties_FVM_MoveJoystick
 {
 UScriptStruct StaticStruct()
 {
-    UScriptStruct local_2;
-    return local_2;
+    return __GeneratedProperties_FVM_MoveJoystick.Get();
 }
 }

@@ -165,21 +165,17 @@ struct FPresentationConfig : FDataObject
 
     FSoftBrush GetDefaultIcon() const
     {
-        FSoftBrush __return;
-        if (this.Icons.Find(EPresentationIconType(0)))
+        TConstRawPtr<FSoftBrush> local_4 = this.Icons.Find(EPresentationIconType(0));
+        if (local_4)
         {
+            return local_4.Get();
         }
-        else
+        TConstRawPtr<FSoftBrush> local_6 = this.Icons.Find(EPresentationIconType(1));
+        if (local_6)
         {
-            if (this.Icons.Find(EPresentationIconType(1)))
-            {
-            }
-            else
-            {
-                __return = FSoftBrush();
-            }
+            return local_6.Get();
         }
-        return __return;
+        return FSoftBrush();
     }
     const TDataObjectPtr<FDropItemConfigBase> GetDropReward() const property
     {

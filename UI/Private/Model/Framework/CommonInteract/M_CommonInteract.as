@@ -80,11 +80,9 @@ FMS_CommonInteractManager& Get(const UObject ContextObject)
 {
     return FMS_CommonInteractManager::GetByManager(EUIInternal::GetContextManager(ContextObject));
 }
-FMS_CommonInteractManager GetByManager(const UEUIManagerSubsystem Manager)
+FMS_CommonInteractManager& GetByManager(const UEUIManagerSubsystem Manager)
 {
-    FMS_CommonInteractManager __r;
-    TEUIModelRef<FMS_CommonInteractManager> local_6 = TEUIModelRef<FMS_CommonInteractManager>(EUIInternal::MakeModelWithManager(Manager, FMS_CommonInteractManager::ModelId));
-    return __r;
+    return TEUIModelRef<FMS_CommonInteractManager>(EUIInternal::MakeModelWithManager(Manager, FMS_CommonInteractManager::ModelId)).Get();
 }
 void GetModelInfo(FEUIModelOnlyMetaInfo &inout Result)
 {

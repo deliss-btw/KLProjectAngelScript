@@ -139,11 +139,9 @@ FVM_CommissionFinishResurltItem& Create(const UObject ContextObject, const FText
 {
     return FVM_CommissionFinishResurltItem::CreateByManager(EUIInternal::GetContextManager(ContextObject), ResurltContent, ResurltNum, ResurltScore);
 }
-FVM_CommissionFinishResurltItem CreateByManager(const UEUIManagerSubsystem Manager, const FText &inout ResurltContent, const int ResurltNum, const int ResurltScore)
+FVM_CommissionFinishResurltItem& CreateByManager(const UEUIManagerSubsystem Manager, const FText &inout ResurltContent, const int ResurltNum, const int ResurltScore)
 {
-    FVM_CommissionFinishResurltItem __r;
-    TEUIModelRef<FVM_CommissionFinishResurltItem> local_6 = TEUIModelRef<FVM_CommissionFinishResurltItem>(EUIInternal::MakeModelWithManager_Generic(Manager, FVM_CommissionFinishResurltItem::ModelId, 0, ResurltContent, ResurltNum, ResurltScore));
-    return __r;
+    return TEUIModelRef<FVM_CommissionFinishResurltItem>(EUIInternal::MakeModelWithManager_Generic(Manager, FVM_CommissionFinishResurltItem::ModelId, 0, ResurltContent, ResurltNum, ResurltScore)).Get();
 }
 void GetModelInfo(FEUIViewModelMetaInfo &inout Result)
 {
@@ -220,7 +218,6 @@ namespace __GeneratedProperties_FVM_CommissionFinishResurltItem
 {
 UScriptStruct StaticStruct()
 {
-    UScriptStruct local_2;
-    return local_2;
+    return __GeneratedProperties_FVM_CommissionFinishResurltItem.Get();
 }
 }

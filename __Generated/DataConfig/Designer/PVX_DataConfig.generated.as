@@ -51,7 +51,7 @@ TDataObjectPtr<FBasePrefabConfig> __FPVX_MonsterKillExpConfig_GetMonsterConfig(c
         FPVX_MonsterKillExpConfig local_42;
         return local_42.GetMonsterConfig();
     }
-    return GetMonsterConfig();
+    return DataObject.Get().GetMonsterConfig();
 }
 UFUNCTION()
 int __FPVX_MonsterKillExpConfig_GetExp(const TDataObjectPtr<FPVX_MonsterKillExpConfig> &inout DataObject)
@@ -86,18 +86,16 @@ int __FPVX_MonsterKillExpConfig_GetCoin(const TDataObjectPtr<FPVX_MonsterKillExp
 UFUNCTION()
 bool __FPVX_MonsterKillExpConfig_GetUseExpMul(const TDataObjectPtr<FPVX_MonsterKillExpConfig> &inout DataObject)
 {
-    bool local_1 = false;
     if ((DataObject == nullptr))
     {
-        local_1 = !(EUIGlobals::GIsDuringPropertyConversion);
-        if (local_1)
+        if (!(EUIGlobals::GIsDuringPropertyConversion))
         {
             FBlueprintDebugFunctions::ThrowScriptException("Get 'UseExpMul' from a null 'FPVX_MonsterKillExpConfig' DataObject!");
         }
         FPVX_MonsterKillExpConfig local_42;
         return local_42.UseExpMul;
     }
-    return local_1;
+    return DataObject.Get().UseExpMul;
 }
 UFUNCTION()
 FPVX_MonsterKillExpConfig CastToFPVX_MonsterKillExpConfig(const TDataObjectPtr<FPVX_MonsterKillExpConfig> &inout DataObject)

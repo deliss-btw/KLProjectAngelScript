@@ -3,7 +3,6 @@ namespace __FObjectiveConfigFunctions
 UFUNCTION()
 EObjectiveType __FObjectiveConfig_GetObjectiveType(const TDataObjectPtr<FObjectiveConfig> &inout DataObject)
 {
-    int local_17 = 0;
     if ((DataObject == nullptr))
     {
         if (!(EUIGlobals::GIsDuringPropertyConversion))
@@ -11,10 +10,9 @@ EObjectiveType __FObjectiveConfig_GetObjectiveType(const TDataObjectPtr<FObjecti
             FBlueprintDebugFunctions::ThrowScriptException("Get 'ObjectiveType' from a null 'FObjectiveConfig' DataObject!");
         }
         FObjectiveConfig local_16;
-        local_17 = int(local_16.ObjectiveType);
-        return EObjectiveType(local_17);
+        return local_16.ObjectiveType;
     }
-    return EObjectiveType(local_17);
+    return DataObject.Get().ObjectiveType;
 }
 UFUNCTION()
 FObjectiveConfig CastToFObjectiveConfig(const TDataObjectPtr<FObjectiveConfig> &inout DataObject)
@@ -28,7 +26,6 @@ namespace __FObjectiveSingleConfigFunctions
 UFUNCTION()
 bool __FObjectiveSingleConfig_GetbHidden(const TDataObjectPtr<FObjectiveSingleConfig> &inout DataObject)
 {
-    bool local_1 = false;
     if ((DataObject == nullptr))
     {
         if (!(EUIGlobals::GIsDuringPropertyConversion))
@@ -38,12 +35,11 @@ bool __FObjectiveSingleConfig_GetbHidden(const TDataObjectPtr<FObjectiveSingleCo
         FObjectiveSingleConfig local_104;
         return local_104.bHidden;
     }
-    return local_1;
+    return DataObject.Get().bHidden;
 }
 UFUNCTION()
 FText __FObjectiveSingleConfig_GetObjectiveTitle(const TDataObjectPtr<FObjectiveSingleConfig> &inout DataObject)
 {
-    FText __r;
     if ((DataObject == nullptr))
     {
         if (!(EUIGlobals::GIsDuringPropertyConversion))
@@ -53,12 +49,11 @@ FText __FObjectiveSingleConfig_GetObjectiveTitle(const TDataObjectPtr<FObjective
         FObjectiveSingleConfig local_104;
         return local_104.ObjectiveTitle;
     }
-    return __r;
+    return DataObject.Get().ObjectiveTitle;
 }
 UFUNCTION()
 FText __FObjectiveSingleConfig_GetObjectiveProgressFormat(const TDataObjectPtr<FObjectiveSingleConfig> &inout DataObject)
 {
-    FText __r;
     if ((DataObject == nullptr))
     {
         if (!(EUIGlobals::GIsDuringPropertyConversion))
@@ -68,12 +63,11 @@ FText __FObjectiveSingleConfig_GetObjectiveProgressFormat(const TDataObjectPtr<F
         FObjectiveSingleConfig local_104;
         return local_104.ObjectiveProgressFormat;
     }
-    return __r;
+    return DataObject.Get().ObjectiveProgressFormat;
 }
 UFUNCTION()
 EObjectiveProgressTextType __FObjectiveSingleConfig_GetProgressTextType(const TDataObjectPtr<FObjectiveSingleConfig> &inout DataObject)
 {
-    int local_105 = 0;
     if ((DataObject == nullptr))
     {
         if (!(EUIGlobals::GIsDuringPropertyConversion))
@@ -81,15 +75,13 @@ EObjectiveProgressTextType __FObjectiveSingleConfig_GetProgressTextType(const TD
             FBlueprintDebugFunctions::ThrowScriptException("Get 'ProgressTextType' from a null 'FObjectiveSingleConfig' DataObject!");
         }
         FObjectiveSingleConfig local_104;
-        local_105 = int(local_104.ProgressTextType);
-        return EObjectiveProgressTextType(local_105);
+        return local_104.ProgressTextType;
     }
-    return EObjectiveProgressTextType(local_105);
+    return DataObject.Get().ProgressTextType;
 }
 UFUNCTION()
 EObjectiveProgressUIType __FObjectiveSingleConfig_GetProgressUIType(const TDataObjectPtr<FObjectiveSingleConfig> &inout DataObject)
 {
-    int local_105 = 0;
     if ((DataObject == nullptr))
     {
         if (!(EUIGlobals::GIsDuringPropertyConversion))
@@ -97,15 +89,13 @@ EObjectiveProgressUIType __FObjectiveSingleConfig_GetProgressUIType(const TDataO
             FBlueprintDebugFunctions::ThrowScriptException("Get 'ProgressUIType' from a null 'FObjectiveSingleConfig' DataObject!");
         }
         FObjectiveSingleConfig local_104;
-        local_105 = int(local_104.ProgressUIType);
-        return EObjectiveProgressUIType(local_105);
+        return local_104.ProgressUIType;
     }
-    return EObjectiveProgressUIType(local_105);
+    return DataObject.Get().ProgressUIType;
 }
 UFUNCTION()
 EObjectiveProgressTextOrderType __FObjectiveSingleConfig_GetProgressTextOrderType(const TDataObjectPtr<FObjectiveSingleConfig> &inout DataObject)
 {
-    int local_105 = 0;
     if ((DataObject == nullptr))
     {
         if (!(EUIGlobals::GIsDuringPropertyConversion))
@@ -113,15 +103,13 @@ EObjectiveProgressTextOrderType __FObjectiveSingleConfig_GetProgressTextOrderTyp
             FBlueprintDebugFunctions::ThrowScriptException("Get 'ProgressTextOrderType' from a null 'FObjectiveSingleConfig' DataObject!");
         }
         FObjectiveSingleConfig local_104;
-        local_105 = int(local_104.ProgressTextOrderType);
-        return EObjectiveProgressTextOrderType(local_105);
+        return local_104.ProgressTextOrderType;
     }
-    return EObjectiveProgressTextOrderType(local_105);
+    return DataObject.Get().ProgressTextOrderType;
 }
 UFUNCTION()
 bool __FObjectiveSingleConfig_GetbIgnoreStatusInGroup(const TDataObjectPtr<FObjectiveSingleConfig> &inout DataObject)
 {
-    bool local_1 = false;
     if ((DataObject == nullptr))
     {
         if (!(EUIGlobals::GIsDuringPropertyConversion))
@@ -131,7 +119,7 @@ bool __FObjectiveSingleConfig_GetbIgnoreStatusInGroup(const TDataObjectPtr<FObje
         FObjectiveSingleConfig local_104;
         return local_104.bIgnoreStatusInGroup;
     }
-    return local_1;
+    return DataObject.Get().bIgnoreStatusInGroup;
 }
 UFUNCTION()
 TDataObjectPtr<FConditionConfigBase> __FObjectiveSingleConfig_GetFinishCondition(const TDataObjectPtr<FObjectiveSingleConfig> &inout DataObject)
@@ -145,7 +133,7 @@ TDataObjectPtr<FConditionConfigBase> __FObjectiveSingleConfig_GetFinishCondition
         FObjectiveSingleConfig local_104;
         return local_104.GetFinishCondition();
     }
-    return GetFinishCondition();
+    return DataObject.Get().GetFinishCondition();
 }
 UFUNCTION()
 TDataObjectPtr<FConditionConfigBase> __FObjectiveSingleConfig_GetFailCondition(const TDataObjectPtr<FObjectiveSingleConfig> &inout DataObject)
@@ -159,7 +147,7 @@ TDataObjectPtr<FConditionConfigBase> __FObjectiveSingleConfig_GetFailCondition(c
         FObjectiveSingleConfig local_104;
         return local_104.GetFailCondition();
     }
-    return GetFailCondition();
+    return DataObject.Get().GetFailCondition();
 }
 UFUNCTION()
 FGuideConfig __FObjectiveSingleConfig_GetGuideConfig(const TDataObjectPtr<FObjectiveSingleConfig> &inout DataObject)
@@ -189,7 +177,6 @@ namespace __FObjectiveGroupConfigFunctions
 UFUNCTION()
 EObjectiveFinishType __FObjectiveGroupConfig_GetFinishType(const TDataObjectPtr<FObjectiveGroupConfig> &inout DataObject)
 {
-    int local_23 = 0;
     if ((DataObject == nullptr))
     {
         if (!(EUIGlobals::GIsDuringPropertyConversion))
@@ -197,10 +184,9 @@ EObjectiveFinishType __FObjectiveGroupConfig_GetFinishType(const TDataObjectPtr<
             FBlueprintDebugFunctions::ThrowScriptException("Get 'FinishType' from a null 'FObjectiveGroupConfig' DataObject!");
         }
         FObjectiveGroupConfig local_22;
-        local_23 = int(local_22.FinishType);
-        return EObjectiveFinishType(local_23);
+        return local_22.FinishType;
     }
-    return EObjectiveFinishType(local_23);
+    return DataObject.Get().FinishType;
 }
 UFUNCTION()
 TArray<TDataObjectPtr<FObjectiveSingleConfig>> __FObjectiveGroupConfig_GetChildObjectives(const TDataObjectPtr<FObjectiveGroupConfig> &inout DataObject)
@@ -214,7 +200,7 @@ TArray<TDataObjectPtr<FObjectiveSingleConfig>> __FObjectiveGroupConfig_GetChildO
         FObjectiveGroupConfig local_22;
         return local_22.GetChildObjectives();
     }
-    return GetChildObjectives();
+    return DataObject.Get().GetChildObjectives();
 }
 UFUNCTION()
 FObjectiveGroupConfig CastToFObjectiveGroupConfig(const TDataObjectPtr<FObjectiveGroupConfig> &inout DataObject)

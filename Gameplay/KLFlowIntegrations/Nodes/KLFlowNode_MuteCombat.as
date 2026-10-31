@@ -6,6 +6,8 @@ struct FKLFlowNode_MuteCombat : FKLFlowNode
     UPROPERTY()
     bool bReleaseMute;
 
+    default m_ScriptOverrideMeta = Cast<UASStruct>(FKLFlowNode_MuteCombat.Get());
+
     FKLFlowNode_MuteCombat()
     {
         this.bReleaseMute = false;
@@ -14,7 +16,9 @@ struct FKLFlowNode_MuteCombat : FKLFlowNode
     }
     void OnBuild_Implementation()
     {
-        // body not fully recovered — stub [opcode-uncovered]
+        this.InputPins = {n"Input"};
+        this.OutputPins = {n"Output"};
+        return;
     }
     void OnExec_Implementation(const FName &inout PinName)
     {

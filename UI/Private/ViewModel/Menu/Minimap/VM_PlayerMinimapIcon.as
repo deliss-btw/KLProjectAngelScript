@@ -148,7 +148,7 @@ struct FVM_PlayerMinimapIcon : FEUIViewModel
         TDataObjectPtr<FMinimapIconConfig> local_34 = ::GetMinimapIconConfig(this.GetSpot().opArrow(), local_10);
         if (local_34)
         {
-            TDataObjectPtr<FMinimapIconConfig_Player> local_84 = TDataObjectPtr<FMinimapIconConfig_Player>(local_34.opImplConv());
+            this.SetIconColor(TDataObjectPtr<FMinimapIconConfig_Player>(local_34.opImplConv()).Get().IconColor);
         }
         return;
     }
@@ -259,11 +259,9 @@ FVM_PlayerMinimapIcon& Create(const UObject ContextObject, const TEUIModelRef<FM
 {
     return FVM_PlayerMinimapIcon::CreateByManager(EUIInternal::GetContextManager(ContextObject), Spot);
 }
-FVM_PlayerMinimapIcon CreateByManager(const UEUIManagerSubsystem Manager, const TEUIModelRef<FM_Spot> &inout Spot)
+FVM_PlayerMinimapIcon& CreateByManager(const UEUIManagerSubsystem Manager, const TEUIModelRef<FM_Spot> &inout Spot)
 {
-    FVM_PlayerMinimapIcon __r;
-    TEUIModelRef<FVM_PlayerMinimapIcon> local_6 = TEUIModelRef<FVM_PlayerMinimapIcon>(EUIInternal::MakeModelWithManager_Generic(Manager, FVM_PlayerMinimapIcon::ModelId, 0, Spot));
-    return __r;
+    return TEUIModelRef<FVM_PlayerMinimapIcon>(EUIInternal::MakeModelWithManager_Generic(Manager, FVM_PlayerMinimapIcon::ModelId, 0, Spot)).Get();
 }
 void GetModelInfo(FEUIViewModelMetaInfo &inout Result)
 {
@@ -383,7 +381,6 @@ namespace __GeneratedProperties_FVM_PlayerMinimapIcon
 {
 UScriptStruct StaticStruct()
 {
-    UScriptStruct local_2;
-    return local_2;
+    return __GeneratedProperties_FVM_PlayerMinimapIcon.Get();
 }
 }

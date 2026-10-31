@@ -263,18 +263,18 @@ class UESMAction_CharacterTurnTo : UESMBPBaseSpanTickAction
             {
                 local_85 = true;
                 local_52 = local_46;
-                switch (int(this.UpdateDirectionLimitedAction))
+                switch (this.UpdateDirectionLimitedAction)
                 {
-                case 0:
+                case ECharacterTurnUpdateDirectionLimitedAction::Lock:
                 {
                     break;
                 }
-                case 1:
+                case ECharacterTurnUpdateDirectionLimitedAction::Mute:
                 {
                     local_86 = true;
                     break;
                 }
-                case 2:
+                case ECharacterTurnUpdateDirectionLimitedAction::Exit:
                 {
                     local_86 = true;
                     local_87 = false;
@@ -310,9 +310,8 @@ class UESMAction_CharacterTurnTo : UESMBPBaseSpanTickAction
     UFUNCTION()
     void Exit_Implementation(const FESMContext &inout Context, const FESMActionTime &inout Time) const
     {
-        const FESMCharacterTurnToActionInstanceData& local_2;
         int local_10 = 0;
-        if (local_2.bDefaultTurnSilenced)
+        if (this.GetInstanceData(Context).bDefaultTurnSilenced)
         {
             local_10.SetSilenceDefaultTurnCounter((local_10.GetSilenceDefaultTurnCounter() - 1));
         }

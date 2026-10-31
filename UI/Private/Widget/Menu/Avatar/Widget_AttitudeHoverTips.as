@@ -30,8 +30,7 @@ class UWidget_AttitudeHoverTips : UEUIUserWidget
     {
         if (AvatarConfig)
         {
-            TRawPtr<FDamageTypeInfoConfig> local_4;
-            local_4.GetDamageTypeInfo();
+            TRawPtr<FDamageTypeInfoConfig> local_4 = AvatarConfig.Get().GetDamageTypeInfo();
             if (local_4)
             {
                 if (UICommonUtil::CVar_UI_UseAttributePresentation.GetBool())
@@ -70,8 +69,8 @@ class UWidget_AttitudeHoverTips : UEUIUserWidget
     }
     void HandleObservedModelChanges(FEUIReactiveSubscriberIterator &inout It)
     {
-        FVM_AvatarInfo& local_6;
         TEUIModelRef<FVM_AvatarInfo> local_2 = this.Avatar.AsRef();
+        FVM_AvatarInfo& local_6 = local_2.Get();
         for (; It; )
         {
             FEUIReactiveSubscriberTrackScope local_56 = FEUIReactiveSubscriberTrackScope(It);

@@ -42,6 +42,7 @@ class US_PlayerEnterRegionConditionSystem : UECSScriptSystem
                     ::ConditionUtils::SetLocalConditionValueForInstance(local_70.ConditionHandle, (::ConditionUtils::GetCurrentValue(local_70.ConditionHandle) + 1));
                     if (::ConditionUtils::IsReached(local_70.ConditionHandle))
                     {
+                        EnterRegionCond.EnterRegionInfos.Remove(local_66);
                     }
                 }
             }

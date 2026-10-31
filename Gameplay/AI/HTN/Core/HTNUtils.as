@@ -10,8 +10,7 @@ void StopHTN(const FECSEntity &inout Entity)
     local_6.bRunAtInitialization = false;
     if (local_6.HTNComponent.IsValid())
     {
-        UECSHTNComponent local_10;
-        local_10.StopHTN(true);
+        local_6.HTNComponent.Get().StopHTN(true);
     }
     return;
 }
@@ -27,13 +26,12 @@ void StartHTN(const FECSEntity &inout Entity, const TSoftObjectPtr<UHTN> &inout 
 }
 void CleanHTNActor(const FECSEntity &inout Entity, const FC_HTNInstance &inout HTNInstance)
 {
-    AActor local_10;
     FAIExecuteGuard local_1 = FAIExecuteGuard(ECS::GetECSWorld().GetFixedTime(), Entity, Entity);
     if (HTNInstance.HTNComponent.IsValid())
     {
-        UECSHTNComponent local_8;
-        local_8.StopHTN(true);
+        HTNInstance.HTNComponent.Get().StopHTN(true);
     }
+    AActor local_10 = Cast<AActor>(HTNInstance.TreeOwnerActor.Get());
     if (local_10 != nullptr)
     {
         local_10.DestroyActor();
@@ -69,20 +67,19 @@ void Internal_RunHTN(const FECSEntity &inout Entity, FC_HTNInstance &inout Modif
         return;
     }
     FAIExecuteGuard local_2 = FAIExecuteGuard(ECS::GetECSWorld().GetFixedTime(), Entity, Entity);
-    AECSAIProxy local_6;
+    AECSAIProxy local_6 = ModifiableHTNInstance.TreeOwnerActor.Get();
     UBlackboardComponent local_10 = local_6.BlackBoardComponent;
     UECSHTNComponent local_12 = local_6.HTNComponent;
     HTN::SyncLoadObjectPtr(ModifiableHTNInstance.BlackboardAsset.ToSoftObjectPath());
     HTN::SyncLoadObjectPtr(ModifiableHTNInstance.HTNAsset.ToSoftObjectPath());
+    UHTN local_28 = ModifiableHTNInstance.HTNAsset.Get();
     FECSWorldPtr local_4 = Entity.GetWorld();
-    UHTN local_28;
     ModifyOrAdd local_26;
     local_26.opCall().AddAICommandSource(local_28);
-    FECSAIUtils::RegisterBehaviorTreeResource(Entity.GetWorld(), local_28);
-    UBlackboardData local_30;
-    HTN::InitBlackBoard(local_10, local_30);
+    FECSAIUtils::RegisterBehaviorTreeResource(Entity.GetWorld(), ModifiableHTNInstance.HTNAsset.Get());
+    HTN::InitBlackBoard(local_10, ModifiableHTNInstance.BlackboardAsset.Get());
     local_10.SetValueAsEntityId(FAIBlackboardNativeKey::SelfEntity, Entity.GetId());
-    local_12.StartHTN(local_28);
+    local_12.StartHTN(ModifiableHTNInstance.HTNAsset.Get());
     FC_HTNRuningTag local_38;
     Assign local_36;
     local_36.opCall(local_38);

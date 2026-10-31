@@ -582,11 +582,9 @@ FVM_SkillButton& Create(const UObject ContextObject)
 {
     return FVM_SkillButton::CreateByManager(EUIInternal::GetContextManager(ContextObject));
 }
-FVM_SkillButton CreateByManager(const UEUIManagerSubsystem Manager)
+FVM_SkillButton& CreateByManager(const UEUIManagerSubsystem Manager)
 {
-    FVM_SkillButton __r;
-    TEUIModelRef<FVM_SkillButton> local_6 = TEUIModelRef<FVM_SkillButton>(EUIInternal::MakeModelWithManager(Manager, FVM_SkillButton::ModelId));
-    return __r;
+    return TEUIModelRef<FVM_SkillButton>(EUIInternal::MakeModelWithManager(Manager, FVM_SkillButton::ModelId)).Get();
 }
 void GetModelInfo(FEUIViewModelMetaInfo &inout Result)
 {
@@ -721,7 +719,6 @@ namespace __GeneratedProperties_FVM_SkillButton
 {
 UScriptStruct StaticStruct()
 {
-    UScriptStruct local_2;
-    return local_2;
+    return __GeneratedProperties_FVM_SkillButton.Get();
 }
 }

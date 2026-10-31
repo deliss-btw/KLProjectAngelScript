@@ -139,11 +139,9 @@ FMS_CommonNewsTickerPending& Get(const UObject ContextObject)
 {
     return FMS_CommonNewsTickerPending::GetByManager(EUIInternal::GetContextManager(ContextObject));
 }
-FMS_CommonNewsTickerPending GetByManager(const UEUIManagerSubsystem Manager)
+FMS_CommonNewsTickerPending& GetByManager(const UEUIManagerSubsystem Manager)
 {
-    FMS_CommonNewsTickerPending __r;
-    TEUIModelRef<FMS_CommonNewsTickerPending> local_6 = TEUIModelRef<FMS_CommonNewsTickerPending>(EUIInternal::MakeModelWithManager(Manager, FMS_CommonNewsTickerPending::ModelId));
-    return __r;
+    return TEUIModelRef<FMS_CommonNewsTickerPending>(EUIInternal::MakeModelWithManager(Manager, FMS_CommonNewsTickerPending::ModelId)).Get();
 }
 void GetModelInfo(FEUIModelOnlyMetaInfo &inout Result)
 {

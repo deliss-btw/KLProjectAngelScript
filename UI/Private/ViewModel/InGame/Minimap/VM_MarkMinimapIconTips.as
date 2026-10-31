@@ -162,11 +162,9 @@ FVM_MarkMinimapIconTips& Create(const UObject ContextObject, const FECSEntityId 
 {
     return FVM_MarkMinimapIconTips::CreateByManager(EUIInternal::GetContextManager(ContextObject), MarkEntityID, MarkIconWidget);
 }
-FVM_MarkMinimapIconTips CreateByManager(const UEUIManagerSubsystem Manager, const FECSEntityId &inout MarkEntityID, const UWidget MarkIconWidget)
+FVM_MarkMinimapIconTips& CreateByManager(const UEUIManagerSubsystem Manager, const FECSEntityId &inout MarkEntityID, const UWidget MarkIconWidget)
 {
-    FVM_MarkMinimapIconTips __r;
-    TEUIModelRef<FVM_MarkMinimapIconTips> local_6 = TEUIModelRef<FVM_MarkMinimapIconTips>(EUIInternal::MakeModelWithManager_Generic(Manager, FVM_MarkMinimapIconTips::ModelId, 0, MarkEntityID, MarkIconWidget));
-    return __r;
+    return TEUIModelRef<FVM_MarkMinimapIconTips>(EUIInternal::MakeModelWithManager_Generic(Manager, FVM_MarkMinimapIconTips::ModelId, 0, MarkEntityID, MarkIconWidget)).Get();
 }
 void GetModelInfo(FEUIViewModelMetaInfo &inout Result)
 {
@@ -217,7 +215,6 @@ namespace __GeneratedProperties_FVM_MarkMinimapIconTips
 {
 UScriptStruct StaticStruct()
 {
-    UScriptStruct local_2;
-    return local_2;
+    return __GeneratedProperties_FVM_MarkMinimapIconTips.Get();
 }
 }

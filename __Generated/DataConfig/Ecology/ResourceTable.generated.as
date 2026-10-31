@@ -3,7 +3,6 @@ namespace __FEcologyResourceDefinitionRowFunctions
 UFUNCTION()
 FName __FEcologyResourceDefinitionRow_GetResourceName(const TDataObjectPtr<FEcologyResourceDefinitionRow> &inout DataObject)
 {
-    FName __r;
     if ((DataObject == nullptr))
     {
         if (!(EUIGlobals::GIsDuringPropertyConversion))
@@ -13,7 +12,7 @@ FName __FEcologyResourceDefinitionRow_GetResourceName(const TDataObjectPtr<FEcol
         FEcologyResourceDefinitionRow local_56;
         return local_56.ResourceName;
     }
-    return __r;
+    return DataObject.Get().ResourceName;
 }
 UFUNCTION()
 TDataObjectPtr<FEcologyResourceDefinitionRow> __FEcologyResourceDefinitionRow_GetBaseResource(const TDataObjectPtr<FEcologyResourceDefinitionRow> &inout DataObject)
@@ -27,28 +26,25 @@ TDataObjectPtr<FEcologyResourceDefinitionRow> __FEcologyResourceDefinitionRow_Ge
         FEcologyResourceDefinitionRow local_56;
         return local_56.GetBaseResource();
     }
-    return GetBaseResource();
+    return DataObject.Get().GetBaseResource();
 }
 UFUNCTION()
 bool __FEcologyResourceDefinitionRow_GetLimitSlot(const TDataObjectPtr<FEcologyResourceDefinitionRow> &inout DataObject)
 {
-    bool local_1 = false;
     if ((DataObject == nullptr))
     {
-        local_1 = !(EUIGlobals::GIsDuringPropertyConversion);
-        if (local_1)
+        if (!(EUIGlobals::GIsDuringPropertyConversion))
         {
             FBlueprintDebugFunctions::ThrowScriptException("Get 'LimitSlot' from a null 'FEcologyResourceDefinitionRow' DataObject!");
         }
         FEcologyResourceDefinitionRow local_56;
         return local_56.LimitSlot;
     }
-    return local_1;
+    return DataObject.Get().LimitSlot;
 }
 UFUNCTION()
 FGameplayTagContainer __FEcologyResourceDefinitionRow_GetGameplayTags(const TDataObjectPtr<FEcologyResourceDefinitionRow> &inout DataObject)
 {
-    FGameplayTagContainer __r;
     if ((DataObject == nullptr))
     {
         if (!(EUIGlobals::GIsDuringPropertyConversion))
@@ -58,12 +54,11 @@ FGameplayTagContainer __FEcologyResourceDefinitionRow_GetGameplayTags(const TDat
         FEcologyResourceDefinitionRow local_56;
         return local_56.GameplayTags;
     }
-    return __r;
+    return DataObject.Get().GameplayTags;
 }
 UFUNCTION()
 TSubclassOf<AActor> __FEcologyResourceDefinitionRow_GetPreview(const TDataObjectPtr<FEcologyResourceDefinitionRow> &inout DataObject)
 {
-    TSubclassOf<AActor> __r;
     if ((DataObject == nullptr))
     {
         if (!(EUIGlobals::GIsDuringPropertyConversion))
@@ -73,7 +68,7 @@ TSubclassOf<AActor> __FEcologyResourceDefinitionRow_GetPreview(const TDataObject
         FEcologyResourceDefinitionRow local_56;
         return local_56.Preview;
     }
-    return __r;
+    return DataObject.Get().Preview;
 }
 UFUNCTION()
 FEcologyResourceDefinitionRow CastToFEcologyResourceDefinitionRow(const TDataObjectPtr<FEcologyResourceDefinitionRow> &inout DataObject)

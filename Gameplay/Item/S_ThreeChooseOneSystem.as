@@ -8,10 +8,7 @@ class US_ThreeChooseOneSystem : UECSScriptSystem
     void ServerJob_HandleThreeChooseOneEvent(const FCE_ThreeChooseOneRequest &inout Event, const FCS_FixedTime &inout FixedTime) const
     {
         int local_8 = 0;
-        const FTraitConfig& local_14;
         FTraitModifiers local_22;
-        ULevelEventAttribute local_184;
-        int local_317 = 0;
         if (!(Event.ChooseItemEntity.IsValid()))
         {
             XError(ELog(0), "FCE_ThreeChooseOneRequest with invalid item entity");
@@ -28,8 +25,8 @@ class US_ThreeChooseOneSystem : UECSScriptSystem
             return;
         }
         const FTraitParam& local_12 = local_8.GetInfos()[int(Event.ChooseIndex)];
-        int local_23 = local_12.GetLevel();
-        if (local_14.ModifiersByLevel.Find(local_23, local_22))
+        const FTraitConfig& local_14 = local_12.GetTrait().Get();
+        if (local_14.ModifiersByLevel.Find(local_12.GetLevel(), local_22))
         {
             for (auto& local_38 : local_22.Modifiers)
             {
@@ -51,8 +48,7 @@ class US_ThreeChooseOneSystem : UECSScriptSystem
             if (local_62)
             {
                 FTraitCapabilities local_70;
-                local_23 = local_12.GetLevel();
-                if (local_14.CapabilitiesByLevel.Find(local_23, local_70))
+                if (local_14.CapabilitiesByLevel.Find(local_12.GetLevel(), local_70))
                 {
                     for (auto& local_84 : local_62.GetAllPlayerPawnEntities())
                     {
@@ -77,10 +73,12 @@ class US_ThreeChooseOneSystem : UECSScriptSystem
                 }
                 ::FEcologyLevelEventBuffUtils::GetSelectedRuntimeRandomEventInfo(Event.Sender);
                 CastTo local_134;
-                if (local_134.opCall())
+                TDataObjectPtr<FLevelRandomEventInfoConfig> local_158 = local_134.opCall();
+                if (local_158)
                 {
+                    ULevelEventAttribute local_184 = Cast<ULevelEventAttribute>(System::LoadAsset_Blocking(local_158.Get().LevelEventAttribute));
                     FLevelEventTypeAttribute local_316;
-                    if (local_184 != nullptr && local_184.GetTypeAttribute(ELevelRandomEventType(local_317), local_316))
+                    if (local_184 != nullptr && local_184.GetTypeAttribute(ELevelRandomEventType(local_158.Get().LevelRandomEventType), local_316))
                     {
                         ::DivineSkillCDUtils::RecoverPlayerTeamDivineSkillCDBySecond(local_56.GetPlayerEntity(), FixedTime.Time, local_316.DivineSkillCDRecoverSeconds);
                     }
@@ -92,6 +90,7 @@ class US_ThreeChooseOneSystem : UECSScriptSystem
         {
             if (local_342.GetTrait())
             {
+                int local_23 = local_342.GetTrait().Get().DataId;
                 local_328.AddBuffChoice(local_23);
             }
         }

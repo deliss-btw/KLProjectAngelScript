@@ -22,7 +22,7 @@ class UWidget_BuffIcon : UEUIUserWidget
     {
         if (this.BuffIcon.IsValid())
         {
-            HideHover();
+            this.BuffIcon.Get().HideHover();
         }
         return;
     }
@@ -40,8 +40,8 @@ class UWidget_BuffIcon : UEUIUserWidget
     UFUNCTION()
     ESlateVisibility BuffIcon_SlateVisibilityStackVisible() const
     {
-        FVM_BuffIcon& local_2;
         int local_5;
+        FVM_BuffIcon& local_2 = this.BuffIcon.Get();
         if (local_2)
         {
             local_5 = int(local_2.StackVisibleAsSlateVisibility());
@@ -74,8 +74,8 @@ class UWidget_BuffIcon : UEUIUserWidget
     }
     void HandleObservedModelChanges(FEUIReactiveSubscriberIterator &inout It)
     {
-        FVM_BuffIcon& local_6;
         TEUIModelRef<FVM_BuffIcon> local_2 = this.BuffIcon.AsRef();
+        FVM_BuffIcon& local_6 = local_2.Get();
         for (; It; )
         {
             FEUIReactiveSubscriberTrackScope local_56 = FEUIReactiveSubscriberTrackScope(It);

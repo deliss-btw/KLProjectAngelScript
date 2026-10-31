@@ -23,7 +23,7 @@ class UWidget_NewsTracker : UEUIUserWidget
     UFUNCTION()
     void Tick_Implementation(const FGeometry &inout MyGeometry, const float32 InDeltaTime)
     {
-        if (!(this.NewsTicker.IsValid()) || GetbTickerEnd())
+        if (!(this.NewsTicker.IsValid()) || this.NewsTicker.Get().GetbTickerEnd())
         {
             return;
         }
@@ -32,7 +32,7 @@ class UWidget_NewsTracker : UEUIUserWidget
             this.ContainerWidth = MyGeometry.GetLocalSize().X;
             this.TextWidth = this.w_txt_content.GetDesiredSize().X;
             this.CurrentX = this.ContainerWidth;
-            this.RemainingPasses = GetRepeatCount();
+            this.RemainingPasses = this.NewsTicker.Get().GetRepeatCount();
             this.bScrollInitialized = true;
         }
         this.CurrentX -= (this.ScrollSpeed * InDeltaTime);
@@ -42,8 +42,7 @@ class UWidget_NewsTracker : UEUIUserWidget
             --this.RemainingPasses;
             if (this.RemainingPasses <= 0)
             {
-                bool local_1 = true;
-                local_1.SetbTickerEnd();
+                this.NewsTicker.Get().SetbTickerEnd(true);
                 return;
             }
             this.CurrentX = this.ContainerWidth;

@@ -33,6 +33,7 @@ struct FC_EstimatedSpeedHistory : FECSComponent
     }
     void Clear()
     {
+        this.History.Clear();
         return;
     }
     bool GetInterpoValue(const FFPTime &inout WorldTime, FC_EstimatedSpeed &inout OutValue) const

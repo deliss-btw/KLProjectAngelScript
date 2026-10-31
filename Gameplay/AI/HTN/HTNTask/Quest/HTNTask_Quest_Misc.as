@@ -49,21 +49,8 @@ class UHTNTask_Quest_SpawnEcosimAIV2Unit : UHTNTask_ECSScriptBase
     UFUNCTION()
     void Execute_Implementation(const FHTNContext &inout Context)
     {
-        bool local_65 = false;
         FECSEntity local_12 = FECSEntity(this.SpawnAtPointEntityID.GetValue(Context.opImplConv()));
-        bool local_39 = !(this.Unit.IsValid());
-        if (local_39)
-        {
-            local_39 = true;
-        }
-        else
-        {
-            TDataObjectPtr<FEcosimAIV2UnitData> local_64 = TDataObjectPtr<FEcosimAIV2UnitData>(this.Unit);
-            local_65 = !local_65;
-            local_39 = local_65;
-        }
-        local_39 = local_39 || (local_12 == ENTITY_NULL);
-        if (local_39)
+        if (!(this.Unit.IsValid()) || !(TDataObjectPtr<FEcosimAIV2UnitData>(this.Unit).Get().RealWorldEntityPrefab.IsValid()) || (local_12 == ENTITY_NULL))
         {
             this.FinishExecuteWithContext(Context, false);
             return;

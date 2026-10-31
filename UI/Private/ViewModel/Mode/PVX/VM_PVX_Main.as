@@ -72,8 +72,7 @@ struct FVM_PVX_Main : FEUIViewModel
         this.GetModify_MenuCategoryKeys().Empty(0);
         for (auto& local_24 : ::PVXEntrySettings::Get().MenuCategories)
         {
-            TEUIModelRef<FVM_Text> local_26;
-            this.GetModify_MenuBarEntries().Add(local_26);
+            this.GetModify_MenuBarEntries().Add(TEUIModelRef<FVM_Text>(::FVM_Text::Create(this.GetContext().Manager, local_24.GetValue().CategoryName)));
             this.GetModify_MenuCategoryKeys().Add(local_24.GetKey());
         }
         this.SetCurrentMenuIndex(this.GetMenuCategoryKeys().IndexOfByKey(EPVXMenuCategoryType(this.GetDefaultMenuType())));
@@ -96,8 +95,7 @@ struct FVM_PVX_Main : FEUIViewModel
                 }
                 else
                 {
-                    TEUIModelRef<FM_ModeItem> local_4 = this.GetMode();
-                    TEUIModelWeakRef<FM_ModeItem> local_6;
+                    TEUIModelWeakRef<FM_ModeItem> local_6 = TEUIModelWeakRef<FM_ModeItem>(this.GetMode().Get());
                     __return = FEUIModelContainer(::FVM_PVX_Match::Create(this.GetContext().Manager, local_6));
                 }
             }
@@ -326,11 +324,9 @@ FVM_PVX_Main& Create(const UObject ContextObject, const TEUIModelRef<FM_ModeItem
 {
     return FVM_PVX_Main::CreateByManager(EUIInternal::GetContextManager(ContextObject), Mode, EPVXMenuCategoryType(DefaultMenuType));
 }
-FVM_PVX_Main CreateByManager(const UEUIManagerSubsystem Manager, const TEUIModelRef<FM_ModeItem> &inout Mode, const EPVXMenuCategoryType DefaultMenuType)
+FVM_PVX_Main& CreateByManager(const UEUIManagerSubsystem Manager, const TEUIModelRef<FM_ModeItem> &inout Mode, const EPVXMenuCategoryType DefaultMenuType)
 {
-    FVM_PVX_Main __r;
-    TEUIModelRef<FVM_PVX_Main> local_6 = TEUIModelRef<FVM_PVX_Main>(EUIInternal::MakeModelWithManager_Generic(Manager, FVM_PVX_Main::ModelId, 0, Mode, DefaultMenuType));
-    return __r;
+    return TEUIModelRef<FVM_PVX_Main>(EUIInternal::MakeModelWithManager_Generic(Manager, FVM_PVX_Main::ModelId, 0, Mode, DefaultMenuType)).Get();
 }
 void GetModelInfo(FEUIViewModelMetaInfo &inout Result)
 {
@@ -422,7 +418,6 @@ namespace __GeneratedProperties_FVM_PVX_Main
 {
 UScriptStruct StaticStruct()
 {
-    UScriptStruct local_2;
-    return local_2;
+    return __GeneratedProperties_FVM_PVX_Main.Get();
 }
 }

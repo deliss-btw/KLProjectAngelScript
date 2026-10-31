@@ -43,8 +43,8 @@ class UWidget_ForgeMain : UEUIActivatableWidget
         if (this.EUI_List != nullptr)
         {
             int local_4;
-            local_4 = GetSelectedCategoryIndex();
-            if (GetMenuBarEntries().IsValidIndex(local_4))
+            local_4 = this.WeaponForge.Get().GetSelectedCategoryIndex();
+            if (this.WeaponForge.Get().GetMenuBarEntries().IsValidIndex(local_4))
             {
                 this.EUI_List.SetSelectedIndex(local_4);
             }
@@ -58,8 +58,7 @@ class UWidget_ForgeMain : UEUIActivatableWidget
         {
             return nullptr;
         }
-        TEUIModelWeakRef<FM_ForgeNode> local_8;
-        local_8.GetCurrentSelectNode();
+        TEUIModelWeakRef<FM_ForgeNode> local_8 = this.WeaponForge.Get().GetCurrentSelectNode();
         TEUIModelWeakRef<FM_ForgeNode> local_6;
         if (!(local_6.IsValid()))
         {
@@ -67,18 +66,18 @@ class UWidget_ForgeMain : UEUIActivatableWidget
             return local_4;
         }
         TEUIModelWeakRef<FVM_ForgeWeaponFormulaTree> local_10;
-        if (!(GetCurrentTreeMap().Find(GetTreeId(), local_10)) || !(local_10.IsValid()))
+        if (!(this.WeaponForge.Get().GetCurrentTreeMap().Find(local_6.Get().GetTreeId(), local_10)) || !(local_10.IsValid()))
         {
             UWidget local_4;
             return local_4;
         }
         TEUIModelWeakRef<FVM_ForgeWeaponItem> local_14;
-        if (!(GetItemNodeMap().Find(local_6, local_14)) || !(local_14.IsValid()))
+        if (!(local_10.Get().GetItemNodeMap().Find(local_6, local_14)) || !(local_14.IsValid()))
         {
             UWidget local_4;
             return local_4;
         }
-        UWidget_ForgeWeaponItem local_16 = GetForgeWeaponItemWidget();
+        UWidget_ForgeWeaponItem local_16 = local_14.Get().GetForgeWeaponItemWidget();
         return local_16;
     }
     UFUNCTION()
@@ -92,7 +91,7 @@ class UWidget_ForgeMain : UEUIActivatableWidget
     {
         if (this.EUI_List != nullptr)
         {
-            this.EUI_List.SetSelectedIndex(FMath::Max((GetSelectedCategoryIndex() - 1), 0));
+            this.EUI_List.SetSelectedIndex(FMath::Max((this.WeaponForge.Get().GetSelectedCategoryIndex() - 1), 0));
         }
         return;
     }
@@ -101,7 +100,7 @@ class UWidget_ForgeMain : UEUIActivatableWidget
     {
         if (this.EUI_List != nullptr)
         {
-            this.EUI_List.SetSelectedIndex(FMath::Min((GetSelectedCategoryIndex() + 1), (GetMenuBarEntries().Num() - 1)));
+            this.EUI_List.SetSelectedIndex(FMath::Min((this.WeaponForge.Get().GetSelectedCategoryIndex() + 1), (this.WeaponForge.Get().GetMenuBarEntries().Num() - 1)));
         }
         return;
     }
@@ -138,40 +137,38 @@ class UWidget_ForgeMain : UEUIActivatableWidget
     }
     void FocusCurrentSelectNode()
     {
-        TEUIModelWeakRef<FM_ForgeNode> local_4;
-        local_4.GetCurrentSelectNode();
+        TEUIModelWeakRef<FM_ForgeNode> local_4 = this.WeaponForge.Get().GetCurrentSelectNode();
         TEUIModelWeakRef<FM_ForgeNode> local_2;
         if (!(local_2.IsValid()))
         {
             return;
         }
         TEUIModelWeakRef<FVM_ForgeWeaponFormulaTree> local_8;
-        if (!(GetCurrentTreeMap().Find(GetTreeId(), local_8)) || !(local_8.IsValid()))
+        if (!(this.WeaponForge.Get().GetCurrentTreeMap().Find(local_2.Get().GetTreeId(), local_8)) || !(local_8.IsValid()))
         {
             return;
         }
         TEUIModelWeakRef<FVM_ForgeWeaponItem> local_12;
-        if (!(GetItemNodeMap().Find(local_2, local_12)) || !(local_12.IsValid()))
+        if (!(local_8.Get().GetItemNodeMap().Find(local_2, local_12)) || !(local_12.IsValid()))
         {
             return;
         }
         if (this.ScrollBoxHorizontal != nullptr)
         {
-            this.ScrollBoxHorizontal.ScrollWidgetIntoView(GetForgeWeaponItemWidget(), true, EDescendantScrollDestination(2), 0.0f);
+            this.ScrollBoxHorizontal.ScrollWidgetIntoView(local_12.Get().GetForgeWeaponItemWidget(), true, EDescendantScrollDestination(2), 0.0f);
         }
         if (this.ScrollBoxVertical != nullptr)
         {
-            this.ScrollBoxVertical.ScrollWidgetIntoView(GetForgeWeaponItemWidget(), true, EDescendantScrollDestination(2), 0.0f);
+            this.ScrollBoxVertical.ScrollWidgetIntoView(local_12.Get().GetForgeWeaponItemWidget(), true, EDescendantScrollDestination(2), 0.0f);
         }
-        if (GetForgeWeaponItemWidget() != nullptr)
+        if (local_12.Get().GetForgeWeaponItemWidget() != nullptr)
         {
-            this.RuleSetUserFocus(GetForgeWeaponItemWidget());
+            this.RuleSetUserFocus(local_12.Get().GetForgeWeaponItemWidget());
         }
         return;
     }
     void RefreshGamepadNextActionBindingVisibility()
     {
-        bool local_6;
         bool local_1 = false;
         if (!(this.IsPartOfFocusPath(this.ScrollBoxVertical)))
         {
@@ -179,34 +176,13 @@ class UWidget_ForgeMain : UEUIActivatableWidget
         }
         else
         {
-            if (!(GetCurrentWeaponIsUnlock()))
-            {
-                local_6 = false;
-            }
-            else
-            {
-                TEUIModelRef<FVM_CommonConsume> local_4;
-                local_4.GetCurrentCommonConsume();
-                bool local_5 = local_4.IsValid();
-                if (!(local_5))
-                {
-                    local_5 = false;
-                }
-                else
-                {
-                    local_4.GetCurrentCommonConsume();
-                    local_5 = HasRewards();
-                }
-                local_5 = !local_5;
-                local_6 = local_5;
-            }
-            if (local_6)
+            if (this.WeaponForge.Get().GetCurrentWeaponIsUnlock() && !(this.WeaponForge.Get().GetCurrentCommonConsume().IsValid() && this.WeaponForge.Get().GetCurrentCommonConsume().Get().HasRewards()))
             {
                 local_1 = true;
             }
             else
             {
-                if (GetIsCurrentSelectItemLock())
+                if (this.WeaponForge.Get().GetIsCurrentSelectItemLock())
                 {
                     local_1 = true;
                 }
@@ -267,8 +243,8 @@ class UWidget_ForgeMain : UEUIActivatableWidget
     }
     void HandleObservedModelChanges(FEUIReactiveSubscriberIterator &inout It)
     {
-        FVM_WeaponForge& local_6;
         TEUIModelRef<FVM_WeaponForge> local_2 = this.WeaponForge.AsRef();
+        FVM_WeaponForge& local_6 = local_2.Get();
         for (; It; )
         {
             FEUIReactiveSubscriberTrackScope local_56 = FEUIReactiveSubscriberTrackScope(It);

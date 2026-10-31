@@ -72,7 +72,6 @@ class UESMAction_SkillState : UESMBPBaseSpanAction
     void Exit_Implementation(const FESMContext &inout Context, const FESMActionTime &inout Time) const
     {
         int local_12 = 0;
-        int local_13 = 0;
         if (!(this.bTurnBacktoPrevStateOnExit))
         {
             return;
@@ -91,7 +90,7 @@ class UESMAction_SkillState : UESMBPBaseSpanAction
         {
             return;
         }
-        FSkillUtils::ChangeSkillState(local_6, local_14, local_13, Time.WorldTime);
+        FSkillUtils::ChangeSkillState(local_6, local_14, this.GetInstanceData(Context).PrevState, Time.WorldTime);
         return;
     }
     UFUNCTION()

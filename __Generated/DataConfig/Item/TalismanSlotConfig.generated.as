@@ -12,7 +12,7 @@ TArray<TDataObjectPtr<FServerConditionConfigBase>> __FTalismanSlotConfig_GetUnlo
         FTalismanSlotConfig local_20;
         return local_20.GetUnlockCondition();
     }
-    return GetUnlockCondition();
+    return DataObject.Get().GetUnlockCondition();
 }
 UFUNCTION()
 FTalismanSlotConfig CastToFTalismanSlotConfig(const TDataObjectPtr<FTalismanSlotConfig> &inout DataObject)

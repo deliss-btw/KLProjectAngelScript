@@ -18,7 +18,6 @@ float32 __FMinimapIconSimplifiedDisplayRule_GetDisplayMapScale(const TDataObject
 UFUNCTION()
 FSoftBrush __FMinimapIconSimplifiedDisplayRule_GetDisplayIcon(const TDataObjectPtr<FMinimapIconSimplifiedDisplayRule> &inout DataObject)
 {
-    FSoftBrush __r;
     if ((DataObject == nullptr))
     {
         if (!(EUIGlobals::GIsDuringPropertyConversion))
@@ -28,12 +27,11 @@ FSoftBrush __FMinimapIconSimplifiedDisplayRule_GetDisplayIcon(const TDataObjectP
         FMinimapIconSimplifiedDisplayRule local_68;
         return local_68.DisplayIcon;
     }
-    return __r;
+    return DataObject.Get().DisplayIcon;
 }
 UFUNCTION()
 EStretch __FMinimapIconSimplifiedDisplayRule_GetScaleType(const TDataObjectPtr<FMinimapIconSimplifiedDisplayRule> &inout DataObject)
 {
-    int local_69 = 0;
     if ((DataObject == nullptr))
     {
         if (!(EUIGlobals::GIsDuringPropertyConversion))
@@ -41,15 +39,13 @@ EStretch __FMinimapIconSimplifiedDisplayRule_GetScaleType(const TDataObjectPtr<F
             FBlueprintDebugFunctions::ThrowScriptException("Get 'ScaleType' from a null 'FMinimapIconSimplifiedDisplayRule' DataObject!");
         }
         FMinimapIconSimplifiedDisplayRule local_68;
-        local_69 = int(local_68.ScaleType);
-        return EStretch(local_69);
+        return local_68.ScaleType;
     }
-    return EStretch(local_69);
+    return DataObject.Get().ScaleType;
 }
 UFUNCTION()
 EStretchDirection __FMinimapIconSimplifiedDisplayRule_GetStretchDirection(const TDataObjectPtr<FMinimapIconSimplifiedDisplayRule> &inout DataObject)
 {
-    int local_69 = 0;
     if ((DataObject == nullptr))
     {
         if (!(EUIGlobals::GIsDuringPropertyConversion))
@@ -57,10 +53,9 @@ EStretchDirection __FMinimapIconSimplifiedDisplayRule_GetStretchDirection(const 
             FBlueprintDebugFunctions::ThrowScriptException("Get 'StretchDirection' from a null 'FMinimapIconSimplifiedDisplayRule' DataObject!");
         }
         FMinimapIconSimplifiedDisplayRule local_68;
-        local_69 = int(local_68.StretchDirection);
-        return EStretchDirection(local_69);
+        return local_68.StretchDirection;
     }
-    return EStretchDirection(local_69);
+    return DataObject.Get().StretchDirection;
 }
 UFUNCTION()
 UCurveFloat __FMinimapIconSimplifiedDisplayRule_GetUserSpecifiedScaleByMapScale(const TDataObjectPtr<FMinimapIconSimplifiedDisplayRule> &inout DataObject)
@@ -89,7 +84,6 @@ namespace __FMinimapIconConfigFunctions
 UFUNCTION()
 EEntityMinimapIconType __FMinimapIconConfig_GetIconType(const TDataObjectPtr<FMinimapIconConfig> &inout DataObject)
 {
-    int local_65 = 0;
     if ((DataObject == nullptr))
     {
         if (!(EUIGlobals::GIsDuringPropertyConversion))
@@ -97,15 +91,13 @@ EEntityMinimapIconType __FMinimapIconConfig_GetIconType(const TDataObjectPtr<FMi
             FBlueprintDebugFunctions::ThrowScriptException("Get 'IconType' from a null 'FMinimapIconConfig' DataObject!");
         }
         FMinimapIconConfig local_64;
-        local_65 = int(local_64.IconType);
-        return EEntityMinimapIconType(local_65);
+        return local_64.IconType;
     }
-    return EEntityMinimapIconType(local_65);
+    return DataObject.Get().IconType;
 }
 UFUNCTION()
 FVector2D __FMinimapIconConfig_GetIconSize(const TDataObjectPtr<FMinimapIconConfig> &inout DataObject)
 {
-    FVector2D __r;
     if ((DataObject == nullptr))
     {
         if (!(EUIGlobals::GIsDuringPropertyConversion))
@@ -115,12 +107,11 @@ FVector2D __FMinimapIconConfig_GetIconSize(const TDataObjectPtr<FMinimapIconConf
         FMinimapIconConfig local_64;
         return local_64.IconSize;
     }
-    return __r;
+    return DataObject.Get().IconSize;
 }
 UFUNCTION()
 FMinimapIconDisplaySettings __FMinimapIconConfig_GetDisplaySettings(const TDataObjectPtr<FMinimapIconConfig> &inout DataObject)
 {
-    FMinimapIconDisplaySettings __r;
     if ((DataObject == nullptr))
     {
         if (!(EUIGlobals::GIsDuringPropertyConversion))
@@ -130,7 +121,7 @@ FMinimapIconDisplaySettings __FMinimapIconConfig_GetDisplaySettings(const TDataO
         FMinimapIconConfig local_64;
         return local_64.DisplaySettings;
     }
-    return __r;
+    return DataObject.Get().DisplaySettings;
 }
 UFUNCTION()
 int __FMinimapIconConfig_GetZOrder(const TDataObjectPtr<FMinimapIconConfig> &inout DataObject)
@@ -150,18 +141,16 @@ int __FMinimapIconConfig_GetZOrder(const TDataObjectPtr<FMinimapIconConfig> &ino
 UFUNCTION()
 bool __FMinimapIconConfig_GetbEnableSimplifiedDisplay(const TDataObjectPtr<FMinimapIconConfig> &inout DataObject)
 {
-    bool local_1 = false;
     if ((DataObject == nullptr))
     {
-        local_1 = !(EUIGlobals::GIsDuringPropertyConversion);
-        if (local_1)
+        if (!(EUIGlobals::GIsDuringPropertyConversion))
         {
             FBlueprintDebugFunctions::ThrowScriptException("Get 'bEnableSimplifiedDisplay' from a null 'FMinimapIconConfig' DataObject!");
         }
         FMinimapIconConfig local_64;
         return local_64.bEnableSimplifiedDisplay;
     }
-    return local_1;
+    return DataObject.Get().bEnableSimplifiedDisplay;
 }
 UFUNCTION()
 TDataObjectPtr<FMinimapIconSimplifiedDisplayRule> __FMinimapIconConfig_GetCustomSimplifiedDisplayRule(const TDataObjectPtr<FMinimapIconConfig> &inout DataObject)
@@ -175,7 +164,7 @@ TDataObjectPtr<FMinimapIconSimplifiedDisplayRule> __FMinimapIconConfig_GetCustom
         FMinimapIconConfig local_64;
         return local_64.GetCustomSimplifiedDisplayRule();
     }
-    return GetCustomSimplifiedDisplayRule();
+    return DataObject.Get().GetCustomSimplifiedDisplayRule();
 }
 UFUNCTION()
 FMinimapIconConfig CastToFMinimapIconConfig(const TDataObjectPtr<FMinimapIconConfig> &inout DataObject)
@@ -205,7 +194,6 @@ FPresentationIcon __FMinimapIconConfig_Common_GetIcon(const TDataObjectPtr<FMini
 UFUNCTION()
 bool __FMinimapIconConfig_Common_GetbCanSetGuideTarget(const TDataObjectPtr<FMinimapIconConfig_Common> &inout DataObject)
 {
-    bool local_1 = false;
     if ((DataObject == nullptr))
     {
         if (!(EUIGlobals::GIsDuringPropertyConversion))
@@ -215,12 +203,11 @@ bool __FMinimapIconConfig_Common_GetbCanSetGuideTarget(const TDataObjectPtr<FMin
         FMinimapIconConfig_Common local_132;
         return local_132.bCanSetGuideTarget;
     }
-    return local_1;
+    return DataObject.Get().bCanSetGuideTarget;
 }
 UFUNCTION()
 bool __FMinimapIconConfig_Common_GetbShowTooltip(const TDataObjectPtr<FMinimapIconConfig_Common> &inout DataObject)
 {
-    bool local_1 = false;
     if ((DataObject == nullptr))
     {
         if (!(EUIGlobals::GIsDuringPropertyConversion))
@@ -230,12 +217,11 @@ bool __FMinimapIconConfig_Common_GetbShowTooltip(const TDataObjectPtr<FMinimapIc
         FMinimapIconConfig_Common local_132;
         return local_132.bShowTooltip;
     }
-    return local_1;
+    return DataObject.Get().bShowTooltip;
 }
 UFUNCTION()
 TSoftClassPtr<UEUIUserWidget> __FMinimapIconConfig_Common_GetCustomTooltipWidget(const TDataObjectPtr<FMinimapIconConfig_Common> &inout DataObject)
 {
-    TSoftClassPtr<UEUIUserWidget> __r;
     if ((DataObject == nullptr))
     {
         if (!(EUIGlobals::GIsDuringPropertyConversion))
@@ -245,12 +231,11 @@ TSoftClassPtr<UEUIUserWidget> __FMinimapIconConfig_Common_GetCustomTooltipWidget
         FMinimapIconConfig_Common local_132;
         return local_132.CustomTooltipWidget;
     }
-    return __r;
+    return DataObject.Get().CustomTooltipWidget;
 }
 UFUNCTION()
 bool __FMinimapIconConfig_Common_GetbNeverHittestable(const TDataObjectPtr<FMinimapIconConfig_Common> &inout DataObject)
 {
-    bool local_1 = false;
     if ((DataObject == nullptr))
     {
         if (!(EUIGlobals::GIsDuringPropertyConversion))
@@ -260,7 +245,7 @@ bool __FMinimapIconConfig_Common_GetbNeverHittestable(const TDataObjectPtr<FMini
         FMinimapIconConfig_Common local_132;
         return local_132.bNeverHittestable;
     }
-    return local_1;
+    return DataObject.Get().bNeverHittestable;
 }
 UFUNCTION()
 FMinimapIconConfig_Common CastToFMinimapIconConfig_Common(const TDataObjectPtr<FMinimapIconConfig_Common> &inout DataObject)
@@ -274,7 +259,6 @@ namespace __FMinimapIconConfig_PlayerFunctions
 UFUNCTION()
 FLinearColor __FMinimapIconConfig_Player_GetIconColor(const TDataObjectPtr<FMinimapIconConfig_Player> &inout DataObject)
 {
-    FLinearColor __r;
     if ((DataObject == nullptr))
     {
         if (!(EUIGlobals::GIsDuringPropertyConversion))
@@ -284,7 +268,7 @@ FLinearColor __FMinimapIconConfig_Player_GetIconColor(const TDataObjectPtr<FMini
         FMinimapIconConfig_Player local_68;
         return local_68.IconColor;
     }
-    return __r;
+    return DataObject.Get().IconColor;
 }
 UFUNCTION()
 FMinimapIconConfig_Player CastToFMinimapIconConfig_Player(const TDataObjectPtr<FMinimapIconConfig_Player> &inout DataObject)
@@ -298,7 +282,6 @@ namespace __FMinimapIconConfig_CustomFunctions
 UFUNCTION()
 TSoftClassPtr<UUserWidget> __FMinimapIconConfig_Custom_GetIconWidget(const TDataObjectPtr<FMinimapIconConfig_Custom> &inout DataObject)
 {
-    TSoftClassPtr<UUserWidget> __r;
     if ((DataObject == nullptr))
     {
         if (!(EUIGlobals::GIsDuringPropertyConversion))
@@ -308,7 +291,7 @@ TSoftClassPtr<UUserWidget> __FMinimapIconConfig_Custom_GetIconWidget(const TData
         FMinimapIconConfig_Custom local_74;
         return local_74.IconWidget;
     }
-    return __r;
+    return DataObject.Get().IconWidget;
 }
 UFUNCTION()
 FMinimapIconConfig_Custom CastToFMinimapIconConfig_Custom(const TDataObjectPtr<FMinimapIconConfig_Custom> &inout DataObject)

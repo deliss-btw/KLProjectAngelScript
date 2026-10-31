@@ -58,12 +58,15 @@ struct FCS_LocalConditionSubscriptionManager : FECSSingleton
         if (local_4.KeyedHandles.Contains(Key))
         {
             TArray<FConditionInstanceHandle> local_6;
+            local_6.Remove(Handle);
             if (local_6.IsEmpty())
             {
+                local_4.KeyedHandles.Remove(Key);
             }
         }
         if (local_4.KeyedHandles.IsEmpty())
         {
+            this.TypeSubscriptions.Remove(TypeDefine);
         }
         return;
     }

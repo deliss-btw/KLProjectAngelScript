@@ -112,11 +112,10 @@ struct FVM_MissionListEntry : FEUIViewModel
     void PostConstruct()
     {
         TDataObjectPtr<FMissionPhaseConfig> local_24;
-        if (::MissionUtils::GetGuidePresentationConfig(this.GetMissionConfig(), local_24).IsSet())
+        TDataObjectPtr<FGuidePresentationConfig> local_48 = ::MissionUtils::GetGuidePresentationConfig(this.GetMissionConfig(), local_24);
+        if (local_48.IsSet())
         {
-            FSoftBrush local_120;
-            local_120.GetGuideIcon();
-            this.SetTrackingIcon(local_120);
+            this.SetTrackingIcon(local_48.Get().GetGuideIcon());
             this.InitMissionRedDotVM();
         }
         if (this.GetChapterConfig().IsSet())
@@ -131,10 +130,7 @@ struct FVM_MissionListEntry : FEUIViewModel
         {
             return false;
         }
-        TEUIModelWeakRef<FVM_MissionList> local_2 = this.GetOwnerList();
-        TEUIModelRef<FVM_MissionListEntry> local_6;
-        local_6.GetSelectedMissionEntry();
-        return (local_6 == FEUIModelRef(this));
+        return (this.GetOwnerList().Get().GetSelectedMissionEntry() == FEUIModelRef(this));
     }
     FText GetMainTitle() const
     {
@@ -154,9 +150,7 @@ struct FVM_MissionListEntry : FEUIViewModel
         {
             return;
         }
-        FEUIModelContainer local_18 = FEUIModelContainer(this);
-        TEUIModelWeakRef<FVM_MissionList> local_2 = this.GetOwnerList();
-        local_18.OnEntryItemClicked();
+        this.GetOwnerList().Get().OnEntryItemClicked(FEUIModelContainer(this));
         return;
     }
     void ApplyGuideDistance(const int Meters)
@@ -196,14 +190,12 @@ struct FVM_MissionListEntry : FEUIViewModel
     }
     void InitMissionRedDotVM()
     {
-        int local_4 = 0;
-        int local_17 = 0;
         if (!(this.GetMissionConfig().IsSet()))
         {
             return;
         }
         FGameplayTag local_3;
-        int local_5 = local_4;
+        int local_5 = int(this.GetMissionConfig().Get().MissionType);
         if (local_5 <= 1)
         {
             if (local_5 != 0)
@@ -217,8 +209,8 @@ struct FVM_MissionListEntry : FEUIViewModel
                 local_3 = GameplayTags::RedDotSystem_Mission_NewSideMission;
             }
         }
-        FString local_10 = FString();
-        this.SetRedDotVM(TEUIModelRef<FVM_RedDot>(::FVM_RedDot::Create(this.GetContext().Manager, FRedDotNodeData(local_3, local_17))));
+        XError(ELog(63), FString().Append("[Mission] Generate New Mission RedDot failed, MissionType: ").Append(this.GetMissionConfig().Get().MissionType));
+        this.SetRedDotVM(TEUIModelRef<FVM_RedDot>(::FVM_RedDot::Create(this.GetContext().Manager, FRedDotNodeData(local_3, this.GetMissionConfig().Get().DataId))));
         return;
     }
     TEUIModelWeakRef<FVM_MissionList> GetOwnerList() const property
@@ -502,11 +494,9 @@ FVM_MissionListEntry& Create(const UObject ContextObject, const TEUIModelWeakRef
 {
     return FVM_MissionListEntry::CreateByManager(EUIInternal::GetContextManager(ContextObject), OwnerList, ChapterConfig, MissionConfig, EntryWidgetClass);
 }
-FVM_MissionListEntry CreateByManager(const UEUIManagerSubsystem Manager, const TEUIModelWeakRef<FVM_MissionList> &inout OwnerList, const TDataObjectPtr<FChapterConfig> &inout ChapterConfig, const TDataObjectPtr<FMissionConfig> &inout MissionConfig, const TSoftClassPtr<UEUIUserWidget> &inout EntryWidgetClass)
+FVM_MissionListEntry& CreateByManager(const UEUIManagerSubsystem Manager, const TEUIModelWeakRef<FVM_MissionList> &inout OwnerList, const TDataObjectPtr<FChapterConfig> &inout ChapterConfig, const TDataObjectPtr<FMissionConfig> &inout MissionConfig, const TSoftClassPtr<UEUIUserWidget> &inout EntryWidgetClass)
 {
-    FVM_MissionListEntry __r;
-    TEUIModelRef<FVM_MissionListEntry> local_6 = TEUIModelRef<FVM_MissionListEntry>(EUIInternal::MakeModelWithManager_Generic(Manager, FVM_MissionListEntry::ModelId, 0, OwnerList, ChapterConfig, MissionConfig, EntryWidgetClass));
-    return __r;
+    return TEUIModelRef<FVM_MissionListEntry>(EUIInternal::MakeModelWithManager_Generic(Manager, FVM_MissionListEntry::ModelId, 0, OwnerList, ChapterConfig, MissionConfig, EntryWidgetClass)).Get();
 }
 void GetModelInfo(FEUIViewModelMetaInfo &inout Result)
 {
@@ -691,7 +681,6 @@ namespace __GeneratedProperties_FVM_MissionListEntry
 {
 UScriptStruct StaticStruct()
 {
-    UScriptStruct local_2;
-    return local_2;
+    return __GeneratedProperties_FVM_MissionListEntry.Get();
 }
 }

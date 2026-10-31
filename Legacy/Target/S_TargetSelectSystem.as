@@ -69,9 +69,9 @@ class US_TargetSelectSystem : UECSScriptSystem
                 {
                     if (!(SelectTargetRequestLogic.GetDataByRequestName().Contains(local_32.GetKey())))
                     {
-                        if (GetConfirmInputContextConfig())
+                        if (local_32.GetValue().GetConfirmInputContextConfig())
                         {
-                            ::EnhancedInputUtils::RemoveInputContext(local_6.GetPlayerEntity(), GetConfirmInputContextConfig());
+                            ::EnhancedInputUtils::RemoveInputContext(local_6.GetPlayerEntity(), local_32.GetValue().GetConfirmInputContextConfig());
                         }
                     }
                 }
@@ -84,7 +84,7 @@ class US_TargetSelectSystem : UECSScriptSystem
                 TRawPtr<FSelectTargetRuntimeData> local_56 = local_14.DataByRequestName.Find(local_54.GetKey());
                 if (!(local_56))
                 {
-                    ::EnhancedInputUtils::AddInputContext(Entity, GetConfirmInputContextConfig());
+                    ::EnhancedInputUtils::AddInputContext(Entity, local_54.GetValue().GetConfirmInputContextConfig());
                     continue;
                 }
                 if (!(local_56))
@@ -102,7 +102,7 @@ class US_TargetSelectSystem : UECSScriptSystem
                 if (local_131)
                 {
                     ::EnhancedInputUtils::RemoveInputContext(local_6.GetPlayerEntity(), local_56.opArrow().GetConfirmInputContextConfig());
-                    ::EnhancedInputUtils::AddInputContext(local_6.GetPlayerEntity(), GetConfirmInputContextConfig());
+                    ::EnhancedInputUtils::AddInputContext(local_6.GetPlayerEntity(), local_54.GetValue().GetConfirmInputContextConfig());
                 }
             }
         }
@@ -121,10 +121,9 @@ class US_TargetSelectSystem : UECSScriptSystem
             {
                 for (auto& local_32 : local_14.DataByRequestName)
                 {
-                    local_32;
-                    if (GetConfirmInputContextConfig())
+                    if (local_32.GetValue().GetConfirmInputContextConfig())
                     {
-                        ::EnhancedInputUtils::RemoveInputContext(local_6.GetPlayerEntity(), GetConfirmInputContextConfig());
+                        ::EnhancedInputUtils::RemoveInputContext(local_6.GetPlayerEntity(), local_32.GetValue().GetConfirmInputContextConfig());
                     }
                 }
             }
@@ -136,7 +135,6 @@ class US_TargetSelectSystem : UECSScriptSystem
     UFUNCTION()
     void Monitor_OnSelectTargetRequestViewModified(const FECSEntity &inout Entity, const FC_SelectTargetRequestView &inout SelectTargetRequest) const
     {
-        const FSelectTargetRuntimeData& local_34;
         FC_ViewportSelectTarget local_6 = FECSEntity::Modify<FC_ViewportSelectTarget>(Entity).opCall();
         if (local_6)
         {
@@ -152,6 +150,7 @@ class US_TargetSelectSystem : UECSScriptSystem
         }
         for (auto& local_32 : SelectTargetRequest.DataByRequestName)
         {
+            const FSelectTargetRuntimeData& local_34 = local_32.GetValue();
             if ((int(local_34.GetMethod())) == 0)
             {
                 bool local_41;
@@ -211,7 +210,6 @@ class US_TargetSelectSystem : UECSScriptSystem
     void ClientJob_ViewportSelectTarget(const FECSEntity &inout Entity, FC_ViewportSelectTarget &inout ViewportSelectTarget) const
     {
         int local_32 = 0;
-        const FViewportSelectTargetParams& local_68;
         bool local_195;
         bool local_224;
         bool local_240;
@@ -254,6 +252,7 @@ class US_TargetSelectSystem : UECSScriptSystem
         int local_65 = 0;
         for (; local_65 < ViewportSelectTarget.SelectDatas.Num(); ++local_65)
         {
+            const FViewportSelectTargetParams& local_68 = ViewportSelectTarget.SelectDatas[local_65].Params.Get();
             FViewportSelectTargetEntityData& local_70 = ViewportSelectTarget.TargetDatas[local_65];
             local_70.bTargetUpdated = false;
             local_70.Entities.SetNum(int(local_68.TargetNum));
@@ -510,15 +509,14 @@ class US_TargetSelectSystem : UECSScriptSystem
     UFUNCTION()
     void Job_UpdateSelectTargetInput(const FECSEntity &inout Entity, const FC_SelectTargetRequestLogic &inout SelectTargetRequest, const FC_Input &inout Input, FC_ESMTrigger &inout ESMTrigger, const FCS_FixedTime &inout FixedTime) const
     {
-        const FSelectTargetRuntimeData& local_22;
         Modify local_48;
         UESMInputTriggerAsset local_72;
-        ESelectTargetQuickSelectType local_73 = ESelectTargetQuickSelectType(0);
         for (auto& local_20 : SelectTargetRequest.GetDataByRequestName())
         {
+            const FSelectTargetRuntimeData& local_22 = local_20.GetValue();
             if (local_22.GetViewportSelectTargetParams())
             {
-                const FViewportSelectTargetParams& local_24;
+                const FViewportSelectTargetParams& local_24 = local_22.GetViewportSelectTargetParams().Get();
                 if (local_24.bNeedConfirm)
                 {
                     FActiveTriggerResult local_40 = FESMInputTriggerItem::GetTriggerResult(local_24.ConfirmInput.CoreTriggerItem, Input.State, FixedTime.LastTime, FixedTime.Time, ESMTrigger.Storage);
@@ -541,12 +539,12 @@ class US_TargetSelectSystem : UECSScriptSystem
                     FActiveTriggerResult local_32 = FESMInputTriggerItem::GetTriggerResult(local_70.GetKey().CoreTriggerItem, Input.State, FixedTime.LastTime, FixedTime.Time, ESMTrigger.Storage);
                     if (local_32.bActive && (FFPTime(local_32.TriggerTime).opCmp(FixedTime.Time) <= 0) && (local_32.GetTriggerExpireTime().opCmp(FixedTime.LastTime) >= 0))
                     {
-                        if (int(local_73) == 0)
+                        if (int(local_70.GetValue()) == 0)
                         {
                             TArray<FECSEntity> local_78;
                             local_78.Add(Entity);
                             local_48.opCall().GetModify_DataByRequestName()[local_20.GetKey()].SetbConfirmed(true);
-                            ::FTargetSelectUtils::SetSelectTargetResultByRequestType(Entity, GetRequestType(), local_20.GetKey(), local_78);
+                            ::FTargetSelectUtils::SetSelectTargetResultByRequestType(Entity, local_20.GetValue().GetRequestType(), local_20.GetKey(), local_78);
                             if (!(local_24.ConfirmTriggerName.IsNone()))
                             {
                                 FESMTriggerUtils::ActivateTrigger(Entity, ESMTrigger.Storage, local_24.ConfirmTriggerName, local_32.TriggerTime, FFPTime(local_24.ConfirmTriggerValidateTime), local_70.GetKey().GetConsumeKey());
@@ -554,9 +552,9 @@ class US_TargetSelectSystem : UECSScriptSystem
                         }
                         else
                         {
-                            if (int(local_73) >= 1 && (int(local_73) <= 4))
+                            if (int(local_70.GetValue()) >= 1 && (int(local_70.GetValue()) <= 4))
                             {
-                                if ((int(local_73) - 1) < ::FTeamUtils::GetTeammates(Entity).Num())
+                                if ((int(local_70.GetValue()) - 1) < ::FTeamUtils::GetTeammates(Entity).Num())
                                 {
                                     TArray<FECSEntity> local_88;
                                     FECSEntity local_92;
@@ -598,7 +596,7 @@ class US_TargetSelectSystem : UECSScriptSystem
                                     if (!(local_88.IsEmpty()))
                                     {
                                         local_48.opCall().GetModify_DataByRequestName()[local_20.GetKey()].SetbConfirmed(true);
-                                        ::FTargetSelectUtils::SetSelectTargetResultByRequestType(Entity, GetRequestType(), local_20.GetKey(), local_88);
+                                        ::FTargetSelectUtils::SetSelectTargetResultByRequestType(Entity, local_20.GetValue().GetRequestType(), local_20.GetKey(), local_88);
                                         if (!(local_24.ConfirmTriggerName.IsNone()))
                                         {
                                             FESMTriggerUtils::ActivateTrigger(Entity, ESMTrigger.Storage, local_24.ConfirmTriggerName, local_32.TriggerTime, FFPTime(local_24.ConfirmTriggerValidateTime), local_70.GetKey().GetConsumeKey());
@@ -626,14 +624,14 @@ class US_TargetSelectSystem : UECSScriptSystem
         TArray<FName> local_4;
         for (auto& local_24 : SelectTargetResult.GetTargetEntitiesByRequestName())
         {
-            if (FFPTime(GetExpireTime()).opCmp(FixedTime.Time) <= 0)
+            if (FFPTime(local_24.GetValue().GetExpireTime()).opCmp(FixedTime.Time) <= 0)
             {
                 local_4.Add(local_24.GetKey());
             }
         }
         for (auto& local_42 : local_4)
         {
-            local_42;
+            SelectTargetResult.GetModify_TargetEntitiesByRequestName().Remove(local_42);
         }
         if (SelectTargetResult.GetTargetEntitiesByRequestName().Num() == 0)
         {
@@ -645,9 +643,9 @@ class US_TargetSelectSystem : UECSScriptSystem
             SelectTargetResult.SetNextExpireTime(FFPTime(-1));
             for (auto& local_24_2 : SelectTargetResult.GetTargetEntitiesByRequestName())
             {
-                if (FFPTime(SelectTargetResult.GetNextExpireTime()).opCmp(GetExpireTime()) > 0)
+                if (FFPTime(SelectTargetResult.GetNextExpireTime()).opCmp(local_24_2.GetValue().GetExpireTime()) > 0)
                 {
-                    SelectTargetResult.SetNextExpireTime(GetExpireTime());
+                    SelectTargetResult.SetNextExpireTime(local_24_2.GetValue().GetExpireTime());
                 }
             }
         }
@@ -657,7 +655,7 @@ class US_TargetSelectSystem : UECSScriptSystem
     void Job_UpdateSkilTargetPosition(const FECSEntity &inout Entity, const FC_Transform &inout Transform, const FC_SkillTargetPositionSelectRequest &inout SkillTargetPositionSelectRequest, FC_SkillTargetPosition &inout SkillTargetPosition, const FCS_FixedTime &inout FixedTime) const
     {
         FVector local_6 = FCharacterInputUtils::GetViewInput(Entity, FixedTime.LastTime);
-        FSkillTargetPositionSelectParams local_14;
+        const FSkillTargetPositionSelectParams& local_14 = SkillTargetPositionSelectRequest.GetParams().Get();
         float32 local_20 = local_14.MaxDistance;
         float32 local_19_2 = SkillTargetPosition.GetDistance() + (float32(local_6.Y) * local_14.DistanceSpeed);
         SkillTargetPosition.SetDistance(FMath::Clamp(local_19_2, local_14.MinDistance, local_20));
@@ -710,14 +708,15 @@ class US_TargetSelectSystem : UECSScriptSystem
     UFUNCTION()
     void ClentJob_UpdateCameraLookAtBySkillTargetPosition(const FECSEntity &inout Entity, const FC_SkillTargetPositionSelectRequest &inout SkillTargetPositionSelectRequest, const FC_SkillTargetPosition &inout SkillTargetPosition) const
     {
+        FCameraUtils::UpdateCameraLookAt(Entity, SkillTargetPosition.GetTargetPosition(), FVector3f::ZeroVector, 0.0f, SkillTargetPositionSelectRequest.GetParams().Get().CameraLookAtTargetConfig);
         return;
     }
     UFUNCTION()
     void ClentJob_UpdateSkillTargetPositionSelectRequestFX(const FECSEntity &inout Entity, const FC_SkillTargetPositionSelectRequest &inout SkillTargetPositionSelectRequest, const FC_SkillTargetPosition &inout SkillTargetPosition, const FC_InterpoTime &inout InterpoTime, const FCS_FixedTime &inout FixedTime) const
     {
-        const FSkillTargetPositionSelectParams& local_2;
         FC_SkillTargetPositionView& local_10;
         int local_236 = 0;
+        const FSkillTargetPositionSelectParams& local_2 = SkillTargetPositionSelectRequest.GetParams().Get();
         if (local_2.HintFxConfig.Asset.IsValid())
         {
             FDataObjectPtr local_82;

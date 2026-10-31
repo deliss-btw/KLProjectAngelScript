@@ -124,30 +124,27 @@ struct FC_EcologySpawnerStats : FECSComponent
     TMap<FName, FCreatureTypeAggregate> GetAggregateByType() const
     {
         TMap<FName, FCreatureTypeAggregate> local_20;
-        FName local_42;
         for (auto& local_40 : this.CreatureStats)
         {
-            local_40;
-            bool local_37 = !(local_20.Contains(local_42));
-            if (local_37)
+            FName local_42(local_40.GetValue().CreatureRowName);
+            if (!(local_20.Contains(local_42)))
             {
                 FCreatureTypeAggregate local_46;
                 local_20.Add(local_42, local_46);
             }
             ++local_20[local_42].Spawned;
-            if (local_37)
+            if (local_40.GetValue().bDeathByKill)
             {
                 ++local_20[local_42].Death;
             }
             else
             {
-                local_37 = !local_37;
-                if (local_37)
+                if (!(local_40.GetValue().bAlive))
                 {
                     ++local_20[local_42].Destroyed;
                 }
             }
-            if (local_37)
+            if (local_40.GetValue().bAlive)
             {
                 ++local_20[local_42].Alive;
             }
@@ -157,30 +154,27 @@ struct FC_EcologySpawnerStats : FECSComponent
     TMap<FECSEntityId, FCreatureTypeAggregate> GetAggregateByFlock() const
     {
         TMap<FECSEntityId, FCreatureTypeAggregate> local_20;
-        FECSEntityId local_41;
         for (auto& local_40 : this.CreatureStats)
         {
-            local_40;
-            bool local_37 = !(local_20.Contains(local_41));
-            if (local_37)
+            FECSEntityId local_41 = FECSEntityId(local_40.GetValue().FlockEntity);
+            if (!(local_20.Contains(local_41)))
             {
                 FCreatureTypeAggregate local_46;
                 local_20.Add(local_41, local_46);
             }
             ++local_20[local_41].Spawned;
-            if (local_37)
+            if (local_40.GetValue().bDeathByKill)
             {
                 ++local_20[local_41].Death;
             }
             else
             {
-                local_37 = !local_37;
-                if (local_37)
+                if (!(local_40.GetValue().bAlive))
                 {
                     ++local_20[local_41].Destroyed;
                 }
             }
-            if (local_37)
+            if (local_40.GetValue().bAlive)
             {
                 ++local_20[local_41].Alive;
             }

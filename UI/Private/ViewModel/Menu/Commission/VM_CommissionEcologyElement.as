@@ -338,11 +338,9 @@ FVM_CommissionEcologyElement& Create(const UObject ContextObject, const TEUIMode
 {
     return FVM_CommissionEcologyElement::CreateByManager(EUIInternal::GetContextManager(ContextObject), EcologyInfo, EEcologyElementType(ElementType));
 }
-FVM_CommissionEcologyElement CreateByManager(const UEUIManagerSubsystem Manager, const TEUIModelWeakRef<FVM_CommissionEcologyInfo> &inout EcologyInfo, const EEcologyElementType ElementType)
+FVM_CommissionEcologyElement& CreateByManager(const UEUIManagerSubsystem Manager, const TEUIModelWeakRef<FVM_CommissionEcologyInfo> &inout EcologyInfo, const EEcologyElementType ElementType)
 {
-    FVM_CommissionEcologyElement __r;
-    TEUIModelRef<FVM_CommissionEcologyElement> local_6 = TEUIModelRef<FVM_CommissionEcologyElement>(EUIInternal::MakeModelWithManager_Generic(Manager, FVM_CommissionEcologyElement::ModelId, 0, EcologyInfo, ElementType));
-    return __r;
+    return TEUIModelRef<FVM_CommissionEcologyElement>(EUIInternal::MakeModelWithManager_Generic(Manager, FVM_CommissionEcologyElement::ModelId, 0, EcologyInfo, ElementType)).Get();
 }
 void GetModelInfo(FEUIViewModelMetaInfo &inout Result)
 {
@@ -459,7 +457,6 @@ namespace __GeneratedProperties_FVM_CommissionEcologyElement
 {
 UScriptStruct StaticStruct()
 {
-    UScriptStruct local_2;
-    return local_2;
+    return __GeneratedProperties_FVM_CommissionEcologyElement.Get();
 }
 }

@@ -54,7 +54,7 @@ bool GetEntityMapPosition(const FECSEntity &inout Entity, FVector2D &inout OutWo
 }
 bool IsValidHandle(const FMinimapIconHandle &inout Handle)
 {
-    UMinimapIconRegistry local_4;
+    UMinimapIconRegistry local_4 = Handle.Registry.Get();
     if (local_4 != nullptr)
     {
         return local_4.IconExists(Handle);
@@ -63,7 +63,7 @@ bool IsValidHandle(const FMinimapIconHandle &inout Handle)
 }
 void UnregisterIcon(const FMinimapIconHandle &inout Handle)
 {
-    UMinimapIconRegistry local_4;
+    UMinimapIconRegistry local_4 = Handle.Registry.Get();
     if (local_4 != nullptr)
     {
         local_4.RemoveIcon(Handle);
@@ -72,7 +72,7 @@ void UnregisterIcon(const FMinimapIconHandle &inout Handle)
 }
 void UpdateIconPosition(const FMinimapIconHandle &inout Handle, const FVector2D &inout WorldPosition)
 {
-    UMinimapIconRegistry local_4;
+    UMinimapIconRegistry local_4 = Handle.Registry.Get();
     if (local_4 != nullptr)
     {
         if (!(local_4.IconExists(Handle)))
@@ -91,7 +91,7 @@ void UpdateIconPosition(const FMinimapIconHandle &inout Handle, const FVector2D 
 }
 void UpdateIconInfo(const FMinimapIconHandle &inout Handle, const FMinimapIconInfo &inout IconInfo)
 {
-    UMinimapIconRegistry local_4;
+    UMinimapIconRegistry local_4 = Handle.Registry.Get();
     if (local_4 != nullptr)
     {
         local_4.SetIconInfo(Handle, IconInfo);
@@ -100,7 +100,7 @@ void UpdateIconInfo(const FMinimapIconHandle &inout Handle, const FMinimapIconIn
 }
 FMinimapIconInfo GetIconInfo(const FMinimapIconHandle &inout Handle)
 {
-    UMinimapIconRegistry local_4;
+    UMinimapIconRegistry local_4 = Handle.Registry.Get();
     if (local_4 != nullptr)
     {
         return local_4.GetIconInfo(Handle);
@@ -109,7 +109,7 @@ FMinimapIconInfo GetIconInfo(const FMinimapIconHandle &inout Handle)
 }
 void SetIconNeverHide(const FMinimapIconHandle &inout Handle, const bool bNeverHide)
 {
-    UMinimapIconRegistry local_4;
+    UMinimapIconRegistry local_4 = Handle.Registry.Get();
     if (local_4 != nullptr)
     {
         if (!(local_4.IconExists(Handle)))

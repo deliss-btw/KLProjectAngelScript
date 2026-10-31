@@ -99,13 +99,11 @@ TDataObjectPtr<FDialogueConfig> GetDialogueConfig(const FECSEntity &inout Dialog
 UFUNCTION()
 FName GetDialogueName(const TDataObjectPtr<FDialogueConfig> &inout DialogueConfig)
 {
-    FName local_3;
     if (!(DialogueConfig.IsSet()))
     {
-        return local_3;
+        return FName();
     }
-    local_3.GetDataName();
-    return local_3;
+    return DialogueConfig.Get().GetDataName();
 }
 bool TryFindDialogueEntity(const TDataObjectPtr<FDialogueConfig> &inout Dialogue, FECSEntity &out DialogueEntity)
 {
@@ -116,9 +114,9 @@ bool TryFindDialogueEntity(const TDataObjectPtr<FDialogueConfig> &inout Dialogue
     DialogueEntity = local_4;
     GetGameplaySettings<UDialogueSettings> local_8;
     local_6 = local_8;
-    if (GetInteractTargetNPC().IsSet())
+    if (Dialogue.Get().GetInteractTargetNPC().IsSet())
     {
-        TDataObjectPtr<FNPCMainConfig> local_36 = GetInteractTargetNPC();
+        TDataObjectPtr<FNPCMainConfig> local_36 = Dialogue.Get().GetInteractTargetNPC();
         FECSRuntimeView local_100 = ECS::GetECSWorld().GetRuntimeView(EECSRuntimeViewType(2));
         Include local_104;
         local_104.opCall();
@@ -149,40 +147,36 @@ bool TryFindDialogueEntity(const TDataObjectPtr<FDialogueConfig> &inout Dialogue
 }
 bool ActivatePlayerDialogue(const TDataObjectPtr<FDialogueConfig> &inout Dialogue, const FECSEntity &inout PlayerEntity)
 {
-    int local_12 = 0;
     int local_118 = 0;
     if (!(Dialogue.IsSet()))
     {
         XError(ELog(64), FString().Append("[Dialogue] Failed to Activate Player Dialogue: dialogue is null."));
         return false;
     }
-    FName local_11;
-    local_11.GetDataName();
-    FName local_9 = local_11;
+    FName local_9(Dialogue.Get().GetDataName());
     if (!(PlayerEntity.IsValid()))
     {
         XError(ELog(64), FString().Append("[Dialogue] Failed to Activate Player Dialogue: ").Append(local_9).Append(", player entity is invalid."));
         return false;
     }
-    int local_13 = local_12;
-    if (local_13 != 0)
+    if (int(Dialogue.Get().DialogueScope) != 0)
     {
         XError(ELog(64), FString().Append("[Dialogue] Failed to Activate Player Dialogue: ").Append(local_9).Append(", dialogue scope is not personal."));
         return false;
     }
-    if (!(GetInteractTargetNPC().IsSet()))
+    if (!(Dialogue.Get().GetInteractTargetNPC().IsSet()))
     {
         XError(ELog(64), FString().Append("[Dialogue] Failed to Activate Player Dialogue: ").Append(local_9).Append(", InteractTargetNPC is not set."));
         return false;
     }
-    TDataObjectPtr<FLevelInfoConfig> local_38 = GetLevelInfo();
+    TDataObjectPtr<FLevelInfoConfig> local_38 = Dialogue.Get().GetLevelInfo();
     if (local_38.IsSet() && !((local_38 == FLevelUtils::GetCurrentLevelInfoConfig(nullptr).opImplConv())))
     {
         XLog(ELog(64), FString().Append("[Dialogue] Skip Activate Player Dialogue: ").Append(local_9).Append(", level is not match"));
         return false;
     }
     XLog(ELog(64), FString().Append("[Dialogue] Activate Player Dialogue: ").Append(local_9));
-    local_118.GetModify_NPCDialogueMap().FindOrAdd(GetInteractTargetNPC()).GetDialogueInfos().FindOrAdd(local_9) = FDialogueInfo(Dialogue);
+    local_118.GetModify_NPCDialogueMap().FindOrAdd(Dialogue.Get().GetInteractTargetNPC()).GetDialogueInfos().FindOrAdd(local_9) = FDialogueInfo(Dialogue);
     return true;
 }
 bool DeactivatePlayerDialogue(const TDataObjectPtr<FDialogueConfig> &inout Dialogue, const FECSEntity &inout PlayerEntity)
@@ -192,9 +186,7 @@ bool DeactivatePlayerDialogue(const TDataObjectPtr<FDialogueConfig> &inout Dialo
         XError(ELog(64), FString().Append("[Dialogue] Failed to Activate Player Dialogue: dialogue is null."));
         return false;
     }
-    FName local_11;
-    local_11.GetDataName();
-    FName local_9 = local_11;
+    FName local_9(Dialogue.Get().GetDataName());
     if (!(PlayerEntity.IsValid()))
     {
         XError(ELog(64), FString().Append("[Dialogue] Failed to Activate Player Dialogue: ").Append(local_9).Append(", player entity is invalid."));
@@ -207,6 +199,7 @@ bool DeactivatePlayerDialogue(const TDataObjectPtr<FDialogueConfig> &inout Dialo
     {
         if (local_18.HistoryCache.Contains(local_9))
         {
+            local_18.HistoryCache.Remove(local_9);
         }
         if (local_18.HistoryCache.Num() == 0)
         {
@@ -218,14 +211,16 @@ bool DeactivatePlayerDialogue(const TDataObjectPtr<FDialogueConfig> &inout Dialo
     FC_PlayerDialogues& local_30 = local_28.opCall();
     if (local_30)
     {
-        TDataObjectPtr<FNPCMainConfig> local_54 = GetInteractTargetNPC();
+        TDataObjectPtr<FNPCMainConfig> local_54 = Dialogue.Get().GetInteractTargetNPC();
         if (local_54.IsSet())
         {
             if (local_30.GetNPCDialogueMap().Contains(local_54))
             {
                 FDialogueInfoList& local_80 = local_30.GetModify_NPCDialogueMap()[local_54];
+                local_80.GetDialogueInfos().Remove(local_9);
                 if (local_80.GetDialogueInfos().Num() == 0)
                 {
+                    local_30.GetModify_NPCDialogueMap().Remove(local_54);
                 }
             }
         }
@@ -244,29 +239,23 @@ bool ActivateGlobalDialogue(const TDataObjectPtr<FDialogueConfig> &inout Dialogu
     int local_18 = 0;
     if (!(Dialogue))
     {
-        FName local_8;
-        local_8.GetDataName();
-        XError(ELog(64), FString().Append("[Dialogue] Failed to Activate Global Dialogue: ").Append(local_8).Append(", dialogue is null."));
+        XError(ELog(64), FString().Append("[Dialogue] Failed to Activate Global Dialogue: ").Append(Dialogue.Get().GetDataName()).Append(", dialogue is null."));
         return false;
     }
     else
     {
-        FName local_8;
-        if (0 != 2)
+        if (int(Dialogue.Get().DialogueScope) != 2)
         {
-            local_8.GetDataName();
-            XError(ELog(64), FString().Append("[Dialogue] Failed to Activate Global Dialogue: ").Append(local_8).Append(", dialogue scope is not global."));
+            XError(ELog(64), FString().Append("[Dialogue] Failed to Activate Global Dialogue: ").Append(Dialogue.Get().GetDataName()).Append(", dialogue scope is not global."));
             return false;
         }
         else
         {
             if (DialogueEntity.IsValid())
             {
-                local_8.GetDataName();
-                XLog(ELog(64), FString().Append("[Dialogue] Activate Global Dialogue: ").Append(local_8));
-                FDialogueInfo local_46 = FDialogueInfo(Dialogue);
-                local_8.GetDataName();
-                local_18.GetModify_DialogueInfos().FindOrAdd(local_8) = local_46;
+                XLog(ELog(64), FString().Append("[Dialogue] Activate Global Dialogue: ").Append(Dialogue.Get().GetDataName()));
+                FName local_8 = Dialogue.Get().GetDataName();
+                local_18.GetModify_DialogueInfos().FindOrAdd(local_8) = FDialogueInfo(Dialogue);
                 return true;
             }
             else
@@ -274,17 +263,14 @@ bool ActivateGlobalDialogue(const TDataObjectPtr<FDialogueConfig> &inout Dialogu
                 FECSEntity local_50;
                 if (DialogueUtils::TryFindDialogueEntity(Dialogue, local_50))
                 {
-                    local_8.GetDataName();
-                    XLog(ELog(64), FString().Append("[Dialogue] Activate Global Dialogue: ").Append(local_8));
-                    FDialogueInfo local_46_2 = FDialogueInfo(Dialogue);
-                    local_8.GetDataName();
-                    local_18.GetModify_DialogueInfos().FindOrAdd(local_8) = local_46_2;
+                    XLog(ELog(64), FString().Append("[Dialogue] Activate Global Dialogue: ").Append(Dialogue.Get().GetDataName()));
+                    FName local_8_2 = Dialogue.Get().GetDataName();
+                    local_18.GetModify_DialogueInfos().FindOrAdd(local_8_2) = FDialogueInfo(Dialogue);
                     return true;
                 }
                 else
                 {
-                    local_8.GetDataName();
-                    XError(ELog(64), FString().Append("[Dialogue] Failed to Activate Global Dialogue: ").Append(local_8).Append(", no dialogue entity found."));
+                    XError(ELog(64), FString().Append("[Dialogue] Failed to Activate Global Dialogue: ").Append(Dialogue.Get().GetDataName()).Append(", no dialogue entity found."));
                     return false;
                 }
             }
@@ -296,9 +282,7 @@ bool DeactivateGlobalDialogue(const TDataObjectPtr<FDialogueConfig> &inout Dialo
 {
     FC_GlobalDialogues& local_138;
     Remove local_144;
-    FName local_4;
-    local_4.GetDataName();
-    FName local_2 = local_4;
+    FName local_2(Dialogue.Get().GetDataName());
     if (!(Dialogue))
     {
         XError(ELog(64), FString().Append("[Dialogue] Failed to Deactivate Global Dialogue: ").Append(local_2).Append(", dialogue is null."));
@@ -321,6 +305,7 @@ bool DeactivateGlobalDialogue(const TDataObjectPtr<FDialogueConfig> &inout Dialo
                 if (local_132.HistoryCache.Contains(local_2))
                 {
                     XLog(ELog(64), FString().Append("[Dialogue] Clear Dialogue History for Player: ").Append(local_126.GetEntityName()).Append(", Dialogue: ").Append(local_2));
+                    local_132.HistoryCache.Remove(local_2);
                 }
             }
         }
@@ -330,6 +315,7 @@ bool DeactivateGlobalDialogue(const TDataObjectPtr<FDialogueConfig> &inout Dialo
             local_138 = local_136.opCall();
             if (local_138)
             {
+                local_138.GetModify_DialogueInfos().Remove(local_2);
                 if (local_138.GetDialogueInfos().Num() == 0)
                 {
                     local_144.opCall();
@@ -354,6 +340,7 @@ bool DeactivateGlobalDialogue(const TDataObjectPtr<FDialogueConfig> &inout Dialo
                 const FECSEntity& local_126_2 = local_124.Proceed();
                 if (local_138.GetDialogueInfos().Contains(local_2))
                 {
+                    local_138.GetModify_DialogueInfos().Remove(local_2);
                     if (local_138.GetDialogueInfos().Num() == 0)
                     {
                         local_144.opCall();
@@ -368,7 +355,6 @@ bool DeactivateGlobalDialogue(const TDataObjectPtr<FDialogueConfig> &inout Dialo
 UFUNCTION()
 bool StartAmbientDialogue(const FECSEntity &inout DialogueEntity, const TDataObjectPtr<FAmbientDialogueConfig> &inout DialogueConfig, const FECSEntity &inout TriggerPlayer = ENTITY_NULL, const float32 InterruptDistance = 500.f, const float32 ResumeDistance = -1.f)
 {
-    int local_45 = 0;
     if (!(DialogueConfig.IsSet()))
     {
         XError(ELog(64), FString().Append("[Dialogue] Failed to Start Ambient Dialogue: dialogue config is null."));
@@ -376,9 +362,7 @@ bool StartAmbientDialogue(const FECSEntity &inout DialogueEntity, const TDataObj
     }
     if (!(DialogueEntity.IsValid()))
     {
-        FName local_9;
-        local_9.GetDataName();
-        XError(ELog(64), FString().Append("[Dialogue] Failed to Start Ambient Dialogue: ").Append(local_9).Append(", dialogue entity is invalid."));
+        XError(ELog(64), FString().Append("[Dialogue] Failed to Start Ambient Dialogue: ").Append(DialogueConfig.Get().GetDataName()).Append(", dialogue entity is invalid."));
         return false;
     }
     FFPTime local_16 = FFPTime(-1);
@@ -386,7 +370,7 @@ bool StartAmbientDialogue(const FECSEntity &inout DialogueEntity, const TDataObj
     local_20.TriggerPlayer = TriggerPlayer;
     local_20.DialogueEntity = DialogueEntity;
     local_20.DialogueConfig = DialogueConfig;
-    local_20.BroadcastScope = EDialogueScope(local_45);
+    local_20.BroadcastScope = DialogueConfig.Get().BroadcastScope;
     local_20.InterruptDistance = InterruptDistance;
     local_20.ResumeDistance = ResumeDistance;
     return true;
@@ -414,7 +398,6 @@ bool StopAmbientDialogue(const FECSEntity &inout DialogueEntity)
 UFUNCTION()
 bool StartNarrationDialogue(const TDataObjectPtr<FNarrationDialogueConfig> &inout DialogueConfig, const FECSEntity &inout TriggerPlayer = FECSEntity())
 {
-    const FNarrationDialogueConfig& local_10;
     Include local_64;
     int local_156 = 0;
     if (!(DialogueConfig.IsSet()))
@@ -422,6 +405,7 @@ bool StartNarrationDialogue(const TDataObjectPtr<FNarrationDialogueConfig> &inou
         XError(ELog(64), FString().Append("[Dialogue] Failed to Start Narration Dialogue: dialogue config is null."));
         return false;
     }
+    const FNarrationDialogueConfig& local_10 = DialogueConfig.Get();
     XLog(ELog(64), FString().Append("[Dialogue] Start Narration Dialogue: ").Append(local_10.GetDataName()).Append(", BroadcastScope=").Append(local_10.BroadcastScope));
     TArray<FECSEntity> local_16;
     switch (int(local_10.BroadcastScope))
@@ -484,23 +468,19 @@ bool IsSameDialogue(const TDataObjectPtr<FDialogueConfig> &inout Dialogue1, cons
     {
         return false;
     }
-    FName local_4;
-    local_4.GetDataName();
-    FName local_6;
-    local_6.GetDataName();
-    return (local_4 == local_6);
+    return (Dialogue1.Get().GetDataName() == Dialogue2.Get().GetDataName());
 }
 FText GetNPCDisplayName(const TDataObjectPtr<FNPCMainConfig> &inout NPCConfig)
 {
-    FText __r;
     if (!(NPCConfig.IsSet()))
     {
         return FText();
     }
-    if (!(GetPresentationConfig().IsSet()))
+    TDataObjectPtr<FNPCPresentationConfig> local_30 = NPCConfig.Get().GetPresentationConfig();
+    if (!(local_30.IsSet()))
     {
         return FText();
     }
-    return __r;
+    return local_30.Get().Name;
 }
 }

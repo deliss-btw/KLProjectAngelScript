@@ -56,16 +56,17 @@ struct FM_Shop : FEUIModel
                 local_20.GetModify_ShopGoods().Add(local_2.RequireShopGoodsModel(local_34));
             }
         }
+        __Lambda_UI_Private_Model_Player_Shop_M_Shop_29 local_46;
+        this.GetModify_ShopCategories().Sort(local_46);
         return;
     }
     bool HasMultipleCategories() const
     {
         return (this.GetShopCategories().Num() > 1);
     }
-    FM_ShopCategory FindOrCreateShopCategory(const TDataObjectPtr<FShopCategoryConfig> &inout Category)
+    FM_ShopCategory& FindOrCreateShopCategory(const TDataObjectPtr<FShopCategoryConfig> &inout Category)
     {
         bool local_13 = false;
-        FM_ShopCategory __r;
         for (auto& local_16 : this.GetModify_ShopCategories())
         {
             TDataObjectPtr<FShopCategoryConfig> local_40;
@@ -73,7 +74,7 @@ struct FM_Shop : FEUIModel
             local_13 = (local_40 == Category.opImplConv());
             if (local_13)
             {
-                return __r;
+                return local_16.Get();
             }
         }
         FM_ShopCategory& local_90 = ::FM_ShopCategory::Create(this.GetContext().Manager);
@@ -147,11 +148,9 @@ FM_Shop& Create(const UObject ContextObject, const TDataObjectPtr<FShopConfig> &
 {
     return FM_Shop::CreateByManager(EUIInternal::GetContextManager(ContextObject), ShopConfig);
 }
-FM_Shop CreateByManager(const UEUIManagerSubsystem Manager, const TDataObjectPtr<FShopConfig> &inout ShopConfig)
+FM_Shop& CreateByManager(const UEUIManagerSubsystem Manager, const TDataObjectPtr<FShopConfig> &inout ShopConfig)
 {
-    FM_Shop __r;
-    TEUIModelRef<FM_Shop> local_6 = TEUIModelRef<FM_Shop>(EUIInternal::MakeModelWithManager_Generic(Manager, FM_Shop::ModelId, 0, ShopConfig));
-    return __r;
+    return TEUIModelRef<FM_Shop>(EUIInternal::MakeModelWithManager_Generic(Manager, FM_Shop::ModelId, 0, ShopConfig)).Get();
 }
 void GetModelInfo(FEUIModelOnlyMetaInfo &inout Result)
 {

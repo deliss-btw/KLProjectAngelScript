@@ -103,8 +103,7 @@ struct FVM_ChatChannelPanel : FEUIViewModel
         }
         int local_11 = int(::FLevelUtils::GetCurrentLevelType());
         bool local_9 = local_4.InnerLevelTypes.Contains(ELevelType(local_11));
-        TEUIModelRef<FMS_ChatRuntimeData> local_16 = this.GetChatRuntimeData();
-        int local_13 = int(GetSelectChannelTab());
+        int local_13 = int(this.GetChatRuntimeData().Get().GetSelectChannelTab());
         bool local_18 = false;
         int local_19 = 0;
         for (; local_19 < local_4.ChatChannelTabInfoConfigs.Num(); ++local_19)
@@ -132,12 +131,9 @@ struct FVM_ChatChannelPanel : FEUIViewModel
         }
         if (!(local_18) && (this.GetChannelTabs().Num() > 0))
         {
-            int local_17 = GetTabInfo().ChannelID;
-            TEUIModelRef<FMS_ChatRuntimeData> local_16_2 = this.GetChatRuntimeData();
-            local_17.SetSelectChannelTab();
+            this.GetChatRuntimeData().Get().SetSelectChannelTab(EChatChannelTab(this.GetChannelTabs()[0].Get().GetTabInfo().ChannelID));
         }
-        TEUIModelRef<FMS_ChatRuntimeData> local_16_3 = this.GetChatRuntimeData();
-        local_11.SetLastChannelTabsLevelType();
+        this.GetChatRuntimeData().Get().SetLastChannelTabsLevelType(ELevelType(local_11));
         return;
     }
     void SyncChannelTabVisualFromRuntime()
@@ -163,7 +159,6 @@ struct FVM_ChatChannelPanel : FEUIViewModel
     void RefreshPanelMessages()
     {
         int local_20 = 0;
-        FM_ChatMessage& local_28;
         this.GetModify_PanelMessages().Empty(0);
         int local_6 = ::ChatSystemUtil::ResolveToProtoByChannelType(this.GetChatRuntimeData().opArrow().GetSelectChannelTab());
         if (local_6 != 0 && this.GetChatDataModel().opArrow().GetRecentMessagesByChannel().Contains(local_6))
@@ -176,6 +171,7 @@ struct FVM_ChatChannelPanel : FEUIViewModel
             for (; local_23 < local_20.Num(); )
             {
                 TEUIModelRef<FM_ChatMessage> local_26 = TEUIModelRef<FM_ChatMessage>(local_20[local_23]);
+                FM_ChatMessage& local_28 = local_26.Get();
                 int local_24 = ::ChatSystemUtil::GetUnixTimestampDisplayDayKey(::ChatSystemUtil::MsToUnixSeconds(local_28.GetSendTimeMs()));
                 if (local_24 != local_21)
                 {
@@ -327,11 +323,9 @@ FVM_ChatChannelPanel& Create(const UObject ContextObject)
 {
     return FVM_ChatChannelPanel::CreateByManager(EUIInternal::GetContextManager(ContextObject));
 }
-FVM_ChatChannelPanel CreateByManager(const UEUIManagerSubsystem Manager)
+FVM_ChatChannelPanel& CreateByManager(const UEUIManagerSubsystem Manager)
 {
-    FVM_ChatChannelPanel __r;
-    TEUIModelRef<FVM_ChatChannelPanel> local_6 = TEUIModelRef<FVM_ChatChannelPanel>(EUIInternal::MakeModelWithManager(Manager, FVM_ChatChannelPanel::ModelId));
-    return __r;
+    return TEUIModelRef<FVM_ChatChannelPanel>(EUIInternal::MakeModelWithManager(Manager, FVM_ChatChannelPanel::ModelId)).Get();
 }
 void GetModelInfo(FEUIViewModelMetaInfo &inout Result)
 {
@@ -432,7 +426,6 @@ namespace __GeneratedProperties_FVM_ChatChannelPanel
 {
 UScriptStruct StaticStruct()
 {
-    UScriptStruct local_2;
-    return local_2;
+    return __GeneratedProperties_FVM_ChatChannelPanel.Get();
 }
 }

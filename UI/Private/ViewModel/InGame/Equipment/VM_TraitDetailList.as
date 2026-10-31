@@ -42,28 +42,14 @@ struct FVM_TraitDetailList : FEUIViewModel
     }
     void PostConstruct()
     {
-        bool local_57 = false;
-        bool local_58 = false;
-        TEUIModelRef<FM_Trait> local_2 = this.GetTrait();
-        TDataObjectPtr<FTraitConfig> local_26 = GetTraitConfig();
-        TEUIModelRef<FM_Trait> local_2_2 = this.GetTrait();
+        TDataObjectPtr<FTraitConfig> local_26 = this.GetTrait().Get().GetTraitConfig();
         int local_51;
-        local_51 = GetTraitLevel();
+        local_51 = this.GetTrait().Get().GetTraitLevel();
         int local_52 = ::NumericUtils::AsInt32(local_26.opArrow().LevelLimit);
         int local_55 = 1;
         for (; local_55 < (local_52 + 1); ++local_55)
         {
-            local_57 = !local_57;
-            if (!(local_57))
-            {
-                local_57 = false;
-            }
-            else
-            {
-                local_58 = !local_58;
-                local_57 = local_58;
-            }
-            if (local_57)
+            if (!(local_26.Get().ModifiersByLevel.Contains(local_55)) && !(local_26.Get().CapabilitiesByLevel.Contains(local_55)))
             {
                 XError(ELog(16), FString().Append("Trait level ").Append(local_55).Append(" is not found in trait config ").Append(local_26.GetDataName()));
                 continue;
@@ -76,18 +62,15 @@ struct FVM_TraitDetailList : FEUIViewModel
     }
     FSoftBrush GetTraitIcon() const
     {
-        TEUIModelRef<FM_Trait> local_2 = this.GetTrait();
-        return GetTraitConfig().opArrow().TraitIcon;
+        return this.GetTrait().Get().GetTraitConfig().opArrow().TraitIcon;
     }
     FText GetTraitName() const
     {
-        TEUIModelRef<FM_Trait> local_2 = this.GetTrait();
-        return GetTraitConfig().opArrow().TraitName;
+        return this.GetTrait().Get().GetTraitConfig().opArrow().TraitName;
     }
     FText GetTraitLevelText() const
     {
-        TEUIModelRef<FM_Trait> local_2 = this.GetTrait();
-        return FText::Format(FText::AsCultureInvariant("Lv.{0}"), GetTraitLevel());
+        return FText::Format(FText::AsCultureInvariant("Lv.{0}"), this.GetTrait().Get().GetTraitLevel());
     }
     TEUIModelRef<FM_Trait> GetTrait() const property
     {
@@ -154,11 +137,9 @@ FVM_TraitDetailList& Create(const UObject ContextObject, const TEUIModelRef<FM_T
 {
     return FVM_TraitDetailList::CreateByManager(EUIInternal::GetContextManager(ContextObject), Trait);
 }
-FVM_TraitDetailList CreateByManager(const UEUIManagerSubsystem Manager, const TEUIModelRef<FM_Trait> &inout Trait)
+FVM_TraitDetailList& CreateByManager(const UEUIManagerSubsystem Manager, const TEUIModelRef<FM_Trait> &inout Trait)
 {
-    FVM_TraitDetailList __r;
-    TEUIModelRef<FVM_TraitDetailList> local_6 = TEUIModelRef<FVM_TraitDetailList>(EUIInternal::MakeModelWithManager_Generic(Manager, FVM_TraitDetailList::ModelId, 0, Trait));
-    return __r;
+    return TEUIModelRef<FVM_TraitDetailList>(EUIInternal::MakeModelWithManager_Generic(Manager, FVM_TraitDetailList::ModelId, 0, Trait)).Get();
 }
 void GetModelInfo(FEUIViewModelMetaInfo &inout Result)
 {
@@ -232,7 +213,6 @@ namespace __GeneratedProperties_FVM_TraitDetailList
 {
 UScriptStruct StaticStruct()
 {
-    UScriptStruct local_2;
-    return local_2;
+    return __GeneratedProperties_FVM_TraitDetailList.Get();
 }
 }

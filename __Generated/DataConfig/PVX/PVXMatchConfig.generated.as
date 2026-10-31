@@ -3,7 +3,6 @@ namespace __FMatchConfigFunctions
 UFUNCTION()
 EMatchMode __FMatchConfig_GetMatchMode(const TDataObjectPtr<FMatchConfig> &inout DataObject)
 {
-    int local_181 = 0;
     if ((DataObject == nullptr))
     {
         if (!(EUIGlobals::GIsDuringPropertyConversion))
@@ -11,10 +10,9 @@ EMatchMode __FMatchConfig_GetMatchMode(const TDataObjectPtr<FMatchConfig> &inout
             FBlueprintDebugFunctions::ThrowScriptException("Get 'MatchMode' from a null 'FMatchConfig' DataObject!");
         }
         FMatchConfig local_180;
-        local_181 = int(local_180.MatchMode);
-        return EMatchMode(local_181);
+        return local_180.MatchMode;
     }
-    return EMatchMode(local_181);
+    return DataObject.Get().MatchMode;
 }
 UFUNCTION()
 int __FMatchConfig_GetConfirmWaitTime(const TDataObjectPtr<FMatchConfig> &inout DataObject)
@@ -58,7 +56,7 @@ TDataObjectPtr<FLevelInfoConfig> __FMatchConfig_GetLevelConfig(const TDataObject
         FMatchConfig local_180;
         return local_180.GetLevelConfig();
     }
-    return GetLevelConfig();
+    return DataObject.Get().GetLevelConfig();
 }
 UFUNCTION()
 TArray<TDataObjectPtr<FOpenTimeRange>> __FMatchConfig_GetOpenPeriods(const TDataObjectPtr<FMatchConfig> &inout DataObject)
@@ -72,12 +70,11 @@ TArray<TDataObjectPtr<FOpenTimeRange>> __FMatchConfig_GetOpenPeriods(const TData
         FMatchConfig local_180;
         return local_180.GetOpenPeriods();
     }
-    return GetOpenPeriods();
+    return DataObject.Get().GetOpenPeriods();
 }
 UFUNCTION()
 FText __FMatchConfig_GetOutOfOpenPeriodTips(const TDataObjectPtr<FMatchConfig> &inout DataObject)
 {
-    FText __r;
     if ((DataObject == nullptr))
     {
         if (!(EUIGlobals::GIsDuringPropertyConversion))
@@ -87,7 +84,7 @@ FText __FMatchConfig_GetOutOfOpenPeriodTips(const TDataObjectPtr<FMatchConfig> &
         FMatchConfig local_180;
         return local_180.OutOfOpenPeriodTips;
     }
-    return __r;
+    return DataObject.Get().OutOfOpenPeriodTips;
 }
 UFUNCTION()
 TDataObjectPtr<FSystemControlConfig> __FMatchConfig_GetSystemControlCfg(const TDataObjectPtr<FMatchConfig> &inout DataObject)
@@ -101,12 +98,11 @@ TDataObjectPtr<FSystemControlConfig> __FMatchConfig_GetSystemControlCfg(const TD
         FMatchConfig local_180;
         return local_180.GetSystemControlCfg();
     }
-    return GetSystemControlCfg();
+    return DataObject.Get().GetSystemControlCfg();
 }
 UFUNCTION()
 FText __FMatchConfig_GetModeName(const TDataObjectPtr<FMatchConfig> &inout DataObject)
 {
-    FText __r;
     if ((DataObject == nullptr))
     {
         if (!(EUIGlobals::GIsDuringPropertyConversion))
@@ -116,12 +112,11 @@ FText __FMatchConfig_GetModeName(const TDataObjectPtr<FMatchConfig> &inout DataO
         FMatchConfig local_180;
         return local_180.ModeName;
     }
-    return __r;
+    return DataObject.Get().ModeName;
 }
 UFUNCTION()
 FText __FMatchConfig_GetModeDesc(const TDataObjectPtr<FMatchConfig> &inout DataObject)
 {
-    FText __r;
     if ((DataObject == nullptr))
     {
         if (!(EUIGlobals::GIsDuringPropertyConversion))
@@ -131,12 +126,11 @@ FText __FMatchConfig_GetModeDesc(const TDataObjectPtr<FMatchConfig> &inout DataO
         FMatchConfig local_180;
         return local_180.ModeDesc;
     }
-    return __r;
+    return DataObject.Get().ModeDesc;
 }
 UFUNCTION()
 FSoftBrush __FMatchConfig_GetModeEntranceImage(const TDataObjectPtr<FMatchConfig> &inout DataObject)
 {
-    FSoftBrush __r;
     if ((DataObject == nullptr))
     {
         if (!(EUIGlobals::GIsDuringPropertyConversion))
@@ -146,12 +140,11 @@ FSoftBrush __FMatchConfig_GetModeEntranceImage(const TDataObjectPtr<FMatchConfig
         FMatchConfig local_180;
         return local_180.ModeEntranceImage;
     }
-    return __r;
+    return DataObject.Get().ModeEntranceImage;
 }
 UFUNCTION()
 FSoftBrush __FMatchConfig_GetModeEntranceImageBG(const TDataObjectPtr<FMatchConfig> &inout DataObject)
 {
-    FSoftBrush __r;
     if ((DataObject == nullptr))
     {
         if (!(EUIGlobals::GIsDuringPropertyConversion))
@@ -161,12 +154,11 @@ FSoftBrush __FMatchConfig_GetModeEntranceImageBG(const TDataObjectPtr<FMatchConf
         FMatchConfig local_180;
         return local_180.ModeEntranceImageBG;
     }
-    return __r;
+    return DataObject.Get().ModeEntranceImageBG;
 }
 UFUNCTION()
 TArray<FItemParamConfig> __FMatchConfig_GetModeRewards(const TDataObjectPtr<FMatchConfig> &inout DataObject)
 {
-    TArray<FItemParamConfig> __r;
     if ((DataObject == nullptr))
     {
         if (!(EUIGlobals::GIsDuringPropertyConversion))
@@ -176,12 +168,11 @@ TArray<FItemParamConfig> __FMatchConfig_GetModeRewards(const TDataObjectPtr<FMat
         FMatchConfig local_180;
         return local_180.ModeRewards;
     }
-    return __r;
+    return DataObject.Get().ModeRewards;
 }
 UFUNCTION()
 FGameplayTag __FMatchConfig_GetWidgetTag(const TDataObjectPtr<FMatchConfig> &inout DataObject)
 {
-    FGameplayTag __r;
     if ((DataObject == nullptr))
     {
         if (!(EUIGlobals::GIsDuringPropertyConversion))
@@ -191,7 +182,7 @@ FGameplayTag __FMatchConfig_GetWidgetTag(const TDataObjectPtr<FMatchConfig> &ino
         FMatchConfig local_180;
         return local_180.WidgetTag;
     }
-    return __r;
+    return DataObject.Get().WidgetTag;
 }
 UFUNCTION()
 FMatchConfig CastToFMatchConfig(const TDataObjectPtr<FMatchConfig> &inout DataObject)
@@ -295,7 +286,6 @@ int __FPvxMatchConfig_GetBossCampNum(const TDataObjectPtr<FPvxMatchConfig> &inou
 UFUNCTION()
 TArray<FPvxRewardFactor> __FPvxMatchConfig_GetPvxRewardArray(const TDataObjectPtr<FPvxMatchConfig> &inout DataObject)
 {
-    TArray<FPvxRewardFactor> __r;
     if ((DataObject == nullptr))
     {
         if (!(EUIGlobals::GIsDuringPropertyConversion))
@@ -305,12 +295,11 @@ TArray<FPvxRewardFactor> __FPvxMatchConfig_GetPvxRewardArray(const TDataObjectPt
         FPvxMatchConfig local_208;
         return local_208.PvxRewardArray;
     }
-    return __r;
+    return DataObject.Get().PvxRewardArray;
 }
 UFUNCTION()
 FText __FPvxMatchConfig_GetPlayerName(const TDataObjectPtr<FPvxMatchConfig> &inout DataObject)
 {
-    FText __r;
     if ((DataObject == nullptr))
     {
         if (!(EUIGlobals::GIsDuringPropertyConversion))
@@ -320,12 +309,11 @@ FText __FPvxMatchConfig_GetPlayerName(const TDataObjectPtr<FPvxMatchConfig> &ino
         FPvxMatchConfig local_208;
         return local_208.PlayerName;
     }
-    return __r;
+    return DataObject.Get().PlayerName;
 }
 UFUNCTION()
 FText __FPvxMatchConfig_GetBossName(const TDataObjectPtr<FPvxMatchConfig> &inout DataObject)
 {
-    FText __r;
     if ((DataObject == nullptr))
     {
         if (!(EUIGlobals::GIsDuringPropertyConversion))
@@ -335,12 +323,11 @@ FText __FPvxMatchConfig_GetBossName(const TDataObjectPtr<FPvxMatchConfig> &inout
         FPvxMatchConfig local_208;
         return local_208.BossName;
     }
-    return __r;
+    return DataObject.Get().BossName;
 }
 UFUNCTION()
 FText __FPvxMatchConfig_GetPlayerDesc(const TDataObjectPtr<FPvxMatchConfig> &inout DataObject)
 {
-    FText __r;
     if ((DataObject == nullptr))
     {
         if (!(EUIGlobals::GIsDuringPropertyConversion))
@@ -350,12 +337,11 @@ FText __FPvxMatchConfig_GetPlayerDesc(const TDataObjectPtr<FPvxMatchConfig> &ino
         FPvxMatchConfig local_208;
         return local_208.PlayerDesc;
     }
-    return __r;
+    return DataObject.Get().PlayerDesc;
 }
 UFUNCTION()
 FText __FPvxMatchConfig_GetBossDesc(const TDataObjectPtr<FPvxMatchConfig> &inout DataObject)
 {
-    FText __r;
     if ((DataObject == nullptr))
     {
         if (!(EUIGlobals::GIsDuringPropertyConversion))
@@ -365,7 +351,7 @@ FText __FPvxMatchConfig_GetBossDesc(const TDataObjectPtr<FPvxMatchConfig> &inout
         FPvxMatchConfig local_208;
         return local_208.BossDesc;
     }
-    return __r;
+    return DataObject.Get().BossDesc;
 }
 UFUNCTION()
 FPvxMatchConfig CastToFPvxMatchConfig(const TDataObjectPtr<FPvxMatchConfig> &inout DataObject)

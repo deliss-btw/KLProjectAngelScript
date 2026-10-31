@@ -218,8 +218,7 @@ struct FMS_TeleporterSpotManager : FEUIModelSingleton
         this.GetModify_EntityUpdaters().Empty(0);
         for (auto& local_22 : this.GetTeleporterSpots())
         {
-            local_22;
-            opArrow().RemoveDisplayScope(EPresentationSpotDisplayScope(0), EPresentationSpotDisplayScopeSource(1));
+            local_22.GetValue().opArrow().RemoveDisplayScope(EPresentationSpotDisplayScope(0), EPresentationSpotDisplayScopeSource(1));
         }
         return;
     }
@@ -277,18 +276,18 @@ struct FMS_TeleporterSpotManager : FEUIModelSingleton
     void SyncInGameVisibility(const TDataObjectPtr<FLevelInfoConfig> &inout CurrentLevelInfoConfig)
     {
         int local_8;
-        const TEUIModelRef<FM_Spot>& local_72;
         bool local_73;
         bool local_74;
         FECSWorldPtr local_2 = ECS::GetECSWorld();
         TMap<TDataObjectPtr<FTeleporterConfig>, FECSEntityId> local_28;
         for (auto& local_48 : local_8.GetTeleporters())
         {
-            FECSEntityId local_49 = local_48.GetKey().GetId();
+            local_28.Add(local_48.GetValue(), local_48.GetKey().GetId());
         }
         for (auto& local_68 : this.GetTeleporterSpots())
         {
             const TDataObjectPtr<FTeleporterConfig>& local_70 = local_68.GetKey();
+            const TEUIModelRef<FM_Spot>& local_72 = local_68.GetValue();
             local_73 = false;
             if (local_70.opArrow().bShowOnRegionMap)
             {
@@ -336,12 +335,12 @@ struct FMS_TeleporterSpotManager : FEUIModelSingleton
     void SyncEntityUpdaters()
     {
         int local_8;
-        const TDataObjectPtr<FTeleporterConfig>& local_52;
         FECSWorldPtr local_2 = ECS::GetECSWorld();
         TSet<FECSEntity> local_28;
         for (auto& local_48 : local_8.GetTeleporters())
         {
             FECSEntity local_50 = local_48.GetKey();
+            const TDataObjectPtr<FTeleporterConfig>& local_52 = local_48.GetValue();
             local_28.Add(local_50);
             if (!(this.GetEntityUpdaters().Contains(local_50)))
             {
@@ -363,7 +362,7 @@ struct FMS_TeleporterSpotManager : FEUIModelSingleton
         auto local_88 = local_62.Iterator();
         for (; local_88.CanProceed;)
         {
-            FECSEntity local_50_2 = local_88.Proceed();
+            this.GetModify_EntityUpdaters().Remove(local_88.Proceed());
         }
         return;
     }
@@ -529,11 +528,9 @@ FM_TeleporterSpotUpdater& Create(const UObject ContextObject, const TEUIModelRef
 {
     return FM_TeleporterSpotUpdater::CreateByManager(EUIInternal::GetContextManager(ContextObject), Spot, Entity, TeleporterConfig);
 }
-FM_TeleporterSpotUpdater CreateByManager(const UEUIManagerSubsystem Manager, const TEUIModelRef<FM_Spot> &inout Spot, const FECSEntity &inout Entity, const TDataObjectPtr<FTeleporterConfig> &inout TeleporterConfig)
+FM_TeleporterSpotUpdater& CreateByManager(const UEUIManagerSubsystem Manager, const TEUIModelRef<FM_Spot> &inout Spot, const FECSEntity &inout Entity, const TDataObjectPtr<FTeleporterConfig> &inout TeleporterConfig)
 {
-    FM_TeleporterSpotUpdater __r;
-    TEUIModelRef<FM_TeleporterSpotUpdater> local_6 = TEUIModelRef<FM_TeleporterSpotUpdater>(EUIInternal::MakeModelWithManager_Generic(Manager, FM_TeleporterSpotUpdater::ModelId, 0, Spot, Entity, TeleporterConfig));
-    return __r;
+    return TEUIModelRef<FM_TeleporterSpotUpdater>(EUIInternal::MakeModelWithManager_Generic(Manager, FM_TeleporterSpotUpdater::ModelId, 0, Spot, Entity, TeleporterConfig)).Get();
 }
 void GetModelInfo(FEUIModelOnlyMetaInfo &inout Result)
 {
@@ -582,11 +579,9 @@ FMS_TeleporterSpotManager& Get(const UObject ContextObject)
 {
     return FMS_TeleporterSpotManager::GetByManager(EUIInternal::GetContextManager(ContextObject));
 }
-FMS_TeleporterSpotManager GetByManager(const UEUIManagerSubsystem Manager)
+FMS_TeleporterSpotManager& GetByManager(const UEUIManagerSubsystem Manager)
 {
-    FMS_TeleporterSpotManager __r;
-    TEUIModelRef<FMS_TeleporterSpotManager> local_6 = TEUIModelRef<FMS_TeleporterSpotManager>(EUIInternal::MakeModelWithManager(Manager, FMS_TeleporterSpotManager::ModelId));
-    return __r;
+    return TEUIModelRef<FMS_TeleporterSpotManager>(EUIInternal::MakeModelWithManager(Manager, FMS_TeleporterSpotManager::ModelId)).Get();
 }
 void GetModelInfo(FEUIModelOnlyMetaInfo &inout Result)
 {

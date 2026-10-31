@@ -12,7 +12,6 @@ class US_EnvSurfaceImpactSystem : UECSScriptSystem
     UFUNCTION()
     void Job_CheckEnvironmentSurfaceHit(const FCE_CheckEnvSurfaceHit &inout Event, const FCS_LocalTime &inout LocalTime) const
     {
-        int local_141 = 0;
         if (!(Event.Sender.IsValid()))
         {
             XLog(ELog(1), FString().Append("Job_CheckEnvironmentSurfaceHit Event sender is not valid."));
@@ -38,9 +37,10 @@ class US_EnvSurfaceImpactSystem : UECSScriptSystem
             local_72.SetTraceLength(-1.0f);
             local_72.SetbDurational(false);
             local_72.SetCharacterSize(ECharacterBodySize(0));
-            if (::GetPrefabConfigPtr(Event.Sender))
+            TDataObjectPtr<FBasePrefabConfig> local_116 = ::GetPrefabConfigPtr(Event.Sender);
+            if (local_116)
             {
-                local_72.SetCharacterSize(ECharacterBodySize(local_141));
+                local_72.SetCharacterSize(ECharacterBodySize(local_116.Get().Size));
             }
             local_13 = ::FEnvSurfaceImpactUtils::GetWeaponHitEnvSurfaceHitInfo(local_42, Event.Sender, local_16, local_72);
         }
@@ -100,9 +100,10 @@ class US_EnvSurfaceImpactSystem : UECSScriptSystem
         local_234.ImpactPosition = local_42.HitLocation;
         local_234.ImpactRotation = FRotator3f(local_192);
         local_234.ImpactSurfaceTypeName = local_200;
-        if (::GetPrefabConfigPtr(Event.Sender))
+        TDataObjectPtr<FBasePrefabConfig> local_140 = ::GetPrefabConfigPtr(Event.Sender);
+        if (local_140)
         {
-            int local_92_2 = local_141;
+            int local_92_2 = int(local_140.Get().Size);
             local_234.CharacterBodySize = ECharacterBodySize(local_92_2);
         }
         Get local_242;

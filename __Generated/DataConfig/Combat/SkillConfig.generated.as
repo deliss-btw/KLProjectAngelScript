@@ -21,12 +21,11 @@ TDataObjectPtr<FAvatarMappingConfig> __FSkillBtnConfig_GetAvatarMapping(const TD
         FSkillBtnConfig local_240;
         return local_240.GetAvatarMapping();
     }
-    return GetAvatarMapping();
+    return DataObject.Get().GetAvatarMapping();
 }
 UFUNCTION()
 FName __FSkillBtnConfig_GetAvatarName(const TDataObjectPtr<FSkillBtnConfig> &inout DataObject)
 {
-    FName __r;
     if ((DataObject == nullptr))
     {
         if (!(EUIGlobals::GIsDuringPropertyConversion))
@@ -36,60 +35,53 @@ FName __FSkillBtnConfig_GetAvatarName(const TDataObjectPtr<FSkillBtnConfig> &ino
         FSkillBtnConfig local_240;
         return local_240.AvatarName;
     }
-    return __r;
+    return DataObject.Get().AvatarName;
 }
 UFUNCTION()
 bool __FSkillBtnConfig_GetbEnableExclusiveSkill(const TDataObjectPtr<FSkillBtnConfig> &inout DataObject)
 {
-    bool local_1 = false;
     if ((DataObject == nullptr))
     {
-        local_1 = !(EUIGlobals::GIsDuringPropertyConversion);
-        if (local_1)
+        if (!(EUIGlobals::GIsDuringPropertyConversion))
         {
             FBlueprintDebugFunctions::ThrowScriptException("Get 'bEnableExclusiveSkill' from a null 'FSkillBtnConfig' DataObject!");
         }
         FSkillBtnConfig local_240;
         return local_240.bEnableExclusiveSkill;
     }
-    return local_1;
+    return DataObject.Get().bEnableExclusiveSkill;
 }
 UFUNCTION()
 bool __FSkillBtnConfig_GetbEnableGamepadRightShoulderAnim(const TDataObjectPtr<FSkillBtnConfig> &inout DataObject)
 {
-    bool local_1 = false;
     if ((DataObject == nullptr))
     {
-        local_1 = !(EUIGlobals::GIsDuringPropertyConversion);
-        if (local_1)
+        if (!(EUIGlobals::GIsDuringPropertyConversion))
         {
             FBlueprintDebugFunctions::ThrowScriptException("Get 'bEnableGamepadRightShoulderAnim' from a null 'FSkillBtnConfig' DataObject!");
         }
         FSkillBtnConfig local_240;
         return local_240.bEnableGamepadRightShoulderAnim;
     }
-    return local_1;
+    return DataObject.Get().bEnableGamepadRightShoulderAnim;
 }
 UFUNCTION()
 bool __FSkillBtnConfig_GetbRebuildSkillResourceWidgetOnExit(const TDataObjectPtr<FSkillBtnConfig> &inout DataObject)
 {
-    bool local_1 = false;
     if ((DataObject == nullptr))
     {
-        local_1 = !(EUIGlobals::GIsDuringPropertyConversion);
-        if (local_1)
+        if (!(EUIGlobals::GIsDuringPropertyConversion))
         {
             FBlueprintDebugFunctions::ThrowScriptException("Get 'bRebuildSkillResourceWidgetOnExit' from a null 'FSkillBtnConfig' DataObject!");
         }
         FSkillBtnConfig local_240;
         return local_240.bRebuildSkillResourceWidgetOnExit;
     }
-    return local_1;
+    return DataObject.Get().bRebuildSkillResourceWidgetOnExit;
 }
 UFUNCTION()
 TArray<FName> __FSkillBtnConfig_GetBanInputNames(const TDataObjectPtr<FSkillBtnConfig> &inout DataObject)
 {
-    TArray<FName> __r;
     if ((DataObject == nullptr))
     {
         if (!(EUIGlobals::GIsDuringPropertyConversion))
@@ -99,12 +91,11 @@ TArray<FName> __FSkillBtnConfig_GetBanInputNames(const TDataObjectPtr<FSkillBtnC
         FSkillBtnConfig local_240;
         return local_240.BanInputNames;
     }
-    return __r;
+    return DataObject.Get().BanInputNames;
 }
 UFUNCTION()
 TSoftClassPtr<UEUIUserWidget> __FSkillBtnConfig_GetExclusiveSkillWidget(const TDataObjectPtr<FSkillBtnConfig> &inout DataObject)
 {
-    TSoftClassPtr<UEUIUserWidget> __r;
     if ((DataObject == nullptr))
     {
         if (!(EUIGlobals::GIsDuringPropertyConversion))
@@ -114,12 +105,11 @@ TSoftClassPtr<UEUIUserWidget> __FSkillBtnConfig_GetExclusiveSkillWidget(const TD
         FSkillBtnConfig local_240;
         return local_240.ExclusiveSkillWidget;
     }
-    return __r;
+    return DataObject.Get().ExclusiveSkillWidget;
 }
 UFUNCTION()
 TSubclassOf<UExclusiveSkillModelAdapterBase> __FSkillBtnConfig_GetExclusiveSkillModelAdapter(const TDataObjectPtr<FSkillBtnConfig> &inout DataObject)
 {
-    TSubclassOf<UExclusiveSkillModelAdapterBase> __r;
     if ((DataObject == nullptr))
     {
         if (!(EUIGlobals::GIsDuringPropertyConversion))
@@ -129,23 +119,21 @@ TSubclassOf<UExclusiveSkillModelAdapterBase> __FSkillBtnConfig_GetExclusiveSkill
         FSkillBtnConfig local_240;
         return local_240.ExclusiveSkillModelAdapter;
     }
-    return __r;
+    return DataObject.Get().ExclusiveSkillModelAdapter;
 }
 UFUNCTION()
 bool __FSkillBtnConfig_GetbHasUltraSkill(const TDataObjectPtr<FSkillBtnConfig> &inout DataObject)
 {
-    bool local_1 = false;
     if ((DataObject == nullptr))
     {
-        local_1 = !(EUIGlobals::GIsDuringPropertyConversion);
-        if (local_1)
+        if (!(EUIGlobals::GIsDuringPropertyConversion))
         {
             FBlueprintDebugFunctions::ThrowScriptException("Get 'bHasUltraSkill' from a null 'FSkillBtnConfig' DataObject!");
         }
         FSkillBtnConfig local_240;
         return local_240.bHasUltraSkill;
     }
-    return local_1;
+    return DataObject.Get().bHasUltraSkill;
 }
 UFUNCTION()
 FNormalSkillBtnConfig __FSkillBtnConfig_GetUltraSkillBtnConfig(const TDataObjectPtr<FSkillBtnConfig> &inout DataObject)
@@ -166,18 +154,16 @@ FNormalSkillBtnConfig __FSkillBtnConfig_GetUltraSkillBtnConfig(const TDataObject
 UFUNCTION()
 bool __FSkillBtnConfig_GetbHasSpecialAttack(const TDataObjectPtr<FSkillBtnConfig> &inout DataObject)
 {
-    bool local_1 = false;
     if ((DataObject == nullptr))
     {
-        local_1 = !(EUIGlobals::GIsDuringPropertyConversion);
-        if (local_1)
+        if (!(EUIGlobals::GIsDuringPropertyConversion))
         {
             FBlueprintDebugFunctions::ThrowScriptException("Get 'bHasSpecialAttack' from a null 'FSkillBtnConfig' DataObject!");
         }
         FSkillBtnConfig local_240;
         return local_240.bHasSpecialAttack;
     }
-    return local_1;
+    return DataObject.Get().bHasSpecialAttack;
 }
 UFUNCTION()
 FNormalSkillBtnConfig __FSkillBtnConfig_GetSpecialAttackSkillBtnConfig(const TDataObjectPtr<FSkillBtnConfig> &inout DataObject)
@@ -198,18 +184,16 @@ FNormalSkillBtnConfig __FSkillBtnConfig_GetSpecialAttackSkillBtnConfig(const TDa
 UFUNCTION()
 bool __FSkillBtnConfig_GetbHasSimpleSkill1(const TDataObjectPtr<FSkillBtnConfig> &inout DataObject)
 {
-    bool local_1 = false;
     if ((DataObject == nullptr))
     {
-        local_1 = !(EUIGlobals::GIsDuringPropertyConversion);
-        if (local_1)
+        if (!(EUIGlobals::GIsDuringPropertyConversion))
         {
             FBlueprintDebugFunctions::ThrowScriptException("Get 'bHasSimpleSkill1' from a null 'FSkillBtnConfig' DataObject!");
         }
         FSkillBtnConfig local_240;
         return local_240.bHasSimpleSkill1;
     }
-    return local_1;
+    return DataObject.Get().bHasSimpleSkill1;
 }
 UFUNCTION()
 FNormalSkillBtnConfig __FSkillBtnConfig_GetSimpleSkill1BtnConfig(const TDataObjectPtr<FSkillBtnConfig> &inout DataObject)
@@ -230,18 +214,16 @@ FNormalSkillBtnConfig __FSkillBtnConfig_GetSimpleSkill1BtnConfig(const TDataObje
 UFUNCTION()
 bool __FSkillBtnConfig_GetbHasSimpleSkill2(const TDataObjectPtr<FSkillBtnConfig> &inout DataObject)
 {
-    bool local_1 = false;
     if ((DataObject == nullptr))
     {
-        local_1 = !(EUIGlobals::GIsDuringPropertyConversion);
-        if (local_1)
+        if (!(EUIGlobals::GIsDuringPropertyConversion))
         {
             FBlueprintDebugFunctions::ThrowScriptException("Get 'bHasSimpleSkill2' from a null 'FSkillBtnConfig' DataObject!");
         }
         FSkillBtnConfig local_240;
         return local_240.bHasSimpleSkill2;
     }
-    return local_1;
+    return DataObject.Get().bHasSimpleSkill2;
 }
 UFUNCTION()
 FNormalSkillBtnConfig __FSkillBtnConfig_GetSimpleSkill2BtnConfig(const TDataObjectPtr<FSkillBtnConfig> &inout DataObject)
@@ -262,18 +244,16 @@ FNormalSkillBtnConfig __FSkillBtnConfig_GetSimpleSkill2BtnConfig(const TDataObje
 UFUNCTION()
 bool __FSkillBtnConfig_GetbHasSimpleSkill3(const TDataObjectPtr<FSkillBtnConfig> &inout DataObject)
 {
-    bool local_1 = false;
     if ((DataObject == nullptr))
     {
-        local_1 = !(EUIGlobals::GIsDuringPropertyConversion);
-        if (local_1)
+        if (!(EUIGlobals::GIsDuringPropertyConversion))
         {
             FBlueprintDebugFunctions::ThrowScriptException("Get 'bHasSimpleSkill3' from a null 'FSkillBtnConfig' DataObject!");
         }
         FSkillBtnConfig local_240;
         return local_240.bHasSimpleSkill3;
     }
-    return local_1;
+    return DataObject.Get().bHasSimpleSkill3;
 }
 UFUNCTION()
 FNormalSkillBtnConfig __FSkillBtnConfig_GetSimpleSkill3BtnConfig(const TDataObjectPtr<FSkillBtnConfig> &inout DataObject)
@@ -294,18 +274,16 @@ FNormalSkillBtnConfig __FSkillBtnConfig_GetSimpleSkill3BtnConfig(const TDataObje
 UFUNCTION()
 bool __FSkillBtnConfig_GetbHasDivineSkill(const TDataObjectPtr<FSkillBtnConfig> &inout DataObject)
 {
-    bool local_1 = false;
     if ((DataObject == nullptr))
     {
-        local_1 = !(EUIGlobals::GIsDuringPropertyConversion);
-        if (local_1)
+        if (!(EUIGlobals::GIsDuringPropertyConversion))
         {
             FBlueprintDebugFunctions::ThrowScriptException("Get 'bHasDivineSkill' from a null 'FSkillBtnConfig' DataObject!");
         }
         FSkillBtnConfig local_240;
         return local_240.bHasDivineSkill;
     }
-    return local_1;
+    return DataObject.Get().bHasDivineSkill;
 }
 UFUNCTION()
 FNormalSkillBtnConfig __FSkillBtnConfig_GetDivineSkillBtnConfig(const TDataObjectPtr<FSkillBtnConfig> &inout DataObject)
@@ -374,7 +352,7 @@ TDataObjectPtr<FMessageHintConfig_LargeHint> __FAddTemporarySkillConfig_GetHint(
         FAddTemporarySkillConfig local_42;
         return local_42.GetHint();
     }
-    return GetHint();
+    return DataObject.Get().GetHint();
 }
 UFUNCTION()
 FAddTemporarySkillConfig CastToFAddTemporarySkillConfig(const TDataObjectPtr<FAddTemporarySkillConfig> &inout DataObject)
@@ -403,7 +381,6 @@ USkillConfig __FSkillInitConfig_GetSkillConfig(const TDataObjectPtr<FSkillInitCo
 UFUNCTION()
 FText __FSkillInitConfig_GetName(const TDataObjectPtr<FSkillInitConfig> &inout DataObject)
 {
-    FText __r;
     if ((DataObject == nullptr))
     {
         if (!(EUIGlobals::GIsDuringPropertyConversion))
@@ -413,12 +390,11 @@ FText __FSkillInitConfig_GetName(const TDataObjectPtr<FSkillInitConfig> &inout D
         FSkillInitConfig local_128;
         return local_128.Name;
     }
-    return __r;
+    return DataObject.Get().Name;
 }
 UFUNCTION()
 FText __FSkillInitConfig_GetTypeDesc(const TDataObjectPtr<FSkillInitConfig> &inout DataObject)
 {
-    FText __r;
     if ((DataObject == nullptr))
     {
         if (!(EUIGlobals::GIsDuringPropertyConversion))
@@ -428,12 +404,11 @@ FText __FSkillInitConfig_GetTypeDesc(const TDataObjectPtr<FSkillInitConfig> &ino
         FSkillInitConfig local_128;
         return local_128.TypeDesc;
     }
-    return __r;
+    return DataObject.Get().TypeDesc;
 }
 UFUNCTION()
 ESkillType __FSkillInitConfig_GetSkillType(const TDataObjectPtr<FSkillInitConfig> &inout DataObject)
 {
-    int local_129 = 0;
     if ((DataObject == nullptr))
     {
         if (!(EUIGlobals::GIsDuringPropertyConversion))
@@ -441,15 +416,13 @@ ESkillType __FSkillInitConfig_GetSkillType(const TDataObjectPtr<FSkillInitConfig
             FBlueprintDebugFunctions::ThrowScriptException("Get 'SkillType' from a null 'FSkillInitConfig' DataObject!");
         }
         FSkillInitConfig local_128;
-        local_129 = int(local_128.SkillType);
-        return ESkillType(local_129);
+        return local_128.SkillType;
     }
-    return ESkillType(local_129);
+    return DataObject.Get().SkillType;
 }
 UFUNCTION()
 bool __FSkillInitConfig_GetbIsDefault(const TDataObjectPtr<FSkillInitConfig> &inout DataObject)
 {
-    bool local_1 = false;
     if ((DataObject == nullptr))
     {
         if (!(EUIGlobals::GIsDuringPropertyConversion))
@@ -459,12 +432,11 @@ bool __FSkillInitConfig_GetbIsDefault(const TDataObjectPtr<FSkillInitConfig> &in
         FSkillInitConfig local_128;
         return local_128.bIsDefault;
     }
-    return local_1;
+    return DataObject.Get().bIsDefault;
 }
 UFUNCTION()
 ESkillSlot __FSkillInitConfig_GetDefaultSkillSlot(const TDataObjectPtr<FSkillInitConfig> &inout DataObject)
 {
-    int local_129 = 0;
     if ((DataObject == nullptr))
     {
         if (!(EUIGlobals::GIsDuringPropertyConversion))
@@ -472,15 +444,13 @@ ESkillSlot __FSkillInitConfig_GetDefaultSkillSlot(const TDataObjectPtr<FSkillIni
             FBlueprintDebugFunctions::ThrowScriptException("Get 'DefaultSkillSlot' from a null 'FSkillInitConfig' DataObject!");
         }
         FSkillInitConfig local_128;
-        local_129 = int(local_128.DefaultSkillSlot);
-        return ESkillSlot(local_129);
+        return local_128.DefaultSkillSlot;
     }
-    return ESkillSlot(local_129);
+    return DataObject.Get().DefaultSkillSlot;
 }
 UFUNCTION()
 FSoftBrush __FSkillInitConfig_GetIcon(const TDataObjectPtr<FSkillInitConfig> &inout DataObject)
 {
-    FSoftBrush __r;
     if ((DataObject == nullptr))
     {
         if (!(EUIGlobals::GIsDuringPropertyConversion))
@@ -490,12 +460,11 @@ FSoftBrush __FSkillInitConfig_GetIcon(const TDataObjectPtr<FSkillInitConfig> &in
         FSkillInitConfig local_128;
         return local_128.Icon;
     }
-    return __r;
+    return DataObject.Get().Icon;
 }
 UFUNCTION()
 FText __FSkillInitConfig_GetDescription(const TDataObjectPtr<FSkillInitConfig> &inout DataObject)
 {
-    FText __r;
     if ((DataObject == nullptr))
     {
         if (!(EUIGlobals::GIsDuringPropertyConversion))
@@ -505,7 +474,7 @@ FText __FSkillInitConfig_GetDescription(const TDataObjectPtr<FSkillInitConfig> &
         FSkillInitConfig local_128;
         return local_128.Description;
     }
-    return __r;
+    return DataObject.Get().Description;
 }
 UFUNCTION()
 UMediaSource __FSkillInitConfig_GetPreviewMovie(const TDataObjectPtr<FSkillInitConfig> &inout DataObject)
@@ -525,7 +494,6 @@ UMediaSource __FSkillInitConfig_GetPreviewMovie(const TDataObjectPtr<FSkillInitC
 UFUNCTION()
 FSoftBrush __FSkillInitConfig_GetPreviewPicture(const TDataObjectPtr<FSkillInitConfig> &inout DataObject)
 {
-    FSoftBrush __r;
     if ((DataObject == nullptr))
     {
         if (!(EUIGlobals::GIsDuringPropertyConversion))
@@ -535,7 +503,7 @@ FSoftBrush __FSkillInitConfig_GetPreviewPicture(const TDataObjectPtr<FSkillInitC
         FSkillInitConfig local_128;
         return local_128.PreviewPicture;
     }
-    return __r;
+    return DataObject.Get().PreviewPicture;
 }
 UFUNCTION()
 FSkillInitConfig CastToFSkillInitConfig(const TDataObjectPtr<FSkillInitConfig> &inout DataObject)
@@ -549,7 +517,6 @@ namespace __FAvatarSkillConfigFunctions
 UFUNCTION()
 TArray<FAvatarSkillSlotConfig> __FAvatarSkillConfig_GetSkillInitConfigs(const TDataObjectPtr<FAvatarSkillConfig> &inout DataObject)
 {
-    TArray<FAvatarSkillSlotConfig> __r;
     if ((DataObject == nullptr))
     {
         if (!(EUIGlobals::GIsDuringPropertyConversion))
@@ -559,7 +526,7 @@ TArray<FAvatarSkillSlotConfig> __FAvatarSkillConfig_GetSkillInitConfigs(const TD
         FAvatarSkillConfig local_20;
         return local_20.SkillInitConfigs;
     }
-    return __r;
+    return DataObject.Get().SkillInitConfigs;
 }
 UFUNCTION()
 FAvatarSkillConfig CastToFAvatarSkillConfig(const TDataObjectPtr<FAvatarSkillConfig> &inout DataObject)
@@ -573,7 +540,6 @@ namespace __FSkillEffectNounsConfigFunctions
 UFUNCTION()
 FText __FSkillEffectNounsConfig_GetName(const TDataObjectPtr<FSkillEffectNounsConfig> &inout DataObject)
 {
-    FText __r;
     if ((DataObject == nullptr))
     {
         if (!(EUIGlobals::GIsDuringPropertyConversion))
@@ -583,12 +549,11 @@ FText __FSkillEffectNounsConfig_GetName(const TDataObjectPtr<FSkillEffectNounsCo
         FSkillEffectNounsConfig local_22;
         return local_22.Name;
     }
-    return __r;
+    return DataObject.Get().Name;
 }
 UFUNCTION()
 FText __FSkillEffectNounsConfig_GetDescription(const TDataObjectPtr<FSkillEffectNounsConfig> &inout DataObject)
 {
-    FText __r;
     if ((DataObject == nullptr))
     {
         if (!(EUIGlobals::GIsDuringPropertyConversion))
@@ -598,7 +563,7 @@ FText __FSkillEffectNounsConfig_GetDescription(const TDataObjectPtr<FSkillEffect
         FSkillEffectNounsConfig local_22;
         return local_22.Description;
     }
-    return __r;
+    return DataObject.Get().Description;
 }
 UFUNCTION()
 FSkillEffectNounsConfig CastToFSkillEffectNounsConfig(const TDataObjectPtr<FSkillEffectNounsConfig> &inout DataObject)
@@ -627,18 +592,16 @@ int __FSkillPresentationOverrideConfig_GetPriority(const TDataObjectPtr<FSkillPr
 UFUNCTION()
 bool __FSkillPresentationOverrideConfig_GetbEnableChangeSkillPanel(const TDataObjectPtr<FSkillPresentationOverrideConfig> &inout DataObject)
 {
-    bool local_1 = false;
     if ((DataObject == nullptr))
     {
-        local_1 = !(EUIGlobals::GIsDuringPropertyConversion);
-        if (local_1)
+        if (!(EUIGlobals::GIsDuringPropertyConversion))
         {
             FBlueprintDebugFunctions::ThrowScriptException("Get 'bEnableChangeSkillPanel' from a null 'FSkillPresentationOverrideConfig' DataObject!");
         }
         FSkillPresentationOverrideConfig local_48;
         return local_48.bEnableChangeSkillPanel;
     }
-    return local_1;
+    return DataObject.Get().bEnableChangeSkillPanel;
 }
 UFUNCTION()
 TDataObjectPtr<FSkillBtnConfig> __FSkillPresentationOverrideConfig_GetSkillBtnConfig(const TDataObjectPtr<FSkillPresentationOverrideConfig> &inout DataObject)
@@ -652,28 +615,25 @@ TDataObjectPtr<FSkillBtnConfig> __FSkillPresentationOverrideConfig_GetSkillBtnCo
         FSkillPresentationOverrideConfig local_48;
         return local_48.GetSkillBtnConfig();
     }
-    return GetSkillBtnConfig();
+    return DataObject.Get().GetSkillBtnConfig();
 }
 UFUNCTION()
 bool __FSkillPresentationOverrideConfig_GetbEnableReplaceSkill(const TDataObjectPtr<FSkillPresentationOverrideConfig> &inout DataObject)
 {
-    bool local_1 = false;
     if ((DataObject == nullptr))
     {
-        local_1 = !(EUIGlobals::GIsDuringPropertyConversion);
-        if (local_1)
+        if (!(EUIGlobals::GIsDuringPropertyConversion))
         {
             FBlueprintDebugFunctions::ThrowScriptException("Get 'bEnableReplaceSkill' from a null 'FSkillPresentationOverrideConfig' DataObject!");
         }
         FSkillPresentationOverrideConfig local_48;
         return local_48.bEnableReplaceSkill;
     }
-    return local_1;
+    return DataObject.Get().bEnableReplaceSkill;
 }
 UFUNCTION()
 TArray<FSkillReplaceEntry> __FSkillPresentationOverrideConfig_GetReplaceSkills(const TDataObjectPtr<FSkillPresentationOverrideConfig> &inout DataObject)
 {
-    TArray<FSkillReplaceEntry> __r;
     if ((DataObject == nullptr))
     {
         if (!(EUIGlobals::GIsDuringPropertyConversion))
@@ -683,7 +643,7 @@ TArray<FSkillReplaceEntry> __FSkillPresentationOverrideConfig_GetReplaceSkills(c
         FSkillPresentationOverrideConfig local_48;
         return local_48.ReplaceSkills;
     }
-    return __r;
+    return DataObject.Get().ReplaceSkills;
 }
 UFUNCTION()
 FSkillPresentationOverrideConfig CastToFSkillPresentationOverrideConfig(const TDataObjectPtr<FSkillPresentationOverrideConfig> &inout DataObject)

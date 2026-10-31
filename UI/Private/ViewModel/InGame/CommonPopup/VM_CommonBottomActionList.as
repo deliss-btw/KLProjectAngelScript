@@ -91,9 +91,8 @@ struct FVMS_CommonBottomActionList : FEUIViewModelSingleton
             TEUIModelRef<FVM_InputAction> local_22 = TEUIModelRef<FVM_InputAction>(::FVM_InputAction::Create(this.GetContext().Manager, local_20.InputAction, local_20.OnInputActionExecute));
             if (!(local_20.ActionNameOverride.IsEmpty()))
             {
-                bool local_17 = true;
-                local_17.SetbOverrideActionName();
-                local_20.ActionNameOverride.SetActionNameOverride();
+                local_22.Get().SetbOverrideActionName(true);
+                local_22.Get().SetActionNameOverride(local_20.ActionNameOverride);
             }
             this.GetModify_InputActions().Add(local_22);
             local_4.Add(local_22);
@@ -110,11 +109,10 @@ struct FVMS_CommonBottomActionList : FEUIViewModelSingleton
         TEUIModelRef<FVM_InputAction> local_2 = TEUIModelRef<FVM_InputAction>(::FVM_InputAction::Create(this.GetContext().Manager, NewAction.InputAction, NewAction.OnInputActionExecute));
         if (!(NewAction.ActionNameOverride.IsEmpty()))
         {
-            bool local_5 = true;
-            local_5.SetbOverrideActionName();
-            NewAction.ActionNameOverride.SetActionNameOverride();
+            local_2.Get().SetbOverrideActionName(true);
+            local_2.Get().SetActionNameOverride(NewAction.ActionNameOverride);
         }
-        NewAction.bOnlyShowMainKey.SetbOnlyShowMainKey();
+        local_2.Get().SetbOnlyShowMainKey(NewAction.bOnlyShowMainKey);
         this.GetModify_InputActions().Add(local_2);
         return local_2;
     }
@@ -130,8 +128,7 @@ struct FVMS_CommonBottomActionList : FEUIViewModelSingleton
         int local_4 = this.GetModify_InputActions().Num() - 1;
         for (; local_4 >= 0; --local_4)
         {
-            TEUIModelRef<FVM_InputAction>& local_8 = this.GetModify_InputActions()[local_4];
-            const FEUIInputAction& local_10 = GetInputAction();
+            const FEUIInputAction& local_10 = this.GetModify_InputActions()[local_4].Get().GetInputAction();
             local_12 = RemoveAction.EnhancedAction;
             local_14 = local_10.EnhancedAction;
             if (local_12 == local_14 && (FEUIInputActionDataRow(RemoveAction.TableRowAction) == local_10.TableRowAction))
@@ -216,11 +213,9 @@ FVMS_CommonBottomActionList& Get(const UObject ContextObject)
 {
     return FVMS_CommonBottomActionList::GetByManager(EUIInternal::GetContextManager(ContextObject));
 }
-FVMS_CommonBottomActionList GetByManager(const UEUIManagerSubsystem Manager)
+FVMS_CommonBottomActionList& GetByManager(const UEUIManagerSubsystem Manager)
 {
-    FVMS_CommonBottomActionList __r;
-    TEUIModelRef<FVMS_CommonBottomActionList> local_6 = TEUIModelRef<FVMS_CommonBottomActionList>(EUIInternal::MakeModelWithManager(Manager, FVMS_CommonBottomActionList::ModelId));
-    return __r;
+    return TEUIModelRef<FVMS_CommonBottomActionList>(EUIInternal::MakeModelWithManager(Manager, FVMS_CommonBottomActionList::ModelId)).Get();
 }
 void GetModelInfo(FEUIViewModelMetaInfo &inout Result)
 {
@@ -344,7 +339,6 @@ namespace __GeneratedProperties_FVMS_CommonBottomActionList
 {
 UScriptStruct StaticStruct()
 {
-    UScriptStruct local_2;
-    return local_2;
+    return __GeneratedProperties_FVMS_CommonBottomActionList.Get();
 }
 }

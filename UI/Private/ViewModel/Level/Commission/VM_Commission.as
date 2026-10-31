@@ -237,6 +237,7 @@ struct FVMS_Commission : FEUIViewModelSingleton
     }
     void ClearCommissionCounterDown()
     {
+        this.GetModify_CommissionCounterDown().Clear();
         this.SetCachedCommissionTimeoutTime(FFPTime());
         return;
     }
@@ -244,8 +245,7 @@ struct FVMS_Commission : FEUIViewModelSingleton
     {
         if (this.GetLevelInfo().IsValid())
         {
-            TEUIModelRef<FMS_LevelInfo> local_2 = this.GetLevelInfo();
-            return GetLevelInfoConfig();
+            return this.GetLevelInfo().Get().GetLevelInfoConfig();
         }
         return ::FLevelUtils::GetCurrentLevelInfoConfig(nullptr);
     }
@@ -254,8 +254,7 @@ struct FVMS_Commission : FEUIViewModelSingleton
         bool local_9;
         if (this.GetClientCondition().IsValid())
         {
-            TEUIModelRef<FMS_ClientCondition> local_2 = this.GetClientCondition();
-            local_9 = GetbIsLoading();
+            local_9 = this.GetClientCondition().Get().GetbIsLoading();
         }
         else
         {
@@ -267,9 +266,7 @@ struct FVMS_Commission : FEUIViewModelSingleton
     {
         if (this.GetTitleModel().IsValid())
         {
-            TEUIModelRef<FVM_MissionInfoTitle> local_2 = this.GetTitleModel();
-            FText local_8;
-            local_8.SetTitle();
+            this.GetTitleModel().Get().SetTitle(FText());
         }
         this.ClearCommissionCounterDown();
         this.GetModify_TargetModels().Empty(0);
@@ -281,9 +278,7 @@ struct FVMS_Commission : FEUIViewModelSingleton
         {
             if (this.GetTitleModel().IsValid())
             {
-                TEUIModelRef<FVM_MissionInfoTitle> local_4 = this.GetTitleModel();
-                FText local_8;
-                local_8.SetTitle();
+                this.GetTitleModel().Get().SetTitle(FText());
             }
             return;
         }
@@ -305,82 +300,36 @@ struct FVMS_Commission : FEUIViewModelSingleton
             return;
         }
         TDataObjectPtr<FMissionConfig> local_30 = ::MissionUtils::GetCurrentTrackingMission(this.GetContext().GetLocalPlayer(), EMissionType(0));
-        local_5 = !(local_30.IsSet());
-        if (local_5)
+        if (!(local_30.IsSet()))
         {
             bool local_58;
-            bool local_57;
             TEUIModelRef<FVM_MissionInfoTitle> local_56 = this.GetTitleModel();
-            if (!(local_56.IsValid()))
-            {
-                local_58 = true;
-            }
-            else
-            {
-                TEUIModelRef<FVM_MissionInfoTitle> local_56_2 = this.GetTitleModel();
-                local_57 = local_56_2.IsValid();
-                if (!(local_57))
-                {
-                    local_57 = false;
-                }
-                else
-                {
-                    TEUIModelRef<FVM_MissionInfoTitle> local_56_3 = this.GetTitleModel();
-                    local_57 = !(GetTitle().IsEmpty());
-                }
-                local_58 = local_57;
-            }
-            FSoftBrush local_104;
+            local_58 = !(local_56.IsValid()) || (this.GetTitleModel().IsValid() && !(this.GetTitleModel().Get().GetTitle().IsEmpty()));
             if (local_58)
             {
                 local_5 = false;
-                local_104 = FSoftBrush();
                 local_58 = false;
-                TEUIModelRef<FVM_MissionInfoTitle> local_56_4 = TEUIModelRef<FVM_MissionInfoTitle>(::FVM_MissionInfoTitle::Create(this.GetContext().Manager, FText(), local_58, local_104, local_5));
-                this.SetTitleModel(local_56_4);
+                TEUIModelRef<FVM_MissionInfoTitle> local_56_3 = TEUIModelRef<FVM_MissionInfoTitle>(::FVM_MissionInfoTitle::Create(this.GetContext().Manager, FText(), local_58, FSoftBrush(), local_5));
+                this.SetTitleModel(local_56_3);
             }
             this.GetModify_TargetModels().Empty(0);
             this.CommissionDbg_LogState("RefreshMainTaskTargets:no tracking mission -> TargetModels.Empty", 1);
             return;
         }
-        TEUIModelRef<FVM_MissionInfoTitle> local_56_5 = this.GetTitleModel();
-        if (!(local_56_5.IsValid()))
+        TEUIModelRef<FVM_MissionInfoTitle> local_56_4 = this.GetTitleModel();
+        if (!(local_56_4.IsValid()) || (this.GetTitleModel().IsValid() && (!((FText(this.GetTitleModel().Get().GetTitle()) == local_30.Get().MissionTitle)))))
         {
-            local_5 = true;
-        }
-        else
-        {
-            bool local_57;
-            local_56_5 = this.GetTitleModel();
-            local_57 = local_56_5.IsValid();
-            if (!(local_57))
-            {
-                local_57 = false;
-            }
-            else
-            {
-                local_56_5 = this.GetTitleModel();
-                FText local_108 = FText(GetTitle());
-                local_5 = !local_5;
-                local_57 = local_5;
-            }
-            local_5 = local_57;
-        }
-        if (local_5)
-        {
-            FSoftBrush local_104;
             bool local_58;
-            bool local_57;
             FSoftBrush local_156;
             TDataObjectPtr<FMissionPhaseConfig> local_180;
-            if (::MissionUtils::GetGuidePresentationConfig(local_30, local_180).IsSet())
+            TDataObjectPtr<FGuidePresentationConfig> local_204 = ::MissionUtils::GetGuidePresentationConfig(local_30, local_180);
+            if (local_204.IsSet())
             {
-                local_104.GetGuideIcon();
-                local_156 = local_104;
+                local_156 = local_204.Get().GetGuideIcon();
             }
             local_58 = false;
-            local_57 = false;
-            this.SetTitleModel(local_56_5);
+            TEUIModelRef<FVM_MissionInfoTitle> local_56_6 = TEUIModelRef<FVM_MissionInfoTitle>(::FVM_MissionInfoTitle::Create(this.GetContext().Manager, local_30.Get().MissionTitle, false, local_156, local_58));
+            this.SetTitleModel(local_56_6);
         }
         this.FillMainTaskObjectiveModels(local_30);
         return;
@@ -392,11 +341,18 @@ struct FVMS_Commission : FEUIViewModelSingleton
     uint64 CommissionDbg_ItemKey(FEUIModelContainer &inout C)
     {
         int local_6 = 0;
-        int local_10 = 0;
+        int local_9;
         FEUIModelContainer::RequireModel(C);
-        int local_9 = local_6.GetSingleObjectiveConfig().IsSet() ? local_10 : 0;
+        if (local_6.GetSingleObjectiveConfig().IsSet())
+        {
+            local_9 = local_6.GetSingleObjectiveConfig().Get().DataId;
+        }
+        else
+        {
+            local_9 = 0;
+        }
         int64 local_12 = local_9;
-        local_10 = 1;
+        int local_10 = 1;
         local_12 = local_12 << local_10;
         local_12 = local_12 | local_6.GetSubObj() ? 1 : 0;
         return local_12;
@@ -404,10 +360,17 @@ struct FVMS_Commission : FEUIViewModelSingleton
     FString CommissionDbg_FormatVmLine(const FString &inout Prefix, const int Idx, FEUIModelContainer &inout C)
     {
         int local_6 = 0;
-        int local_14 = 0;
+        int local_13;
         FEUIModelContainer::RequireModel(C);
         int local_10 = this.CommissionDbg_ItemKey(C);
-        int local_13 = local_6.GetSingleObjectiveConfig().IsSet() ? local_14 : 0;
+        if (local_6.GetSingleObjectiveConfig().IsSet())
+        {
+            local_13 = local_6.GetSingleObjectiveConfig().Get().DataId;
+        }
+        else
+        {
+            local_13 = 0;
+        }
         int local_24 = local_6.GetProgress().GetFailedProgressValue();
         int local_23 = local_6.GetProgress().GetSuccessProgressValue();
         int local_22 = int(local_6.GetUIState());
@@ -446,47 +409,25 @@ struct FVMS_Commission : FEUIViewModelSingleton
     }
     void Commission_Finish()
     {
-        int local_27 = 0;
         bool local_90;
         if (!(this.HasCommission()))
         {
             return;
         }
-        TDataObjectPtr<FCommissionConfig> local_26 = this.GetCommissionConfig();
-        if (!(::CommissionUtils::GetCommissionTypeConfig(ECommissionType(local_27))))
+        TDataObjectPtr<FCommissionTypeConfig> local_52 = ::CommissionUtils::GetCommissionTypeConfig(this.GetCommissionConfig().Get().CommissionType);
+        if (!(local_52))
         {
             XError(ELog(16), "CommissionTypeConfig is null");
             return;
         }
         FText local_86 = NSLOCTEXT("CommissionFinishTargetTitle", "Tile_CommissionEnd", "关卡即将结束");
-        TEUIModelRef<FVM_MissionInfoTitle> local_88 = this.GetTitleModel();
-        if (!(local_88.IsValid()))
+        if (!(this.GetTitleModel().IsValid()) || (this.GetTitleModel().IsValid() && !((FText(this.GetTitleModel().Get().GetTitle()) == local_86))))
         {
             local_90 = true;
+            this.SetTitleModel(TEUIModelRef<FVM_MissionInfoTitle>(::FVM_MissionInfoTitle::Create(this.GetContext().Manager, local_86, local_90, local_52.Get().CommissionTypeIcon, false)));
         }
-        else
-        {
-            local_88 = this.GetTitleModel();
-            bool local_89 = local_88.IsValid();
-            if (!(local_89))
-            {
-                local_89 = false;
-            }
-            else
-            {
-                local_88 = this.GetTitleModel();
-                local_89 = !((FText(GetTitle()) == local_86));
-            }
-            local_90 = local_89;
-        }
-        if (local_90)
-        {
-            local_90 = true;
-            this.SetTitleModel(local_88);
-        }
-        TEUIModelRef<FVM_MissionInfoTitle> local_88_2 = this.GetTitleModel();
         Get local_94;
-        local_94.opCall().GetKickPlayerTime().SetEndTime();
+        this.GetTitleModel().Get().SetEndTime(local_94.opCall().GetKickPlayerTime());
         this.ClearCommissionCounterDown();
         this.GetModify_TargetModels().Empty(0);
         FCommissionObjItemModelData local_130;
@@ -498,52 +439,31 @@ struct FVMS_Commission : FEUIViewModelSingleton
     }
     void Commission_OnGoing()
     {
-        int local_27 = 0;
-        bool local_118;
         if (!(this.HasCommission()))
         {
             return;
         }
-        TDataObjectPtr<FCommissionConfig> local_26 = this.GetCommissionConfig();
-        if (!(::CommissionUtils::GetCommissionTypeConfig(ECommissionType(local_27))))
+        TDataObjectPtr<FCommissionTypeConfig> local_52 = ::CommissionUtils::GetCommissionTypeConfig(this.GetCommissionConfig().Get().CommissionType);
+        if (!(local_52))
         {
             XError(ELog(16), "CommissionTypeConfig is null");
             return;
         }
-        TDataObjectPtr<FCommissionConfig> local_26_2 = this.GetCommissionConfig();
+        TDataObjectPtr<FCommissionConfig> local_26 = this.GetCommissionConfig();
         FText local_114;
-        if (local_26_2)
+        if (local_26)
         {
+            local_114 = local_26.Get().CommissionName;
         }
         else
         {
             local_114 = FText();
         }
-        TEUIModelRef<FVM_MissionInfoTitle> local_116 = this.GetTitleModel();
-        if (!(local_116.IsValid()))
-        {
-            local_118 = true;
-        }
-        else
-        {
-            local_116 = this.GetTitleModel();
-            bool local_117 = local_116.IsValid();
-            if (!(local_117))
-            {
-                local_117 = false;
-            }
-            else
-            {
-                local_116 = this.GetTitleModel();
-                local_117 = !((FText(GetTitle()) == local_114));
-            }
-            local_118 = local_117;
-        }
+        bool local_118 = !(this.GetTitleModel().IsValid()) || (this.GetTitleModel().IsValid() && !((FText(this.GetTitleModel().Get().GetTitle()) == local_114)));
         if (local_118)
         {
             local_118 = false;
-            bool local_1 = this.HasTimeLimit();
-            this.SetTitleModel(local_116);
+            this.SetTitleModel(TEUIModelRef<FVM_MissionInfoTitle>(::FVM_MissionInfoTitle::Create(this.GetContext().Manager, local_114, this.HasTimeLimit(), local_52.Get().CommissionTypeIcon, local_118)));
         }
         if (!(this.HasTimeLimit()))
         {
@@ -551,7 +471,7 @@ struct FVMS_Commission : FEUIViewModelSingleton
         }
         else
         {
-            local_118 = local_26_2;
+            local_118 = local_26;
         }
         if (local_118)
         {
@@ -559,8 +479,7 @@ struct FVMS_Commission : FEUIViewModelSingleton
             const FCS_CommissionInfo& local_124 = local_122.opCall();
             if (local_124)
             {
-                TEUIModelRef<FVM_MissionInfoTitle> local_116_2 = this.GetTitleModel();
-                local_124.CommissionTimeoutTime.SetEndTime();
+                this.GetTitleModel().Get().SetEndTime(local_124.CommissionTimeoutTime);
                 if ((!((FFPTime(this.GetCachedCommissionTimeoutTime()) == local_124.CommissionTimeoutTime))))
                 {
                     this.SetCachedCommissionTimeoutTime(local_124.CommissionTimeoutTime);
@@ -618,7 +537,7 @@ struct FVMS_Commission : FEUIViewModelSingleton
         }
         if (local_5)
         {
-            return EFaction(1);
+            return EFaction::Player;
         }
         FECSEntity local_4_2 = this.GetContext().GetLocalPlayer();
         Get local_18;
@@ -633,12 +552,12 @@ struct FVMS_Commission : FEUIViewModelSingleton
                 return local_34.GetFaction();
             }
         }
-        return EFaction(1);
+        return EFaction::Player;
     }
     void FillPVXFactionObjectiveModels()
     {
+        bool local_7;
         TDataObjectPtr<FObjectiveSingleConfig> local_118;
-        bool local_119 = false;
         int local_155;
         int local_156;
         FEUIModelContainer::MakeCached local_170;
@@ -654,6 +573,8 @@ struct FVMS_Commission : FEUIViewModelSingleton
             else
             {
             }
+            TDataObjectPtr<FObjectiveConfig> local_60;
+            TDataObjectPtr<FObjectiveConfig> local_34 = local_60;
             FCommissionTargetProgress local_62;
             FCommissionTargetProgress local_64;
             if (int(local_9) == 6)
@@ -663,30 +584,27 @@ struct FVMS_Commission : FEUIViewModelSingleton
             {
             }
             local_62 = local_64;
-            TDataObjectPtr<FObjectiveConfig> local_60;
-            bool local_7 = !(local_60.IsSet());
-            if (local_7)
+            if (!(local_34.IsSet()))
             {
                 return;
             }
-            if (0 == 0)
+            if (int(local_34.Get().ObjectiveType) == 0)
             {
                 TDataObjectPtr<FObjectiveSingleConfig> local_94;
                 CastTo local_70;
                 local_94 = local_70.opCall();
-                if (local_7)
+                if (local_94.Get().bHidden)
                 {
                     return;
                 }
-                bool local_7_2 = (local_62.GetSuccessProgressValue() >= ::ConditionUtils::GetTargetValue(GetFinishCondition()));
-                if (!(GetFinishCondition()))
+                local_7 = (local_62.GetSuccessProgressValue() >= ::ConditionUtils::GetTargetValue(local_94.Get().GetFinishCondition()));
+                if (!(local_94.Get().GetFinishCondition()))
                 {
-                    local_7_2 = false;
+                    local_7 = false;
                 }
                 FCommissionObjItemModelData local_154;
-                local_119 = false;
-                local_154.SubObj = local_119;
-                if (local_7_2)
+                local_154.SubObj = false;
+                if (local_7)
                 {
                     local_156 = 1;
                     local_155 = local_156;
@@ -712,44 +630,40 @@ struct FVMS_Commission : FEUIViewModelSingleton
                 else
                 {
                 }
-                for (auto& local_258 : GetChildObjectives())
+                for (auto& local_258 : local_218.Get().GetChildObjectives())
                 {
                     local_258;
                     CastTo local_262;
                     local_118 = local_262.opCall();
-                    if (local_119)
+                    if (local_118.Get().bHidden)
                     {
                         continue;
                     }
-                    local_119 = false;
-                    bool local_7_3 = local_119;
+                    local_7 = false;
                     FCommissionTargetProgress local_264;
-                    if (local_244.Contains(unresolved.DataId))
+                    if (local_244.Contains(local_118.Get().DataId))
                     {
-                        local_119 = (local_264.GetSuccessProgressValue() >= ::ConditionUtils::GetTargetValue(GetFinishCondition()));
-                        local_7_3 = local_119;
+                        local_264 = local_244[local_118.Get().DataId];
+                        local_7 = (local_264.GetSuccessProgressValue() >= ::ConditionUtils::GetTargetValue(local_118.Get().GetFinishCondition()));
                     }
-                    local_119 = !(GetFinishCondition());
-                    if (local_119)
+                    if (!(local_118.Get().GetFinishCondition()))
                     {
-                        local_119 = false;
-                        local_7_3 = local_119;
+                        local_7 = false;
                     }
-                    if (0 == 2)
+                    if (int(local_218.Get().FinishType) == 2)
                     {
-                        local_119 = !local_119;
-                        if (local_119)
+                        if (!(local_244.Contains(local_118.Get().DataId)))
                         {
                             continue;
                         }
-                        if (local_7_3)
+                        if (local_7)
                         {
                             continue;
                         }
                     }
                     FCommissionObjItemModelData local_154;
                     local_154.SubObj = false;
-                    if (local_7_3)
+                    if (local_7)
                     {
                         local_156 = 1;
                         local_155 = local_156;
@@ -776,7 +690,7 @@ struct FVMS_Commission : FEUIViewModelSingleton
                 for (; local_273 < this.GetTargetModels().Num(); ++local_273)
                 {
                     FEUIModelContainer::RequireModel(this.GetModify_TargetModels()[local_273]);
-                    if (local_190.GetSingleObjectiveConfig().IsSet() && (0 == 2))
+                    if (local_190.GetSingleObjectiveConfig().IsSet() && (int(local_190.GetSingleObjectiveConfig().Get().ProgressTextType) == 2))
                     {
                         local_190.SetProgress(local_264);
                     }
@@ -791,20 +705,18 @@ struct FVMS_Commission : FEUIViewModelSingleton
         int local_102 = 0;
         bool local_1 = false;
         FCommissionTargetProgress local_4;
-        if (C_CommissionInfo.ChildProgress.Contains(unresolved.DataId))
+        if (C_CommissionInfo.ChildProgress.Contains(ObjectiveSingleConfig.Get().DataId))
         {
-            local_1 = (local_4.GetSuccessProgressValue() >= ::ConditionUtils::GetTargetValue(GetFinishCondition()));
+            local_4 = C_CommissionInfo.ChildProgress[ObjectiveSingleConfig.Get().DataId];
+            local_1 = (local_4.GetSuccessProgressValue() >= ::ConditionUtils::GetTargetValue(ObjectiveSingleConfig.Get().GetFinishCondition()));
         }
-        bool local_2 = !(GetFinishCondition());
-        if (local_2)
+        if (!(ObjectiveSingleConfig.Get().GetFinishCondition()))
         {
-            local_2 = false;
-            local_1 = local_2;
+            local_1 = false;
         }
-        if (0 == 2)
+        if (int(ObjGroup.Get().FinishType) == 2)
         {
-            local_2 = !local_2;
-            if (local_2)
+            if (!(C_CommissionInfo.ChildProgress.Contains(ObjectiveSingleConfig.Get().DataId)))
             {
                 return;
             }
@@ -837,35 +749,32 @@ struct FVMS_Commission : FEUIViewModelSingleton
     }
     void FillCommissionObjectiveModels()
     {
-        bool local_7 = false;
         CastTo local_14;
         TDataObjectPtr<FObjectiveSingleConfig> local_38;
         TDataObjectPtr<FObjectiveSingleConfig> local_62;
-        bool local_63 = false;
+        bool local_63;
         int local_99;
         int local_100;
         int local_134 = 0;
-        bool local_293 = false;
         Get local_4;
         const FCS_CommissionInfo& local_6 = local_4.opCall();
         if (local_6)
         {
             if (local_6.CommissionTargetObjective)
             {
-                if (0 == 0)
+                if (int(local_6.CommissionTargetObjective.Get().ObjectiveType) == 0)
                 {
                     local_38 = local_14.opCall();
-                    local_7 = !local_7;
-                    if (local_7)
+                    if (!(local_38.Get().bHidden))
                     {
-                        local_7 = (local_6.Progress.GetSuccessProgressValue() >= ::ConditionUtils::GetTargetValue(GetFinishCondition()));
-                        if (!(GetFinishCondition()))
+                        bool local_7;
+                        local_7 = (local_6.Progress.GetSuccessProgressValue() >= ::ConditionUtils::GetTargetValue(local_38.Get().GetFinishCondition()));
+                        if (!(local_38.Get().GetFinishCondition()))
                         {
                             local_7 = false;
                         }
                         FCommissionObjItemModelData local_98;
-                        local_63 = false;
-                        local_98.SubObj = local_63;
+                        local_98.SubObj = false;
                         if (local_7)
                         {
                             local_100 = 1;
@@ -889,11 +798,13 @@ struct FVMS_Commission : FEUIViewModelSingleton
                     CastTo local_138;
                     TDataObjectPtr<FObjectiveGroupConfig> local_162 = local_138.opCall();
                     TSet<uint> local_206;
-                    for (auto& local_220 : GetChildObjectives())
+                    for (auto& local_220 : local_162.Get().GetChildObjectives())
                     {
                         local_220;
                         CastTo local_224;
                         local_62 = local_224.opCall();
+                        local_206.Add(local_62.Get().DataId);
+                        local_63 = local_62.Get().bHidden;
                         if (local_63)
                         {
                             continue;
@@ -911,7 +822,16 @@ struct FVMS_Commission : FEUIViewModelSingleton
                             continue;
                         }
                         local_38 = local_14.opCall();
-                        if (!(local_38.IsSet()) || local_293)
+                        local_63 = !(local_38.IsSet());
+                        if (local_63)
+                        {
+                            local_63 = true;
+                        }
+                        else
+                        {
+                            local_63 = local_38.Get().bHidden;
+                        }
+                        if (local_63)
                         {
                             continue;
                         }
@@ -931,7 +851,7 @@ struct FVMS_Commission : FEUIViewModelSingleton
                     for (; local_303 < this.GetTargetModels().Num(); ++local_303)
                     {
                         FEUIModelContainer::RequireModel(this.GetModify_TargetModels()[local_303]);
-                        if (local_134.GetSingleObjectiveConfig().IsSet() && (0 == 2))
+                        if (local_134.GetSingleObjectiveConfig().IsSet() && (int(local_134.GetSingleObjectiveConfig().Get().ProgressTextType) == 2))
                         {
                             local_134.SetProgress(local_302);
                         }
@@ -959,12 +879,10 @@ struct FVMS_Commission : FEUIViewModelSingleton
     }
     void FillCommissionSubObjectiveModels()
     {
-        bool local_7 = false;
-        int local_57 = 0;
+        bool local_7;
         TDataObjectPtr<FObjectiveSingleConfig> local_112;
         FEUIModelContainer::MakeCached local_162;
         int local_182 = 0;
-        int local_253 = 0;
         Get local_4;
         const FCS_CommissionSubTarget& local_6 = local_4.opCall();
         if (local_6)
@@ -974,13 +892,12 @@ struct FVMS_Commission : FEUIViewModelSingleton
             {
                 if (local_32)
                 {
-                    int local_58 = local_57;
-                    if (local_58 == 0)
+                    if (int(local_32.Get().ObjectiveType) == 0)
                     {
                         TDataObjectPtr<FObjectiveSingleConfig> local_88;
                         CastTo local_64;
                         local_88 = local_64.opCall();
-                        local_7 = !local_7;
+                        local_7 = !(local_88.Get().bHidden);
                         if (local_7)
                         {
                             FCommissionObjItemModelData local_146;
@@ -991,37 +908,35 @@ struct FVMS_Commission : FEUIViewModelSingleton
                             this.GetModify_TargetModels().Add(local_162.opImplConv());
                             FEUIModelContainer::RequireModel(this.GetModify_TargetModels().Last(0));
                             local_182.GetModify_Progress().SetSuccessProgressValue(local_6.GetProgress().GetSuccessProgressValue());
-                            local_58 = local_6.GetProgress().GetFailedProgressValue();
-                            local_182.GetModify_Progress().SetFailedProgressValue(local_58);
+                            local_182.GetModify_Progress().SetFailedProgressValue(local_6.GetProgress().GetFailedProgressValue());
                         }
                         return;
                     }
                     CastTo local_186;
                     TDataObjectPtr<FObjectiveGroupConfig> local_210 = local_186.opCall();
-                    for (auto& local_248 : GetChildObjectives())
+                    for (auto& local_248 : local_210.Get().GetChildObjectives())
                     {
-                        local_248;
                         CastTo local_252;
                         local_112 = local_252.opCall();
+                        local_7 = local_112.Get().bHidden;
                         if (local_7)
                         {
                             continue;
                         }
-                        int local_59 = local_253;
-                        if (local_59 == 2)
+                        if (int(local_210.Get().FinishType) == 2)
                         {
-                            local_7 = !local_7;
+                            local_7 = !(local_6.GetChildProgress().Contains(local_248.Get().DataId));
                             if (local_7)
                             {
                                 continue;
                             }
-                            local_7 = GetFinishCondition().IsSet() && ((local_59 >= ::ConditionUtils::GetTargetValue(GetFinishCondition())));
+                            local_7 = local_112.Get().GetFinishCondition().IsSet() && (local_6.GetChildProgress()[local_248.Get().DataId].GetSuccessProgressValue() >= ::ConditionUtils::GetTargetValue(local_112.Get().GetFinishCondition()));
                             if (local_7)
                             {
                                 continue;
                             }
                         }
-                        if (local_6.GetChildProgress().Contains(unresolved.DataId))
+                        if (local_6.GetChildProgress().Contains(local_248.Get().DataId))
                         {
                             FCommissionObjItemModelData local_146;
                             local_146.SubObj = true;
@@ -1029,13 +944,13 @@ struct FVMS_Commission : FEUIViewModelSingleton
                             local_146.SingleObjectiveConfig = local_112;
                             this.GetModify_TargetModels().Add(local_162.opImplConv());
                             FEUIModelContainer::RequireModel(this.GetModify_TargetModels().Last(0));
-                            local_182.GetModify_Progress().SetSuccessProgressValue(local_58);
-                            local_182.GetModify_Progress().SetFailedProgressValue(local_59);
+                            local_182.GetModify_Progress().SetSuccessProgressValue(local_6.GetChildProgress()[local_248.Get().DataId].GetSuccessProgressValue());
+                            local_182.GetModify_Progress().SetFailedProgressValue(local_6.GetChildProgress()[local_248.Get().DataId].GetFailedProgressValue());
                             continue;
                         }
-                        if (local_253 != 2)
+                        if (int(local_210.Get().FinishType) != 2)
                         {
-                            FString local_260 = FString();
+                            XError(ELog(16), FString().Append("FillCommissionSubObjectiveModels ChiledProgress not found DataId:").Append(local_248.Get().DataId));
                         }
                     }
                 }
@@ -1045,12 +960,18 @@ struct FVMS_Commission : FEUIViewModelSingleton
     }
     void FillMainTaskObjectiveModels(const TDataObjectPtr<FMissionConfig> &inout TrackingMission)
     {
-        int local_5 = 0;
-        FMissionObjectiveInfo local_268;
+        int local_4;
         int local_392 = 0;
         this.GetModify_TargetModels().Empty(0);
         this.CommissionDbg_LogState("FillMainTaskObjectiveModels:cleared", 2);
-        int local_4 = TrackingMission ? local_5 : 0;
+        if (TrackingMission)
+        {
+            local_4 = TrackingMission.Get().DataId;
+        }
+        else
+        {
+            local_4 = 0;
+        }
         if (local_4 == 0)
         {
             return;
@@ -1061,27 +982,26 @@ struct FVMS_Commission : FEUIViewModelSingleton
             return;
         }
         TArray<uint> local_128;
-        CastTo local_198;
         for (auto& local_146 : local_118.GetActiveObjectiveStatusMap())
         {
-            local_146;
-            ::ObjectiveUtils::FindObjectiveConfig(GetObjectiveId());
-            if (local_198.opCall())
+            ::ObjectiveUtils::FindObjectiveConfig(local_146.GetValue().GetObjectiveId());
+            CastTo local_198;
+            TDataObjectPtr<FObjectiveGroupConfig> local_222 = local_198.opCall();
+            if (local_222)
             {
-                if (0 == 2)
+                if (int(local_222.Get().FinishType) == 2)
                 {
-                    for (auto& local_262 : GetChildObjectives())
+                    for (auto& local_262 : local_222.Get().GetChildObjectives())
                     {
-                        local_262;
+                        local_128.Add(local_262.Get().DataId);
                     }
                 }
             }
         }
         for (auto& local_146 : local_118.GetActiveObjectiveStatusMap())
         {
-            local_146;
-            bool local_3 = !(::ObjectiveUtils::FindObjectiveConfig(local_268.GetObjectiveId()));
-            if (local_3)
+            FMissionObjectiveInfo local_268 = FMissionObjectiveInfo(local_146.GetValue());
+            if (!(::ObjectiveUtils::FindObjectiveConfig(local_268.GetObjectiveId())))
             {
                 continue;
             }
@@ -1091,11 +1011,11 @@ struct FVMS_Commission : FEUIViewModelSingleton
             {
                 continue;
             }
-            if (local_3)
+            if (local_320.Get().bHidden)
             {
                 continue;
             }
-            if (local_128.Contains(unresolved.DataId))
+            if (local_128.Contains(local_320.Get().DataId))
             {
                 if (int(local_268.GetObjectiveStatus()) != 1)
                 {
@@ -1117,11 +1037,18 @@ struct FVMS_Commission : FEUIViewModelSingleton
     uint64 MakeItemKey(FEUIModelContainer &inout Container)
     {
         int local_6 = 0;
-        int local_10 = 0;
+        int local_9;
         FEUIModelContainer::RequireModel(Container);
-        int local_9 = local_6.GetSingleObjectiveConfig().IsSet() ? local_10 : 0;
+        if (local_6.GetSingleObjectiveConfig().IsSet())
+        {
+            local_9 = local_6.GetSingleObjectiveConfig().Get().DataId;
+        }
+        else
+        {
+            local_9 = 0;
+        }
         int64 local_12 = local_9;
-        local_10 = 1;
+        int local_10 = 1;
         local_12 = local_12 << local_10;
         local_12 = local_12 | local_6.GetSubObj() ? 1 : 0;
         return local_12;
@@ -1408,7 +1335,6 @@ struct FVMS_Commission : FEUIViewModelSingleton
         TArray<uint64> local_4;
         int local_18 = 0;
         int local_20;
-        int local_21 = 0;
         this.BuildViewKeyOrderMainBeforeSub(local_4);
         int local_6 = this.GetPendingAddModels().Num();
         int local_7 = 0;
@@ -1416,9 +1342,16 @@ struct FVMS_Commission : FEUIViewModelSingleton
         {
             const FEUIModelContainer& local_12 = this.GetPendingAddModels()[local_7];
             FEUIModelContainer::RequireModel(local_12);
-            local_20 = local_18.GetSingleObjectiveConfig().IsSet() ? local_21 : 0;
+            if (local_18.GetSingleObjectiveConfig().IsSet())
+            {
+                local_20 = local_18.GetSingleObjectiveConfig().Get().DataId;
+            }
+            else
+            {
+                local_20 = 0;
+            }
             int64 local_26 = local_20;
-            local_21 = 1;
+            int local_21 = 1;
             local_26 = local_26 << local_21;
             local_26 = local_26 | local_18.GetSubObj() ? 1 : 0;
             int local_27 = this.GetViewInsertIndexForNewKey(local_4, local_26);
@@ -1750,11 +1683,9 @@ FVMS_Commission& Get(const UObject ContextObject)
 {
     return FVMS_Commission::GetByManager(EUIInternal::GetContextManager(ContextObject));
 }
-FVMS_Commission GetByManager(const UEUIManagerSubsystem Manager)
+FVMS_Commission& GetByManager(const UEUIManagerSubsystem Manager)
 {
-    FVMS_Commission __r;
-    TEUIModelRef<FVMS_Commission> local_6 = TEUIModelRef<FVMS_Commission>(EUIInternal::MakeModelWithManager(Manager, FVMS_Commission::ModelId));
-    return __r;
+    return TEUIModelRef<FVMS_Commission>(EUIInternal::MakeModelWithManager(Manager, FVMS_Commission::ModelId)).Get();
 }
 void GetModelInfo(FEUIViewModelMetaInfo &inout Result)
 {
@@ -2017,7 +1948,6 @@ namespace __GeneratedProperties_FVMS_Commission
 {
 UScriptStruct StaticStruct()
 {
-    UScriptStruct local_2;
-    return local_2;
+    return __GeneratedProperties_FVMS_Commission.Get();
 }
 }

@@ -274,8 +274,7 @@ class US_ASGameModeSystemPVX : US_ECSScriptGameModeSystemBase
             GetDefaulted local_260;
             local_256.SetPlayerName(local_260.opCall().GetNickName());
             local_256.SetPlayerUID(::FASCommonUtils::GetPlayerUidFromPlayerEntity(local_142));
-            int local_261 = local_154.GetPlayerAvatarID();
-            local_262 = local_261;
+            local_262 = local_154.GetPlayerAvatarID();
             if (local_262 != 0)
             {
                 local_19 = false;
@@ -288,8 +287,7 @@ class US_ASGameModeSystemPVX : US_ECSScriptGameModeSystemBase
             if (local_19)
             {
                 Get local_272;
-                local_261 = local_272.opCall().GetPlayerSpecialtyID();
-                local_262 = local_261;
+                local_262 = local_272.opCall().GetPlayerSpecialtyID();
             }
             local_256.SetPlayerAvatarID(local_262);
             Has local_276;
@@ -298,7 +296,7 @@ class US_ASGameModeSystemPVX : US_ECSScriptGameModeSystemBase
             {
                 if (local_282.GetDivineSkillData().GetSkillConfig())
                 {
-                    local_256.SetPlayerDivineSkillID(local_261);
+                    local_256.SetPlayerDivineSkillID(local_282.GetDivineSkillData().GetSkillConfig().Get().DataId);
                 }
             }
             local_256.SetKills(0);
@@ -665,14 +663,12 @@ class US_ASGameModeSystemPVX : US_ECSScriptGameModeSystemBase
         {
             int local_89;
             Get local_94;
-            int local_95 = local_94.opCall().GetPlayerAvatarID();
-            local_89 = local_95;
+            local_89 = local_94.opCall().GetPlayerAvatarID();
             TDataObjectPtr<FAvatarPrefabConfig> local_120;
             if (local_89 <= 0)
             {
                 Get local_124;
-                local_95 = local_124.opCall().GetPlayerSpecialtyID();
-                local_89 = local_95;
+                local_89 = local_124.opCall().GetPlayerSpecialtyID();
             }
             if (local_89 > 0)
             {
@@ -684,6 +680,7 @@ class US_ASGameModeSystemPVX : US_ECSScriptGameModeSystemBase
                 if (local_88.ChangeRoleDataObjects.Num() > 0)
                 {
                     local_120 = local_88.ChangeRoleDataObjects[0];
+                    int local_95 = local_120.Get().DataId;
                     local_89 = local_95;
                 }
             }
@@ -973,8 +970,7 @@ class US_ASGameModeSystemPVX : US_ECSScriptGameModeSystemBase
                     break;
                 }
             }
-            UClass local_306;
-            ::BlueprintFunctions_Common::SpawnProp(FECSEntityAdapter(local_92), TSoftClassPtr<APropPrefab>(local_306), local_160, local_172, local_304, false, 1000.0f, 50.0f);
+            ::BlueprintFunctions_Common::SpawnProp(FECSEntityAdapter(local_92), TSoftClassPtr<APropPrefab>(local_8.DoomHeartPrefab.Get()), local_160, local_172, local_304, false, 1000.0f, 50.0f);
             ::FLevelUtils::SendCustomLevelEvent(DeadEntity, n"PVXBossDeath");
         }
         FECSWorldPtr local_32_2 = this.GetECSWorld();
@@ -1298,11 +1294,13 @@ class US_ASGameModeSystemPVX : US_ECSScriptGameModeSystemBase
                 local_50.SetUid(local_39);
                 if (local_41 == 1)
                 {
-                    local_51 = EFaction(1);
+                    EFaction local_52 = EFaction::Player;
+                    local_51 = local_52;
                 }
                 else
                 {
-                    local_51 = EFaction(6);
+                    EFaction local_52_2 = EFaction::Boss;
+                    local_51 = local_52_2;
                 }
                 local_50.SetFaction(EFaction(local_51));
                 local_14.GetModify_PlayerEntries().Add(local_39, local_50);
@@ -1337,7 +1335,6 @@ class US_ASGameModeSystemPVX : US_ECSScriptGameModeSystemBase
         UAS_GameModeSettingsPVX local_66;
         bool local_73 = false;
         int local_80 = 0;
-        int local_82 = 0;
         int local_155;
         int local_184 = 0;
         int local_198 = 0;
@@ -1366,6 +1363,7 @@ class US_ASGameModeSystemPVX : US_ECSScriptGameModeSystemBase
             for (; local_118.CanProceed;)
             {
                 const FECSEntity& local_154 = local_118.Proceed();
+                int local_82 = local_66.ChangeRoleDataObjects[0].Get().DataId;
                 local_155 = local_82;
                 Has local_160;
                 bool local_7_2 = local_160.opCall();

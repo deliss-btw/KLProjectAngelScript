@@ -81,7 +81,6 @@ namespace ServerDataTrackerHelper
 {
 bool CheckServerAndCommissionConfig(uint &out ConfigId, uint64 &out CommissionInstId)
 {
-    int local_13 = 0;
     ConfigId = 0;
     CommissionInstId = 0;
     if (!(ECS::GetRuntimeInfo().IsServer))
@@ -95,7 +94,7 @@ bool CheckServerAndCommissionConfig(uint &out ConfigId, uint64 &out CommissionIn
     {
         if (local_12.CommissionConfig)
         {
-            ConfigId = local_13;
+            ConfigId = local_12.CommissionConfig.Get().DataId;
         }
         FECSWorldPtr local_16 = ECS::GetECSWorld();
         Get local_20;
@@ -160,18 +159,27 @@ FPbPlayerLogHead InternalGetLogHead(const FECSEntity &inout PlayerEntity)
 }
 FPbPlayerLogHeadExt InternalGetLogHeadExt(const FECSEntity &inout PlayerEntity, const FECSEntity &inout PawnEntity)
 {
+    int local_61;
     FPbPlayerLogHeadExt local_10;
-    int local_61 = 0;
-    int local_111 = 0;
-    int local_191 = 0;
     if (PawnEntity.IsValid())
     {
-        if (GetAvatarConfig(PawnEntity))
+        TDataObjectPtr<FAvatarPrefabConfig> local_36 = GetAvatarConfig(PawnEntity);
+        if (local_36)
         {
+            local_61 = local_36.Get().DataId;
             local_10.SetAvatarId(local_61);
         }
     }
-    local_10.SetSceneId((FLevelUtils::GetCurrentLevelInfoConfig(nullptr) ? local_111 : 0));
+    TDataObjectPtr<FLevelInfoConfig> local_86 = FLevelUtils::GetCurrentLevelInfoConfig(nullptr);
+    if (local_86)
+    {
+        local_61 = local_86.Get().DataId;
+    }
+    else
+    {
+        local_61 = 0;
+    }
+    local_10.SetSceneId(local_61);
     if (PawnEntity.IsValid())
     {
         Get local_116;
@@ -183,8 +191,7 @@ FPbPlayerLogHeadExt InternalGetLogHeadExt(const FECSEntity &inout PlayerEntity, 
             local_10.SetZCoordinate(int(local_118.GetPosition().Z));
         }
     }
-    local_61 = FWeatherUtils::GetPlayerControllerWeatherDataId(PlayerEntity);
-    local_10.SetWeather(local_61);
+    local_10.SetWeather(FWeatherUtils::GetPlayerControllerWeatherDataId(PlayerEntity));
     local_10.SetDsId(UGameDSConnectionSubsystem::Get().GetDsID());
     if (PlayerEntity.IsValid())
     {
@@ -221,9 +228,8 @@ FPbPlayerLogHeadExt InternalGetLogHeadExt(const FECSEntity &inout PlayerEntity, 
     {
         if (local_190.CommissionConfig)
         {
-            local_10.SetCommissionId(local_61);
-            int local_121 = local_191;
-            local_10.SetCommissionType(local_121);
+            local_10.SetCommissionId(local_190.CommissionConfig.Get().DataId);
+            local_10.SetCommissionType(int(local_190.CommissionConfig.Get().CommissionType));
         }
         FECSWorldPtr local_194 = ECS::GetECSWorld();
         Get local_198;

@@ -56,7 +56,6 @@ class US_EcologyConditionSystem : UECSScriptSystem
     void ServerJob_HandleWeatherChanged(const FCE_RegionWeatherChanged &inout Event) const
     {
         int local_16 = 0;
-        AActor local_18;
         bool local_19;
         int local_26 = 0;
         int local_30 = 0;
@@ -66,11 +65,11 @@ class US_EcologyConditionSystem : UECSScriptSystem
         int local_1 = true;
         FScopeCycleCounter local_3 = FScopeCycleCounter(FStatID(n"ProcessEcologyCondition"), false);
         FName local_7 = ::FWeatherUtils::GetWeatherNameFromRegionEntity(Event.Sender);
-        if (!(local_16) || (local_18 == nullptr))
+        if (!(local_16) || (local_16.RegionVolume.Get() == nullptr))
         {
             return;
         }
-        AECSRegionVolume local_24 = (Cast<AECSRegionVolume>(local_18));
+        AECSRegionVolume local_24 = (Cast<AECSRegionVolume>(local_16.RegionVolume.Get()));
         FECSWorldPtr local_28 = ECS::GetECSWorld();
         FECSWorldPtr local_28_2 = ECS::GetECSWorld();
         int local_4 = ::FEcologySceneInfoUtils::GetCurrentTimeSegments(local_30);

@@ -77,11 +77,9 @@ FVM_Index& Create(const UObject ContextObject, const int IndexValue)
 {
     return FVM_Index::CreateByManager(EUIInternal::GetContextManager(ContextObject), IndexValue);
 }
-FVM_Index CreateByManager(const UEUIManagerSubsystem Manager, const int IndexValue)
+FVM_Index& CreateByManager(const UEUIManagerSubsystem Manager, const int IndexValue)
 {
-    FVM_Index __r;
-    TEUIModelRef<FVM_Index> local_6 = TEUIModelRef<FVM_Index>(EUIInternal::MakeModelWithManager_Generic(Manager, FVM_Index::ModelId, 0, IndexValue));
-    return __r;
+    return TEUIModelRef<FVM_Index>(EUIInternal::MakeModelWithManager_Generic(Manager, FVM_Index::ModelId, 0, IndexValue)).Get();
 }
 void GetModelInfo(FEUIViewModelMetaInfo &inout Result)
 {
@@ -132,7 +130,6 @@ namespace __GeneratedProperties_FVM_Index
 {
 UScriptStruct StaticStruct()
 {
-    UScriptStruct local_2;
-    return local_2;
+    return __GeneratedProperties_FVM_Index.Get();
 }
 }

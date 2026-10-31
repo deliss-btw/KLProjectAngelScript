@@ -73,14 +73,13 @@ class UHTNTask_EcosimAIV2_GetLLMCallBACK : UHTNTask_ECSScriptBase
     UFUNCTION()
     void Execute_Implementation(const FHTNContext &inout Context)
     {
-        FName local_56;
         FECSEntity local_12 = FECSEntity(this.SourceEntityID.GetValue(Context.opImplConv()));
         if (local_12.IsValid())
         {
             TMap<FString, FString> local_34;
             for (auto& local_52 : this.ReplaceContentMap)
             {
-                FAISmartValueContext local_6 = Context.opImplConv();
+                FName local_56 = local_52.GetValue().GetValue(Context.opImplConv());
                 FString local_64;
                 if (local_56.IsNone())
                 {
@@ -196,7 +195,7 @@ class UHTNTask_EcosimAIV2_EntityPublicSpeakByTypeWriterStyle : UHTNTask_ECSScrip
     UFUNCTION()
     void Execute_Implementation(const FHTNContext &inout Context)
     {
-        FHTNTask_EntityPublicSpeakByTypeWriterStyleInstanceData local_2;
+        FHTNTask_EntityPublicSpeakByTypeWriterStyleInstanceData& local_2 = this.GetInstanceData(Context);
         local_2.TypeWriterStyleTimeCount = 0.0f;
         local_2.TimeCountAfterFinished = 0.0f;
         local_2.bStartWaitToEnd = false;
@@ -209,7 +208,7 @@ class UHTNTask_EcosimAIV2_EntityPublicSpeakByTypeWriterStyle : UHTNTask_ECSScrip
     UFUNCTION()
     void Tick_Implementation(const FHTNContext &inout Context, const float32 DeltaSeconds)
     {
-        FHTNTask_EntityPublicSpeakByTypeWriterStyleInstanceData& local_2;
+        FHTNTask_EntityPublicSpeakByTypeWriterStyleInstanceData& local_2 = this.GetInstanceData(Context);
         FECSEntity local_14 = FECSEntity(this.EntityID.GetValue(Context.opImplConv()));
         if (local_14.IsValid())
         {

@@ -188,11 +188,9 @@ FVM_Qiong_BuffTip& Create(const UObject ContextObject, const FECSEntity &inout F
 {
     return FVM_Qiong_BuffTip::CreateByManager(EUIInternal::GetContextManager(ContextObject), FromEntity, AttachEntity, BuffConfig, Offset);
 }
-FVM_Qiong_BuffTip CreateByManager(const UEUIManagerSubsystem Manager, const FECSEntity &inout FromEntity, const FECSEntity &inout AttachEntity, const FBuffConfigRef &inout BuffConfig, const FVector &inout Offset)
+FVM_Qiong_BuffTip& CreateByManager(const UEUIManagerSubsystem Manager, const FECSEntity &inout FromEntity, const FECSEntity &inout AttachEntity, const FBuffConfigRef &inout BuffConfig, const FVector &inout Offset)
 {
-    FVM_Qiong_BuffTip __r;
-    TEUIModelRef<FVM_Qiong_BuffTip> local_6 = TEUIModelRef<FVM_Qiong_BuffTip>(EUIInternal::MakeModelWithManager_Generic(Manager, FVM_Qiong_BuffTip::ModelId, 0, FromEntity, AttachEntity, BuffConfig, Offset));
-    return __r;
+    return TEUIModelRef<FVM_Qiong_BuffTip>(EUIInternal::MakeModelWithManager_Generic(Manager, FVM_Qiong_BuffTip::ModelId, 0, FromEntity, AttachEntity, BuffConfig, Offset)).Get();
 }
 void GetModelInfo(FEUIViewModelMetaInfo &inout Result)
 {
@@ -255,7 +253,6 @@ namespace __GeneratedProperties_FVM_Qiong_BuffTip
 {
 UScriptStruct StaticStruct()
 {
-    UScriptStruct local_2;
-    return local_2;
+    return __GeneratedProperties_FVM_Qiong_BuffTip.Get();
 }
 }

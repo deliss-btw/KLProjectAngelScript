@@ -9,7 +9,6 @@ class US_ConditionMonsterDeathSystem : UECSScriptSystem
     {
         int local_12 = 0;
         ELocalConditionPlayerFilter local_35;
-        UClass local_108;
         Has local_4;
         bool local_5 = local_4.opCall();
         if (local_5)
@@ -77,9 +76,10 @@ class US_ConditionMonsterDeathSystem : UECSScriptSystem
                             }
                         }
                     }
-                    if (local_62.Get().IsValid())
+                    TSubclassOf<AKLLevelScriptBaseActor> local_104 = local_62.Get();
+                    if (local_104.IsValid())
                     {
-                        if ((!((local_64 == local_108.GetName()))))
+                        if ((!((local_64 == local_104.Get().GetName()))))
                         {
                             continue;
                         }
@@ -103,9 +103,10 @@ class US_ConditionMonsterDeathSystem : UECSScriptSystem
             TDataObjectPtr<FLocalConditionConfig> local_56 = local_32.opCall();
             if (local_56)
             {
-                if (FInstancedStruct::GetPtr(local_56.opArrow().ConditionTypeDefineConfig).opCall())
+                TConstRawPtr<FConditionMonsterDeathConfig> local_86 = FInstancedStruct::GetPtr(local_56.opArrow().ConditionTypeDefineConfig).opCall();
+                if (local_86)
                 {
-                    return TConstRawPtr<FConditionMonsterDeathConfig>();
+                    return TConstRawPtr<FConditionMonsterDeathConfig>(local_86.Get());
                 }
             }
         }

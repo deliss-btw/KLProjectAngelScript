@@ -6,6 +6,8 @@ struct FKLFlowNode_SetSpawnerActive : FKLFlowNode
     UPROPERTY()
     bool bActive;
 
+    default m_ScriptOverrideMeta = Cast<UASStruct>(FKLFlowNode_SetSpawnerActive.Get());
+
     FKLFlowNode_SetSpawnerActive()
     {
         this.Spawner = nullptr;
@@ -15,7 +17,9 @@ struct FKLFlowNode_SetSpawnerActive : FKLFlowNode
     }
     void OnBuild_Implementation()
     {
-        // body not fully recovered — stub [opcode-uncovered]
+        this.InputPins = {n"Input"};
+        this.OutputPins = {n"Output"};
+        return;
     }
     void OnExec_Implementation(const FName &inout PinName)
     {

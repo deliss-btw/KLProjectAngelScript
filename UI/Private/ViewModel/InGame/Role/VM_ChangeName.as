@@ -89,11 +89,9 @@ FVMS_ChangeName& Get(const UObject ContextObject)
 {
     return FVMS_ChangeName::GetByManager(EUIInternal::GetContextManager(ContextObject));
 }
-FVMS_ChangeName GetByManager(const UEUIManagerSubsystem Manager)
+FVMS_ChangeName& GetByManager(const UEUIManagerSubsystem Manager)
 {
-    FVMS_ChangeName __r;
-    TEUIModelRef<FVMS_ChangeName> local_6 = TEUIModelRef<FVMS_ChangeName>(EUIInternal::MakeModelWithManager(Manager, FVMS_ChangeName::ModelId));
-    return __r;
+    return TEUIModelRef<FVMS_ChangeName>(EUIInternal::MakeModelWithManager(Manager, FVMS_ChangeName::ModelId)).Get();
 }
 void GetModelInfo(FEUIViewModelMetaInfo &inout Result)
 {
@@ -137,7 +135,6 @@ namespace __GeneratedProperties_FVMS_ChangeName
 {
 UScriptStruct StaticStruct()
 {
-    UScriptStruct local_2;
-    return local_2;
+    return __GeneratedProperties_FVMS_ChangeName.Get();
 }
 }

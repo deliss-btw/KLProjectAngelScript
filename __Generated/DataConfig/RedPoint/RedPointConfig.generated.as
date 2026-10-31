@@ -3,7 +3,6 @@ namespace __FRedPointNodeConfigFunctions
 UFUNCTION()
 ERedDotType __FRedPointNodeConfig_GetNodeDisplayType(const TDataObjectPtr<FRedPointNodeConfig> &inout DataObject)
 {
-    int local_23 = 0;
     if ((DataObject == nullptr))
     {
         if (!(EUIGlobals::GIsDuringPropertyConversion))
@@ -11,15 +10,13 @@ ERedDotType __FRedPointNodeConfig_GetNodeDisplayType(const TDataObjectPtr<FRedPo
             FBlueprintDebugFunctions::ThrowScriptException("Get 'NodeDisplayType' from a null 'FRedPointNodeConfig' DataObject!");
         }
         FRedPointNodeConfig local_22;
-        local_23 = int(local_22.NodeDisplayType);
-        return ERedDotType(local_23);
+        return local_22.NodeDisplayType;
     }
-    return ERedDotType(local_23);
+    return DataObject.Get().NodeDisplayType;
 }
 UFUNCTION()
 FGameplayTag __FRedPointNodeConfig_GetNodeTag(const TDataObjectPtr<FRedPointNodeConfig> &inout DataObject)
 {
-    FGameplayTag __r;
     if ((DataObject == nullptr))
     {
         if (!(EUIGlobals::GIsDuringPropertyConversion))
@@ -29,7 +26,7 @@ FGameplayTag __FRedPointNodeConfig_GetNodeTag(const TDataObjectPtr<FRedPointNode
         FRedPointNodeConfig local_22;
         return local_22.NodeTag;
     }
-    return __r;
+    return DataObject.Get().NodeTag;
 }
 UFUNCTION()
 TArray<TDataObjectPtr<FRedPointNodeConfig>> __FRedPointNodeConfig_GetParentNodeList(const TDataObjectPtr<FRedPointNodeConfig> &inout DataObject)
@@ -43,7 +40,7 @@ TArray<TDataObjectPtr<FRedPointNodeConfig>> __FRedPointNodeConfig_GetParentNodeL
         FRedPointNodeConfig local_22;
         return local_22.GetParentNodeList();
     }
-    return GetParentNodeList();
+    return DataObject.Get().GetParentNodeList();
 }
 UFUNCTION()
 FRedPointNodeConfig CastToFRedPointNodeConfig(const TDataObjectPtr<FRedPointNodeConfig> &inout DataObject)
@@ -57,7 +54,6 @@ namespace __FRedPointConfigFunctions
 UFUNCTION()
 ESystemModule __FRedPointConfig_GetModuleType(const TDataObjectPtr<FRedPointConfig> &inout DataObject)
 {
-    int local_41 = 0;
     if ((DataObject == nullptr))
     {
         if (!(EUIGlobals::GIsDuringPropertyConversion))
@@ -65,15 +61,13 @@ ESystemModule __FRedPointConfig_GetModuleType(const TDataObjectPtr<FRedPointConf
             FBlueprintDebugFunctions::ThrowScriptException("Get 'ModuleType' from a null 'FRedPointConfig' DataObject!");
         }
         FRedPointConfig local_40;
-        local_41 = int(local_40.ModuleType);
-        return ESystemModule(local_41);
+        return local_40.ModuleType;
     }
-    return ESystemModule(local_41);
+    return DataObject.Get().ModuleType;
 }
 UFUNCTION()
 ERedPointEvent __FRedPointConfig_GetEventType(const TDataObjectPtr<FRedPointConfig> &inout DataObject)
 {
-    int local_41 = 0;
     if ((DataObject == nullptr))
     {
         if (!(EUIGlobals::GIsDuringPropertyConversion))
@@ -81,10 +75,9 @@ ERedPointEvent __FRedPointConfig_GetEventType(const TDataObjectPtr<FRedPointConf
             FBlueprintDebugFunctions::ThrowScriptException("Get 'EventType' from a null 'FRedPointConfig' DataObject!");
         }
         FRedPointConfig local_40;
-        local_41 = int(local_40.EventType);
-        return ERedPointEvent(local_41);
+        return local_40.EventType;
     }
-    return ERedPointEvent(local_41);
+    return DataObject.Get().EventType;
 }
 UFUNCTION()
 TDataObjectPtr<FRedPointNodeConfig> __FRedPointConfig_GetNodeConfig(const TDataObjectPtr<FRedPointConfig> &inout DataObject)
@@ -98,7 +91,7 @@ TDataObjectPtr<FRedPointNodeConfig> __FRedPointConfig_GetNodeConfig(const TDataO
         FRedPointConfig local_40;
         return local_40.GetNodeConfig();
     }
-    return GetNodeConfig();
+    return DataObject.Get().GetNodeConfig();
 }
 UFUNCTION()
 FRedPointConfig CastToFRedPointConfig(const TDataObjectPtr<FRedPointConfig> &inout DataObject)

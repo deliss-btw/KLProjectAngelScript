@@ -42,8 +42,7 @@ struct FGameModeDamageCoefficientRow : FDataObject
 
     TArray<float32> ToArray() const
     {
-        // body not fully recovered — stub [opcode-uncovered]
-        TArray<float32> __r; return __r;
+        return {1.0f, this.Player, this.ShuiJing, this.PlayerWizard, this.WaiXiangRen, this.Qiong, this.QiongSolarResonance, this.PlayerMan, this.PlayerManWizard, this.PC_Monster_QiongQi, this.MonsterCommon};
     }
     float32 GetByEntity(const EGameModeDamageCoefficientEntity Entity) const
     {

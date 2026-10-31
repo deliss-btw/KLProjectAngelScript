@@ -2,25 +2,10 @@ namespace LoginSystemUtil
 {
 FText ResolveLoginTextData(const TDataObjectPtr<FKLTextData> &inout TextData)
 {
-    bool local_1;
-    bool local_2 = false;
-    FText __return;
-    if (!(TextData.IsSet()))
+    if (TextData.IsSet() && !(TextData.Get().Text.IsEmpty()))
     {
-        local_1 = false;
+        return TextData.Get().Text;
     }
-    else
-    {
-        local_2 = !local_2;
-        local_1 = local_2;
-    }
-    if (local_1)
-    {
-    }
-    else
-    {
-        __return = FText();
-    }
-    return __return;
+    return FText();
 }
 }

@@ -59,8 +59,7 @@ FECSEntity SpawnTreasureForPlayer(const FECSEntity &inout TreasureConfigEntity, 
     bool local_100 = false;
     for (auto& local_114 : local_6.DropItems)
     {
-        int local_139 = int(local_114.TriggerType);
-        local_98.AddDropItem(EDropTriggerType(local_139), TDataObjectPtr<FDropItemConfigBase>());
+        local_98.AddDropItem(EDropTriggerType(local_114.TriggerType), TDataObjectPtr<FDropItemConfigBase>(local_114.Item.Get()));
         if (int(local_114.TriggerType) == 3)
         {
             local_99 = true;
@@ -88,13 +87,12 @@ FECSEntity SpawnTreasureForPlayer(const FECSEntity &inout TreasureConfigEntity, 
 }
 void RespawnUncollectedTreasureForPlayer(const FECSEntity &inout TreasureBoxEntity, const TDataObjectPtr<FLevelObjectStatConfig> &inout LevelObjectStatConfig, const FECSEntity &inout PlayerControllerEntity)
 {
-    int local_4 = 0;
     int local_14 = 0;
     if (!(TreasureBoxEntity.IsValid()) || !(PlayerControllerEntity.IsValid()) || !(LevelObjectStatConfig.IsSet()))
     {
         return;
     }
-    if ((int(TreasureBoxUtils::GetTreasureBoxRecordState(PlayerControllerEntity, local_4))) != 1)
+    if ((int(TreasureBoxUtils::GetTreasureBoxRecordState(PlayerControllerEntity, LevelObjectStatConfig.Get().DataId))) != 1)
     {
         return;
     }
@@ -156,6 +154,7 @@ void DestroyTrackedTreasureForPlayerIndex(const int PlayerIndex)
             FASCommonUtils::DestroyEntity(local_26.DropEntity);
         }
     }
+    local_8.DropItemsByPlayerIndex.Remove(PlayerIndex);
     return;
 }
 void DestroyTrackedTreasureForBox(const FECSEntity &inout BoxEntity)

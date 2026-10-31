@@ -3,7 +3,6 @@ namespace __FDialogueConfigFunctions
 UFUNCTION()
 EDialogueType __FDialogueConfig_GetDialogueType(const TDataObjectPtr<FDialogueConfig> &inout DataObject)
 {
-    int local_67 = 0;
     if ((DataObject == nullptr))
     {
         if (!(EUIGlobals::GIsDuringPropertyConversion))
@@ -11,15 +10,13 @@ EDialogueType __FDialogueConfig_GetDialogueType(const TDataObjectPtr<FDialogueCo
             FBlueprintDebugFunctions::ThrowScriptException("Get 'DialogueType' from a null 'FDialogueConfig' DataObject!");
         }
         FDialogueConfig local_66;
-        local_67 = int(local_66.DialogueType);
-        return EDialogueType(local_67);
+        return local_66.DialogueType;
     }
-    return EDialogueType(local_67);
+    return DataObject.Get().DialogueType;
 }
 UFUNCTION()
 EDialogueScope __FDialogueConfig_GetDialogueScope(const TDataObjectPtr<FDialogueConfig> &inout DataObject)
 {
-    int local_67 = 0;
     if ((DataObject == nullptr))
     {
         if (!(EUIGlobals::GIsDuringPropertyConversion))
@@ -27,10 +24,9 @@ EDialogueScope __FDialogueConfig_GetDialogueScope(const TDataObjectPtr<FDialogue
             FBlueprintDebugFunctions::ThrowScriptException("Get 'DialogueScope' from a null 'FDialogueConfig' DataObject!");
         }
         FDialogueConfig local_66;
-        local_67 = int(local_66.DialogueScope);
-        return EDialogueScope(local_67);
+        return local_66.DialogueScope;
     }
-    return EDialogueScope(local_67);
+    return DataObject.Get().DialogueScope;
 }
 UFUNCTION()
 int __FDialogueConfig_GetDialoguePriority(const TDataObjectPtr<FDialogueConfig> &inout DataObject)
@@ -59,12 +55,11 @@ TDataObjectPtr<FNPCMainConfig> __FDialogueConfig_GetInteractTargetNPC(const TDat
         FDialogueConfig local_66;
         return local_66.GetInteractTargetNPC();
     }
-    return GetInteractTargetNPC();
+    return DataObject.Get().GetInteractTargetNPC();
 }
 UFUNCTION()
 TObjectPtr<UDialogueGraphAsset> __FDialogueConfig_GetDialogueData(const TDataObjectPtr<FDialogueConfig> &inout DataObject)
 {
-    TObjectPtr<UDialogueGraphAsset> __r;
     if ((DataObject == nullptr))
     {
         if (!(EUIGlobals::GIsDuringPropertyConversion))
@@ -74,7 +69,7 @@ TObjectPtr<UDialogueGraphAsset> __FDialogueConfig_GetDialogueData(const TDataObj
         FDialogueConfig local_66;
         return local_66.DialogueData;
     }
-    return __r;
+    return DataObject.Get().DialogueData;
 }
 UFUNCTION()
 TDataObjectPtr<FLevelInfoConfig> __FDialogueConfig_GetLevelInfo(const TDataObjectPtr<FDialogueConfig> &inout DataObject)
@@ -88,7 +83,7 @@ TDataObjectPtr<FLevelInfoConfig> __FDialogueConfig_GetLevelInfo(const TDataObjec
         FDialogueConfig local_66;
         return local_66.GetLevelInfo();
     }
-    return GetLevelInfo();
+    return DataObject.Get().GetLevelInfo();
 }
 UFUNCTION()
 FDialogueConfig CastToFDialogueConfig(const TDataObjectPtr<FDialogueConfig> &inout DataObject)
@@ -120,7 +115,6 @@ namespace __FAmbientDialogueConfigFunctions
 UFUNCTION()
 EDialogueScope __FAmbientDialogueConfig_GetBroadcastScope(const TDataObjectPtr<FAmbientDialogueConfig> &inout DataObject)
 {
-    int local_69 = 0;
     if ((DataObject == nullptr))
     {
         if (!(EUIGlobals::GIsDuringPropertyConversion))
@@ -128,10 +122,9 @@ EDialogueScope __FAmbientDialogueConfig_GetBroadcastScope(const TDataObjectPtr<F
             FBlueprintDebugFunctions::ThrowScriptException("Get 'BroadcastScope' from a null 'FAmbientDialogueConfig' DataObject!");
         }
         FAmbientDialogueConfig local_68;
-        local_69 = int(local_68.BroadcastScope);
-        return EDialogueScope(local_69);
+        return local_68.BroadcastScope;
     }
-    return EDialogueScope(local_69);
+    return DataObject.Get().BroadcastScope;
 }
 UFUNCTION()
 FAmbientDialogueConfig CastToFAmbientDialogueConfig(const TDataObjectPtr<FAmbientDialogueConfig> &inout DataObject)
@@ -154,12 +147,11 @@ TDataObjectPtr<FNPCMainConfig> __FDialogueLineConfig_GetSpeakerNPC(const TDataOb
         FDialogueLineConfig local_66;
         return local_66.GetSpeakerNPC();
     }
-    return GetSpeakerNPC();
+    return DataObject.Get().GetSpeakerNPC();
 }
 UFUNCTION()
 FText __FDialogueLineConfig_GetLineText(const TDataObjectPtr<FDialogueLineConfig> &inout DataObject)
 {
-    FText __r;
     if ((DataObject == nullptr))
     {
         if (!(EUIGlobals::GIsDuringPropertyConversion))
@@ -169,7 +161,7 @@ FText __FDialogueLineConfig_GetLineText(const TDataObjectPtr<FDialogueLineConfig
         FDialogueLineConfig local_66;
         return local_66.LineText;
     }
-    return __r;
+    return DataObject.Get().LineText;
 }
 UFUNCTION()
 TDataObjectPtr<FDialogueVoiceConfig> __FDialogueLineConfig_GetVoiceConfig(const TDataObjectPtr<FDialogueLineConfig> &inout DataObject)
@@ -183,7 +175,7 @@ TDataObjectPtr<FDialogueVoiceConfig> __FDialogueLineConfig_GetVoiceConfig(const 
         FDialogueLineConfig local_66;
         return local_66.GetVoiceConfig();
     }
-    return GetVoiceConfig();
+    return DataObject.Get().GetVoiceConfig();
 }
 UFUNCTION()
 FDialogueLineConfig CastToFDialogueLineConfig(const TDataObjectPtr<FDialogueLineConfig> &inout DataObject)
@@ -197,7 +189,6 @@ namespace __FNarrationDialogueConfigFunctions
 UFUNCTION()
 EDialogueScope __FNarrationDialogueConfig_GetBroadcastScope(const TDataObjectPtr<FNarrationDialogueConfig> &inout DataObject)
 {
-    int local_21 = 0;
     if ((DataObject == nullptr))
     {
         if (!(EUIGlobals::GIsDuringPropertyConversion))
@@ -205,15 +196,13 @@ EDialogueScope __FNarrationDialogueConfig_GetBroadcastScope(const TDataObjectPtr
             FBlueprintDebugFunctions::ThrowScriptException("Get 'BroadcastScope' from a null 'FNarrationDialogueConfig' DataObject!");
         }
         FNarrationDialogueConfig local_20;
-        local_21 = int(local_20.BroadcastScope);
-        return EDialogueScope(local_21);
+        return local_20.BroadcastScope;
     }
-    return EDialogueScope(local_21);
+    return DataObject.Get().BroadcastScope;
 }
 UFUNCTION()
 TArray<FNarrationSubtitleEntry> __FNarrationDialogueConfig_GetNarrationEntries(const TDataObjectPtr<FNarrationDialogueConfig> &inout DataObject)
 {
-    TArray<FNarrationSubtitleEntry> __r;
     if ((DataObject == nullptr))
     {
         if (!(EUIGlobals::GIsDuringPropertyConversion))
@@ -223,7 +212,7 @@ TArray<FNarrationSubtitleEntry> __FNarrationDialogueConfig_GetNarrationEntries(c
         FNarrationDialogueConfig local_20;
         return local_20.NarrationEntries;
     }
-    return __r;
+    return DataObject.Get().NarrationEntries;
 }
 UFUNCTION()
 FNarrationDialogueConfig CastToFNarrationDialogueConfig(const TDataObjectPtr<FNarrationDialogueConfig> &inout DataObject)
@@ -237,7 +226,6 @@ namespace __FDialogueOptionStyleConfigFunctions
 UFUNCTION()
 FSoftBrush __FDialogueOptionStyleConfig_GetOptionIcon(const TDataObjectPtr<FDialogueOptionStyleConfig> &inout DataObject)
 {
-    FSoftBrush __r;
     if ((DataObject == nullptr))
     {
         if (!(EUIGlobals::GIsDuringPropertyConversion))
@@ -247,12 +235,11 @@ FSoftBrush __FDialogueOptionStyleConfig_GetOptionIcon(const TDataObjectPtr<FDial
         FDialogueOptionStyleConfig local_84;
         return local_84.OptionIcon;
     }
-    return __r;
+    return DataObject.Get().OptionIcon;
 }
 UFUNCTION()
 FLinearColor __FDialogueOptionStyleConfig_GetOptionBgColor(const TDataObjectPtr<FDialogueOptionStyleConfig> &inout DataObject)
 {
-    FLinearColor __r;
     if ((DataObject == nullptr))
     {
         if (!(EUIGlobals::GIsDuringPropertyConversion))
@@ -262,44 +249,39 @@ FLinearColor __FDialogueOptionStyleConfig_GetOptionBgColor(const TDataObjectPtr<
         FDialogueOptionStyleConfig local_84;
         return local_84.OptionBgColor;
     }
-    return __r;
+    return DataObject.Get().OptionBgColor;
 }
 UFUNCTION()
 bool __FDialogueOptionStyleConfig_GetbIsEscapeOption(const TDataObjectPtr<FDialogueOptionStyleConfig> &inout DataObject)
 {
-    bool local_1 = false;
     if ((DataObject == nullptr))
     {
-        local_1 = !(EUIGlobals::GIsDuringPropertyConversion);
-        if (local_1)
+        if (!(EUIGlobals::GIsDuringPropertyConversion))
         {
             FBlueprintDebugFunctions::ThrowScriptException("Get 'bIsEscapeOption' from a null 'FDialogueOptionStyleConfig' DataObject!");
         }
         FDialogueOptionStyleConfig local_84;
         return local_84.bIsEscapeOption;
     }
-    return local_1;
+    return DataObject.Get().bIsEscapeOption;
 }
 UFUNCTION()
 bool __FDialogueOptionStyleConfig_GetbNeedConfirm(const TDataObjectPtr<FDialogueOptionStyleConfig> &inout DataObject)
 {
-    bool local_1 = false;
     if ((DataObject == nullptr))
     {
-        local_1 = !(EUIGlobals::GIsDuringPropertyConversion);
-        if (local_1)
+        if (!(EUIGlobals::GIsDuringPropertyConversion))
         {
             FBlueprintDebugFunctions::ThrowScriptException("Get 'bNeedConfirm' from a null 'FDialogueOptionStyleConfig' DataObject!");
         }
         FDialogueOptionStyleConfig local_84;
         return local_84.bNeedConfirm;
     }
-    return local_1;
+    return DataObject.Get().bNeedConfirm;
 }
 UFUNCTION()
 FText __FDialogueOptionStyleConfig_GetConfirmTitle(const TDataObjectPtr<FDialogueOptionStyleConfig> &inout DataObject)
 {
-    FText __r;
     if ((DataObject == nullptr))
     {
         if (!(EUIGlobals::GIsDuringPropertyConversion))
@@ -309,12 +291,11 @@ FText __FDialogueOptionStyleConfig_GetConfirmTitle(const TDataObjectPtr<FDialogu
         FDialogueOptionStyleConfig local_84;
         return local_84.ConfirmTitle;
     }
-    return __r;
+    return DataObject.Get().ConfirmTitle;
 }
 UFUNCTION()
 FText __FDialogueOptionStyleConfig_GetConfirmMessage(const TDataObjectPtr<FDialogueOptionStyleConfig> &inout DataObject)
 {
-    FText __r;
     if ((DataObject == nullptr))
     {
         if (!(EUIGlobals::GIsDuringPropertyConversion))
@@ -324,12 +305,11 @@ FText __FDialogueOptionStyleConfig_GetConfirmMessage(const TDataObjectPtr<FDialo
         FDialogueOptionStyleConfig local_84;
         return local_84.ConfirmMessage;
     }
-    return __r;
+    return DataObject.Get().ConfirmMessage;
 }
 UFUNCTION()
 FText __FDialogueOptionStyleConfig_GetConfirmButtonText(const TDataObjectPtr<FDialogueOptionStyleConfig> &inout DataObject)
 {
-    FText __r;
     if ((DataObject == nullptr))
     {
         if (!(EUIGlobals::GIsDuringPropertyConversion))
@@ -339,12 +319,11 @@ FText __FDialogueOptionStyleConfig_GetConfirmButtonText(const TDataObjectPtr<FDi
         FDialogueOptionStyleConfig local_84;
         return local_84.ConfirmButtonText;
     }
-    return __r;
+    return DataObject.Get().ConfirmButtonText;
 }
 UFUNCTION()
 FText __FDialogueOptionStyleConfig_GetCancelButtonText(const TDataObjectPtr<FDialogueOptionStyleConfig> &inout DataObject)
 {
-    FText __r;
     if ((DataObject == nullptr))
     {
         if (!(EUIGlobals::GIsDuringPropertyConversion))
@@ -354,7 +333,7 @@ FText __FDialogueOptionStyleConfig_GetCancelButtonText(const TDataObjectPtr<FDia
         FDialogueOptionStyleConfig local_84;
         return local_84.CancelButtonText;
     }
-    return __r;
+    return DataObject.Get().CancelButtonText;
 }
 UFUNCTION()
 FDialogueOptionStyleConfig CastToFDialogueOptionStyleConfig(const TDataObjectPtr<FDialogueOptionStyleConfig> &inout DataObject)

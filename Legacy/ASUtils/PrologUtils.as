@@ -52,10 +52,8 @@ void DebugTestPrologFunction()
     int local_39 = 0;
     for (; local_39 < int(local_32.Num); )
     {
-        FString local_46;
-        FString local_54 = (local_46 + " ");
-        FString local_50;
-        Print((local_54 + local_50), 5.0f, FLinearColor::LucBlue);
+        FString local_54 = (FString(local_32.Get(0, local_39)) + " ");
+        Print((local_54 + FString(local_32.Get(1, local_39))), 5.0f, FLinearColor::LucBlue);
         ++local_39;
     }
     return;
@@ -109,15 +107,15 @@ void PrintQueryAllResult(FPlQueryAllResult &inout AllResult, const int TopN = -1
     {
         if ((TopN <= 0 || (local_1 < TopN)))
         {
-            FString local_10;
+            FString local_10 = AllResult.Get(0, local_1);
+            FString local_14 = AllResult.Get(1, local_1);
+            FString local_18 = AllResult.Get(2, local_1);
+            FString local_22 = AllResult.Get(3, local_1);
             FString local_26 = (local_10 + " ");
-            FString local_14;
             FString local_30 = (local_26 + local_14);
             local_26 = (local_30 + " ");
-            FString local_18;
             local_30 = (local_26 + local_18);
             local_26 = (local_30 + " ");
-            FString local_22;
             Print((local_26 + local_22), 5.0f, FLinearColor::LucBlue);
         }
     }
@@ -333,13 +331,13 @@ void PrintPrologQueryByString(const FString &inout QueryContent, const FString &
     FPlQuery local_44 = FPlQuery(QueryContent, bDebugTrace);
     FPlQueryAllResult local_50 = local_44.AllSolutionAndClose();
     int local_57 = 0;
-    FString local_68;
     for (; local_57 < int(local_50.Num); )
     {
         FString local_62 = "PrologLog: ";
         int local_63 = 0;
         for (; local_63 < local_50.ArgsNum(); ++local_63)
         {
+            FString local_68 = local_50.Get(local_63, local_57);
             if (!(local_44.Args.IsVariable(local_63)))
             {
                 local_62 += local_68;
@@ -394,11 +392,12 @@ bool GetFirstQueryMapResult(const FString &inout QueryContent, TMap<FString, FSt
     int local_58 = 0;
     for (; local_58 < local_48.ArgsNum(); ++local_58)
     {
+        FString local_62 = local_48.Get(local_58, 0);
         if (!(local_40.Args.IsVariable(local_58)))
         {
             continue;
         }
-        MapResult.Add(local_40.Args.ArgNames[local_58], FString());
+        MapResult.Add(local_40.Args.ArgNames[local_58], local_62);
         local_57 = true;
     }
     return local_57;
@@ -419,11 +418,12 @@ bool GetRandomQueryMapResult(const FString &inout QueryContent, TMap<FString, FS
     int local_60 = 0;
     for (; local_60 < local_48.ArgsNum(); ++local_60)
     {
+        FString local_64 = local_48.Get(local_60, local_59);
         if (!(local_40.Args.IsVariable(local_60)))
         {
             continue;
         }
-        MapResult.Add(local_40.Args.ArgNames[local_60], FString());
+        MapResult.Add(local_40.Args.ArgNames[local_60], local_64);
         local_57 = true;
     }
     return local_57;
@@ -461,11 +461,12 @@ bool GetQueryArgValueResult(const FString &inout QueryContent, TArray<FPrologUti
         int local_63 = 0;
         for (; local_63 < local_32.ArgsNum(); ++local_63)
         {
+            FString local_68 = local_32.Get(local_63, local_41);
             if (!(local_24.Args.IsVariable(local_63)))
             {
                 continue;
             }
-            local_62.ArgValueResult.Add(local_24.Args.ArgNames[local_63], FString());
+            local_62.ArgValueResult.Add(local_24.Args.ArgNames[local_63], local_68);
         }
         ArgValueResults.Add(local_62);
         ++local_41;
@@ -490,6 +491,7 @@ bool GetQueryValueResultByArgName(const FString &inout QueryContent, const FStri
         int local_44 = 0;
         for (; local_44 < local_32.ArgsNum(); ++local_44)
         {
+            FString local_50 = local_32.Get(local_44, local_43);
             if (!(local_24.Args.IsVariable(local_44)))
             {
                 continue;
@@ -498,10 +500,10 @@ bool GetQueryValueResultByArgName(const FString &inout QueryContent, const FStri
             {
                 if (bUnique)
                 {
-                    ResultValue.AddUnique(FString());
+                    ResultValue.AddUnique(local_50);
                     continue;
                 }
-                ResultValue.Add(FString());
+                ResultValue.Add(local_50);
             }
         }
     }
@@ -522,13 +524,13 @@ bool GetRandomQueryMapResultByArgName(const FString &inout QueryContent, const F
     int local_43 = 0;
     for (; local_43 < local_32.ArgsNum(); ++local_43)
     {
+        FString local_48 = local_32.Get(local_43, local_42);
         if (!(local_24.Args.IsVariable(local_43)))
         {
             continue;
         }
         if ((ArgName == local_24.Args.ArgNames[local_43]))
         {
-            FString local_48;
             ResultValue = local_48;
             return true;
         }
@@ -552,13 +554,13 @@ bool GetFirstQueryResultValueByArgName(const FString &inout QueryContent, const 
         int local_42 = 0;
         for (; local_42 < local_32.ArgsNum(); ++local_42)
         {
+            FString local_48 = local_32.Get(local_42, local_41);
             if (!(local_24.Args.IsVariable(local_42)))
             {
                 continue;
             }
             if ((ArgName == local_24.Args.ArgNames[local_42]))
             {
-                FString local_48;
                 ResultValue = local_48;
                 return true;
             }
@@ -583,11 +585,12 @@ bool CustomQuery(const FString &inout QueryContent, FPrologUtils::FCustomPrologQ
         int local_63 = 0;
         for (; local_63 < local_32.ArgsNum(); ++local_63)
         {
+            FString local_68 = local_32.Get(local_63, local_41);
             if (!(local_24.Args.IsVariable(local_63)))
             {
                 continue;
             }
-            local_62.MapResult.Add(local_24.Args.ArgNames[local_63], FString());
+            local_62.MapResult.Add(local_24.Args.ArgNames[local_63], local_68);
         }
     }
     return true;

@@ -88,21 +88,18 @@ struct FVM_MonsterInfo : FEUIViewModel
     }
     void AddDropRewardItems(FCommonRewardListBuilder &inout Builder, const TDataObjectPtr<FDropItemConfigBase> &inout DropReward)
     {
-        FDropItemConfigParser local_20;
-        int local_37 = 0;
         int local_41;
-        int local_42 = 0;
-        int local_44 = 0;
+        FDropItemConfigParser local_20;
         local_20.ParseDropItemConfig(DropReward);
         for (auto& local_40 : local_20.ParsedDropItemDataMap)
         {
-            local_40;
+            int local_42 = local_40.GetKey().Get().DataId;
             local_41 = local_42;
-            if (0 > 0)
+            if (local_40.GetValue().MinNum > 0)
             {
-                local_37 = 0;
-                Builder.AddItem(local_41, local_44, FName(), FText(), (local_37 != 0));
+                Builder.AddItem(local_41, local_40.GetValue().MinNum, FName(), FText(), false);
             }
+            int local_37 = local_40.GetValue().bProbability;
             if (local_37 != 0)
             {
                 Builder.AddItem(local_41, 0, n"CommissionDrop", FText(), false);
@@ -270,11 +267,9 @@ FVM_MonsterInfo& Create(const UObject ContextObject, const TDataObjectPtr<FMonst
 {
     return FVM_MonsterInfo::CreateByManager(EUIInternal::GetContextManager(ContextObject), MonsterConfig);
 }
-FVM_MonsterInfo CreateByManager(const UEUIManagerSubsystem Manager, const TDataObjectPtr<FMonsterMainConfig> &inout MonsterConfig)
+FVM_MonsterInfo& CreateByManager(const UEUIManagerSubsystem Manager, const TDataObjectPtr<FMonsterMainConfig> &inout MonsterConfig)
 {
-    FVM_MonsterInfo __r;
-    TEUIModelRef<FVM_MonsterInfo> local_6 = TEUIModelRef<FVM_MonsterInfo>(EUIInternal::MakeModelWithManager_Generic(Manager, FVM_MonsterInfo::ModelId, 0, MonsterConfig));
-    return __r;
+    return TEUIModelRef<FVM_MonsterInfo>(EUIInternal::MakeModelWithManager_Generic(Manager, FVM_MonsterInfo::ModelId, 0, MonsterConfig)).Get();
 }
 void GetModelInfo(FEUIViewModelMetaInfo &inout Result)
 {
@@ -410,7 +405,6 @@ namespace __GeneratedProperties_FVM_MonsterInfo
 {
 UScriptStruct StaticStruct()
 {
-    UScriptStruct local_2;
-    return local_2;
+    return __GeneratedProperties_FVM_MonsterInfo.Get();
 }
 }

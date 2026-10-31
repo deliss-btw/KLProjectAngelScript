@@ -66,7 +66,7 @@ class UESMAction_TrapAttachUpdate : UESMBPBaseSpanTickAction
     void ViewTick_Implementation(const FESMViewContext &inout Context, const FESMActionTime &inout Time) const
     {
         const AActor local_14;
-        USkeletalMeshComponent local_28;
+        const AActor local_22;
         float32 local_293;
         FECSEntity local_8 = this.GetMonsterEntity(Context.GetEntity());
         if (!(local_8.IsValid()))
@@ -88,10 +88,12 @@ class UESMAction_TrapAttachUpdate : UESMBPBaseSpanTickAction
         {
             return;
         }
-        if ((!((Context.GetEntity().GetActor() != nullptr))))
+        local_22 = Context.GetEntity().GetActor();
+        if ((!((local_22 != nullptr))))
         {
             return;
         }
+        USkeletalMeshComponent local_28 = Cast<USkeletalMeshComponent>(local_22.GetComponent(USkeletalMeshComponent, n"SKM_Open"));
         if ((!((local_28 != nullptr))))
         {
             return;

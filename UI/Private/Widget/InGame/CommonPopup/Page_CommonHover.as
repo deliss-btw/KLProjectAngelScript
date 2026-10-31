@@ -24,7 +24,7 @@ class UPage_CommonHover : UEUIActivatableWidget
     void OnViewBind_Implementation()
     {
         this.bEnteredByHoverChainNavigation = false;
-        this.SetRuntimeSupportsActivationFocus(this.CommonHover.IsValid() && GetbFocusHover());
+        this.SetRuntimeSupportsActivationFocus(this.CommonHover.IsValid() && this.CommonHover.Get().GetbFocusHover());
         this.RefreshHoverChainNavigation();
         return;
     }
@@ -101,9 +101,9 @@ class UPage_CommonHover : UEUIActivatableWidget
             if (!(local_62.GetLocalSize().IsZero()))
             {
                 FBox2D local_88;
-                local_88.Min = local_34.LocalToAbsolute(GetAnchorsViewportSpace().Min);
-                local_88.Max = local_34.LocalToAbsolute(GetAnchorsViewportSpace().Max);
-                local_88.bIsValid = (GetAnchorsViewportSpace().bIsValid != 0);
+                local_88.Min = local_34.LocalToAbsolute(this.CommonHover.Get().GetAnchorsViewportSpace().Min);
+                local_88.Max = local_34.LocalToAbsolute(this.CommonHover.Get().GetAnchorsViewportSpace().Max);
+                local_88.bIsValid = (this.CommonHover.Get().GetAnchorsViewportSpace().bIsValid != 0);
                 if (this.UpdateHoverAnchors(local_18, local_62, local_88))
                 {
                     this.HoverWidget.SetVisibility(ESlateVisibility(4));
@@ -133,7 +133,7 @@ class UPage_CommonHover : UEUIActivatableWidget
     }
     void ScheduleHoverChainFocusExitCheck()
     {
-        if (!(this.CommonHover.IsValid()) || GetbFocusHover() || !(this.bEnteredByHoverChainNavigation))
+        if (!(this.CommonHover.IsValid()) || this.CommonHover.Get().GetbFocusHover() || !(this.bEnteredByHoverChainNavigation))
         {
             return;
         }
@@ -156,7 +156,7 @@ class UPage_CommonHover : UEUIActivatableWidget
     {
         System::ClearAndInvalidateTimerHandle(__GetWorldContext(), this.DeferredHoverChainFocusExitTimerHandle);
         this.bDeferredHoverChainFocusExitScheduled = false;
-        if (!(this.CommonHover.IsValid()) || GetbFocusHover() || !(this.bEnteredByHoverChainNavigation))
+        if (!(this.CommonHover.IsValid()) || this.CommonHover.Get().GetbFocusHover() || !(this.bEnteredByHoverChainNavigation))
         {
             return;
         }
@@ -164,7 +164,7 @@ class UPage_CommonHover : UEUIActivatableWidget
         {
             return;
         }
-        FCommonHoverHandle local_8 = this.ResolveDisplayedChildHover(GetHoverHandle());
+        FCommonHoverHandle local_8 = this.ResolveDisplayedChildHover(this.CommonHover.Get().GetHoverHandle());
         if (local_8.IsValid())
         {
             UWidget local_10 = Cast<UWidget>(local_8.WidgetRef.GetUserWidget());
@@ -204,9 +204,9 @@ class UPage_CommonHover : UEUIActivatableWidget
         {
             return nullptr;
         }
-        if (GetParentHoverHandle().IsValid())
+        if (this.CommonHover.Get().GetParentHoverHandle().IsValid())
         {
-            return GetParentHoverHandle().WidgetRef.GetUserWidget();
+            return this.CommonHover.Get().GetParentHoverHandle().WidgetRef.GetUserWidget();
         }
         return nullptr;
     }
@@ -233,28 +233,28 @@ class UPage_CommonHover : UEUIActivatableWidget
     }
     void NotifyContentEnteredByChainNavigation()
     {
-        if (!(this.CommonHover.IsValid()) || !(SupportsChainNavigation()))
+        if (!(this.CommonHover.IsValid()) || !(this.CommonHover.Get().SupportsChainNavigation()))
         {
             return;
         }
-        if (this.ResolveDisplayedChildHover(GetHoverHandle()).IsValid())
+        if (this.ResolveDisplayedChildHover(this.CommonHover.Get().GetHoverHandle()).IsValid())
         {
             return;
         }
-        RequestContentEnterByChainNavigation();
+        this.CommonHover.Get().RequestContentEnterByChainNavigation();
         return;
     }
     void CancelContentEnterByChainNavigation()
     {
         if (this.CommonHover.IsValid())
         {
-            CancelContentEnterByChainNavigation();
+            this.CommonHover.Get().CancelContentEnterByChainNavigation();
         }
         return;
     }
     void RefreshHoverChainNavigation()
     {
-        bool local_2 = this.CommonHover.IsValid() && SupportsChainNavigation();
+        bool local_2 = this.CommonHover.IsValid() && this.CommonHover.Get().SupportsChainNavigation();
         bool local_1 = local_2 && IsValid(this.ResolveCommonHoverChainNextNavigationTarget(EUINavigation(4)));
         bool local_3 = local_2 && IsValid(this.ResolveCommonHoverChainPreviousNavigationTarget(EUINavigation(5)));
         bool local_4 = !(this.bHoverChainNextNavigationBound);
@@ -307,7 +307,7 @@ class UPage_CommonHover : UEUIActivatableWidget
                 return false;
             }
             FVector2D local_28 = BoundaryGeometry.GetLocalSize();
-            local_33 = int(GetHoverLayout());
+            local_33 = int(this.CommonHover.Get().GetHoverLayout());
             int local_36 = local_33;
             local_23 = (local_36 == 0) || (local_33 == 1);
             FVector2D local_42;
@@ -478,7 +478,7 @@ class UPage_CommonHover : UEUIActivatableWidget
     UFUNCTION()
     TSoftClassPtr<UUserWidget> CommonHover_ContentWidget() const
     {
-        FVM_CommonHover& local_2;
+        FVM_CommonHover& local_2 = this.CommonHover.Get();
         TSoftClassPtr<UUserWidget> local_34;
         if (local_2)
         {
@@ -493,15 +493,15 @@ class UPage_CommonHover : UEUIActivatableWidget
     UFUNCTION()
     FEUIModelContainer CommonHover_ContentModels() const
     {
-        FVM_CommonHover& local_2;
+        FVM_CommonHover& local_2 = this.CommonHover.Get();
         FEUIModelContainer local_32 = local_2 ? local_2.GetContentModels() : FEUIModelContainer();
         return local_32;
     }
     UFUNCTION()
     ESlateVisibility CommonHover_SlateVisibilitybClickClose() const
     {
-        FVM_CommonHover& local_2;
         int local_5;
+        FVM_CommonHover& local_2 = this.CommonHover.Get();
         if (local_2)
         {
             local_5 = int(local_2.bClickCloseAsSlateVisibility());
@@ -523,8 +523,8 @@ class UPage_CommonHover : UEUIActivatableWidget
     }
     void HandleObservedModelChanges(FEUIReactiveSubscriberIterator &inout It)
     {
-        FVM_CommonHover& local_6;
         TEUIModelRef<FVM_CommonHover> local_2 = this.CommonHover.AsRef();
+        FVM_CommonHover& local_6 = local_2.Get();
         for (; It; )
         {
             FEUIReactiveSubscriberTrackScope local_56 = FEUIReactiveSubscriberTrackScope(It);

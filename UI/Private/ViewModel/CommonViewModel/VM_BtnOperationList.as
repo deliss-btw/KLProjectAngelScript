@@ -114,11 +114,9 @@ FVM_BtnOperationList& Create(const UObject ContextObject, const TArray<TEUIModel
 {
     return FVM_BtnOperationList::CreateByManager(EUIInternal::GetContextManager(ContextObject), BtnList);
 }
-FVM_BtnOperationList CreateByManager(const UEUIManagerSubsystem Manager, const TArray<TEUIModelRef<FVM_BtnOperationItem>> &inout BtnList)
+FVM_BtnOperationList& CreateByManager(const UEUIManagerSubsystem Manager, const TArray<TEUIModelRef<FVM_BtnOperationItem>> &inout BtnList)
 {
-    FVM_BtnOperationList __r;
-    TEUIModelRef<FVM_BtnOperationList> local_6 = TEUIModelRef<FVM_BtnOperationList>(EUIInternal::MakeModelWithManager_Generic(Manager, FVM_BtnOperationList::ModelId, 0, BtnList));
-    return __r;
+    return TEUIModelRef<FVM_BtnOperationList>(EUIInternal::MakeModelWithManager_Generic(Manager, FVM_BtnOperationList::ModelId, 0, BtnList)).Get();
 }
 void GetModelInfo(FEUIViewModelMetaInfo &inout Result)
 {
@@ -164,7 +162,6 @@ namespace __GeneratedProperties_FVM_BtnOperationList
 {
 UScriptStruct StaticStruct()
 {
-    UScriptStruct local_2;
-    return local_2;
+    return __GeneratedProperties_FVM_BtnOperationList.Get();
 }
 }

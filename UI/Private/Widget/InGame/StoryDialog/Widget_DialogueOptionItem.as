@@ -23,7 +23,7 @@ class UWidget_DialogueOptionItem : UEUIUserWidget
         {
             if (this.Option.opArrow().GetOptionInfo().GetOptionStyle().IsSet())
             {
-                this.w_img_bg.SetBrushTintColor(FSlateColor());
+                this.w_img_bg.SetBrushTintColor(FSlateColor(this.Option.opArrow().GetOptionInfo().GetOptionStyle().Get().OptionBgColor));
                 return;
             }
             this.w_img_bg.SetBrushTintColor(FSlateColor(FLinearColor::Black));

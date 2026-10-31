@@ -188,8 +188,8 @@ class UWidget_StigmataDetail : UEUIActivatableWidget
     }
     void HandleObservedModelChanges(FEUIReactiveSubscriberIterator &inout It)
     {
-        FVM_StigmataDetail& local_6;
         TEUIModelRef<FVM_StigmataDetail> local_2 = this.StigmataDetail.AsRef();
+        FVM_StigmataDetail& local_6 = local_2.Get();
         for (; It; )
         {
             FEUIReactiveSubscriberTrackScope local_56 = FEUIReactiveSubscriberTrackScope(It);

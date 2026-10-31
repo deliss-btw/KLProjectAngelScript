@@ -80,11 +80,9 @@ FMS_GameServerStatus& Get(const UObject ContextObject)
 {
     return FMS_GameServerStatus::GetByManager(EUIInternal::GetContextManager(ContextObject));
 }
-FMS_GameServerStatus GetByManager(const UEUIManagerSubsystem Manager)
+FMS_GameServerStatus& GetByManager(const UEUIManagerSubsystem Manager)
 {
-    FMS_GameServerStatus __r;
-    TEUIModelRef<FMS_GameServerStatus> local_6 = TEUIModelRef<FMS_GameServerStatus>(EUIInternal::MakeModelWithManager(Manager, FMS_GameServerStatus::ModelId));
-    return __r;
+    return TEUIModelRef<FMS_GameServerStatus>(EUIInternal::MakeModelWithManager(Manager, FMS_GameServerStatus::ModelId)).Get();
 }
 void GetModelInfo(FEUIModelOnlyMetaInfo &inout Result)
 {

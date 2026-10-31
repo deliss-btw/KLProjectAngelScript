@@ -3,7 +3,6 @@ namespace __FCommissionBadgeConfigFunctions
 UFUNCTION()
 ECommissionBadgeConfigType __FCommissionBadgeConfig_GetBadgeType(const TDataObjectPtr<FCommissionBadgeConfig> &inout DataObject)
 {
-    int local_81 = 0;
     if ((DataObject == nullptr))
     {
         if (!(EUIGlobals::GIsDuringPropertyConversion))
@@ -11,15 +10,13 @@ ECommissionBadgeConfigType __FCommissionBadgeConfig_GetBadgeType(const TDataObje
             FBlueprintDebugFunctions::ThrowScriptException("Get 'BadgeType' from a null 'FCommissionBadgeConfig' DataObject!");
         }
         FCommissionBadgeConfig local_80;
-        local_81 = int(local_80.BadgeType);
-        return ECommissionBadgeConfigType(local_81);
+        return local_80.BadgeType;
     }
-    return ECommissionBadgeConfigType(local_81);
+    return DataObject.Get().BadgeType;
 }
 UFUNCTION()
 FSoftBrush __FCommissionBadgeConfig_GetIconBrush(const TDataObjectPtr<FCommissionBadgeConfig> &inout DataObject)
 {
-    FSoftBrush __r;
     if ((DataObject == nullptr))
     {
         if (!(EUIGlobals::GIsDuringPropertyConversion))
@@ -29,12 +26,11 @@ FSoftBrush __FCommissionBadgeConfig_GetIconBrush(const TDataObjectPtr<FCommissio
         FCommissionBadgeConfig local_80;
         return local_80.IconBrush;
     }
-    return __r;
+    return DataObject.Get().IconBrush;
 }
 UFUNCTION()
 FText __FCommissionBadgeConfig_GetBadgeName(const TDataObjectPtr<FCommissionBadgeConfig> &inout DataObject)
 {
-    FText __r;
     if ((DataObject == nullptr))
     {
         if (!(EUIGlobals::GIsDuringPropertyConversion))
@@ -44,12 +40,11 @@ FText __FCommissionBadgeConfig_GetBadgeName(const TDataObjectPtr<FCommissionBadg
         FCommissionBadgeConfig local_80;
         return local_80.BadgeName;
     }
-    return __r;
+    return DataObject.Get().BadgeName;
 }
 UFUNCTION()
 FText __FCommissionBadgeConfig_GetBadgeDesc(const TDataObjectPtr<FCommissionBadgeConfig> &inout DataObject)
 {
-    FText __r;
     if ((DataObject == nullptr))
     {
         if (!(EUIGlobals::GIsDuringPropertyConversion))
@@ -59,12 +54,11 @@ FText __FCommissionBadgeConfig_GetBadgeDesc(const TDataObjectPtr<FCommissionBadg
         FCommissionBadgeConfig local_80;
         return local_80.BadgeDesc;
     }
-    return __r;
+    return DataObject.Get().BadgeDesc;
 }
 UFUNCTION()
 FText __FCommissionBadgeConfig_GetBadgeValueDesc(const TDataObjectPtr<FCommissionBadgeConfig> &inout DataObject)
 {
-    FText __r;
     if ((DataObject == nullptr))
     {
         if (!(EUIGlobals::GIsDuringPropertyConversion))
@@ -74,12 +68,11 @@ FText __FCommissionBadgeConfig_GetBadgeValueDesc(const TDataObjectPtr<FCommissio
         FCommissionBadgeConfig local_80;
         return local_80.BadgeValueDesc;
     }
-    return __r;
+    return DataObject.Get().BadgeValueDesc;
 }
 UFUNCTION()
 ECommissionPlayerStatsType __FCommissionBadgeConfig_GetCountState(const TDataObjectPtr<FCommissionBadgeConfig> &inout DataObject)
 {
-    int local_81 = 0;
     if ((DataObject == nullptr))
     {
         if (!(EUIGlobals::GIsDuringPropertyConversion))
@@ -87,15 +80,13 @@ ECommissionPlayerStatsType __FCommissionBadgeConfig_GetCountState(const TDataObj
             FBlueprintDebugFunctions::ThrowScriptException("Get 'CountState' from a null 'FCommissionBadgeConfig' DataObject!");
         }
         FCommissionBadgeConfig local_80;
-        local_81 = int(local_80.CountState);
-        return ECommissionPlayerStatsType(local_81);
+        return local_80.CountState;
     }
-    return ECommissionPlayerStatsType(local_81);
+    return DataObject.Get().CountState;
 }
 UFUNCTION()
 ECommissionPlayerStateCountType __FCommissionBadgeConfig_GetCountType(const TDataObjectPtr<FCommissionBadgeConfig> &inout DataObject)
 {
-    int local_81 = 0;
     if ((DataObject == nullptr))
     {
         if (!(EUIGlobals::GIsDuringPropertyConversion))
@@ -103,10 +94,9 @@ ECommissionPlayerStateCountType __FCommissionBadgeConfig_GetCountType(const TDat
             FBlueprintDebugFunctions::ThrowScriptException("Get 'CountType' from a null 'FCommissionBadgeConfig' DataObject!");
         }
         FCommissionBadgeConfig local_80;
-        local_81 = int(local_80.CountType);
-        return ECommissionPlayerStateCountType(local_81);
+        return local_80.CountType;
     }
-    return ECommissionPlayerStateCountType(local_81);
+    return DataObject.Get().CountType;
 }
 UFUNCTION()
 int __FCommissionBadgeConfig_GetTarget(const TDataObjectPtr<FCommissionBadgeConfig> &inout DataObject)

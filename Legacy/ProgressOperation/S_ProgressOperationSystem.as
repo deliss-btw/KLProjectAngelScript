@@ -6,11 +6,11 @@ class US_ProgressOperationSystem : UECSScriptSystem
     }
     void DisposeUpdateProgressOperationInput(const FECSEntity &inout Entity, const FC_ProgressOperationMember &inout Member, const FC_Input &inout Input, FC_ESMTrigger &inout ESMTrigger, const FCS_FixedTime &inout FixedTime) const
     {
-        const FProgressOperationConfig& local_10;
         int local_58 = 0;
         EProgressOperationState local_1;
         Get local_6;
         local_1 = local_6.opCall().GetState();
+        const FProgressOperationConfig& local_10 = Member.GetConfig().Get();
         for (auto& local_26 : local_10.InputActions)
         {
             if ((int(local_26.ResponseState) & (1 << int(local_1))) == 0)
@@ -61,7 +61,7 @@ class US_ProgressOperationSystem : UECSScriptSystem
     {
         int local_12 = 0;
         int local_36 = 0;
-        UProgressOperationBase local_4;
+        UProgressOperationBase local_4 = ProgressOperationRuntime.GetConfig().Get().Operation.GetDefaultObject();
         local_4.Tick(ProgressOperationRuntime, FixedTime.DeltaTime);
         if (local_4.NeedEndOperation(ProgressOperationRuntime))
         {
@@ -110,8 +110,8 @@ class US_ProgressOperationSystem : UECSScriptSystem
     UFUNCTION()
     void Job_UpdateProgressOperationUI(const FECSEntity &inout Entity, const FC_ProgressOperationMember &inout Member, const FCS_LocalPlayer &inout LocalPlayer) const
     {
-        const FProgressOperationConfig& local_2;
         int local_10 = 0;
+        const FProgressOperationConfig& local_2 = Member.GetConfig().Get();
         if (!(local_2.UISoftWidgetClass.IsNull()) && Member.GetOperationEntity().IsValid())
         {
             TSoftClassPtr<UEUIUserWidget> local_20;

@@ -18,11 +18,11 @@ class UWidget_AvatarSpecialtyHoverItem : UEUIUserWidget
     UFUNCTION()
     void OnChangeAvatarSpecialty()
     {
-        if (this.Avatar.IsNull() || !(GetAvatarConfig().IsSet()))
+        if (this.Avatar.IsNull() || !(this.Avatar.Get().GetAvatarConfig().IsSet()))
         {
             return;
         }
-        OnChangeSpecialty();
+        this.Avatar.Get().OnChangeSpecialty();
         return;
     }
     UFUNCTION()

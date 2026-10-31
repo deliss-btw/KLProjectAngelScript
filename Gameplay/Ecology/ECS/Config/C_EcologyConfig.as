@@ -94,6 +94,8 @@ struct FCommonEcologyUnitConfig : FEcologyUnitConfig
     UPROPERTY()
     FVirtualConfigData ConfigData;
 
+    default m_ScriptOverrideMeta = Cast<UASStruct>(FCommonEcologyUnitConfig.Get());
+
     FCommonEcologyUnitConfig()
     {
         this.__InitDefaults();
@@ -101,12 +103,11 @@ struct FCommonEcologyUnitConfig : FEcologyUnitConfig
     }
     bool Activate_Implementation(const FLevelUnitExecuteContext &inout Context)
     {
-        UScriptStruct local_6;
         if (!(ECS::GetRuntimeInfo().IsServer))
         {
             return true;
         }
-        if (!(this.ConfigData.GetConfigType().IsChildOf(local_6)))
+        if (!(this.ConfigData.GetConfigType().IsChildOf(FEcologyConfig.Get())))
         {
             return false;
         }
@@ -115,8 +116,7 @@ struct FCommonEcologyUnitConfig : FEcologyUnitConfig
         local_40.SetDefaultedTransform(this.Transform.GetLocation(), this.Transform.Rotator());
         local_40.bOuterIsConfig = true;
         TConstRawPtr<FEcologyConfig> local_58 = FInstancedStruct::GetPtr(this.ConfigData.GetConfigData()).opCall();
-        FECSEntity local_64;
-        local_64.GenerateRuntimeEntity(local_40);
+        FECSEntity local_64 = local_58.Get().GenerateRuntimeEntity(local_40);
         if (local_64.IsValid())
         {
             Has local_72;

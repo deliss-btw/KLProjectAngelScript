@@ -33,6 +33,7 @@ struct FC_AnimIdleHeadControlHistory : FECSComponent
     }
     void Clear()
     {
+        this.History.Clear();
         return;
     }
     bool GetInterpoValue(const FFPTime &inout WorldTime, FC_AnimIdleHeadControl &inout OutValue) const

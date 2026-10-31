@@ -21,9 +21,10 @@ namespace CommissionUtils
 {
 TDataObjectPtr<FCommissionConfig> GetMyCommissionConfig(const uint64 CommissionID)
 {
-    if (FMS_CommissionData::Get(FASCommonUtils::GetLocalPlayerController()).FindCommissionByInstId(CommissionID).IsValid())
+    TEUIModelRef<FM_Commission> local_4 = FMS_CommissionData::Get(FASCommonUtils::GetLocalPlayerController()).FindCommissionByInstId(CommissionID);
+    if (local_4.IsValid())
     {
-        return GetCommissionConfig();
+        return local_4.Get().GetCommissionConfig();
     }
     return TDataObjectPtr<FCommissionConfig>();
 }
@@ -162,7 +163,6 @@ void SetFinishCommissionTierAndScore(FCS_CommissionFinish &inout CommissionFinis
 void FinishCommission(const TDataObjectPtr<FCommissionConfig> &inout CommissionConfig, const bool bSuccess, const ECommissionFailReason FailReason = ECommissionFailReason::Unknown)
 {
     int local_30 = 0;
-    int local_37 = 0;
     FCS_CommissionInfo local_84;
     FECSWorldPtr local_2 = ECS::GetECSWorld();
     Has local_6;
@@ -187,8 +187,7 @@ void FinishCommission(const TDataObjectPtr<FCommissionConfig> &inout CommissionC
     Get local_34;
     local_30.SetFinishTime(local_34.opCall().Time);
     float32 local_35 = 10.0f;
-    int local_38 = local_37;
-    if (local_38 == 3)
+    if (int(CommissionConfig.Get().CommissionType) == 3)
     {
         float32 local_36;
         if (bSuccess)
@@ -245,8 +244,8 @@ void FinishCommission(const TDataObjectPtr<FCommissionConfig> &inout CommissionC
     if (local_68)
     {
         FECSWorldPtr local_70_3 = ECS::GetECSWorld();
-        int local_38_2 = local_82.opCall().bHasFinishChallengeFactor;
-        bool local_78 = (local_38_2 > 0);
+        int local_38 = local_82.opCall().bHasFinishChallengeFactor;
+        bool local_78 = (local_38 > 0);
         local_77 = local_78;
     }
     FECSWorldPtr local_70_4 = ECS::GetECSWorld();
@@ -287,6 +286,8 @@ void FinishCommission(const TDataObjectPtr<FCommissionConfig> &inout CommissionC
             FBuffUtils::AddBuff(local_118.GetPlayerPawnEntity(), CommissionUtils::GetCommissionSettings().CommissionEndBuffConfig, local_34.opCall().Time, local_118.GetPlayerPawnEntity(), false, -1.0f, 1, false);
         }
     }
+    __Lambda_Gameplay_Level_Commission_CommissionUtils_278 local_198;
+    local_30.GetModify_FinishTeamers().Sort(local_198);
     PlayerNotify::CancelNotify(EPlayerNotify(0));
     PlayerNotify::NotifyPlayer(EPlayerNotify(1));
     FFPTime local_54 = FFPTime(-1);
@@ -392,22 +393,20 @@ uint ServerActivateCommissionObjective(const TDataObjectPtr<FObjectiveConfig> &i
     {
         FObjectiveContext local_50;
         local_8.CommissionTargetObjectiveInstanceId = ObjectiveUtils::ActivateObjective(ObjectiveConfig, local_50);
-        int local_9 = int(local_8.CommissionTargetObjectiveInstanceId);
-        if ((local_9 > 0 && (0 == 1)))
+        if (int(local_8.CommissionTargetObjectiveInstanceId) > 0 && (int(ObjectiveConfig.Get().ObjectiveType) == 1))
         {
             FObjectiveInstance local_200;
-            int local_10 = int(local_8.CommissionTargetObjectiveInstanceId);
-            if (ObjectiveUtils::TryFindActivetedObjectiveInstance(local_10, local_200))
+            if (ObjectiveUtils::TryFindActivetedObjectiveInstance(int(local_8.CommissionTargetObjectiveInstanceId), local_200))
             {
                 FECSWorldPtr local_2_2 = ECS::GetECSWorld();
                 for (auto& local_220 : local_200.ChildObjectiveMap)
                 {
-                    local_220;
+                    int local_10 = local_220.GetValue();
                     if (local_10 == 0)
                     {
                         continue;
                     }
-                    if (ObjectiveUtils::TryFindActivetedObjectiveInstance(local_9, local_366))
+                    if (ObjectiveUtils::TryFindActivetedObjectiveInstance(local_220.GetValue(), local_366))
                     {
                         FCommissionTargetProgress local_368;
                         local_368.SetSuccessProgressValue(local_366.GetFinishProgressValue());
@@ -484,10 +483,9 @@ uint ServerActivateAdditionalCommissionObjective(const TDataObjectPtr<FObjective
 }
 void ServerSetCurrentCommissionTimeoutTime(const FCS_FixedTime &inout C_FixedTime, FCS_CommissionInfo &inout C_CommissionInfo)
 {
-    float32 local_1 = 0.0f;
-    if (local_1 > 0.0f)
+    if (C_CommissionInfo.CommissionConfig.Get().CommissionTimeLimit > 0.0f)
     {
-        C_CommissionInfo.CommissionTimeoutTime = (FFPTime(C_FixedTime.Time) + FFPTime(local_1));
+        C_CommissionInfo.CommissionTimeoutTime = (FFPTime(C_FixedTime.Time) + FFPTime(C_CommissionInfo.CommissionConfig.Get().CommissionTimeLimit));
     }
     else
     {
@@ -552,9 +550,10 @@ bool IsCommissionTarget(const FECSEntity &inout Entity)
     }
     FECSWorldPtr local_16 = Entity.GetWorld();
     Get local_20;
-    if (local_20.opCall())
+    const FCS_CommissionInfo& local_22 = local_20.opCall();
+    if (local_22)
     {
-        TArray<TDataObjectPtr<FMonsterMainConfig>> local_26 = FLevelUtils::GetTargetMonsterConfigsFromObjective(GetCommissionTargetObjective());
+        TArray<TDataObjectPtr<FMonsterMainConfig>> local_26 = FLevelUtils::GetTargetMonsterConfigsFromObjective(local_22.CommissionConfig.Get().GetCommissionTargetObjective());
         for (auto& local_44 : local_26)
         {
             local_68;
@@ -568,41 +567,46 @@ bool IsCommissionTarget(const FECSEntity &inout Entity)
 }
 TDataObjectPtr<FMonsterMainConfig> TryGetMonsterConfigFromSingleObjective(const TDataObjectPtr<FObjectiveSingleConfig> &inout SingleObjective)
 {
-    bool local_111 = false;
-    TDataObjectPtr<FMonsterMainConfig> __return;
     if (!(SingleObjective))
     {
         return TDataObjectPtr<FMonsterMainConfig>();
     }
     CastTo local_54;
-    if (!(local_54.opCall()))
+    TDataObjectPtr<FLocalConditionConfig> local_78 = local_54.opCall();
+    bool local_1 = !(local_78);
+    if (local_1)
     {
         return TDataObjectPtr<FMonsterMainConfig>();
     }
-    FInstancedStruct::GetPtr local_106;
-    if (local_106.opCall() && local_111)
+    TConstRawPtr<FConditionMonsterDeathConfig> local_108 = FInstancedStruct::GetPtr(local_78.Get().ConditionTypeDefineConfig).opCall();
+    if (!(local_108))
     {
+        local_1 = false;
     }
     else
     {
-        __return = TDataObjectPtr<FMonsterMainConfig>();
+        local_1 = local_108.Get().MonsterConfig;
     }
-    return __return;
+    if (local_1)
+    {
+        return local_108.Get().MonsterConfig;
+    }
+    return TDataObjectPtr<FMonsterMainConfig>();
 }
 TArray<TDataObjectPtr<FMonsterMainConfig>> GetCommissionObjectiveTargetMonsterConfigs()
 {
     TArray<TDataObjectPtr<FMonsterMainConfig>> local_4;
-    int local_63 = 0;
     FECSWorldPtr local_6 = ECS::GetECSWorld();
     Get local_10;
-    if (local_10.opCall())
+    const FCS_CommissionInfo& local_12 = local_10.opCall();
+    if (local_12)
     {
-        if (!(GetCommissionTargetObjective().IsSet()))
+        TDataObjectPtr<FObjectiveConfig> local_38 = local_12.CommissionConfig.Get().GetCommissionTargetObjective();
+        if (!(local_38.IsSet()))
         {
             return local_4;
         }
-        int local_64 = local_63;
-        if (local_64 == 0)
+        if (int(local_38.Get().ObjectiveType) == 0)
         {
             CastTo local_70;
             TDataObjectPtr<FMonsterMainConfig> local_142 = CommissionUtils::TryGetMonsterConfigFromSingleObjective(local_70.opCall());
@@ -613,11 +617,11 @@ TArray<TDataObjectPtr<FMonsterMainConfig>> GetCommissionObjectiveTargetMonsterCo
         }
         else
         {
-            if (local_63 == 1)
+            if (int(local_38.Get().ObjectiveType) == 1)
             {
                 CastTo local_170;
                 TDataObjectPtr<FObjectiveGroupConfig> local_194 = local_170.opCall();
-                for (auto& local_232 : GetChildObjectives())
+                for (auto& local_232 : local_194.Get().GetChildObjectives())
                 {
                     TDataObjectPtr<FMonsterMainConfig> local_166 = CommissionUtils::TryGetMonsterConfigFromSingleObjective(local_232);
                     if (local_166)
@@ -835,26 +839,25 @@ void ServerInitCommissionByDSGlobalInfo(const FPbDsGlobalCommissionInfo &inout D
 void ServerInitCommissionByDSGlobalInfoForPIEOnly(const TDataObjectPtr<FCommissionConfig> &inout CommissionConfig)
 {
     FCS_CommissionDSGlobalInfo local_10;
-    TArrayConstIterator<FRandomFactorConfig> local_184;
-    int local_414 = 0;
     if (!(CommissionConfig.IsSet()))
     {
         return;
     }
     FECSWorldPtr local_4 = ECS::GetECSWorld();
-    TDataObjectPtr<FRandomSeedConfig> local_34 = GetRandomSeedConfig();
+    TDataObjectPtr<FRandomSeedConfig> local_34 = CommissionConfig.Get().GetRandomSeedConfig();
     if (!(local_34.IsSet()))
     {
         return;
     }
-    if (!(FPIECommissionRandomPolicy::GetRandomPolicyByRandomSeedConfig(local_34).IsSet()))
+    TDataObjectPtr<FRandomPolicyConfig> local_82 = FPIECommissionRandomPolicy::GetRandomPolicyByRandomSeedConfig(local_34);
+    if (!(local_82.IsSet()))
     {
         return;
     }
     TDataObjectPtr<FCommissionWeatherPoolConfig> local_130 = TDataObjectPtr<FCommissionWeatherPoolConfig>(nullptr);
-    for (; local_184.CanProceed;)
+    for (auto& local_192 : local_82.Get().RandomFactorConfig)
     {
-        switch (int(local_184.Proceed().RandomFactorType))
+        switch (int(local_192.RandomFactorType))
         {
         case 1:
         {
@@ -892,9 +895,9 @@ void ServerInitCommissionByDSGlobalInfoForPIEOnly(const TDataObjectPtr<FCommissi
             {
                 break;
             }
-            int local_194 = (0 + (FMath::RandRange(0, local_414))) % 24;
+            int local_194 = (local_388.Get().BaseTime + (FMath::RandRange(0, local_388.Get().TimeRange))) % 24;
             local_10.StartTimeInHoursOverride = local_194;
-            local_10.TimeSpeedOverride = local_414;
+            local_10.TimeSpeedOverride = local_388.Get().TimeSpeed;
             local_10.SelectedCommissionTimeConfig = local_388;
             XLog(ELog(22), FString().Append("ServerInitCommissionByDSGlobalInfoForPIEOnly: CommissionTimeConfig=").Append(local_388.GetDataName().ToString()).Append(" StartTimeInHoursOverride=").Append(local_10.StartTimeInHoursOverride).Append(" TimeSpeedOverride=").Append(local_10.SelectedCommissionTimeConfig));
             break;
@@ -967,7 +970,6 @@ void ServerInitCommissionByDSGlobalInfoForPIEOnly(const TDataObjectPtr<FCommissi
 }
 void HandlePendingSubTargetOnCommissionFinish(const FCS_CommissionFinish &inout CommissionFinish, FCS_CommissionSubTarget &inout CommissionSubTarget)
 {
-    int local_7 = 0;
     Modify local_218;
     CommissionUtils::SetObjectiveGuideEnabledToAllPlayers(CommissionSubTarget.GetObjectiveInstanceId(), false, EGuideStyleType(3));
     int local_4 = int(CommissionSubTarget.GetStatus());
@@ -975,8 +977,7 @@ void HandlePendingSubTargetOnCommissionFinish(const FCS_CommissionFinish &inout 
     {
         return;
     }
-    int local_6 = local_7;
-    if (local_6 == 0)
+    if (int(CommissionSubTarget.GetSubTargetConfig().Get().ObjectiveType) == 0)
     {
         FObjectiveInstance local_208;
         bool local_61;
@@ -1013,7 +1014,6 @@ void HandlePendingSubTargetOnCommissionFinish(const FCS_CommissionFinish &inout 
 }
 EGuideStyleType GetCommissionGuideStyleType()
 {
-    int local_12 = 0;
     int local_1 = 3;
     FECSWorldPtr local_4 = ECS::GetECSWorld();
     Get local_8;
@@ -1022,31 +1022,31 @@ EGuideStyleType GetCommissionGuideStyleType()
     {
         if (local_10.CommissionConfig.IsSet())
         {
-            if (local_12 == 1)
+            if (int(local_10.CommissionConfig.Get().CommissionType) == 1)
             {
                 local_1 = 4;
             }
             else
             {
-                if (local_12 == 2)
+                if (int(local_10.CommissionConfig.Get().CommissionType) == 2)
                 {
                     local_1 = 5;
                 }
                 else
                 {
-                    if (local_12 == 3)
+                    if (int(local_10.CommissionConfig.Get().CommissionType) == 3)
                     {
                         local_1 = 1;
                     }
                     else
                     {
-                        if (local_12 == 4)
+                        if (int(local_10.CommissionConfig.Get().CommissionType) == 4)
                         {
                             local_1 = 7;
                         }
                         else
                         {
-                            if (local_12 == 5)
+                            if (int(local_10.CommissionConfig.Get().CommissionType) == 5)
                             {
                                 local_1 = 8;
                             }

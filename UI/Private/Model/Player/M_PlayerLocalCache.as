@@ -51,7 +51,6 @@ struct FMS_PlayerLocalCache : FEUIModelSingleton
     }
     void SavePlayerToCache(const uint Uid, const FPlayerFullInfo &inout Info)
     {
-        FPlayerFullInfo& local_12;
         if (Uid == 0)
         {
             return;
@@ -61,8 +60,10 @@ struct FMS_PlayerLocalCache : FEUIModelSingleton
         {
             return;
         }
-        if (local_4.PlayerInfoMap.Find(Uid))
+        TRawPtr<FPlayerFullInfo> local_8 = local_4.PlayerInfoMap.Find(Uid);
+        if (local_8)
         {
+            FPlayerFullInfo& local_12 = local_8.Get();
             if (Info.GetbHasNickName())
             {
                 local_12.SetNickName(Info.GetNickName());
@@ -110,25 +111,22 @@ struct FMS_PlayerLocalCache : FEUIModelSingleton
     }
     FPlayerFullInfo LoadPlayerFromCache(const uint Uid)
     {
-        FPlayerFullInfo __return;
+        FPlayerFullInfo local_20;
         if (Uid == 0)
         {
-            return FPlayerFullInfo();
+            return local_20;
         }
         UPlayerInfoCacheSaveAll local_22 = this.GetOrCreateSave();
         if (local_22 == nullptr)
         {
-            return FPlayerFullInfo();
+            return local_20;
         }
-        if (local_22.PlayerInfoMap.Find(Uid))
+        TRawPtr<FPlayerFullInfo> local_26 = local_22.PlayerInfoMap.Find(Uid);
+        if (local_26)
         {
+            return local_26.Get();
         }
-        else
-        {
-            FPlayerFullInfo local_20;
-            __return = local_20;
-        }
-        return __return;
+        return local_20;
     }
     void RetainPlayerCache(const EPlayerCacheUser User)
     {
@@ -165,11 +163,9 @@ FMS_PlayerLocalCache& Get(const UObject ContextObject)
 {
     return FMS_PlayerLocalCache::GetByManager(EUIInternal::GetContextManager(ContextObject));
 }
-FMS_PlayerLocalCache GetByManager(const UEUIManagerSubsystem Manager)
+FMS_PlayerLocalCache& GetByManager(const UEUIManagerSubsystem Manager)
 {
-    FMS_PlayerLocalCache __r;
-    TEUIModelRef<FMS_PlayerLocalCache> local_6 = TEUIModelRef<FMS_PlayerLocalCache>(EUIInternal::MakeModelWithManager(Manager, FMS_PlayerLocalCache::ModelId));
-    return __r;
+    return TEUIModelRef<FMS_PlayerLocalCache>(EUIInternal::MakeModelWithManager(Manager, FMS_PlayerLocalCache::ModelId)).Get();
 }
 void GetModelInfo(FEUIModelOnlyMetaInfo &inout Result)
 {

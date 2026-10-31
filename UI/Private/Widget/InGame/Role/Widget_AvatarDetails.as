@@ -29,11 +29,11 @@ class UWidget_AvatarDetails : UEUIUserWidget
     UFUNCTION()
     void OnAvatarChanged()
     {
-        FVM_AvatarInfo& local_2;
+        FVM_AvatarInfo& local_2 = this.Avatar.Get();
         if (local_2)
         {
-            local_2.GetAvatar().SetCurrentAvatar();
-            0.SetbHasHoverSkill();
+            this.AvatarDetails.Get().SetCurrentAvatar(local_2.GetAvatar());
+            this.AvatarDetails.Get().SetbHasHoverSkill(false);
         }
         return;
     }
@@ -58,7 +58,7 @@ class UWidget_AvatarDetails : UEUIUserWidget
     UFUNCTION()
     TArray<FEUIModelWeakRef> AvatarDetails_AvatarTraitList() const
     {
-        FVM_AvatarDetailInfo& local_2;
+        FVM_AvatarDetailInfo& local_2 = this.AvatarDetails.Get();
         TArray<FEUIModelWeakRef> local_16;
         if (local_2)
         {
@@ -73,7 +73,7 @@ class UWidget_AvatarDetails : UEUIUserWidget
     UFUNCTION()
     TArray<FEUIModelWeakRef> AvatarDetails_TraitHoverList() const
     {
-        FVM_AvatarDetailInfo& local_2;
+        FVM_AvatarDetailInfo& local_2 = this.AvatarDetails.Get();
         TArray<FEUIModelWeakRef> local_16;
         if (local_2)
         {
@@ -88,7 +88,7 @@ class UWidget_AvatarDetails : UEUIUserWidget
     UFUNCTION()
     TArray<FEUIModelWeakRef> AvatarDetails_AvatarAttributeList() const
     {
-        FVM_AvatarDetailInfo& local_2;
+        FVM_AvatarDetailInfo& local_2 = this.AvatarDetails.Get();
         TArray<FEUIModelWeakRef> local_16;
         if (local_2)
         {
@@ -103,8 +103,8 @@ class UWidget_AvatarDetails : UEUIUserWidget
     UFUNCTION()
     bool AvatarDetails_bCanDisplayAttribute() const
     {
-        FVM_AvatarDetailInfo& local_2;
         bool local_5;
+        FVM_AvatarDetailInfo& local_2 = this.AvatarDetails.Get();
         if (local_2)
         {
             local_5 = local_2.GetbCanDisplayAttribute();
@@ -118,8 +118,8 @@ class UWidget_AvatarDetails : UEUIUserWidget
     UFUNCTION()
     bool AvatarDetails_bCanDisplayTrait() const
     {
-        FVM_AvatarDetailInfo& local_2;
         bool local_5;
+        FVM_AvatarDetailInfo& local_2 = this.AvatarDetails.Get();
         if (local_2)
         {
             local_5 = local_2.GetbCanDisplayTrait();
@@ -141,8 +141,8 @@ class UWidget_AvatarDetails : UEUIUserWidget
     }
     void HandleObservedModelChanges(FEUIReactiveSubscriberIterator &inout It)
     {
-        FVM_AvatarInfo& local_6;
         TEUIModelRef<FVM_AvatarInfo> local_2 = this.Avatar.AsRef();
+        FVM_AvatarInfo& local_6 = local_2.Get();
         for (; It; )
         {
             FEUIReactiveSubscriberTrackScope local_56 = FEUIReactiveSubscriberTrackScope(It);

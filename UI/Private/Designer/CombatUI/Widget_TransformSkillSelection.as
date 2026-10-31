@@ -52,7 +52,7 @@ class UWidget_TransformSkillSelection : UEUIUserWidget
     UFUNCTION()
     float32 TransformSkillSelection_TeamLinkEnergy() const
     {
-        FVMS_TransformSkillSelection& local_2;
+        FVMS_TransformSkillSelection& local_2 = this.TransformSkillSelection.Get();
         return local_2 ? local_2.GetTeamLinkEnergy() : 0.0f;
     }
     UFUNCTION()

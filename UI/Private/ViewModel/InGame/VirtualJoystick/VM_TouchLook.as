@@ -247,11 +247,9 @@ FVM_TouchLook& Create(const UObject ContextObject)
 {
     return FVM_TouchLook::CreateByManager(EUIInternal::GetContextManager(ContextObject));
 }
-FVM_TouchLook CreateByManager(const UEUIManagerSubsystem Manager)
+FVM_TouchLook& CreateByManager(const UEUIManagerSubsystem Manager)
 {
-    FVM_TouchLook __r;
-    TEUIModelRef<FVM_TouchLook> local_6 = TEUIModelRef<FVM_TouchLook>(EUIInternal::MakeModelWithManager(Manager, FVM_TouchLook::ModelId));
-    return __r;
+    return TEUIModelRef<FVM_TouchLook>(EUIInternal::MakeModelWithManager(Manager, FVM_TouchLook::ModelId)).Get();
 }
 void GetModelInfo(FEUIViewModelMetaInfo &inout Result)
 {
@@ -313,7 +311,6 @@ namespace __GeneratedProperties_FVM_TouchLook
 {
 UScriptStruct StaticStruct()
 {
-    UScriptStruct local_2;
-    return local_2;
+    return __GeneratedProperties_FVM_TouchLook.Get();
 }
 }

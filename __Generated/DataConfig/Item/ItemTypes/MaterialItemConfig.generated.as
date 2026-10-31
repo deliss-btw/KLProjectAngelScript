@@ -45,7 +45,6 @@ int __FCookMaterialConfig_GetEnergyAbundance(const TDataObjectPtr<FCookMaterialC
 UFUNCTION()
 TMap<FGameplayTag, int> __FCookMaterialConfig_GetCookTags(const TDataObjectPtr<FCookMaterialConfig> &inout DataObject)
 {
-    TMap<FGameplayTag, int> __r;
     if ((DataObject == nullptr))
     {
         if (!(EUIGlobals::GIsDuringPropertyConversion))
@@ -55,12 +54,11 @@ TMap<FGameplayTag, int> __FCookMaterialConfig_GetCookTags(const TDataObjectPtr<F
         FCookMaterialConfig local_228;
         return local_228.CookTags;
     }
-    return __r;
+    return DataObject.Get().CookTags;
 }
 UFUNCTION()
 TArray<FCookIngredientAttribute> __FCookMaterialConfig_GetAbundanceTier1Attributes(const TDataObjectPtr<FCookMaterialConfig> &inout DataObject)
 {
-    TArray<FCookIngredientAttribute> __r;
     if ((DataObject == nullptr))
     {
         if (!(EUIGlobals::GIsDuringPropertyConversion))
@@ -70,12 +68,11 @@ TArray<FCookIngredientAttribute> __FCookMaterialConfig_GetAbundanceTier1Attribut
         FCookMaterialConfig local_228;
         return local_228.AbundanceTier1Attributes;
     }
-    return __r;
+    return DataObject.Get().AbundanceTier1Attributes;
 }
 UFUNCTION()
 TArray<FCookIngredientAttribute> __FCookMaterialConfig_GetAbundanceTier2Attributes(const TDataObjectPtr<FCookMaterialConfig> &inout DataObject)
 {
-    TArray<FCookIngredientAttribute> __r;
     if ((DataObject == nullptr))
     {
         if (!(EUIGlobals::GIsDuringPropertyConversion))
@@ -85,12 +82,11 @@ TArray<FCookIngredientAttribute> __FCookMaterialConfig_GetAbundanceTier2Attribut
         FCookMaterialConfig local_228;
         return local_228.AbundanceTier2Attributes;
     }
-    return __r;
+    return DataObject.Get().AbundanceTier2Attributes;
 }
 UFUNCTION()
 TArray<FCookIngredientAttribute> __FCookMaterialConfig_GetAbundanceTier3Attributes(const TDataObjectPtr<FCookMaterialConfig> &inout DataObject)
 {
-    TArray<FCookIngredientAttribute> __r;
     if ((DataObject == nullptr))
     {
         if (!(EUIGlobals::GIsDuringPropertyConversion))
@@ -100,12 +96,11 @@ TArray<FCookIngredientAttribute> __FCookMaterialConfig_GetAbundanceTier3Attribut
         FCookMaterialConfig local_228;
         return local_228.AbundanceTier3Attributes;
     }
-    return __r;
+    return DataObject.Get().AbundanceTier3Attributes;
 }
 UFUNCTION()
 TArray<FCookIngredientAttribute> __FCookMaterialConfig_GetAbundanceTier4Attributes(const TDataObjectPtr<FCookMaterialConfig> &inout DataObject)
 {
-    TArray<FCookIngredientAttribute> __r;
     if ((DataObject == nullptr))
     {
         if (!(EUIGlobals::GIsDuringPropertyConversion))
@@ -115,7 +110,7 @@ TArray<FCookIngredientAttribute> __FCookMaterialConfig_GetAbundanceTier4Attribut
         FCookMaterialConfig local_228;
         return local_228.AbundanceTier4Attributes;
     }
-    return __r;
+    return DataObject.Get().AbundanceTier4Attributes;
 }
 UFUNCTION()
 FCookMaterialConfig CastToFCookMaterialConfig(const TDataObjectPtr<FCookMaterialConfig> &inout DataObject)
@@ -138,7 +133,7 @@ TDataObjectPtr<FBoonRandomSlotsConfig> __FTestThreeChooseOneItemConfig_GetBoonRa
         FTestThreeChooseOneItemConfig local_212;
         return local_212.GetBoonRandomSlots();
     }
-    return GetBoonRandomSlots();
+    return DataObject.Get().GetBoonRandomSlots();
 }
 UFUNCTION()
 FTestThreeChooseOneItemConfig CastToFTestThreeChooseOneItemConfig(const TDataObjectPtr<FTestThreeChooseOneItemConfig> &inout DataObject)

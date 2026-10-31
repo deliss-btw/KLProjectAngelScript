@@ -37,21 +37,21 @@ class UPage_StoryDialog : UEUIActivatableWidget
     UFUNCTION()
     FText StoryDialog_CurrentSpeaker() const
     {
-        FVMS_StoryDialog& local_2;
+        FVMS_StoryDialog& local_2 = this.StoryDialog.Get();
         FText local_12 = local_2 ? local_2.GetCurrentSpeaker() : FText();
         return local_12;
     }
     UFUNCTION()
     FText StoryDialog_CurrentContent() const
     {
-        FVMS_StoryDialog& local_2;
+        FVMS_StoryDialog& local_2 = this.StoryDialog.Get();
         FText local_12 = local_2 ? local_2.GetCurrentContent() : FText();
         return local_12;
     }
     UFUNCTION()
     TArray<FEUIModelWeakRef> StoryDialog_CurrentOptions() const
     {
-        FVMS_StoryDialog& local_2;
+        FVMS_StoryDialog& local_2 = this.StoryDialog.Get();
         TArray<FEUIModelWeakRef> local_16;
         if (local_2)
         {
@@ -66,8 +66,8 @@ class UPage_StoryDialog : UEUIActivatableWidget
     UFUNCTION()
     bool StoryDialog_HasNextSection() const
     {
-        FVMS_StoryDialog& local_2;
         bool local_5;
+        FVMS_StoryDialog& local_2 = this.StoryDialog.Get();
         if (local_2)
         {
             local_5 = local_2.HasNextSection();

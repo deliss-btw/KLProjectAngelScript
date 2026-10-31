@@ -89,8 +89,7 @@ struct FVM_CommonItemBar : FEUIViewModel
         {
             if (!(this.GetItemConfig()))
             {
-                TEUIModelRef<FM_ItemData> local_2 = this.GetItemData();
-                this.SetItemConfig(GetConfig());
+                this.SetItemConfig(this.GetItemData().Get().GetConfig());
             }
         }
         else
@@ -170,18 +169,18 @@ struct FVM_CommonItemBar : FEUIViewModel
         TDataObjectPtr<FItemConfig> local_52;
         if (this.GetItemData().IsValid())
         {
-            TEUIModelRef<FM_ItemData> local_26 = this.GetItemData();
-            local_52 = GetConfig();
+            local_52 = this.GetItemData().Get().GetConfig();
         }
         else
         {
             local_52 = this.GetItemConfig();
         }
-        if ((!(local_52) || !(::UGlobalItemSettings::Get().VoucherConfig)))
+        TDataObjectPtr<FItemConfig> local_104 = ::UGlobalItemSettings::Get().VoucherConfig;
+        if ((!(local_52) || !(local_104)))
         {
             return false;
         }
-        return (0 == 0);
+        return (local_52.Get().DataId == local_104.Get().DataId);
     }
     void OpenRechargePage()
     {
@@ -206,8 +205,7 @@ struct FVM_CommonItemBar : FEUIViewModel
     {
         if (this.GetHoverProvider().IsValid())
         {
-            TEUIModelWeakRef<FVM_CommonHoverProvider> local_2 = this.GetHoverProvider();
-            (this.GetbHasFixedTooltip() || !(this.GetExternalTipModels().IsEmpty())).SetbIsForbidHover();
+            this.GetHoverProvider().Get().SetbIsForbidHover(this.GetbHasFixedTooltip() || !(this.GetExternalTipModels().IsEmpty()));
         }
         return;
     }
@@ -225,9 +223,7 @@ struct FVM_CommonItemBar : FEUIViewModel
     }
     UWidget ResolveSharedHoverAnchorWidget() const
     {
-        TWeakObjectPtr<UWidget> local_2 = this.GetSharedHoverAnchor();
-        UWidget local_4;
-        return local_4;
+        return this.GetSharedHoverAnchor().Get();
     }
     ECommonHoverLayout ResolveSharedHoverLayout() const
     {
@@ -247,14 +243,14 @@ struct FVM_CommonItemBar : FEUIViewModel
     {
         if (this.GetHoverProvider().IsValid())
         {
-            TEUIModelWeakRef<FVM_CommonHoverProvider> local_2 = this.GetHoverProvider();
-            (this.GetbEnableClickLock() && this.GetExternalTipModels().IsEmpty()).SetbResponsibleForClick();
+            this.GetHoverProvider().Get().SetbResponsibleForClick(this.GetbEnableClickLock() && this.GetExternalTipModels().IsEmpty());
         }
         return;
     }
     void RefreshCommonTipHoverModels()
     {
         int local_75;
+        this.GetModify_CommonTipHoverModels().Clear();
         if (!(this.GetItemConfig()))
         {
             return;
@@ -529,11 +525,9 @@ FVM_CommonItemBar& Create(const UObject ContextObject)
 {
     return FVM_CommonItemBar::CreateByManager(EUIInternal::GetContextManager(ContextObject));
 }
-FVM_CommonItemBar CreateByManager(const UEUIManagerSubsystem Manager)
+FVM_CommonItemBar& CreateByManager(const UEUIManagerSubsystem Manager)
 {
-    FVM_CommonItemBar __r;
-    TEUIModelRef<FVM_CommonItemBar> local_6 = TEUIModelRef<FVM_CommonItemBar>(EUIInternal::MakeModelWithManager(Manager, FVM_CommonItemBar::ModelId));
-    return __r;
+    return TEUIModelRef<FVM_CommonItemBar>(EUIInternal::MakeModelWithManager(Manager, FVM_CommonItemBar::ModelId)).Get();
 }
 void GetModelInfo(FEUIViewModelMetaInfo &inout Result)
 {
@@ -671,7 +665,6 @@ namespace __GeneratedProperties_FVM_CommonItemBar
 {
 UScriptStruct StaticStruct()
 {
-    UScriptStruct local_2;
-    return local_2;
+    return __GeneratedProperties_FVM_CommonItemBar.Get();
 }
 }

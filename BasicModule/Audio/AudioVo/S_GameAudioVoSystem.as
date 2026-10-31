@@ -232,8 +232,8 @@ class US_GameAudioVoSystem : UECSScriptSystem
     UFUNCTION()
     void Job_UpdateInventoryPickedUp(const FCE_InventoryAudioVo &inout Event, const FCS_LocalTime &inout LocalTime) const
     {
-        const FItemConfig& local_10;
         ::FASCommonUtils::GetLocalPlayerPawnEntity();
+        const FItemConfig& local_10 = Event.Item.Get();
         if (int(local_10.Rarity) < 3)
         {
             return;
@@ -423,30 +423,19 @@ class US_GameAudioVoSystem : UECSScriptSystem
     UFUNCTION()
     void Job_CleanUpExpiredDodgeStates(FCS_EntityAudioVoManager &inout Manager, const FCS_FixedTime &inout FixedTime) const
     {
-        FFPTime local_28;
         TArray<FECSEntityId> local_4;
         int local_5 = 1106247680;
         for (auto& local_26 : Manager.DodgeStateMap)
         {
-            bool local_23 = (local_28 == 0.0);
-            if (local_23)
-            {
-                local_23 = true;
-            }
-            else
-            {
-                local_28 = FFPTime(FixedTime.Time);
-                FFPTime local_32;
-                local_23 = (local_32.opCmp(30.0) > 0);
-            }
-            if (local_23)
+            FFPTime local_28 = FFPTime(local_26.GetValue().AccumulateDeadline);
+            if (((local_28 == 0.0) || ((((FFPTime(FixedTime.Time) - local_26.GetValue().AccumulateDeadline)).opCmp(30.0) > 0))))
             {
                 local_4.Add(local_26.GetKey());
             }
         }
         for (auto& local_48 : local_4)
         {
-            local_48;
+            Manager.DodgeStateMap.Remove(local_48);
         }
         return;
     }

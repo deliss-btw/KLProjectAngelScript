@@ -12,8 +12,7 @@ bool MonsterPathConnectTest(const UObject WorldContextObject, const FVector &ino
     {
         return false;
     }
-    TSoftClassPtr<ACharacterPrefab> local_16;
-    local_16.GetSoftCombatPrefab();
+    TSoftClassPtr<ACharacterPrefab> local_16 = MonsterConfig.Get().GetSoftCombatPrefab();
     if (local_16.IsNull())
     {
         return false;

@@ -6,6 +6,8 @@ struct FGTCSetTransformAction : FGTCAction
     UPROPERTY()
     FQuat Rotation;
 
+    default m_ScriptOverrideMeta = Cast<UASStruct>(FGTCSetTransformAction.Get());
+
     FGTCSetTransformAction()
     {
         this.__InitDefaults();

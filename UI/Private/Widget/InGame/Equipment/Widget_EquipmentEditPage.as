@@ -25,10 +25,7 @@ class UWidget_EquipmentEditPage : UEUIActivatableWidget
     UFUNCTION()
     void Tick_Implementation(const FGeometry &inout MyGeometry, const float32 InDeltaTime)
     {
-        bool local_3 = false;
-        FEUIModelWeakRef local_2 = this.SelectList.GetSelectedItem();
-        local_3 = !local_3;
-        if (local_3)
+        if (!(this.SelectList.GetSelectedItem().Get()))
         {
             this.SelectList.SetSelectedIndex(0);
         }
@@ -48,7 +45,7 @@ class UWidget_EquipmentEditPage : UEUIActivatableWidget
     UFUNCTION()
     TArray<FEUIModelWeakRef> EquipmentEdit_EquipmentSelectList() const
     {
-        FVM_EquipmentEditPage& local_2;
+        FVM_EquipmentEditPage& local_2 = this.EquipmentEdit.Get();
         TArray<FEUIModelWeakRef> local_16;
         if (local_2)
         {
@@ -63,7 +60,7 @@ class UWidget_EquipmentEditPage : UEUIActivatableWidget
     UFUNCTION()
     FEUIModelRef EquipmentEdit_EquipmentSelectDetail() const
     {
-        FVM_EquipmentEditPage& local_2;
+        FVM_EquipmentEditPage& local_2 = this.EquipmentEdit.Get();
         FEUIModelRef local_8 = local_2 ? local_2.GetEquipmentSelectDetail() : FEUIModelRef();
         return local_8;
     }
@@ -88,7 +85,7 @@ class UWidget_EquipmentEditPage : UEUIActivatableWidget
     UFUNCTION()
     TArray<FEUIModelWeakRef> SelectedEquipmentInfo_EquipmentTraits() const
     {
-        FVM_EquipmentInfo& local_2;
+        FVM_EquipmentInfo& local_2 = this.SelectedEquipmentInfo.Get();
         TArray<FEUIModelWeakRef> local_16;
         if (local_2)
         {
@@ -103,7 +100,7 @@ class UWidget_EquipmentEditPage : UEUIActivatableWidget
     UFUNCTION()
     TArray<FEUIModelWeakRef> SelectedEquipmentInfo_EquipmentAttributes() const
     {
-        FVM_EquipmentInfo& local_2;
+        FVM_EquipmentInfo& local_2 = this.SelectedEquipmentInfo.Get();
         TArray<FEUIModelWeakRef> local_16;
         if (local_2)
         {
@@ -118,8 +115,8 @@ class UWidget_EquipmentEditPage : UEUIActivatableWidget
     UFUNCTION()
     bool SelectedEquipmentInfo_bShowDescription() const
     {
-        FVM_EquipmentInfo& local_2;
         bool local_5;
+        FVM_EquipmentInfo& local_2 = this.SelectedEquipmentInfo.Get();
         if (local_2)
         {
             local_5 = local_2.GetbShowDescription();
@@ -132,8 +129,8 @@ class UWidget_EquipmentEditPage : UEUIActivatableWidget
     }
     void HandleObservedModelChanges(FEUIReactiveSubscriberIterator &inout It)
     {
-        FVM_EquipmentEditPage& local_6;
         TEUIModelRef<FVM_EquipmentEditPage> local_2 = this.EquipmentEdit.AsRef();
+        FVM_EquipmentEditPage& local_6 = local_2.Get();
         for (; It; )
         {
             FEUIReactiveSubscriberTrackScope local_56 = FEUIReactiveSubscriberTrackScope(It);

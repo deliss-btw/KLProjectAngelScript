@@ -3,7 +3,6 @@ namespace __FSpawnAreaPoolConfigFunctions
 UFUNCTION()
 FText __FSpawnAreaPoolConfig_GetDescription(const TDataObjectPtr<FSpawnAreaPoolConfig> &inout DataObject)
 {
-    FText __r;
     if ((DataObject == nullptr))
     {
         if (!(EUIGlobals::GIsDuringPropertyConversion))
@@ -13,12 +12,11 @@ FText __FSpawnAreaPoolConfig_GetDescription(const TDataObjectPtr<FSpawnAreaPoolC
         FSpawnAreaPoolConfig local_24;
         return local_24.Description;
     }
-    return __r;
+    return DataObject.Get().Description;
 }
 UFUNCTION()
 TArray<FSpawnAreaRandomFactor> __FSpawnAreaPoolConfig_GetTargetRandomPool(const TDataObjectPtr<FSpawnAreaPoolConfig> &inout DataObject)
 {
-    TArray<FSpawnAreaRandomFactor> __r;
     if ((DataObject == nullptr))
     {
         if (!(EUIGlobals::GIsDuringPropertyConversion))
@@ -28,7 +26,7 @@ TArray<FSpawnAreaRandomFactor> __FSpawnAreaPoolConfig_GetTargetRandomPool(const 
         FSpawnAreaPoolConfig local_24;
         return local_24.TargetRandomPool;
     }
-    return __r;
+    return DataObject.Get().TargetRandomPool;
 }
 UFUNCTION()
 FSpawnAreaPoolConfig CastToFSpawnAreaPoolConfig(const TDataObjectPtr<FSpawnAreaPoolConfig> &inout DataObject)
@@ -51,12 +49,11 @@ TDataObjectPtr<FWorldAreaConfig> __FWeatherAreaTemplateFactorConfig_GetAreaConfi
         FWeatherAreaTemplateFactorConfig local_44;
         return local_44.GetAreaConfig();
     }
-    return GetAreaConfig();
+    return DataObject.Get().GetAreaConfig();
 }
 UFUNCTION()
 TArray<FWeatherTemplateRandomFactor> __FWeatherAreaTemplateFactorConfig_GetWeatherTemplateTargetRandomPool(const TDataObjectPtr<FWeatherAreaTemplateFactorConfig> &inout DataObject)
 {
-    TArray<FWeatherTemplateRandomFactor> __r;
     if ((DataObject == nullptr))
     {
         if (!(EUIGlobals::GIsDuringPropertyConversion))
@@ -66,7 +63,7 @@ TArray<FWeatherTemplateRandomFactor> __FWeatherAreaTemplateFactorConfig_GetWeath
         FWeatherAreaTemplateFactorConfig local_44;
         return local_44.WeatherTemplateTargetRandomPool;
     }
-    return __r;
+    return DataObject.Get().WeatherTemplateTargetRandomPool;
 }
 UFUNCTION()
 FWeatherAreaTemplateFactorConfig CastToFWeatherAreaTemplateFactorConfig(const TDataObjectPtr<FWeatherAreaTemplateFactorConfig> &inout DataObject)
@@ -80,7 +77,6 @@ namespace __FCommissionWeatherPoolConfigFunctions
 UFUNCTION()
 FText __FCommissionWeatherPoolConfig_GetDescription(const TDataObjectPtr<FCommissionWeatherPoolConfig> &inout DataObject)
 {
-    FText __r;
     if ((DataObject == nullptr))
     {
         if (!(EUIGlobals::GIsDuringPropertyConversion))
@@ -90,12 +86,11 @@ FText __FCommissionWeatherPoolConfig_GetDescription(const TDataObjectPtr<FCommis
         FCommissionWeatherPoolConfig local_28;
         return local_28.Description;
     }
-    return __r;
+    return DataObject.Get().Description;
 }
 UFUNCTION()
 TArray<FWeatherRandomFactor> __FCommissionWeatherPoolConfig_GetWeatherRandomPool(const TDataObjectPtr<FCommissionWeatherPoolConfig> &inout DataObject)
 {
-    TArray<FWeatherRandomFactor> __r;
     if ((DataObject == nullptr))
     {
         if (!(EUIGlobals::GIsDuringPropertyConversion))
@@ -105,7 +100,7 @@ TArray<FWeatherRandomFactor> __FCommissionWeatherPoolConfig_GetWeatherRandomPool
         FCommissionWeatherPoolConfig local_28;
         return local_28.WeatherRandomPool;
     }
-    return __r;
+    return DataObject.Get().WeatherRandomPool;
 }
 UFUNCTION()
 TArray<TDataObjectPtr<FWeatherAreaTemplateFactorConfig>> __FCommissionWeatherPoolConfig_GetWeatherAreaTemplateFactors(const TDataObjectPtr<FCommissionWeatherPoolConfig> &inout DataObject)
@@ -119,7 +114,7 @@ TArray<TDataObjectPtr<FWeatherAreaTemplateFactorConfig>> __FCommissionWeatherPoo
         FCommissionWeatherPoolConfig local_28;
         return local_28.GetWeatherAreaTemplateFactors();
     }
-    return GetWeatherAreaTemplateFactors();
+    return DataObject.Get().GetWeatherAreaTemplateFactors();
 }
 UFUNCTION()
 FCommissionWeatherPoolConfig CastToFCommissionWeatherPoolConfig(const TDataObjectPtr<FCommissionWeatherPoolConfig> &inout DataObject)
@@ -133,7 +128,6 @@ namespace __FIntrusionPolicyPoolConfigFunctions
 UFUNCTION()
 FText __FIntrusionPolicyPoolConfig_GetDescription(const TDataObjectPtr<FIntrusionPolicyPoolConfig> &inout DataObject)
 {
-    FText __r;
     if ((DataObject == nullptr))
     {
         if (!(EUIGlobals::GIsDuringPropertyConversion))
@@ -143,12 +137,11 @@ FText __FIntrusionPolicyPoolConfig_GetDescription(const TDataObjectPtr<FIntrusio
         FIntrusionPolicyPoolConfig local_24;
         return local_24.Description;
     }
-    return __r;
+    return DataObject.Get().Description;
 }
 UFUNCTION()
 TArray<FIntrusionPolicyRandomFactor> __FIntrusionPolicyPoolConfig_GetTargetRandomPool(const TDataObjectPtr<FIntrusionPolicyPoolConfig> &inout DataObject)
 {
-    TArray<FIntrusionPolicyRandomFactor> __r;
     if ((DataObject == nullptr))
     {
         if (!(EUIGlobals::GIsDuringPropertyConversion))
@@ -158,7 +151,7 @@ TArray<FIntrusionPolicyRandomFactor> __FIntrusionPolicyPoolConfig_GetTargetRando
         FIntrusionPolicyPoolConfig local_24;
         return local_24.TargetRandomPool;
     }
-    return __r;
+    return DataObject.Get().TargetRandomPool;
 }
 UFUNCTION()
 FIntrusionPolicyPoolConfig CastToFIntrusionPolicyPoolConfig(const TDataObjectPtr<FIntrusionPolicyPoolConfig> &inout DataObject)
@@ -172,7 +165,6 @@ namespace __FCommissionSubTargetPoolConfigFunctions
 UFUNCTION()
 FText __FCommissionSubTargetPoolConfig_GetDescription(const TDataObjectPtr<FCommissionSubTargetPoolConfig> &inout DataObject)
 {
-    FText __r;
     if ((DataObject == nullptr))
     {
         if (!(EUIGlobals::GIsDuringPropertyConversion))
@@ -182,12 +174,11 @@ FText __FCommissionSubTargetPoolConfig_GetDescription(const TDataObjectPtr<FComm
         FCommissionSubTargetPoolConfig local_24;
         return local_24.Description;
     }
-    return __r;
+    return DataObject.Get().Description;
 }
 UFUNCTION()
 TArray<FCommissionSubTargetRandomFactor> __FCommissionSubTargetPoolConfig_GetTargetRandomPool(const TDataObjectPtr<FCommissionSubTargetPoolConfig> &inout DataObject)
 {
-    TArray<FCommissionSubTargetRandomFactor> __r;
     if ((DataObject == nullptr))
     {
         if (!(EUIGlobals::GIsDuringPropertyConversion))
@@ -197,7 +188,7 @@ TArray<FCommissionSubTargetRandomFactor> __FCommissionSubTargetPoolConfig_GetTar
         FCommissionSubTargetPoolConfig local_24;
         return local_24.TargetRandomPool;
     }
-    return __r;
+    return DataObject.Get().TargetRandomPool;
 }
 UFUNCTION()
 FCommissionSubTargetPoolConfig CastToFCommissionSubTargetPoolConfig(const TDataObjectPtr<FCommissionSubTargetPoolConfig> &inout DataObject)
@@ -211,7 +202,6 @@ namespace __FCommissionTimePoolConfigFunctions
 UFUNCTION()
 FText __FCommissionTimePoolConfig_GetDescription(const TDataObjectPtr<FCommissionTimePoolConfig> &inout DataObject)
 {
-    FText __r;
     if ((DataObject == nullptr))
     {
         if (!(EUIGlobals::GIsDuringPropertyConversion))
@@ -221,12 +211,11 @@ FText __FCommissionTimePoolConfig_GetDescription(const TDataObjectPtr<FCommissio
         FCommissionTimePoolConfig local_24;
         return local_24.Description;
     }
-    return __r;
+    return DataObject.Get().Description;
 }
 UFUNCTION()
 TArray<FCommissionTimeRandomFactor> __FCommissionTimePoolConfig_GetTargetRandomPool(const TDataObjectPtr<FCommissionTimePoolConfig> &inout DataObject)
 {
-    TArray<FCommissionTimeRandomFactor> __r;
     if ((DataObject == nullptr))
     {
         if (!(EUIGlobals::GIsDuringPropertyConversion))
@@ -236,7 +225,7 @@ TArray<FCommissionTimeRandomFactor> __FCommissionTimePoolConfig_GetTargetRandomP
         FCommissionTimePoolConfig local_24;
         return local_24.TargetRandomPool;
     }
-    return __r;
+    return DataObject.Get().TargetRandomPool;
 }
 UFUNCTION()
 FCommissionTimePoolConfig CastToFCommissionTimePoolConfig(const TDataObjectPtr<FCommissionTimePoolConfig> &inout DataObject)
@@ -250,7 +239,6 @@ namespace __FCommissionEntryRulePoolConfigFunctions
 UFUNCTION()
 FText __FCommissionEntryRulePoolConfig_GetDescription(const TDataObjectPtr<FCommissionEntryRulePoolConfig> &inout DataObject)
 {
-    FText __r;
     if ((DataObject == nullptr))
     {
         if (!(EUIGlobals::GIsDuringPropertyConversion))
@@ -260,12 +248,11 @@ FText __FCommissionEntryRulePoolConfig_GetDescription(const TDataObjectPtr<FComm
         FCommissionEntryRulePoolConfig local_24;
         return local_24.Description;
     }
-    return __r;
+    return DataObject.Get().Description;
 }
 UFUNCTION()
 TArray<FCommissionEntryRuleRandomFactor> __FCommissionEntryRulePoolConfig_GetTargetRandomPool(const TDataObjectPtr<FCommissionEntryRulePoolConfig> &inout DataObject)
 {
-    TArray<FCommissionEntryRuleRandomFactor> __r;
     if ((DataObject == nullptr))
     {
         if (!(EUIGlobals::GIsDuringPropertyConversion))
@@ -275,7 +262,7 @@ TArray<FCommissionEntryRuleRandomFactor> __FCommissionEntryRulePoolConfig_GetTar
         FCommissionEntryRulePoolConfig local_24;
         return local_24.TargetRandomPool;
     }
-    return __r;
+    return DataObject.Get().TargetRandomPool;
 }
 UFUNCTION()
 FCommissionEntryRulePoolConfig CastToFCommissionEntryRulePoolConfig(const TDataObjectPtr<FCommissionEntryRulePoolConfig> &inout DataObject)
@@ -289,7 +276,6 @@ namespace __FRandomPolicyConfigFunctions
 UFUNCTION()
 TArray<FRandomFactorConfig> __FRandomPolicyConfig_GetRandomFactorConfig(const TDataObjectPtr<FRandomPolicyConfig> &inout DataObject)
 {
-    TArray<FRandomFactorConfig> __r;
     if ((DataObject == nullptr))
     {
         if (!(EUIGlobals::GIsDuringPropertyConversion))
@@ -299,7 +285,7 @@ TArray<FRandomFactorConfig> __FRandomPolicyConfig_GetRandomFactorConfig(const TD
         FRandomPolicyConfig local_22;
         return local_22.RandomFactorConfig;
     }
-    return __r;
+    return DataObject.Get().RandomFactorConfig;
 }
 UFUNCTION()
 FRandomPolicyConfig CastToFRandomPolicyConfig(const TDataObjectPtr<FRandomPolicyConfig> &inout DataObject)
@@ -313,7 +299,6 @@ namespace __FRandomSeedConfigFunctions
 UFUNCTION()
 FText __FRandomSeedConfig_GetRandomSeedName(const TDataObjectPtr<FRandomSeedConfig> &inout DataObject)
 {
-    FText __r;
     if ((DataObject == nullptr))
     {
         if (!(EUIGlobals::GIsDuringPropertyConversion))
@@ -323,7 +308,7 @@ FText __FRandomSeedConfig_GetRandomSeedName(const TDataObjectPtr<FRandomSeedConf
         FRandomSeedConfig local_24;
         return local_24.RandomSeedName;
     }
-    return __r;
+    return DataObject.Get().RandomSeedName;
 }
 UFUNCTION()
 TArray<TDataObjectPtr<FRandomPolicyConfig>> __FRandomSeedConfig_GetRandomPolicyConfig(const TDataObjectPtr<FRandomSeedConfig> &inout DataObject)
@@ -337,7 +322,7 @@ TArray<TDataObjectPtr<FRandomPolicyConfig>> __FRandomSeedConfig_GetRandomPolicyC
         FRandomSeedConfig local_24;
         return local_24.GetRandomPolicyConfig();
     }
-    return GetRandomPolicyConfig();
+    return DataObject.Get().GetRandomPolicyConfig();
 }
 UFUNCTION()
 FRandomSeedConfig CastToFRandomSeedConfig(const TDataObjectPtr<FRandomSeedConfig> &inout DataObject)
@@ -360,7 +345,6 @@ namespace __FRandomPolicyBlacklistSingleConfigFunctions
 UFUNCTION()
 TArray<FRandomFactorBlacklistConfig> __FRandomPolicyBlacklistSingleConfig_GetRandomFactorBlacklistConfig(const TDataObjectPtr<FRandomPolicyBlacklistSingleConfig> &inout DataObject)
 {
-    TArray<FRandomFactorBlacklistConfig> __r;
     if ((DataObject == nullptr))
     {
         if (!(EUIGlobals::GIsDuringPropertyConversion))
@@ -370,7 +354,7 @@ TArray<FRandomFactorBlacklistConfig> __FRandomPolicyBlacklistSingleConfig_GetRan
         FRandomPolicyBlacklistSingleConfig local_20;
         return local_20.RandomFactorBlacklistConfig;
     }
-    return __r;
+    return DataObject.Get().RandomFactorBlacklistConfig;
 }
 UFUNCTION()
 FRandomPolicyBlacklistSingleConfig CastToFRandomPolicyBlacklistSingleConfig(const TDataObjectPtr<FRandomPolicyBlacklistSingleConfig> &inout DataObject)
@@ -393,7 +377,7 @@ TArray<TDataObjectPtr<FRandomPolicyBlacklistSingleConfig>> __FRandomPolicyBlackl
         FRandomPolicyBlacklistGroupConfig local_20;
         return local_20.GetBlacklistSingleConfigs();
     }
-    return GetBlacklistSingleConfigs();
+    return DataObject.Get().GetBlacklistSingleConfigs();
 }
 UFUNCTION()
 FRandomPolicyBlacklistGroupConfig CastToFRandomPolicyBlacklistGroupConfig(const TDataObjectPtr<FRandomPolicyBlacklistGroupConfig> &inout DataObject)
@@ -407,7 +391,6 @@ namespace __FRandomConstraintConfigFunctions
 UFUNCTION()
 ECommissionType __FRandomConstraintConfig_GetCommissionType(const TDataObjectPtr<FRandomConstraintConfig> &inout DataObject)
 {
-    int local_23 = 0;
     if ((DataObject == nullptr))
     {
         if (!(EUIGlobals::GIsDuringPropertyConversion))
@@ -415,15 +398,13 @@ ECommissionType __FRandomConstraintConfig_GetCommissionType(const TDataObjectPtr
             FBlueprintDebugFunctions::ThrowScriptException("Get 'CommissionType' from a null 'FRandomConstraintConfig' DataObject!");
         }
         FRandomConstraintConfig local_22;
-        local_23 = int(local_22.CommissionType);
-        return ECommissionType(local_23);
+        return local_22.CommissionType;
     }
-    return ECommissionType(local_23);
+    return DataObject.Get().CommissionType;
 }
 UFUNCTION()
 ERandomFactorType __FRandomConstraintConfig_GetRandomFactorType(const TDataObjectPtr<FRandomConstraintConfig> &inout DataObject)
 {
-    int local_23 = 0;
     if ((DataObject == nullptr))
     {
         if (!(EUIGlobals::GIsDuringPropertyConversion))
@@ -431,10 +412,9 @@ ERandomFactorType __FRandomConstraintConfig_GetRandomFactorType(const TDataObjec
             FBlueprintDebugFunctions::ThrowScriptException("Get 'RandomFactorType' from a null 'FRandomConstraintConfig' DataObject!");
         }
         FRandomConstraintConfig local_22;
-        local_23 = int(local_22.RandomFactorType);
-        return ERandomFactorType(local_23);
+        return local_22.RandomFactorType;
     }
-    return ERandomFactorType(local_23);
+    return DataObject.Get().RandomFactorType;
 }
 UFUNCTION()
 TArray<TDataObjectPtr<FDataObject>> __FRandomConstraintConfig_GetRandomFactor(const TDataObjectPtr<FRandomConstraintConfig> &inout DataObject)
@@ -448,7 +428,7 @@ TArray<TDataObjectPtr<FDataObject>> __FRandomConstraintConfig_GetRandomFactor(co
         FRandomConstraintConfig local_22;
         return local_22.GetRandomFactor();
     }
-    return GetRandomFactor();
+    return DataObject.Get().GetRandomFactor();
 }
 UFUNCTION()
 FRandomConstraintConfig CastToFRandomConstraintConfig(const TDataObjectPtr<FRandomConstraintConfig> &inout DataObject)

@@ -221,13 +221,13 @@ struct FVM_TeamInvitationPage : FEUIViewModel
     }
     void FilterTeamMembersFromList(TArray<FEUIModelContainer> &inout List)
     {
-        int local_16 = 0;
         int local_4 = List.Num() - 1;
         for (; local_4 >= 0; --local_4)
         {
-            if (FInstancedStruct::GetPtr(List[local_4].GetFactoryStruct()).opCall())
+            TConstRawPtr<FTeamInvitationItemData> local_12 = FInstancedStruct::GetPtr(List[local_4].GetFactoryStruct()).opCall();
+            if (local_12)
             {
-                if (::FMS_LocalPlayerTeamData::Get(this.GetContext().Manager).IsTeamMember(local_16, ETeamType(1)))
+                if (::FMS_LocalPlayerTeamData::Get(this.GetContext().Manager).IsTeamMember(local_12.Get().PlayerBrief.GetUid(), ETeamType(1)))
                 {
                     List.RemoveAtSwap(local_4);
                 }
@@ -354,11 +354,9 @@ FVM_TeamInvitationPage& Create(const UObject ContextObject)
 {
     return FVM_TeamInvitationPage::CreateByManager(EUIInternal::GetContextManager(ContextObject));
 }
-FVM_TeamInvitationPage CreateByManager(const UEUIManagerSubsystem Manager)
+FVM_TeamInvitationPage& CreateByManager(const UEUIManagerSubsystem Manager)
 {
-    FVM_TeamInvitationPage __r;
-    TEUIModelRef<FVM_TeamInvitationPage> local_6 = TEUIModelRef<FVM_TeamInvitationPage>(EUIInternal::MakeModelWithManager(Manager, FVM_TeamInvitationPage::ModelId));
-    return __r;
+    return TEUIModelRef<FVM_TeamInvitationPage>(EUIInternal::MakeModelWithManager(Manager, FVM_TeamInvitationPage::ModelId)).Get();
 }
 void GetModelInfo(FEUIViewModelMetaInfo &inout Result)
 {
@@ -468,7 +466,6 @@ namespace __GeneratedProperties_FVM_TeamInvitationPage
 {
 UScriptStruct StaticStruct()
 {
-    UScriptStruct local_2;
-    return local_2;
+    return __GeneratedProperties_FVM_TeamInvitationPage.Get();
 }
 }

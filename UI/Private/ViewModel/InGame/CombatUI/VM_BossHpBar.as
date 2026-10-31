@@ -415,7 +415,7 @@ struct FVMS_BossHpBar : FEUIViewModelSingleton
     }
     void RefreshPreviewHpBarRatio()
     {
-        this.SetDisplayPreviewHpBarRatio(0.0f);
+        this.SetDisplayPreviewHpBarRatio(this.GetPreviewHpBarRatioSource().GetValue());
         this.CachedPreviewHpBarRatioForLogic = this.GetDisplayPreviewHpBarRatio();
         return;
     }
@@ -432,7 +432,18 @@ struct FVMS_BossHpBar : FEUIViewModelSingleton
     }
     void RefreshDivineStatus()
     {
-        // body not fully recovered — stub [unresolved-operand]
+        if (this.GetDivineBurstTag().GetValue())
+        {
+            this.SetDivineStatus(1);
+            return;
+        }
+        if (this.GetDivineChaosTag().GetValue())
+        {
+            this.SetDivineStatus(2);
+            return;
+        }
+        this.SetDivineStatus(0);
+        return;
     }
     void RefreshExecutedState()
     {
@@ -548,8 +559,7 @@ struct FVMS_BossHpBar : FEUIViewModelSingleton
     }
     void RefreshExecutedWaitTimeRatio()
     {
-        float32 local_1 = 0.0f;
-        this.SetExecutedWaitTimeRatio(local_1);
+        this.SetExecutedWaitTimeRatio(this.GetExecutedWaitTimeSource().GetValue());
         return;
     }
     void OnPlayerLockTargetChange(const FC_LockTarget &inout LockTarget)
@@ -616,8 +626,7 @@ struct FVMS_BossHpBar : FEUIViewModelSingleton
     }
     void OnBuffInfoChange()
     {
-        TEUIModelRef<FVM_BuffInfo> local_2 = this.GetVM_BuffInfo();
-        TArray<FEUIDynamicWidgetData> local_6 = GetBuffModels();
+        TArray<FEUIDynamicWidgetData> local_6 = this.GetVM_BuffInfo().Get().GetBuffModels();
         this.GetModify_BuffDataList().Reset(0);
         for (auto& local_24 : local_6)
         {
@@ -632,7 +641,7 @@ struct FVMS_BossHpBar : FEUIViewModelSingleton
             int local_4 = 0;
             for (; local_4 < this.GetHpSegmentIconVMList().Num(); )
             {
-                (local_4 >= (this.GetMaxHpBarSegment() - this.GetHpBarSegment())).SetbIconActive();
+                this.GetHpSegmentIconVMList()[local_4].Get().SetbIconActive((local_4 >= (this.GetMaxHpBarSegment() - this.GetHpBarSegment())));
                 ++local_4;
             }
         }
@@ -640,7 +649,6 @@ struct FVMS_BossHpBar : FEUIViewModelSingleton
     }
     void HandleHpTargetEntityChanged()
     {
-        int local_2 = 0;
         if (!(this.GetHpTargetEntity().IsValid()))
         {
             return;
@@ -653,15 +661,16 @@ struct FVMS_BossHpBar : FEUIViewModelSingleton
         {
             if (local_10.GetPresentationConfig())
             {
-                this.SetHpBarSegment(local_2);
+                this.SetHpBarSegment(local_10.GetPresentationConfig().Get().HPBarSegment);
                 local_3 = true;
             }
         }
         if (!(local_3))
         {
-            if (::GetMonsterConfig(this.GetHpTargetEntity()))
+            TDataObjectPtr<FMonsterPrefabConfig> local_34 = ::GetMonsterConfig(this.GetHpTargetEntity());
+            if (local_34)
             {
-                this.SetHpBarSegment(local_2);
+                this.SetHpBarSegment(local_34.Get().HPBarSegment);
             }
         }
         this.SetMaxHpBarSegment(this.GetHpBarSegment());
@@ -842,17 +851,19 @@ struct FVMS_BossHpBar : FEUIViewModelSingleton
             return;
         }
         FECSEntity local_8 = ::FASCommonUtils::GetLocalPlayerProxy();
-        int local_49 = EBossHpBarDisplayReason(0);
+        int local_49 = EBossHpBarDisplayReason::None;
         FECSEntity local_48 = ::FASCommonUtils::GetUniquePlayerEntity(HitEvent.Attacker);
         if ((local_48 == local_8))
         {
-            local_49 = EBossHpBarDisplayReason(3);
+            EBossHpBarDisplayReason local_1_2 = EBossHpBarDisplayReason::PlayerHit;
+            local_49 = local_1_2;
         }
         else
         {
             if (::FTeamUtils::IsInSameTeam(local_8, local_48))
             {
-                local_49 = EBossHpBarDisplayReason(1);
+                EBossHpBarDisplayReason local_1_3 = EBossHpBarDisplayReason::TeamHit;
+                local_49 = local_1_3;
             }
         }
         this.SetDisplayBossEntity(HitEvent.Receiver, EBossHpBarDisplayReason(local_49));
@@ -903,8 +914,7 @@ struct FVMS_BossHpBar : FEUIViewModelSingleton
         }
         if (this.GetVM_BuffInfo().IsValid())
         {
-            TEUIModelRef<FVM_BuffInfo> local_10 = this.GetVM_BuffInfo();
-            this.GetDisplayBossEntity().SetTargetEntity();
+            this.GetVM_BuffInfo().Get().SetTargetEntity(this.GetDisplayBossEntity());
         }
         this.RefreshBossDisplayNameAndDivine();
         this.RefreshVisibility();
@@ -922,6 +932,8 @@ struct FVMS_BossHpBar : FEUIViewModelSingleton
             {
                 if (local_8.GetPresentationConfig())
                 {
+                    this.SetBossDisplayName(local_8.GetPresentationConfig().Get().Name);
+                    this.SetBossDisplayPrefix(local_8.GetPresentationConfig().Get().Prefix);
                     local_2 = true;
                 }
             }
@@ -936,8 +948,10 @@ struct FVMS_BossHpBar : FEUIViewModelSingleton
                 {
                     this.SetBossDisplayName(FText());
                 }
-                if (::GetMonsterConfig(this.GetDisplayBossEntity()))
+                TDataObjectPtr<FMonsterPrefabConfig> local_84 = ::GetMonsterConfig(this.GetDisplayBossEntity());
+                if (local_84)
                 {
+                    this.SetBossDisplayPrefix(local_84.Get().DisplayPrefix);
                 }
                 else
                 {
@@ -972,13 +986,16 @@ struct FVMS_BossHpBar : FEUIViewModelSingleton
                 {
                     if (local_86.GetPresentationConfig())
                     {
-                        local_24 = GetDivineLiteraryType();
+                        local_24 = local_86.GetPresentationConfig().Get().GetDivineLiteraryType();
                     }
                 }
             }
         }
         if (local_24)
         {
+            this.SetDivineLiteraryNormal(local_24.Get().LiteraryImage);
+            this.SetDivineLiteraryStrengthening(local_24.Get().LiteraryStrengtheningImage);
+            this.SetDivineLiteraryWeaken(local_24.Get().LiteraryWeakenImage);
             return;
         }
         this.SetDivineLiteraryNormal(FSoftBrush());
@@ -1895,11 +1912,9 @@ FVMS_BossHpBar& Get(const UObject ContextObject)
 {
     return FVMS_BossHpBar::GetByManager(EUIInternal::GetContextManager(ContextObject));
 }
-FVMS_BossHpBar GetByManager(const UEUIManagerSubsystem Manager)
+FVMS_BossHpBar& GetByManager(const UEUIManagerSubsystem Manager)
 {
-    FVMS_BossHpBar __r;
-    TEUIModelRef<FVMS_BossHpBar> local_6 = TEUIModelRef<FVMS_BossHpBar>(EUIInternal::MakeModelWithManager(Manager, FVMS_BossHpBar::ModelId));
-    return __r;
+    return TEUIModelRef<FVMS_BossHpBar>(EUIInternal::MakeModelWithManager(Manager, FVMS_BossHpBar::ModelId)).Get();
 }
 void GetModelInfo(FEUIViewModelMetaInfo &inout Result)
 {
@@ -2394,7 +2409,6 @@ namespace __GeneratedProperties_FVMS_BossHpBar
 {
 UScriptStruct StaticStruct()
 {
-    UScriptStruct local_2;
-    return local_2;
+    return __GeneratedProperties_FVMS_BossHpBar.Get();
 }
 }

@@ -204,11 +204,9 @@ FVM_CommonTips& Create(const UObject ContextObject, const FText &inout Content)
 {
     return FVM_CommonTips::CreateByManager(EUIInternal::GetContextManager(ContextObject), Content);
 }
-FVM_CommonTips CreateByManager(const UEUIManagerSubsystem Manager, const FText &inout Content)
+FVM_CommonTips& CreateByManager(const UEUIManagerSubsystem Manager, const FText &inout Content)
 {
-    FVM_CommonTips __r;
-    TEUIModelRef<FVM_CommonTips> local_6 = TEUIModelRef<FVM_CommonTips>(EUIInternal::MakeModelWithManager_Generic(Manager, FVM_CommonTips::ModelId, 0, Content));
-    return __r;
+    return TEUIModelRef<FVM_CommonTips>(EUIInternal::MakeModelWithManager_Generic(Manager, FVM_CommonTips::ModelId, 0, Content)).Get();
 }
 void GetModelInfo(FEUIViewModelMetaInfo &inout Result)
 {
@@ -258,8 +256,7 @@ namespace __GeneratedProperties_FVM_CommonTips
 {
 UScriptStruct StaticStruct()
 {
-    UScriptStruct local_2;
-    return local_2;
+    return __GeneratedProperties_FVM_CommonTips.Get();
 }
 }
 namespace FVM_ImportantTips
@@ -268,11 +265,9 @@ FVM_ImportantTips& Create(const UObject ContextObject, const EImportantTipsStyle
 {
     return FVM_ImportantTips::CreateByManager(EUIInternal::GetContextManager(ContextObject), EImportantTipsStyle(Style));
 }
-FVM_ImportantTips CreateByManager(const UEUIManagerSubsystem Manager, const EImportantTipsStyle Style)
+FVM_ImportantTips& CreateByManager(const UEUIManagerSubsystem Manager, const EImportantTipsStyle Style)
 {
-    FVM_ImportantTips __r;
-    TEUIModelRef<FVM_ImportantTips> local_6 = TEUIModelRef<FVM_ImportantTips>(EUIInternal::MakeModelWithManager_Generic(Manager, FVM_ImportantTips::ModelId, 0, Style));
-    return __r;
+    return TEUIModelRef<FVM_ImportantTips>(EUIInternal::MakeModelWithManager_Generic(Manager, FVM_ImportantTips::ModelId, 0, Style)).Get();
 }
 void GetModelInfo(FEUIViewModelMetaInfo &inout Result)
 {
@@ -314,7 +309,6 @@ namespace __GeneratedProperties_FVM_ImportantTips
 {
 UScriptStruct StaticStruct()
 {
-    UScriptStruct local_2;
-    return local_2;
+    return __GeneratedProperties_FVM_ImportantTips.Get();
 }
 }

@@ -430,6 +430,7 @@ class US_AIKnowledgeSystem : UECSScriptSystem
             }
             for (auto local_60 : local_42)
             {
+                local_8.Watchers[local_32].Set.Remove(local_60);
             }
             if (local_8.Watchers[local_32].Set.Num() == 0)
             {
@@ -438,6 +439,7 @@ class US_AIKnowledgeSystem : UECSScriptSystem
         }
         for (auto& local_32 : local_14)
         {
+            local_8.Watchers.Remove(local_32);
         }
         return;
     }

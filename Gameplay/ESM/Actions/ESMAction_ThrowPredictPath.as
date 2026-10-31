@@ -98,6 +98,7 @@ class UESMAction_ThrowPredictPath : UESMBPBaseSpanTickAction
         FThrowPredictPathData local_136;
         if (this.ThrowPredictPathConfig)
         {
+            local_136.PitchMappingCurve = this.ThrowPredictPathConfig.Get().ThrowPitchMappingCurve;
         }
         FName local_138;
         FName local_140;
@@ -177,8 +178,11 @@ class UESMAction_ThrowPredictPath : UESMBPBaseSpanTickAction
                 this.ClearUploadedPredictPaths(Context, Time);
                 FECSWorldPtr local_234 = ECS::GetECSWorld();
                 ModifyOrAdd local_238;
-                if (local_238.opCall())
+                FCS_ThrowPredictPathTrace& local_240 = local_238.opCall();
+                if (local_240)
                 {
+                    local_240.PathTraceResults.Remove(local_54);
+                    local_240.PreparedPredictPaths.Remove(local_54);
                 }
             }
             this.UpdateThrowPredictPath(Context, Time);
@@ -261,6 +265,7 @@ class UESMAction_ThrowPredictPath : UESMBPBaseSpanTickAction
             }
             for (auto local_38 : local_20)
             {
+                local_16.UploadedProjectileKeys.Remove(local_38);
             }
             local_20.Empty(0);
             local_16.PreparedPredictPaths.GetKeys(local_20);
@@ -268,6 +273,7 @@ class UESMAction_ThrowPredictPath : UESMBPBaseSpanTickAction
             {
                 if ((FECSEntityId(local_38.GetOwnerId()) == Context.GetEntity().GetId()))
                 {
+                    local_16.PreparedPredictPaths.Remove(local_38);
                 }
             }
             local_20.Empty(0);
@@ -276,6 +282,7 @@ class UESMAction_ThrowPredictPath : UESMBPBaseSpanTickAction
             {
                 if ((FECSEntityId(local_38.GetOwnerId()) == Context.GetEntity().GetId()))
                 {
+                    local_16.PreparedLaunchVelocities.Remove(local_38);
                 }
             }
         }
@@ -433,7 +440,6 @@ class UESMAction_ThrowPredictPath : UESMBPBaseSpanTickAction
     void GetPropThrowPredictPathParams(const FECSEntity &inout PropEntity, FThrowPredictPathParams &inout OutParams) const
     {
         float32 local_12;
-        float32 local_25 = 0.0f;
         if (!(PropEntity.IsValid()))
         {
             return;
@@ -470,7 +476,7 @@ class UESMAction_ThrowPredictPath : UESMBPBaseSpanTickAction
         }
         if (this.ThrowPredictPathConfig)
         {
-            local_12 = local_25;
+            local_12 = this.ThrowPredictPathConfig.Get().MaxPredictTime;
         }
         else
         {

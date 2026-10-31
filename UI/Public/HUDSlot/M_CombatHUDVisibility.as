@@ -621,11 +621,9 @@ FMS_CombatHUDVisibility& Get(const UObject ContextObject)
 {
     return FMS_CombatHUDVisibility::GetByManager(EUIInternal::GetContextManager(ContextObject));
 }
-FMS_CombatHUDVisibility GetByManager(const UEUIManagerSubsystem Manager)
+FMS_CombatHUDVisibility& GetByManager(const UEUIManagerSubsystem Manager)
 {
-    FMS_CombatHUDVisibility __r;
-    TEUIModelRef<FMS_CombatHUDVisibility> local_6 = TEUIModelRef<FMS_CombatHUDVisibility>(EUIInternal::MakeModelWithManager(Manager, FMS_CombatHUDVisibility::ModelId));
-    return __r;
+    return TEUIModelRef<FMS_CombatHUDVisibility>(EUIInternal::MakeModelWithManager(Manager, FMS_CombatHUDVisibility::ModelId)).Get();
 }
 void GetModelInfo(FEUIModelOnlyMetaInfo &inout Result)
 {

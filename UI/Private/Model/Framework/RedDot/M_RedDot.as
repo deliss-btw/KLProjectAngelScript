@@ -84,8 +84,7 @@ struct FM_RedDotNode : FEUIModel
         int local_1 = 0;
         for (auto& local_22 : this.GetSourceCounts())
         {
-            local_22;
-            local_1 = local_1 + 0;
+            local_1 = local_1 + local_22.GetValue();
         }
         return local_1;
     }
@@ -121,6 +120,7 @@ struct FM_RedDotNode : FEUIModel
             this.GetModify_SourceCounts().Add(InSource, local_4);
             return;
         }
+        this.GetModify_SourceCounts().Remove(InSource);
         return;
     }
     void DecreaseSourceCount(const uint InSource, const int InCount = 1)
@@ -139,7 +139,11 @@ struct FM_RedDotNode : FEUIModel
     }
     void RemoveChildNodeData(const FRedDotNodeData &inout InNodeData)
     {
-        // body not fully recovered — stub [unresolved-operand]
+        if (this.GetModify_ChildNodeDataSet().Remove(InNodeData))
+        {
+            this.DecreaseChildCount(1);
+        }
+        return;
     }
     void RemoveAllChildNodeData()
     {
@@ -418,10 +422,10 @@ struct FMS_RedDotSystem : FEUIModelSingleton
         {
             if (local_2.IsValid())
             {
-                return TEUIModelWeakRef<FM_RedDotNode>();
+                return TEUIModelWeakRef<FM_RedDotNode>(local_2.Get());
             }
         }
-        return (TEUIModelWeakRef<FM_RedDotNode>(nullptr));
+        return TEUIModelWeakRef<FM_RedDotNode>(nullptr);
     }
     ERedDotType GetRedDotDisplayType(const FRedDotNodeData &inout InNodeData) const
     {
@@ -430,7 +434,7 @@ struct FMS_RedDotSystem : FEUIModelSingleton
         {
             if (local_2.IsValid())
             {
-                return GetDisplayType();
+                return local_2.Get().GetDisplayType();
             }
         }
         return ERedDotType(0);
@@ -442,7 +446,7 @@ struct FMS_RedDotSystem : FEUIModelSingleton
         {
             if (local_2.IsValid())
             {
-                return GetCount();
+                return local_2.Get().GetCount();
             }
         }
         return 0;
@@ -458,7 +462,6 @@ struct FMS_RedDotSystem : FEUIModelSingleton
     bool HasRedDotByEvent(const ERedPointEvent InEventType, const uint64 InExtraDataId = 0)
     {
         FRedDotEventConfigData local_24;
-        bool local_141 = false;
         if (int(InEventType) == 0)
         {
             return false;
@@ -470,7 +473,8 @@ struct FMS_RedDotSystem : FEUIModelSingleton
         for (auto local_42 : local_24.EventDataIdSet)
         {
             GetDataObjectByGSDataId<FRedPointConfig> local_90;
-            if (local_90.opImplConv().IsSet() && GetNodeConfig().IsSet() && local_141)
+            TDataObjectPtr<FRedPointConfig> local_66 = local_90.opImplConv();
+            if (local_66.IsSet() && local_66.Get().GetNodeConfig().IsSet() && this.HasRedDot(local_66.Get().GetNodeConfig().Get().NodeTag, InExtraDataId))
             {
                 return true;
             }
@@ -496,7 +500,7 @@ struct FMS_RedDotSystem : FEUIModelSingleton
         }
         for (auto local_50 : local_24.EventDataIdSet)
         {
-            if (int(local_50).GetSourceCount() > 0)
+            if (local_30.Get().GetSourceCount(int(local_50)) > 0)
             {
                 return true;
             }
@@ -506,12 +510,12 @@ struct FMS_RedDotSystem : FEUIModelSingleton
     bool InternalConsumeRedDot(const TDataObjectPtr<FRedPointNodeConfig> &inout InNodeCfg, const uint64 InExtraDataId, const uint InSource, const TEUIModelRef<FM_RedDotNode> &inout InChildNodeModel, const int InConsumeCount, TSet<FRedDotNodeData> &inout VisitedNodes)
     {
         bool local_1;
-        FRedDotNodeData local_6;
         local_1 = false;
         if (!(InNodeCfg.IsSet()))
         {
             return local_1;
         }
+        FRedDotNodeData local_6 = FRedDotNodeData(InNodeCfg.Get().NodeTag, InExtraDataId);
         if (VisitedNodes.Contains(local_6))
         {
             return local_1;
@@ -525,22 +529,22 @@ struct FMS_RedDotSystem : FEUIModelSingleton
         bool local_10 = false;
         if (InChildNodeModel.IsValid())
         {
-            int local_12 = GetCount();
-            InSource.DecreaseSourceCount(InConsumeCount);
-            FRedDotNodeData local_16 = FRedDotNodeData(GetNodeData().NodeTag, 0);
+            int local_12 = local_8.Get().GetCount();
+            local_8.Get().DecreaseSourceCount(InSource, InConsumeCount);
+            FRedDotNodeData local_16 = FRedDotNodeData(InChildNodeModel.Get().GetNodeData().NodeTag, 0);
             TEUIModelRef<FM_RedDotNode> local_20;
-            if (!(this.GetRedDotNodeDataMap().Find(local_16, local_20)) || (GetCount() <= 0))
+            if (!(this.GetRedDotNodeDataMap().Find(local_16, local_20)) || (local_20.Get().GetCount() <= 0))
             {
-                local_16.RemoveChildNodeData();
+                local_8.Get().RemoveChildNodeData(local_16);
             }
-            local_10 = (local_12 != GetCount());
+            local_10 = (local_12 != local_8.Get().GetCount());
         }
-        bool local_9 = local_10 || (!(HasChildActivation()) && (GetCount() > 0));
+        bool local_9 = local_10 || (!(local_8.Get().HasChildActivation()) && (local_8.Get().GetCount() > 0));
         if (local_9)
         {
-            if (!(GetbHasGhostChild()) && !(HasChildActivation()))
+            if (!(local_8.Get().GetbHasGhostChild()) && !(local_8.Get().HasChildActivation()))
             {
-                InSource.DecreaseSourceCount(InSource.GetSourceCount());
+                local_8.Get().DecreaseSourceCount(InSource, local_8.Get().GetSourceCount(InSource));
                 TEUIModelRef<FM_RedDotNode> local_20;
                 if (local_6.ExtraDataId <= 0)
                 {
@@ -552,10 +556,10 @@ struct FMS_RedDotSystem : FEUIModelSingleton
                 }
                 if (local_9)
                 {
-                    InSource.DecreaseSourceCount(InConsumeCount);
-                    if (GetCount() <= 0)
+                    local_20.Get().DecreaseSourceCount(InSource, InConsumeCount);
+                    if (local_8.Get().GetCount() <= 0)
                     {
-                        GetNodeData().RemoveChildNodeData();
+                        local_20.Get().RemoveChildNodeData(local_8.Get().GetNodeData());
                     }
                 }
                 FPbRedPointEventData local_38;
@@ -573,15 +577,16 @@ struct FMS_RedDotSystem : FEUIModelSingleton
                     }
                     if (local_38.GetParams_Num() <= 0)
                     {
+                        this.GetModify_PbRedDotEventDataMap().Remove(InSource);
                         local_1 = true;
                     }
                 }
-                if (GetCount() <= 0)
+                if (local_8.Get().GetCount() <= 0)
                 {
-                    GetModify_ResponseEventList().Reset(0);
+                    local_8.Get().GetModify_ResponseEventList().Reset(0);
                 }
             }
-            for (auto& local_60 : GetParentNodeList())
+            for (auto& local_60 : InNodeCfg.Get().GetParentNodeList())
             {
                 if (local_60.IsSet())
                 {
@@ -595,45 +600,45 @@ struct FMS_RedDotSystem : FEUIModelSingleton
     {
         TDataObjectPtr<FRedPointNodeConfig> local_24;
         GetDataObjectByGSDataId<FRedPointConfig> local_72;
-        bool local_121 = !(local_72.opImplConv().IsSet()) || !(GetNodeConfig().IsSet());
-        if (local_121)
+        TDataObjectPtr<FRedPointConfig> local_48 = local_72.opImplConv();
+        if (!(local_48.IsSet()) || !(local_48.Get().GetNodeConfig().IsSet()))
         {
             return local_24;
         }
+        TSet<uint> local_166;
         TArray<TDataObjectPtr<FRedPointNodeConfig>> local_170;
-        local_170.Add(GetNodeConfig());
+        local_170.Add(local_48.Get().GetNodeConfig());
         while (!(local_170.IsEmpty()))
         {
             TDataObjectPtr<FRedPointNodeConfig> local_196 = local_170.Last(0);
             local_170.RemoveAt((local_170.Num() - 1));
-            if (!(local_196.IsSet()) || local_121)
+            if (!(local_196.IsSet()) || local_166.Contains(local_196.Get().DataId))
             {
                 continue;
             }
-            FGameplayTag local_199;
-            local_121 = (local_199 == InNodeTag);
-            if (local_121)
+            local_166.Add(local_196.Get().DataId);
+            if ((FGameplayTag(local_196.Get().NodeTag) == InNodeTag))
             {
                 return local_196;
             }
-            local_170.Append(GetParentNodeList());
+            local_170.Append(local_196.Get().GetParentNodeList());
         }
         return local_24;
     }
     void ConsumeSourceNode(const uint InSource, const TDataObjectPtr<FRedPointNodeConfig> &inout InNodeCfg, const uint64 InExtraDataId)
     {
-        FRedDotNodeData local_6;
         if (!(InNodeCfg.IsSet()))
         {
             return;
         }
+        FRedDotNodeData local_6 = FRedDotNodeData(InNodeCfg.Get().NodeTag, InExtraDataId);
         TEUIModelRef<FM_RedDotNode> local_8;
         if (!(this.GetRedDotNodeDataMap().Find(local_6, local_8)) || !(local_8.IsValid()))
         {
             return;
         }
         TSet<FRedDotNodeData> local_30;
-        int local_32 = InSource.GetSourceCount();
+        int local_32 = local_8.Get().GetSourceCount(InSource);
         this.SetbRequestStoreDataDirty(this.InternalConsumeRedDot(InNodeCfg, InExtraDataId, InSource, TEUIModelRef<FM_RedDotNode>(nullptr), local_32, local_30) || this.GetbRequestStoreDataDirty());
         return;
     }
@@ -646,13 +651,13 @@ struct FMS_RedDotSystem : FEUIModelSingleton
             return;
         }
         TArray<uint> local_14;
-        local_14.GetSourceKeys();
+        local_8.Get().GetSourceKeys(local_14);
         for (auto local_27 : local_14)
         {
             if (local_27 == 0)
             {
-                int local_29 = 0.GetSourceCount();
-                0.DecreaseSourceCount(local_29);
+                int local_29 = local_8.Get().GetSourceCount(0);
+                local_8.Get().DecreaseSourceCount(0, local_29);
                 continue;
             }
             TDataObjectPtr<FRedPointNodeConfig> local_78 = this.FindSourceNodeConfig(local_27, InNodeData.NodeTag);
@@ -661,7 +666,7 @@ struct FMS_RedDotSystem : FEUIModelSingleton
                 continue;
             }
             TSet<FRedDotNodeData> local_98;
-            int local_29_2 = local_27.GetSourceCount();
+            int local_29_2 = local_8.Get().GetSourceCount(local_27);
             this.SetbRequestStoreDataDirty(this.InternalConsumeRedDot(local_78, InNodeData.ExtraDataId, local_27, TEUIModelRef<FM_RedDotNode>(nullptr), local_29_2, local_98) || this.GetbRequestStoreDataDirty());
         }
         return;
@@ -673,8 +678,7 @@ struct FMS_RedDotSystem : FEUIModelSingleton
     }
     TEUIModelWeakRef<FM_RedDotNode> TryFindOrAddRedDotNode(const FRedDotNodeData &inout InNodeData)
     {
-        this.FindOrAddRedDotNode(InNodeData);
-        return TEUIModelWeakRef<FM_RedDotNode>();
+        return TEUIModelWeakRef<FM_RedDotNode>(this.FindOrAddRedDotNode(InNodeData).Get());
     }
     TEUIModelRef<FM_RedDotNode> FindOrAddRedDotNode(const FRedDotNodeData &inout InRedDotNodeData)
     {
@@ -687,9 +691,6 @@ struct FMS_RedDotSystem : FEUIModelSingleton
     void InternalGenerateRedDot(const ERedPointEvent InEventType, const TArray<uint64> &inout InExtraParamList)
     {
         FRedDotEventConfigData local_24;
-        bool local_141 = false;
-        FRedDotNodeData local_164;
-        FRedDotNodeData local_208;
         if (int(InEventType) == 0)
         {
             return;
@@ -702,38 +703,38 @@ struct FMS_RedDotSystem : FEUIModelSingleton
         {
             int local_91 = int(local_42);
             GetDataObjectByGSDataId<FRedPointConfig> local_90;
-            if (local_90.opImplConv().IsSet() && GetNodeConfig().IsSet())
+            TDataObjectPtr<FRedPointConfig> local_66 = local_90.opImplConv();
+            if (local_66.IsSet() && local_66.Get().GetNodeConfig().IsSet())
             {
-                const FRedPointNodeConfig& local_144;
+                const FRedPointNodeConfig& local_144 = local_66.Get().GetNodeConfig().Get();
                 FRedDotNodeData local_148 = FRedDotNodeData(local_144.NodeTag, 0);
-                this.FindOrAddRedDotNode(local_148);
+                TEUIModelRef<FM_RedDotNode> local_152 = this.FindOrAddRedDotNode(local_148);
                 int local_155 = int(local_144.NodeDisplayType);
-                local_155.SetDisplayType();
-                GetModify_ResponseEventList().AddUnique(InEventType);
+                local_152.Get().SetDisplayType(ERedDotType(local_155));
+                local_152.Get().GetModify_ResponseEventList().AddUnique(InEventType);
                 int local_1 = InExtraParamList.Num();
                 int local_156 = FMath::Max(local_1, 1);
-                local_91 = int(local_42);
-                local_91.IncreaseSourceCount(local_156);
+                local_152.Get().IncreaseSourceCount(int(local_42), local_156);
                 int local_158 = 0;
                 for (; local_158 < local_1; )
                 {
-                    local_164 = FRedDotNodeData(local_144.NodeTag, InExtraParamList[local_158]);
-                    this.FindOrAddRedDotNode(local_164);
-                    local_155 = int(local_144.NodeDisplayType);
-                    local_155.SetDisplayType();
-                    GetModify_ResponseEventList().AddUnique(InEventType);
-                    int(local_42).IncreaseSourceCount(1);
-                    local_164.AddChildNodeData();
+                    FRedDotNodeData local_164 = FRedDotNodeData(local_144.NodeTag, InExtraParamList[local_158]);
+                    TEUIModelRef<FM_RedDotNode> local_154 = this.FindOrAddRedDotNode(local_164);
+                    local_154.Get().SetDisplayType(ERedDotType(local_144.NodeDisplayType));
+                    local_154.Get().GetModify_ResponseEventList().AddUnique(InEventType);
+                    local_154.Get().IncreaseSourceCount(int(local_42), 1);
+                    local_152.Get().AddChildNodeData(local_164);
                     ++local_158;
                 }
+                TSet<uint> local_186;
                 TArray<TDataObjectPtr<FRedPointNodeConfig>> local_190;
                 for (auto& local_204 : local_144.GetParentNodeList())
                 {
                     if (local_204.IsSet())
                     {
-                        this.FindOrAddRedDotNode(local_208);
-                        local_155.SetDisplayType();
-                        local_148.AddChildNodeData();
+                        TEUIModelRef<FM_RedDotNode> local_166 = this.FindOrAddRedDotNode(FRedDotNodeData(local_204.Get().NodeTag, 0));
+                        local_166.Get().SetDisplayType(ERedDotType(local_204.Get().NodeDisplayType));
+                        local_166.Get().AddChildNodeData(local_148);
                     }
                 }
                 local_190.Append(local_144.GetParentNodeList());
@@ -741,23 +742,25 @@ struct FMS_RedDotSystem : FEUIModelSingleton
                 {
                     TDataObjectPtr<FRedPointNodeConfig> local_232 = local_190.Last(0);
                     local_190.RemoveAt((local_190.Num() - 1));
-                    if (!(local_232.IsSet()) || local_141)
+                    if (!(local_232.IsSet()) || local_186.Contains(local_232.Get().DataId))
                     {
                         continue;
                     }
-                    this.FindOrAddRedDotNode(local_164);
-                    local_155.SetDisplayType();
-                    int(local_42).IncreaseSourceCount(local_156);
-                    for (auto& local_204 : GetParentNodeList())
+                    local_186.Add(local_232.Get().DataId);
+                    FRedDotNodeData local_164_2 = FRedDotNodeData(local_232.Get().NodeTag, 0);
+                    TEUIModelRef<FM_RedDotNode> local_154_2 = this.FindOrAddRedDotNode(local_164_2);
+                    local_154_2.Get().SetDisplayType(ERedDotType(local_232.Get().NodeDisplayType));
+                    local_154_2.Get().IncreaseSourceCount(int(local_42), local_156);
+                    for (auto& local_204 : local_232.Get().GetParentNodeList())
                     {
                         if (local_204.IsSet())
                         {
-                            this.FindOrAddRedDotNode(local_208);
-                            local_155.SetDisplayType();
-                            local_164.AddChildNodeData();
+                            TEUIModelRef<FM_RedDotNode> local_166_2 = this.FindOrAddRedDotNode(FRedDotNodeData(local_204.Get().NodeTag, 0));
+                            local_166_2.Get().SetDisplayType(ERedDotType(local_204.Get().NodeDisplayType));
+                            local_166_2.Get().AddChildNodeData(local_164_2);
                         }
                     }
-                    local_190.Append(GetParentNodeList());
+                    local_190.Append(local_232.Get().GetParentNodeList());
                 }
                 FPbRedPointEventData& local_260 = this.GetModify_PbRedDotEventDataMap().FindOrAdd(local_42);
                 local_260.SetEventId(int(local_42));
@@ -785,10 +788,10 @@ struct FMS_RedDotSystem : FEUIModelSingleton
         FRedPointNodeConfig local_26;
         if (!(!(InNodeData.NodeTag.IsValid())) && this.GetRedPointNodeConfigMap().Find(InNodeData.NodeTag, local_26))
         {
-            this.FindOrAddRedDotNode(InNodeData);
-            int(local_26.NodeDisplayType).SetDisplayType();
-            InNewIncreaseCount.IncreaseCount();
-            InHasGhostChild.SetbHasGhostChild();
+            TEUIModelRef<FM_RedDotNode> local_30 = this.FindOrAddRedDotNode(InNodeData);
+            local_30.Get().SetDisplayType(local_26.NodeDisplayType);
+            local_30.Get().IncreaseCount(InNewIncreaseCount);
+            local_30.Get().SetbHasGhostChild(InHasGhostChild);
         }
         return;
     }
@@ -812,9 +815,10 @@ struct FMS_RedDotSystem : FEUIModelSingleton
         {
             int local_91 = int(local_42);
             GetDataObjectByGSDataId<FRedPointConfig> local_90;
-            if (local_90.opImplConv().IsSet() && GetNodeConfig().IsSet())
+            TDataObjectPtr<FRedPointConfig> local_66 = local_90.opImplConv();
+            if (local_66.IsSet() && local_66.Get().GetNodeConfig().IsSet())
             {
-                this.ConsumeSourceNode(int(local_42), GetNodeConfig(), InExtraDataId);
+                this.ConsumeSourceNode(int(local_42), local_66.Get().GetNodeConfig(), InExtraDataId);
             }
         }
         return;
@@ -835,7 +839,8 @@ struct FMS_RedDotSystem : FEUIModelSingleton
         {
             int local_95 = int(local_46);
             GetDataObjectByGSDataId<FRedPointConfig> local_94;
-            if (!(local_94.opImplConv().IsSet()) || !(GetNodeConfig().IsSet()))
+            TDataObjectPtr<FRedPointConfig> local_70 = local_94.opImplConv();
+            if (!(local_70.IsSet()) || !(local_70.Get().GetNodeConfig().IsSet()))
             {
                 continue;
             }
@@ -846,12 +851,13 @@ struct FMS_RedDotSystem : FEUIModelSingleton
                 local_156.GetParams(local_160);
                 for (auto local_174 : local_160)
                 {
-                    this.ConsumeSourceNode(int(local_46), GetNodeConfig(), local_174);
+                    this.ConsumeSourceNode(int(local_46), local_70.Get().GetNodeConfig(), local_174);
                 }
             }
-            this.ConsumeSourceNode(int(local_46), GetNodeConfig(), 0);
+            this.ConsumeSourceNode(int(local_46), local_70.Get().GetNodeConfig(), 0);
             if (this.GetPbRedDotEventDataMap().Contains(local_46))
             {
+                this.GetModify_PbRedDotEventDataMap().Remove(local_46);
                 this.SetbRequestStoreDataDirty(true);
             }
         }
@@ -872,7 +878,6 @@ struct FMS_RedDotSystem : FEUIModelSingleton
     }
     void GS_OnRedPointRsp(const FPbRedPointRsp &inout RedPointRsp)
     {
-        int local_131 = 0;
         XLog(ELog(72), FString().Append("[M_RedDotSystem]GS_OnRedPointRsp. Retcode:[").Append(RedPointRsp.GetRetcode()).Append("]"));
         if (RedPointRsp.GetRetcode() == 0)
         {
@@ -883,11 +888,12 @@ struct FMS_RedDotSystem : FEUIModelSingleton
             {
                 int local_51 = local_26.GetEventId();
                 GetDataObjectByGSDataId<FRedPointConfig> local_76;
-                if (local_76.opImplConv().IsSet() && GetNodeConfig().IsSet())
+                TDataObjectPtr<FRedPointConfig> local_50 = local_76.opImplConv();
+                if (local_50.IsSet() && local_50.Get().GetNodeConfig().IsSet())
                 {
                     TArray<uint64> local_130;
                     local_26.GetParams(local_130);
-                    this.InternalGenerateRedDot(ERedPointEvent(local_131), local_130);
+                    this.InternalGenerateRedDot(local_50.Get().EventType, local_130);
                 }
             }
             XLog(ELog(72), FString().Append("[M_RedDotSystem]GS_OnRedPointRsp restore done, broadcast FMsg_RedPointDataRestored. EventDataList.Num:[").Append(local_12.Num()).Append("]"));
@@ -900,13 +906,12 @@ struct FMS_RedDotSystem : FEUIModelSingleton
     {
         XLog(ELog(72), FString().Append("[M_RedDotSystem]GS_RequestStoreRedPoint."));
         FPbStoreRedPointReq local_10;
-        auto local_18 = this.GetPbRedDotEventDataMap().Iterator();
-        for (; local_18.CanProceed;)
+        for (auto& local_30 : this.GetPbRedDotEventDataMap())
         {
             FPbRedPointEventData local_50 = local_10.AddDataList();
-            local_50.SetEventId(local_18.Proceed().GetKey());
+            local_50.SetEventId(local_30.GetKey());
             TArray<uint64> local_56;
-            local_56.GetParams();
+            local_30.GetValue().GetParams(local_56);
             for (auto local_70 : local_56)
             {
                 local_50.AddParams(local_70);
@@ -1087,11 +1092,9 @@ FM_RedDotNode& Create(const UObject ContextObject, const FRedDotNodeData &inout 
 {
     return FM_RedDotNode::CreateByManager(EUIInternal::GetContextManager(ContextObject), NodeData);
 }
-FM_RedDotNode CreateByManager(const UEUIManagerSubsystem Manager, const FRedDotNodeData &inout NodeData)
+FM_RedDotNode& CreateByManager(const UEUIManagerSubsystem Manager, const FRedDotNodeData &inout NodeData)
 {
-    FM_RedDotNode __r;
-    TEUIModelRef<FM_RedDotNode> local_6 = TEUIModelRef<FM_RedDotNode>(EUIInternal::MakeModelWithManager_Generic(Manager, FM_RedDotNode::ModelId, 0, NodeData));
-    return __r;
+    return TEUIModelRef<FM_RedDotNode>(EUIInternal::MakeModelWithManager_Generic(Manager, FM_RedDotNode::ModelId, 0, NodeData)).Get();
 }
 void GetModelInfo(FEUIModelOnlyMetaInfo &inout Result)
 {
@@ -1139,11 +1142,9 @@ FMS_RedDotSystem& Get(const UObject ContextObject)
 {
     return FMS_RedDotSystem::GetByManager(EUIInternal::GetContextManager(ContextObject));
 }
-FMS_RedDotSystem GetByManager(const UEUIManagerSubsystem Manager)
+FMS_RedDotSystem& GetByManager(const UEUIManagerSubsystem Manager)
 {
-    FMS_RedDotSystem __r;
-    TEUIModelRef<FMS_RedDotSystem> local_6 = TEUIModelRef<FMS_RedDotSystem>(EUIInternal::MakeModelWithManager(Manager, FMS_RedDotSystem::ModelId));
-    return __r;
+    return TEUIModelRef<FMS_RedDotSystem>(EUIInternal::MakeModelWithManager(Manager, FMS_RedDotSystem::ModelId)).Get();
 }
 void GetModelInfo(FEUIModelOnlyMetaInfo &inout Result)
 {

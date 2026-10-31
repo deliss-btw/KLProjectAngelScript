@@ -172,11 +172,9 @@ FMS_WorldMapSpotView& Get(const UObject ContextObject)
 {
     return FMS_WorldMapSpotView::GetByManager(EUIInternal::GetContextManager(ContextObject));
 }
-FMS_WorldMapSpotView GetByManager(const UEUIManagerSubsystem Manager)
+FMS_WorldMapSpotView& GetByManager(const UEUIManagerSubsystem Manager)
 {
-    FMS_WorldMapSpotView __r;
-    TEUIModelRef<FMS_WorldMapSpotView> local_6 = TEUIModelRef<FMS_WorldMapSpotView>(EUIInternal::MakeModelWithManager(Manager, FMS_WorldMapSpotView::ModelId));
-    return __r;
+    return TEUIModelRef<FMS_WorldMapSpotView>(EUIInternal::MakeModelWithManager(Manager, FMS_WorldMapSpotView::ModelId)).Get();
 }
 void GetModelInfo(FEUIModelOnlyMetaInfo &inout Result)
 {
@@ -199,11 +197,9 @@ FVM_WorldMapSpotInfo& Create(const UObject ContextObject, const TEUIModelRef<FM_
 {
     return FVM_WorldMapSpotInfo::CreateByManager(EUIInternal::GetContextManager(ContextObject), Spot);
 }
-FVM_WorldMapSpotInfo CreateByManager(const UEUIManagerSubsystem Manager, const TEUIModelRef<FM_Spot> &inout Spot)
+FVM_WorldMapSpotInfo& CreateByManager(const UEUIManagerSubsystem Manager, const TEUIModelRef<FM_Spot> &inout Spot)
 {
-    FVM_WorldMapSpotInfo __r;
-    TEUIModelRef<FVM_WorldMapSpotInfo> local_6 = TEUIModelRef<FVM_WorldMapSpotInfo>(EUIInternal::MakeModelWithManager_Generic(Manager, FVM_WorldMapSpotInfo::ModelId, 0, Spot));
-    return __r;
+    return TEUIModelRef<FVM_WorldMapSpotInfo>(EUIInternal::MakeModelWithManager_Generic(Manager, FVM_WorldMapSpotInfo::ModelId, 0, Spot)).Get();
 }
 void GetModelInfo(FEUIViewModelMetaInfo &inout Result)
 {
@@ -268,7 +264,6 @@ namespace __GeneratedProperties_FVM_WorldMapSpotInfo
 {
 UScriptStruct StaticStruct()
 {
-    UScriptStruct local_2;
-    return local_2;
+    return __GeneratedProperties_FVM_WorldMapSpotInfo.Get();
 }
 }

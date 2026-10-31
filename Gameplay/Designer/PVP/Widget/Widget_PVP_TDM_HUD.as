@@ -30,7 +30,7 @@ class UWidget_PVP_TDM_HUD : UEUIUserWidget
     {
         if (this.VMS_PVP_TDM_HUD.IsValid())
         {
-            ToggleScoreboard();
+            this.VMS_PVP_TDM_HUD.Get().ToggleScoreboard();
         }
         return;
     }
@@ -39,7 +39,7 @@ class UWidget_PVP_TDM_HUD : UEUIUserWidget
     {
         if (this.VMS_PVP_TDM_HUD.IsValid())
         {
-            OnBackToCityPressed();
+            this.VMS_PVP_TDM_HUD.Get().OnBackToCityPressed();
         }
         return;
     }
@@ -48,38 +48,38 @@ class UWidget_PVP_TDM_HUD : UEUIUserWidget
     {
         if (this.VMS_PVP_TDM_HUD.IsValid())
         {
-            this.SwitchAvatarPanelDisableInputTags.OnSwitchAvatarPanelTogglePressed();
+            this.VMS_PVP_TDM_HUD.Get().OnSwitchAvatarPanelTogglePressed(this.SwitchAvatarPanelDisableInputTags);
         }
         return;
     }
     UFUNCTION()
     int VMS_PVP_TDM_HUD_Team1Kills() const
     {
-        FVMS_PVP_TDM_HUD& local_2;
+        FVMS_PVP_TDM_HUD& local_2 = this.VMS_PVP_TDM_HUD.Get();
         return local_2 ? local_2.GetTeam1Kills() : 0;
     }
     UFUNCTION()
     int VMS_PVP_TDM_HUD_Team2Kills() const
     {
-        FVMS_PVP_TDM_HUD& local_2;
+        FVMS_PVP_TDM_HUD& local_2 = this.VMS_PVP_TDM_HUD.Get();
         return local_2 ? local_2.GetTeam2Kills() : 0;
     }
     UFUNCTION()
     int VMS_PVP_TDM_HUD_KillScoreLimit() const
     {
-        FVMS_PVP_TDM_HUD& local_2;
+        FVMS_PVP_TDM_HUD& local_2 = this.VMS_PVP_TDM_HUD.Get();
         return local_2 ? local_2.GetKillScoreLimit() : 0;
     }
     UFUNCTION()
     int VMS_PVP_TDM_HUD_WinnerTeamId() const
     {
-        FVMS_PVP_TDM_HUD& local_2;
+        FVMS_PVP_TDM_HUD& local_2 = this.VMS_PVP_TDM_HUD.Get();
         return local_2 ? local_2.GetWinnerTeamId() : 0;
     }
     UFUNCTION()
     TArray<FEUIModelWeakRef> VMS_PVP_TDM_HUD_Modify_KDAListEntries() const
     {
-        FVMS_PVP_TDM_HUD& local_2;
+        FVMS_PVP_TDM_HUD& local_2 = this.VMS_PVP_TDM_HUD.Get();
         TArray<FEUIModelWeakRef> local_16;
         if (local_2)
         {
@@ -94,7 +94,7 @@ class UWidget_PVP_TDM_HUD : UEUIUserWidget
     UFUNCTION()
     TArray<FPVP_TDM_KDAEntry> VMS_PVP_TDM_HUD_Modify_AllPlayersKDA() const
     {
-        FVMS_PVP_TDM_HUD& local_2;
+        FVMS_PVP_TDM_HUD& local_2 = this.VMS_PVP_TDM_HUD.Get();
         TArray<FPVP_TDM_KDAEntry> local_12;
         if (local_2)
         {
@@ -109,8 +109,8 @@ class UWidget_PVP_TDM_HUD : UEUIUserWidget
     UFUNCTION()
     bool VMS_PVP_TDM_HUD_bScoreboardVisible() const
     {
-        FVMS_PVP_TDM_HUD& local_2;
         bool local_5;
+        FVMS_PVP_TDM_HUD& local_2 = this.VMS_PVP_TDM_HUD.Get();
         if (local_2)
         {
             local_5 = local_2.GetbScoreboardVisible();
@@ -124,53 +124,53 @@ class UWidget_PVP_TDM_HUD : UEUIUserWidget
     UFUNCTION()
     int VMS_PVP_TDM_HUD_LocalPlayerKills() const
     {
-        FVMS_PVP_TDM_HUD& local_2;
+        FVMS_PVP_TDM_HUD& local_2 = this.VMS_PVP_TDM_HUD.Get();
         return local_2 ? local_2.GetLocalPlayerKills() : 0;
     }
     UFUNCTION()
     int VMS_PVP_TDM_HUD_LocalPlayerDeaths() const
     {
-        FVMS_PVP_TDM_HUD& local_2;
+        FVMS_PVP_TDM_HUD& local_2 = this.VMS_PVP_TDM_HUD.Get();
         return local_2 ? local_2.GetLocalPlayerDeaths() : 0;
     }
     UFUNCTION()
     int VMS_PVP_TDM_HUD_LocalPlayerAssists() const
     {
-        FVMS_PVP_TDM_HUD& local_2;
+        FVMS_PVP_TDM_HUD& local_2 = this.VMS_PVP_TDM_HUD.Get();
         return local_2 ? local_2.GetLocalPlayerAssists() : 0;
     }
     UFUNCTION()
     FText VMS_PVP_TDM_HUD_LocalPlayerKDAText() const
     {
-        FVMS_PVP_TDM_HUD& local_2;
+        FVMS_PVP_TDM_HUD& local_2 = this.VMS_PVP_TDM_HUD.Get();
         FText local_12 = local_2 ? local_2.GetLocalPlayerKDAText() : FText();
         return local_12;
     }
     UFUNCTION()
     int VMS_PVP_TDM_HUD_LocalPlayerTeamId() const
     {
-        FVMS_PVP_TDM_HUD& local_2;
+        FVMS_PVP_TDM_HUD& local_2 = this.VMS_PVP_TDM_HUD.Get();
         return local_2 ? local_2.GetLocalPlayerTeamId() : 0;
     }
     UFUNCTION()
     FText VMS_PVP_TDM_HUD_LocalPlayerTeamDisplayText() const
     {
-        FVMS_PVP_TDM_HUD& local_2;
+        FVMS_PVP_TDM_HUD& local_2 = this.VMS_PVP_TDM_HUD.Get();
         FText local_12 = local_2 ? local_2.GetLocalPlayerTeamDisplayText() : FText();
         return local_12;
     }
     UFUNCTION()
     FText VMS_PVP_TDM_HUD_MatchRemainingTimeText() const
     {
-        FVMS_PVP_TDM_HUD& local_2;
+        FVMS_PVP_TDM_HUD& local_2 = this.VMS_PVP_TDM_HUD.Get();
         FText local_12 = local_2 ? local_2.GetMatchRemainingTimeText() : FText();
         return local_12;
     }
     UFUNCTION()
     bool VMS_PVP_TDM_HUD_bMatchEndResultVisible() const
     {
-        FVMS_PVP_TDM_HUD& local_2;
         bool local_5;
+        FVMS_PVP_TDM_HUD& local_2 = this.VMS_PVP_TDM_HUD.Get();
         if (local_2)
         {
             local_5 = local_2.GetbMatchEndResultVisible();
@@ -184,35 +184,35 @@ class UWidget_PVP_TDM_HUD : UEUIUserWidget
     UFUNCTION()
     FText VMS_PVP_TDM_HUD_MatchEndWinnerAnnouncementText() const
     {
-        FVMS_PVP_TDM_HUD& local_2;
+        FVMS_PVP_TDM_HUD& local_2 = this.VMS_PVP_TDM_HUD.Get();
         FText local_12 = local_2 ? local_2.GetMatchEndWinnerAnnouncementText() : FText();
         return local_12;
     }
     UFUNCTION()
     FText VMS_PVP_TDM_HUD_MatchEndMVPPlayerNameText() const
     {
-        FVMS_PVP_TDM_HUD& local_2;
+        FVMS_PVP_TDM_HUD& local_2 = this.VMS_PVP_TDM_HUD.Get();
         FText local_12 = local_2 ? local_2.GetMatchEndMVPPlayerNameText() : FText();
         return local_12;
     }
     UFUNCTION()
     int VMS_PVP_TDM_HUD_MatchEndMVPKills() const
     {
-        FVMS_PVP_TDM_HUD& local_2;
+        FVMS_PVP_TDM_HUD& local_2 = this.VMS_PVP_TDM_HUD.Get();
         return local_2 ? local_2.GetMatchEndMVPKills() : 0;
     }
     UFUNCTION()
     FText VMS_PVP_TDM_HUD_MatchEndMVPSummaryText() const
     {
-        FVMS_PVP_TDM_HUD& local_2;
+        FVMS_PVP_TDM_HUD& local_2 = this.VMS_PVP_TDM_HUD.Get();
         FText local_12 = local_2 ? local_2.GetMatchEndMVPSummaryText() : FText();
         return local_12;
     }
     UFUNCTION()
     bool VMS_PVP_TDM_HUD_bLocalPlayerWonMatch() const
     {
-        FVMS_PVP_TDM_HUD& local_2;
         bool local_5;
+        FVMS_PVP_TDM_HUD& local_2 = this.VMS_PVP_TDM_HUD.Get();
         if (local_2)
         {
             local_5 = local_2.GetbLocalPlayerWonMatch();
@@ -226,15 +226,15 @@ class UWidget_PVP_TDM_HUD : UEUIUserWidget
     UFUNCTION()
     FText VMS_PVP_TDM_HUD_BackToCityRemainTimeText() const
     {
-        FVMS_PVP_TDM_HUD& local_2;
+        FVMS_PVP_TDM_HUD& local_2 = this.VMS_PVP_TDM_HUD.Get();
         FText local_12 = local_2 ? local_2.GetBackToCityRemainTimeText() : FText();
         return local_12;
     }
     UFUNCTION()
     bool VMS_PVP_TDM_HUD_bBackToRoomVisible() const
     {
-        FVMS_PVP_TDM_HUD& local_2;
         bool local_5;
+        FVMS_PVP_TDM_HUD& local_2 = this.VMS_PVP_TDM_HUD.Get();
         if (local_2)
         {
             local_5 = local_2.GetbBackToRoomVisible();
@@ -248,8 +248,8 @@ class UWidget_PVP_TDM_HUD : UEUIUserWidget
     UFUNCTION()
     bool VMS_PVP_TDM_HUD_bSwitchAvatarPanelVisible() const
     {
-        FVMS_PVP_TDM_HUD& local_2;
         bool local_5;
+        FVMS_PVP_TDM_HUD& local_2 = this.VMS_PVP_TDM_HUD.Get();
         if (local_2)
         {
             local_5 = local_2.GetbSwitchAvatarPanelVisible();
@@ -263,8 +263,8 @@ class UWidget_PVP_TDM_HUD : UEUIUserWidget
     UFUNCTION()
     bool VMS_PVP_TDM_HUD_bInBrawlPrepStage() const
     {
-        FVMS_PVP_TDM_HUD& local_2;
         bool local_5;
+        FVMS_PVP_TDM_HUD& local_2 = this.VMS_PVP_TDM_HUD.Get();
         if (local_2)
         {
             local_5 = local_2.GetbInBrawlPrepStage();
@@ -278,22 +278,22 @@ class UWidget_PVP_TDM_HUD : UEUIUserWidget
     UFUNCTION()
     FText VMS_PVP_TDM_HUD_BrawlPrepCountdownText() const
     {
-        FVMS_PVP_TDM_HUD& local_2;
+        FVMS_PVP_TDM_HUD& local_2 = this.VMS_PVP_TDM_HUD.Get();
         FText local_12 = local_2 ? local_2.GetBrawlPrepCountdownText() : FText();
         return local_12;
     }
     UFUNCTION()
     FText VMS_PVP_TDM_HUD_BrawlPrepStageText() const
     {
-        FVMS_PVP_TDM_HUD& local_2;
+        FVMS_PVP_TDM_HUD& local_2 = this.VMS_PVP_TDM_HUD.Get();
         FText local_12 = local_2 ? local_2.GetBrawlPrepStageText() : FText();
         return local_12;
     }
     UFUNCTION()
     bool VMS_PVP_TDM_HUD_bIsBrawlMode() const
     {
-        FVMS_PVP_TDM_HUD& local_2;
         bool local_5;
+        FVMS_PVP_TDM_HUD& local_2 = this.VMS_PVP_TDM_HUD.Get();
         if (local_2)
         {
             local_5 = local_2.GetbIsBrawlMode();
@@ -307,8 +307,8 @@ class UWidget_PVP_TDM_HUD : UEUIUserWidget
     UFUNCTION()
     bool VMS_PVP_TDM_HUD_bIsTDMRoundMode() const
     {
-        FVMS_PVP_TDM_HUD& local_2;
         bool local_5;
+        FVMS_PVP_TDM_HUD& local_2 = this.VMS_PVP_TDM_HUD.Get();
         if (local_2)
         {
             local_5 = local_2.GetbIsTDMRoundMode();
@@ -322,66 +322,66 @@ class UWidget_PVP_TDM_HUD : UEUIUserWidget
     UFUNCTION()
     int VMS_PVP_TDM_HUD_CurrentRound() const
     {
-        FVMS_PVP_TDM_HUD& local_2;
+        FVMS_PVP_TDM_HUD& local_2 = this.VMS_PVP_TDM_HUD.Get();
         return local_2 ? local_2.GetCurrentRound() : 0;
     }
     UFUNCTION()
     int VMS_PVP_TDM_HUD_Team1RoundWins() const
     {
-        FVMS_PVP_TDM_HUD& local_2;
+        FVMS_PVP_TDM_HUD& local_2 = this.VMS_PVP_TDM_HUD.Get();
         return local_2 ? local_2.GetTeam1RoundWins() : 0;
     }
     UFUNCTION()
     int VMS_PVP_TDM_HUD_Team2RoundWins() const
     {
-        FVMS_PVP_TDM_HUD& local_2;
+        FVMS_PVP_TDM_HUD& local_2 = this.VMS_PVP_TDM_HUD.Get();
         return local_2 ? local_2.GetTeam2RoundWins() : 0;
     }
     UFUNCTION()
     int VMS_PVP_TDM_HUD_RoundsToWin() const
     {
-        FVMS_PVP_TDM_HUD& local_2;
+        FVMS_PVP_TDM_HUD& local_2 = this.VMS_PVP_TDM_HUD.Get();
         return local_2 ? local_2.GetRoundsToWin() : 0;
     }
     UFUNCTION()
     FText VMS_PVP_TDM_HUD_RoundScoreText() const
     {
-        FVMS_PVP_TDM_HUD& local_2;
+        FVMS_PVP_TDM_HUD& local_2 = this.VMS_PVP_TDM_HUD.Get();
         FText local_12 = local_2 ? local_2.GetRoundScoreText() : FText();
         return local_12;
     }
     UFUNCTION()
     FText VMS_PVP_TDM_HUD_RoundStageText() const
     {
-        FVMS_PVP_TDM_HUD& local_2;
+        FVMS_PVP_TDM_HUD& local_2 = this.VMS_PVP_TDM_HUD.Get();
         FText local_12 = local_2 ? local_2.GetRoundStageText() : FText();
         return local_12;
     }
     UFUNCTION()
     FText VMS_PVP_TDM_HUD_RoundCountdownText() const
     {
-        FVMS_PVP_TDM_HUD& local_2;
+        FVMS_PVP_TDM_HUD& local_2 = this.VMS_PVP_TDM_HUD.Get();
         FText local_12 = local_2 ? local_2.GetRoundCountdownText() : FText();
         return local_12;
     }
     UFUNCTION()
     int VMS_PVP_TDM_HUD_RoundWinnerTeamId() const
     {
-        FVMS_PVP_TDM_HUD& local_2;
+        FVMS_PVP_TDM_HUD& local_2 = this.VMS_PVP_TDM_HUD.Get();
         return local_2 ? local_2.GetRoundWinnerTeamId() : 0;
     }
     UFUNCTION()
     FText VMS_PVP_TDM_HUD_RoundResultText() const
     {
-        FVMS_PVP_TDM_HUD& local_2;
+        FVMS_PVP_TDM_HUD& local_2 = this.VMS_PVP_TDM_HUD.Get();
         FText local_12 = local_2 ? local_2.GetRoundResultText() : FText();
         return local_12;
     }
     UFUNCTION()
     bool VMS_PVP_TDM_HUD_bRoundResultVisible() const
     {
-        FVMS_PVP_TDM_HUD& local_2;
         bool local_5;
+        FVMS_PVP_TDM_HUD& local_2 = this.VMS_PVP_TDM_HUD.Get();
         if (local_2)
         {
             local_5 = local_2.GetbRoundResultVisible();
@@ -395,8 +395,8 @@ class UWidget_PVP_TDM_HUD : UEUIUserWidget
     UFUNCTION()
     bool VMS_PVP_TDM_HUD_bRoundStageHintVisible() const
     {
-        FVMS_PVP_TDM_HUD& local_2;
         bool local_5;
+        FVMS_PVP_TDM_HUD& local_2 = this.VMS_PVP_TDM_HUD.Get();
         if (local_2)
         {
             local_5 = local_2.GetbRoundStageHintVisible();

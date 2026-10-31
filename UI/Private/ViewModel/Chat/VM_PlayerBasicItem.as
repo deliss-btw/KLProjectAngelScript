@@ -246,7 +246,6 @@ struct FVM_PlayerBasicItem : FEUIViewModel
     void UpdateChatCommonAvatar()
     {
         TDataObjectPtr<FAvatarPrefabConfig> local_24;
-        int local_29 = 0;
         if (this.GetOverrideSource().IsValid() && (this.GetOverrideSource().opArrow().GetOverrideAvatarID() > 0))
         {
             int local_28 = this.GetOverrideSource().opArrow().GetOverrideAvatarID();
@@ -261,14 +260,13 @@ struct FVM_PlayerBasicItem : FEUIViewModel
             }
             else
             {
-                local_29 = this.GetPlayerBrief().GetCurAvatarId();
-                local_24 = ::FAvatarPrefabConfig::GetByDataId(local_29);
+                local_24 = ::FAvatarPrefabConfig::GetByDataId(this.GetPlayerBrief().GetCurAvatarId());
             }
         }
         if (local_24.IsSet())
         {
             this.SetAvatarConfig(local_24);
-            this.SetAvatarID(local_29);
+            this.SetAvatarID(local_24.Get().DataId);
             this.SetChatCommonAvatar(TEUIModelRef<FVM_ChatCommonAvatar>(::FVM_ChatCommonAvatar::Create(this.GetManager(), local_24)));
         }
         return;
@@ -578,11 +576,9 @@ FVM_PlayerBasicItemExtend& Create(const UObject ContextObject)
 {
     return FVM_PlayerBasicItemExtend::CreateByManager(EUIInternal::GetContextManager(ContextObject));
 }
-FVM_PlayerBasicItemExtend CreateByManager(const UEUIManagerSubsystem Manager)
+FVM_PlayerBasicItemExtend& CreateByManager(const UEUIManagerSubsystem Manager)
 {
-    FVM_PlayerBasicItemExtend __r;
-    TEUIModelRef<FVM_PlayerBasicItemExtend> local_6 = TEUIModelRef<FVM_PlayerBasicItemExtend>(EUIInternal::MakeModelWithManager(Manager, FVM_PlayerBasicItemExtend::ModelId));
-    return __r;
+    return TEUIModelRef<FVM_PlayerBasicItemExtend>(EUIInternal::MakeModelWithManager(Manager, FVM_PlayerBasicItemExtend::ModelId)).Get();
 }
 void GetModelInfo(FEUIViewModelMetaInfo &inout Result)
 {
@@ -632,8 +628,7 @@ namespace __GeneratedProperties_FVM_PlayerBasicItemExtend
 {
 UScriptStruct StaticStruct()
 {
-    UScriptStruct local_2;
-    return local_2;
+    return __GeneratedProperties_FVM_PlayerBasicItemExtend.Get();
 }
 }
 namespace FVM_PlayerBasicItem
@@ -642,11 +637,9 @@ FVM_PlayerBasicItem& Create(const UObject ContextObject, const FPlayerBriefInfo 
 {
     return FVM_PlayerBasicItem::CreateByManager(EUIInternal::GetContextManager(ContextObject), PlayerBrief);
 }
-FVM_PlayerBasicItem CreateByManager(const UEUIManagerSubsystem Manager, const FPlayerBriefInfo &inout PlayerBrief)
+FVM_PlayerBasicItem& CreateByManager(const UEUIManagerSubsystem Manager, const FPlayerBriefInfo &inout PlayerBrief)
 {
-    FVM_PlayerBasicItem __r;
-    TEUIModelRef<FVM_PlayerBasicItem> local_6 = TEUIModelRef<FVM_PlayerBasicItem>(EUIInternal::MakeModelWithManager_Generic(Manager, FVM_PlayerBasicItem::ModelId, 0, PlayerBrief));
-    return __r;
+    return TEUIModelRef<FVM_PlayerBasicItem>(EUIInternal::MakeModelWithManager_Generic(Manager, FVM_PlayerBasicItem::ModelId, 0, PlayerBrief)).Get();
 }
 void GetModelInfo(FEUIViewModelMetaInfo &inout Result)
 {
@@ -801,7 +794,6 @@ namespace __GeneratedProperties_FVM_PlayerBasicItem
 {
 UScriptStruct StaticStruct()
 {
-    UScriptStruct local_2;
-    return local_2;
+    return __GeneratedProperties_FVM_PlayerBasicItem.Get();
 }
 }

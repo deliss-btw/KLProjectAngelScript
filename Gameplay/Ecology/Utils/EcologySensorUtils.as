@@ -19,19 +19,16 @@ bool UpdateDOTSensorUnit(const FECSEntity &inout Entity, FC_EcologyDOTSensor &in
 }
 void UpdateAllDOTSensorUnit(const FECSEntity &inout Entity, FC_EcologyDOTSensor &inout DOTSensor, const FEcologyConditionWorldContext &inout WorldContext, FCS_EcologyDataCacheContext &inout CacheContext = FEcologyUtils::ModifyDataCacheContext())
 {
-    FEcologyDOTSensorUnit& local_42;
     TMap<FName, bool> local_20;
-    bool local_43 = false;
     int local_62 = 0;
     for (auto& local_40 : DOTSensor.DOTSensorMap)
     {
-        local_40;
+        FEcologyDOTSensorUnit& local_42 = local_40.GetValue();
         bool local_37 = FEcologySensorUtils::UpdateDOTSensorUnit(Entity, DOTSensor, local_42, WorldContext, CacheContext);
         if (local_37)
         {
             XLog(ELog(22), FString().Append("Sensor Unit Change   ").Append(local_42.SensorName).Append(" ").Append(Entity.GetEntityName()).Append(" ").Append(WorldContext.TimeSegments).Append(", ").Append(WorldContext.WeatherName));
-            local_43 = local_42.bIsEnter;
-            local_20.FindOrAdd(local_42.SensorName) = local_43;
+            local_20.FindOrAdd(local_42.SensorName) = local_42.bIsEnter;
         }
     }
     if (local_20.Num() > 0)
@@ -39,7 +36,7 @@ void UpdateAllDOTSensorUnit(const FECSEntity &inout Entity, FC_EcologyDOTSensor 
         FFPTime local_60 = FFPTime(-1);
         for (auto& local_80 : local_20)
         {
-            local_62.ChangedState.FindOrAdd(local_80.GetKey()) = local_43;
+            local_62.ChangedState.FindOrAdd(local_80.GetKey()) = local_80.GetValue();
         }
     }
     return;
@@ -85,6 +82,7 @@ void UnRegister(const FECSEntity &inout Entity, FC_EcologyDOTSensor &inout DOTSe
 {
     if (DOTSensor.DOTSensorMap.Contains(DOTSensorName))
     {
+        DOTSensor.DOTSensorMap.Remove(DOTSensorName);
         return;
     }
     XWarning(ELog(30), FString().Append("FEcologySensorUtils.UnRegister: Tried to remove non-existent sensor: ").Append(DOTSensorName));

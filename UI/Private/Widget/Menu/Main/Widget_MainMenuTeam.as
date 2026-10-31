@@ -37,10 +37,10 @@ class UWidget_MainMenuTeam : UEUIActivatableWidget
     UFUNCTION()
     void OnViewBind_Implementation()
     {
-        FVMS_ItemBtns& local_4;
         TEUIModelRef<FVM_AvatarShowcase> local_2;
         local_2;
-        local_2.SetCurrentShowcase();
+        this.Team.Get().SetCurrentShowcase(local_2);
+        FVMS_ItemBtns& local_4 = this.ItemBtns.Get();
         if (local_4)
         {
             this.SavedShowItemUsableCount.Empty(0);
@@ -53,7 +53,7 @@ class UWidget_MainMenuTeam : UEUIActivatableWidget
     UFUNCTION()
     void OnViewUnbind_Implementation()
     {
-        FVMS_ItemBtns& local_2;
+        FVMS_ItemBtns& local_2 = this.ItemBtns.Get();
         if (local_2)
         {
             this.RestoreCount(local_2.GetCombatBtnVM1(), 0);
@@ -64,7 +64,7 @@ class UWidget_MainMenuTeam : UEUIActivatableWidget
     }
     void SaveCountAndHide(const TEUIModelRef<FVM_NormalSkillBtn> &inout Btn)
     {
-        FVM_NormalSkillBtn& local_2;
+        FVM_NormalSkillBtn& local_2 = Btn.Get();
         if (local_2)
         {
             this.SavedShowItemUsableCount.Add(local_2.GetbShowItemUsableCount());
@@ -78,7 +78,7 @@ class UWidget_MainMenuTeam : UEUIActivatableWidget
     {
         if (Index < this.SavedShowItemUsableCount.Num())
         {
-            FVM_NormalSkillBtn& local_4;
+            FVM_NormalSkillBtn& local_4 = Btn.Get();
             if (local_4)
             {
                 local_4.SetbShowItemUsableCount((this.SavedShowItemUsableCount[Index]));

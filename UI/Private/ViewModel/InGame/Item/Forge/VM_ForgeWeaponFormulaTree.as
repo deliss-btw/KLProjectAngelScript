@@ -76,10 +76,8 @@ struct FVM_ForgeWeaponFormulaTree : FEUIViewModel
     {
         if (this.GetTreeM().IsValid())
         {
-            TEUIModelWeakRef<FM_ForgeTree> local_2 = this.GetTreeM();
-            this.GetModify_NodeList().Append(GetNodeList());
-            TEUIModelWeakRef<FM_ForgeTree> local_2_2 = this.GetTreeM();
-            this.SetBranchType(GetBranchType());
+            this.GetModify_NodeList().Append(this.GetTreeM().Get().GetNodeList());
+            this.SetBranchType(this.GetTreeM().Get().GetBranchType());
         }
         return;
     }
@@ -237,11 +235,9 @@ FVM_ForgeWeaponFormulaTree& Create(const UObject ContextObject, const TEUIModelW
 {
     return FVM_ForgeWeaponFormulaTree::CreateByManager(EUIInternal::GetContextManager(ContextObject), WeaponForgeVM, TreeM, Index, WidthOverride);
 }
-FVM_ForgeWeaponFormulaTree CreateByManager(const UEUIManagerSubsystem Manager, const TEUIModelWeakRef<FVM_WeaponForge> &inout WeaponForgeVM, const TEUIModelWeakRef<FM_ForgeTree> &inout TreeM, const int Index, const float32 WidthOverride)
+FVM_ForgeWeaponFormulaTree& CreateByManager(const UEUIManagerSubsystem Manager, const TEUIModelWeakRef<FVM_WeaponForge> &inout WeaponForgeVM, const TEUIModelWeakRef<FM_ForgeTree> &inout TreeM, const int Index, const float32 WidthOverride)
 {
-    FVM_ForgeWeaponFormulaTree __r;
-    TEUIModelRef<FVM_ForgeWeaponFormulaTree> local_6 = TEUIModelRef<FVM_ForgeWeaponFormulaTree>(EUIInternal::MakeModelWithManager_Generic(Manager, FVM_ForgeWeaponFormulaTree::ModelId, 0, WeaponForgeVM, TreeM, Index, WidthOverride));
-    return __r;
+    return TEUIModelRef<FVM_ForgeWeaponFormulaTree>(EUIInternal::MakeModelWithManager_Generic(Manager, FVM_ForgeWeaponFormulaTree::ModelId, 0, WeaponForgeVM, TreeM, Index, WidthOverride)).Get();
 }
 void GetModelInfo(FEUIViewModelMetaInfo &inout Result)
 {
@@ -317,7 +313,6 @@ namespace __GeneratedProperties_FVM_ForgeWeaponFormulaTree
 {
 UScriptStruct StaticStruct()
 {
-    UScriptStruct local_2;
-    return local_2;
+    return __GeneratedProperties_FVM_ForgeWeaponFormulaTree.Get();
 }
 }

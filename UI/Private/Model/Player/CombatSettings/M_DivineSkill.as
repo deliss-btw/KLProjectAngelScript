@@ -422,11 +422,9 @@ FMS_PvpModeState& Get(const UObject ContextObject)
 {
     return FMS_PvpModeState::GetByManager(EUIInternal::GetContextManager(ContextObject));
 }
-FMS_PvpModeState GetByManager(const UEUIManagerSubsystem Manager)
+FMS_PvpModeState& GetByManager(const UEUIManagerSubsystem Manager)
 {
-    FMS_PvpModeState __r;
-    TEUIModelRef<FMS_PvpModeState> local_6 = TEUIModelRef<FMS_PvpModeState>(EUIInternal::MakeModelWithManager(Manager, FMS_PvpModeState::ModelId));
-    return __r;
+    return TEUIModelRef<FMS_PvpModeState>(EUIInternal::MakeModelWithManager(Manager, FMS_PvpModeState::ModelId)).Get();
 }
 void GetModelInfo(FEUIModelOnlyMetaInfo &inout Result)
 {
@@ -453,11 +451,9 @@ FM_DivineSkill& Create(const UObject ContextObject, const TDataObjectPtr<FDivine
 {
     return FM_DivineSkill::CreateByManager(EUIInternal::GetContextManager(ContextObject), Config);
 }
-FM_DivineSkill CreateByManager(const UEUIManagerSubsystem Manager, const TDataObjectPtr<FDivineSkillConfig> &inout Config)
+FM_DivineSkill& CreateByManager(const UEUIManagerSubsystem Manager, const TDataObjectPtr<FDivineSkillConfig> &inout Config)
 {
-    FM_DivineSkill __r;
-    TEUIModelRef<FM_DivineSkill> local_6 = TEUIModelRef<FM_DivineSkill>(EUIInternal::MakeModelWithManager_Generic(Manager, FM_DivineSkill::ModelId, 0, Config));
-    return __r;
+    return TEUIModelRef<FM_DivineSkill>(EUIInternal::MakeModelWithManager_Generic(Manager, FM_DivineSkill::ModelId, 0, Config)).Get();
 }
 void GetModelInfo(FEUIModelOnlyMetaInfo &inout Result)
 {
@@ -484,11 +480,9 @@ FMS_DivineSkillData& Get(const UObject ContextObject)
 {
     return FMS_DivineSkillData::GetByManager(EUIInternal::GetContextManager(ContextObject));
 }
-FMS_DivineSkillData GetByManager(const UEUIManagerSubsystem Manager)
+FMS_DivineSkillData& GetByManager(const UEUIManagerSubsystem Manager)
 {
-    FMS_DivineSkillData __r;
-    TEUIModelRef<FMS_DivineSkillData> local_6 = TEUIModelRef<FMS_DivineSkillData>(EUIInternal::MakeModelWithManager(Manager, FMS_DivineSkillData::ModelId));
-    return __r;
+    return TEUIModelRef<FMS_DivineSkillData>(EUIInternal::MakeModelWithManager(Manager, FMS_DivineSkillData::ModelId)).Get();
 }
 void GetModelInfo(FEUIModelOnlyMetaInfo &inout Result)
 {

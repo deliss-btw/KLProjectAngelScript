@@ -206,18 +206,18 @@ struct FLocalConditionInstance
     {
         FLocalConditionInstance __r;
         this.SetInstanceId(Other.GetInstanceId());
-        this.SetInstanceData();
+        this.SetInstanceData(Other.GetInstanceData());
         return __r;
     }
     FConditionInstanceHandle GetHandle() const property
     {
         FConditionInstanceHandle __r;
-        FConditionInstanceHandle local_26 = FConditionInstanceHandle(GetConditionConfig(), this.GetInstanceId());
+        FConditionInstanceHandle local_26 = FConditionInstanceHandle(this.GetInstanceData().GetConditionConfig(), this.GetInstanceId());
         return __r;
     }
     TDataObjectPtr<FLocalConditionConfig> GetConditionConfig() const property
     {
-        return GetConditionConfig();
+        return this.GetInstanceData().GetConditionConfig();
     }
     int GetInstanceId() const property
     {
@@ -292,8 +292,10 @@ struct FCS_LocalConditionManager : FECSSingleton
                 if (this.TypeToInstances.Contains(local_36))
                 {
                     local_40 = this.TypeToInstances[local_36].GetInstances();
+                    local_40.Remove(InstanceId);
                     if (local_40.IsEmpty())
                     {
+                        this.TypeToInstances.Remove(local_36);
                     }
                 }
             }
@@ -305,8 +307,10 @@ struct FCS_LocalConditionManager : FECSSingleton
             if (this.EntityToInstances.Contains(local_46))
             {
                 local_40 = this.EntityToInstances[local_46].GetInstances();
+                local_40.Remove(InstanceId);
                 if (local_40.IsEmpty())
                 {
+                    this.EntityToInstances.Remove(local_46);
                 }
             }
         }

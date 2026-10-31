@@ -13,7 +13,6 @@ class US_AnimResolvedSystemAS : UECSScriptSystem
     void ClientJob_RegisterChannels(const FECSEntity &inout Entity, const FC_AimPoseConfig &inout AimPoseConfig) const
     {
         FC_AnimResolvedState local_6;
-        const FAnimAimPoseConfig& local_10;
         if (local_6.bRegistered)
         {
             return;
@@ -22,6 +21,7 @@ class US_AnimResolvedSystemAS : UECSScriptSystem
         {
             return;
         }
+        const FAnimAimPoseConfig& local_10 = AimPoseConfig.GetConfigPtr().Get();
         if (local_10.Segments.Num() == 0)
         {
             return;
@@ -36,6 +36,7 @@ class US_AnimResolvedSystemAS : UECSScriptSystem
                 local_94.ChannelKey = local_50;
                 if (local_46.AllowSourcePreset.IsSet())
                 {
+                    local_94.AllowSources = local_46.AllowSourcePreset.Get().AllowSources;
                 }
                 local_94.TransitionSpeed = local_46.ChannelTransitionSpeed;
                 continue;
@@ -46,8 +47,7 @@ class US_AnimResolvedSystemAS : UECSScriptSystem
         local_6.Channels.Empty(0);
         for (auto& local_118 : local_32)
         {
-            local_118;
-            local_6.Channels.Add();
+            local_6.Channels.Add(local_118.GetValue());
         }
         local_6.bRegistered = true;
         return;
@@ -55,12 +55,12 @@ class US_AnimResolvedSystemAS : UECSScriptSystem
     UFUNCTION()
     void ServerJob_PickTopPerChannel(const FECSEntity &inout Entity, FC_LookRequestLocal &inout Local, const FC_AimPoseConfig &inout AimPoseConfig, const FC_AnimAimPoseOutput &inout AimPoseOutput, FC_AnimResolvedSynced &inout Synced, const FCS_FixedTime &inout FixedTime) const
     {
-        const FAnimAimPoseConfig& local_4;
         if (!(AimPoseConfig.GetConfigPtr()))
         {
             return;
         }
         this.PruneExpired(Local, FixedTime.Time);
+        const FAnimAimPoseConfig& local_4 = AimPoseConfig.GetConfigPtr().Get();
         TMap<FName, FAnimSnapshot> local_24;
         TSet<FName> local_44;
         for (auto& local_58 : local_4.Segments)
@@ -74,6 +74,7 @@ class US_AnimResolvedSystemAS : UECSScriptSystem
             TSet<EAnimLookSource> local_82;
             if (local_58.AllowSourcePreset.IsSet())
             {
+                local_82 = local_58.AllowSourcePreset.Get().AllowSources;
             }
             TSet<EAnimLookSource> local_102;
             bool local_1 = this.ResolveEffectiveAllowSources(local_82, AimPoseOutput, local_102);
@@ -211,13 +212,13 @@ class US_AnimResolvedSystemAS : UECSScriptSystem
     }
     void ResolveEntryToSnapshot(const FLookRequestEntry &inout E, FAnimSnapshot &inout Out) const
     {
-        AActor local_8;
         Out.SetSource(E.Source);
         Out.SetPriority(int(E.Priority));
         Out.SetAnimSnapshotTypeMask(E.SnapshotTypeMask);
         Out.SetRotator(E.TargetRotationCS);
         if (::FAnimSnapshot::HasType(E.SnapshotTypeMask, EAnimSnapshotType(0)))
         {
+            AActor local_8 = E.TargetActor.Get();
             FVector local_22;
             if (local_8 != nullptr)
             {

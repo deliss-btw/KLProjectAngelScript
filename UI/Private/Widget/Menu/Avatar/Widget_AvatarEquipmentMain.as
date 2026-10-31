@@ -79,18 +79,18 @@ class UWidget_AvatarEquipmentMain : UEUIActivatableWidget
         if (this.w_list_tab != nullptr)
         {
             int local_4 = 0;
-            if ((int(GetFilterByIllustrate())) != 0)
+            if ((int(this.AvatarEquipMainVM.Get().GetFilterByIllustrate())) != 0)
             {
-                int local_7 = int(GetFilterByIllustrate());
+                int local_7 = int(this.AvatarEquipMainVM.Get().GetFilterByIllustrate());
                 local_4 = local_7 - 1;
             }
-            int local_7_2 = GetIllustrateTypes().IsValidIndex(local_4) ? local_4 : 0;
+            int local_7_2 = this.AvatarEquipMainVM.Get().GetIllustrateTypes().IsValidIndex(local_4) ? local_4 : 0;
             this.w_list_tab.SetSelectedIndex(local_7_2);
-            TWeakObjectPtr<UEUICommonListViewBase>(this.w_list_tab).SetIllustrateFilterListWidget();
+            this.AvatarEquipMainVM.Get().SetIllustrateFilterListWidget(TWeakObjectPtr<UEUICommonListViewBase>(this.w_list_tab));
         }
         TEUIModelRef<FVM_AvatarShowcase> local_12;
         local_12;
-        local_12.SetCurrentShowcase();
+        this.AvatarEquipMainVM.Get().SetCurrentShowcase(local_12);
         return;
     }
     UFUNCTION()
@@ -98,7 +98,7 @@ class UWidget_AvatarEquipmentMain : UEUIActivatableWidget
     {
         if (this.AvatarEquipMainVM.IsValid())
         {
-            this.GamepadNextActionBinding.SetCollapsed(GetbBatchDecompose() || !(this.IsPartOfFocusPath(this.w_tile_Item)));
+            this.GamepadNextActionBinding.SetCollapsed(this.AvatarEquipMainVM.Get().GetbBatchDecompose() || !(this.IsPartOfFocusPath(this.w_tile_Item)));
         }
         return;
     }
@@ -107,7 +107,7 @@ class UWidget_AvatarEquipmentMain : UEUIActivatableWidget
     {
         if (this.w_list_tab != nullptr)
         {
-            this.w_list_tab.SetSelectedIndex(FMath::WrapIndex((GetSelectedIllustrateFilterItemIndex() - 1), 0, ::FMS_Talisman::Get(this).GetUnlockSlotCount() + 1));
+            this.w_list_tab.SetSelectedIndex(FMath::WrapIndex((this.AvatarEquipMainVM.Get().GetSelectedIllustrateFilterItemIndex() - 1), 0, ::FMS_Talisman::Get(this).GetUnlockSlotCount() + 1));
         }
         return;
     }
@@ -116,7 +116,7 @@ class UWidget_AvatarEquipmentMain : UEUIActivatableWidget
     {
         if (this.w_list_tab != nullptr)
         {
-            this.w_list_tab.SetSelectedIndex(FMath::WrapIndex((GetSelectedIllustrateFilterItemIndex() + 1), 0, ::FMS_Talisman::Get(this).GetUnlockSlotCount() + 1));
+            this.w_list_tab.SetSelectedIndex(FMath::WrapIndex((this.AvatarEquipMainVM.Get().GetSelectedIllustrateFilterItemIndex() + 1), 0, ::FMS_Talisman::Get(this).GetUnlockSlotCount() + 1));
         }
         return;
     }
@@ -146,8 +146,8 @@ class UWidget_AvatarEquipmentMain : UEUIActivatableWidget
         this.RefreshActionBinding();
         if (this.w_tile_Item != nullptr)
         {
-            this.w_tile_Item.ScrollIndexIntoView(GetSelectedItemIndex());
-            this.w_tile_Item.NavigateToIndex(GetSelectedItemIndex());
+            this.w_tile_Item.ScrollIndexIntoView(this.AvatarEquipMainVM.Get().GetSelectedItemIndex());
+            this.w_tile_Item.NavigateToIndex(this.AvatarEquipMainVM.Get().GetSelectedItemIndex());
         }
         return;
     }
@@ -188,43 +188,16 @@ class UWidget_AvatarEquipmentMain : UEUIActivatableWidget
         {
         }
         this.BatchDecomposeActionBinding.SetInputAction();
-        this.GamepadNextActionBinding.SetCollapsed(GetbBatchDecompose() || !(this.IsPartOfFocusPath(this.w_tile_Item)));
+        this.GamepadNextActionBinding.SetCollapsed(this.AvatarEquipMainVM.Get().GetbBatchDecompose() || !(this.IsPartOfFocusPath(this.w_tile_Item)));
         return;
     }
     UFUNCTION()
     void HandleBatchDecomposeEquipmentSetChanged(const TSet<TEUIModelRef<FM_Equipment>> &inout InBatchDecomposeEquipmentSet)
     {
-        bool local_1 = InBatchDecomposeEquipmentSet.IsEmpty();
-        this.ConfirmBatchDecomposeActionBinding.SetCollapsed(local_1);
-        if (!(this.AvatarEquipMainVM.IsValid()))
+        this.ConfirmBatchDecomposeActionBinding.SetCollapsed(InBatchDecomposeEquipmentSet.IsEmpty());
+        if (this.AvatarEquipMainVM.IsValid() && this.AvatarEquipMainVM.Get().GetSelectedItems().IsValid() && this.AvatarEquipMainVM.Get().GetSelectedItems().Get().GetComposableItemVM().IsValid())
         {
-            local_1 = false;
-        }
-        else
-        {
-            TEUIModelRef<FVM_AvatarEquipmentItem> local_4;
-            local_4.GetSelectedItems();
-            local_1 = local_4.IsValid();
-        }
-        if (!(local_1))
-        {
-            local_1 = false;
-        }
-        else
-        {
-            TEUIModelRef<FVM_ComposableItem> local_8;
-            TEUIModelRef<FVM_AvatarEquipmentItem> local_4;
-            local_4.GetSelectedItems();
-            local_8.GetComposableItemVM();
-            local_1 = local_8.IsValid();
-        }
-        if (local_1)
-        {
-            TEUIModelRef<FVM_ComposableItem> local_8;
-            TEUIModelRef<FVM_AvatarEquipmentItem> local_4;
-            local_4.GetSelectedItems();
-            local_8.GetComposableItemVM();
-            if (::ComposableItemUtility::GetItemEquipMarkIsCheckableSelected())
+            if (::ComposableItemUtility::GetItemEquipMarkIsCheckableSelected(this.AvatarEquipMainVM.Get().GetSelectedItems().Get().GetComposableItemVM().Get()))
             {
             }
             else
@@ -241,48 +214,24 @@ class UWidget_AvatarEquipmentMain : UEUIActivatableWidget
         bool local_4 = false;
         bool local_5 = false;
         bool local_6 = false;
-        bool local_2 = !(GetBatchDecomposeEquipmentSet().IsEmpty());
-        TEUIModelRef<FVM_AvatarEquipmentItem> local_10;
-        local_10.GetSelectedItems();
-        bool local_7 = local_10.IsValid();
-        if (!(local_7))
+        bool local_2 = !(this.AvatarEquipMainVM.Get().GetBatchDecomposeEquipmentSet().IsEmpty());
+        if (this.AvatarEquipMainVM.Get().GetSelectedItems().IsValid() && this.AvatarEquipMainVM.Get().GetSelectedItems().Get().GetComposableItemVM().IsValid())
         {
-            local_7 = false;
-        }
-        else
-        {
-            TEUIModelRef<FVM_ComposableItem> local_12;
-            local_10.GetSelectedItems();
-            local_12.GetComposableItemVM();
-            local_7 = local_12.IsValid();
-        }
-        if (local_7)
-        {
-            TEUIModelRef<FVM_ComposableItem> local_12;
-            TEUIModelRef<FM_Equipment> local_22;
             bool local_20;
-            int64 local_16 = GetCurSlotEquipedItemUId();
+            int64 local_16 = this.AvatarEquipMainVM.Get().GetCurSlotEquipedItemUId();
             local_1 = (local_16 != 0);
-            local_10.GetSelectedItems();
-            local_12.GetComposableItemVM();
-            bool local_13 = ::ComposableItemUtility::GetItemEquipMarkIsCheckableSelected();
+            bool local_13 = ::ComposableItemUtility::GetItemEquipMarkIsCheckableSelected(this.AvatarEquipMainVM.Get().GetSelectedItems().Get().GetComposableItemVM().Get());
             local_20 = false;
-            local_10.GetSelectedItems();
-            local_22.GetEquipment();
-            if (local_22.IsValid())
+            if (this.AvatarEquipMainVM.Get().GetSelectedItems().Get().GetEquipment().IsValid())
             {
-                local_10.GetSelectedItems();
-                local_22.GetEquipment();
-                local_20 = ::FEquipmentUtils::CanDecompose(GetEquipmentConfig());
+                local_20 = ::FEquipmentUtils::CanDecompose(this.AvatarEquipMainVM.Get().GetSelectedItems().Get().GetEquipment().Get().GetEquipmentConfig());
             }
-            if (GetbBatchDecompose())
+            if (this.AvatarEquipMainVM.Get().GetbBatchDecompose())
             {
                 local_3 = false;
                 local_4 = false;
                 local_5 = false;
-                local_10.GetSelectedItems();
-                local_12.GetComposableItemVM();
-                local_6 = !(::ComposableItemUtility::IsItemEquipped()) && local_20;
+                local_6 = !(::ComposableItemUtility::IsItemEquipped(this.AvatarEquipMainVM.Get().GetSelectedItems().Get().GetComposableItemVM().Get())) && local_20;
                 if (local_13)
                 {
                 }
@@ -293,9 +242,7 @@ class UWidget_AvatarEquipmentMain : UEUIActivatableWidget
             }
             else
             {
-                local_10.GetSelectedItems();
-                local_12.GetComposableItemVM();
-                if (::ComposableItemUtility::IsItemEquipBySelf())
+                if (::ComposableItemUtility::IsItemEquipBySelf(this.AvatarEquipMainVM.Get().GetSelectedItems().Get().GetComposableItemVM().Get()))
                 {
                     local_3 = false;
                     local_4 = true;
@@ -303,9 +250,7 @@ class UWidget_AvatarEquipmentMain : UEUIActivatableWidget
                 }
                 else
                 {
-                    local_10.GetSelectedItems();
-                    local_12.GetComposableItemVM();
-                    if (::ComposableItemUtility::IsItemEquipByOther())
+                    if (::ComposableItemUtility::IsItemEquipByOther(this.AvatarEquipMainVM.Get().GetSelectedItems().Get().GetComposableItemVM().Get()))
                     {
                         local_3 = true;
                         local_4 = false;
@@ -322,7 +267,7 @@ class UWidget_AvatarEquipmentMain : UEUIActivatableWidget
         }
         this.CompareActionBinding.SetCollapsed(!(local_1));
         this.EquipActionBinding.SetCollapsed(!(local_3));
-        this.UnEquipActionBinding.SetCollapsed(!(local_4 && CanShowUnEquipAction()));
+        this.UnEquipActionBinding.SetCollapsed(!(local_4 && this.AvatarEquipMainVM.Get().CanShowUnEquipAction()));
         this.DecomposeActionBinding.SetCollapsed(!(local_5));
         this.BatchDecomposeSelectActionBinding.SetCollapsed(!(local_6));
         this.ConfirmBatchDecomposeActionBinding.SetCollapsed(!(local_2));
@@ -344,7 +289,7 @@ class UWidget_AvatarEquipmentMain : UEUIActivatableWidget
         {
             if (this.Page.IsValid())
             {
-                ClosePage();
+                this.Page.Get().ClosePage();
             }
         }
         return;
@@ -476,8 +421,8 @@ class UWidget_AvatarEquipmentMain : UEUIActivatableWidget
     }
     void HandleObservedModelChanges(FEUIReactiveSubscriberIterator &inout It)
     {
-        FVM_AvatarEquipmentMain& local_6;
         TEUIModelRef<FVM_AvatarEquipmentMain> local_2 = this.AvatarEquipMainVM.AsRef();
+        FVM_AvatarEquipmentMain& local_6 = local_2.Get();
         for (; It; )
         {
             FEUIReactiveSubscriberTrackScope local_56 = FEUIReactiveSubscriberTrackScope(It);

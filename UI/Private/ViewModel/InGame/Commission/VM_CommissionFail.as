@@ -83,11 +83,9 @@ FVM_CommissionFail& Create(const UObject ContextObject, const float32 LeaveTime)
 {
     return FVM_CommissionFail::CreateByManager(EUIInternal::GetContextManager(ContextObject), LeaveTime);
 }
-FVM_CommissionFail CreateByManager(const UEUIManagerSubsystem Manager, const float32 LeaveTime)
+FVM_CommissionFail& CreateByManager(const UEUIManagerSubsystem Manager, const float32 LeaveTime)
 {
-    FVM_CommissionFail __r;
-    TEUIModelRef<FVM_CommissionFail> local_6 = TEUIModelRef<FVM_CommissionFail>(EUIInternal::MakeModelWithManager_Generic(Manager, FVM_CommissionFail::ModelId, 0, LeaveTime));
-    return __r;
+    return TEUIModelRef<FVM_CommissionFail>(EUIInternal::MakeModelWithManager_Generic(Manager, FVM_CommissionFail::ModelId, 0, LeaveTime)).Get();
 }
 void GetModelInfo(FEUIViewModelMetaInfo &inout Result)
 {
@@ -120,7 +118,6 @@ namespace __GeneratedProperties_FVM_CommissionFail
 {
 UScriptStruct StaticStruct()
 {
-    UScriptStruct local_2;
-    return local_2;
+    return __GeneratedProperties_FVM_CommissionFail.Get();
 }
 }

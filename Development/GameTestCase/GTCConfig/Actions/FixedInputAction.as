@@ -4,6 +4,8 @@ struct FGTCFixedInputAction : FGTCAction
     UPROPERTY()
     TArray<FSimulatedInput> InputGroup;
 
+    default m_ScriptOverrideMeta = Cast<UASStruct>(FGTCFixedInputAction.Get());
+
     FGTCFixedInputAction()
     {
         this.__InitDefaults();

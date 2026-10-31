@@ -39,7 +39,7 @@ TArray<FTraitParam> RandomTraitsFromSlotsConfig(const FECSEntity &inout PlayerEn
         local_56 = local_126.GetUniqueID();
         BoonRandomDropUtils::FSingleTraitPoolChoosedIndices& local_128 = local_24[local_56];
         local_129 = false;
-        FTraitParam local_182 = BoonRandomDropUtils::RandomChooseOneTraitFromPool(PlayerEntity, local_128, local_129);
+        FTraitParam local_182 = BoonRandomDropUtils::RandomChooseOneTraitFromPool(PlayerEntity, local_126.Get(), local_128, local_129);
         if (local_129)
         {
             local_4.Add(local_182);
@@ -60,7 +60,7 @@ bool InternalCheckPlayerCtrlHasPawnInAvatarList(const FC_PlayerController &inout
         TDataObjectPtr<FAvatarPrefabConfig> local_40 = GetAvatarConfig(local_16);
         for (auto& local_78 : BoonAvatarList)
         {
-            if (local_78 && GetAvatar().Contains(local_40))
+            if (local_78 && local_78.Get().GetAvatar().Contains(local_40))
             {
                 return true;
             }
@@ -82,8 +82,7 @@ FTraitParam RandomChooseOneTraitFromPool(const FECSEntity &inout PlayerEntity, c
     else
     {
         TArray<bool> local_36;
-        int local_4 = PoolConfig.TraitParams.Num();
-        local_36.SetNumZeroed(local_4);
+        local_36.SetNumZeroed(PoolConfig.TraitParams.Num());
         int local_49 = 0;
         int local_50 = 0;
         for (; local_50 < PoolConfig.TraitParams.Num(); ++local_50)
@@ -103,7 +102,7 @@ FTraitParam RandomChooseOneTraitFromPool(const FECSEntity &inout PlayerEntity, c
             {
                 EBoonTraitAdaptRule local_104;
                 TDataObjectPtr<FTraitConfig> local_76 = local_52.Param.GetTrait();
-                local_101 = local_4;
+                local_101 = local_76.Get().BoonDropNumLimit;
                 if (local_42 && (local_101 > 0))
                 {
                     int local_103 = 0;
@@ -116,11 +115,10 @@ FTraitParam RandomChooseOneTraitFromPool(const FECSEntity &inout PlayerEntity, c
                         }
                     }
                 }
-                EBoonTraitAdaptRule local_105;
-                local_104 = local_105;
+                local_104 = local_76.Get().BoonRule;
                 if (int(local_104) == 1)
                 {
-                    if (!(BoonRandomDropUtils::InternalCheckPlayerCtrlHasPawnInAvatarList(local_48, GetBoonAvatarList())))
+                    if (!(BoonRandomDropUtils::InternalCheckPlayerCtrlHasPawnInAvatarList(local_48, local_76.Get().GetBoonAvatarList())))
                     {
                         local_36[local_50] = true;
                         continue;

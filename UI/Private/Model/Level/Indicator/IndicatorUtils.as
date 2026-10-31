@@ -2,7 +2,6 @@ namespace IndicatorUtils
 {
 bool IsSpotOutOfScreen(const TEUIModelRef<FM_Spot> &inout Spot)
 {
-    AActor local_72;
     FMS_UIViewProjection& local_2 = FMS_UIViewProjection::Get(Spot.opArrow().GetContext().Manager);
     if (!(local_2.IsSnapshotValid()))
     {
@@ -36,6 +35,8 @@ bool IsSpotOutOfScreen(const TEUIModelRef<FM_Spot> &inout Spot)
         const FC_IndicatorConfig& local_64 = local_62.opCall();
         if (local_64)
         {
+            GetDefaulted local_68;
+            AActor local_72 = local_68.opCall().Actor.Get();
             if (local_72 != nullptr)
             {
                 for (auto& local_86 : local_64.ExtraOutScreenCheckSockets)

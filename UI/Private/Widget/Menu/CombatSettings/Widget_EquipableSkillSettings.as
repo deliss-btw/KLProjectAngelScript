@@ -45,14 +45,14 @@ class UWidget_EquipableSkillSettings : UEUIActivatableWidget
     UFUNCTION()
     void OnViewBind_Implementation()
     {
-        FVM_CommonHoverProvider& local_10;
-        if (this.EquipableSkillSettings.IsValid() && this.AvatarShowcase.IsValid() && (GetConfigs().Num() > 0))
+        if (this.EquipableSkillSettings.IsValid() && this.AvatarShowcase.IsValid() && (this.AvatarShowcase.Get().GetConfigs().Num() > 0))
         {
             TEUIModelRef<FVM_AvatarShowcase> local_6;
             local_6;
-            local_6.SetCurrentShowcase();
+            this.EquipableSkillSettings.Get().SetCurrentShowcase(local_6);
         }
         this.SelectedDivineSkill.SetRef(this.EquipableSkillSettings.opArrow().GetSelectedEquipableSkill());
+        FVM_CommonHoverProvider& local_10 = this.HoverProvider.Get();
         if (this.HoverBtn != nullptr && !(local_10.GetbIsForbidHover()))
         {
             local_10.SetHoverForWidget(this.HoverBtn);
@@ -93,11 +93,10 @@ class UWidget_EquipableSkillSettings : UEUIActivatableWidget
         {
             if (this.EquipableSkillSettings.IsValid())
             {
-                TEUIModelRef<FVM_EquipHoverTips> local_6;
-                local_6.GetHoverTips();
-                this.bCanHoverGoTo.SetbCanHoverGoTo();
-                local_6.opImplConv().ResetHoverModel();
-                NotifyMouseEnter();
+                TEUIModelRef<FVM_EquipHoverTips> local_6 = this.EquipableSkillSettings.Get().GetHoverTips();
+                local_6.Get().SetbCanHoverGoTo((this.bCanHoverGoTo));
+                this.HoverProvider.Get().ResetHoverModel(local_6.opImplConv());
+                this.HoverProvider.Get().NotifyMouseEnter();
             }
         }
         return;
@@ -107,7 +106,7 @@ class UWidget_EquipableSkillSettings : UEUIActivatableWidget
     {
         if (this.HoverProvider.IsValid())
         {
-            FVM_CommonHoverProvider& local_4;
+            FVM_CommonHoverProvider& local_4 = this.HoverProvider.Get();
             if (!(local_4.GetbIsForbidHover()))
             {
                 local_4.NotifyMouseLeave();
@@ -249,8 +248,8 @@ class UWidget_EquipableSkillSettings : UEUIActivatableWidget
     }
     void HandleObservedModelChanges(FEUIReactiveSubscriberIterator &inout It)
     {
-        FVM_DivineSkillSettings& local_6;
         TEUIModelRef<FVM_DivineSkillSettings> local_2 = this.EquipableSkillSettings.AsRef();
+        FVM_DivineSkillSettings& local_6 = local_2.Get();
         for (; It; )
         {
             FEUIReactiveSubscriberTrackScope local_56 = FEUIReactiveSubscriberTrackScope(It);

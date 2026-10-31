@@ -24,8 +24,21 @@ struct FPresentationCameraConfig
 
     bool IsValid() const
     {
-        // body not fully recovered — stub [opcode-uncovered]
-        bool __r; return __r;
+        switch (this.CameraType)
+        {
+        case EPresentationCameraType::Fixed:
+        {
+            return this.FixedCameraConfig.IsSet();
+        }
+        case EPresentationCameraType::SpringArm:
+        {
+            return this.SpringArmCameraConfig.IsSet();
+        }
+        case EPresentationCameraType::Animated:
+        {
+            return this.AnimatedCameraConfig.IsSet();
+        }
+        }
     }
 }
 

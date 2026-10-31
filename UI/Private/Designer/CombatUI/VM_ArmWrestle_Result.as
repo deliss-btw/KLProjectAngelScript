@@ -84,11 +84,9 @@ FVM_ArmWrestle_Result& Create(const UObject ContextObject)
 {
     return FVM_ArmWrestle_Result::CreateByManager(EUIInternal::GetContextManager(ContextObject));
 }
-FVM_ArmWrestle_Result CreateByManager(const UEUIManagerSubsystem Manager)
+FVM_ArmWrestle_Result& CreateByManager(const UEUIManagerSubsystem Manager)
 {
-    FVM_ArmWrestle_Result __r;
-    TEUIModelRef<FVM_ArmWrestle_Result> local_6 = TEUIModelRef<FVM_ArmWrestle_Result>(EUIInternal::MakeModelWithManager(Manager, FVM_ArmWrestle_Result::ModelId));
-    return __r;
+    return TEUIModelRef<FVM_ArmWrestle_Result>(EUIInternal::MakeModelWithManager(Manager, FVM_ArmWrestle_Result::ModelId)).Get();
 }
 void GetModelInfo(FEUIViewModelMetaInfo &inout Result)
 {
@@ -137,7 +135,6 @@ namespace __GeneratedProperties_FVM_ArmWrestle_Result
 {
 UScriptStruct StaticStruct()
 {
-    UScriptStruct local_2;
-    return local_2;
+    return __GeneratedProperties_FVM_ArmWrestle_Result.Get();
 }
 }

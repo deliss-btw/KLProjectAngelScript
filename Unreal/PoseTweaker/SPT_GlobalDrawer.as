@@ -104,9 +104,7 @@ class UKLPoseTweakerDrawer : UGameDebugImGuiGlobalDrawer
                 ImGui::Text(FString().Append("Trace Time: ").Append(FString::ApplyFormat(local_130.GroundTraceResult.TraceTimeInMS, ".4f")).Append(" ms"));
                 for (auto& local_160 : local_130.GroundTraceResult.HitActors)
                 {
-                    local_160;
-                    AActor local_34;
-                    ImGui::Text(FString().Append("-").Append(local_34.GetName()));
+                    ImGui::Text(FString().Append("-").Append(local_160.Get().GetName()));
                 }
             }
             Handle.EndPanel();
@@ -156,7 +154,6 @@ class UMainPlayerSceneQueryDrawer : UGameDebugImGuiGlobalDrawer
     {
         APlayerController local_38;
         AECSPlayerController local_42;
-        UPrimitiveComponent local_266;
         TArray<APlayerController> local_6 = Context.DrawerWorld.GetActorsInWorld(APlayerController);
         FString local_14 = "None";
         TMap<FString, FColliderInfo> local_34;
@@ -197,6 +194,7 @@ class UMainPlayerSceneQueryDrawer : UGameDebugImGuiGlobalDrawer
                         {
                             Handle.DrawLine(local_126, local_252.ImpactPoint, FLinearColor::Red, ESceneDepthPriorityGroup(0), 0.0f, 0.0f);
                             AActor local_262 = local_252.GetActor();
+                            UPrimitiveComponent local_266 = local_252.GetComponent();
                             FName local_274;
                             if (local_262 != nullptr)
                             {
@@ -275,6 +273,7 @@ class UMainPlayerSceneQueryDrawer : UGameDebugImGuiGlobalDrawer
             {
                 TArray<FString> local_290;
                 local_34.GetKeys(local_290);
+                local_290.Sort(false);
                 ImGui::Text("Collides with:");
                 for (auto& local_304 : local_290)
                 {

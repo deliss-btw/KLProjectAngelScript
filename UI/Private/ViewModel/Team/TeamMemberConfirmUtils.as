@@ -2,7 +2,6 @@ namespace TeamMemberConfirmUtils
 {
 FText BuildMissingIllustrateWarning(const TArray<TEUIModelRef<FM_Player>> &inout Players)
 {
-    TDataObjectPtr<FDivineSkillConfig> local_60;
     const UAvatarBuildSettings local_88;
     TSet<EAvatarIllustrate> local_20;
     for (auto& local_36 : Players)
@@ -11,7 +10,7 @@ FText BuildMissingIllustrateWarning(const TArray<TEUIModelRef<FM_Player>> &inout
         {
             continue;
         }
-        local_60.GetDivineSkill();
+        TDataObjectPtr<FDivineSkillConfig> local_60 = local_36.Get().GetDivineSkill();
         if (local_60)
         {
             local_20.Add(local_60.opArrow().GetTypeConfig().opArrow().TargetIllustrate);

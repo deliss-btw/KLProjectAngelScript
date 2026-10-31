@@ -358,8 +358,7 @@ class AKLLevelScriptTutorialLevelItem : AKLLevelScriptTutorialActor
     UFUNCTION()
     void OnPoisonSnailUsedUp(const FECSEntity &inout Entity)
     {
-        FECSEntityId local_1 = Entity.GetId();
-        if (0 == 0)
+        if (this.PoisonSnailRemainingIds.Remove(Entity.GetId()) == 0)
         {
             return;
         }
@@ -387,8 +386,7 @@ class AKLLevelScriptTutorialLevelItem : AKLLevelScriptTutorialActor
     UFUNCTION()
     void OnExplodeBarrelUsedUp(const FECSEntity &inout Entity)
     {
-        FECSEntityId local_1 = Entity.GetId();
-        if (0 == 0)
+        if (this.ExplodeBarrelRemainingIds.Remove(Entity.GetId()) == 0)
         {
             return;
         }

@@ -81,13 +81,12 @@ struct FVM_AttributeValueItem : FEUIViewModel
     }
     FText GetValueText() const
     {
-        float32 local_19 = 0.0f;
         FNumberFormattingOptions local_12;
         local_12 = FNumberFormattingOptions::DefaultWithGrouping();
         local_12.SetMinimumFractionalDigits(0).SetMaximumFractionalDigits(1);
         FText local_24;
-        FText::AsNumber(local_24, local_19);
-        if (local_19 > 0.0f)
+        FText::AsNumber(local_24, this.GetValue());
+        if (this.GetValue() > 0.0f)
         {
             return FText::Format(FText::AsCultureInvariant("+{0}"), local_24);
         }
@@ -95,7 +94,7 @@ struct FVM_AttributeValueItem : FEUIViewModel
     }
     bool IsGreaterOrEqualZero() const
     {
-        return (0.0f >= 0.0f);
+        return (this.GetValue() >= 0.0f);
     }
     TDataObjectPtr<FAttributeConfig> GetAttrConfig() const
     {
@@ -209,11 +208,9 @@ FVM_AttributeValueItem& Create(const UObject ContextObject, const FGameAttribute
 {
     return FVM_AttributeValueItem::CreateByManager(EUIInternal::GetContextManager(ContextObject), Attribute, Value);
 }
-FVM_AttributeValueItem CreateByManager(const UEUIManagerSubsystem Manager, const FGameAttributeRef &inout Attribute, const float32 Value)
+FVM_AttributeValueItem& CreateByManager(const UEUIManagerSubsystem Manager, const FGameAttributeRef &inout Attribute, const float32 Value)
 {
-    FVM_AttributeValueItem __r;
-    TEUIModelRef<FVM_AttributeValueItem> local_6 = TEUIModelRef<FVM_AttributeValueItem>(EUIInternal::MakeModelWithManager_Generic(Manager, FVM_AttributeValueItem::ModelId, 0, Attribute, Value));
-    return __r;
+    return TEUIModelRef<FVM_AttributeValueItem>(EUIInternal::MakeModelWithManager_Generic(Manager, FVM_AttributeValueItem::ModelId, 0, Attribute, Value)).Get();
 }
 void GetModelInfo(FEUIViewModelMetaInfo &inout Result)
 {
@@ -274,7 +271,7 @@ void __UpdateHoverTips(FVM_AttributeValueItem &inout Model)
 }
 float32 __UIGetter_Value(const FVM_AttributeValueItem &inout Model)
 {
-    return 0.0f;
+    return Model.GetValue();
 }
 FEUIModelRef __UIGetter_HoverTips(const FVM_AttributeValueItem &inout Model)
 {
@@ -317,7 +314,6 @@ namespace __GeneratedProperties_FVM_AttributeValueItem
 {
 UScriptStruct StaticStruct()
 {
-    UScriptStruct local_2;
-    return local_2;
+    return __GeneratedProperties_FVM_AttributeValueItem.Get();
 }
 }

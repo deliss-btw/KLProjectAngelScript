@@ -6,7 +6,22 @@ class US_SignificanceSystemAS : UECSScriptSystem
     }
     void UpdateSignificance(const FECSEntity &inout Entity) const
     {
-        // body not fully recovered — stub [argmismatch:argint]
+        int local_7 = int(::Significance::GetSignificanceType(Entity));
+        FC_Significance local_6;
+        int local_8 = ::Significance::GetSignificanceOffset(Entity, local_6.SignificanceType);
+        Get local_12;
+        const FC_SignificanceConfig& local_14 = local_12.opCall();
+        if (local_14)
+        {
+            TDataObjectPtr<FSignificanceConfig> local_40 = TDataObjectPtr<FSignificanceConfig>(local_14.Config.CastTo(FSignificanceConfig));
+            if (!(local_40))
+            {
+                return;
+            }
+            local_6.Config = local_40.opImplConv();
+            int local_115 = int(::Significance::GetSignificanceValue(local_40.Get(), local_6.SignificanceType, int(local_6.SignificanceOffset)));
+        }
+        return;
     }
     UFUNCTION()
     void Monitor_ActorActive(const FECSEntity &inout Entity, const FC_Actor &inout Actor) const
@@ -36,7 +51,26 @@ class US_SignificanceSystemAS : UECSScriptSystem
     UFUNCTION()
     void Monitor_ViewEntityFXData(const FECSEntity &inout Entity, const FC_ViewEntityFXData &inout FXData) const
     {
-        // body not fully recovered — stub [argmismatch:argint]
+        TDataObjectPtr<FSignificanceConfig> local_24 = TDataObjectPtr<FSignificanceConfig>(FXData.BakedData.Significance.CastTo(FSignificanceConfig));
+        FECSEntity local_114;
+        if (FXData.OwnerEntity)
+        {
+            local_114 = FXData.OwnerEntity;
+        }
+        else
+        {
+            local_114 = FXData.AttachEntity;
+        }
+        int local_115 = int(::Significance::GetSignificanceType(local_114));
+        FC_Significance local_104;
+        int local_116 = ::Significance::GetSignificanceOffset(local_114, local_104.SignificanceType);
+        if (!(local_24.IsSet()))
+        {
+            return;
+        }
+        local_104.Config = FXData.BakedData.Significance;
+        int local_117 = int(::Significance::GetSignificanceValue(local_24.Get(), local_104.SignificanceType, int(local_104.SignificanceOffset)));
+        return;
     }
     UFUNCTION()
     void Monitor_ControlledByAIUpdate(const FECSEntity &inout Entity, const FC_ControlledByAI &inout ControlledByAI) const

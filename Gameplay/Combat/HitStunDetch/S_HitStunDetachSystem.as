@@ -93,7 +93,7 @@ class US_HitStunDetachSystem : US_ECSScriptGameModeSystemBase
         {
             return;
         }
-        FAttackData local_48;
+        const FAttackData& local_48 = Event.AttackData.Get();
         float32 local_49 = local_48.CustomHitStunDetach;
         if (local_49 <= 0.0f)
         {

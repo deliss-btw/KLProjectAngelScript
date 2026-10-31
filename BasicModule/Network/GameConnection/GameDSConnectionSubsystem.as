@@ -546,9 +546,10 @@ class UGameDSConnectionSubsystem : UGameDSConnectionSubsystemBase
                 return;
             }
         }
-        if (::FLevelUtils::GetCurrentLevelInfoConfig(nullptr))
+        TDataObjectPtr<FLevelInfoConfig> local_48 = ::FLevelUtils::GetCurrentLevelInfoConfig(nullptr);
+        if (local_48)
         {
-            if (0 == 6)
+            if (int(local_48.Get().LevelType) == 6)
             {
                 return;
             }
@@ -652,7 +653,6 @@ class UGameDSConnectionSubsystem : UGameDSConnectionSubsystemBase
     {
         int local_6 = 0;
         int local_14 = 0;
-        int local_42 = 0;
         FDSAvatarEquipmentInfo local_132;
         if (PlayerInfo.IsValid())
         {
@@ -668,8 +668,7 @@ class UGameDSConnectionSubsystem : UGameDSConnectionSubsystemBase
             local_43 = 0;
             if (local_6.GetAllPlayerPawnEntities().Num() > 0)
             {
-                TDataObjectPtr<FAvatarPrefabConfig> local_68 = ::GetAvatarConfig(local_6.GetAllPlayerPawnEntities()[0]);
-                local_41 = local_42;
+                local_41 = ::GetAvatarConfig(local_6.GetAllPlayerPawnEntities()[0]).Get().DataId;
                 if (local_41 != 0)
                 {
                     local_30.SetCurAvatarId(local_41);
@@ -686,8 +685,7 @@ class UGameDSConnectionSubsystem : UGameDSConnectionSubsystemBase
             }
             if (local_6.GetAllPlayerPawnEntities().Num() > 1)
             {
-                TDataObjectPtr<FAvatarPrefabConfig> local_68_2 = ::GetAvatarConfig(local_6.GetAllPlayerPawnEntities()[1]);
-                local_43 = local_42;
+                local_43 = ::GetAvatarConfig(local_6.GetAllPlayerPawnEntities()[1]).Get().DataId;
                 local_30.SetSwitchAvatarId(local_43);
                 XLog(ELog(27), FString().Append("SavePlayerAvatarCompInfo PlayerId=").Append(local_6.GetPlayerId()).Append(" SetSwitchAvatarId=").Append(local_43));
             }
@@ -706,19 +704,18 @@ class UGameDSConnectionSubsystem : UGameDSConnectionSubsystemBase
     bool IsCityOrBigWorld()
     {
         int local_9;
-        int local_10 = 0;
         AAS_ECSWorldSettings local_2 = (Cast<AAS_ECSWorldSettings>(this.GetWorld().GetWorldSettings()));
         if (local_2 != nullptr)
         {
             if (local_2.LevelInfoConfig)
             {
-                if (local_10 == 1)
+                if (int(local_2.LevelInfoConfig.Get().LevelType) == 1)
                 {
                     local_9 = 1;
                 }
                 else
                 {
-                    bool local_13 = (local_10 == 2);
+                    bool local_13 = (int(local_2.LevelInfoConfig.Get().LevelType) == 2);
                     local_9 = local_13;
                 }
                 return (local_9 != 0);
@@ -776,8 +773,6 @@ class UGameDSConnectionSubsystem : UGameDSConnectionSubsystemBase
     {
         int local_6 = 0;
         int local_22 = 0;
-        int local_57 = 0;
-        int local_91;
         if (!(PlayerInfo.IsValid()) || (local_6.GetAllPlayerPawnEntities().Num() == 0))
         {
             XWarning(ELog(27), FString().Append("SavePlayerBuffInfo PlayerId=").Append(local_6.GetPlayerId()).Append(" skip: player not ready (no pawn), keep persisted buffs"));
@@ -793,28 +788,24 @@ class UGameDSConnectionSubsystem : UGameDSConnectionSubsystemBase
                 if (local_36.GetMetaBuffConfig())
                 {
                     FPbUint32Pair local_46 = PlayerInfo.AddBuffList();
+                    int local_57 = local_36.GetMetaBuffConfig().Get().DataId;
                     local_46.SetFirst(local_57);
-                    local_57 = local_36.GetStartTime();
-                    local_46.SetSecond(local_57);
+                    local_46.SetSecond(local_36.GetStartTime());
                     FPbUint32ListPair local_68 = PlayerInfo.AddNewBuffList();
+                    local_57 = local_36.GetMetaBuffConfig().Get().DataId;
                     local_68.SetKey(local_57);
-                    auto local_84 = local_36.GetModifiersDataIDs().Iterator();
-                    for (; local_84.CanProceed;)
+                    for (auto local_91 : local_36.GetModifiersDataIDs())
                     {
-                        local_57 = local_84.Proceed();
-                        local_91 = local_57;
                         local_68.AddValues(local_91);
                     }
                     FPbUint32ListPair local_78 = PlayerInfo.AddMetaBuffCapList();
+                    local_57 = local_36.GetMetaBuffConfig().Get().DataId;
                     local_78.SetKey(local_57);
-                    auto local_90 = local_36.GetCapabilitiesConfigs().Iterator();
-                    for (; local_90.CanProceed;)
+                    for (auto local_91 : local_36.GetCapabilitiesConfigs())
                     {
-                        local_78.AddValues(local_90.Proceed());
+                        local_78.AddValues(local_91);
                     }
-                    local_57 = local_36.GetStartTime();
-                    int local_9 = local_6.GetPlayerId();
-                    FString local_14 = FString();
+                    XLog(ELog(27), FString().Append("SavePlayerBuffInfo PlayerId=").Append(local_6.GetPlayerId()).Append(" BuffId=").Append(local_36.GetMetaBuffConfig().Get().DataId).Append(" StartTime=").Append(local_36.GetStartTime()));
                 }
             }
         }
@@ -822,7 +813,6 @@ class UGameDSConnectionSubsystem : UGameDSConnectionSubsystemBase
     }
     void SaveCutSceneInfo(const FECSEntity &inout PlayerEntity, FPbDsPlayerInfo &inout PlayerInfo)
     {
-        int local_29 = 0;
         if (PlayerInfo.IsValid())
         {
             FPbDSMiscInfo local_12 = PlayerInfo.GetDsMiscInfo();
@@ -830,7 +820,7 @@ class UGameDSConnectionSubsystem : UGameDSConnectionSubsystemBase
             const FC_CutSceneLogicData& local_28 = local_26.opCall();
             if (local_28)
             {
-                local_12.SetCutsceneDataKey(local_29);
+                local_12.SetCutsceneDataKey(local_28.GetCutSceneData().Get().DataId);
                 local_12.SetCutsceneStartTime((FDateTime::UtcNow().ToUnixTimestamp() - uint((float32((FFPTime(ECS::GetContextTime()) - local_28.GetStartTime()).ToSeconds()) + 0.5f))));
                 if ((!((local_28.GetPlayerTag() == NAME_None))))
                 {
@@ -888,8 +878,7 @@ class UGameDSConnectionSubsystem : UGameDSConnectionSubsystemBase
                     FFPTime local_118 = FFPTime(ECS::GetContextTime());
                     int local_31 = FDateTime::UtcNow().ToUnixTimestamp();
                     local_92.SetStartTime((local_118 - FFPTime((local_31 - local_23_3))));
-                    FSoftObjectPath local_138;
-                    local_144 = (Cast<ULevelSequence>(local_138.TryLoad()));
+                    local_144 = (Cast<ULevelSequence>(local_92.GetCutSceneData().Get().LevelSequence.ToSoftObjectPath().TryLoad()));
                     if (local_144 != nullptr)
                     {
                         local_146 = local_144.GetDuration();
@@ -899,21 +888,19 @@ class UGameDSConnectionSubsystem : UGameDSConnectionSubsystemBase
                         local_146 = 0.0f;
                     }
                     local_92.SetDuration(FFPTime(local_146));
+                    local_92.SetLevelSequence(local_92.GetCutSceneData().Get().LevelSequence);
                     local_92.SetbPrevTeleported(false);
                     local_92.SetbCrossDS(true);
                     if (!(local_28.IsEmpty()))
                     {
                         local_92.SetPlayerTag(FName(local_28));
                     }
-                    FName local_150 = local_92.GetPlayerTag();
-                    if (::UTagTargetPointManager::Get().GetTagTransform(local_170.EndLocationTag).IsSet())
+                    local_92.GetCutSceneData().Get().EntityInfos.Find(local_92.GetPlayerTag(), local_170);
+                    TOptional<FTransform> local_200 = ::UTagTargetPointManager::Get().GetTagTransform(local_170.EndLocationTag);
+                    if (local_200.IsSet())
                     {
-                        FRotator local_240;
-                        FVector local_234;
-                        local_234.GetLocation();
-                        local_156.Location = local_234;
-                        local_240.Rotator();
-                        local_156.Rotation = local_240;
+                        local_156.Location = local_200.GetValue().GetLocation();
+                        local_156.Rotation = local_200.GetValue().Rotator();
                     }
                     XLog(ELog(27), FString().Append("LoadCutSceneInfo valid cutscene data PlayerEntity=").Append(PlayerEntity).Append(" Uid=").Append(PlayerInfo.GetUid()).Append(" PlayerTag=").Append(local_92.GetPlayerTag()).Append(", spawn point=").Append(local_156.Location));
                 }
@@ -1191,11 +1178,10 @@ class UGameDSConnectionSubsystem : UGameDSConnectionSubsystemBase
     UFUNCTION()
     void SaveAllPlayer()
     {
-        int local_49 = 0;
         TMap<uint, uint> local_20 = this.GetPlayerUidToEntityMap();
         for (auto& local_40 : local_20)
         {
-            this.SaveDSPlayerInfo(FECSEntity(local_49), local_40.GetKey(), true, false);
+            this.SaveDSPlayerInfo(FECSEntity(local_40.GetValue()), local_40.GetKey(), true, false);
         }
         return;
     }
@@ -1613,8 +1599,7 @@ class UGameDSConnectionSubsystem : UGameDSConnectionSubsystemBase
             if (local_7)
             {
                 bool local_57;
-                int local_56 = local_44.GetDsMiscInfo().GetPlayerMapInfo().GetWorldLevelKey();
-                local_55 = local_56;
+                local_55 = local_44.GetDsMiscInfo().GetPlayerMapInfo().GetWorldLevelKey();
                 FECSWorldPtr local_80 = ECS::GetECSWorld();
                 Has local_84;
                 local_57 = local_84.opCall();
@@ -1648,11 +1633,12 @@ class UGameDSConnectionSubsystem : UGameDSConnectionSubsystemBase
                         }
                         if (local_7)
                         {
-                            if (::FLevelUtils::GetCurrentLevelInfoConfig(nullptr))
+                            TDataObjectPtr<FLevelInfoConfig> local_284 = ::FLevelUtils::GetCurrentLevelInfoConfig(nullptr);
+                            if (local_284)
                             {
                                 int local_309;
-                                local_309 = local_56;
-                                if (local_309 > 0 && (local_309 != local_56))
+                                local_309 = local_284.Get().CityLevelId;
+                                if (local_309 > 0 && ((local_309 != local_284.Get().DataId)))
                                 {
                                     local_55 = local_309;
                                 }
@@ -2047,7 +2033,6 @@ class UGameDSConnectionSubsystem : UGameDSConnectionSubsystemBase
         int local_48;
         int local_49;
         int local_62 = 0;
-        AECSPlayerController local_102;
         APlayerState local_104;
         ::InventoryUtils::LoadItemInventory(PlayerEntity);
         FPbDsPlayerInfo local_34 = this.GetPlayerInfo(local_6.GetPlayerId());
@@ -2096,15 +2081,13 @@ class UGameDSConnectionSubsystem : UGameDSConnectionSubsystemBase
         }
         else
         {
-            TWeakObjectPtr<AECSPlayerController> local_97 = local_6.GetUEPlayerController();
+            AECSPlayerController local_102 = local_6.GetUEPlayerController().Get();
             if (local_102 != nullptr)
             {
                 local_104 = local_102.PlayerState;
                 if (local_104 != nullptr)
                 {
-                    TWeakObjectPtr<AECSPlayerController> local_106 = local_6.GetUEPlayerController();
-                    AECSPlayerController local_108;
-                    local_12.SetNickName(local_108.PlayerState.GetPlayerName());
+                    local_12.SetNickName(local_6.GetUEPlayerController().Get().PlayerState.GetPlayerName());
                 }
             }
         }

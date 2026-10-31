@@ -41,8 +41,7 @@ struct FVM_TeamPlayerOperatorListHover : FEUIViewModel
     {
         if (this.GetTeamMember().IsValid())
         {
-            TEUIModelRef<FM_TeamMember> local_2 = this.GetTeamMember();
-            if (IsCaptain())
+            if (this.GetTeamMember().Get().IsCaptain())
             {
             }
         }
@@ -88,11 +87,9 @@ FVM_TeamPlayerOperatorListHover& Create(const UObject ContextObject, const TEUIM
 {
     return FVM_TeamPlayerOperatorListHover::CreateByManager(EUIInternal::GetContextManager(ContextObject), TeamMember);
 }
-FVM_TeamPlayerOperatorListHover CreateByManager(const UEUIManagerSubsystem Manager, const TEUIModelRef<FM_TeamMember> &inout TeamMember)
+FVM_TeamPlayerOperatorListHover& CreateByManager(const UEUIManagerSubsystem Manager, const TEUIModelRef<FM_TeamMember> &inout TeamMember)
 {
-    FVM_TeamPlayerOperatorListHover __r;
-    TEUIModelRef<FVM_TeamPlayerOperatorListHover> local_6 = TEUIModelRef<FVM_TeamPlayerOperatorListHover>(EUIInternal::MakeModelWithManager_Generic(Manager, FVM_TeamPlayerOperatorListHover::ModelId, 0, TeamMember));
-    return __r;
+    return TEUIModelRef<FVM_TeamPlayerOperatorListHover>(EUIInternal::MakeModelWithManager_Generic(Manager, FVM_TeamPlayerOperatorListHover::ModelId, 0, TeamMember)).Get();
 }
 void GetModelInfo(FEUIViewModelMetaInfo &inout Result)
 {
@@ -126,7 +123,6 @@ namespace __GeneratedProperties_FVM_TeamPlayerOperatorListHover
 {
 UScriptStruct StaticStruct()
 {
-    UScriptStruct local_2;
-    return local_2;
+    return __GeneratedProperties_FVM_TeamPlayerOperatorListHover.Get();
 }
 }

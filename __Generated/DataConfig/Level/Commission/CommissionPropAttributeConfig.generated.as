@@ -19,7 +19,6 @@ FCommissionAttributeScale __FCommissionPropAttributeConfig_GetAttributeModifierT
 UFUNCTION()
 TMap<EMonsterRank, FCommissionAttributeScale> __FCommissionPropAttributeConfig_GetAttributeModifiersToMonster(const TDataObjectPtr<FCommissionPropAttributeConfig> &inout DataObject)
 {
-    TMap<EMonsterRank, FCommissionAttributeScale> __r;
     if ((DataObject == nullptr))
     {
         if (!(EUIGlobals::GIsDuringPropertyConversion))
@@ -29,7 +28,7 @@ TMap<EMonsterRank, FCommissionAttributeScale> __FCommissionPropAttributeConfig_G
         FCommissionPropAttributeConfig local_74;
         return local_74.AttributeModifiersToMonster;
     }
-    return __r;
+    return DataObject.Get().AttributeModifiersToMonster;
 }
 UFUNCTION()
 FCommissionAttributeScale __FCommissionPropAttributeConfig_GetAttributeModifiersOfSelf(const TDataObjectPtr<FCommissionPropAttributeConfig> &inout DataObject)

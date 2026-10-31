@@ -121,6 +121,7 @@ struct FVM_WorldEventMinimapIcon : FEUIViewModel
             }
             else
             {
+                this.GetModify_StatusProgress().Clear();
             }
             if ((int(local_18)) == 2)
             {
@@ -128,9 +129,13 @@ struct FVM_WorldEventMinimapIcon : FEUIViewModel
             }
             else
             {
+                this.GetModify_InProgressElapsed().Clear();
             }
             return;
         }
+        this.GetModify_StatusCountdown().Clear();
+        this.GetModify_InProgressElapsed().Clear();
+        this.GetModify_StatusProgress().Clear();
         return;
     }
     TSoftClassPtr<UEUIUserWidget> GetTooltipWidgetClass() const
@@ -142,8 +147,7 @@ struct FVM_WorldEventMinimapIcon : FEUIViewModel
     {
         if (this.GetRewardList())
         {
-            TEUIModelRef<FVM_CommonRewardList> local_2 = this.GetRewardList();
-            return GetRewards();
+            return this.GetRewardList().Get().GetRewards();
         }
         return TArray<TEUIModelRef<FVM_CommonRewardItem>>();
     }
@@ -259,7 +263,7 @@ struct FVM_WorldEventMinimapIcon : FEUIViewModel
         {
             return local_16.GetStatus();
         }
-        return EPublicEventStatus(0);
+        return EPublicEventStatus::PrepareToInteract;
     }
     FText GetTimerAndStateText() const
     {
@@ -601,11 +605,9 @@ FVM_WorldEventMinimapIcon& Create(const UObject ContextObject, const TEUIModelRe
 {
     return FVM_WorldEventMinimapIcon::CreateByManager(EUIInternal::GetContextManager(ContextObject), Spot);
 }
-FVM_WorldEventMinimapIcon CreateByManager(const UEUIManagerSubsystem Manager, const TEUIModelRef<FM_Spot> &inout Spot)
+FVM_WorldEventMinimapIcon& CreateByManager(const UEUIManagerSubsystem Manager, const TEUIModelRef<FM_Spot> &inout Spot)
 {
-    FVM_WorldEventMinimapIcon __r;
-    TEUIModelRef<FVM_WorldEventMinimapIcon> local_6 = TEUIModelRef<FVM_WorldEventMinimapIcon>(EUIInternal::MakeModelWithManager_Generic(Manager, FVM_WorldEventMinimapIcon::ModelId, 0, Spot));
-    return __r;
+    return TEUIModelRef<FVM_WorldEventMinimapIcon>(EUIInternal::MakeModelWithManager_Generic(Manager, FVM_WorldEventMinimapIcon::ModelId, 0, Spot)).Get();
 }
 void GetModelInfo(FEUIViewModelMetaInfo &inout Result)
 {
@@ -909,7 +911,6 @@ namespace __GeneratedProperties_FVM_WorldEventMinimapIcon
 {
 UScriptStruct StaticStruct()
 {
-    UScriptStruct local_2;
-    return local_2;
+    return __GeneratedProperties_FVM_WorldEventMinimapIcon.Get();
 }
 }

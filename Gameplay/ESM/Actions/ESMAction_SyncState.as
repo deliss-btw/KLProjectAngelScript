@@ -63,7 +63,7 @@ class UESMAction_SyncState : UESMBPBaseSpanTickAction
     void Tick_Implementation(const FESMContext &inout Context, const FESMActionTime &inout Time) const
     {
         float32 local_40;
-        FECSEntity local_4;
+        FECSEntity local_4 = FECSEntity(this.GetInstanceData(Context).SlaveEntity);
         if (!(local_4.IsValid()))
         {
             Has local_24;
@@ -123,7 +123,7 @@ class UESMAction_SyncState : UESMBPBaseSpanTickAction
     void Exit_Implementation(const FESMContext &inout Context, const FESMActionTime &inout Time) const
     {
         bool local_5;
-        FECSEntity local_4;
+        FECSEntity local_4 = FECSEntity(this.GetInstanceData(Context).SlaveEntity);
         if (!(local_4.IsValid()))
         {
             local_5 = false;

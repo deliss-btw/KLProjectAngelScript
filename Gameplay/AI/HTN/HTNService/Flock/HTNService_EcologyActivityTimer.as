@@ -405,8 +405,7 @@ class UHTNDecorator_EcologyCheckForceMuteCombatInChangeArea : UHTNDecorator_ECSS
         {
             return (local_1 != 0);
         }
-        FEcologyCreatureDefinitionRow local_14;
-        return local_14.ForceMuteCombatInChangeArea;
+        return local_12.FlockMainCreature.Get().ForceMuteCombatInChangeArea;
     }
 }
 
@@ -444,8 +443,7 @@ class UHTNDecorator_EcologyLeaderHPCheck : UHTNDecorator_ECSScriptBase
             {
                 float32 local_23 = local_24 / local_27;
                 local_2.SetValueAsFloat(this.LeaderHPViewer.SelectedKeyName, local_23);
-                FAISmartValueContext local_32 = Context.opImplConv();
-                if (local_23 <= 0.0f)
+                if (local_23 <= this.CheckHpPercent.GetValue(Context.opImplConv()))
                 {
                     return true;
                 }

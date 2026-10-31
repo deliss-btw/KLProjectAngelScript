@@ -9,11 +9,9 @@ class US_ConditionGameplayTagChanged : UECSScriptSystem
     {
         bool local_17;
         bool local_21;
-        TArrayConstIterator<FConditionInstanceHandle> local_38;
         int local_231;
         int local_235;
         Has local_26;
-        CastTo local_74;
         for (auto& local_20 : GameplayTagChangedConditionManager.MonitoredTags)
         {
             if (!(GameplayTagsChanged.ContainsTag(local_20.GetKey())))
@@ -30,18 +28,18 @@ class US_ConditionGameplayTagChanged : UECSScriptSystem
                 local_17 = local_30.opCall();
             }
             bool local_31 = GameplayTags.Match(local_20.GetKey());
-            for (; local_38.CanProceed;)
+            for (auto& local_46 : local_20.GetValue().ConditionInstances)
             {
-                const FConditionInstanceHandle& local_46 = local_38.Proceed();
                 if (::ConditionUtils::IsReached(local_46))
                 {
                     continue;
                 }
                 TDataObjectPtr<FConditionConfigBase> local_70 = local_46.GetConditionConfig();
-                if (local_74.opCall())
+                CastTo local_74;
+                TDataObjectPtr<FLocalConditionConfig> local_98 = local_74.opCall();
+                if (local_98)
                 {
-                    FInstancedStruct::GetPtr local_126;
-                    TConstRawPtr<FConditionGameplayTagChangedConfig> local_128 = local_126.opCall();
+                    TConstRawPtr<FConditionGameplayTagChangedConfig> local_128 = FInstancedStruct::GetPtr(local_98.Get().ConditionTypeDefineConfig).opCall();
                     if (local_128)
                     {
                         int local_234;

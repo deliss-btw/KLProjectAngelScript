@@ -42,13 +42,11 @@ struct FVM_TraitInfoIcon : FEUIViewModel
     }
     TDataObjectPtr<FTraitConfig> GetTraitConfig() const
     {
-        TEUIModelRef<FM_Trait> local_2 = this.GetTrait();
-        return GetTraitConfig();
+        return this.GetTrait().Get().GetTraitConfig();
     }
     FSoftBrush GetTraitIcon() const
     {
-        // body not fully recovered — stub [no-return]
-        FSoftBrush __r; return __r;
+        return this.GetTraitConfig().Get().TraitIcon;
     }
     TEUIModelRef<FM_Trait> GetTrait() const property
     {
@@ -88,11 +86,9 @@ FVM_TraitInfoIcon& Create(const UObject ContextObject, const TEUIModelRef<FM_Tra
 {
     return FVM_TraitInfoIcon::CreateByManager(EUIInternal::GetContextManager(ContextObject), Trait);
 }
-FVM_TraitInfoIcon CreateByManager(const UEUIManagerSubsystem Manager, const TEUIModelRef<FM_Trait> &inout Trait)
+FVM_TraitInfoIcon& CreateByManager(const UEUIManagerSubsystem Manager, const TEUIModelRef<FM_Trait> &inout Trait)
 {
-    FVM_TraitInfoIcon __r;
-    TEUIModelRef<FVM_TraitInfoIcon> local_6 = TEUIModelRef<FVM_TraitInfoIcon>(EUIInternal::MakeModelWithManager_Generic(Manager, FVM_TraitInfoIcon::ModelId, 0, Trait));
-    return __r;
+    return TEUIModelRef<FVM_TraitInfoIcon>(EUIInternal::MakeModelWithManager_Generic(Manager, FVM_TraitInfoIcon::ModelId, 0, Trait)).Get();
 }
 void GetModelInfo(FEUIViewModelMetaInfo &inout Result)
 {
@@ -135,7 +131,6 @@ namespace __GeneratedProperties_FVM_TraitInfoIcon
 {
 UScriptStruct StaticStruct()
 {
-    UScriptStruct local_2;
-    return local_2;
+    return __GeneratedProperties_FVM_TraitInfoIcon.Get();
 }
 }

@@ -83,6 +83,7 @@ class UESMAction_SimpleSkeletalMeshAnim : UESMBPBaseSpanTickAction
     UFUNCTION()
     void ViewExit_Implementation(const FESMViewContext &inout Context, const FESMActionTime &inout Time) const
     {
+        USkeletalMeshComponent local_10;
         if ((!((this.MeshAnim != nullptr))))
         {
             return;
@@ -90,11 +91,11 @@ class UESMAction_SimpleSkeletalMeshAnim : UESMBPBaseSpanTickAction
         const FESMSimpleSkeletalMeshAnimInstanceData& local_6 = this.GetViewInstanceData(Context);
         if (local_6.CachedSkeletalMeshComponent.IsValid())
         {
+            local_10 = local_6.CachedSkeletalMeshComponent.Get();
         }
         else
         {
         }
-        USkeletalMeshComponent local_10;
         USkeletalMeshComponent local_12 = local_10;
         if (local_12 != nullptr)
         {
@@ -105,6 +106,7 @@ class UESMAction_SimpleSkeletalMeshAnim : UESMBPBaseSpanTickAction
     UFUNCTION()
     void ViewTick_Implementation(const FESMViewContext &inout Context, const FESMActionTime &inout Time) const
     {
+        USkeletalMeshComponent local_10;
         float local_30;
         if ((!((this.MeshAnim != nullptr))))
         {
@@ -113,11 +115,11 @@ class UESMAction_SimpleSkeletalMeshAnim : UESMBPBaseSpanTickAction
         FESMSimpleSkeletalMeshAnimInstanceData& local_6 = this.ModifyViewInstanceData(Context);
         if (local_6.CachedSkeletalMeshComponent.IsValid())
         {
+            local_10 = local_6.CachedSkeletalMeshComponent.Get();
         }
         else
         {
         }
-        USkeletalMeshComponent local_10;
         USkeletalMeshComponent local_12 = local_10;
         if (local_12 == nullptr)
         {

@@ -35,8 +35,8 @@ class UWidget_LoginGamma : UEUIActivatableWidget
     {
         if (this.GammaSliderVM.IsValid())
         {
-            this.DeadZone = GetDeadZone();
-            if (GetbNotLoginPage())
+            this.DeadZone = this.GammaSliderVM.Get().GetDeadZone();
+            if (this.GammaSliderVM.Get().GetbNotLoginPage())
             {
                 this.Esc_AB.Register(this);
                 this.Save_AB.Register(this);
@@ -61,7 +61,7 @@ class UWidget_LoginGamma : UEUIActivatableWidget
             {
                 return FEventReply::Unhandled();
             }
-            local_64.StepCurrentRatio();
+            this.CommonSliderVM.Get().StepCurrentRatio(local_64);
             return FEventReply::Handled();
         }
         return FEventReply::Unhandled();
@@ -71,7 +71,7 @@ class UWidget_LoginGamma : UEUIActivatableWidget
     {
         if (this.GammaSliderVM.IsValid())
         {
-            Ratio.SetSliderValue();
+            this.GammaSliderVM.Get().SetSliderValue(Ratio);
         }
         return;
     }
@@ -80,9 +80,9 @@ class UWidget_LoginGamma : UEUIActivatableWidget
     {
         if (this.GammaSliderVM.IsValid())
         {
-            if (!(GetbNotLoginPage()))
+            if (!(this.GammaSliderVM.Get().GetbNotLoginPage()))
             {
-                SettingFinish();
+                this.GammaSliderVM.Get().SettingFinish();
                 this.ClosePage(false);
                 FEUIModelRef local_12 = FEUIModelRef(::FMS_Login::Get(this.GetOwningLocalPlayer()));
                 FEUIMessageBus::Publish(EUIMessageBus);
@@ -99,7 +99,7 @@ class UWidget_LoginGamma : UEUIActivatableWidget
     {
         if (this.GammaSliderVM.IsValid())
         {
-            SettingFinish();
+            this.GammaSliderVM.Get().SettingFinish();
             this.ClosePage(false);
         }
         return;
@@ -109,14 +109,14 @@ class UWidget_LoginGamma : UEUIActivatableWidget
     {
         if (this.CommonSliderVM.IsValid())
         {
-            1056964608.SetCurrentRatio();
+            this.CommonSliderVM.Get().SetCurrentRatio(0.5f);
         }
         return;
     }
     UFUNCTION()
     void RequireClose()
     {
-        if (HasChanged())
+        if (this.GammaSliderVM.Get().HasChanged())
         {
             FDialogDynamicCallback local_6;
             local_6.BindUFunction(this, n"HandleRequireCloseAnswer");
@@ -134,15 +134,15 @@ class UWidget_LoginGamma : UEUIActivatableWidget
     {
         if (int(Answer.AnswerType) == 1)
         {
-            SettingFinish();
+            this.GammaSliderVM.Get().SettingFinish();
             this.ClosePage(false);
         }
         else
         {
             if (int(Answer.AnswerType) == 2)
             {
-                ResetGammaValue();
-                SettingFinish();
+                this.GammaSliderVM.Get().ResetGammaValue();
+                this.GammaSliderVM.Get().SettingFinish();
                 this.ClosePage(false);
             }
         }
@@ -153,7 +153,7 @@ class UWidget_LoginGamma : UEUIActivatableWidget
     {
         if (this.CommonSliderVM.IsValid())
         {
-            1065353216.StepCurrentRatio();
+            this.CommonSliderVM.Get().StepCurrentRatio(1.0f);
         }
         return;
     }
@@ -162,7 +162,7 @@ class UWidget_LoginGamma : UEUIActivatableWidget
     {
         if (this.CommonSliderVM.IsValid())
         {
-            -1082130432.StepCurrentRatio();
+            this.CommonSliderVM.Get().StepCurrentRatio(-1.0f);
         }
         return;
     }
@@ -190,8 +190,8 @@ class UWidget_LoginGamma : UEUIActivatableWidget
     }
     void HandleObservedModelChanges(FEUIReactiveSubscriberIterator &inout It)
     {
-        FVM_CommonSlider& local_6;
         TEUIModelRef<FVM_CommonSlider> local_2 = this.CommonSliderVM.AsRef();
+        FVM_CommonSlider& local_6 = local_2.Get();
         for (; It; )
         {
             FEUIReactiveSubscriberTrackScope local_56 = FEUIReactiveSubscriberTrackScope(It);

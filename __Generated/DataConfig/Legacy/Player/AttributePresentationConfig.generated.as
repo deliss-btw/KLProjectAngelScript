@@ -3,7 +3,6 @@ namespace __FAttributePresentationConfigFunctions
 UFUNCTION()
 FText __FAttributePresentationConfig_GetDisplayName(const TDataObjectPtr<FAttributePresentationConfig> &inout DataObject)
 {
-    FText __r;
     if ((DataObject == nullptr))
     {
         if (!(EUIGlobals::GIsDuringPropertyConversion))
@@ -13,12 +12,11 @@ FText __FAttributePresentationConfig_GetDisplayName(const TDataObjectPtr<FAttrib
         FAttributePresentationConfig local_72;
         return local_72.DisplayName;
     }
-    return __r;
+    return DataObject.Get().DisplayName;
 }
 UFUNCTION()
 FText __FAttributePresentationConfig_GetDescription(const TDataObjectPtr<FAttributePresentationConfig> &inout DataObject)
 {
-    FText __r;
     if ((DataObject == nullptr))
     {
         if (!(EUIGlobals::GIsDuringPropertyConversion))
@@ -28,12 +26,11 @@ FText __FAttributePresentationConfig_GetDescription(const TDataObjectPtr<FAttrib
         FAttributePresentationConfig local_72;
         return local_72.Description;
     }
-    return __r;
+    return DataObject.Get().Description;
 }
 UFUNCTION()
 FSoftBrush __FAttributePresentationConfig_GetIcon(const TDataObjectPtr<FAttributePresentationConfig> &inout DataObject)
 {
-    FSoftBrush __r;
     if ((DataObject == nullptr))
     {
         if (!(EUIGlobals::GIsDuringPropertyConversion))
@@ -43,12 +40,11 @@ FSoftBrush __FAttributePresentationConfig_GetIcon(const TDataObjectPtr<FAttribut
         FAttributePresentationConfig local_72;
         return local_72.Icon;
     }
-    return __r;
+    return DataObject.Get().Icon;
 }
 UFUNCTION()
 FLinearColor __FAttributePresentationConfig_GetThemeColor(const TDataObjectPtr<FAttributePresentationConfig> &inout DataObject)
 {
-    FLinearColor __r;
     if ((DataObject == nullptr))
     {
         if (!(EUIGlobals::GIsDuringPropertyConversion))
@@ -58,7 +54,7 @@ FLinearColor __FAttributePresentationConfig_GetThemeColor(const TDataObjectPtr<F
         FAttributePresentationConfig local_72;
         return local_72.ThemeColor;
     }
-    return __r;
+    return DataObject.Get().ThemeColor;
 }
 UFUNCTION()
 FAttributePresentationConfig CastToFAttributePresentationConfig(const TDataObjectPtr<FAttributePresentationConfig> &inout DataObject)

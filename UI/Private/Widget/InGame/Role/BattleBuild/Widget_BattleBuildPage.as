@@ -33,7 +33,7 @@ class UWidget_BattleBuildPage : UEUIActivatableWidget
             local_24 = Cast<UWidget_BattleBuildEntry>(local_20);
             if (local_24 != nullptr)
             {
-                this.QuickSlotToEntryMap.Add(GetQuickSlot(), local_24);
+                this.QuickSlotToEntryMap.Add(local_24.Entry.Get().GetQuickSlot(), local_24);
             }
         }
         return;
@@ -41,7 +41,18 @@ class UWidget_BattleBuildPage : UEUIActivatableWidget
     UFUNCTION()
     void Tick_Implementation(const FGeometry &inout MyGeometry, const float32 InDeltaTime)
     {
-        // body not fully recovered — stub [unresolved-operand]
+        FEUIModelWeakRef local_2 = this.SelectList.GetSelectedItem();
+        if (local_2.Get())
+        {
+            FEUIModelRef local_8 = FEUIModelRef(local_2.Get());
+            Get local_12;
+            this.BattleBuild.Get().SetSelectedItemConfig(local_12.opCall().GetItemConfig());
+        }
+        else
+        {
+            this.BattleBuild.Get().SetSelectedItemConfig(::InventoryUtils::GetQuickSlotItem(::FASCommonUtils::GetLocalPlayerProxy(), this.BattleBuild.Get().GetSelectedQuickSlot()));
+        }
+        return;
     }
     UFUNCTION()
     void OnSelectedQuickSlotChanged(const TDataObjectPtr<FItemQuickSlotConfig> &inout QuickSlot)
@@ -87,7 +98,7 @@ class UWidget_BattleBuildPage : UEUIActivatableWidget
     UFUNCTION()
     TArray<FEUIModelWeakRef> BattleBuild_SelectListEntries() const
     {
-        FVMS_BattleBuildPage& local_2;
+        FVMS_BattleBuildPage& local_2 = this.BattleBuild.Get();
         TArray<FEUIModelWeakRef> local_16;
         if (local_2)
         {
@@ -119,8 +130,8 @@ class UWidget_BattleBuildPage : UEUIActivatableWidget
     }
     void HandleObservedModelChanges(FEUIReactiveSubscriberIterator &inout It)
     {
-        FVMS_BattleBuildPage& local_6;
         TEUIModelRef<FVMS_BattleBuildPage> local_2 = this.BattleBuild.AsRef();
+        FVMS_BattleBuildPage& local_6 = local_2.Get();
         for (; It; )
         {
             FEUIReactiveSubscriberTrackScope local_56 = FEUIReactiveSubscriberTrackScope(It);

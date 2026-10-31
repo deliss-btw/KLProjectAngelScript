@@ -3,7 +3,6 @@ namespace __FTrapAttachOffsetRowFunctions
 UFUNCTION()
 FName __FTrapAttachOffsetRow_GetRootBoneName(const TDataObjectPtr<FTrapAttachOffsetRow> &inout DataObject)
 {
-    FName __r;
     if ((DataObject == nullptr))
     {
         if (!(EUIGlobals::GIsDuringPropertyConversion))
@@ -13,12 +12,11 @@ FName __FTrapAttachOffsetRow_GetRootBoneName(const TDataObjectPtr<FTrapAttachOff
         FTrapAttachOffsetRow local_72;
         return local_72.RootBoneName;
     }
-    return __r;
+    return DataObject.Get().RootBoneName;
 }
 UFUNCTION()
 FName __FTrapAttachOffsetRow_GetPelvisBoneName(const TDataObjectPtr<FTrapAttachOffsetRow> &inout DataObject)
 {
-    FName __r;
     if ((DataObject == nullptr))
     {
         if (!(EUIGlobals::GIsDuringPropertyConversion))
@@ -28,12 +26,11 @@ FName __FTrapAttachOffsetRow_GetPelvisBoneName(const TDataObjectPtr<FTrapAttachO
         FTrapAttachOffsetRow local_72;
         return local_72.PelvisBoneName;
     }
-    return __r;
+    return DataObject.Get().PelvisBoneName;
 }
 UFUNCTION()
 FVector __FTrapAttachOffsetRow_GetTopMOffset(const TDataObjectPtr<FTrapAttachOffsetRow> &inout DataObject)
 {
-    FVector __r;
     if ((DataObject == nullptr))
     {
         if (!(EUIGlobals::GIsDuringPropertyConversion))
@@ -43,12 +40,11 @@ FVector __FTrapAttachOffsetRow_GetTopMOffset(const TDataObjectPtr<FTrapAttachOff
         FTrapAttachOffsetRow local_72;
         return local_72.TopMOffset;
     }
-    return __r;
+    return DataObject.Get().TopMOffset;
 }
 UFUNCTION()
 FVector __FTrapAttachOffsetRow_GetBaseOffset(const TDataObjectPtr<FTrapAttachOffsetRow> &inout DataObject)
 {
-    FVector __r;
     if ((DataObject == nullptr))
     {
         if (!(EUIGlobals::GIsDuringPropertyConversion))
@@ -58,7 +54,7 @@ FVector __FTrapAttachOffsetRow_GetBaseOffset(const TDataObjectPtr<FTrapAttachOff
         FTrapAttachOffsetRow local_72;
         return local_72.BaseOffset;
     }
-    return __r;
+    return DataObject.Get().BaseOffset;
 }
 UFUNCTION()
 float32 __FTrapAttachOffsetRow_GetOuterRadius(const TDataObjectPtr<FTrapAttachOffsetRow> &inout DataObject)
@@ -108,7 +104,6 @@ float32 __FTrapAttachOffsetRow_GetAngleOffset(const TDataObjectPtr<FTrapAttachOf
 UFUNCTION()
 FVector __FTrapAttachOffsetRow_GetFrontLOffset(const TDataObjectPtr<FTrapAttachOffsetRow> &inout DataObject)
 {
-    FVector __r;
     if ((DataObject == nullptr))
     {
         if (!(EUIGlobals::GIsDuringPropertyConversion))
@@ -118,12 +113,11 @@ FVector __FTrapAttachOffsetRow_GetFrontLOffset(const TDataObjectPtr<FTrapAttachO
         FTrapAttachOffsetRow local_72;
         return local_72.FrontLOffset;
     }
-    return __r;
+    return DataObject.Get().FrontLOffset;
 }
 UFUNCTION()
 FVector __FTrapAttachOffsetRow_GetFrontMOffset(const TDataObjectPtr<FTrapAttachOffsetRow> &inout DataObject)
 {
-    FVector __r;
     if ((DataObject == nullptr))
     {
         if (!(EUIGlobals::GIsDuringPropertyConversion))
@@ -133,12 +127,11 @@ FVector __FTrapAttachOffsetRow_GetFrontMOffset(const TDataObjectPtr<FTrapAttachO
         FTrapAttachOffsetRow local_72;
         return local_72.FrontMOffset;
     }
-    return __r;
+    return DataObject.Get().FrontMOffset;
 }
 UFUNCTION()
 FVector __FTrapAttachOffsetRow_GetFrontROffset(const TDataObjectPtr<FTrapAttachOffsetRow> &inout DataObject)
 {
-    FVector __r;
     if ((DataObject == nullptr))
     {
         if (!(EUIGlobals::GIsDuringPropertyConversion))
@@ -148,12 +141,11 @@ FVector __FTrapAttachOffsetRow_GetFrontROffset(const TDataObjectPtr<FTrapAttachO
         FTrapAttachOffsetRow local_72;
         return local_72.FrontROffset;
     }
-    return __r;
+    return DataObject.Get().FrontROffset;
 }
 UFUNCTION()
 FVector __FTrapAttachOffsetRow_GetBackLOffset(const TDataObjectPtr<FTrapAttachOffsetRow> &inout DataObject)
 {
-    FVector __r;
     if ((DataObject == nullptr))
     {
         if (!(EUIGlobals::GIsDuringPropertyConversion))
@@ -163,12 +155,11 @@ FVector __FTrapAttachOffsetRow_GetBackLOffset(const TDataObjectPtr<FTrapAttachOf
         FTrapAttachOffsetRow local_72;
         return local_72.BackLOffset;
     }
-    return __r;
+    return DataObject.Get().BackLOffset;
 }
 UFUNCTION()
 FVector __FTrapAttachOffsetRow_GetBackMOffset(const TDataObjectPtr<FTrapAttachOffsetRow> &inout DataObject)
 {
-    FVector __r;
     if ((DataObject == nullptr))
     {
         if (!(EUIGlobals::GIsDuringPropertyConversion))
@@ -178,12 +169,11 @@ FVector __FTrapAttachOffsetRow_GetBackMOffset(const TDataObjectPtr<FTrapAttachOf
         FTrapAttachOffsetRow local_72;
         return local_72.BackMOffset;
     }
-    return __r;
+    return DataObject.Get().BackMOffset;
 }
 UFUNCTION()
 FVector __FTrapAttachOffsetRow_GetBackROffset(const TDataObjectPtr<FTrapAttachOffsetRow> &inout DataObject)
 {
-    FVector __r;
     if ((DataObject == nullptr))
     {
         if (!(EUIGlobals::GIsDuringPropertyConversion))
@@ -193,7 +183,7 @@ FVector __FTrapAttachOffsetRow_GetBackROffset(const TDataObjectPtr<FTrapAttachOf
         FTrapAttachOffsetRow local_72;
         return local_72.BackROffset;
     }
-    return __r;
+    return DataObject.Get().BackROffset;
 }
 UFUNCTION()
 float32 __FTrapAttachOffsetRow_GetUpperLayerBlendRatio(const TDataObjectPtr<FTrapAttachOffsetRow> &inout DataObject)

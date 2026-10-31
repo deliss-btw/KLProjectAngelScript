@@ -456,8 +456,8 @@ FVector ComputePresentationLookAtTargetLocation(const FECSEntity &inout LookAtTa
         }
         if (local_8)
         {
-            AActor local_20;
-            local_22 = local_20;
+            Get local_18;
+            local_22 = local_18.opCall().Actor.Get();
             if (local_22 != nullptr && local_22.DoesSocketExist(LookAtTargetSocketName))
             {
                 FTransform local_76 = local_22.GetSocketTransform(LookAtTargetSocketName, ERelativeTransformSpace(0));

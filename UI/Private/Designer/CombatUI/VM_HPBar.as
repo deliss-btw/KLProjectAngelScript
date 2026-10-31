@@ -116,11 +116,11 @@ struct FVM_HPBar : FEUIViewModel
     }
     void RefreshHPDisplayState()
     {
-        int local_8 = 0;
         if ((FECSEntity(this.GetTargetEntity()) == ENTITY_NULL) || (FECSEntity(this.GetHpTargetEntity()) == ENTITY_NULL))
         {
             return;
         }
+        int local_8 = this.GetHPRatioSource().GetValue();
         int local_7 = this.GetHPRatioSource().GetMaxValue();
         if (local_7 <= 0.0f)
         {
@@ -155,7 +155,7 @@ struct FVM_HPBar : FEUIViewModel
     }
     void RefreshCurrentHPRatio()
     {
-        this.SetCurrentHPRatio(0.0f);
+        this.SetCurrentHPRatio(this.GetCurrentHPRatioSource().GetValue());
         if (this.GetbEnabltHPLowHint())
         {
             this.SetbIsHPLow((this.GetCurrentHPRatio() < 0.4f));
@@ -164,9 +164,7 @@ struct FVM_HPBar : FEUIViewModel
     }
     int ResolveHPBarSegment() const
     {
-        int local_3 = 0;
-        int local_2 = int(::GetPrefabType(this.GetHpTargetEntity()));
-        if (local_2 != 2)
+        if ((int(::GetPrefabType(this.GetHpTargetEntity()))) != 2)
         {
             return 1;
         }
@@ -176,11 +174,10 @@ struct FVM_HPBar : FEUIViewModel
         {
             if (local_10.GetPresentationConfig())
             {
-                return local_2;
+                return local_10.GetPresentationConfig().Get().HPBarSegment;
             }
         }
-        TDataObjectPtr<FMonsterPrefabConfig> local_34 = ::GetMonsterConfig(this.GetHpTargetEntity());
-        return local_3;
+        return ::GetMonsterConfig(this.GetHpTargetEntity()).Get().HPBarSegment;
     }
     void OnTargetEntityChanged()
     {
@@ -452,11 +449,9 @@ FVM_HPBar& Create(const UObject ContextObject)
 {
     return FVM_HPBar::CreateByManager(EUIInternal::GetContextManager(ContextObject));
 }
-FVM_HPBar CreateByManager(const UEUIManagerSubsystem Manager)
+FVM_HPBar& CreateByManager(const UEUIManagerSubsystem Manager)
 {
-    FVM_HPBar __r;
-    TEUIModelRef<FVM_HPBar> local_6 = TEUIModelRef<FVM_HPBar>(EUIInternal::MakeModelWithManager(Manager, FVM_HPBar::ModelId));
-    return __r;
+    return TEUIModelRef<FVM_HPBar>(EUIInternal::MakeModelWithManager(Manager, FVM_HPBar::ModelId)).Get();
 }
 void GetModelInfo(FEUIViewModelMetaInfo &inout Result)
 {
@@ -584,7 +579,6 @@ namespace __GeneratedProperties_FVM_HPBar
 {
 UScriptStruct StaticStruct()
 {
-    UScriptStruct local_2;
-    return local_2;
+    return __GeneratedProperties_FVM_HPBar.Get();
 }
 }

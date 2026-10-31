@@ -90,7 +90,6 @@ struct FVM_BornSelectSpecialty : FEUIViewModel
     }
     void PostConstruct()
     {
-        int local_1 = 0;
         const UAvatarBuildSettings local_4;
         this.SetSelectedAvatarId(0);
         GetGameplaySettings<UAvatarBuildSettings> local_6;
@@ -102,55 +101,50 @@ struct FVM_BornSelectSpecialty : FEUIViewModel
         TDataObjectPtr<FAvatarPrefabConfig> local_58 = this.GetMainAvatarConfigFromBuild(local_4.SwordSpecialtyTrainingAvatarConfig);
         if (local_58.IsSet())
         {
-            this.SetLeftAvatarId(local_1);
+            this.SetLeftAvatarId(local_58.Get().DataId);
             TEUIModelRef<FM_Avatar> TEUIModelRef<FM_Avatar>() = TEUIModelRef<FM_Avatar>(::FM_Avatar::Create(this.GetManager(), local_58));
             this.SetAvatarLeft(TEUIModelRef<FVM_AvatarInfo>(::FVM_AvatarInfo::Create(this.GetManager(), TEUIModelRef<FM_Avatar>())));
             TEUIModelRef<FVM_SpecialtyItem> local_68 = TEUIModelRef<FVM_SpecialtyItem>(::FVM_SpecialtyItem::Create(this.GetManager(), this.GetAvatarLeft()));
             this.SetLeftSpecialtyItem(local_68);
-            int local_9 = 1;
             TEUIModelRef<FVM_SpecialtyItem> local_68_2 = this.GetLeftSpecialtyItem();
-            local_9.SetbUseBtnSelect();
-            local_9 = 1;
+            local_68_2.Get().SetbUseBtnSelect(true);
             TEUIModelRef<FVM_SpecialtyItem> local_68_3 = this.GetLeftSpecialtyItem();
-            local_9.SetNeverActive();
+            local_68_3.Get().SetNeverActive(true);
         }
         TDataObjectPtr<FAvatarPrefabConfig> local_34 = this.GetMainAvatarConfigFromBuild(local_4.WizardSpecialtyTrainingAvatarConfig);
         if (local_34.IsSet())
         {
-            this.SetRightAvatarId(local_1);
+            this.SetRightAvatarId(local_34.Get().DataId);
             TEUIModelRef<FM_Avatar> local_64 = TEUIModelRef<FM_Avatar>(::FM_Avatar::Create(this.GetManager(), local_34));
             this.SetAvatarRight(TEUIModelRef<FVM_AvatarInfo>(::FVM_AvatarInfo::Create(this.GetManager(), local_64)));
             TEUIModelRef<FVM_SpecialtyItem> local_68_4 = TEUIModelRef<FVM_SpecialtyItem>(::FVM_SpecialtyItem::Create(this.GetManager(), this.GetAvatarRight()));
             this.SetRightSpecialtyItem(local_68_4);
-            int local_9_2 = 1;
             TEUIModelRef<FVM_SpecialtyItem> local_68_5 = this.GetRightSpecialtyItem();
-            local_9_2.SetbUseBtnSelect();
-            local_9_2 = 1;
+            local_68_5.Get().SetbUseBtnSelect(true);
             TEUIModelRef<FVM_SpecialtyItem> local_68_6 = this.GetRightSpecialtyItem();
-            local_9_2.SetNeverActive();
+            local_68_6.Get().SetNeverActive(true);
         }
         return;
     }
     TDataObjectPtr<FAvatarPrefabConfig> GetMainAvatarConfigFromBuild(const TDataObjectPtr<FAvatarBuildOverrideConfig> &inout BuildConfig) const
     {
-        bool local_140 = false;
         if (!(BuildConfig.IsSet()))
         {
             return TDataObjectPtr<FAvatarPrefabConfig>();
         }
-        if (!(GetAvatarMappingConfig().IsSet()))
+        TDataObjectPtr<FAvatarMappingConfig> local_74 = BuildConfig.Get().GetAvatarMappingConfig();
+        if (!(local_74.IsSet()))
         {
             return TDataObjectPtr<FAvatarPrefabConfig>();
         }
         TDataObjectPtr<FAvatarPrefabConfig> local_122;
-        for (auto& local_136 : GetAvatar())
+        for (auto& local_136 : local_74.Get().GetAvatar())
         {
             if (!(local_136.IsSet()))
             {
                 continue;
             }
-            local_140 = local_140 && (0 == 1);
-            if (local_140)
+            if (local_136.Get().bIsMainPlayer && (int(local_136.Get().GenderType) == 1))
             {
                 return local_136;
             }
@@ -183,33 +177,22 @@ struct FVM_BornSelectSpecialty : FEUIViewModel
         if (local_2 == 0)
         {
             this.SetSelectedAvatarId(0);
-            TEUIModelRef<FVM_SpecialtyItem> local_6 = this.GetLeftSpecialtyItem();
-            0.SetbSelected();
-            int local_1 = 0;
-            TEUIModelRef<FVM_SpecialtyItem> local_6_2 = this.GetRightSpecialtyItem();
-            local_1.SetbSelected();
+            this.GetLeftSpecialtyItem().Get().SetbSelected(false);
+            this.GetRightSpecialtyItem().Get().SetbSelected(false);
         }
         if (local_2 == this.GetLeftAvatarId())
         {
             this.SetSelectedAvatarId(this.GetLeftAvatarId());
-            int local_1_2 = 1;
-            TEUIModelRef<FVM_SpecialtyItem> local_6_3 = this.GetLeftSpecialtyItem();
-            local_1_2.SetbSelected();
-            local_1_2 = 0;
-            TEUIModelRef<FVM_SpecialtyItem> local_6_4 = this.GetRightSpecialtyItem();
-            local_1_2.SetbSelected();
+            this.GetLeftSpecialtyItem().Get().SetbSelected(true);
+            this.GetRightSpecialtyItem().Get().SetbSelected(false);
         }
         else
         {
             if (local_2 == this.GetRightAvatarId())
             {
                 this.SetSelectedAvatarId(this.GetRightAvatarId());
-                int local_1_3 = 0;
-                TEUIModelRef<FVM_SpecialtyItem> local_6_5 = this.GetLeftSpecialtyItem();
-                local_1_3.SetbSelected();
-                local_1_3 = 1;
-                TEUIModelRef<FVM_SpecialtyItem> local_6_6 = this.GetRightSpecialtyItem();
-                local_1_3.SetbSelected();
+                this.GetLeftSpecialtyItem().Get().SetbSelected(false);
+                this.GetRightSpecialtyItem().Get().SetbSelected(true);
             }
         }
         this.RefreshSelectedSpecialtyDesc();
@@ -229,8 +212,7 @@ struct FVM_BornSelectSpecialty : FEUIViewModel
         }
         if (this.GetLeftSpecialtyItem().IsValid())
         {
-            TEUIModelRef<FVM_SpecialtyItem> local_6 = this.GetLeftSpecialtyItem();
-            OnClickItem();
+            this.GetLeftSpecialtyItem().Get().OnClickItem();
         }
         return;
     }
@@ -247,8 +229,7 @@ struct FVM_BornSelectSpecialty : FEUIViewModel
         }
         if (this.GetRightSpecialtyItem().IsValid())
         {
-            TEUIModelRef<FVM_SpecialtyItem> local_6 = this.GetRightSpecialtyItem();
-            OnClickItem();
+            this.GetRightSpecialtyItem().Get().OnClickItem();
         }
         return;
     }
@@ -267,8 +248,7 @@ struct FVM_BornSelectSpecialty : FEUIViewModel
         if (this.GetSelectedAvatarId() == this.GetLeftAvatarId())
         {
             GetGameplaySettings<UAvatarBuildSettings> local_10;
-            TEUIModelRef<FVM_AvatarInfo> local_6 = this.GetAvatarLeft();
-            OnChangeSpecialty();
+            this.GetAvatarLeft().Get().OnChangeSpecialty();
             local_8 = local_10;
             if (local_8 != nullptr)
             {
@@ -281,8 +261,7 @@ struct FVM_BornSelectSpecialty : FEUIViewModel
         else
         {
             GetGameplaySettings<UAvatarBuildSettings> local_10;
-            TEUIModelRef<FVM_AvatarInfo> local_6_2 = this.GetAvatarRight();
-            OnChangeSpecialty();
+            this.GetAvatarRight().Get().OnChangeSpecialty();
             local_8 = local_10;
             if (local_8 != nullptr)
             {
@@ -563,11 +542,9 @@ FVM_BornSelectSpecialty& Create(const UObject ContextObject)
 {
     return FVM_BornSelectSpecialty::CreateByManager(EUIInternal::GetContextManager(ContextObject));
 }
-FVM_BornSelectSpecialty CreateByManager(const UEUIManagerSubsystem Manager)
+FVM_BornSelectSpecialty& CreateByManager(const UEUIManagerSubsystem Manager)
 {
-    FVM_BornSelectSpecialty __r;
-    TEUIModelRef<FVM_BornSelectSpecialty> local_6 = TEUIModelRef<FVM_BornSelectSpecialty>(EUIInternal::MakeModelWithManager(Manager, FVM_BornSelectSpecialty::ModelId));
-    return __r;
+    return TEUIModelRef<FVM_BornSelectSpecialty>(EUIInternal::MakeModelWithManager(Manager, FVM_BornSelectSpecialty::ModelId)).Get();
 }
 void GetModelInfo(FEUIViewModelMetaInfo &inout Result)
 {
@@ -747,7 +724,6 @@ namespace __GeneratedProperties_FVM_BornSelectSpecialty
 {
 UScriptStruct StaticStruct()
 {
-    UScriptStruct local_2;
-    return local_2;
+    return __GeneratedProperties_FVM_BornSelectSpecialty.Get();
 }
 }

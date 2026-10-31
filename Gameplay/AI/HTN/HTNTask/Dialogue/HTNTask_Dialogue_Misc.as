@@ -20,7 +20,9 @@ class UHTNTask_Dialogue_InteractSpeak : UHTNTask_ECSScriptBase
     UFUNCTION()
     void OnFinished_Implementation(const FHTNContext &inout Context, const EHTNNodeResult Result)
     {
+        int local_10 = 0;
         FECSEntity local_4 = FECSEntity(Context.PawnEntity);
+        local_10.SpeakList.Remove(this.SpeakContent);
         return;
     }
 }
@@ -52,7 +54,9 @@ class UHTNTask_Dialogue_InteractOption : UHTNTask_ECSScriptBase
     UFUNCTION()
     void OnFinished_Implementation(const FHTNContext &inout Context, const EHTNNodeResult Result)
     {
+        int local_10 = 0;
         FECSEntity local_4 = FECSEntity(Context.PawnEntity);
+        local_10.OptionList.Remove(this.OptionContent);
         return;
     }
 }
@@ -79,8 +83,9 @@ class UHTNTask_Dialogue_InteractSimpleSpeakToAndOption : UHTNTask_ECSScriptBase
     UFUNCTION()
     void OnFinished_Implementation(const FHTNContext &inout Context, const EHTNNodeResult Result)
     {
+        int local_10 = 0;
         FECSEntity local_4 = FECSEntity(Context.PawnEntity);
-        TDataObjectPtr<FInteractSimpleSpeakToAndOption> local_34 = TDataObjectPtr<FInteractSimpleSpeakToAndOption>(this.SpeakToAndOption);
+        local_10.SpeakToAndOptionList.Remove(TDataObjectPtr<FInteractSimpleSpeakToAndOption>(this.SpeakToAndOption));
         return;
     }
 }

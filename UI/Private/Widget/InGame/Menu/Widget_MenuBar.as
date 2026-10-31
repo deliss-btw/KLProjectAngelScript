@@ -23,9 +23,9 @@ class UWidget_MenuBar : UEUIActivatableWidget
     UFUNCTION()
     void Refresh()
     {
-        if (this.EUI_List != nullptr && (GetCurrentMenuIndex() != INDEX_NONE))
+        if (this.EUI_List != nullptr && (this.MenuManager.Get().GetCurrentMenuIndex() != INDEX_NONE))
         {
-            this.EUI_List.SetSelectedIndex(GetCurrentMenuIndex());
+            this.EUI_List.SetSelectedIndex(this.MenuManager.Get().GetCurrentMenuIndex());
         }
         return;
     }
@@ -42,8 +42,8 @@ class UWidget_MenuBar : UEUIActivatableWidget
     }
     void HandleObservedModelChanges(FEUIReactiveSubscriberIterator &inout It)
     {
-        FVMS_MenuManager& local_6;
         TEUIModelRef<FVMS_MenuManager> local_2 = this.MenuManager.AsRef();
+        FVMS_MenuManager& local_6 = local_2.Get();
         for (; It; )
         {
             FEUIReactiveSubscriberTrackScope local_56 = FEUIReactiveSubscriberTrackScope(It);

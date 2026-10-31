@@ -271,8 +271,10 @@ struct FVM_Inventory : FEUIViewModel
     }
     void OnFilterDropdownSelected(const int Index)
     {
-        if (this.GetInventorySettings().GetFilterConfigAt(this.GetCurrentCategory(), Index).IsSet())
+        TOptional<FInventoryItemFilterConfig> local_12 = this.GetInventorySettings().GetFilterConfigAt(this.GetCurrentCategory(), Index);
+        if (local_12.IsSet())
         {
+            this.SetApplyingFilter(local_12.GetValue().Filter);
         }
         else
         {
@@ -282,8 +284,10 @@ struct FVM_Inventory : FEUIViewModel
     }
     void OnSorterDropdownSelected(const int Index)
     {
-        if (this.GetInventorySettings().GetSorterConfigAt(this.GetCurrentCategory(), Index).IsSet())
+        TOptional<FInventoryItemSorterConfig> local_12 = this.GetInventorySettings().GetSorterConfigAt(this.GetCurrentCategory(), Index);
+        if (local_12.IsSet())
         {
+            this.SetSelectedSorter(local_12.GetValue().Sorter);
             this.ConfirmSort();
         }
         else
@@ -318,7 +322,7 @@ struct FVM_Inventory : FEUIViewModel
         }
         else
         {
-            this.GetInventorySettings().GetFilterConfigAt(this.GetCurrentCategory(), 0);
+            this.SetApplyingFilter(this.GetInventorySettings().GetFilterConfigAt(this.GetCurrentCategory(), 0).GetValue().Filter);
         }
         int local_35 = INDEX_NONE;
         int local_45 = local_35;
@@ -331,7 +335,7 @@ struct FVM_Inventory : FEUIViewModel
         }
         else
         {
-            this.GetInventorySettings().GetSorterConfigAt(this.GetCurrentCategory(), 0);
+            this.SetSelectedSorter(this.GetInventorySettings().GetSorterConfigAt(this.GetCurrentCategory(), 0).GetValue().Sorter);
         }
         int local_35_2 = INDEX_NONE;
         int local_97 = local_35_2;
@@ -440,21 +444,14 @@ struct FVM_Inventory : FEUIViewModel
         TRawPtr<FInventoryPureDisplayCategoryConfig> local_8 = this.GetInventorySettings().PureDisplayCategories.Find(this.GetCurrentCategory());
         if (local_8)
         {
-            TArray<TEUIModelRef<FM_ItemData>> local_18;
-            TEUIModelRef<FMS_PlayerInventory> local_14 = this.GetPlayerInventory();
-            local_18.GetAllItemsByItemTags(local_8.opArrow().ItemTags);
-            for (auto& local_32 : local_18)
+            for (auto& local_32 : this.GetPlayerInventory().Get().GetAllItemsByItemTags(local_8.opArrow().ItemTags))
             {
                 this.GetModify_CurrentCategoryItems().Add(local_32);
             }
         }
         else
         {
-            TArray<TEUIModelRef<FM_ItemData>> local_18;
-            FGameplayTag local_34 = this.GetCurrentCategory();
-            TEUIModelRef<FMS_PlayerInventory> local_14_2 = this.GetPlayerInventory();
-            local_18.GetAllItemsByCategory(local_34);
-            for (auto& local_32 : local_18)
+            for (auto& local_32 : this.GetPlayerInventory().Get().GetAllItemsByCategory(this.GetCurrentCategory()))
             {
                 this.GetModify_CurrentCategoryItems().Add(local_32);
             }
@@ -466,13 +463,10 @@ struct FVM_Inventory : FEUIViewModel
     {
         TEUIModelRef<FM_ItemData> local_2;
         TEUIModelRef<FVM_InventoryItem> local_4 = this.GetFixedItem();
-        bool local_5 = local_4.IsValid();
-        if (local_5)
+        if (local_4.IsValid())
         {
             TEUIModelRef<FVM_InventoryItem> local_4_2 = this.GetFixedItem();
-            TEUIModelRef<FM_ItemData> local_8;
-            local_8.GetItem();
-            local_2 = local_8;
+            local_2 = local_4_2.Get().GetItem();
         }
         this.GetModify_CurrentDisplayItems().Empty(0);
         TArray<TEUIModelRef<FM_ItemData>> local_14 = this.GetCurrentCategoryItems();
@@ -486,31 +480,19 @@ struct FVM_Inventory : FEUIViewModel
         int local_40 = int(::FItemCategoryTrunkBinding::FindTrunk(this.GetCurrentCategory()));
         if (::ItemConfigUtils::LimitTrunkMax(EItemTrunk(local_40)))
         {
-            TEUIModelRef<FM_ItemData> local_8;
             while (this.GetCurrentDisplayItems().Num() < ::ItemConfigUtils::GetTrunkMax(EItemTrunk(local_40)))
             {
-                local_8 = TEUIModelRef<FM_ItemData>(nullptr);
-                TEUIModelRef<FVM_InventoryItem> local_4_4 = TEUIModelRef<FVM_InventoryItem>(::FVM_InventoryItem::Create(this.GetContext().Manager, local_8, (TEUIModelWeakRef<FVM_Inventory>(this))));
+                TEUIModelRef<FVM_InventoryItem> local_4_4 = TEUIModelRef<FVM_InventoryItem>(::FVM_InventoryItem::Create(this.GetContext().Manager, (TEUIModelRef<FM_ItemData>(nullptr)), (TEUIModelWeakRef<FVM_Inventory>(this))));
                 this.GetModify_CurrentDisplayItems().Add(local_4_4);
             }
         }
         this.ResetSelectedItemIndex();
         if (local_2.IsValid())
         {
-            TEUIModelRef<FM_ItemData> local_8;
             int local_42 = 0;
             for (; local_42 < this.GetCurrentDisplayItems().Num(); ++local_42)
             {
-                if (!(this.GetCurrentDisplayItems()[local_42].IsValid()))
-                {
-                    local_5 = false;
-                }
-                else
-                {
-                    local_8.GetItem();
-                    local_5 = (local_8 == local_2.opImplConv());
-                }
-                if (local_5)
+                if (this.GetCurrentDisplayItems()[local_42].IsValid() && (this.GetCurrentDisplayItems()[local_42].Get().GetItem() == local_2.opImplConv()))
                 {
                     this.SetSelectedItemIndex(local_42);
                     break;
@@ -1076,11 +1058,9 @@ FVM_Inventory& Create(const UObject ContextObject)
 {
     return FVM_Inventory::CreateByManager(EUIInternal::GetContextManager(ContextObject));
 }
-FVM_Inventory CreateByManager(const UEUIManagerSubsystem Manager)
+FVM_Inventory& CreateByManager(const UEUIManagerSubsystem Manager)
 {
-    FVM_Inventory __r;
-    TEUIModelRef<FVM_Inventory> local_6 = TEUIModelRef<FVM_Inventory>(EUIInternal::MakeModelWithManager(Manager, FVM_Inventory::ModelId));
-    return __r;
+    return TEUIModelRef<FVM_Inventory>(EUIInternal::MakeModelWithManager(Manager, FVM_Inventory::ModelId)).Get();
 }
 void GetModelInfo(FEUIViewModelMetaInfo &inout Result)
 {
@@ -1339,8 +1319,7 @@ namespace __GeneratedProperties_FVM_Inventory
 {
 UScriptStruct StaticStruct()
 {
-    UScriptStruct local_2;
-    return local_2;
+    return __GeneratedProperties_FVM_Inventory.Get();
 }
 }
 namespace FVM_CloseVisibilityState
@@ -1349,11 +1328,9 @@ FVM_CloseVisibilityState& Create(const UObject ContextObject)
 {
     return FVM_CloseVisibilityState::CreateByManager(EUIInternal::GetContextManager(ContextObject));
 }
-FVM_CloseVisibilityState CreateByManager(const UEUIManagerSubsystem Manager)
+FVM_CloseVisibilityState& CreateByManager(const UEUIManagerSubsystem Manager)
 {
-    FVM_CloseVisibilityState __r;
-    TEUIModelRef<FVM_CloseVisibilityState> local_6 = TEUIModelRef<FVM_CloseVisibilityState>(EUIInternal::MakeModelWithManager(Manager, FVM_CloseVisibilityState::ModelId));
-    return __r;
+    return TEUIModelRef<FVM_CloseVisibilityState>(EUIInternal::MakeModelWithManager(Manager, FVM_CloseVisibilityState::ModelId)).Get();
 }
 void GetModelInfo(FEUIViewModelMetaInfo &inout Result)
 {
@@ -1414,7 +1391,6 @@ namespace __GeneratedProperties_FVM_CloseVisibilityState
 {
 UScriptStruct StaticStruct()
 {
-    UScriptStruct local_2;
-    return local_2;
+    return __GeneratedProperties_FVM_CloseVisibilityState.Get();
 }
 }

@@ -166,9 +166,9 @@ FECSEntity FindAbilityOwner(const FECSEntity &inout Entity)
 void BeginAction_ReplaceComponent(const FProjectileTimelineUtils::FProjectileTimelineActionContext &inout Ctx, FC_ProjectileTimelineController &inout Controller, const UScriptStruct ActionType, const FInstancedStruct &inout ActionData)
 {
     int local_30 = 0;
+    TDataObjectPtr<FAttackData> local_66;
     int local_68 = 0;
-    FAttackBaseDamageValue local_76;
-    FAttackRecoverEnergyValue local_84;
+    FCapabilityInstanceId local_69;
     int local_132 = 0;
     int local_142 = 0;
     int local_148 = 0;
@@ -185,12 +185,10 @@ void BeginAction_ReplaceComponent(const FProjectileTimelineUtils::FProjectileTim
                 if (local_30.GetAttackInfo().AttackData)
                 {
                     FECSEntity local_42 = FCombatUtils::GetAttackSourceEntity(Ctx.Entity);
-                    TDataObjectPtr<FAttackData> local_66 = TDataObjectPtr<FAttackData>(local_30.GetAttackInfo().AttackData);
-                    local_30.SetDamage(FDamageUtils::CalcAttackBaseDamageValue(local_42, local_68, Ctx.WorldTime, false, FCapabilityInstanceId()));
-                    local_76 = FDamageUtils::CalcAttackBaseDamageValue(local_42, local_68, Ctx.WorldTime, true, FCapabilityInstanceId());
-                    local_30.SetDamageToAvatar(local_76);
-                    local_84 = FDamageUtils::CalcAttackRecoverEnergyValue(local_42, local_68, Ctx.WorldTime, FCapabilityInstanceId());
-                    local_30.SetAttackRecoverEnergyData(local_84);
+                    local_66 = TDataObjectPtr<FAttackData>(local_30.GetAttackInfo().AttackData);
+                    local_30.SetDamage(FDamageUtils::CalcAttackBaseDamageValue(local_42, local_68, Ctx.WorldTime, false, local_69));
+                    local_30.SetDamageToAvatar(FDamageUtils::CalcAttackBaseDamageValue(local_42, local_68, Ctx.WorldTime, true, local_69));
+                    local_30.SetAttackRecoverEnergyData(FDamageUtils::CalcAttackRecoverEnergyValue(local_42, local_68, Ctx.WorldTime, local_69));
                 }
             }
             local_30.GetModify_AttackInfo().HitType = (2 != 0);
@@ -206,11 +204,11 @@ void BeginAction_ReplaceComponent(const FProjectileTimelineUtils::FProjectileTim
                     FDataObjectPtr local_116 = FDataObjectPtr(local_92.AttackDataAfterPenetration);
                     if (local_116)
                     {
-                        FCombatUtils::GetAttackSourceEntity(Ctx.Entity);
+                        FECSEntity local_38 = FCombatUtils::GetAttackSourceEntity(Ctx.Entity);
                         local_30.GetModify_AttackInfoAfterPenetration().AttackData = local_116;
-                        local_30.SetDamageAfterPenetration(local_76);
-                        local_30.SetDamageToAvatarAfterPenetration(local_76);
-                        local_30.SetAttackRecoverEnergyDataAfterPenetration(local_84);
+                        local_30.SetDamageAfterPenetration(FDamageUtils::CalcAttackBaseDamageValue(local_38, local_66.Get(), Ctx.WorldTime, false, local_69));
+                        local_30.SetDamageToAvatarAfterPenetration(FDamageUtils::CalcAttackBaseDamageValue(local_38, local_66.Get(), Ctx.WorldTime, true, local_69));
+                        local_30.SetAttackRecoverEnergyDataAfterPenetration(FDamageUtils::CalcAttackRecoverEnergyValue(local_38, local_66.Get(), Ctx.WorldTime, local_69));
                     }
                 }
             }
@@ -569,6 +567,7 @@ void EndAction_PlayFX(FC_ProjectileTimelineController &inout Controller, const i
     if (Controller.GetTimelineInfos()[TimelineIndex].GetRelativeDatas().Find(ActionIndex, local_4))
     {
         ECSFX::StopFX(local_4.GetRelativeEntity(), (int(PlayFXData.StopMethodOnActionEnd) == 1), false, 0.0f);
+        Controller.GetModify_TimelineInfos()[TimelineIndex].GetModify_RelativeDatas().Remove(ActionIndex);
     }
     return;
 }
@@ -581,6 +580,7 @@ void EndAction_CreateArealEffect(FC_ProjectileTimelineController &inout Controll
         {
             local_4.GetRelativeEntity().DestroyDeferred();
         }
+        Controller.GetModify_TimelineInfos()[TimelineIndex].GetModify_RelativeDatas().Remove(ActionIndex);
     }
     return;
 }

@@ -121,7 +121,7 @@ class UItemOperationConfig_Drop : UItemOperationConfig_NumOperationBase
         {
             return false;
         }
-        if (!(::ItemActionUtils::CanExecuteAction(ItemData.opArrow().GetConfig(), ::FItemActionSource::InvokeFromInventory(ItemData.opArrow().GetContext()), EItemActionType(1))))
+        if (!(::ItemActionUtils::CanExecuteAction(ItemData.opArrow().GetConfig(), ::FItemActionSource::InvokeFromInventory(ItemData.opArrow().GetContext(), ItemData.Get()), EItemActionType(1))))
         {
             return false;
         }
@@ -132,7 +132,7 @@ class UItemOperationConfig_Drop : UItemOperationConfig_NumOperationBase
         int local_1 = 0;
         for (; local_1 < ItemNum; )
         {
-            ::ItemActionUtils::ExecuteActionFromUI(ItemData.opArrow().GetConfig(), ::FItemActionSource::InvokeFromInventory(ItemData.opArrow().GetContext()), EItemActionType(1));
+            ::ItemActionUtils::ExecuteActionFromUI(ItemData.opArrow().GetConfig(), ::FItemActionSource::InvokeFromInventory(ItemData.opArrow().GetContext(), ItemData.Get()), EItemActionType(1));
             ++local_1;
         }
         return;
@@ -152,7 +152,7 @@ class UItemOperationConfig_Destroy : UItemOperationConfig_NumOperationBase
         {
             return false;
         }
-        if (!(::ItemActionUtils::CanExecuteAction(ItemData.opArrow().GetConfig(), ::FItemActionSource::InvokeFromInventory(ItemData.opArrow().GetContext()), EItemActionType(2))))
+        if (!(::ItemActionUtils::CanExecuteAction(ItemData.opArrow().GetConfig(), ::FItemActionSource::InvokeFromInventory(ItemData.opArrow().GetContext(), ItemData.Get()), EItemActionType(2))))
         {
             return false;
         }
@@ -163,7 +163,7 @@ class UItemOperationConfig_Destroy : UItemOperationConfig_NumOperationBase
         int local_1 = 0;
         for (; local_1 < ItemNum; )
         {
-            ::ItemActionUtils::ExecuteActionFromUI(ItemData.opArrow().GetConfig(), ::FItemActionSource::InvokeFromInventory(ItemData.opArrow().GetContext()), EItemActionType(2));
+            ::ItemActionUtils::ExecuteActionFromUI(ItemData.opArrow().GetConfig(), ::FItemActionSource::InvokeFromInventory(ItemData.opArrow().GetContext(), ItemData.Get()), EItemActionType(2));
             ++local_1;
         }
         return;

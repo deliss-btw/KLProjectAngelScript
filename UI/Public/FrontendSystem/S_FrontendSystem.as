@@ -307,14 +307,14 @@ void BehaviorsExitState(const FECSEntity &inout PlayerEntity, FFrontendSystemIns
         local_10.SystemPageGroup = SystemInstance.SystemPageGroup;
         local_10.SystemState = State;
         SystemInstance.Behaviors[State].ExitState(local_10);
+        SystemInstance.Behaviors.Remove(State);
     }
     return;
 }
 UObject GetBehaviorOuter(const FECSEntity &inout PlayerEntity)
 {
     Get local_4;
-    TWeakObjectPtr<AECSPlayerController> local_6 = local_4.opCall().GetUEPlayerController();
-    AECSPlayerController local_8;
+    AECSPlayerController local_8 = local_4.opCall().GetUEPlayerController().Get();
     return local_8;
 }
 }

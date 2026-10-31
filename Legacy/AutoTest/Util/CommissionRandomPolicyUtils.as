@@ -2,12 +2,12 @@ namespace AutoTest::CommissionRandomPolicyUtils
 {
 TArray<TDataObjectPtr<FDataObject>> GetAllRandomFactorConfigsByRandomFactorType(const ERandomFactorType RandomFactorType, const TDataObjectPtr<FCommissionConfig> &inout CommissionConfig)
 {
-    const FRandomSeedConfig& local_12;
     TArray<TDataObjectPtr<FDataObject>> local_8;
     if (!(CommissionConfig) || !(CommissionConfig.opArrow().GetRandomSeedConfig()))
     {
         return local_8;
     }
+    const FRandomSeedConfig& local_12 = CommissionConfig.opArrow().GetRandomSeedConfig().Get();
     for (auto& local_26 : local_12.GetRandomPolicyConfig())
     {
         if (!(local_26))
@@ -27,14 +27,12 @@ TArray<TDataObjectPtr<FDataObject>> GetAllRandomFactorConfigsByRandomFactorType(
 }
 TArray<TDataObjectPtr<FWorldAreaConfig>> GetAllSpawnAreaConfigsByCommissionConfig(const TDataObjectPtr<FCommissionConfig> &inout CommissionConfig)
 {
-    const FRandomSeedConfig& local_12;
-    TArrayConstIterator<FSpawnAreaRandomFactor> local_142;
     TArray<TDataObjectPtr<FWorldAreaConfig>> local_8;
     if (!(CommissionConfig) || !(CommissionConfig.opArrow().GetRandomSeedConfig()))
     {
         return local_8;
     }
-    CastTo local_88;
+    const FRandomSeedConfig& local_12 = CommissionConfig.opArrow().GetRandomSeedConfig().Get();
     for (auto& local_26 : local_12.GetRandomPolicyConfig())
     {
         if (!(local_26))
@@ -48,13 +46,14 @@ TArray<TDataObjectPtr<FWorldAreaConfig>> GetAllSpawnAreaConfigsByCommissionConfi
             {
                 continue;
             }
-            if (!(local_88.opCall().IsSet()))
+            CastTo local_88;
+            TDataObjectPtr<FSpawnAreaPoolConfig> local_112 = local_88.opCall();
+            if (!(local_112.IsSet()))
             {
                 continue;
             }
-            for (; local_142.CanProceed;)
+            for (auto& local_150 : local_112.Get().TargetRandomPool)
             {
-                const FSpawnAreaRandomFactor& local_150 = local_142.Proceed();
                 if (!(local_150.Config.IsSet()))
                 {
                     continue;
@@ -67,14 +66,12 @@ TArray<TDataObjectPtr<FWorldAreaConfig>> GetAllSpawnAreaConfigsByCommissionConfi
 }
 TArray<TDataObjectPtr<FObjectiveConfig>> GetAllSubTargetConfigsByCommissionConfig(const TDataObjectPtr<FCommissionConfig> &inout CommissionConfig)
 {
-    const FRandomSeedConfig& local_12;
-    TArrayConstIterator<FCommissionSubTargetRandomFactor> local_142;
     TArray<TDataObjectPtr<FObjectiveConfig>> local_8;
     if (!(CommissionConfig) || !(CommissionConfig.opArrow().GetRandomSeedConfig()))
     {
         return local_8;
     }
-    CastTo local_88;
+    const FRandomSeedConfig& local_12 = CommissionConfig.opArrow().GetRandomSeedConfig().Get();
     for (auto& local_26 : local_12.GetRandomPolicyConfig())
     {
         if (!(local_26))
@@ -88,13 +85,14 @@ TArray<TDataObjectPtr<FObjectiveConfig>> GetAllSubTargetConfigsByCommissionConfi
             {
                 continue;
             }
-            if (!(local_88.opCall().IsSet()))
+            CastTo local_88;
+            TDataObjectPtr<FCommissionSubTargetPoolConfig> local_112 = local_88.opCall();
+            if (!(local_112.IsSet()))
             {
                 continue;
             }
-            for (; local_142.CanProceed;)
+            for (auto& local_150 : local_112.Get().TargetRandomPool)
             {
-                const FCommissionSubTargetRandomFactor& local_150 = local_142.Proceed();
                 if (!(local_150.Config.IsSet()))
                 {
                     continue;
@@ -107,14 +105,12 @@ TArray<TDataObjectPtr<FObjectiveConfig>> GetAllSubTargetConfigsByCommissionConfi
 }
 TArray<TDataObjectPtr<FCommissionTimeConfig>> GetAllCommissionTimeConfigsByCommissionConfig(const TDataObjectPtr<FCommissionConfig> &inout CommissionConfig)
 {
-    const FRandomSeedConfig& local_12;
-    TArrayConstIterator<FCommissionTimeRandomFactor> local_142;
     TArray<TDataObjectPtr<FCommissionTimeConfig>> local_8;
     if (!(CommissionConfig) || !(CommissionConfig.opArrow().GetRandomSeedConfig()))
     {
         return local_8;
     }
-    CastTo local_88;
+    const FRandomSeedConfig& local_12 = CommissionConfig.opArrow().GetRandomSeedConfig().Get();
     for (auto& local_26 : local_12.GetRandomPolicyConfig())
     {
         if (!(local_26))
@@ -128,13 +124,14 @@ TArray<TDataObjectPtr<FCommissionTimeConfig>> GetAllCommissionTimeConfigsByCommi
             {
                 continue;
             }
-            if (!(local_88.opCall().IsSet()))
+            CastTo local_88;
+            TDataObjectPtr<FCommissionTimePoolConfig> local_112 = local_88.opCall();
+            if (!(local_112.IsSet()))
             {
                 continue;
             }
-            for (; local_142.CanProceed;)
+            for (auto& local_150 : local_112.Get().TargetRandomPool)
             {
-                const FCommissionTimeRandomFactor& local_150 = local_142.Proceed();
                 if (!(local_150.Config.IsSet()))
                 {
                     continue;
@@ -147,14 +144,12 @@ TArray<TDataObjectPtr<FCommissionTimeConfig>> GetAllCommissionTimeConfigsByCommi
 }
 TArray<TDataObjectPtr<FWeatherConfig>> GetAllWeatherConfigsByCommissionConfig(const TDataObjectPtr<FCommissionConfig> &inout CommissionConfig)
 {
-    const FRandomSeedConfig& local_12;
-    TArrayConstIterator<FWeatherRandomFactor> local_142;
     TArray<TDataObjectPtr<FWeatherConfig>> local_8;
     if (!(CommissionConfig) || !(CommissionConfig.opArrow().GetRandomSeedConfig()))
     {
         return local_8;
     }
-    CastTo local_88;
+    const FRandomSeedConfig& local_12 = CommissionConfig.opArrow().GetRandomSeedConfig().Get();
     for (auto& local_26 : local_12.GetRandomPolicyConfig())
     {
         if (!(local_26))
@@ -168,13 +163,14 @@ TArray<TDataObjectPtr<FWeatherConfig>> GetAllWeatherConfigsByCommissionConfig(co
             {
                 continue;
             }
-            if (!(local_88.opCall().IsSet()))
+            CastTo local_88;
+            TDataObjectPtr<FCommissionWeatherPoolConfig> local_112 = local_88.opCall();
+            if (!(local_112.IsSet()))
             {
                 continue;
             }
-            for (; local_142.CanProceed;)
+            for (auto& local_150 : local_112.Get().WeatherRandomPool)
             {
-                const FWeatherRandomFactor& local_150 = local_142.Proceed();
                 if (!(local_150.Config.IsSet()))
                 {
                     continue;
@@ -187,13 +183,12 @@ TArray<TDataObjectPtr<FWeatherConfig>> GetAllWeatherConfigsByCommissionConfig(co
 }
 TArray<TDataObjectPtr<FWeatherAreaTemplateFactorConfig>> GetAllWeatherAreaTemplateConfigsByCommissionConfig(const TDataObjectPtr<FCommissionConfig> &inout CommissionConfig)
 {
-    const FRandomSeedConfig& local_12;
     TArray<TDataObjectPtr<FWeatherAreaTemplateFactorConfig>> local_8;
     if (!(CommissionConfig) || !(CommissionConfig.opArrow().GetRandomSeedConfig()))
     {
         return local_8;
     }
-    CastTo local_88;
+    const FRandomSeedConfig& local_12 = CommissionConfig.opArrow().GetRandomSeedConfig().Get();
     for (auto& local_26 : local_12.GetRandomPolicyConfig())
     {
         if (!(local_26))
@@ -207,17 +202,19 @@ TArray<TDataObjectPtr<FWeatherAreaTemplateFactorConfig>> GetAllWeatherAreaTempla
             {
                 continue;
             }
-            if (!(local_88.opCall().IsSet()))
+            CastTo local_88;
+            TDataObjectPtr<FCommissionWeatherPoolConfig> local_112 = local_88.opCall();
+            if (!(local_112.IsSet()))
             {
                 continue;
             }
-            for (auto& local_150 : GetWeatherAreaTemplateFactors())
+            for (auto& local_150 : local_112.Get().GetWeatherAreaTemplateFactors())
             {
                 if (!(local_150.IsSet()))
                 {
                     continue;
                 }
-                local_8.Add(TDataObjectPtr<FWeatherAreaTemplateFactorConfig>());
+                local_8.Add(TDataObjectPtr<FWeatherAreaTemplateFactorConfig>(local_150.Get()));
             }
         }
     }
@@ -225,15 +222,13 @@ TArray<TDataObjectPtr<FWeatherAreaTemplateFactorConfig>> GetAllWeatherAreaTempla
 }
 TArray<TDataObjectPtr<FWeatherGenerateTemplate>> GetAllWeatherTemplateConfigsByTemplateFactor(const TDataObjectPtr<FWeatherAreaTemplateFactorConfig> &inout WeatherAreaTemplateConfig)
 {
-    TArrayConstIterator<FWeatherTemplateRandomFactor> local_16;
     TArray<TDataObjectPtr<FWeatherGenerateTemplate>> local_8;
     if (!(WeatherAreaTemplateConfig))
     {
         return local_8;
     }
-    for (; local_16.CanProceed;)
+    for (auto& local_24 : WeatherAreaTemplateConfig.Get().WeatherTemplateTargetRandomPool)
     {
-        const FWeatherTemplateRandomFactor& local_24 = local_16.Proceed();
         if (!(local_24.Config.IsSet()))
         {
             continue;
@@ -244,15 +239,13 @@ TArray<TDataObjectPtr<FWeatherGenerateTemplate>> GetAllWeatherTemplateConfigsByT
 }
 TArray<TDataObjectPtr<FWeatherConfig>> GetAllWeatherConfigsByWeatherTemplate(const TDataObjectPtr<FWeatherGenerateTemplate> &inout WeatherTemplateConfig)
 {
-    TArrayConstIterator<FWeatherChanceConfig> local_16;
     TArray<TDataObjectPtr<FWeatherConfig>> local_8;
     if (!(WeatherTemplateConfig))
     {
         return local_8;
     }
-    for (; local_16.CanProceed;)
+    for (auto& local_24 : WeatherTemplateConfig.Get().WeatherChances)
     {
-        const FWeatherChanceConfig& local_24 = local_16.Proceed();
         if (!(local_24.WeatherName.IsSet()))
         {
             continue;
@@ -263,14 +256,12 @@ TArray<TDataObjectPtr<FWeatherConfig>> GetAllWeatherConfigsByWeatherTemplate(con
 }
 TArray<TDataObjectPtr<FIntrusionPolicyConfig>> GetAllIntrusionPolicyConfigsByCommissionConfig(const TDataObjectPtr<FCommissionConfig> &inout CommissionConfig)
 {
-    const FRandomSeedConfig& local_12;
-    TArrayConstIterator<FIntrusionPolicyRandomFactor> local_142;
     TArray<TDataObjectPtr<FIntrusionPolicyConfig>> local_8;
     if (!(CommissionConfig) || !(CommissionConfig.opArrow().GetRandomSeedConfig()))
     {
         return local_8;
     }
-    CastTo local_88;
+    const FRandomSeedConfig& local_12 = CommissionConfig.opArrow().GetRandomSeedConfig().Get();
     for (auto& local_26 : local_12.GetRandomPolicyConfig())
     {
         if (!(local_26))
@@ -284,13 +275,14 @@ TArray<TDataObjectPtr<FIntrusionPolicyConfig>> GetAllIntrusionPolicyConfigsByCom
             {
                 continue;
             }
-            if (!(local_88.opCall().IsSet()))
+            CastTo local_88;
+            TDataObjectPtr<FIntrusionPolicyPoolConfig> local_112 = local_88.opCall();
+            if (!(local_112.IsSet()))
             {
                 continue;
             }
-            for (; local_142.CanProceed;)
+            for (auto& local_150 : local_112.Get().TargetRandomPool)
             {
-                const FIntrusionPolicyRandomFactor& local_150 = local_142.Proceed();
                 if (!(local_150.Config.IsSet()))
                 {
                     continue;
@@ -303,14 +295,12 @@ TArray<TDataObjectPtr<FIntrusionPolicyConfig>> GetAllIntrusionPolicyConfigsByCom
 }
 TArray<TDataObjectPtr<FCommissionEntryRuleConfig>> GetAllEntryRuleConfigsByCommissionConfig(const TDataObjectPtr<FCommissionConfig> &inout CommissionConfig)
 {
-    const FRandomSeedConfig& local_12;
-    TArrayConstIterator<FCommissionEntryRuleRandomFactor> local_142;
     TArray<TDataObjectPtr<FCommissionEntryRuleConfig>> local_8;
     if (!(CommissionConfig) || !(CommissionConfig.opArrow().GetRandomSeedConfig()))
     {
         return local_8;
     }
-    CastTo local_88;
+    const FRandomSeedConfig& local_12 = CommissionConfig.opArrow().GetRandomSeedConfig().Get();
     for (auto& local_26 : local_12.GetRandomPolicyConfig())
     {
         if (!(local_26))
@@ -324,13 +314,14 @@ TArray<TDataObjectPtr<FCommissionEntryRuleConfig>> GetAllEntryRuleConfigsByCommi
             {
                 continue;
             }
-            if (!(local_88.opCall().IsSet()))
+            CastTo local_88;
+            TDataObjectPtr<FCommissionEntryRulePoolConfig> local_112 = local_88.opCall();
+            if (!(local_112.IsSet()))
             {
                 continue;
             }
-            for (; local_142.CanProceed;)
+            for (auto& local_150 : local_112.Get().TargetRandomPool)
             {
-                const FCommissionEntryRuleRandomFactor& local_150 = local_142.Proceed();
                 if (!(local_150.Config.IsSet()))
                 {
                     continue;

@@ -97,8 +97,7 @@ struct FVM_InventoryItem : FEUIViewModel
     }
     bool IsFixed() const
     {
-        FVM_Inventory& local_4;
-        TEUIModelWeakRef<FVM_Inventory> local_2 = this.GetInventory();
+        FVM_Inventory& local_4 = this.GetInventory().Get();
         if (local_4)
         {
             return (local_4.GetFixedItem() == FEUIModelRef(this));
@@ -107,8 +106,8 @@ struct FVM_InventoryItem : FEUIViewModel
     }
     bool HasNoOtherFixedItem() const
     {
-        FVM_Inventory& local_4;
         TEUIModelWeakRef<FVM_Inventory> local_2 = this.GetInventory();
+        FVM_Inventory& local_4 = local_2.Get();
         if (local_4)
         {
             return local_4.GetFixedItem() && !((local_4.GetFixedItem() == FEUIModelRef(this)));
@@ -117,96 +116,34 @@ struct FVM_InventoryItem : FEUIViewModel
     }
     bool GetIsEquiped() const
     {
-        bool local_3 = this.GetCommonItemVM().IsValid();
-        if (!(local_3))
+        if (this.GetCommonItemVM().IsValid() && this.GetCommonItemVM().Get().GetItemVM().IsValid())
         {
-            local_3 = false;
-        }
-        else
-        {
-            TEUIModelRef<FVM_Item> local_6;
-            TEUIModelRef<FVM_CommonItem> local_2 = this.GetCommonItemVM();
-            local_6.GetItemVM();
-            local_3 = local_6.IsValid();
-        }
-        if (local_3)
-        {
-            TEUIModelRef<FVM_Item> local_6;
-            TEUIModelRef<FVM_CommonItem> local_2_2 = this.GetCommonItemVM();
-            local_6.GetItemVM();
-            return GetIsEquiped();
+            return this.GetCommonItemVM().Get().GetItemVM().Get().GetIsEquiped();
         }
         return false;
     }
     FText GetEquipItemLevelText() const
     {
-        bool local_3 = this.GetCommonItemVM().IsValid();
-        if (!(local_3))
+        if (this.GetCommonItemVM().IsValid() && this.GetCommonItemVM().Get().GetItemVM().IsValid())
         {
-            local_3 = false;
+            return this.GetCommonItemVM().Get().GetItemVM().Get().GetEquipmentLevelText();
         }
-        else
-        {
-            TEUIModelRef<FVM_Item> local_6;
-            TEUIModelRef<FVM_CommonItem> local_2 = this.GetCommonItemVM();
-            local_6.GetItemVM();
-            local_3 = local_6.IsValid();
-        }
-        FText local_12;
-        if (local_3)
-        {
-            TEUIModelRef<FVM_Item> local_6;
-            TEUIModelRef<FVM_CommonItem> local_2_2 = this.GetCommonItemVM();
-            local_6.GetItemVM();
-            local_12.GetEquipmentLevelText();
-            return local_12;
-        }
-        return local_12;
+        return FText();
     }
     int GetItemNum() const
     {
-        bool local_3 = this.GetCommonItemVM().IsValid();
-        if (!(local_3))
+        if (this.GetCommonItemVM().IsValid() && this.GetCommonItemVM().Get().GetItemVM().IsValid())
         {
-            local_3 = false;
-        }
-        else
-        {
-            TEUIModelRef<FVM_Item> local_6;
-            TEUIModelRef<FVM_CommonItem> local_2 = this.GetCommonItemVM();
-            local_6.GetItemVM();
-            local_3 = local_6.IsValid();
-        }
-        if (local_3)
-        {
-            TEUIModelRef<FVM_Item> local_6;
-            TEUIModelRef<FVM_CommonItem> local_2_2 = this.GetCommonItemVM();
-            local_6.GetItemVM();
-            return GetNum();
+            return this.GetCommonItemVM().Get().GetItemVM().Get().GetNum();
         }
         return 0;
     }
     bool GetIsShowItemNum() const
     {
         bool local_1 = false;
-        bool local_2 = this.GetCommonItemVM().IsValid();
-        if (!(local_2))
+        if (this.GetCommonItemVM().IsValid() && this.GetCommonItemVM().Get().GetItemVM().IsValid())
         {
-            local_2 = false;
-        }
-        else
-        {
-            TEUIModelRef<FVM_Item> local_6;
-            TEUIModelRef<FVM_CommonItem> local_4 = this.GetCommonItemVM();
-            local_6.GetItemVM();
-            local_2 = local_6.IsValid();
-        }
-        if (local_2)
-        {
-            TEUIModelRef<FVM_Item> local_6;
-            TEUIModelRef<FVM_CommonItem> local_4_2 = this.GetCommonItemVM();
-            local_6.GetItemVM();
-            local_1 = GetCanShowEquipInfoDetail();
+            local_1 = this.GetCommonItemVM().Get().GetItemVM().Get().GetCanShowEquipInfoDetail();
         }
         return this.GetItemNum() > 0 && !(local_1);
     }
@@ -224,8 +161,7 @@ struct FVM_InventoryItem : FEUIViewModel
         {
             if (local_4.GetFixedItem().IsValid() && !((local_4.GetFixedItem() == FEUIModelRef(this))))
             {
-                local_8 = local_4.GetFixedItem();
-                FVM_ItemOperationList& local_18 = FEUIModelContainer::GetModel(GetItemModels()).opCall();
+                FVM_ItemOperationList& local_18 = FEUIModelContainer::GetModel(local_4.GetFixedItem().Get().GetItemModels()).opCall();
                 if (local_18)
                 {
                     local_18.SetbShowList(false);
@@ -269,11 +205,11 @@ struct FVM_InventoryItem : FEUIViewModel
             FCommonItemClicked local_30;
             local_30.AddUnique(this, FVM_InventoryItem::FixItem);
             TEUIModelRef<FVM_CommonItem> local_6_3 = this.GetCommonItemVM();
-            local_30.SetOnCommonItemClicked();
+            local_6_3.Get().SetOnCommonItemClicked(local_30);
         }
         TEUIModelRef<FM_ItemData> local_2_2 = this.GetItem();
         TEUIModelRef<FVM_CommonItem> local_6_4 = this.GetCommonItemVM();
-        local_2_2.SetItemDataModel();
+        local_6_4.Get().SetItemDataModel(local_2_2);
         if (local_4)
         {
             local_33 = local_4.GetNum();
@@ -441,11 +377,9 @@ FVM_InventoryItem& Create(const UObject ContextObject, const TEUIModelRef<FM_Ite
 {
     return FVM_InventoryItem::CreateByManager(EUIInternal::GetContextManager(ContextObject), Item, Inventory);
 }
-FVM_InventoryItem CreateByManager(const UEUIManagerSubsystem Manager, const TEUIModelRef<FM_ItemData> &inout Item, const TEUIModelWeakRef<FVM_Inventory> &inout Inventory)
+FVM_InventoryItem& CreateByManager(const UEUIManagerSubsystem Manager, const TEUIModelRef<FM_ItemData> &inout Item, const TEUIModelWeakRef<FVM_Inventory> &inout Inventory)
 {
-    FVM_InventoryItem __r;
-    TEUIModelRef<FVM_InventoryItem> local_6 = TEUIModelRef<FVM_InventoryItem>(EUIInternal::MakeModelWithManager_Generic(Manager, FVM_InventoryItem::ModelId, 0, Item, Inventory));
-    return __r;
+    return TEUIModelRef<FVM_InventoryItem>(EUIInternal::MakeModelWithManager_Generic(Manager, FVM_InventoryItem::ModelId, 0, Item, Inventory)).Get();
 }
 void GetModelInfo(FEUIViewModelMetaInfo &inout Result)
 {
@@ -627,7 +561,6 @@ namespace __GeneratedProperties_FVM_InventoryItem
 {
 UScriptStruct StaticStruct()
 {
-    UScriptStruct local_2;
-    return local_2;
+    return __GeneratedProperties_FVM_InventoryItem.Get();
 }
 }

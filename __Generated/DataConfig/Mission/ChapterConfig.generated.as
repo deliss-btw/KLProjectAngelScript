@@ -3,7 +3,6 @@ namespace __FChapterConfigFunctions
 UFUNCTION()
 FText __FChapterConfig_GetChapterNumber(const TDataObjectPtr<FChapterConfig> &inout DataObject)
 {
-    FText __r;
     if ((DataObject == nullptr))
     {
         if (!(EUIGlobals::GIsDuringPropertyConversion))
@@ -13,12 +12,11 @@ FText __FChapterConfig_GetChapterNumber(const TDataObjectPtr<FChapterConfig> &in
         FChapterConfig local_24;
         return local_24.ChapterNumber;
     }
-    return __r;
+    return DataObject.Get().ChapterNumber;
 }
 UFUNCTION()
 FText __FChapterConfig_GetChapterTitle(const TDataObjectPtr<FChapterConfig> &inout DataObject)
 {
-    FText __r;
     if ((DataObject == nullptr))
     {
         if (!(EUIGlobals::GIsDuringPropertyConversion))
@@ -28,7 +26,7 @@ FText __FChapterConfig_GetChapterTitle(const TDataObjectPtr<FChapterConfig> &ino
         FChapterConfig local_24;
         return local_24.ChapterTitle;
     }
-    return __r;
+    return DataObject.Get().ChapterTitle;
 }
 UFUNCTION()
 int __FChapterConfig_GetSortPriority(const TDataObjectPtr<FChapterConfig> &inout DataObject)

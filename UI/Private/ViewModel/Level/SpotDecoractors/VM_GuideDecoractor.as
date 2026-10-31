@@ -105,11 +105,9 @@ FVM_GuideDecoractor& Create(const UObject ContextObject, const TEUIModelRef<FM_S
 {
     return FVM_GuideDecoractor::CreateByManager(EUIInternal::GetContextManager(ContextObject), Spot, EPresentationSpotUsage(SpotUsage));
 }
-FVM_GuideDecoractor CreateByManager(const UEUIManagerSubsystem Manager, const TEUIModelRef<FM_Spot> &inout Spot, const EPresentationSpotUsage SpotUsage)
+FVM_GuideDecoractor& CreateByManager(const UEUIManagerSubsystem Manager, const TEUIModelRef<FM_Spot> &inout Spot, const EPresentationSpotUsage SpotUsage)
 {
-    FVM_GuideDecoractor __r;
-    TEUIModelRef<FVM_GuideDecoractor> local_6 = TEUIModelRef<FVM_GuideDecoractor>(EUIInternal::MakeModelWithManager_Generic(Manager, FVM_GuideDecoractor::ModelId, 0, Spot, SpotUsage));
-    return __r;
+    return TEUIModelRef<FVM_GuideDecoractor>(EUIInternal::MakeModelWithManager_Generic(Manager, FVM_GuideDecoractor::ModelId, 0, Spot, SpotUsage)).Get();
 }
 void GetModelInfo(FEUIViewModelMetaInfo &inout Result)
 {
@@ -164,7 +162,6 @@ namespace __GeneratedProperties_FVM_GuideDecoractor
 {
 UScriptStruct StaticStruct()
 {
-    UScriptStruct local_2;
-    return local_2;
+    return __GeneratedProperties_FVM_GuideDecoractor.Get();
 }
 }

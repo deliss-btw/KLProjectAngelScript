@@ -150,34 +150,22 @@ struct FVM_SpecialtyItem : FEUIViewModel
     {
         if (this.GetAvatarInfo().IsValid())
         {
-            FText local_8;
-            TEUIModelRef<FVM_AvatarInfo> local_2 = this.GetAvatarInfo();
-            local_8.GetDisplayName();
-            this.SetDisplayName(local_8);
-            TEUIModelRef<FVM_AvatarInfo> local_2_2 = this.GetAvatarInfo();
-            this.SetClassIcon(GetClassIcon());
-            TEUIModelRef<FVM_AvatarInfo> local_2_3 = this.GetAvatarInfo();
-            this.SetIllustrateBackgroundIcon(GetIllustrateBackgroundIcon());
-            TEUIModelRef<FVM_AvatarInfo> local_2_4 = this.GetAvatarInfo();
-            this.SetIllustrateIcon(GetIllustrateIcon());
-            TEUIModelRef<FVM_AvatarInfo> local_2_5 = this.GetAvatarInfo();
-            this.SetDamageTypeIcon(GetDamageTypeIcon());
-            TEUIModelRef<FVM_AvatarInfo> local_2_6 = this.GetAvatarInfo();
-            this.SetWeaponTypeDisplayName(GetWeaponTypeDisplayName());
-            TEUIModelRef<FVM_AvatarInfo> local_2_7 = this.GetAvatarInfo();
-            local_8.GetAvatarBackgroundDesc();
-            this.SetAvatarBackgroundDesc(local_8);
-            TEUIModelRef<FVM_AvatarInfo> local_2_8 = this.GetAvatarInfo();
-            if (GetAvatarConfig().IsSet())
+            this.SetDisplayName(this.GetAvatarInfo().Get().GetDisplayName());
+            this.SetClassIcon(this.GetAvatarInfo().Get().GetClassIcon());
+            this.SetIllustrateBackgroundIcon(this.GetAvatarInfo().Get().GetIllustrateBackgroundIcon());
+            this.SetIllustrateIcon(this.GetAvatarInfo().Get().GetIllustrateIcon());
+            this.SetDamageTypeIcon(this.GetAvatarInfo().Get().GetDamageTypeIcon());
+            this.SetWeaponTypeDisplayName(this.GetAvatarInfo().Get().GetWeaponTypeDisplayName());
+            this.SetAvatarBackgroundDesc(this.GetAvatarInfo().Get().GetAvatarBackgroundDesc());
+            if (this.GetAvatarInfo().Get().GetAvatarConfig().IsSet())
             {
                 FAvatarPrefabConfig local_10;
-                TEUIModelRef<FVM_AvatarInfo> local_2_9 = this.GetAvatarInfo();
+                TEUIModelRef<FVM_AvatarInfo> local_2 = this.GetAvatarInfo();
                 this.SetSpecialtyDesc(local_10.SpecialtyDesc);
                 this.SetAvatarIllustrateDesc(local_10.PlayerIllustrate1);
                 GetGameplaySettings<UAvatarBuildSettings> local_14;
                 if (local_14 != nullptr)
                 {
-                    TDataObjectPtr<FDivineSkillConfig> local_68;
                     bool local_3 = (int(local_10.CombatType) == 1);
                     if (local_3)
                     {
@@ -199,8 +187,11 @@ struct FVM_SpecialtyItem : FEUIViewModel
                     else
                     {
                     }
-                    if (local_68.IsSet())
+                    TDataObjectPtr<FDivineSkillConfig> local_68;
+                    TDataObjectPtr<FDivineSkillConfig> local_44 = local_68;
+                    if (local_44.IsSet())
                     {
+                        this.SetDefaultDivineSkillName(local_44.Get().DisplayName);
                     }
                 }
             }
@@ -222,20 +213,9 @@ struct FVM_SpecialtyItem : FEUIViewModel
     }
     void RefreshIsLocked()
     {
-        bool local_3 = this.GetAvatarInfo().IsValid();
-        if (!(local_3))
+        if (this.GetAvatarInfo().IsValid() && this.GetAvatarInfo().Get().GetAvatarConfig().IsSet())
         {
-            local_3 = false;
-        }
-        else
-        {
-            TEUIModelRef<FVM_AvatarInfo> local_2 = this.GetAvatarInfo();
-            local_3 = GetAvatarConfig().IsSet();
-        }
-        if (local_3)
-        {
-            TEUIModelRef<FVM_AvatarInfo> local_2_2 = this.GetAvatarInfo();
-            int local_5 = GetIsUnLocked() ? 0 : 1;
+            int local_5 = this.GetAvatarInfo().Get().GetIsUnLocked() ? 0 : 1;
             this.SetUnLockStateIndex(local_5);
         }
         return;
@@ -249,10 +229,8 @@ struct FVM_SpecialtyItem : FEUIViewModel
             this.SetAvatarPowerName(local_8);
             return;
         }
-        TEUIModelRef<FVM_AvatarInfo> local_2 = this.GetAvatarInfo();
-        local_9 = int(GetIllustrate());
-        TEUIModelRef<FVM_AvatarInfo> local_2_2 = this.GetAvatarInfo();
-        FText local_14 = FText(GetIllustrateDisplayName());
+        local_9 = int(this.GetAvatarInfo().Get().GetIllustrate());
+        FText local_14 = FText(this.GetAvatarInfo().Get().GetIllustrateDisplayName());
         switch (local_9)
         {
         case 0:
@@ -280,20 +258,9 @@ struct FVM_SpecialtyItem : FEUIViewModel
     void RefreshCondition()
     {
         this.GetModify_UnlockConditions().Empty(0);
-        bool local_5 = this.GetAvatarInfo().IsValid();
-        if (!(local_5))
+        if (this.GetAvatarInfo().IsValid() && this.GetAvatarInfo().Get().GetAvatarConfig().IsSet())
         {
-            local_5 = false;
-        }
-        else
-        {
-            TEUIModelRef<FVM_AvatarInfo> local_4 = this.GetAvatarInfo();
-            local_5 = GetAvatarConfig().IsSet();
-        }
-        if (local_5)
-        {
-            TEUIModelRef<FVM_AvatarInfo> local_4_2 = this.GetAvatarInfo();
-            for (auto& local_20 : GetUnlockCondition())
+            for (auto& local_20 : this.GetAvatarInfo().Get().GetAvatarConfig().Get().GetUnlockCondition())
             {
                 TEUIModelRef<FVM_AvatarUnlockCondition> local_22 = TEUIModelRef<FVM_AvatarUnlockCondition>(::FVM_AvatarUnlockCondition::Create(this.GetManager(), local_20));
                 this.GetModify_UnlockConditions().Add(local_22);
@@ -318,7 +285,6 @@ struct FVM_SpecialtyItem : FEUIViewModel
     }
     void RefreshIsActive()
     {
-        int local_7 = 0;
         if (this.GetbNeverActive())
         {
             this.SetbIsActive(false);
@@ -326,25 +292,16 @@ struct FVM_SpecialtyItem : FEUIViewModel
         }
         bool local_2 = false;
         TEUIModelRef<FVM_AvatarInfo> local_4 = this.GetAvatarInfo();
-        bool local_1 = local_4.IsValid();
-        if (!(local_1))
-        {
-            local_1 = false;
-        }
-        else
-        {
-            TEUIModelRef<FVM_AvatarInfo> local_4_2 = this.GetAvatarInfo();
-            local_1 = GetAvatarConfig().IsSet();
-        }
-        if (local_1)
+        if (local_4.IsValid() && this.GetAvatarInfo().Get().GetAvatarConfig().IsSet())
         {
             int local_6;
-            TEUIModelRef<FVM_AvatarInfo> local_4_3 = this.GetAvatarInfo();
+            TEUIModelRef<FVM_AvatarInfo> local_4_2 = this.GetAvatarInfo();
+            int local_7 = local_4_2.Get().GetAvatarConfig().Get().DataId;
             local_6 = local_7;
             TEUIModelRef<FM_Player> local_14 = ::FMS_PlayerData::Get(this.GetManager()).GetLocalPlayerData();
             if (local_6 != 0 && local_14.IsValid())
             {
-                local_2 = (local_6 == GetPlayerSpecialtyID());
+                local_2 = (local_6 == local_14.Get().GetPlayerSpecialtyID());
             }
         }
         this.SetbIsActive(local_2);
@@ -372,14 +329,13 @@ struct FVM_SpecialtyItem : FEUIViewModel
     }
     void SelectSpecialty()
     {
-        int local_2 = 0;
         int local_1 = 0;
         if (!(this.GetbSelected()) && this.GetAvatarInfo().IsValid())
         {
-            TEUIModelRef<FVM_AvatarInfo> local_6 = this.GetAvatarInfo();
-            if (GetAvatarConfig().IsSet())
+            TDataObjectPtr<FAvatarPrefabConfig> local_32 = this.GetAvatarInfo().Get().GetAvatarConfig();
+            if (local_32.IsSet())
             {
-                local_1 = local_2;
+                local_1 = local_32.Get().DataId;
             }
         }
         FEUIModelRef local_62 = FEUIModelRef(this);
@@ -834,11 +790,9 @@ FVM_SpecialtyItem& Create(const UObject ContextObject, const TEUIModelRef<FVM_Av
 {
     return FVM_SpecialtyItem::CreateByManager(EUIInternal::GetContextManager(ContextObject), AvatarInfo);
 }
-FVM_SpecialtyItem CreateByManager(const UEUIManagerSubsystem Manager, const TEUIModelRef<FVM_AvatarInfo> &inout AvatarInfo)
+FVM_SpecialtyItem& CreateByManager(const UEUIManagerSubsystem Manager, const TEUIModelRef<FVM_AvatarInfo> &inout AvatarInfo)
 {
-    FVM_SpecialtyItem __r;
-    TEUIModelRef<FVM_SpecialtyItem> local_6 = TEUIModelRef<FVM_SpecialtyItem>(EUIInternal::MakeModelWithManager_Generic(Manager, FVM_SpecialtyItem::ModelId, 0, AvatarInfo));
-    return __r;
+    return TEUIModelRef<FVM_SpecialtyItem>(EUIInternal::MakeModelWithManager_Generic(Manager, FVM_SpecialtyItem::ModelId, 0, AvatarInfo)).Get();
 }
 void GetModelInfo(FEUIViewModelMetaInfo &inout Result)
 {
@@ -1154,7 +1108,6 @@ namespace __GeneratedProperties_FVM_SpecialtyItem
 {
 UScriptStruct StaticStruct()
 {
-    UScriptStruct local_2;
-    return local_2;
+    return __GeneratedProperties_FVM_SpecialtyItem.Get();
 }
 }

@@ -106,21 +106,19 @@ struct FVM_PendingConfirmItem : FEUIViewModel
     }
     bool HasAcceptButton() const
     {
-        bool local_1 = !(this.GetConfig());
-        if (local_1)
+        if (!(this.GetConfig()))
         {
             return false;
         }
-        return local_1;
+        return this.GetConfig().Get().ActionBar.Contains(EPendingConfirmAction(1));
     }
     bool HasRefuseButton() const
     {
-        bool local_1 = !(this.GetConfig());
-        if (local_1)
+        if (!(this.GetConfig()))
         {
             return false;
         }
-        return local_1;
+        return this.GetConfig().Get().ActionBar.Contains(EPendingConfirmAction(0));
     }
     bool HasTestButton() const
     {
@@ -128,7 +126,6 @@ struct FVM_PendingConfirmItem : FEUIViewModel
     }
     bool ShowAcceptCooldown() const
     {
-        int local_2 = 0;
         if (!(this.GetConfig()))
         {
             return false;
@@ -137,11 +134,10 @@ struct FVM_PendingConfirmItem : FEUIViewModel
         {
             return false;
         }
-        return (local_2 == 1);
+        return (int(this.GetConfig().Get().DurationTimeOutAutoAction) == 1);
     }
     bool ShowRefuseCooldown() const
     {
-        int local_2 = 0;
         if (!(this.GetConfig()))
         {
             return false;
@@ -150,8 +146,7 @@ struct FVM_PendingConfirmItem : FEUIViewModel
         {
             return false;
         }
-        int local_3 = local_2;
-        return (local_3 == 0);
+        return (int(this.GetConfig().Get().DurationTimeOutAutoAction) == 0);
     }
     FText GetRemainingTimeText() const
     {
@@ -163,48 +158,43 @@ struct FVM_PendingConfirmItem : FEUIViewModel
     }
     bool HasConfirmButton() const
     {
-        bool local_1 = !(this.GetConfig());
-        if (local_1)
+        if (!(this.GetConfig()))
         {
             return false;
         }
-        return local_1;
+        return this.GetConfig().Get().ActionBar.Contains(EPendingConfirmAction(1));
     }
     bool HasDenyButton() const
     {
-        bool local_1 = !(this.GetConfig());
-        if (local_1)
+        if (!(this.GetConfig()))
         {
             return false;
         }
-        return local_1;
+        return this.GetConfig().Get().ActionBar.Contains(EPendingConfirmAction(0));
     }
     FText GetContextText() const
     {
-        FText __r;
         if (!(this.GetConfig()))
         {
             return FText();
         }
-        return __r;
+        return this.GetConfig().Get().Content;
     }
     FText GetTitleText() const
     {
-        FText __r;
         if (!(this.GetConfig()))
         {
             return FText();
         }
-        return __r;
+        return this.GetConfig().Get().Title;
     }
     FSoftBrush GetTitleImage() const
     {
-        FSoftBrush __r;
         if (!(this.GetConfig()))
         {
             return FSoftBrush();
         }
-        return __r;
+        return this.GetConfig().Get().TitleImage;
     }
     FText GetSenderPlayerName() const
     {
@@ -398,11 +388,9 @@ FVM_PendingConfirmItem& Create(const UObject ContextObject, const int64 CommonPo
 {
     return FVM_PendingConfirmItem::CreateByManager(EUIInternal::GetContextManager(ContextObject), CommonPopupId, SenderPlayerInfo, StartTime, EndTime, Config);
 }
-FVM_PendingConfirmItem CreateByManager(const UEUIManagerSubsystem Manager, const int64 CommonPopupId, const FPlayerBriefInfo &inout SenderPlayerInfo, const FFPTime &inout StartTime, const FFPTime &inout EndTime, const TDataObjectPtr<FPendingConfirmHintConfig> &inout Config)
+FVM_PendingConfirmItem& CreateByManager(const UEUIManagerSubsystem Manager, const int64 CommonPopupId, const FPlayerBriefInfo &inout SenderPlayerInfo, const FFPTime &inout StartTime, const FFPTime &inout EndTime, const TDataObjectPtr<FPendingConfirmHintConfig> &inout Config)
 {
-    FVM_PendingConfirmItem __r;
-    TEUIModelRef<FVM_PendingConfirmItem> local_6 = TEUIModelRef<FVM_PendingConfirmItem>(EUIInternal::MakeModelWithManager_Generic(Manager, FVM_PendingConfirmItem::ModelId, 0, CommonPopupId, SenderPlayerInfo, StartTime, EndTime, Config));
-    return __r;
+    return TEUIModelRef<FVM_PendingConfirmItem>(EUIInternal::MakeModelWithManager_Generic(Manager, FVM_PendingConfirmItem::ModelId, 0, CommonPopupId, SenderPlayerInfo, StartTime, EndTime, Config)).Get();
 }
 void GetModelInfo(FEUIViewModelMetaInfo &inout Result)
 {
@@ -599,7 +587,6 @@ namespace __GeneratedProperties_FVM_PendingConfirmItem
 {
 UScriptStruct StaticStruct()
 {
-    UScriptStruct local_2;
-    return local_2;
+    return __GeneratedProperties_FVM_PendingConfirmItem.Get();
 }
 }

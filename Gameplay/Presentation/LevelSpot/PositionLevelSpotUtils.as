@@ -38,12 +38,28 @@ void RemoveSpot(const FLevelSpotId &inout SpotId)
         if (local_12)
         {
             LevelSpotViewerUtils::RemoveSpotFromViewers(SpotId, local_12.opArrow().GetAllViewers());
+            local_8.LevelSpots.Remove(SpotId);
         }
     }
     return;
 }
 void ChangeSpotPosition(const FLevelSpotId &inout SpotId, const FVector &inout Position)
 {
-    // body not fully recovered — stub [argmismatch:argtype]
+    FECSWorldPtr local_2 = ECS::GetECSWorld();
+    Modify local_6;
+    FCS_PositionLevelSpotManager& local_8 = local_6.opCall();
+    if (local_8)
+    {
+        TRawPtr<FLevelSpotInfo> local_12 = local_8.LevelSpots.Find(SpotId);
+        if (local_12)
+        {
+            LevelSpotViewerUtils::AddPositionSpotToViewers(SpotId, local_12.Get(), Position);
+        }
+        else
+        {
+            XError(ELog(69), FString().Append("Failed to change position of spot ").Append(SpotId.ToString()).Append(", spot not found."));
+        }
+    }
+    return;
 }
 }

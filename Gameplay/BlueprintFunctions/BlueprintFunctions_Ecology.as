@@ -200,6 +200,7 @@ void MuteBossAutoChangeArea(const FECSEntity &inout Entity, const bool ReleaseMu
             }
             else
             {
+                local_28.ActiveKeys.Remove(Key);
             }
             if (local_28.ActiveKeys.Num() == 0)
             {
@@ -255,8 +256,7 @@ void RestraintLockSpecialControl(const FECSEntity &inout Entity, const FECSEntit
         {
             return;
         }
-        AActor local_42;
-        local_34 = (Cast<AECSRegionVolume>(local_42));
+        local_34 = (Cast<AECSRegionVolume>(local_40.RegionVolume.Get()));
         if (local_34 == nullptr)
         {
             return;
@@ -433,28 +433,23 @@ FECSEntity SpawnNPCInValidPos(const TDataObjectPtr<FNPCMainConfig> &inout NPCCon
     }
     else
     {
-        local_1 = GetCombatConfig();
+        local_1 = NPCConfig.Get().GetCombatConfig();
     }
     if (local_1)
     {
         bool local_61;
-        const FNPCMainConfig& local_4;
-        bool local_2;
+        const FNPCMainConfig& local_4 = NPCConfig.Get();
         TSubclassOf<ACharacterPrefab> local_6;
         TDataObjectPtr<FNPCSkinOverride> local_30;
         local_30 = local_4.GetSkinOverride();
-        local_2 = !((local_30 == nullptr));
-        if (!(local_2))
+        if (!((local_30 == nullptr)) && !(local_4.GetSkinOverride().Get().PrefabOverride.IsNull()))
         {
-            local_2 = false;
+            local_6 = local_4.GetSkinOverride().Get().PrefabOverride.Get();
         }
         else
         {
-            local_1 = !local_1;
-            local_2 = local_1;
+            local_6 = local_4.GetCombatPrefab();
         }
-        TSubclassOf<ACharacterPrefab> local_56;
-        local_6 = local_2 ? local_56 : local_4.GetCombatPrefab();
         if ((local_6 == nullptr))
         {
             return FECSEntity();
@@ -482,29 +477,23 @@ FECSEntity SpawnNPCByDailyRouteConfig(const TDataObjectPtr<FNPCMainConfig> &inou
         return FECSEntity();
     }
     FString local_10;
-    bool local_1 = !(BlueprintFunctions_Ecology::ValidateNPCDailyRouteConfig(RouteConfig, local_10));
-    if (local_1)
+    if (!(BlueprintFunctions_Ecology::ValidateNPCDailyRouteConfig(RouteConfig, local_10)))
     {
         XWarning(ELog(30), FString().Append("SpawnNPCByDailyRouteConfig: invalid daily route config. ").Append(local_10));
         return FECSEntity();
     }
     FNPCDailyRouteRuntimePointInfo local_24;
-    FName local_26;
-    local_26.GetStartPointId();
-    ECS::GetUEWorld();
-    local_1 = !local_1;
-    if (local_1)
+    if (!(NPCDailyRouteRuntimeLibrary::GetRoutePointInfo(ECS::GetUEWorld(), RouteConfig.Get().RouteSourceId, RouteConfig.Get().GetStartPointId(), local_24)))
     {
-        local_26.GetStartPointId();
-        FString local_14 = FString();
+        XWarning(ELog(30), FString().Append("SpawnNPCByDailyRouteConfig: cannot find route point ").Append(RouteConfig.Get().GetStartPointId()).Append(" in route source ").Append(RouteConfig.Get().RouteSourceId).Append("."));
         return FECSEntity();
     }
     FECSEntity local_6 = BlueprintFunctions_Ecology::SpawnNPCInValidPos(NPCConfig, local_24.Location, Rotation, MaxNearbyRadius, StepLength, bEnableNoValidPos, DifficultyLevelConfigOverride, SpawnInitEntryName);
     if (local_6.IsValid())
     {
         Has local_38;
-        bool local_1_2 = local_38.opCall();
-        if (local_1_2)
+        bool local_1 = local_38.opCall();
+        if (local_1)
         {
             FECSEntity::Get<FC_Transform> local_48;
             FVector local_44 = local_48.opCall().GetPosition();
@@ -515,9 +504,7 @@ FECSEntity SpawnNPCByDailyRouteConfig(const TDataObjectPtr<FNPCMainConfig> &inou
             }
             else
             {
-                FString local_60 = FString::ApplyFormat(local_53, ".2f");
-                local_26.GetStartPointId();
-                XLog(ELog(30), FString().Append("SpawnNPCByDailyRouteConfig: spawned entity ").Append(local_6.GetIdValue()).Append(" near route start ").Append(local_26).Append(", location=").Append(local_44).Append(", offset=").Append(local_60).Append("; route will finish the start node stay before moving to the next node."));
+                XLog(ELog(30), FString().Append("SpawnNPCByDailyRouteConfig: spawned entity ").Append(local_6.GetIdValue()).Append(" near route start ").Append(RouteConfig.Get().GetStartPointId()).Append(", location=").Append(local_44).Append(", offset=").Append(FString::ApplyFormat(local_53, ".2f")).Append("; route will finish the start node stay before moving to the next node."));
             }
         }
         FNPCDailyRouteUtils::InitializeRouteState(local_6, RouteConfig, -1);
@@ -527,12 +514,12 @@ FECSEntity SpawnNPCByDailyRouteConfig(const TDataObjectPtr<FNPCMainConfig> &inou
 UFUNCTION()
 FECSEntity SpawnNPCByDailyRoute(const TDataObjectPtr<FNPCMainConfig> &inout NPCConfig, const FRotator &inout Rotation = FRotator::ZeroRotator, const float32 MaxNearbyRadius = 500.0f, const float32 StepLength = 50.0f, const bool bEnableNoValidPos = true, const UDataTable DifficultyLevelConfigOverride = nullptr, const FName &inout SpawnInitEntryName = NAME_None)
 {
-    if (!(NPCConfig.IsSet()) || !(GetDailyRouteConfig().IsSet()))
+    if (!(NPCConfig.IsSet()) || !(NPCConfig.Get().GetDailyRouteConfig().IsSet()))
     {
         XWarning(ELog(30), "SpawnNPCByDailyRoute: NPC config has no daily route config.");
         return FECSEntity();
     }
-    return BlueprintFunctions_Ecology::SpawnNPCByDailyRouteConfig(NPCConfig, GetDailyRouteConfig(), Rotation, MaxNearbyRadius, StepLength, bEnableNoValidPos, DifficultyLevelConfigOverride, SpawnInitEntryName);
+    return BlueprintFunctions_Ecology::SpawnNPCByDailyRouteConfig(NPCConfig, NPCConfig.Get().GetDailyRouteConfig(), Rotation, MaxNearbyRadius, StepLength, bEnableNoValidPos, DifficultyLevelConfigOverride, SpawnInitEntryName);
 }
 UFUNCTION()
 FECSEntity BP_SpawnNPCByDailyRouteConfig(const TDataObjectPtr<FNPCMainConfig> &inout NPCConfig, const TDataObjectPtr<FNPCDailyRouteConfig> &inout RouteConfig, const FEntityCreateFinishDelegate &inout OnCreateFinish, const FRotator &inout Rotation = FRotator::ZeroRotator, const float32 MaxNearbyRadius = 500.0f, const float32 StepLength = 50.0f, const bool bEnableNoValidPos = true, const UDataTable DifficultyLevelConfigOverride = nullptr, const FName &inout SpawnInitEntryName = NAME_None)
@@ -557,7 +544,6 @@ FECSEntity BP_SpawnNPCByDailyRoute(const TDataObjectPtr<FNPCMainConfig> &inout N
 UFUNCTION()
 bool SetNPCDailyRouteConfig(const FECSEntity &inout Entity, const TDataObjectPtr<FNPCDailyRouteConfig> &inout RouteConfig, const int CurrentNodeIndex, FString &out ErrorMessage)
 {
-    FName local_14;
     FString local_4;
     ErrorMessage = local_4;
     ErrorMessage = "";
@@ -575,15 +561,13 @@ bool SetNPCDailyRouteConfig(const FECSEntity &inout Entity, const TDataObjectPtr
     {
         return false;
     }
-    if ((CurrentNodeIndex < -1 || (CurrentNodeIndex >= 0)))
+    if (CurrentNodeIndex < -1 || (CurrentNodeIndex >= RouteConfig.Get().Nodes.Num()))
     {
-        local_14.GetDataName();
-        ErrorMessage = FString().Append("invalid CurrentNodeIndex ").Append(CurrentNodeIndex).Append(" for route ").Append(local_14).Append(".");
+        ErrorMessage = FString().Append("invalid CurrentNodeIndex ").Append(CurrentNodeIndex).Append(" for route ").Append(RouteConfig.Get().GetDataName()).Append(".");
         return false;
     }
     FNPCDailyRouteUtils::InitializeRouteState(Entity, RouteConfig, CurrentNodeIndex);
-    local_14.GetDataName();
-    ErrorMessage = FString().Append("OK Entity=").Append(Entity.GetIdValue()).Append(", Route=").Append(local_14).Append(", CurrentNodeIndex=").Append(CurrentNodeIndex).Append(".");
+    ErrorMessage = FString().Append("OK Entity=").Append(Entity.GetIdValue()).Append(", Route=").Append(RouteConfig.Get().GetDataName()).Append(", CurrentNodeIndex=").Append(CurrentNodeIndex).Append(".");
     return true;
 }
 UFUNCTION()
@@ -597,14 +581,12 @@ bool SetNPCDailyRouteByNPCConfig(const FECSEntity &inout Entity, const TDataObje
         ErrorMessage = "NPC config is not set.";
         return false;
     }
-    if (!(GetDailyRouteConfig().IsSet()))
+    if (!(NPCConfig.Get().GetDailyRouteConfig().IsSet()))
     {
-        FName local_12;
-        local_12.GetDataName();
-        ErrorMessage = local_4.Append("NPC config ").Append(local_12).Append(" has no DailyRouteConfig.");
+        ErrorMessage = local_4.Append("NPC config ").Append(NPCConfig.Get().GetDataName()).Append(" has no DailyRouteConfig.");
         return false;
     }
-    return BlueprintFunctions_Ecology::SetNPCDailyRouteConfig(Entity, GetDailyRouteConfig(), CurrentNodeIndex, ErrorMessage);
+    return BlueprintFunctions_Ecology::SetNPCDailyRouteConfig(Entity, NPCConfig.Get().GetDailyRouteConfig(), CurrentNodeIndex, ErrorMessage);
 }
 UFUNCTION()
 bool ClearNPCDailyRoute(const FECSEntity &inout Entity, FString &out ErrorMessage)
@@ -637,9 +619,6 @@ UFUNCTION()
 bool ValidateNPCDailyRouteConfig(const TDataObjectPtr<FNPCDailyRouteConfig> &inout RouteConfig, FString &out ErrorMessage)
 {
     FString local_4;
-    int local_39 = 0;
-    FName local_41;
-    FName local_43;
     ErrorMessage = local_4;
     ErrorMessage = "";
     if (!(RouteConfig.IsSet()))
@@ -647,78 +626,76 @@ bool ValidateNPCDailyRouteConfig(const TDataObjectPtr<FNPCDailyRouteConfig> &ino
         ErrorMessage = "daily route config is not set.";
         return false;
     }
-    if (!(HasRouteNodes()))
+    if (!(RouteConfig.Get().HasRouteNodes()))
     {
         ErrorMessage = "daily route config needs at least two nodes.";
         return false;
     }
-    if (unresolved.RouteSourceId.IsNone())
+    if (RouteConfig.Get().RouteSourceId.IsNone())
     {
         ErrorMessage = "daily route config has empty RouteSourceId.";
         return false;
     }
-    bool local_5 = !(IsLoopStartIndexValid());
-    if (local_5)
+    if (!(RouteConfig.Get().IsLoopStartIndexValid()))
     {
-        FString local_10 = FString();
+        ErrorMessage = FString().Append("invalid LoopStartIndex ").Append(RouteConfig.Get().LoopStartIndex).Append(" for route source ").Append(RouteConfig.Get().RouteSourceId).Append(".");
         return false;
     }
     int local_11 = 0;
-    for (; local_11 < 0; ++local_11)
+    for (; local_11 < RouteConfig.Get().Nodes.Num(); ++local_11)
     {
         FNPCDailyRouteNodeConfig local_20;
         FNPCDailyRouteNodeConfig local_26;
+        local_26 = RouteConfig.Get().Nodes[local_11];
         local_20 = local_26;
         if (local_20.PointId.IsNone())
         {
-            FString local_10_2 = FString();
+            ErrorMessage = FString().Append("route node ").Append(local_11).Append(" has empty PointId in route source ").Append(RouteConfig.Get().RouteSourceId).Append(".");
             return false;
         }
-        local_5 = !(local_20.StayTime.IsValid());
-        if (local_5)
+        if (!(local_20.StayTime.IsValid()))
         {
-            FString local_10_3 = FString();
+            ErrorMessage = FString().Append("route node ").Append(local_11).Append(" has invalid stay time in route source ").Append(RouteConfig.Get().RouteSourceId).Append(".");
             return false;
         }
-        ECS::GetUEWorld();
-        local_5 = !local_5;
-        if (local_5)
+        FNPCDailyRouteRuntimePointInfo local_36;
+        if (!(NPCDailyRouteRuntimeLibrary::GetRoutePointInfo(ECS::GetUEWorld(), RouteConfig.Get().RouteSourceId, local_20.PointId, local_36)))
         {
-            FString local_10_4 = FString();
+            ErrorMessage = FString().Append("cannot find route point ").Append(local_20.PointId).Append(" in route source ").Append(RouteConfig.Get().RouteSourceId).Append(".");
             return false;
         }
     }
     int local_11_2 = 0;
-    for (; (local_11_2 + 1) < local_39; ++local_11_2)
+    for (; (local_11_2 + 1) < RouteConfig.Get().Nodes.Num(); ++local_11_2)
     {
-        int local_12 = local_11_2 + 1;
+        FName local_41(RouteConfig.Get().Nodes[local_11_2].PointId);
+        FName local_43(RouteConfig.Get().Nodes[(local_11_2 + 1)].PointId);
         if ((local_41 == local_43))
         {
-            local_39 = local_11_2 + 1;
-            FString local_10_5 = FString();
+            ErrorMessage = FString().Append("adjacent route nodes ").Append(local_11_2).Append(" and ").Append((local_11_2 + 1)).Append(" use the same PointId ").Append(local_41).Append(" in route source ").Append(RouteConfig.Get().RouteSourceId).Append(".");
             return false;
         }
-        ECS::GetUEWorld();
-        local_5 = !local_5;
-        if (local_5)
+        FNPCDailyRouteRuntimeConnectionInfo local_50;
+        if (!(NPCDailyRouteRuntimeLibrary::GetRouteConnectionInfo(ECS::GetUEWorld(), RouteConfig.Get().RouteSourceId, local_41, local_43, local_50)))
         {
-            FString local_10_6 = FString();
+            ErrorMessage = FString().Append("missing generated path ").Append(local_41).Append(" -> ").Append(local_43).Append(" in route source ").Append(RouteConfig.Get().RouteSourceId).Append(".");
             return false;
         }
     }
-    if ((local_43 == local_41))
+    FName local_43_2(RouteConfig.Get().Nodes.Last(0).PointId);
+    FName local_41_2(RouteConfig.Get().Nodes[RouteConfig.Get().LoopStartIndex].PointId);
+    if ((local_43_2 == local_41_2))
     {
-        FString local_10_7 = FString();
+        ErrorMessage = FString().Append("route last node and loop start node use the same PointId ").Append(local_43_2).Append(" in route source ").Append(RouteConfig.Get().RouteSourceId).Append(".");
         return false;
     }
-    ECS::GetUEWorld();
-    local_5 = !local_5;
-    if (local_5)
+    FNPCDailyRouteRuntimeConnectionInfo local_50;
+    if (!(NPCDailyRouteRuntimeLibrary::GetRouteConnectionInfo(ECS::GetUEWorld(), RouteConfig.Get().RouteSourceId, local_43_2, local_41_2, local_50)))
     {
-        FString local_10_8 = FString();
+        ErrorMessage = FString().Append("missing generated loop path ").Append(local_43_2).Append(" -> ").Append(local_41_2).Append(" in route source ").Append(RouteConfig.Get().RouteSourceId).Append(".");
         return false;
     }
-    FString local_10_9 = FString();
+    ErrorMessage = FString().Append("OK RouteSource=").Append(RouteConfig.Get().RouteSourceId).Append(", NodeCount=").Append(RouteConfig.Get().Nodes.Num()).Append(", LoopStart=").Append(RouteConfig.Get().LoopStartIndex).Append(".");
     return true;
 }
 UFUNCTION()
@@ -767,6 +744,7 @@ void GetNPCDailyRouteRuntimeDebugInfo(const FECSEntity &inout Entity, bool &out 
     bHasRuntime = true;
     if (local_38.RouteConfig.IsSet())
     {
+        RouteSourceId = local_38.RouteConfig.Get().RouteSourceId;
     }
     CurrentNodeIndex = int(local_38.CurrentNodeIndex);
     CurrentPointId = local_38.CurrentPointId;
@@ -791,7 +769,6 @@ void GetNPCDailyRouteRuntimeDebugInfo(const FECSEntity &inout Entity, bool &out 
 UFUNCTION()
 void GetNPCDailyRouteNextStepPreview(const FECSEntity &inout Entity, bool &out bHasPreview, FName &out RouteSourceId, int &out FromNodeIndex, FName &out FromPointId, int &out ToNodeIndex, FName &out ToPointId, int &out PathPointCount, FVector &out TargetLocation, float32 &out TargetAcceptRadius, FString &out Summary)
 {
-    bool local_47 = false;
     bHasPreview = false;
     FName local_4;
     RouteSourceId = local_4;
@@ -819,40 +796,29 @@ void GetNPCDailyRouteNextStepPreview(const FECSEntity &inout Entity, bool &out b
         return;
     }
     TDataObjectPtr<FNPCDailyRouteConfig> local_46;
-    if (!(FNPCDailyRouteUtils::TryGetRouteConfig(Entity, local_46)) || !(HasRouteNodes()))
+    if (!(FNPCDailyRouteUtils::TryGetRouteConfig(Entity, local_46)) || !(local_46.Get().HasRouteNodes()))
     {
         Summary = "Entity has no usable daily route config";
         return;
     }
-    if (unresolved.RouteSourceId.IsNone())
+    if (local_46.Get().RouteSourceId.IsNone())
     {
         Summary = "Daily route has empty RouteSourceId";
         return;
     }
-    bool local_19 = !(IsLoopStartIndexValid());
-    if (local_19)
+    if (!(local_46.Get().IsLoopStartIndexValid()))
     {
-        FString local_52 = FString();
+        Summary = FString().Append("Daily route has invalid LoopStartIndex ").Append(local_46.Get().LoopStartIndex);
         return;
     }
+    RouteSourceId = local_46.Get().RouteSourceId;
     Get local_56;
     const FC_NPCDailyRouteRuntime& local_58 = local_56.opCall();
     if (local_58)
     {
         FromNodeIndex = int(local_58.CurrentNodeIndex);
         FromPointId = local_58.CurrentPointId;
-        local_19 = local_58.bHasPreparedTarget;
-        if (!(local_19))
-        {
-            local_19 = false;
-        }
-        else
-        {
-            int local_20_4 = int(local_58.PendingTargetNodeIndex);
-            local_19 = local_47;
-        }
-        local_19 = local_19 && !(local_58.TargetPointId.IsNone());
-        if (local_19)
+        if (local_58.bHasPreparedTarget && local_46.Get().Nodes.IsValidIndex(int(local_58.PendingTargetNodeIndex)) && !(local_58.TargetPointId.IsNone()))
         {
             FNPCDailyRouteRuntimePointInfo local_68;
             if (!(NPCDailyRouteRuntimeLibrary::GetRoutePointInfo(ECS::GetUEWorld(), RouteSourceId, local_58.TargetPointId, local_68)))
@@ -860,8 +826,7 @@ void GetNPCDailyRouteNextStepPreview(const FECSEntity &inout Entity, bool &out b
                 Summary = FString().Append("Prepared target point ").Append(local_58.TargetPointId).Append(" is missing in route source ").Append(RouteSourceId);
                 return;
             }
-            local_47 = true;
-            bHasPreview = local_47;
+            bHasPreview = true;
             ToNodeIndex = int(local_58.PendingTargetNodeIndex);
             ToPointId = local_58.TargetPointId;
             PathPointCount = local_58.ActivePathPoints.Num();
@@ -872,18 +837,14 @@ void GetNPCDailyRouteNextStepPreview(const FECSEntity &inout Entity, bool &out b
         }
     }
     int local_71 = FromNodeIndex;
-    ToNodeIndex = local_71 < 0 ? 0 : local_71.GetNextNodeIndex();
-    int local_73 = ToNodeIndex;
-    local_19 = !local_19;
-    if (local_19)
+    ToNodeIndex = local_71 < 0 ? 0 : local_46.Get().GetNextNodeIndex(local_71);
+    if (!(local_46.Get().Nodes.IsValidIndex(ToNodeIndex)))
     {
         Summary = FString().Append("Next node index ").Append(ToNodeIndex).Append(" is invalid");
         return;
     }
     FNPCDailyRouteNodeConfig local_80;
-    FNPCDailyRouteNodeConfig local_86;
-    int local_20_5 = ToNodeIndex;
-    local_80 = local_86;
+    local_80 = local_46.Get().Nodes[ToNodeIndex];
     FNPCDailyRouteRuntimePointInfo local_68;
     if (!(NPCDailyRouteRuntimeLibrary::GetRoutePointInfo(ECS::GetUEWorld(), RouteSourceId, local_80.PointId, local_68)))
     {
@@ -893,8 +854,9 @@ void GetNPCDailyRouteNextStepPreview(const FECSEntity &inout Entity, bool &out b
     ToPointId = local_80.PointId;
     TargetLocation = local_68.Location;
     TargetAcceptRadius = local_68.AcceptRadius;
-    if (unresolved.Nodes.IsValidIndex(local_71))
+    if (local_46.Get().Nodes.IsValidIndex(local_71))
     {
+        FromPointId = local_46.Get().Nodes[local_71].PointId;
         if ((FromPointId == ToPointId))
         {
             Summary = FString().Append("Next route segment cannot use the same point twice ").Append(FromPointId);
@@ -912,8 +874,7 @@ void GetNPCDailyRouteNextStepPreview(const FECSEntity &inout Entity, bool &out b
     {
         PathPointCount = 1;
     }
-    local_47 = true;
-    bHasPreview = local_47;
+    bHasPreview = true;
     Summary = FString().Append("Next From[").Append(FromNodeIndex).Append("]=").Append(FromPointId).Append(" -> To[").Append(ToNodeIndex).Append("]=").Append(ToPointId).Append(", PathPointCount=").Append(PathPointCount).Append(", Target=").Append(TargetLocation).Append(", AcceptRadius=").Append(TargetAcceptRadius);
     return;
 }
@@ -946,37 +907,33 @@ void GetNPCDailyRouteConfigStartPreview(const TDataObjectPtr<FNPCDailyRouteConfi
         Summary = "daily route config is not set";
         return;
     }
-    if (!(HasRouteNodes()))
+    if (!(RouteConfig.Get().HasRouteNodes()))
     {
         Summary = "daily route config needs at least two nodes";
         return;
     }
-    if (unresolved.RouteSourceId.IsNone())
+    if (RouteConfig.Get().RouteSourceId.IsNone())
     {
         Summary = "daily route config has empty RouteSourceId";
         return;
     }
-    FName local_29;
-    local_29.GetStartPointId();
-    StartPointId = local_29;
+    RouteSourceId = RouteConfig.Get().RouteSourceId;
+    StartPointId = RouteConfig.Get().GetStartPointId();
     FNPCDailyRouteRuntimePointInfo local_40;
-    bool local_25 = !(NPCDailyRouteRuntimeLibrary::GetRoutePointInfo(ECS::GetUEWorld(), RouteSourceId, StartPointId, local_40));
-    if (local_25)
+    if (!(NPCDailyRouteRuntimeLibrary::GetRoutePointInfo(ECS::GetUEWorld(), RouteSourceId, StartPointId, local_40)))
     {
         Summary = FString().Append("cannot find start point ").Append(StartPointId).Append(" in route source ").Append(RouteSourceId);
         return;
     }
     StartLocation = local_40.Location;
-    FirstTargetNodeIndex = 0.GetNextNodeIndex();
-    int local_26 = FirstTargetNodeIndex;
-    local_25 = !local_25;
-    if (local_25)
+    FirstTargetNodeIndex = RouteConfig.Get().GetNextNodeIndex(0);
+    if (!(RouteConfig.Get().Nodes.IsValidIndex(FirstTargetNodeIndex)))
     {
         Summary = FString().Append("first target node index ").Append(FirstTargetNodeIndex).Append(" is invalid");
         return;
     }
     FNPCDailyRouteNodeConfig local_60;
-    int local_47 = FirstTargetNodeIndex;
+    local_60 = RouteConfig.Get().Nodes[FirstTargetNodeIndex];
     FirstTargetPointId = local_60.PointId;
     if ((StartPointId == FirstTargetPointId))
     {
@@ -1030,7 +987,6 @@ FECSEntity BP_SpawnMonsterByMonsterIdInValidPos(const FECSEntityAdapter &inout E
 }
 FECSEntity SpawnMonsterByMonsterIdInValidPos(const FECSEntityAdapter &inout Entity, const TDataObjectPtr<FMonsterMainConfig> &inout MonsterConfig, const FVector &inout Location, const FRotator &inout Rotation, const float32 MaxNearbyRadius = 500.0f, const float32 StepLength = 50.0f, const bool bEnableNoValidPos = true, const UDataTable DifficultyLevelConfigOverride = nullptr, const int MonsterLevel = 0, const FName &inout SpawnInitEntryName = NAME_None, const bool bMuteDrop = false)
 {
-    int local_4 = 0;
     bool local_48 = false;
     int local_49 = 0;
     int local_56 = 0;
@@ -1051,17 +1007,17 @@ FECSEntity SpawnMonsterByMonsterIdInValidPos(const FECSEntityAdapter &inout Enti
     }
     else
     {
-        local_1 = GetCombatConfig();
+        local_1 = MonsterConfig.Get().GetCombatConfig();
     }
     FECSEntity local_214;
     if (local_1)
     {
-        TSubclassOf<ACharacterPrefab> local_8;
         bool local_5;
         int local_3;
+        int local_4 = MonsterConfig.Get().MonsterId;
         local_3 = local_4;
         local_5 = false;
-        local_8.GetCombatPrefab();
+        TSubclassOf<ACharacterPrefab> local_8 = MonsterConfig.Get().GetCombatPrefab();
         if ((local_8 == nullptr))
         {
             FECSEntity local_18 = Entity.GetEntity();
@@ -1160,11 +1116,11 @@ FECSEntity SpawnMonsterByMonsterIdInValidPos(const FECSEntityAdapter &inout Enti
                 local_220.Level = MonsterLevel;
             }
             TDataObjectPtr<FGameAttributeInherit> local_244;
-            local_244 = GetAttributeInheritConfig();
+            local_244 = MonsterConfig.Get().GetAttributeInheritConfig();
             if (!((local_244 == nullptr)))
             {
                 local_270.SetInheritOwner(Entity.GetEntity());
-                local_270.SetGameAttributeInheritConfig(GetAttributeInheritConfig());
+                local_270.SetGameAttributeInheritConfig(MonsterConfig.Get().GetAttributeInheritConfig());
                 ModifyOrAdd local_278;
                 local_278.opCall().AddInheritEntity(local_18_2);
             }
@@ -1253,8 +1209,10 @@ void RemoveCreaturePreferActivityData(const FECSEntityAdapter &inout Entity, con
         return;
     }
     Modify local_6;
-    if (local_6.opCall())
+    FC_CreatureEcologyState& local_8 = local_6.opCall();
+    if (local_8)
     {
+        local_8.ActivityData.PreferActivityList.Remove(ActivityData);
     }
     return;
 }

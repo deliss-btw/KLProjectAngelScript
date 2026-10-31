@@ -23,7 +23,6 @@ class UHTNTask_D3FindScaredSource : UHTNTask_ECSScriptBase
         int local_10 = 0;
         int local_38 = 0;
         int local_84 = 0;
-        TMapIterator<FECSEntityId, FEcologyVoxelSceneUnitSummary> local_142;
         int local_162 = 0;
         int local_166 = 0;
         int local_172 = 0;
@@ -53,10 +52,9 @@ class UHTNTask_D3FindScaredSource : UHTNTask_ECSScriptBase
             FEcologyVoxelSceneRegion& local_114 = local_84.VoxelScene.FindOrAddRegion(local_100.Proceed().Current);
             for (auto& local_134 : local_114.GetCellSlotDataRef(EEcologyVoxelUnitSlot(1)))
             {
-                local_134;
-                for (; local_142.CanProceed;)
+                for (auto& local_152 : local_134.GetValue().SlotData)
                 {
-                    FECSEntity local_156 = FECSEntity(local_142.Proceed().GetKey());
+                    FECSEntity local_156 = FECSEntity(local_152.GetKey());
                     if (!(local_156.IsValid()))
                     {
                         continue;
@@ -190,21 +188,21 @@ class UHTNTask_D3FleeResourceFilter : UHTNTask_ECSScriptBase
     bool RealExecute(const FHTNContext &inout Context)
     {
         int local_10 = 0;
-        bool local_22 = false;
         int local_30 = 0;
         FName local_8 = this.ResourceListKey.GetValue(Context.opImplConv());
         FECSEntity local_4 = Context.GetControllerEntity();
-        if (!(FInstancedStruct::GetPtr(local_10).opCall()) || (0 == 0))
+        TConstRawPtr<FEntitySearchResultList> local_16 = FInstancedStruct::GetPtr(local_10).opCall();
+        if (!(local_16) || (local_16.Get().Results.Num() == 0))
         {
             return false;
         }
-        FAISmartValueContext local_6 = Context.opImplConv();
+        bool local_22 = this.bContainerCurrent.GetValue(Context.opImplConv());
         FECSEntity local_4_2 = FECSEntity(local_30.LeaderEntity);
         if (!(local_4_2.IsValid()))
         {
             return false;
         }
-        TArray<FEntitySearchResult> local_38;
+        TArray<FEntitySearchResult> local_38 = local_16.Get().Results;
         int local_39 = 0;
         for (; local_39 < local_38.Num(); ++local_39)
         {

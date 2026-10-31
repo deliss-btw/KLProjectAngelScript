@@ -295,7 +295,6 @@ class US_InteractionSystem : UECSScriptSystem
     UFUNCTION()
     void Monitor_OnRemoveIsBeingInteractedTag(const FECSEntity &inout Entity, const FC_IsBeingInteractedTag &inout IsBeingInteractedTag) const
     {
-        UInteractionBehaviorBase local_16;
         Modify local_4;
         FC_RuntimeInteractTargetStatus& local_6 = local_4.opCall();
         if (local_6)
@@ -303,7 +302,7 @@ class US_InteractionSystem : UECSScriptSystem
             int local_11 = local_6.GetInteractionBehaviorStatus().Num() - 1;
             for (; local_11 >= 0; --local_11)
             {
-                if (!(local_16.InteractProgressConfig.bKeepProgressWhenInterrupt))
+                if (!(local_6.GetInteractionBehaviorStatus()[local_11].GetBehavior().Get().InteractProgressConfig.bKeepProgressWhenInterrupt))
                 {
                     local_6.GetModify_InteractionBehaviorStatus().RemoveAt(local_11);
                 }
@@ -515,7 +514,7 @@ class US_InteractionSystem : UECSScriptSystem
         FInteractionPointTypeConfig local_34;
         bool local_59;
         bool local_62;
-        int local_117 = 0;
+        int local_117;
         bool local_119;
         bool local_120;
         for (auto& local_16 : CandidateEntities)
@@ -574,15 +573,15 @@ class US_InteractionSystem : UECSScriptSystem
                     local_116.Rotation = local_76;
                     local_62 = local_16.bIsSecondaryTarget;
                     local_116.bIsSecondaryTarget = local_62;
-                    EInteractionBehaviorEvaluateResult local_118 = EInteractionBehaviorEvaluateResult(0);
+                    EInteractionBehaviorEvaluateResult local_118 = EInteractionBehaviorEvaluateResult::NotChecked;
                     local_117 = local_118;
                     local_119 = false;
                     local_120 = false;
                     if (local_13 || local_27)
                     {
                         FCompareInteractionTargetParam local_130;
-                        local_118 = ::FInteractUtils::EvaluateInteractionBehaviorWithTarget(InteractSourceCheckParam, local_18, local_32, local_84, local_68, local_76, false, local_130);
-                        if (local_118 == 1)
+                        local_117 = ::FInteractUtils::EvaluateInteractionBehaviorWithTarget(InteractSourceCheckParam, local_18, local_32, local_84, local_68, local_76, false, local_130);
+                        if (local_117 == 1)
                         {
                             bool local_133;
                             int local_132 = -1;
@@ -608,8 +607,9 @@ class US_InteractionSystem : UECSScriptSystem
                     local_62 = local_16.bTip;
                     if (local_62)
                     {
-                        local_62 = ::FInteractUtils::GetInteractTipPreset(local_32, local_84).IsSet() && !(local_119 && !(local_120));
-                        if (local_62 && (int(local_118) == 1))
+                        TDataObjectPtr<FInteractTipPreset> local_162 = ::FInteractUtils::GetInteractTipPreset(local_32, local_84);
+                        local_62 = local_162.IsSet() && !(local_119 && !(local_120));
+                        if (local_62 && (int(::FInteractUtils::EvaluateInteractionBehaviorWithTipTarget(InteractSourceCheckParam, local_18, local_32, local_84, local_162.Get().InteractTipParam, local_68, local_76, EInteractionBehaviorEvaluateResult(local_117))) == 1))
                         {
                             if (!(local_119))
                             {
@@ -1092,9 +1092,7 @@ class US_InteractionSystem : UECSScriptSystem
                 FString local_44;
                 if (local_28.PrefabClass.IsValid())
                 {
-                    TSubclassOf<AECSPrefab> local_30 = local_28.PrefabClass.Get();
-                    UClass local_32;
-                    local_44 = local_32.GetName();
+                    local_44 = local_28.PrefabClass.Get().Get().GetName();
                 }
                 else
                 {
@@ -1244,7 +1242,6 @@ class US_InteractionSystem : UECSScriptSystem
     void ServerJob_TickRuntimeInteractTargetStatus(const FECSEntity &inout Entity, const FCS_FixedTime &inout FixedTime, FC_RuntimeInteractTargetStatus &inout RuntimeInteractTargetStatus) const
     {
         UInteractionBehaviorBase local_76;
-        FInteractProgressConfig local_112;
         float32 local_114;
         TArray<FECSEntity> local_4;
         auto local_10 = RuntimeInteractTargetStatus.GetInteractionPointStatus().Iterator();
@@ -1293,10 +1290,13 @@ class US_InteractionSystem : UECSScriptSystem
         for (auto& local_106 : local_70)
         {
             local_76 = local_106.GetKey();
+            int local_49 = local_106.GetValue().InteractEntities.Num();
             TArray<int> local_110;
+            FInteractProgressConfig local_112 = local_110 = local_106.GetValue().IndexOfPoints;
             int local_36 = RuntimeInteractTargetStatus.GetInteractionBehaviorStatusIndex(local_76);
             float32 local_115 = RuntimeInteractTargetStatus.GetModify_InteractionBehaviorStatus()[local_36].GetProgressValue();
             local_114 = local_115;
+            local_115 = local_112.GetMultiInteractorProgressScaler(local_106.GetValue().InteractEntities, FixedTime.Time);
             local_114 = local_114 + ((local_112.ProgressValuePerSecondPerPlayer * float32(FixedTime.DeltaTime.ToSeconds())) * local_115);
             RuntimeInteractTargetStatus.GetModify_InteractionBehaviorStatus()[local_36].SetProgressValue(local_114);
             if (local_114 >= local_112.MaxProgressValue)

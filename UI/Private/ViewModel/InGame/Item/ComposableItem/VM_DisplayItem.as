@@ -159,32 +159,21 @@ struct FVM_DisplayItem : FEUIViewModel
             this.SetRarityColor(FLinearColor::White);
             if (this.GetCommonItemVM().IsValid())
             {
-                TEUIModelRef<FVM_CommonItem> local_56 = this.GetCommonItemVM();
-                this.GetDisplayData().SetupDisplayData();
+                this.GetCommonItemVM().Get().SetupDisplayData(this.GetDisplayData());
             }
             return;
         }
-        TEUIModelRef<FM_DisplayItemData> local_2_2 = this.GetDisplayData();
-        this.SetDisplayName(GetDisplayName());
-        TEUIModelRef<FM_DisplayItemData> local_2_3 = this.GetDisplayData();
-        this.SetDisplayDesc(GetDisplayDesc());
-        TEUIModelRef<FM_DisplayItemData> local_2_4 = this.GetDisplayData();
-        this.SetItemImage(GetItemImage());
-        TEUIModelRef<FM_DisplayItemData> local_2_5 = this.GetDisplayData();
-        this.SetItemImageHigh(GetItemImageHigh());
-        TEUIModelRef<FM_DisplayItemData> local_2_6 = this.GetDisplayData();
-        this.SetItemImageTemp(GetItemImageTemp());
-        TEUIModelRef<FM_DisplayItemData> local_2_7 = this.GetDisplayData();
-        this.SetItemImageBG(GetItemImageBG());
-        TEUIModelRef<FM_DisplayItemData> local_2_8 = this.GetDisplayData();
-        this.SetCurDisplayState(GetCurDisplayState());
-        TEUIModelRef<FM_DisplayItemData> local_2_9 = this.GetDisplayData();
-        this.SetRarityColor(GetRarityColor());
+        this.SetDisplayName(this.GetDisplayData().Get().GetDisplayName());
+        this.SetDisplayDesc(this.GetDisplayData().Get().GetDisplayDesc());
+        this.SetItemImage(this.GetDisplayData().Get().GetItemImage());
+        this.SetItemImageHigh(this.GetDisplayData().Get().GetItemImageHigh());
+        this.SetItemImageTemp(this.GetDisplayData().Get().GetItemImageTemp());
+        this.SetItemImageBG(this.GetDisplayData().Get().GetItemImageBG());
+        this.SetCurDisplayState(this.GetDisplayData().Get().GetCurDisplayState());
+        this.SetRarityColor(this.GetDisplayData().Get().GetRarityColor());
         if (this.GetCommonItemVM().IsValid())
         {
-            TEUIModelRef<FM_DisplayItemData> local_2_10 = this.GetDisplayData();
-            TEUIModelRef<FVM_CommonItem> local_56_2 = this.GetCommonItemVM();
-            local_2_10.SetupDisplayData();
+            this.GetCommonItemVM().Get().SetupDisplayData(this.GetDisplayData());
         }
         return;
     }
@@ -193,13 +182,11 @@ struct FVM_DisplayItem : FEUIViewModel
         this.SetCurDisplayState(DisplayState);
         if (this.GetDisplayData().IsValid())
         {
-            TEUIModelRef<FM_DisplayItemData> local_2 = this.GetDisplayData();
-            DisplayState.SetCurDisplayState();
+            this.GetDisplayData().Get().SetCurDisplayState(DisplayState);
         }
         if (this.GetCommonItemVM().IsValid())
         {
-            TEUIModelRef<FVM_CommonItem> local_6 = this.GetCommonItemVM();
-            DisplayState.ApplyDisplayState();
+            this.GetCommonItemVM().Get().ApplyDisplayState(DisplayState);
         }
         return;
     }
@@ -208,13 +195,11 @@ struct FVM_DisplayItem : FEUIViewModel
         this.SetItemImage(InItemImage);
         if (this.GetDisplayData().IsValid())
         {
-            TEUIModelRef<FM_DisplayItemData> local_2 = this.GetDisplayData();
-            InItemImage.SetItemImage();
+            this.GetDisplayData().Get().SetItemImage(InItemImage);
         }
         if (this.GetCommonItemVM().IsValid())
         {
-            TEUIModelRef<FVM_CommonItem> local_6 = this.GetCommonItemVM();
-            InItemImage.SetSpecialDisplayItemImage();
+            this.GetCommonItemVM().Get().SetSpecialDisplayItemImage(InItemImage);
         }
         return;
     }
@@ -223,13 +208,11 @@ struct FVM_DisplayItem : FEUIViewModel
         this.SetItemImageTemp(InItemImage);
         if (this.GetDisplayData().IsValid())
         {
-            TEUIModelRef<FM_DisplayItemData> local_2 = this.GetDisplayData();
-            InItemImage.SetItemImageTemp();
+            this.GetDisplayData().Get().SetItemImageTemp(InItemImage);
         }
         if (this.GetCommonItemVM().IsValid())
         {
-            TEUIModelRef<FVM_CommonItem> local_6 = this.GetCommonItemVM();
-            InItemImage.SetTempDisplayItemImage();
+            this.GetCommonItemVM().Get().SetTempDisplayItemImage(InItemImage);
         }
         return;
     }
@@ -813,11 +796,9 @@ FVM_DisplayItem& Create(const UObject ContextObject, const TEUIModelRef<FM_Displ
 {
     return FVM_DisplayItem::CreateByManager(EUIInternal::GetContextManager(ContextObject), DisplayData, EItemDisplayScenario(Scenario));
 }
-FVM_DisplayItem CreateByManager(const UEUIManagerSubsystem Manager, const TEUIModelRef<FM_DisplayItemData> &inout DisplayData, const EItemDisplayScenario Scenario)
+FVM_DisplayItem& CreateByManager(const UEUIManagerSubsystem Manager, const TEUIModelRef<FM_DisplayItemData> &inout DisplayData, const EItemDisplayScenario Scenario)
 {
-    FVM_DisplayItem __r;
-    TEUIModelRef<FVM_DisplayItem> local_6 = TEUIModelRef<FVM_DisplayItem>(EUIInternal::MakeModelWithManager_Generic(Manager, FVM_DisplayItem::ModelId, 0, DisplayData, Scenario));
-    return __r;
+    return TEUIModelRef<FVM_DisplayItem>(EUIInternal::MakeModelWithManager_Generic(Manager, FVM_DisplayItem::ModelId, 0, DisplayData, Scenario)).Get();
 }
 void GetModelInfo(FEUIViewModelMetaInfo &inout Result)
 {
@@ -1144,7 +1125,6 @@ namespace __GeneratedProperties_FVM_DisplayItem
 {
 UScriptStruct StaticStruct()
 {
-    UScriptStruct local_2;
-    return local_2;
+    return __GeneratedProperties_FVM_DisplayItem.Get();
 }
 }

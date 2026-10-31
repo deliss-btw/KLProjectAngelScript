@@ -132,8 +132,7 @@ struct FVM_InventoryMainItem : FEUIViewModel
         int64 local_22 = 0;
         if (::FMS_ItemDataCache::Get(this.GetContext().Manager).TryGetItemUid(this.GetItem(), local_22) && (local_22 > 0))
         {
-            TEUIModelRef<FM_ItemData> local_26 = this.GetItem();
-            ::FMS_PlayerInventory::Get(this.GetContext().Manager).ConsumeRootCategoryRedDot(local_22, GetConfig());
+            ::FMS_PlayerInventory::Get(this.GetContext().Manager).ConsumeRootCategoryRedDot(local_22, this.GetItem().Get().GetConfig());
         }
         return;
     }
@@ -181,9 +180,7 @@ struct FVM_InventoryMainItem : FEUIViewModel
     }
     UWidget ResolveSharedHoverAnchorWidget() const
     {
-        TWeakObjectPtr<UWidget> local_2 = this.GetSharedHoverAnchor();
-        UWidget local_4;
-        return local_4;
+        return this.GetSharedHoverAnchor().Get();
     }
     ECommonHoverLayout ResolveSharedHoverLayout() const
     {
@@ -210,21 +207,23 @@ struct FVM_InventoryMainItem : FEUIViewModel
             TEUIModelRef<FVM_ComposableItem> local_10 = TEUIModelRef<FVM_ComposableItem>(::FVM_ComposableItem::Create(this.GetContext().Manager, this.GetItem(), EItemDisplayScenario(1)));
             this.SetComposableItem(local_10);
             TEUIModelRef<FVM_ComposableItem> local_10_2 = this.GetComposableItem();
-            1.SetCurDisplayState();
+            local_10_2.Get().SetCurDisplayState(1);
             FItemTipHandle local_12;
             this.SetTipHandle(local_12);
+            this.GetModify_TipHoverModels().Clear();
             return;
         }
         TEUIModelRef<FVM_ComposableItem> local_10_3 = TEUIModelRef<FVM_ComposableItem>(::FVM_ComposableItem::Create(this.GetContext().Manager, this.GetItem(), EItemDisplayScenario(1)));
         this.SetComposableItem(local_10_3);
         TEUIModelRef<FVM_ComposableItem> local_10_4 = this.GetComposableItem();
-        0.SetCurDisplayState();
+        local_10_4.Get().SetCurDisplayState(0);
         int64 local_14 = 0;
         if (::FMS_ItemDataCache::Get(this.GetContext().Manager).TryGetItemUid(this.GetItem(), local_14) && (local_14 > 0))
         {
             FRedDotNodeData local_20 = FRedDotNodeData(GameplayTags::RedDotSystem_Inventory_NewItem, local_14);
             TEUIModelRef<FVM_RedDot> local_24 = TEUIModelRef<FVM_RedDot>(local_22);
             TEUIModelRef<FVM_ComposableItem> local_10_5 = this.GetComposableItem();
+            ::ComposableItemUtility::SetItemRedDotVM(local_10_5.Get(), local_24);
         }
         this.EnsureComposableItemCountFeature();
         this.RefreshComposableItemCountText();
@@ -241,7 +240,7 @@ struct FVM_InventoryMainItem : FEUIViewModel
         }
         TEUIModelRef<FM_Equipment> local_10 = this.GetDisplayEquipmentModel();
         bool local_5 = local_10.IsValid();
-        bool local_11 = local_5 && GetEquiptingAvatar().IsSet();
+        bool local_11 = local_5 && local_10.Get().GetEquiptingAvatar().IsSet();
         FText local_20 = this.GetDisplayEquipmentLevelText(local_10);
         if (local_5 && !(local_20.IsEmpty()))
         {
@@ -261,7 +260,7 @@ struct FVM_InventoryMainItem : FEUIViewModel
         if (::FMS_ItemDataCache::Get(this.GetContext().Manager).TryGetItemUid(this.GetItem(), local_2) && (local_2 > 0))
         {
             TEUIModelRef<FM_Equipment> local_12 = ::FMS_EquipmentDataCache::Get(this.GetContext().Manager).GetEquipment(local_2);
-            if (local_12.IsValid() && GetEquipmentConfig().IsSet())
+            if (local_12.IsValid() && local_12.Get().GetEquipmentConfig().IsSet())
             {
                 return local_12;
             }
@@ -270,11 +269,10 @@ struct FVM_InventoryMainItem : FEUIViewModel
     }
     FText GetDisplayEquipmentLevelText(const TEUIModelRef<FM_Equipment> &inout Equipment) const
     {
-        int local_2 = 0;
         int local_1 = 0;
-        if (Equipment.IsValid() && GetEquipmentConfig().IsSet())
+        if (Equipment.IsValid() && Equipment.Get().GetEquipmentConfig().IsSet())
         {
-            local_1 = local_2;
+            local_1 = Equipment.Get().GetEquipmentConfig().Get().Level;
         }
         FText local_16;
         if (local_1 > 0)
@@ -301,26 +299,14 @@ struct FVM_InventoryMainItem : FEUIViewModel
     }
     void BindCommonItemClickIntent()
     {
-        TEUIModelRef<FVM_CommonItem> local_8;
-        bool local_1 = !(this.GetbHasItem()) || !(this.GetComposableItem().IsValid());
-        if (local_1)
-        {
-            local_1 = true;
-        }
-        else
-        {
-            TEUIModelRef<FVM_ComposableItem> local_4 = this.GetComposableItem();
-            local_8.GetCommonItemVM();
-            local_1 = !(local_8.IsValid());
-        }
-        if (local_1)
+        if (!(this.GetbHasItem()) || !(this.GetComposableItem().IsValid()) || !(this.GetComposableItem().Get().GetCommonItemVM().IsValid()))
         {
             return;
         }
-        TEUIModelRef<FVM_ComposableItem> local_4_2 = this.GetComposableItem();
-        local_8.GetCommonItemVM();
-        GetOnCommonItemClicked().AddUnique(this, FVM_InventoryMainItem::HandleCommonItemClicked);
-        this.SetBoundCommonItemClickModel(TEUIModelWeakRef<FVM_CommonItem>());
+        TEUIModelRef<FVM_CommonItem> local_8 = this.GetComposableItem().Get().GetCommonItemVM();
+        TEUIModelRef<FVM_CommonItem> local_10;
+        local_10.Get().GetOnCommonItemClicked().AddUnique(this, FVM_InventoryMainItem::HandleCommonItemClicked);
+        this.SetBoundCommonItemClickModel(TEUIModelWeakRef<FVM_CommonItem>(local_10.Get()));
         return;
     }
     void UnbindCommonItemClickIntent()
@@ -329,149 +315,60 @@ struct FVM_InventoryMainItem : FEUIViewModel
         if (local_2.IsValid())
         {
             local_2 = this.GetBoundCommonItemClickModel();
+            local_2.Get().GetOnCommonItemClicked().Remove(this, FVM_InventoryMainItem::HandleCommonItemClicked);
         }
         this.SetBoundCommonItemClickModel(local_2);
         return;
     }
     void EnsureComposableItemCountFeature()
     {
-        TEUIModelRef<FVM_CommonItem> local_6;
-        bool local_3 = !(this.GetComposableItem().IsValid());
-        if (local_3)
-        {
-            local_3 = true;
-        }
-        else
-        {
-            TEUIModelRef<FVM_ComposableItem> local_2 = this.GetComposableItem();
-            local_3 = !(GetFeature_Count().IsEmpty());
-        }
-        if (local_3)
-        {
-            local_3 = true;
-        }
-        else
-        {
-            TEUIModelRef<FVM_ComposableItem> local_2_2 = this.GetComposableItem();
-            local_6.GetCommonItemVM();
-            local_3 = !(local_6.IsValid());
-        }
-        if (local_3)
+        if (!(this.GetComposableItem().IsValid()) || !(this.GetComposableItem().Get().GetFeature_Count().IsEmpty()) || !(this.GetComposableItem().Get().GetCommonItemVM().IsValid()))
         {
             return;
         }
         FEUIDynamicWidgetData local_30;
-        TEUIModelRef<FVM_ComposableItem> local_2_3 = this.GetComposableItem();
-        local_6.GetCommonItemVM();
-        local_30.ModelContainer = FEUIModelContainer(::FVM_ItemFeature_Count::Create(this.GetContext().Manager, local_6));
-        TEUIModelRef<FVM_ComposableItem> local_2_4 = this.GetComposableItem();
-        if (GetRegistry() != nullptr)
+        local_30.ModelContainer = FEUIModelContainer(::FVM_ItemFeature_Count::Create(this.GetContext().Manager, this.GetComposableItem().Get().GetCommonItemVM()));
+        if (this.GetComposableItem().Get().GetRegistry() != nullptr)
         {
-            TEUIModelRef<FVM_ComposableItem> local_2_5 = this.GetComposableItem();
-            local_30.WidgetClass = GetRegistry().GetWidgetClassForFeature(EItemDisplayType(1), EItemDisplayFeature(1));
+            local_30.WidgetClass = this.GetComposableItem().Get().GetRegistry().GetWidgetClassForFeature(EItemDisplayType(1), EItemDisplayFeature(1));
         }
-        TEUIModelRef<FVM_ComposableItem> local_2_6 = this.GetComposableItem();
-        local_30.SetFeature_Count();
+        this.GetComposableItem().Get().SetFeature_Count(local_30);
         return;
     }
     void EnsureComposableItemLevelFeature()
     {
-        TEUIModelRef<FVM_CommonItem> local_6;
-        bool local_3 = !(this.GetComposableItem().IsValid());
-        if (local_3)
-        {
-            local_3 = true;
-        }
-        else
-        {
-            TEUIModelRef<FVM_ComposableItem> local_2 = this.GetComposableItem();
-            local_3 = !(GetFeature_Level().IsEmpty());
-        }
-        if (local_3)
-        {
-            local_3 = true;
-        }
-        else
-        {
-            TEUIModelRef<FVM_ComposableItem> local_2_2 = this.GetComposableItem();
-            local_6.GetCommonItemVM();
-            local_3 = !(local_6.IsValid());
-        }
-        if (local_3)
+        if (!(this.GetComposableItem().IsValid()) || !(this.GetComposableItem().Get().GetFeature_Level().IsEmpty()) || !(this.GetComposableItem().Get().GetCommonItemVM().IsValid()))
         {
             return;
         }
         FEUIDynamicWidgetData local_30;
-        TEUIModelRef<FVM_ComposableItem> local_2_3 = this.GetComposableItem();
-        local_6.GetCommonItemVM();
-        local_30.ModelContainer = FEUIModelContainer(::FVM_ItemFeature_Level::Create(this.GetContext().Manager, local_6));
-        TEUIModelRef<FVM_ComposableItem> local_2_4 = this.GetComposableItem();
-        if (GetRegistry() != nullptr)
+        local_30.ModelContainer = FEUIModelContainer(::FVM_ItemFeature_Level::Create(this.GetContext().Manager, this.GetComposableItem().Get().GetCommonItemVM()));
+        if (this.GetComposableItem().Get().GetRegistry() != nullptr)
         {
-            TEUIModelRef<FVM_ComposableItem> local_2_5 = this.GetComposableItem();
-            local_30.WidgetClass = GetRegistry().GetWidgetClassForFeature(EItemDisplayType(1), EItemDisplayFeature(2));
+            local_30.WidgetClass = this.GetComposableItem().Get().GetRegistry().GetWidgetClassForFeature(EItemDisplayType(1), EItemDisplayFeature(2));
         }
-        TEUIModelRef<FVM_ComposableItem> local_2_6 = this.GetComposableItem();
-        local_30.SetFeature_Level();
+        this.GetComposableItem().Get().SetFeature_Level(local_30);
         return;
     }
     void EnsureComposableItemEquipMarkFeature()
     {
-        TEUIModelRef<FVM_CommonItem> local_6;
-        bool local_3 = !(this.GetComposableItem().IsValid());
-        if (local_3)
-        {
-            local_3 = true;
-        }
-        else
-        {
-            TEUIModelRef<FVM_ComposableItem> local_2 = this.GetComposableItem();
-            local_3 = !(GetFeature_EquipMark().IsEmpty());
-        }
-        if (local_3)
-        {
-            local_3 = true;
-        }
-        else
-        {
-            TEUIModelRef<FVM_ComposableItem> local_2_2 = this.GetComposableItem();
-            local_6.GetCommonItemVM();
-            local_3 = !(local_6.IsValid());
-        }
-        if (local_3)
+        if (!(this.GetComposableItem().IsValid()) || !(this.GetComposableItem().Get().GetFeature_EquipMark().IsEmpty()) || !(this.GetComposableItem().Get().GetCommonItemVM().IsValid()))
         {
             return;
         }
         FEUIDynamicWidgetData local_30;
-        TEUIModelRef<FVM_ComposableItem> local_2_3 = this.GetComposableItem();
-        local_6.GetCommonItemVM();
-        local_30.ModelContainer = FEUIModelContainer(::FVM_ItemFeature_EquipMark::Create(this.GetContext().Manager, local_6));
-        TEUIModelRef<FVM_ComposableItem> local_2_4 = this.GetComposableItem();
-        if (GetRegistry() != nullptr)
+        local_30.ModelContainer = FEUIModelContainer(::FVM_ItemFeature_EquipMark::Create(this.GetContext().Manager, this.GetComposableItem().Get().GetCommonItemVM()));
+        if (this.GetComposableItem().Get().GetRegistry() != nullptr)
         {
-            TEUIModelRef<FVM_ComposableItem> local_2_5 = this.GetComposableItem();
-            local_30.WidgetClass = GetRegistry().GetWidgetClassForFeature(EItemDisplayType(1), EItemDisplayFeature(3));
+            local_30.WidgetClass = this.GetComposableItem().Get().GetRegistry().GetWidgetClassForFeature(EItemDisplayType(1), EItemDisplayFeature(3));
         }
-        TEUIModelRef<FVM_ComposableItem> local_2_6 = this.GetComposableItem();
-        local_30.SetFeature_EquipMark();
+        this.GetComposableItem().Get().SetFeature_EquipMark(local_30);
         return;
     }
     void RefreshComposableItemCountText()
     {
         bool local_7;
-        bool local_3 = !(this.GetComposableItem().IsValid());
-        if (local_3)
-        {
-            local_3 = true;
-        }
-        else
-        {
-            TEUIModelRef<FVM_CommonItem> local_6;
-            TEUIModelRef<FVM_ComposableItem> local_2 = this.GetComposableItem();
-            local_6.GetCommonItemVM();
-            local_3 = !(local_6.IsValid());
-        }
-        if (local_3)
+        if (!(this.GetComposableItem().IsValid()) || !(this.GetComposableItem().Get().GetCommonItemVM().IsValid()))
         {
             return;
         }
@@ -490,7 +387,7 @@ struct FVM_InventoryMainItem : FEUIViewModel
         {
             local_12 = FText::AsNumber(this.GetItem().opArrow().GetNum(), FNumberFormattingOptions::DefaultWithGrouping());
         }
-        TEUIModelRef<FVM_ComposableItem> local_2_2 = this.GetComposableItem();
+        ::ComposableItemUtility::SetItemCountText(this.GetComposableItem().Get(), local_12);
         return;
     }
     void RefreshComposableItemLevelVisibility(const FText &inout LevelText)
@@ -499,11 +396,8 @@ struct FVM_InventoryMainItem : FEUIViewModel
         {
             return;
         }
-        TEUIModelRef<FVM_ComposableItem> local_2 = this.GetComposableItem();
-        ::ItemFeature_Level_Util::SetDisplayLevelText(GetFeature_Level().ModelContainer, LevelText);
-        bool local_3 = !(LevelText.IsEmpty());
-        TEUIModelRef<FVM_ComposableItem> local_2_2 = this.GetComposableItem();
-        ::ComposableItemUtility::SetIsShowLevel(local_3);
+        ::ItemFeature_Level_Util::SetDisplayLevelText(this.GetComposableItem().Get().GetFeature_Level().ModelContainer, LevelText);
+        ::ComposableItemUtility::SetIsShowLevel(this.GetComposableItem().Get(), !(LevelText.IsEmpty()));
         return;
     }
     void RefreshComposableItemEquipMarkState(const bool bIsEquipped)
@@ -512,14 +406,17 @@ struct FVM_InventoryMainItem : FEUIViewModel
         {
             return;
         }
+        int local_4 = 4;
         if (bIsEquipped)
         {
+            local_4 = 1;
         }
-        TEUIModelRef<FVM_ComposableItem> local_2 = this.GetComposableItem();
+        ::ComposableItemUtility::SetItemEquipMarkState(this.GetComposableItem().Get(), local_4);
         return;
     }
     void RebuildTipHoverModels()
     {
+        this.GetModify_TipHoverModels().Clear();
         FItemTipHandle local_2;
         this.SetTipHandle(local_2);
         if (!(this.GetbHasItem()))
@@ -923,7 +820,7 @@ struct FVM_InventoryMain : FEUIViewModel
         {
             if (local_16.IsValid())
             {
-                RefreshEquipmentDisplayFeatures();
+                local_16.Get().RefreshEquipmentDisplayFeatures();
             }
         }
         return;
@@ -984,8 +881,7 @@ struct FVM_InventoryMain : FEUIViewModel
     {
         if (this.GetCurrentDisplayItems().IsValidIndex(this.GetSelectedItemIndex()) && this.GetCurrentDisplayItems()[this.GetSelectedItemIndex()].IsValid())
         {
-            int local_1 = this.GetSelectedItemIndex();
-            ClosePinnedTipHover();
+            this.GetCurrentDisplayItems()[this.GetSelectedItemIndex()].Get().ClosePinnedTipHover();
         }
         this.SelectItemIndex(INDEX_NONE);
         return;
@@ -999,11 +895,11 @@ struct FVM_InventoryMain : FEUIViewModel
             {
                 continue;
             }
-            if (!(ConsumePendingPinnedTipSelectionSync()))
+            if (!(this.GetCurrentDisplayItems()[local_1].Get().ConsumePendingPinnedTipSelectionSync()))
             {
                 continue;
             }
-            if (GetbHasItem())
+            if (this.GetCurrentDisplayItems()[local_1].Get().GetbHasItem())
             {
                 this.SelectItemIndex(local_1);
             }
@@ -1014,6 +910,7 @@ struct FVM_InventoryMain : FEUIViewModel
     void SyncSelectedItemFromSelection()
     {
         bool local_2 = false;
+        this.GetModify_SelectedItem().Clear();
         if (this.GetCurrentDisplayItems().IsValidIndex(this.GetSelectedItemIndex()) && this.GetCurrentDisplayItems()[this.GetSelectedItemIndex()].IsValid())
         {
             FEUIModelRef local_6;
@@ -1038,8 +935,7 @@ struct FVM_InventoryMain : FEUIViewModel
             {
                 return;
             }
-            TEUIModelRef<FMS_CommonHoverManager> local_2 = this.GetCommonHoverManager();
-            if (GetDisplayingHovers().IndexOfByKey(local_12) == INDEX_NONE)
+            if (this.GetCommonHoverManager().Get().GetDisplayingHovers().IndexOfByKey(local_12) == INDEX_NONE)
             {
                 local_10.UpdatePinnedTipHoverHandle(FCommonHoverHandle::InvalidHandle);
                 this.ClearSelection();
@@ -1139,19 +1035,16 @@ struct FVM_InventoryMain : FEUIViewModel
     }
     void AddViewedRedDot()
     {
-        TEUIModelRef<FM_ItemData> local_24;
         for (auto& local_16 : this.GetCurrentDisplayItems())
         {
-            if (!(local_16.IsValid()) || !(GetbHasItem()))
+            if (!(local_16.IsValid()) || !(local_16.Get().GetbHasItem()))
             {
                 continue;
             }
             int64 local_20 = 0;
-            local_24.GetItem();
-            if (::FMS_ItemDataCache::Get(this.GetContext().Manager).TryGetItemUid(local_24, local_20) && (local_20 > 0))
+            if (::FMS_ItemDataCache::Get(this.GetContext().Manager).TryGetItemUid(local_16.Get().GetItem(), local_20) && (local_20 > 0))
             {
-                local_24.GetItem();
-                this.ViewedRedDotItemUids.Add(local_20, GetConfig());
+                this.ViewedRedDotItemUids.Add(local_20, local_16.Get().GetItem().Get().GetConfig());
             }
         }
         return;
@@ -1163,8 +1056,7 @@ struct FVM_InventoryMain : FEUIViewModel
         for (auto& local_22 : this.ViewedRedDotItemUids)
         {
             local_24 = local_22.GetKey();
-            TDataObjectPtr<FItemConfig> local_74;
-            TDataObjectPtr<FItemConfig> local_50 = local_74;
+            TDataObjectPtr<FItemConfig> local_50 = local_22.GetValue();
             ::FMS_PlayerInventory::Get(this.GetContext().Manager).ConsumeRootCategoryRedDot(local_24, local_50);
         }
         this.ViewedRedDotItemUids.Reset();
@@ -1172,13 +1064,15 @@ struct FVM_InventoryMain : FEUIViewModel
     }
     void OnFilterSelected(const int Index)
     {
-        if (this.GetInventorySettings().GetFilterConfigAt(this.GetCurrentCategory(), Index).IsSet())
+        UItemFilterBase local_24;
+        TOptional<FInventoryItemFilterConfig> local_12 = this.GetInventorySettings().GetFilterConfigAt(this.GetCurrentCategory(), Index);
+        if (local_12.IsSet())
         {
+            local_24 = local_12.GetValue().Filter;
         }
         else
         {
         }
-        UItemFilterBase local_24;
         this.SetApplyingFilter(local_24);
         this.RefreshDisplayingItems();
         this.ClearItemSelection();
@@ -1188,8 +1082,10 @@ struct FVM_InventoryMain : FEUIViewModel
     }
     void OnSorterSelected(const int Index)
     {
-        if (this.GetInventorySettings().GetSorterConfigAt(this.GetCurrentCategory(), Index).IsSet())
+        TOptional<FInventoryItemSorterConfig> local_12 = this.GetInventorySettings().GetSorterConfigAt(this.GetCurrentCategory(), Index);
+        if (local_12.IsSet())
         {
+            this.SetSelectedSorter(local_12.GetValue().Sorter);
             this.ConfirmSort();
         }
         else
@@ -1246,21 +1142,14 @@ struct FVM_InventoryMain : FEUIViewModel
         TRawPtr<FInventoryPureDisplayCategoryConfig> local_8 = this.GetInventorySettings().PureDisplayCategories.Find(this.GetCurrentCategory());
         if (local_8)
         {
-            TArray<TEUIModelRef<FM_ItemData>> local_18;
-            TEUIModelRef<FMS_PlayerInventory> local_14 = this.GetPlayerInventory();
-            local_18.GetAllItemsByItemTags(local_8.opArrow().ItemTags);
-            for (auto& local_32 : local_18)
+            for (auto& local_32 : this.GetPlayerInventory().Get().GetAllItemsByItemTags(local_8.opArrow().ItemTags))
             {
                 this.GetModify_CurrentCategoryItems().Add(local_32);
             }
         }
         else
         {
-            TArray<TEUIModelRef<FM_ItemData>> local_18;
-            FGameplayTag local_34 = this.GetCurrentCategory();
-            TEUIModelRef<FMS_PlayerInventory> local_14_2 = this.GetPlayerInventory();
-            local_18.GetAllItemsByCategory(local_34);
-            for (auto& local_32 : local_18)
+            for (auto& local_32 : this.GetPlayerInventory().Get().GetAllItemsByCategory(this.GetCurrentCategory()))
             {
                 this.GetModify_CurrentCategoryItems().Add(local_32);
             }
@@ -1339,6 +1228,7 @@ struct FVM_InventoryMain : FEUIViewModel
             TOptional<FInventoryItemFilterConfig> local_24 = this.GetInventorySettings().GetFilterConfigAt(this.GetCurrentCategory(), 0);
             if (local_24.IsSet())
             {
+                local_34 = local_24.GetValue().Filter;
             }
             else
             {
@@ -1364,6 +1254,7 @@ struct FVM_InventoryMain : FEUIViewModel
             TOptional<FInventoryItemSorterConfig> local_86 = this.GetInventorySettings().GetSorterConfigAt(this.GetCurrentCategory(), 0);
             if (local_86.IsSet())
             {
+                local_96 = local_86.GetValue().Sorter;
             }
             else
             {
@@ -1391,8 +1282,7 @@ struct FVM_InventoryMain : FEUIViewModel
         {
             return;
         }
-        bool local_1 = false;
-        local_1.SetDropdownOpen();
+        Dropdown.Get().SetDropdownOpen(false);
         return;
     }
     void InitCategorySaveData()
@@ -1430,10 +1320,10 @@ struct FVM_InventoryMain : FEUIViewModel
             if (this.GetRootCategories()[local_1].IsValid())
             {
                 bool local_4 = (local_1 == this.GetRootCategoryIndex());
-                local_4.SetbSelected();
+                this.GetRootCategories()[local_1].Get().SetbSelected(local_4);
                 if (this.GetRootCategorySelectableItems().IsValidIndex(local_1) && this.GetRootCategorySelectableItems()[local_1].IsValid())
                 {
-                    local_4.SetbIsSelected();
+                    this.GetRootCategorySelectableItems()[local_1].Get().SetbIsSelected(local_4);
                 }
             }
         }
@@ -1460,7 +1350,7 @@ struct FVM_InventoryMain : FEUIViewModel
         {
             if (this.GetCategories()[local_1].IsValid())
             {
-                (local_1 == this.GetCurrentCategoryIndex()).SetbSelected();
+                this.GetCategories()[local_1].Get().SetbSelected((local_1 == this.GetCurrentCategoryIndex()));
             }
         }
         return;
@@ -1535,13 +1425,15 @@ struct FVM_InventoryMain : FEUIViewModel
     }
     UItemFilterBase ResolveFilterByIndex(const int Index) const
     {
-        if (this.GetInventorySettings().GetFilterConfigAt(this.GetCurrentCategory(), Index).IsSet())
+        UItemFilterBase local_24;
+        TOptional<FInventoryItemFilterConfig> local_12 = this.GetInventorySettings().GetFilterConfigAt(this.GetCurrentCategory(), Index);
+        if (local_12.IsSet())
         {
+            local_24 = local_12.GetValue().Filter;
         }
         else
         {
         }
-        UItemFilterBase local_24;
         return local_24;
     }
     TArray<FEUIModelContainer> MakeSorterDropdownOptions(const UItemSorterBase InSelectedSorter, int &inout OutDefaultSelectedIndex) const
@@ -1580,13 +1472,15 @@ struct FVM_InventoryMain : FEUIViewModel
     }
     UItemSorterBase ResolveSorterByIndex(const int Index) const
     {
-        if (this.GetInventorySettings().GetSorterConfigAt(this.GetCurrentCategory(), Index).IsSet())
+        UItemSorterBase local_24;
+        TOptional<FInventoryItemSorterConfig> local_12 = this.GetInventorySettings().GetSorterConfigAt(this.GetCurrentCategory(), Index);
+        if (local_12.IsSet())
         {
+            local_24 = local_12.GetValue().Sorter;
         }
         else
         {
         }
-        UItemSorterBase local_24;
         return local_24;
     }
     UInventorySettings GetInventorySettings() const property
@@ -2101,11 +1995,9 @@ FVM_InventoryMainItem& Create(const UObject ContextObject, const TEUIModelRef<FM
 {
     return FVM_InventoryMainItem::CreateByManager(EUIInternal::GetContextManager(ContextObject), Item);
 }
-FVM_InventoryMainItem CreateByManager(const UEUIManagerSubsystem Manager, const TEUIModelRef<FM_ItemData> &inout Item)
+FVM_InventoryMainItem& CreateByManager(const UEUIManagerSubsystem Manager, const TEUIModelRef<FM_ItemData> &inout Item)
 {
-    FVM_InventoryMainItem __r;
-    TEUIModelRef<FVM_InventoryMainItem> local_6 = TEUIModelRef<FVM_InventoryMainItem>(EUIInternal::MakeModelWithManager_Generic(Manager, FVM_InventoryMainItem::ModelId, 0, Item));
-    return __r;
+    return TEUIModelRef<FVM_InventoryMainItem>(EUIInternal::MakeModelWithManager_Generic(Manager, FVM_InventoryMainItem::ModelId, 0, Item)).Get();
 }
 void GetModelInfo(FEUIViewModelMetaInfo &inout Result)
 {
@@ -2239,8 +2131,7 @@ namespace __GeneratedProperties_FVM_InventoryMainItem
 {
 UScriptStruct StaticStruct()
 {
-    UScriptStruct local_2;
-    return local_2;
+    return __GeneratedProperties_FVM_InventoryMainItem.Get();
 }
 }
 namespace FVM_InventoryMain
@@ -2249,11 +2140,9 @@ FVM_InventoryMain& Create(const UObject ContextObject)
 {
     return FVM_InventoryMain::CreateByManager(EUIInternal::GetContextManager(ContextObject));
 }
-FVM_InventoryMain CreateByManager(const UEUIManagerSubsystem Manager)
+FVM_InventoryMain& CreateByManager(const UEUIManagerSubsystem Manager)
 {
-    FVM_InventoryMain __r;
-    TEUIModelRef<FVM_InventoryMain> local_6 = TEUIModelRef<FVM_InventoryMain>(EUIInternal::MakeModelWithManager(Manager, FVM_InventoryMain::ModelId));
-    return __r;
+    return TEUIModelRef<FVM_InventoryMain>(EUIInternal::MakeModelWithManager(Manager, FVM_InventoryMain::ModelId)).Get();
 }
 void GetModelInfo(FEUIViewModelMetaInfo &inout Result)
 {
@@ -2573,7 +2462,6 @@ namespace __GeneratedProperties_FVM_InventoryMain
 {
 UScriptStruct StaticStruct()
 {
-    UScriptStruct local_2;
-    return local_2;
+    return __GeneratedProperties_FVM_InventoryMain.Get();
 }
 }

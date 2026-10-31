@@ -241,7 +241,6 @@ class US_TeleportSystemAS : UECSScriptSystem
     }
     bool IsTeleportViewHideApplied(const FECSEntity &inout Entity, const FC_TeleportViewHideRuntime &inout Runtime) const
     {
-        const UActorComponent local_26;
         USceneComponent local_30;
         const AActor local_34;
         if (!(Runtime.bInitialized) || Runtime.GuardedMeshNames.IsEmpty())
@@ -259,7 +258,7 @@ class US_TeleportSystemAS : UECSScriptSystem
             {
                 return false;
             }
-            local_30 = Cast<USceneComponent>(local_26);
+            local_30 = Cast<USceneComponent>(local_20.GetComponent());
             if (local_30 == nullptr || local_30.IsVisible())
             {
                 return false;
@@ -1449,7 +1448,6 @@ class US_TeleportSystemAS : UECSScriptSystem
     UFUNCTION()
     void ServerJob_HandlePlayerRequestMoveToTeleporter(const FCE_PlayerRequestMoveToTeleporter &inout Event) const
     {
-        int local_43 = 0;
         XLog(ELog(22), FString().Append("HandlePlayerRequestMoveToTeleporter Sender=").Append(Event.Sender).Append(" TeleporterConfig=").Append(Event.TeleporterConfig));
         FECSEntity local_10 = ::TeleporterUtils::GetTeleportRequestPawnEntity(Event.Sender);
         if (!(local_10.IsValid()) || !(::TeleporterUtils::IsTeleportAllowed(local_10)))
@@ -1481,7 +1479,9 @@ class US_TeleportSystemAS : UECSScriptSystem
             {
                 int local_44;
                 int local_42;
+                int local_43 = Event.TeleporterConfig.Get().GetLevelInfoConfig().Get().DataId;
                 local_42 = local_43;
+                local_43 = Event.TeleporterConfig.Get().DataId;
                 local_44 = local_43;
                 ::UGameDSConnectionSubsystem::Get().PlayerRequestEnterDS(Event.Sender, local_42, false, local_44);
             }

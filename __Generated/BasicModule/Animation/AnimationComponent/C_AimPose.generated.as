@@ -38,6 +38,7 @@ struct FC_AimPoseConfigHistory : FECSComponent
     }
     void Clear()
     {
+        this.History.Clear();
         return;
     }
     bool GetInterpoValue(const FFPTime &inout WorldTime, FC_AimPoseConfig &inout OutValue) const
@@ -75,6 +76,7 @@ struct FC_AnimAimPoseOutputHistory : FECSComponent
     }
     void Clear()
     {
+        this.History.Clear();
         return;
     }
     bool GetInterpoValue(const FFPTime &inout WorldTime, FC_AnimAimPoseOutput &inout OutValue) const

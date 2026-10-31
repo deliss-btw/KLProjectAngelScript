@@ -21,8 +21,7 @@ void SetSpecialDisplayItemImage(const FEUIModelContainer &inout ItemModelContain
     {
         if (local_2.GetCommonItemVM().IsValid())
         {
-            TEUIModelRef<FVM_CommonItem> local_10 = local_2.GetCommonItemVM();
-            InItemImage.SetSpecialDisplayItemImage();
+            local_2.GetCommonItemVM().Get().SetSpecialDisplayItemImage(InItemImage);
         }
     }
     return;
@@ -34,8 +33,7 @@ void SetItemCustomSelection(const FEUIModelContainer &inout ItemModelContainer, 
     {
         if (local_2.GetCommonItemVM().IsValid())
         {
-            TEUIModelRef<FVM_CommonItem> local_10 = local_2.GetCommonItemVM();
-            bIsSelected.SetItemCustomSelection();
+            local_2.GetCommonItemVM().Get().SetItemCustomSelection(bIsSelected);
         }
     }
     return;
@@ -47,8 +45,7 @@ void BindItemClickCallback(const FEUIModelContainer &inout ItemModelContainer, c
     {
         if (local_2.GetCommonItemVM().IsValid())
         {
-            TEUIModelRef<FVM_CommonItem> local_10 = local_2.GetCommonItemVM();
-            GetOnCommonItemClicked().Add(ModelRef, Callback);
+            local_2.GetCommonItemVM().Get().GetOnCommonItemClicked().Add(ModelRef, Callback);
         }
     }
     return;
@@ -60,7 +57,7 @@ void UnbindItemClickCallback(const FEUIModelContainer &inout ItemModelContainer,
     {
         if (local_2.GetCommonItemVM().IsValid())
         {
-            TEUIModelRef<FVM_CommonItem> local_10 = local_2.GetCommonItemVM();
+            local_2.GetCommonItemVM().Get().GetOnCommonItemClicked().Remove(ModelRef, Callback);
         }
     }
     return;

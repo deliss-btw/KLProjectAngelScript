@@ -521,11 +521,9 @@ struct FMS_MailModel : FEUIModelSingleton
         FM_MailData __r;
         if (this.GetMailDataCache().Find(MailId, local_2))
         {
+            return local_2.Get();
         }
-        else
-        {
-            this.GetModify_MailDataCache().Add(MailId, TEUIModelRef<FM_MailData>(::FM_MailData::Create(this.GetContext().Manager, MailId)));
-        }
+        this.GetModify_MailDataCache().Add(MailId, TEUIModelRef<FM_MailData>(::FM_MailData::Create(this.GetContext().Manager, MailId)));
         return __r;
     }
     void ApplyMailUnreadInfoSnapshot(const FPbMailLoginDataNotify &inout Notify)
@@ -572,6 +570,7 @@ struct FMS_MailModel : FEUIModelSingleton
             }
             return false;
         }
+        this.GetModify_UnreadMailExpireTimeMap().Remove(MailId);
         this.SetUnreadCount(FMath::Max(0, this.GetUnreadCount() - 1));
         if (local_1 == this.GetLatestUnreadMailExpireTime())
         {
@@ -587,10 +586,9 @@ struct FMS_MailModel : FEUIModelSingleton
     void PruneExpiredUnreadMails(const int64 Now)
     {
         TArray<uint> local_4;
-        int local_25 = 0;
         for (auto& local_24 : this.GetUnreadMailExpireTimeMap())
         {
-            if ((local_25 > 0 && (Now >= 0)))
+            if (local_24.GetValue() > 0 && (Now >= local_24.GetValue()))
             {
                 local_4.Add(local_24.GetKey());
             }
@@ -599,10 +597,9 @@ struct FMS_MailModel : FEUIModelSingleton
         {
             return;
         }
-        auto local_36 = local_4.Iterator();
-        for (; local_36.CanProceed;)
+        for (auto local_43 : local_4)
         {
-            local_25 = local_36.Proceed();
+            this.GetModify_UnreadMailExpireTimeMap().Remove(local_43);
         }
         this.SetUnreadCount(FMath::Max(0, (this.GetUnreadCount() - local_4.Num())));
         this.RecalculateLatestUnreadMailExpireTime();
@@ -610,14 +607,12 @@ struct FMS_MailModel : FEUIModelSingleton
     }
     void RecalculateLatestUnreadMailExpireTime()
     {
-        int local_1 = 0;
         this.SetLatestUnreadMailExpireTime(0);
         for (auto& local_22 : this.GetUnreadMailExpireTimeMap())
         {
-            local_22;
-            if (local_1 > 0 && (local_1 > this.GetLatestUnreadMailExpireTime()))
+            if (local_22.GetValue() > 0 && (local_22.GetValue() > this.GetLatestUnreadMailExpireTime()))
             {
-                this.SetLatestUnreadMailExpireTime(local_1);
+                this.SetLatestUnreadMailExpireTime(local_22.GetValue());
             }
         }
         return;
@@ -635,6 +630,8 @@ struct FMS_MailModel : FEUIModelSingleton
     }
     void RemoveMailFromCache(const uint MailId)
     {
+        this.GetModify_MailDataCache().Remove(MailId);
+        this.GetModify_OrderedMailIds().Remove(MailId);
         return;
     }
     void ReconcileHasMorePages()
@@ -857,11 +854,9 @@ FMS_MailModel& Get(const UObject ContextObject)
 {
     return FMS_MailModel::GetByManager(EUIInternal::GetContextManager(ContextObject));
 }
-FMS_MailModel GetByManager(const UEUIManagerSubsystem Manager)
+FMS_MailModel& GetByManager(const UEUIManagerSubsystem Manager)
 {
-    FMS_MailModel __r;
-    TEUIModelRef<FMS_MailModel> local_6 = TEUIModelRef<FMS_MailModel>(EUIInternal::MakeModelWithManager(Manager, FMS_MailModel::ModelId));
-    return __r;
+    return TEUIModelRef<FMS_MailModel>(EUIInternal::MakeModelWithManager(Manager, FMS_MailModel::ModelId)).Get();
 }
 void GetModelInfo(FEUIModelOnlyMetaInfo &inout Result)
 {

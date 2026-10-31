@@ -212,11 +212,9 @@ FVM_RaceCommissionTimer& Create(const UObject ContextObject)
 {
     return FVM_RaceCommissionTimer::CreateByManager(EUIInternal::GetContextManager(ContextObject));
 }
-FVM_RaceCommissionTimer CreateByManager(const UEUIManagerSubsystem Manager)
+FVM_RaceCommissionTimer& CreateByManager(const UEUIManagerSubsystem Manager)
 {
-    FVM_RaceCommissionTimer __r;
-    TEUIModelRef<FVM_RaceCommissionTimer> local_6 = TEUIModelRef<FVM_RaceCommissionTimer>(EUIInternal::MakeModelWithManager(Manager, FVM_RaceCommissionTimer::ModelId));
-    return __r;
+    return TEUIModelRef<FVM_RaceCommissionTimer>(EUIInternal::MakeModelWithManager(Manager, FVM_RaceCommissionTimer::ModelId)).Get();
 }
 void GetModelInfo(FEUIViewModelMetaInfo &inout Result)
 {
@@ -306,7 +304,6 @@ namespace __GeneratedProperties_FVM_RaceCommissionTimer
 {
 UScriptStruct StaticStruct()
 {
-    UScriptStruct local_2;
-    return local_2;
+    return __GeneratedProperties_FVM_RaceCommissionTimer.Get();
 }
 }

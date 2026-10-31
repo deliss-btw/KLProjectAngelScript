@@ -101,11 +101,9 @@ FItemQuickSlotModel& Create(const UObject ContextObject, const TDataObjectPtr<FI
 {
     return FItemQuickSlotModel::CreateByManager(EUIInternal::GetContextManager(ContextObject), QuickSlot);
 }
-FItemQuickSlotModel CreateByManager(const UEUIManagerSubsystem Manager, const TDataObjectPtr<FItemQuickSlotConfig> &inout QuickSlot)
+FItemQuickSlotModel& CreateByManager(const UEUIManagerSubsystem Manager, const TDataObjectPtr<FItemQuickSlotConfig> &inout QuickSlot)
 {
-    FItemQuickSlotModel __r;
-    TEUIModelRef<FItemQuickSlotModel> local_6 = TEUIModelRef<FItemQuickSlotModel>(EUIInternal::MakeModelWithManager_Generic(Manager, FItemQuickSlotModel::ModelId, 0, QuickSlot));
-    return __r;
+    return TEUIModelRef<FItemQuickSlotModel>(EUIInternal::MakeModelWithManager_Generic(Manager, FItemQuickSlotModel::ModelId, 0, QuickSlot)).Get();
 }
 void GetModelInfo(FEUIModelOnlyMetaInfo &inout Result)
 {

@@ -268,7 +268,6 @@ class US_ProjectileAudioSystem : UECSScriptSystem
     {
         int local_6 = 0;
         bool local_15;
-        float32 local_40 = 0.0f;
         int local_10 = local_6.PlayingEntries.Num() - 1;
         for (; local_10 >= 0; --local_10)
         {
@@ -286,8 +285,7 @@ class US_ProjectileAudioSystem : UECSScriptSystem
             {
                 if (!(local_14.Rtpc.IsNull()) && Entity.IsValid())
                 {
-                    local_40 = local_14.ResetValue;
-                    FGameAudioUtils::SetAudioRtpc(local_14.Rtpc, Entity, local_40, FMath::RoundToInt((local_14.InterpolateTime * 1000.0f)), FOnLoadEventCallbackWithEntity(), true, FGameAudioUtils::GetCachedAudioWorld());
+                    FGameAudioUtils::SetAudioRtpc(local_14.Rtpc, Entity, local_14.ResetValue, FMath::RoundToInt((local_14.InterpolateTime * 1000.0f)), FOnLoadEventCallbackWithEntity(), true, FGameAudioUtils::GetCachedAudioWorld());
                     if (CVar_Projectile_DebugAudio.GetBool())
                     {
                         Print(FString().Append("TickProjectileAudioKeepRtpc ResetRtpc ").Append(local_14.Rtpc.GetAssetName()).Append(" to ").Append(local_14.ResetValue), 5.0f, FLinearColor::LucBlue);
@@ -313,11 +311,10 @@ class US_ProjectileAudioSystem : UECSScriptSystem
             {
                 if (!(local_30.GetRtpc().IsNull()))
                 {
-                    float32 local_39_2 = local_30.GetInterpolateTime() * 1000.0f;
-                    FGameAudioUtils::SetAudioRtpc(local_30.GetRtpc(), Entity, local_40, FMath::RoundToInt(local_39_2), FOnLoadEventCallbackWithEntity(), true, FGameAudioUtils::GetCachedAudioWorld());
+                    FGameAudioUtils::SetAudioRtpc(local_30.GetRtpc(), Entity, local_30.GetValue(), FMath::RoundToInt((local_30.GetInterpolateTime() * 1000.0f)), FOnLoadEventCallbackWithEntity(), true, FGameAudioUtils::GetCachedAudioWorld());
                     if (CVar_Projectile_DebugAudio.GetBool())
                     {
-                        Print(FString().Append("TickProjectileAudioKeepRtpc SetRtpc ").Append(local_30.GetRtpc().GetAssetName()).Append(" to ").Append(local_39_2), 5.0f, FLinearColor::LucBlue);
+                        Print(FString().Append("TickProjectileAudioKeepRtpc SetRtpc ").Append(local_30.GetRtpc().GetAssetName()).Append(" to ").Append(local_30.GetValue()), 5.0f, FLinearColor::LucBlue);
                     }
                 }
                 FProjectileAudioKeepRtpcPlayingEntry local_74;

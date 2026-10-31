@@ -15,9 +15,10 @@ class UConditionPublicEventComplete : ULocalConditionTypeDefineBase
     }
     TConstRawPtr<FConditionPublicEventCompleteConfig> GetConditionPublicEventCompleteConfig(const TDataObjectPtr<FLocalConditionConfig> &inout ConditionConfig) const
     {
-        if (FInstancedStruct::GetPtr(ConditionConfig.opArrow().ConditionTypeDefineConfig).opCall())
+        TConstRawPtr<FConditionPublicEventCompleteConfig> local_6 = FInstancedStruct::GetPtr(ConditionConfig.opArrow().ConditionTypeDefineConfig).opCall();
+        if (local_6)
         {
-            return TConstRawPtr<FConditionPublicEventCompleteConfig>();
+            return TConstRawPtr<FConditionPublicEventCompleteConfig>(local_6.Get());
         }
         return TConstRawPtr<FConditionPublicEventCompleteConfig>(nullptr);
     }

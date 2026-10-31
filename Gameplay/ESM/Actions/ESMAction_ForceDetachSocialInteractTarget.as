@@ -29,9 +29,10 @@ class UESMAction_ForceDetachSocialInteractTarget : UESMBPBaseInstantAction
         if (!((local_20 == ENTITY_NULL)) && ::FAttachmentUtils::IsEntityAttachedToParent(local_20, local_2))
         {
             ::FAttachmentUtils::EntityDetach(local_20, Time.WorldTime, this.DetachLocationOffset, this.DetachRotationOffset, this.bUseRootRotationOffset, uint8(0), false);
-            if (::FCombatUtils::GetAttackDataPtrFromDataTable(this.AttackDataConfigWhileDetatch, Context.GetEntity()))
+            TDataObjectPtr<FAttackData> local_54 = ::FCombatUtils::GetAttackDataPtrFromDataTable(this.AttackDataConfigWhileDetatch, Context.GetEntity());
+            if (local_54)
             {
-                ::FDamageUtils::AddDirectDamageByAttackData(local_2, local_2, local_20, Time.WorldTime);
+                ::FDamageUtils::AddDirectDamageByAttackData(local_2, local_2, local_20, local_54.Get(), Time.WorldTime);
             }
         }
         return;

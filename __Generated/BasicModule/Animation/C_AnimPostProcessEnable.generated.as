@@ -33,6 +33,7 @@ struct FC_AnimPostProcessEnableHistory : FECSComponent
     }
     void Clear()
     {
+        this.History.Clear();
         return;
     }
     bool GetInterpoValue(const FFPTime &inout WorldTime, FC_AnimPostProcessEnable &inout OutValue) const

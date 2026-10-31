@@ -37,7 +37,7 @@ class UPage_BonfirePage : UEUIActivatableWidget
     UFUNCTION()
     TArray<FEUIModelWeakRef> BonfirePage_ItemRefs() const
     {
-        FVMS_BonfirePage& local_2;
+        FVMS_BonfirePage& local_2 = this.BonfirePage.Get();
         TArray<FEUIModelWeakRef> local_16;
         if (local_2)
         {

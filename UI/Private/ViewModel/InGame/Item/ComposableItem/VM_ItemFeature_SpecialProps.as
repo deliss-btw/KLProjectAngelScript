@@ -72,18 +72,17 @@ class UItemFeatureCondition_SpecialProps : UItemFeatureConditionBase
         {
             return false;
         }
-        TDataObjectPtr<FItemConfig> local_26 = GetConfig();
+        TDataObjectPtr<FItemConfig> local_26 = ItemData.Get().GetConfig();
         if (!(local_26.IsSet()))
         {
             return false;
         }
-        TDataObjectPtr<FItemFeatureConfig> local_122 = TDataObjectPtr<FItemFeatureConfig>(::FItemFeatureConfig::FindByKey(local_26));
-        bool local_1 = !(local_122.IsSet());
-        if (local_1)
+        TDataObjectPtr<FItemFeatureConfig> local_74 = TDataObjectPtr<FItemFeatureConfig>(::FItemFeatureConfig::FindByKey(local_26));
+        if (!(local_74.IsSet()))
         {
             return false;
         }
-        return local_1;
+        return local_74.Get().bSpecialProps;
     }
 }
 
@@ -104,11 +103,9 @@ FVM_ItemFeature_SpecialProps& Create(const UObject ContextObject, const TEUIMode
 {
     return FVM_ItemFeature_SpecialProps::CreateByManager(EUIInternal::GetContextManager(ContextObject), CommonItemVM);
 }
-FVM_ItemFeature_SpecialProps CreateByManager(const UEUIManagerSubsystem Manager, const TEUIModelRef<FVM_CommonItem> &inout CommonItemVM)
+FVM_ItemFeature_SpecialProps& CreateByManager(const UEUIManagerSubsystem Manager, const TEUIModelRef<FVM_CommonItem> &inout CommonItemVM)
 {
-    FVM_ItemFeature_SpecialProps __r;
-    TEUIModelRef<FVM_ItemFeature_SpecialProps> local_6 = TEUIModelRef<FVM_ItemFeature_SpecialProps>(EUIInternal::MakeModelWithManager_Generic(Manager, FVM_ItemFeature_SpecialProps::ModelId, 0, CommonItemVM));
-    return __r;
+    return TEUIModelRef<FVM_ItemFeature_SpecialProps>(EUIInternal::MakeModelWithManager_Generic(Manager, FVM_ItemFeature_SpecialProps::ModelId, 0, CommonItemVM)).Get();
 }
 void GetModelInfo(FEUIViewModelMetaInfo &inout Result)
 {
@@ -142,7 +139,6 @@ namespace __GeneratedProperties_FVM_ItemFeature_SpecialProps
 {
 UScriptStruct StaticStruct()
 {
-    UScriptStruct local_2;
-    return local_2;
+    return __GeneratedProperties_FVM_ItemFeature_SpecialProps.Get();
 }
 }

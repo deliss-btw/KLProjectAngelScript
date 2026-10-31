@@ -84,8 +84,8 @@ struct FVM_TutorialHint : FEUIViewModel
     {
         int local_49 = this.GetGuideDataId();
         GetDataObjectByGSDataId<FGuideGroupConfig> local_48;
-        TDataObjectPtr<FGuideGroupConfig> local_74 = local_48.opImplConv();
-        if (!(local_74))
+        TDataObjectPtr<FGuideGroupConfig> local_24 = local_48.opImplConv();
+        if (!(local_24))
         {
             this.CloseHint();
             return;
@@ -94,10 +94,8 @@ struct FVM_TutorialHint : FEUIViewModel
         this.SetCountdownSeconds(FMath::Max(local_104.HintCountdownSeconds, 0.0f));
         this.SetRemainingCountdownSeconds(this.GetCountdownSeconds());
         this.SetHintInputAction(local_104.HintInputAction);
-        this.SetbShowAction((0 == 2));
-        FText::AsCultureInvariant("[{0}]");
-        FText local_118;
-        this.SetSystemText(local_118);
+        this.SetbShowAction((int(local_24.Get().IsInManual) == 2));
+        this.SetSystemText(FText::Format(FText::AsCultureInvariant("[{0}]"), local_24.Get().Name));
         ::FMS_GuideManual::Get(this.GetManager()).CompleteGuideOnShow(this.GetGuideDataId());
         if (this.GetCountdownSeconds() <= 0.0f)
         {
@@ -327,11 +325,9 @@ FVM_TutorialHint& Create(const UObject ContextObject, const uint GuideDataId)
 {
     return FVM_TutorialHint::CreateByManager(EUIInternal::GetContextManager(ContextObject), GuideDataId);
 }
-FVM_TutorialHint CreateByManager(const UEUIManagerSubsystem Manager, const uint GuideDataId)
+FVM_TutorialHint& CreateByManager(const UEUIManagerSubsystem Manager, const uint GuideDataId)
 {
-    FVM_TutorialHint __r;
-    TEUIModelRef<FVM_TutorialHint> local_6 = TEUIModelRef<FVM_TutorialHint>(EUIInternal::MakeModelWithManager_Generic(Manager, FVM_TutorialHint::ModelId, 0, GuideDataId));
-    return __r;
+    return TEUIModelRef<FVM_TutorialHint>(EUIInternal::MakeModelWithManager_Generic(Manager, FVM_TutorialHint::ModelId, 0, GuideDataId)).Get();
 }
 void GetModelInfo(FEUIViewModelMetaInfo &inout Result)
 {
@@ -430,7 +426,6 @@ namespace __GeneratedProperties_FVM_TutorialHint
 {
 UScriptStruct StaticStruct()
 {
-    UScriptStruct local_2;
-    return local_2;
+    return __GeneratedProperties_FVM_TutorialHint.Get();
 }
 }

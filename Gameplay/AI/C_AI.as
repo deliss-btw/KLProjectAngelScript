@@ -474,8 +474,10 @@ struct FCS_AITargetAvailableWatcher : FECSSingleton
     {
         if (this.Watchers.Contains(TargetId))
         {
+            this.Watchers[TargetId].Set.Remove(WatcherId);
             if (this.Watchers[TargetId].Set.Num() == 0)
             {
+                this.Watchers.Remove(TargetId);
             }
         }
         return;

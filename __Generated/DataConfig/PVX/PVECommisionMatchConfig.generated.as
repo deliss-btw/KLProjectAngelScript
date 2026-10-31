@@ -3,7 +3,6 @@ namespace __FPveCommissionMatchConfigFunctions
 UFUNCTION()
 EMatchMode __FPveCommissionMatchConfig_GetMatchMode(const TDataObjectPtr<FPveCommissionMatchConfig> &inout DataObject)
 {
-    int local_47 = 0;
     if ((DataObject == nullptr))
     {
         if (!(EUIGlobals::GIsDuringPropertyConversion))
@@ -11,10 +10,9 @@ EMatchMode __FPveCommissionMatchConfig_GetMatchMode(const TDataObjectPtr<FPveCom
             FBlueprintDebugFunctions::ThrowScriptException("Get 'MatchMode' from a null 'FPveCommissionMatchConfig' DataObject!");
         }
         FPveCommissionMatchConfig local_46;
-        local_47 = int(local_46.MatchMode);
-        return EMatchMode(local_47);
+        return local_46.MatchMode;
     }
-    return EMatchMode(local_47);
+    return DataObject.Get().MatchMode;
 }
 UFUNCTION()
 int __FPveCommissionMatchConfig_GetConfirmWaitTime(const TDataObjectPtr<FPveCommissionMatchConfig> &inout DataObject)
@@ -34,7 +32,6 @@ int __FPveCommissionMatchConfig_GetConfirmWaitTime(const TDataObjectPtr<FPveComm
 UFUNCTION()
 ECommissionType __FPveCommissionMatchConfig_GetCommissionType(const TDataObjectPtr<FPveCommissionMatchConfig> &inout DataObject)
 {
-    int local_47 = 0;
     if ((DataObject == nullptr))
     {
         if (!(EUIGlobals::GIsDuringPropertyConversion))
@@ -42,10 +39,9 @@ ECommissionType __FPveCommissionMatchConfig_GetCommissionType(const TDataObjectP
             FBlueprintDebugFunctions::ThrowScriptException("Get 'CommissionType' from a null 'FPveCommissionMatchConfig' DataObject!");
         }
         FPveCommissionMatchConfig local_46;
-        local_47 = int(local_46.CommissionType);
-        return ECommissionType(local_47);
+        return local_46.CommissionType;
     }
-    return ECommissionType(local_47);
+    return DataObject.Get().CommissionType;
 }
 UFUNCTION()
 int __FPveCommissionMatchConfig_GetMaxPlayerNum(const TDataObjectPtr<FPveCommissionMatchConfig> &inout DataObject)
@@ -119,7 +115,7 @@ TDataObjectPtr<FSystemControlConfig> __FPveCommissionMatchConfig_GetSystemContro
         FPveCommissionMatchConfig local_46;
         return local_46.GetSystemControlCfg();
     }
-    return GetSystemControlCfg();
+    return DataObject.Get().GetSystemControlCfg();
 }
 UFUNCTION()
 FPveCommissionMatchConfig CastToFPveCommissionMatchConfig(const TDataObjectPtr<FPveCommissionMatchConfig> &inout DataObject)

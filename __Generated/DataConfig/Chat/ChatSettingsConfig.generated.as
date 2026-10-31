@@ -28,7 +28,7 @@ TDataObjectPtr<FChatContentConfig> __FChatSettingsConfig_GetGetItemChatId(const 
         FChatSettingsConfig local_432;
         return local_432.GetGetItemChatId();
     }
-    return GetGetItemChatId();
+    return DataObject.Get().GetGetItemChatId();
 }
 UFUNCTION()
 TDataObjectPtr<FChatContentConfig> __FChatSettingsConfig_GetJoinTeamChatId(const TDataObjectPtr<FChatSettingsConfig> &inout DataObject)
@@ -42,7 +42,7 @@ TDataObjectPtr<FChatContentConfig> __FChatSettingsConfig_GetJoinTeamChatId(const
         FChatSettingsConfig local_432;
         return local_432.GetJoinTeamChatId();
     }
-    return GetJoinTeamChatId();
+    return DataObject.Get().GetJoinTeamChatId();
 }
 UFUNCTION()
 TDataObjectPtr<FChatContentConfig> __FChatSettingsConfig_GetLeaveTeamChatId(const TDataObjectPtr<FChatSettingsConfig> &inout DataObject)
@@ -56,7 +56,7 @@ TDataObjectPtr<FChatContentConfig> __FChatSettingsConfig_GetLeaveTeamChatId(cons
         FChatSettingsConfig local_432;
         return local_432.GetLeaveTeamChatId();
     }
-    return GetLeaveTeamChatId();
+    return DataObject.Get().GetLeaveTeamChatId();
 }
 UFUNCTION()
 TDataObjectPtr<FChatContentConfig> __FChatSettingsConfig_GetJoinCombatTeamChatId(const TDataObjectPtr<FChatSettingsConfig> &inout DataObject)
@@ -70,7 +70,7 @@ TDataObjectPtr<FChatContentConfig> __FChatSettingsConfig_GetJoinCombatTeamChatId
         FChatSettingsConfig local_432;
         return local_432.GetJoinCombatTeamChatId();
     }
-    return GetJoinCombatTeamChatId();
+    return DataObject.Get().GetJoinCombatTeamChatId();
 }
 UFUNCTION()
 TDataObjectPtr<FChatContentConfig> __FChatSettingsConfig_GetLeaveCombatTeamChatId(const TDataObjectPtr<FChatSettingsConfig> &inout DataObject)
@@ -84,7 +84,7 @@ TDataObjectPtr<FChatContentConfig> __FChatSettingsConfig_GetLeaveCombatTeamChatI
         FChatSettingsConfig local_432;
         return local_432.GetLeaveCombatTeamChatId();
     }
-    return GetLeaveCombatTeamChatId();
+    return DataObject.Get().GetLeaveCombatTeamChatId();
 }
 UFUNCTION()
 TDataObjectPtr<FChatContentConfig> __FChatSettingsConfig_GetCreateTeamChatId(const TDataObjectPtr<FChatSettingsConfig> &inout DataObject)
@@ -98,7 +98,7 @@ TDataObjectPtr<FChatContentConfig> __FChatSettingsConfig_GetCreateTeamChatId(con
         FChatSettingsConfig local_432;
         return local_432.GetCreateTeamChatId();
     }
-    return GetCreateTeamChatId();
+    return DataObject.Get().GetCreateTeamChatId();
 }
 UFUNCTION()
 TDataObjectPtr<FChatContentConfig> __FChatSettingsConfig_GetEndTeamChatId(const TDataObjectPtr<FChatSettingsConfig> &inout DataObject)
@@ -112,7 +112,7 @@ TDataObjectPtr<FChatContentConfig> __FChatSettingsConfig_GetEndTeamChatId(const 
         FChatSettingsConfig local_432;
         return local_432.GetEndTeamChatId();
     }
-    return GetEndTeamChatId();
+    return DataObject.Get().GetEndTeamChatId();
 }
 UFUNCTION()
 TDataObjectPtr<FChatContentConfig> __FChatSettingsConfig_GetKickTeamMemberChatId(const TDataObjectPtr<FChatSettingsConfig> &inout DataObject)
@@ -126,7 +126,7 @@ TDataObjectPtr<FChatContentConfig> __FChatSettingsConfig_GetKickTeamMemberChatId
         FChatSettingsConfig local_432;
         return local_432.GetKickTeamMemberChatId();
     }
-    return GetKickTeamMemberChatId();
+    return DataObject.Get().GetKickTeamMemberChatId();
 }
 UFUNCTION()
 TDataObjectPtr<FChatContentConfig> __FChatSettingsConfig_GetKickOutTeamChatId(const TDataObjectPtr<FChatSettingsConfig> &inout DataObject)
@@ -140,7 +140,7 @@ TDataObjectPtr<FChatContentConfig> __FChatSettingsConfig_GetKickOutTeamChatId(co
         FChatSettingsConfig local_432;
         return local_432.GetKickOutTeamChatId();
     }
-    return GetKickOutTeamChatId();
+    return DataObject.Get().GetKickOutTeamChatId();
 }
 UFUNCTION()
 TDataObjectPtr<FChatContentConfig> __FChatSettingsConfig_GetTeamCaptainTransferChatId(const TDataObjectPtr<FChatSettingsConfig> &inout DataObject)
@@ -154,7 +154,7 @@ TDataObjectPtr<FChatContentConfig> __FChatSettingsConfig_GetTeamCaptainTransferC
         FChatSettingsConfig local_432;
         return local_432.GetTeamCaptainTransferChatId();
     }
-    return GetTeamCaptainTransferChatId();
+    return DataObject.Get().GetTeamCaptainTransferChatId();
 }
 UFUNCTION()
 TDataObjectPtr<FChatContentConfig> __FChatSettingsConfig_GetAddFriendChatId(const TDataObjectPtr<FChatSettingsConfig> &inout DataObject)
@@ -168,7 +168,7 @@ TDataObjectPtr<FChatContentConfig> __FChatSettingsConfig_GetAddFriendChatId(cons
         FChatSettingsConfig local_432;
         return local_432.GetAddFriendChatId();
     }
-    return GetAddFriendChatId();
+    return DataObject.Get().GetAddFriendChatId();
 }
 UFUNCTION()
 TDataObjectPtr<FChatContentConfig> __FChatSettingsConfig_GetAddExpChatId(const TDataObjectPtr<FChatSettingsConfig> &inout DataObject)
@@ -182,7 +182,7 @@ TDataObjectPtr<FChatContentConfig> __FChatSettingsConfig_GetAddExpChatId(const T
         FChatSettingsConfig local_432;
         return local_432.GetAddExpChatId();
     }
-    return GetAddExpChatId();
+    return DataObject.Get().GetAddExpChatId();
 }
 UFUNCTION()
 TDataObjectPtr<FChatContentConfig> __FChatSettingsConfig_GetAddExpOverflowChatId(const TDataObjectPtr<FChatSettingsConfig> &inout DataObject)
@@ -196,7 +196,7 @@ TDataObjectPtr<FChatContentConfig> __FChatSettingsConfig_GetAddExpOverflowChatId
         FChatSettingsConfig local_432;
         return local_432.GetAddExpOverflowChatId();
     }
-    return GetAddExpOverflowChatId();
+    return DataObject.Get().GetAddExpOverflowChatId();
 }
 UFUNCTION()
 TDataObjectPtr<FChatContentConfig> __FChatSettingsConfig_GetAddExpConvertChatId(const TDataObjectPtr<FChatSettingsConfig> &inout DataObject)
@@ -210,7 +210,7 @@ TDataObjectPtr<FChatContentConfig> __FChatSettingsConfig_GetAddExpConvertChatId(
         FChatSettingsConfig local_432;
         return local_432.GetAddExpConvertChatId();
     }
-    return GetAddExpConvertChatId();
+    return DataObject.Get().GetAddExpConvertChatId();
 }
 UFUNCTION()
 int __FChatSettingsConfig_GetStrangerChatOfflineMaxCount(const TDataObjectPtr<FChatSettingsConfig> &inout DataObject)
@@ -299,12 +299,11 @@ TDataObjectPtr<FChatContentConfig> __FChatSettingsConfig_GetRecruitChatId(const 
         FChatSettingsConfig local_432;
         return local_432.GetRecruitChatId();
     }
-    return GetRecruitChatId();
+    return DataObject.Get().GetRecruitChatId();
 }
 UFUNCTION()
 TArray<EChatChannelTab> __FChatSettingsConfig_GetServerHistoryChannels(const TDataObjectPtr<FChatSettingsConfig> &inout DataObject)
 {
-    TArray<EChatChannelTab> __r;
     if ((DataObject == nullptr))
     {
         if (!(EUIGlobals::GIsDuringPropertyConversion))
@@ -314,7 +313,7 @@ TArray<EChatChannelTab> __FChatSettingsConfig_GetServerHistoryChannels(const TDa
         FChatSettingsConfig local_432;
         return local_432.ServerHistoryChannels;
     }
-    return __r;
+    return DataObject.Get().ServerHistoryChannels;
 }
 UFUNCTION()
 int __FChatSettingsConfig_GetChatSendCDMilliseconds(const TDataObjectPtr<FChatSettingsConfig> &inout DataObject)

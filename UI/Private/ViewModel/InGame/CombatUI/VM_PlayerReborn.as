@@ -107,11 +107,8 @@ struct FVM_PlayerReborn : FEUIViewModel
             bool local_1 = local_22.opCall();
             if (local_1)
             {
-                FString local_34;
                 Get local_26;
-                ::FMS_PlayerData::Get(this.GetContext().Manager).GetOrCreatePlayerByEntity(local_26.opCall().GetPlayerEntity());
-                local_34.GetNickName();
-                local_18 = FText::FromString(local_34);
+                local_18 = FText::FromString(::FMS_PlayerData::Get(this.GetContext().Manager).GetOrCreatePlayerByEntity(local_26.opCall().GetPlayerEntity()).Get().GetNickName());
             }
             else
             {
@@ -134,8 +131,10 @@ struct FVM_PlayerReborn : FEUIViewModel
                     }
                     if (!(local_39))
                     {
-                        if (!((::GetMonsterConfig(local_10) == nullptr)))
+                        TDataObjectPtr<FMonsterPrefabConfig> local_106 = ::GetMonsterConfig(local_10);
+                        if (!((local_106 == nullptr)))
                         {
+                            local_18 = local_106.Get().DisplayName;
                         }
                     }
                 }
@@ -158,9 +157,7 @@ struct FVM_PlayerReborn : FEUIViewModel
         this.SetbWaitEnd((this.GetEndWaitTime().ToSeconds() <= 0.0));
         if (this.GetRescuedProgressModel())
         {
-            float32 local_11 = this.GetCountdownProgress();
-            TEUIModelRef<FVM_RevivalTimeProgressBar> local_10 = this.GetRescuedProgressModel();
-            local_11.SetProgress();
+            this.GetRescuedProgressModel().Get().SetProgress(this.GetCountdownProgress());
         }
         return;
     }
@@ -554,11 +551,9 @@ FVM_PlayerReborn& Create(const UObject ContextObject, const FFPTime &inout EndWa
 {
     return FVM_PlayerReborn::CreateByManager(EUIInternal::GetContextManager(ContextObject), EndWaitTime, AvailableReviveTypes, KilledByEntity, EDeathReason(DeathReason));
 }
-FVM_PlayerReborn CreateByManager(const UEUIManagerSubsystem Manager, const FFPTime &inout EndWaitTime, const TArray<EReviveType> &inout AvailableReviveTypes, const FECSEntityId &inout KilledByEntity, const EDeathReason DeathReason)
+FVM_PlayerReborn& CreateByManager(const UEUIManagerSubsystem Manager, const FFPTime &inout EndWaitTime, const TArray<EReviveType> &inout AvailableReviveTypes, const FECSEntityId &inout KilledByEntity, const EDeathReason DeathReason)
 {
-    FVM_PlayerReborn __r;
-    TEUIModelRef<FVM_PlayerReborn> local_6 = TEUIModelRef<FVM_PlayerReborn>(EUIInternal::MakeModelWithManager_Generic(Manager, FVM_PlayerReborn::ModelId, 0, EndWaitTime, AvailableReviveTypes, KilledByEntity, DeathReason));
-    return __r;
+    return TEUIModelRef<FVM_PlayerReborn>(EUIInternal::MakeModelWithManager_Generic(Manager, FVM_PlayerReborn::ModelId, 0, EndWaitTime, AvailableReviveTypes, KilledByEntity, DeathReason)).Get();
 }
 void GetModelInfo(FEUIViewModelMetaInfo &inout Result)
 {
@@ -752,7 +747,6 @@ namespace __GeneratedProperties_FVM_PlayerReborn
 {
 UScriptStruct StaticStruct()
 {
-    UScriptStruct local_2;
-    return local_2;
+    return __GeneratedProperties_FVM_PlayerReborn.Get();
 }
 }

@@ -38,9 +38,7 @@ struct FVM_WidgetRef : FEUIViewModel
     }
     UWidget GetWidget() const property
     {
-        TWeakObjectPtr<UWidget> local_2 = this.GetWeakWidget();
-        UWidget local_4;
-        return local_4;
+        return this.GetWeakWidget().Get();
     }
     TEUIModelRef<FVM_WidgetRef> GetModelRef() const
     {
@@ -82,11 +80,9 @@ FVM_WidgetRef& Create(const UObject ContextObject, const UWidget Widget)
 {
     return FVM_WidgetRef::CreateByManager(EUIInternal::GetContextManager(ContextObject), Widget);
 }
-FVM_WidgetRef CreateByManager(const UEUIManagerSubsystem Manager, const UWidget Widget)
+FVM_WidgetRef& CreateByManager(const UEUIManagerSubsystem Manager, const UWidget Widget)
 {
-    FVM_WidgetRef __r;
-    TEUIModelRef<FVM_WidgetRef> local_6 = TEUIModelRef<FVM_WidgetRef>(EUIInternal::MakeModelWithManager_Generic(Manager, FVM_WidgetRef::ModelId, 0, Widget));
-    return __r;
+    return TEUIModelRef<FVM_WidgetRef>(EUIInternal::MakeModelWithManager_Generic(Manager, FVM_WidgetRef::ModelId, 0, Widget)).Get();
 }
 void GetModelInfo(FEUIViewModelMetaInfo &inout Result)
 {
@@ -128,7 +124,6 @@ namespace __GeneratedProperties_FVM_WidgetRef
 {
 UScriptStruct StaticStruct()
 {
-    UScriptStruct local_2;
-    return local_2;
+    return __GeneratedProperties_FVM_WidgetRef.Get();
 }
 }

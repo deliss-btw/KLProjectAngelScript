@@ -59,112 +59,112 @@ class UWidget_CurrentRole : UEUIActivatableWidget
     UFUNCTION()
     FText CurrentRole_MainAvatarName() const
     {
-        FVMS_CurrentRole& local_2;
+        FVMS_CurrentRole& local_2 = this.CurrentRole.Get();
         FText local_16 = local_2 ? local_2.GetMainAvatarName() : FText();
         return local_16;
     }
     UFUNCTION()
     FSlateBrush CurrentRole_MainAvatarIcon() const
     {
-        FVMS_CurrentRole& local_2;
+        FVMS_CurrentRole& local_2 = this.CurrentRole.Get();
         FSlateBrush local_136 = local_2 ? local_2.GetMainAvatarIcon() : FSlateBrush();
         return local_136;
     }
     UFUNCTION()
     FSlateBrush CurrentRole_MainPlayerPowerIcon() const
     {
-        FVMS_CurrentRole& local_2;
+        FVMS_CurrentRole& local_2 = this.CurrentRole.Get();
         FSlateBrush local_136 = local_2 ? local_2.GetMainPlayerPowerIcon() : FSlateBrush();
         return local_136;
     }
     UFUNCTION()
     FSlateBrush CurrentRole_MainPlayerTachie() const
     {
-        FVMS_CurrentRole& local_2;
+        FVMS_CurrentRole& local_2 = this.CurrentRole.Get();
         FSlateBrush local_136 = local_2 ? local_2.GetMainPlayerTachie() : FSlateBrush();
         return local_136;
     }
     UFUNCTION()
     FSlateBrush CurrentRole_MainPlayerTachieBack() const
     {
-        FVMS_CurrentRole& local_2;
+        FVMS_CurrentRole& local_2 = this.CurrentRole.Get();
         FSlateBrush local_136 = local_2 ? local_2.GetMainPlayerTachieBack() : FSlateBrush();
         return local_136;
     }
     UFUNCTION()
     FSlateBrush CurrentRole_MainPlayerClassIcon() const
     {
-        FVMS_CurrentRole& local_2;
+        FVMS_CurrentRole& local_2 = this.CurrentRole.Get();
         FSlateBrush local_136 = local_2 ? local_2.GetMainPlayerClassIcon() : FSlateBrush();
         return local_136;
     }
     UFUNCTION()
     FText CurrentRole_MainPlayerIllustrate1() const
     {
-        FVMS_CurrentRole& local_2;
+        FVMS_CurrentRole& local_2 = this.CurrentRole.Get();
         FText local_16 = local_2 ? local_2.GetMainPlayerIllustrate1() : FText();
         return local_16;
     }
     UFUNCTION()
     FText CurrentRole_MainPlayerIllustrate2() const
     {
-        FVMS_CurrentRole& local_2;
+        FVMS_CurrentRole& local_2 = this.CurrentRole.Get();
         FText local_16 = local_2 ? local_2.GetMainPlayerIllustrate2() : FText();
         return local_16;
     }
     UFUNCTION()
     FText CurrentRole_SubAvatarName() const
     {
-        FVMS_CurrentRole& local_2;
+        FVMS_CurrentRole& local_2 = this.CurrentRole.Get();
         FText local_16 = local_2 ? local_2.GetSubAvatarName() : FText();
         return local_16;
     }
     UFUNCTION()
     FSlateBrush CurrentRole_SubAvatarIcon() const
     {
-        FVMS_CurrentRole& local_2;
+        FVMS_CurrentRole& local_2 = this.CurrentRole.Get();
         FSlateBrush local_136 = local_2 ? local_2.GetSubAvatarIcon() : FSlateBrush();
         return local_136;
     }
     UFUNCTION()
     FSlateBrush CurrentRole_SubPlayerPowerIcon() const
     {
-        FVMS_CurrentRole& local_2;
+        FVMS_CurrentRole& local_2 = this.CurrentRole.Get();
         FSlateBrush local_136 = local_2 ? local_2.GetSubPlayerPowerIcon() : FSlateBrush();
         return local_136;
     }
     UFUNCTION()
     FSlateBrush CurrentRole_SubPlayerTachie() const
     {
-        FVMS_CurrentRole& local_2;
+        FVMS_CurrentRole& local_2 = this.CurrentRole.Get();
         FSlateBrush local_136 = local_2 ? local_2.GetSubPlayerTachie() : FSlateBrush();
         return local_136;
     }
     UFUNCTION()
     FSlateBrush CurrentRole_SubPlayerTachieBack() const
     {
-        FVMS_CurrentRole& local_2;
+        FVMS_CurrentRole& local_2 = this.CurrentRole.Get();
         FSlateBrush local_136 = local_2 ? local_2.GetSubPlayerTachieBack() : FSlateBrush();
         return local_136;
     }
     UFUNCTION()
     FSlateBrush CurrentRole_SubPlayerClassIcon() const
     {
-        FVMS_CurrentRole& local_2;
+        FVMS_CurrentRole& local_2 = this.CurrentRole.Get();
         FSlateBrush local_136 = local_2 ? local_2.GetSubPlayerClassIcon() : FSlateBrush();
         return local_136;
     }
     UFUNCTION()
     FText CurrentRole_SubPlayerIllustrate1() const
     {
-        FVMS_CurrentRole& local_2;
+        FVMS_CurrentRole& local_2 = this.CurrentRole.Get();
         FText local_16 = local_2 ? local_2.GetSubPlayerIllustrate1() : FText();
         return local_16;
     }
     UFUNCTION()
     FText CurrentRole_SubPlayerIllustrate2() const
     {
-        FVMS_CurrentRole& local_2;
+        FVMS_CurrentRole& local_2 = this.CurrentRole.Get();
         FText local_16 = local_2 ? local_2.GetSubPlayerIllustrate2() : FText();
         return local_16;
     }
@@ -197,8 +197,8 @@ class UWidget_CurrentRole : UEUIActivatableWidget
     }
     void HandleObservedModelChanges(FEUIReactiveSubscriberIterator &inout It)
     {
-        FVMS_CurrentRole& local_6;
         TEUIModelRef<FVMS_CurrentRole> local_2 = this.CurrentRole.AsRef();
+        FVMS_CurrentRole& local_6 = local_2.Get();
         for (; It; )
         {
             FEUIReactiveSubscriberTrackScope local_56 = FEUIReactiveSubscriberTrackScope(It);

@@ -8,16 +8,17 @@ class US_PlayeLevelSystem : UECSScriptSystem
     void Job_OverridePlayerAvatarInitAttribute(const FECSEntity &inout Entity, const FC_ControlledByPlayer &inout ControlledByPlayer) const
     {
         int local_6 = 0;
-        int local_58 = 0;
         int local_88 = 0;
         if (!(local_6))
         {
             return;
         }
-        if (!(::GetAvatarConfig(Entity)))
+        TDataObjectPtr<FAvatarPrefabConfig> local_32 = ::GetAvatarConfig(Entity);
+        if (!(local_32))
         {
             return;
         }
+        int local_58 = local_32.Get().DataId;
         int local_57 = local_58;
         TDataObjectPtr<FGameAttributeInitConfig_Avatar> local_82;
         if (local_6.AtrributeInitConfigByAvatarId.Find(local_57, local_82))
@@ -61,11 +62,11 @@ class US_PlayeLevelSystem : UECSScriptSystem
         {
             return;
         }
-        if (!(TSoftObjectPtr<UDataTable>(UGameplayConfigsManager::GetLevelAttributeGrowthConfig()).IsNull()))
+        TSoftObjectPtr<UDataTable> local_30 = TSoftObjectPtr<UDataTable>(UGameplayConfigsManager::GetLevelAttributeGrowthConfig());
+        if (!(local_30.IsNull()))
         {
             TArray<FGameAttributeGrowByLevelConfig> local_34;
-            UDataTable local_36;
-            local_36.GetAllRows(local_34);
+            local_30.Get().GetAllRows(local_34);
             int local_38 = local_12.GetCurLevel() - 1;
             if (local_38 >= 0 && (local_38 < local_34.Num()))
             {
@@ -114,11 +115,11 @@ class US_PlayeLevelSystem : UECSScriptSystem
         {
             return;
         }
-        if (!(TSoftObjectPtr<UDataTable>(UGameplayConfigsManager::GetLevelAttributeGrowthConfig()).IsNull()))
+        TSoftObjectPtr<UDataTable> local_18 = TSoftObjectPtr<UDataTable>(UGameplayConfigsManager::GetLevelAttributeGrowthConfig());
+        if (!(local_18.IsNull()))
         {
             TArray<FGameAttributeGrowByLevelConfig> local_22;
-            UDataTable local_24;
-            local_24.GetAllRows(local_22);
+            local_18.Get().GetAllRows(local_22);
             int local_26 = PlayerState.GetCurLevel() - 1;
             if (local_26 >= 0 && (local_26 < local_22.Num()))
             {

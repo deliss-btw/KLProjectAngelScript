@@ -119,8 +119,7 @@ class UESMAction_DeathResistance : UESMBPBaseSpanAction
         {
             return;
         }
-        FECSEntity local_6;
-        if (local_6.IsValid())
+        if (FECSEntity(this.GetInstanceData(Context).TargetEntity).IsValid())
         {
             Modify local_10;
             FC_DeathResistance& local_12 = local_10.opCall();

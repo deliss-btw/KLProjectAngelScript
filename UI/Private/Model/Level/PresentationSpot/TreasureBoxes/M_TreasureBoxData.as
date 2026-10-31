@@ -81,23 +81,17 @@ struct FMS_TreasureBoxData : FEUIModelSingleton
         int local_6 = 0;
         bool local_7;
         ETreasureBoxState local_99;
-        int local_219 = 0;
-        int local_220 = 0;
         int local_224;
         ETreasureBoxState local_259;
-        local_7 = !(local_6);
-        if (local_7)
+        if (!(local_6))
         {
             return;
         }
         TSet<TDataObjectPtr<FLevelObjectStatConfig>> local_28;
         for (auto& local_46 : local_6.GetTreasureBoxes())
         {
-            local_46;
-            TDataObjectPtr<FLevelObjectStatConfig> local_94;
-            TDataObjectPtr<FLevelObjectStatConfig> local_70 = local_94;
-            local_7 = !(this.GetTreasureBoxStates().Contains(local_70));
-            if (local_7)
+            TDataObjectPtr<FLevelObjectStatConfig> local_70 = local_46.GetValue();
+            if (!(this.GetTreasureBoxStates().Contains(local_70)))
             {
                 FTreasureBoxStateInfo local_98;
                 local_99 = this.GetTreasureBoxState(local_70);
@@ -117,17 +111,7 @@ struct FMS_TreasureBoxData : FEUIModelSingleton
                     int local_193 = local_168.GetTreasureBoxId();
                     GetDataObjectByGSDataId<FLevelObjectStatConfig> local_192;
                     TDataObjectPtr<FLevelObjectStatConfig> local_70_2 = local_192.opImplConv();
-                    local_7 = !(local_70_2.IsSet());
-                    if (local_7)
-                    {
-                        local_7 = true;
-                    }
-                    else
-                    {
-                        local_220 = local_219;
-                        local_7 = (local_220 != 0);
-                    }
-                    if (local_7)
+                    if (!(local_70_2.IsSet()) || (int(local_70_2.Get().ObjectType) != 0))
                     {
                         continue;
                     }
@@ -136,6 +120,7 @@ struct FMS_TreasureBoxData : FEUIModelSingleton
                         local_120.Add(local_70_2);
                         continue;
                     }
+                    int local_220 = local_70_2.Get().CooldownDuration;
                     local_224 = local_220;
                     if (local_224 < 0)
                     {
@@ -169,11 +154,11 @@ struct FMS_TreasureBoxData : FEUIModelSingleton
         {
             if (local_120.Contains(local_252))
             {
-                local_99 = ETreasureBoxState(1);
+                local_99 = ETreasureBoxState::CoolDown;
             }
             else
             {
-                local_99 = ETreasureBoxState(2);
+                local_99 = ETreasureBoxState::Ready;
             }
             TRawPtr<FTreasureBoxStateInfo> local_256 = this.GetModify_TreasureBoxStates().Find(local_252);
             local_259 = local_256.opArrow().State;
@@ -211,8 +196,6 @@ struct FMS_TreasureBoxData : FEUIModelSingleton
     void OnTreasureBoxRefreshTimerExpired()
     {
         int local_20 = 0;
-        int local_153 = 0;
-        int local_154 = 0;
         int local_157;
         FTreasureBoxStateInfo local_162;
         FMsg_TreasureBoxStateChanged local_172;
@@ -232,20 +215,11 @@ struct FMS_TreasureBoxData : FEUIModelSingleton
                 int local_21 = local_56.GetTreasureBoxId();
                 GetDataObjectByGSDataId<FLevelObjectStatConfig> local_104;
                 TDataObjectPtr<FLevelObjectStatConfig> local_80 = local_104.opImplConv();
-                bool local_13 = !(local_80.IsSet());
-                if (local_13)
-                {
-                    local_13 = true;
-                }
-                else
-                {
-                    local_154 = local_153;
-                    local_13 = (local_154 != 0);
-                }
-                if (local_13)
+                if (!(local_80.IsSet()) || (int(local_80.Get().ObjectType) != 0))
                 {
                     continue;
                 }
+                int local_154 = local_80.Get().CooldownDuration;
                 local_157 = local_154;
                 if (local_56.GetTreasureBoxState() == 1)
                 {
@@ -329,11 +303,9 @@ FMS_TreasureBoxData& Get(const UObject ContextObject)
 {
     return FMS_TreasureBoxData::GetByManager(EUIInternal::GetContextManager(ContextObject));
 }
-FMS_TreasureBoxData GetByManager(const UEUIManagerSubsystem Manager)
+FMS_TreasureBoxData& GetByManager(const UEUIManagerSubsystem Manager)
 {
-    FMS_TreasureBoxData __r;
-    TEUIModelRef<FMS_TreasureBoxData> local_6 = TEUIModelRef<FMS_TreasureBoxData>(EUIInternal::MakeModelWithManager(Manager, FMS_TreasureBoxData::ModelId));
-    return __r;
+    return TEUIModelRef<FMS_TreasureBoxData>(EUIInternal::MakeModelWithManager(Manager, FMS_TreasureBoxData::ModelId)).Get();
 }
 void GetModelInfo(FEUIModelOnlyMetaInfo &inout Result)
 {

@@ -259,15 +259,11 @@ struct FInteractionPoint
 
     FText GetHUDContent() const
     {
-        FText __return;
         if (this.HUDContentRow.IsSet())
         {
+            return this.HUDContentRow.Get().Text;
         }
-        else
-        {
-            __return = FText();
-        }
-        return __return;
+        return FText();
     }
     void DebugDraw(const UWorld World, const FTransform &inout BaseTransform, const TArray<FVector3f> &inout InTraceCheckOffsets) const
     {
@@ -331,7 +327,6 @@ struct FC_InteractionTargetConfig : FECSComponent
         int local_26 = 0;
         float32 local_28;
         float32 local_29;
-        float32 local_30 = 0.0f;
         UInteractCustomCheckConditionBase local_166;
         UInteractCustomCheckCondition_BlackboardConditionAndArray local_170;
         float32 local_171;
@@ -380,8 +375,7 @@ struct FC_InteractionTargetConfig : FECSComponent
                 FTransform local_68 = FTransformUtils::GetStaticSocketTransform(Entity, local_16.SocketName, local_42, false, FFPTime(-1));
                 if (local_42)
                 {
-                    local_30 = float32(local_68.GetLocation().Size());
-                    local_19_2 = local_19_2 + local_30;
+                    local_19_2 = local_19_2 + float32(local_68.GetLocation().Size());
                 }
                 else
                 {
@@ -389,8 +383,7 @@ struct FC_InteractionTargetConfig : FECSComponent
                     const FC_PushColliderConfig& local_98 = local_96.opCall();
                     if (local_98)
                     {
-                        local_30 = local_98.PushColliderBoundingBox.GetExtent().Size();
-                        local_19_2 = local_19_2 + local_30;
+                        local_19_2 = local_19_2 + local_98.PushColliderBoundingBox.GetExtent().Size();
                     }
                 }
             }
@@ -420,13 +413,13 @@ struct FC_InteractionTargetConfig : FECSComponent
                             }
                             if (local_150.bOverrideInteractPointParam)
                             {
-                                local_30 = local_150.OverrideInteractPointParam.DistanceMax;
-                                local_28 = FMath::Max(local_28, local_30);
+                                local_28 = FMath::Max(local_28, local_150.OverrideInteractPointParam.DistanceMax);
                             }
-                            if (::FInteractUtils::GetInteractTipPreset(local_16, local_150).IsSet())
+                            TDataObjectPtr<FInteractTipPreset> local_196 = ::FInteractUtils::GetInteractTipPreset(local_16, local_150);
+                            if (local_196.IsSet())
                             {
                                 this.bHasTip = true;
-                                local_29 = FMath::Max(local_29, local_30);
+                                local_29 = FMath::Max(local_29, local_196.Get().InteractTipParam.DistanceMax);
                             }
                             if (local_150.bIsSecondaryInteractTarget)
                             {
@@ -441,15 +434,13 @@ struct FC_InteractionTargetConfig : FECSComponent
             if (local_28 > 0.0f)
             {
                 local_171 = local_28 + local_19_2;
-                local_30 = local_28 + local_19_2;
-                local_171 = local_171 * local_30;
+                local_171 = local_171 * (local_28 + local_19_2);
                 this.MaxInteractDistanceSQ = FMath::Max(this.MaxInteractDistanceSQ, local_171);
             }
             if (local_29 > 0.0f)
             {
                 local_171 = local_29 + local_19_2;
-                local_30 = local_171 * (local_29 + local_19_2);
-                this.MaxInteractTipDistanceSQ = FMath::Max(this.MaxInteractTipDistanceSQ, local_30);
+                this.MaxInteractTipDistanceSQ = FMath::Max(this.MaxInteractTipDistanceSQ, (local_171 * (local_29 + local_19_2)));
             }
         }
         if (this.MaxInteractTipDistanceSQ > 0.0f)

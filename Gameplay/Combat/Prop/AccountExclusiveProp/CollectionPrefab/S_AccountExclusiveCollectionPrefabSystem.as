@@ -47,7 +47,7 @@ class US_AccountExclusiveCollectionPrefabSystem : UECSScriptSystem
         {
             return;
         }
-        if (0 != 4)
+        if (int(LevelObjectStatConfig.LevelObjectStatConfig.Get().ObjectType) != 4)
         {
             return;
         }

@@ -590,6 +590,8 @@ TArray<FAILockPointRatingResult> RateAndSortLockPoints(const FECSEntity &inout S
         local_102.TotalScore = ((local_77 * Config.WeightXY) + (local_76 * Config.WeightZ));
         local_4.Add(local_102);
     }
+    __Lambda_Gameplay_Combat_LockTargetUtils_521 local_104;
+    local_4.Sort(local_104);
     return local_4;
 }
 int GetBestAILockPointIndex(const FECSEntity &inout SourceEntity, const FECSEntity &inout TargetEntity, const FAILockPointRatingConfig &inout Config)
@@ -635,17 +637,19 @@ TDataObjectPtr<FAILockPointRatingConfig> GetActiveLockPointRatingConfig(const FE
             return local_6.ConfigStack.Last(0);
         }
     }
-    if ((!((FAITargetingUtils::GetTargetingConfig(Entity) == nullptr))))
+    TDataObjectPtr<FAITargetingConfig> local_56 = FAITargetingUtils::GetTargetingConfig(Entity);
+    if ((!((local_56 == nullptr))))
     {
-        return GetLockPointRatingConfig();
+        return local_56.Get().GetLockPointRatingConfig();
     }
     return TDataObjectPtr<FAILockPointRatingConfig>(nullptr);
 }
 int GetBestAILockPointIndexWithOverride(const FECSEntity &inout SourceEntity, const FECSEntity &inout TargetEntity)
 {
-    if ((!((FLockTargetUtils::GetActiveLockPointRatingConfig(SourceEntity) == nullptr))))
+    TDataObjectPtr<FAILockPointRatingConfig> local_24 = FLockTargetUtils::GetActiveLockPointRatingConfig(SourceEntity);
+    if ((!((local_24 == nullptr))))
     {
-        return FLockTargetUtils::GetBestAILockPointIndex(SourceEntity, TargetEntity);
+        return FLockTargetUtils::GetBestAILockPointIndex(SourceEntity, TargetEntity, local_24.Get());
     }
     return 0;
 }
@@ -754,6 +758,7 @@ bool IsPointsDistributedCloseToMoveDir(const FVector &inout ZeroPosition, const 
     {
         return false;
     }
+    local_22.Sort(false);
     float local_58_2 = 0.0;
     int local_69 = 0;
     int local_70 = 0;
@@ -787,33 +792,33 @@ bool IsPointsDistributedCloseToMoveDir(const FVector &inout ZeroPosition, const 
         local_76 = local_22[local_69];
     }
     float32 local_77 = 0.0f;
-    int local_3_2 = 0;
-    int local_79 = local_3_2;
+    int local_3 = 0;
+    int local_79 = local_3;
     if (local_66 <= local_76)
     {
         if (local_77 < local_66)
         {
-            local_3_2 = 0;
+            local_3 = 0;
         }
         else
         {
             bool local_80 = (local_77 <= local_76);
-            local_3_2 = local_80;
+            local_3 = local_80;
         }
-        local_79 = local_3_2;
+        local_79 = local_3;
     }
     else
     {
         if (local_77 >= local_66)
         {
-            local_3_2 = 1;
+            local_3 = 1;
         }
         else
         {
             bool local_80_2 = (local_77 <= local_76);
-            local_3_2 = local_80_2;
+            local_3 = local_80_2;
         }
-        local_79 = local_3_2;
+        local_79 = local_3;
     }
     return (local_79 != 0);
 }

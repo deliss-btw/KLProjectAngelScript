@@ -18,7 +18,7 @@ class UWidget_AvatarAttributeInfo : UEUIUserWidget
     UFUNCTION()
     TArray<FEUIModelWeakRef> AttributeList_AttributeItems() const
     {
-        FVM_AvatarAttributeList& local_2;
+        FVM_AvatarAttributeList& local_2 = this.AttributeList.Get();
         TArray<FEUIModelWeakRef> local_16;
         if (local_2)
         {

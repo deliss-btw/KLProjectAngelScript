@@ -177,7 +177,7 @@ class UESMAction_VOCheck : UESMBPBaseSpanTickAction
     UFUNCTION()
     void OnDataValidate_Implementation(const FESMDataHierarchyInfo &inout Info)
     {
-        UDataTable local_4;
+        UDataTable local_4 = UGameplayConfigsManager::GetAudioVoTable().Get();
         if (local_4 == nullptr)
         {
             XWarning(ELog(0), "UESMAction_InstantVOCheck: can not find datatable: AudioVo Table.");

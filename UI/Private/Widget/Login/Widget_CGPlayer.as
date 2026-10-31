@@ -22,7 +22,7 @@ class UWidget_CGPlayer : UEUIActivatableWidget
     void OnViewBind_Implementation()
     {
         this.NextButtonActionBinding.SetCollapsed(true);
-        this.NextButtonActionBinding.GetConfigDisplayName().SetActionName();
+        this.CGPlayerVM.Get().SetActionName(this.NextButtonActionBinding.GetConfigDisplayName());
         return;
     }
     UFUNCTION()
@@ -48,7 +48,7 @@ class UWidget_CGPlayer : UEUIActivatableWidget
         {
             return;
         }
-        CGConfig.SetupByCGConfig();
+        this.CGPlayerVM.Get().SetupByCGConfig(CGConfig);
         return;
     }
     UFUNCTION()
@@ -62,8 +62,8 @@ class UWidget_CGPlayer : UEUIActivatableWidget
     }
     void HandleObservedModelChanges(FEUIReactiveSubscriberIterator &inout It)
     {
-        FVM_CGPlayer& local_6;
         TEUIModelRef<FVM_CGPlayer> local_2 = this.CGPlayerVM.AsRef();
+        FVM_CGPlayer& local_6 = local_2.Get();
         for (; It; )
         {
             FEUIReactiveSubscriberTrackScope local_56 = FEUIReactiveSubscriberTrackScope(It);

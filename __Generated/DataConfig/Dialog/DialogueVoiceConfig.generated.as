@@ -3,7 +3,6 @@ namespace __FDialogueVoiceConfigFunctions
 UFUNCTION()
 TArray<FDialogueVOSource> __FDialogueVoiceConfig_GetVOSources(const TDataObjectPtr<FDialogueVoiceConfig> &inout DataObject)
 {
-    TArray<FDialogueVOSource> __r;
     if ((DataObject == nullptr))
     {
         if (!(EUIGlobals::GIsDuringPropertyConversion))
@@ -13,7 +12,7 @@ TArray<FDialogueVOSource> __FDialogueVoiceConfig_GetVOSources(const TDataObjectP
         FDialogueVoiceConfig local_18;
         return local_18.VOSources;
     }
-    return __r;
+    return DataObject.Get().VOSources;
 }
 UFUNCTION()
 FDialogueVoiceConfig CastToFDialogueVoiceConfig(const TDataObjectPtr<FDialogueVoiceConfig> &inout DataObject)

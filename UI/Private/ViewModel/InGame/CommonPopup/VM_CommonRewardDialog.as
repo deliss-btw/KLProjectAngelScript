@@ -82,8 +82,7 @@ struct FVM_CommonRewardDialog : FEUIViewModel
     {
         if (this.GetRewardList().IsValid())
         {
-            TEUIModelRef<FVM_CommonRewardList> local_2 = this.GetRewardList();
-            return GetRewards();
+            return this.GetRewardList().Get().GetRewards();
         }
         return TArray<TEUIModelRef<FVM_CommonRewardItem>>();
     }
@@ -289,11 +288,9 @@ FVM_CommonRewardDialog& Create(const UObject ContextObject, const FText &inout T
 {
     return FVM_CommonRewardDialog::CreateByManager(EUIInternal::GetContextManager(ContextObject), Title, Description, RewardList, Options, Callback);
 }
-FVM_CommonRewardDialog CreateByManager(const UEUIManagerSubsystem Manager, const FText &inout Title, const FText &inout Description, const TEUIModelRef<FVM_CommonRewardList> &inout RewardList, const TArray<FCommonDialogOption> &inout Options, const FDialogCallback &inout Callback)
+FVM_CommonRewardDialog& CreateByManager(const UEUIManagerSubsystem Manager, const FText &inout Title, const FText &inout Description, const TEUIModelRef<FVM_CommonRewardList> &inout RewardList, const TArray<FCommonDialogOption> &inout Options, const FDialogCallback &inout Callback)
 {
-    FVM_CommonRewardDialog __r;
-    TEUIModelRef<FVM_CommonRewardDialog> local_6 = TEUIModelRef<FVM_CommonRewardDialog>(EUIInternal::MakeModelWithManager_Generic(Manager, FVM_CommonRewardDialog::ModelId, 0, Title, Description, RewardList, Options, Callback));
-    return __r;
+    return TEUIModelRef<FVM_CommonRewardDialog>(EUIInternal::MakeModelWithManager_Generic(Manager, FVM_CommonRewardDialog::ModelId, 0, Title, Description, RewardList, Options, Callback)).Get();
 }
 void GetModelInfo(FEUIViewModelMetaInfo &inout Result)
 {
@@ -413,7 +410,6 @@ namespace __GeneratedProperties_FVM_CommonRewardDialog
 {
 UScriptStruct StaticStruct()
 {
-    UScriptStruct local_2;
-    return local_2;
+    return __GeneratedProperties_FVM_CommonRewardDialog.Get();
 }
 }

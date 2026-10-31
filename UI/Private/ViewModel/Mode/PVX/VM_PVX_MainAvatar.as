@@ -337,8 +337,7 @@ struct FVM_PVX_MainAvatar : FEUIViewModel
                 }
             }
         }
-        ::FMS_PlayerData::Get(this.GetContext().Manager).GetLocalPlayerData();
-        this.SetLocalPlayerUid(GetPlayerUid());
+        this.SetLocalPlayerUid(::FMS_PlayerData::Get(this.GetContext().Manager).GetLocalPlayerData().Get().GetPlayerUid());
         this.SetPlayerOwnedAvatarInfo(TEUIModelRef<FVMS_PlayerOwnedAvatarInfo>(::FVMS_PlayerOwnedAvatarInfo::Get(this.GetManager())));
         this.ViewInit();
         return;
@@ -380,8 +379,7 @@ struct FVM_PVX_MainAvatar : FEUIViewModel
             }
         }
         this.SetAvatarDetailInfo(TEUIModelRef<FVM_AvatarDetailInfo>(::FVM_AvatarDetailInfo::Create(this.GetManager())));
-        TEUIModelRef<FVM_AvatarDetailInfo> local_198 = this.GetAvatarDetailInfo();
-        1.SetPanelGameMode();
+        this.GetAvatarDetailInfo().Get().SetPanelGameMode(EGameModeType(1));
         return;
     }
     void RefreshSelectCountdownSeconds()
@@ -436,20 +434,16 @@ struct FVM_PVX_MainAvatar : FEUIViewModel
         if (this.GetFilteredAvatars().IsValidIndex(this.GetSelectedAvatarIndex()))
         {
             this.SetSelectedAvatar(this.GetFilteredAvatars()[this.GetSelectedAvatarIndex()]);
-            if (this.GetSelectedAvatarInfo().IsValid())
+            TEUIModelRef<FVM_AvatarInfo> local_12 = this.GetSelectedAvatarInfo();
+            if (local_12.IsValid())
             {
-                TEUIModelRef<FM_Avatar> local_44;
                 if (this.GetTeamPlayersAvatar().Find(this.GetLocalPlayerUid()))
                 {
                     int local_13 = this.GetLocalPlayerUid();
-                    this.GetModify_TeamPlayersAvatar()[local_13] = GetAvatarConfig();
+                    this.GetModify_TeamPlayersAvatar()[local_13] = local_12.Get().GetAvatarConfig();
                 }
-                local_44.GetAvatar();
-                TEUIModelRef<FVM_AvatarDetailInfo> local_42 = this.GetAvatarDetailInfo();
-                local_44.SetCurrentAvatar();
-                bool local_7 = true;
-                TEUIModelRef<FVM_AvatarDetailInfo> local_42_2 = this.GetAvatarDetailInfo();
-                local_7.TrySetShowAttributeOrSkill();
+                this.GetAvatarDetailInfo().Get().SetCurrentAvatar(local_12.Get().GetAvatar());
+                this.GetAvatarDetailInfo().Get().TrySetShowAttributeOrSkill(true);
             }
             this.RefreshShowcaseAvatars();
             this.RefreshConfirmButtonEnabled();
@@ -466,30 +460,31 @@ struct FVM_PVX_MainAvatar : FEUIViewModel
         if (this.GetShowcase())
         {
             TArray<TDataObjectPtr<FAvatarPrefabConfig>> local_14;
-            if (this.GetSelectedAvatarInfo().IsValid())
+            TEUIModelRef<FVM_AvatarInfo> local_18 = this.GetSelectedAvatarInfo();
+            if (local_18.IsValid())
             {
-                local_14.Add(GetAvatarConfig());
+                local_14.Add(local_18.Get().GetAvatarConfig());
             }
             if (!(local_14.IsEmpty()))
             {
                 XLog(ELog(70), FString().Append("[M_Mode][PVX]RefreshShowcaseAvatars. SetAvatars."));
-                TEUIModelRef<FVM_AvatarShowcase> local_8 = this.GetShowcase();
-                local_14.SetNextAvatars();
+                this.GetShowcase().Get().SetNextAvatars(local_14);
             }
         }
         return;
     }
     void RefreshConfirmButtonEnabled()
     {
-        int local_8 = 0;
-        if (!(this.GetSelectedAvatarInfo().IsValid()) || !(GetAvatarConfig().IsSet()))
+        TEUIModelRef<FVM_AvatarInfo> local_4 = this.GetSelectedAvatarInfo();
+        if (!(local_4.IsValid()) || !(local_4.Get().GetAvatarConfig().IsSet()))
         {
             this.SetbConfirmButtonEnabled(false);
             return;
         }
+        int local_8 = local_4.Get().GetAvatarConfig().Get().DataId;
         int local_7 = local_8;
-        local_8 = this.GetConfirmedAvatarId();
-        this.SetbConfirmButtonEnabled(local_8 == 0 || (local_7 != this.GetConfirmedAvatarId()));
+        int local_8_2 = this.GetConfirmedAvatarId();
+        this.SetbConfirmButtonEnabled(local_8_2 == 0 || (local_7 != this.GetConfirmedAvatarId()));
         return;
     }
     void OnSelectIllustrateFilter(const int IllustrateFilterItemIndex)
@@ -513,8 +508,6 @@ struct FVM_PVX_MainAvatar : FEUIViewModel
     }
     void RefreshFilteredAvatarList()
     {
-        FVM_AvatarInfo& local_24;
-        bool local_28;
         if (this.GetbMonsterCampus())
         {
             return;
@@ -524,21 +517,12 @@ struct FVM_PVX_MainAvatar : FEUIViewModel
             this.SetPlayerOwnedAvatarInfo(TEUIModelRef<FVMS_PlayerOwnedAvatarInfo>(::FVMS_PlayerOwnedAvatarInfo::Get(this.GetManager())));
         }
         this.GetModify_FilteredAvatars().Reset(0);
-        TEUIModelRef<FVMS_PlayerOwnedAvatarInfo> local_4 = this.GetPlayerOwnedAvatarInfo();
-        for (auto& local_22 : GetUnLockAvatarList())
+        for (auto& local_22 : this.GetPlayerOwnedAvatarInfo().Get().GetUnLockAvatarList())
         {
+            FVM_AvatarInfo& local_24 = local_22.Get();
             if (local_24)
             {
-                if (!(local_24.GetAvatarConfig()))
-                {
-                    local_28 = false;
-                }
-                else
-                {
-                    EAvatarIllustrate local_26;
-                    local_28 = int(local_26) == int(this.GetFilterByIllustrate()) || (int(this.GetFilterByIllustrate()) == 3);
-                }
-                if (local_28)
+                if (local_24.GetAvatarConfig() && (int(local_24.GetAvatarConfig().Get().AvatarIllustrate) == int(this.GetFilterByIllustrate()) || (int(this.GetFilterByIllustrate()) == 3)))
                 {
                     FEUIModelContainer local_44;
                     local_44.AddModel(local_22.opImplConv(), false);
@@ -572,14 +556,14 @@ struct FVM_PVX_MainAvatar : FEUIViewModel
     }
     uint GetSelectedAvatarIdForSend() const
     {
-        int local_3 = 0;
         if (this.IsPVXMode() && this.GetbMonsterCampus())
         {
             return 0;
         }
-        if (this.GetSelectedAvatarInfo().IsValid() && GetAvatarConfig().IsSet())
+        TEUIModelRef<FVM_AvatarInfo> local_8 = this.GetSelectedAvatarInfo();
+        if (local_8.IsValid() && local_8.Get().GetAvatarConfig().IsSet())
         {
-            return local_3;
+            return local_8.Get().GetAvatarConfig().Get().DataId;
         }
         return 0;
     }
@@ -626,17 +610,7 @@ struct FVM_PVX_MainAvatar : FEUIViewModel
         if (local_6)
         {
             XLog(ELog(70), FString().Append("[M_Mode][PVX]RefreshPlayerCompDisplay. self campus=[").Append(local_14.GetFaction()).Append("], teamId=[").Append(local_14.GetTeamId()).Append("]"));
-            bool local_6_2 = !(this.GetMyFakeTeam().IsValid());
-            if (local_6_2)
-            {
-                local_6_2 = true;
-            }
-            else
-            {
-                TEUIModelRef<FM_SocialTeam> local_22 = this.GetMyFakeTeam();
-                local_6_2 = GetTeamCommonData().Members.IsEmpty();
-            }
-            if (local_6_2)
+            if (!(this.GetMyFakeTeam().IsValid()) || this.GetMyFakeTeam().Get().GetTeamCommonData().Members.IsEmpty())
             {
                 this.SetMyFakeTeam(TEUIModelRef<FM_SocialTeam>(::FM_SocialTeam::Create(this.GetContext().Manager, local_14.GetTeamId())));
                 this.GetModify_TeamPlayerMonitors().Empty(0);
@@ -647,7 +621,7 @@ struct FVM_PVX_MainAvatar : FEUIViewModel
                     this.SetbMonsterCampus(false);
                     for (auto& local_42 : PlayerEntries)
                     {
-                        if (local_14.GetTeamId() == GetTeamId())
+                        if (local_14.GetTeamId() == local_42.GetValue().GetTeamId())
                         {
                             this.GetModify_TeamPlayersAvatar().Add(local_42.GetKey(), TDataObjectPtr<FAvatarPrefabConfig>());
                         }
@@ -674,14 +648,11 @@ struct FVM_PVX_MainAvatar : FEUIViewModel
                     TEUIModelRef<FM_Player> local_134 = ::FMS_PlayerData::Get(this.GetContext().Manager).GetCachedPlayerData(local_129);
                     if (local_134.IsValid())
                     {
-                        FECSEntity local_140;
-                        local_140.GetPlayerEntity();
-                        TEUIModelRef<FVM_PVX_PlayerMonitor> local_136 = TEUIModelRef<FVM_PVX_PlayerMonitor>(::FVM_PVX_PlayerMonitor::Create(this.GetContext().Manager, local_140, local_88, local_110));
-                        bool local_18 = (local_129 == this.GetLocalPlayerUid());
-                        local_18.SetbIsSelf();
+                        TEUIModelRef<FVM_PVX_PlayerMonitor> local_136 = TEUIModelRef<FVM_PVX_PlayerMonitor>(::FVM_PVX_PlayerMonitor::Create(this.GetContext().Manager, local_134.Get().GetPlayerEntity(), local_88, local_110));
+                        local_136.Get().SetbIsSelf((local_129 == this.GetLocalPlayerUid()));
                         this.GetModify_TeamPlayerMonitors().Add(local_136);
-                        TEUIModelRef<FM_SocialTeam> local_22_2 = this.GetMyFakeTeam();
-                        FEUIModelWeakRef local_144 = FEUIModelWeakRef(FEUIModelRef());
+                        FEUIModelRef local_146 = FEUIModelRef(this.GetMyFakeTeam().Get());
+                        FEUIModelWeakRef local_144 = FEUIModelWeakRef(local_146);
                         local_148.SetPlayer(local_134);
                         if (PlayerEntries.Contains(local_129))
                         {
@@ -690,10 +661,12 @@ struct FVM_PVX_MainAvatar : FEUIViewModel
                         this.GetMyFakeTeam().opArrow().GetModify_TeamCommonData().Members.Add(TEUIModelRef<FM_TeamMember>(local_148));
                         TEUIModelRef<FVM_TeammateInfo> local_152 = TEUIModelRef<FVM_TeammateInfo>(::FVM_TeammateInfo::Create(this.GetContext().Manager, (TEUIModelRef<FM_TeamMember>(local_148))));
                         FEUIModelContainer local_168;
-                        local_168.AddModel(FEUIModelRef(::FVM_TeamMemberPrepareItem::Create(this.GetContext().Manager, local_152)), false);
+                        local_146 = FEUIModelRef(::FVM_TeamMemberPrepareItem::Create(this.GetContext().Manager, local_152));
+                        local_168.AddModel(local_146, false);
                         FVM_PlayerBasicItemExtend& local_170 = ::FVM_PlayerBasicItemExtend::Create(this.GetContext().Manager);
                         local_170.SetbShowLevelText(false);
-                        local_168.AddModel(FEUIModelRef(local_170), false);
+                        local_146 = FEUIModelRef(local_170);
+                        local_168.AddModel(local_146, false);
                         this.GetModify_TeamMemberPrepareItems().Add(local_168);
                     }
                 }
@@ -712,9 +685,10 @@ struct FVM_PVX_MainAvatar : FEUIViewModel
             {
                 this.GetModify_TeamPlayersAvatar()[local_1] = local_26;
             }
-            if (::FMS_PlayerData::Get(this.GetContext().Manager).GetCachedPlayerData(local_1).IsValid() && local_26.IsSet())
+            TEUIModelRef<FM_Player> local_108 = ::FMS_PlayerData::Get(this.GetContext().Manager).GetCachedPlayerData(local_1);
+            if (local_108.IsValid() && local_26.IsSet())
             {
-                GetModify_CurrentAvatarAttr().Set(EPlayerInfoTrust(3), local_26);
+                local_108.Get().GetModify_CurrentAvatarAttr().Set(EPlayerInfoTrust(3), local_26);
             }
         }
         return;
@@ -764,48 +738,16 @@ struct FVM_PVX_MainAvatar : FEUIViewModel
     }
     void UpdateTeamMemberReady(const uint Uid, const bool bIsReady)
     {
-        bool local_13;
-        TEUIModelRef<FVM_TeammateInfo> local_26;
         int local_30 = 0;
-        TEUIModelRef<FM_Player> local_34;
         for (auto& local_16 : this.GetTeamMemberPrepareItems())
         {
-            if (!(TEUIModelRef<FVM_TeamMemberPrepareItem>(FEUIModelContainer::GetModel(local_16).opCall()).IsValid()))
+            TEUIModelRef<FVM_TeamMemberPrepareItem> local_18 = TEUIModelRef<FVM_TeamMemberPrepareItem>(FEUIModelContainer::GetModel(local_16).opCall());
+            if (local_18.IsValid() && local_18.Get().GetTeammateInfo().IsValid())
             {
-                local_13 = false;
-            }
-            else
-            {
-                local_26.GetTeammateInfo();
-                local_13 = local_26.IsValid();
-            }
-            if (local_13)
-            {
-                local_26.GetTeammateInfo();
-                local_13 = local_30.GetTeamMember().IsValid();
-                if (!(local_13))
+                TEUIModelRef<FVM_TeammateInfo> local_26 = local_18.Get().GetTeammateInfo();
+                if (local_30.GetTeamMember().IsValid() && local_30.GetTeamMember().Get().GetPlayer().IsValid() && (local_30.GetTeamMember().Get().GetPlayer().Get().GetPlayerUid() == Uid))
                 {
-                    local_13 = false;
-                }
-                else
-                {
-                    TEUIModelRef<FM_TeamMember> local_32 = local_30.GetTeamMember();
-                    local_34.GetPlayer();
-                    local_13 = local_34.IsValid();
-                }
-                if (!(local_13))
-                {
-                    local_13 = false;
-                }
-                else
-                {
-                    TEUIModelRef<FM_TeamMember> local_32_2 = local_30.GetTeamMember();
-                    local_34.GetPlayer();
-                    local_13 = (GetPlayerUid() == Uid);
-                }
-                if (local_13)
-                {
-                    bIsReady.SetbReady();
+                    local_18.Get().SetbReady(bIsReady);
                     break;
                 }
             }
@@ -1302,11 +1244,9 @@ FVM_PVX_PlayerMonitor& Create(const UObject ContextObject, const FECSEntity &ino
 {
     return FVM_PVX_PlayerMonitor::CreateByManager(EUIInternal::GetContextManager(ContextObject), PlayerEntity, OnReadyChanged, OnAvatarChanged);
 }
-FVM_PVX_PlayerMonitor CreateByManager(const UEUIManagerSubsystem Manager, const FECSEntity &inout PlayerEntity, const FPlayerMonitorReadyEvent &inout OnReadyChanged, const FPlayerMonitorAvatarEvent &inout OnAvatarChanged)
+FVM_PVX_PlayerMonitor& CreateByManager(const UEUIManagerSubsystem Manager, const FECSEntity &inout PlayerEntity, const FPlayerMonitorReadyEvent &inout OnReadyChanged, const FPlayerMonitorAvatarEvent &inout OnAvatarChanged)
 {
-    FVM_PVX_PlayerMonitor __r;
-    TEUIModelRef<FVM_PVX_PlayerMonitor> local_6 = TEUIModelRef<FVM_PVX_PlayerMonitor>(EUIInternal::MakeModelWithManager_Generic(Manager, FVM_PVX_PlayerMonitor::ModelId, 0, PlayerEntity, OnReadyChanged, OnAvatarChanged));
-    return __r;
+    return TEUIModelRef<FVM_PVX_PlayerMonitor>(EUIInternal::MakeModelWithManager_Generic(Manager, FVM_PVX_PlayerMonitor::ModelId, 0, PlayerEntity, OnReadyChanged, OnAvatarChanged)).Get();
 }
 void GetModelInfo(FEUIViewModelMetaInfo &inout Result)
 {
@@ -1392,8 +1332,7 @@ namespace __GeneratedProperties_FVM_PVX_PlayerMonitor
 {
 UScriptStruct StaticStruct()
 {
-    UScriptStruct local_2;
-    return local_2;
+    return __GeneratedProperties_FVM_PVX_PlayerMonitor.Get();
 }
 }
 namespace FVM_PVX_MainAvatar
@@ -1402,11 +1341,9 @@ FVM_PVX_MainAvatar& Create(const UObject ContextObject)
 {
     return FVM_PVX_MainAvatar::CreateByManager(EUIInternal::GetContextManager(ContextObject));
 }
-FVM_PVX_MainAvatar CreateByManager(const UEUIManagerSubsystem Manager)
+FVM_PVX_MainAvatar& CreateByManager(const UEUIManagerSubsystem Manager)
 {
-    FVM_PVX_MainAvatar __r;
-    TEUIModelRef<FVM_PVX_MainAvatar> local_6 = TEUIModelRef<FVM_PVX_MainAvatar>(EUIInternal::MakeModelWithManager(Manager, FVM_PVX_MainAvatar::ModelId));
-    return __r;
+    return TEUIModelRef<FVM_PVX_MainAvatar>(EUIInternal::MakeModelWithManager(Manager, FVM_PVX_MainAvatar::ModelId)).Get();
 }
 void GetModelInfo(FEUIViewModelMetaInfo &inout Result)
 {
@@ -1704,7 +1641,6 @@ namespace __GeneratedProperties_FVM_PVX_MainAvatar
 {
 UScriptStruct StaticStruct()
 {
-    UScriptStruct local_2;
-    return local_2;
+    return __GeneratedProperties_FVM_PVX_MainAvatar.Get();
 }
 }

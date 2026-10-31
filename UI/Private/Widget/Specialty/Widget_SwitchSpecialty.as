@@ -61,8 +61,8 @@ class UWidget_SwitchSpecialty : UEUIActivatableWidget
     }
     void HandleObservedModelChanges(FEUIReactiveSubscriberIterator &inout It)
     {
-        FVM_SwitchSpecialty& local_6;
         TEUIModelRef<FVM_SwitchSpecialty> local_2 = this.SpecialtyModel.AsRef();
+        FVM_SwitchSpecialty& local_6 = local_2.Get();
         for (; It; )
         {
             FEUIReactiveSubscriberTrackScope local_56 = FEUIReactiveSubscriberTrackScope(It);

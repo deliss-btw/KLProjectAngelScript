@@ -6,7 +6,7 @@ void AddTemporarySkill(const FECSEntity &inout Entity, const TDataObjectPtr<FAdd
     int local_10 = 0;
     if (!(!(Entity.IsValid())) && AddTemporarySkillConfig)
     {
-        const FAddTemporarySkillConfig& local_4;
+        const FAddTemporarySkillConfig& local_4 = AddTemporarySkillConfig.Get();
         if (local_10.GetSkillEntity().IsValid())
         {
             FSkillUtils::RemoveSkill(local_10.GetSkillEntity(), Entity, true);

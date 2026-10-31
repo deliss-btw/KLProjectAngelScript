@@ -283,9 +283,7 @@ struct FVM_CommonHoverProvider : FEUIViewModel
     }
     UWidget GetHoverForWidget() const
     {
-        TWeakObjectPtr<UWidget> local_2 = this.GetHoverForWidgetRef();
-        UWidget local_4;
-        return local_4;
+        return this.GetHoverForWidgetRef().Get();
     }
     bool CloseExistingHover(const ECommonHoverCloseReason Reason)
     {
@@ -394,6 +392,7 @@ struct FVM_CommonHoverProvider : FEUIViewModel
         }
         if (Model.IsValid())
         {
+            this.GetModify_HoverModels().Clear();
             this.GetModify_HoverModels().AddModel(Model, false);
         }
         return;
@@ -635,11 +634,9 @@ FVM_CommonHoverProvider& Create(const UObject ContextObject)
 {
     return FVM_CommonHoverProvider::CreateByManager(EUIInternal::GetContextManager(ContextObject));
 }
-FVM_CommonHoverProvider CreateByManager(const UEUIManagerSubsystem Manager)
+FVM_CommonHoverProvider& CreateByManager(const UEUIManagerSubsystem Manager)
 {
-    FVM_CommonHoverProvider __r;
-    TEUIModelRef<FVM_CommonHoverProvider> local_6 = TEUIModelRef<FVM_CommonHoverProvider>(EUIInternal::MakeModelWithManager(Manager, FVM_CommonHoverProvider::ModelId));
-    return __r;
+    return TEUIModelRef<FVM_CommonHoverProvider>(EUIInternal::MakeModelWithManager(Manager, FVM_CommonHoverProvider::ModelId)).Get();
 }
 void GetModelInfo(FEUIViewModelMetaInfo &inout Result)
 {
@@ -720,7 +717,6 @@ namespace __GeneratedProperties_FVM_CommonHoverProvider
 {
 UScriptStruct StaticStruct()
 {
-    UScriptStruct local_2;
-    return local_2;
+    return __GeneratedProperties_FVM_CommonHoverProvider.Get();
 }
 }

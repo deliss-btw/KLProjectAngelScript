@@ -33,33 +33,20 @@ struct FDialogueNode_Speech : FDialogueSectionNodeBase
     }
     bool FillSubtitle(FDialogueSubtitle &inout Subtitle) const
     {
-        bool local_30;
         TDataObjectPtr<FDialogueLineConfig> local_24;
-        if (!(this.DialogueLineOnLeave))
-        {
-            local_30 = false;
-        }
-        else
-        {
-            FName local_26;
-            local_26.GetDataName();
-            local_30 = (local_26 == Subtitle.GetDialogueLineName());
-        }
-        if (local_30)
+        if (this.DialogueLineOnLeave && (this.DialogueLineOnLeave.Get().GetDataName() == Subtitle.GetDialogueLineName()))
         {
             local_24 = this.DialogueLineOnLeave;
         }
         else
         {
-            FName local_26;
             for (auto& local_68 : this.DialogueLines)
             {
                 if (!(local_68))
                 {
                     continue;
                 }
-                local_26.GetDataName();
-                if ((!((local_26 == Subtitle.GetDialogueLineName()))))
+                if ((!((local_68.Get().GetDataName() == Subtitle.GetDialogueLineName()))))
                 {
                     continue;
                 }
@@ -68,9 +55,8 @@ struct FDialogueNode_Speech : FDialogueSectionNodeBase
         }
         if (local_24)
         {
-            FText local_72;
-            local_72.GetSpeakerName();
-            Subtitle.SetSpeakerName(local_72);
+            Subtitle.SetSpeakerName(local_24.Get().GetSpeakerName());
+            Subtitle.SetContent(local_24.Get().LineText);
             FDialogueVOSource local_80;
             if (this.TryFindVoiceSource(local_24, local_80))
             {
@@ -145,13 +131,13 @@ struct FDialogueNode_Speech : FDialogueSectionNodeBase
     }
     bool TryFindVoiceSource(const TDataObjectPtr<FDialogueLineConfig> &inout Line, FDialogueVOSource &out OutVoiceSource) const
     {
-        const FDialogueVoiceConfig& local_14;
-        if (!(GetVoiceConfig().IsSet()))
+        if (!(Line.Get().GetVoiceConfig().IsSet()))
         {
             return false;
         }
         int local_11 = 2;
         int local_10 = local_11;
+        const FDialogueVoiceConfig& local_14 = Line.Get().GetVoiceConfig().Get();
         for (auto& local_28 : local_14.VOSources)
         {
             if ((int(local_28.PlayerGender) == 0 || (int(local_28.PlayerGender) == local_10)))
@@ -163,9 +149,7 @@ struct FDialogueNode_Speech : FDialogueSectionNodeBase
     }
     FDialogueSubtitle CreateSubtitle(const FDialogueDeliveryContext &inout Context, const TDataObjectPtr<FDialogueLineConfig> &inout Line) const
     {
-        FName local_24;
-        local_24.GetDataName();
-        FDialogueSubtitle local_22 = FDialogueSubtitle(Context.GetInteractTarget(), int(this.NodeId), local_24);
+        FDialogueSubtitle local_22 = FDialogueSubtitle(Context.GetInteractTarget(), int(this.NodeId), Line.Get().GetDataName());
         local_22.SetDuration(this.SubtitleDuration);
         if (this.bUseVoiceDuration)
         {
@@ -197,19 +181,18 @@ struct FDialogueNode_Option : FDialogueSectionNodeBase
     {
         if (this.OptionText.IsSet())
         {
-            FName local_3;
-            local_3.GetDataName();
-            return local_3;
+            return this.OptionText.Get().GetDataName();
         }
         return NAME_None;
     }
     bool CheckCondition(const FECSEntity &inout DialogueContextEntity, const FDialogueDeliveryContext &inout Context) const
     {
-        if ((FInstancedStruct::GetPtr(this.Condition).opCall() == nullptr))
+        TConstRawPtr<FDialogueConditionBase> local_6 = FInstancedStruct::GetPtr(this.Condition).opCall();
+        if ((local_6 == nullptr))
         {
             return true;
         }
-        return DialogueContextEntity.CheckCondition(Context.GetInteractTarget());
+        return local_6.Get().CheckCondition(DialogueContextEntity, Context.GetInteractTarget());
     }
     bool FillOption(FDialogueOptionInfo &inout Option) const
     {
@@ -217,6 +200,7 @@ struct FDialogueNode_Option : FDialogueSectionNodeBase
         {
             return false;
         }
+        Option.SetOptionText(this.OptionText.Get().LineText);
         Option.SetOptionStyle(this.OptionStyle);
         return true;
     }

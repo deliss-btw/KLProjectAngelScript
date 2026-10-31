@@ -22,7 +22,7 @@ class UWidget_RegionEventMinimapIcon : UEUIUserWidget
     UFUNCTION()
     TEUIModelRef<FVM_CommonRewardList> RegionEventMinimapIcon_RewardList() const
     {
-        FVM_RegionEventMinimapIcon& local_2;
+        FVM_RegionEventMinimapIcon& local_2 = this.RegionEventMinimapIcon.Get();
         TEUIModelRef<FVM_CommonRewardList> local_10;
         if (local_2)
         {
@@ -37,21 +37,21 @@ class UWidget_RegionEventMinimapIcon : UEUIUserWidget
     UFUNCTION()
     FText RegionEventMinimapIcon_RewardBuffDesc() const
     {
-        FVM_RegionEventMinimapIcon& local_2;
+        FVM_RegionEventMinimapIcon& local_2 = this.RegionEventMinimapIcon.Get();
         FText local_12 = local_2 ? local_2.GetRewardBuffDesc() : FText();
         return local_12;
     }
     UFUNCTION()
     FText RegionEventMinimapIcon_ToolTipDesc() const
     {
-        FVM_RegionEventMinimapIcon& local_2;
+        FVM_RegionEventMinimapIcon& local_2 = this.RegionEventMinimapIcon.Get();
         FText local_12 = local_2 ? local_2.GetToolTipDesc() : FText();
         return local_12;
     }
     UFUNCTION()
     FSoftBrush RegionEventMinimapIcon_DungeonIcon() const
     {
-        FVM_RegionEventMinimapIcon& local_2;
+        FVM_RegionEventMinimapIcon& local_2 = this.RegionEventMinimapIcon.Get();
         FSoftBrush local_92 = local_2 ? local_2.GetDungeonIcon() : FSoftBrush();
         return local_92;
     }
@@ -91,7 +91,7 @@ class UWidget_RegionEventMinimapIconTooltip : UEUIUserWidget
     UFUNCTION()
     TEUIModelRef<FVM_CommonRewardList> RegionEventMinimapIcon_RewardList() const
     {
-        FVM_RegionEventMinimapIcon& local_2;
+        FVM_RegionEventMinimapIcon& local_2 = this.RegionEventMinimapIcon.Get();
         TEUIModelRef<FVM_CommonRewardList> local_10;
         if (local_2)
         {
@@ -106,29 +106,29 @@ class UWidget_RegionEventMinimapIconTooltip : UEUIUserWidget
     UFUNCTION()
     FText RegionEventMinimapIcon_RewardBuffDesc() const
     {
-        FVM_RegionEventMinimapIcon& local_2;
+        FVM_RegionEventMinimapIcon& local_2 = this.RegionEventMinimapIcon.Get();
         FText local_12 = local_2 ? local_2.GetRewardBuffDesc() : FText();
         return local_12;
     }
     UFUNCTION()
     FText RegionEventMinimapIcon_ToolTipDesc() const
     {
-        FVM_RegionEventMinimapIcon& local_2;
+        FVM_RegionEventMinimapIcon& local_2 = this.RegionEventMinimapIcon.Get();
         FText local_12 = local_2 ? local_2.GetToolTipDesc() : FText();
         return local_12;
     }
     UFUNCTION()
     FSoftBrush RegionEventMinimapIcon_DungeonIcon() const
     {
-        FVM_RegionEventMinimapIcon& local_2;
+        FVM_RegionEventMinimapIcon& local_2 = this.RegionEventMinimapIcon.Get();
         FSoftBrush local_92 = local_2 ? local_2.GetDungeonIcon() : FSoftBrush();
         return local_92;
     }
     UFUNCTION()
     UWidget DecoratorTooltip_TipsFromWidget() const
     {
-        FVM_MinimapIconDecoratorTooltip& local_2;
         UWidget local_8;
+        FVM_MinimapIconDecoratorTooltip& local_2 = this.DecoratorTooltip.Get();
         if (local_2)
         {
             local_8 = local_2.GetTipsFromWidget();
@@ -141,21 +141,21 @@ class UWidget_RegionEventMinimapIconTooltip : UEUIUserWidget
     UFUNCTION()
     FText DecoratorTooltip_TooltipText() const
     {
-        FVM_MinimapIconDecoratorTooltip& local_2;
+        FVM_MinimapIconDecoratorTooltip& local_2 = this.DecoratorTooltip.Get();
         FText local_12 = local_2 ? local_2.GetTooltipText() : FText();
         return local_12;
     }
     UFUNCTION()
     FText DecoratorTooltip_DetailText() const
     {
-        FVM_MinimapIconDecoratorTooltip& local_2;
+        FVM_MinimapIconDecoratorTooltip& local_2 = this.DecoratorTooltip.Get();
         FText local_12 = local_2 ? local_2.GetDetailText() : FText();
         return local_12;
     }
     UFUNCTION()
     TArray<FEUIModelWeakRef> DecoratorTooltip_Actions() const
     {
-        FVM_MinimapIconDecoratorTooltip& local_2;
+        FVM_MinimapIconDecoratorTooltip& local_2 = this.DecoratorTooltip.Get();
         TArray<FEUIModelWeakRef> local_16;
         if (local_2)
         {

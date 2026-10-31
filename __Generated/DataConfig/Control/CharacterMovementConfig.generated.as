@@ -93,7 +93,6 @@ float32 __FDTCharacterMovementConfig_GetBaseNearDeathCrawlMoveSpeed(const TDataO
 UFUNCTION()
 TObjectPtr<UCurveFloat> __FDTCharacterMovementConfig_GetNaviWalkMoveSpeedAnimCurve(const TDataObjectPtr<FDTCharacterMovementConfig> &inout DataObject)
 {
-    TObjectPtr<UCurveFloat> __r;
     if ((DataObject == nullptr))
     {
         if (!(EUIGlobals::GIsDuringPropertyConversion))
@@ -103,12 +102,11 @@ TObjectPtr<UCurveFloat> __FDTCharacterMovementConfig_GetNaviWalkMoveSpeedAnimCur
         FDTCharacterMovementConfig local_142;
         return local_142.NaviWalkMoveSpeedAnimCurve;
     }
-    return __r;
+    return DataObject.Get().NaviWalkMoveSpeedAnimCurve;
 }
 UFUNCTION()
 TObjectPtr<UCurveFloat> __FDTCharacterMovementConfig_GetStrafeWalkMoveSpeedAnimCurve(const TDataObjectPtr<FDTCharacterMovementConfig> &inout DataObject)
 {
-    TObjectPtr<UCurveFloat> __r;
     if ((DataObject == nullptr))
     {
         if (!(EUIGlobals::GIsDuringPropertyConversion))
@@ -118,12 +116,11 @@ TObjectPtr<UCurveFloat> __FDTCharacterMovementConfig_GetStrafeWalkMoveSpeedAnimC
         FDTCharacterMovementConfig local_142;
         return local_142.StrafeWalkMoveSpeedAnimCurve;
     }
-    return __r;
+    return DataObject.Get().StrafeWalkMoveSpeedAnimCurve;
 }
 UFUNCTION()
 TObjectPtr<UCurveFloat> __FDTCharacterMovementConfig_GetStrafeJogMoveSpeedAnimCurve(const TDataObjectPtr<FDTCharacterMovementConfig> &inout DataObject)
 {
-    TObjectPtr<UCurveFloat> __r;
     if ((DataObject == nullptr))
     {
         if (!(EUIGlobals::GIsDuringPropertyConversion))
@@ -133,12 +130,11 @@ TObjectPtr<UCurveFloat> __FDTCharacterMovementConfig_GetStrafeJogMoveSpeedAnimCu
         FDTCharacterMovementConfig local_142;
         return local_142.StrafeJogMoveSpeedAnimCurve;
     }
-    return __r;
+    return DataObject.Get().StrafeJogMoveSpeedAnimCurve;
 }
 UFUNCTION()
 TObjectPtr<UCurveFloat> __FDTCharacterMovementConfig_GetNaviRunMoveSpeedAnimCurve(const TDataObjectPtr<FDTCharacterMovementConfig> &inout DataObject)
 {
-    TObjectPtr<UCurveFloat> __r;
     if ((DataObject == nullptr))
     {
         if (!(EUIGlobals::GIsDuringPropertyConversion))
@@ -148,12 +144,11 @@ TObjectPtr<UCurveFloat> __FDTCharacterMovementConfig_GetNaviRunMoveSpeedAnimCurv
         FDTCharacterMovementConfig local_142;
         return local_142.NaviRunMoveSpeedAnimCurve;
     }
-    return __r;
+    return DataObject.Get().NaviRunMoveSpeedAnimCurve;
 }
 UFUNCTION()
 TObjectPtr<UCurveFloat> __FDTCharacterMovementConfig_GetNaviSprintMoveSpeedAnimCurve(const TDataObjectPtr<FDTCharacterMovementConfig> &inout DataObject)
 {
-    TObjectPtr<UCurveFloat> __r;
     if ((DataObject == nullptr))
     {
         if (!(EUIGlobals::GIsDuringPropertyConversion))
@@ -163,12 +158,11 @@ TObjectPtr<UCurveFloat> __FDTCharacterMovementConfig_GetNaviSprintMoveSpeedAnimC
         FDTCharacterMovementConfig local_142;
         return local_142.NaviSprintMoveSpeedAnimCurve;
     }
-    return __r;
+    return DataObject.Get().NaviSprintMoveSpeedAnimCurve;
 }
 UFUNCTION()
 TObjectPtr<UCurveFloat> __FDTCharacterMovementConfig_GetNearDeathCrawlMoveSpeedAnimCurve(const TDataObjectPtr<FDTCharacterMovementConfig> &inout DataObject)
 {
-    TObjectPtr<UCurveFloat> __r;
     if ((DataObject == nullptr))
     {
         if (!(EUIGlobals::GIsDuringPropertyConversion))
@@ -178,7 +172,7 @@ TObjectPtr<UCurveFloat> __FDTCharacterMovementConfig_GetNearDeathCrawlMoveSpeedA
         FDTCharacterMovementConfig local_142;
         return local_142.NearDeathCrawlMoveSpeedAnimCurve;
     }
-    return __r;
+    return DataObject.Get().NearDeathCrawlMoveSpeedAnimCurve;
 }
 UFUNCTION()
 float32 __FDTCharacterMovementConfig_GetMoveAcceleration(const TDataObjectPtr<FDTCharacterMovementConfig> &inout DataObject)
@@ -318,7 +312,6 @@ float32 __FDTCharacterMovementConfig_GetMaxHoverHeight(const TDataObjectPtr<FDTC
 UFUNCTION()
 bool __FDTCharacterMovementConfig_GetbKeepStepHeightInAir(const TDataObjectPtr<FDTCharacterMovementConfig> &inout DataObject)
 {
-    bool local_1 = false;
     if ((DataObject == nullptr))
     {
         if (!(EUIGlobals::GIsDuringPropertyConversion))
@@ -328,7 +321,7 @@ bool __FDTCharacterMovementConfig_GetbKeepStepHeightInAir(const TDataObjectPtr<F
         FDTCharacterMovementConfig local_142;
         return local_142.bKeepStepHeightInAir;
     }
-    return local_1;
+    return DataObject.Get().bKeepStepHeightInAir;
 }
 UFUNCTION()
 float32 __FDTCharacterMovementConfig_GetWalkableSlopDegree(const TDataObjectPtr<FDTCharacterMovementConfig> &inout DataObject)
@@ -348,7 +341,6 @@ float32 __FDTCharacterMovementConfig_GetWalkableSlopDegree(const TDataObjectPtr<
 UFUNCTION()
 FCharacterMoveSlopeSpeedScaleConfig __FDTCharacterMovementConfig_GetSlopeSpeedScale(const TDataObjectPtr<FDTCharacterMovementConfig> &inout DataObject)
 {
-    FCharacterMoveSlopeSpeedScaleConfig __r;
     if ((DataObject == nullptr))
     {
         if (!(EUIGlobals::GIsDuringPropertyConversion))
@@ -358,7 +350,7 @@ FCharacterMoveSlopeSpeedScaleConfig __FDTCharacterMovementConfig_GetSlopeSpeedSc
         FDTCharacterMovementConfig local_142;
         return local_142.SlopeSpeedScale;
     }
-    return __r;
+    return DataObject.Get().SlopeSpeedScale;
 }
 UFUNCTION()
 float32 __FDTCharacterMovementConfig_GetDitchProtectRadius(const TDataObjectPtr<FDTCharacterMovementConfig> &inout DataObject)
@@ -393,7 +385,6 @@ float32 __FDTCharacterMovementConfig_GetEdgeProtectRadius(const TDataObjectPtr<F
 UFUNCTION()
 bool __FDTCharacterMovementConfig_GetbImmovableByPlayer(const TDataObjectPtr<FDTCharacterMovementConfig> &inout DataObject)
 {
-    bool local_1 = false;
     if ((DataObject == nullptr))
     {
         if (!(EUIGlobals::GIsDuringPropertyConversion))
@@ -403,7 +394,7 @@ bool __FDTCharacterMovementConfig_GetbImmovableByPlayer(const TDataObjectPtr<FDT
         FDTCharacterMovementConfig local_142;
         return local_142.bImmovableByPlayer;
     }
-    return local_1;
+    return DataObject.Get().bImmovableByPlayer;
 }
 UFUNCTION()
 float32 __FDTCharacterMovementConfig_GetWallRunSpeed(const TDataObjectPtr<FDTCharacterMovementConfig> &inout DataObject)
@@ -678,7 +669,6 @@ float32 __FDTCharacterMovementConfig_GetFlyPitchMax(const TDataObjectPtr<FDTChar
 UFUNCTION()
 FRuntimeFloatCurve __FDTCharacterMovementConfig_GetFlyTurnSpeedScaleCurve(const TDataObjectPtr<FDTCharacterMovementConfig> &inout DataObject)
 {
-    FRuntimeFloatCurve __r;
     if ((DataObject == nullptr))
     {
         if (!(EUIGlobals::GIsDuringPropertyConversion))
@@ -688,12 +678,11 @@ FRuntimeFloatCurve __FDTCharacterMovementConfig_GetFlyTurnSpeedScaleCurve(const 
         FDTCharacterMovementConfig local_142;
         return local_142.FlyTurnSpeedScaleCurve;
     }
-    return __r;
+    return DataObject.Get().FlyTurnSpeedScaleCurve;
 }
 UFUNCTION()
 FRuntimeFloatCurve __FDTCharacterMovementConfig_GetFlyPitchSpeedCurve(const TDataObjectPtr<FDTCharacterMovementConfig> &inout DataObject)
 {
-    FRuntimeFloatCurve __r;
     if ((DataObject == nullptr))
     {
         if (!(EUIGlobals::GIsDuringPropertyConversion))
@@ -703,7 +692,7 @@ FRuntimeFloatCurve __FDTCharacterMovementConfig_GetFlyPitchSpeedCurve(const TDat
         FDTCharacterMovementConfig local_142;
         return local_142.FlyPitchSpeedCurve;
     }
-    return __r;
+    return DataObject.Get().FlyPitchSpeedCurve;
 }
 UFUNCTION()
 float32 __FDTCharacterMovementConfig_GetExternalForceMaxSpeed(const TDataObjectPtr<FDTCharacterMovementConfig> &inout DataObject)

@@ -92,10 +92,8 @@ struct FM_CommissionTier : FEUIModel
             this.SetTimeLimitSec(int(local_168.TimeSec));
             if (local_168.Reward.IsSet())
             {
-                TArrayConstIterator<FRewardEntry> local_178;
-                for (; local_178.CanProceed;)
+                for (auto& local_186 : local_168.Reward.Get().RewardItems)
                 {
-                    const FRewardEntry& local_186 = local_178.Proceed();
                     if (!(local_186.Item.IsSet()))
                     {
                         continue;
@@ -122,16 +120,14 @@ struct FM_CommissionTier : FEUIModel
         }
         TDataObjectPtr<FCommissionConfig> local_30 = this.GetCommission().opArrow().GetCommissionConfig();
         FMS_CommissionLeaderboardManager& local_56 = ::FMS_CommissionLeaderboardManager::Get(this.GetContext().Manager);
-        if (!(local_56.GetOrCreateLeaderboard(local_30).IsValid()))
+        TEUIModelRef<FM_CommissionLeaderboard> local_58 = local_56.GetOrCreateLeaderboard(local_30);
+        if (!(local_58.IsValid()))
         {
             return;
         }
-        TEUIModelRef<FM_CommissionLeaderboardEntry> local_64;
-        local_64.GetMyEntry();
-        if (local_64.IsValid())
+        if (local_58.Get().GetMyEntry().IsValid())
         {
-            local_64.GetMyEntry();
-            local_2 = GetCostTimeSec();
+            local_2 = local_58.Get().GetMyEntry().Get().GetCostTimeSec();
         }
         else
         {
@@ -302,11 +298,9 @@ FM_CommissionTier& Create(const UObject ContextObject, const TEUIModelRef<FM_Com
 {
     return FM_CommissionTier::CreateByManager(EUIInternal::GetContextManager(ContextObject), Commission, ECommissionTier(Tier));
 }
-FM_CommissionTier CreateByManager(const UEUIManagerSubsystem Manager, const TEUIModelRef<FM_Commission> &inout Commission, const ECommissionTier Tier)
+FM_CommissionTier& CreateByManager(const UEUIManagerSubsystem Manager, const TEUIModelRef<FM_Commission> &inout Commission, const ECommissionTier Tier)
 {
-    FM_CommissionTier __r;
-    TEUIModelRef<FM_CommissionTier> local_6 = TEUIModelRef<FM_CommissionTier>(EUIInternal::MakeModelWithManager_Generic(Manager, FM_CommissionTier::ModelId, 0, Commission, Tier));
-    return __r;
+    return TEUIModelRef<FM_CommissionTier>(EUIInternal::MakeModelWithManager_Generic(Manager, FM_CommissionTier::ModelId, 0, Commission, Tier)).Get();
 }
 void GetModelInfo(FEUIModelOnlyMetaInfo &inout Result)
 {

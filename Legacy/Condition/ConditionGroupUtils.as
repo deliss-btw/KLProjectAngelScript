@@ -239,14 +239,14 @@ bool FindPerConditionContextEntity(const FECSEntity &inout GroupContextEntity, c
 {
     FECSEntity local_4;
     OutContextEntity = local_4;
-    switch (int(ContextType))
+    switch (ContextType)
     {
-    case 0:
+    case EConditionSpecContextType::Default:
     {
         OutContextEntity = GroupContextEntity;
         return true;
     }
-    case 1:
+    case EConditionSpecContextType::Team:
     {
         Get local_12;
         const FC_PlayerInTeam& local_14 = local_12.opCall();
@@ -257,7 +257,7 @@ bool FindPerConditionContextEntity(const FECSEntity &inout GroupContextEntity, c
         }
         break;
     }
-    case 2:
+    case EConditionSpecContextType::Player:
     {
         Has local_18;
         bool local_7 = local_18.opCall();
@@ -268,7 +268,7 @@ bool FindPerConditionContextEntity(const FECSEntity &inout GroupContextEntity, c
         }
         break;
     }
-    case 3:
+    case EConditionSpecContextType::Global:
     {
         OutContextEntity = ENTITY_NULL;
         return true;

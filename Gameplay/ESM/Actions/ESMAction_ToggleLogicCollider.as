@@ -62,6 +62,7 @@ class UESMAction_ToggleLogicCollider : UESMBPBaseSpanAction
     {
         if (!(this.bLegacyImported) == !(false))
         {
+            this.Modify(true);
             this.bLegacyImported = true;
             if ((!((this.ColliderName == NAME_None))))
             {

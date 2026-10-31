@@ -19,6 +19,8 @@ struct FKLFlowNode_ListenTrigger : FKLFlowNode
     UPROPERTY()
     int SubscriptionHandleEndOverlap;
 
+    default m_ScriptOverrideMeta = Cast<UASStruct>(FKLFlowNode_ListenTrigger.Get());
+
     FKLFlowNode_ListenTrigger()
     {
         this.SubscriptionHandleBeginOverlap = 0;
@@ -28,7 +30,9 @@ struct FKLFlowNode_ListenTrigger : FKLFlowNode
     }
     void OnBuild_Implementation()
     {
-        // body not fully recovered — stub [opcode-uncovered]
+        this.bIsEntryNode = true;
+        this.OutputPins = {n"OnPlayerControllerBeginOverlap", n"OnPlayerControllerEndOverlap"};
+        return;
     }
     void OnInit_Implementation()
     {
@@ -65,24 +69,25 @@ struct FKLFlowNode_ListenTrigger : FKLFlowNode
     bool TryConsumeOverlapEvent(const int SubscriptionHandle, FKLFlowEvent_PlayerControllerOverlap &inout OutEvent)
     {
         FInstancedStruct local_4;
-        int local_20 = 0;
         if (!(this.ConsumeEvent(SubscriptionHandle, local_4)))
         {
             return false;
         }
         FInstancedStruct::GetPtr local_10;
-        if (!(local_10.opCall()))
+        TConstRawPtr<FKLFlowEvent_PlayerControllerOverlap> local_12 = local_10.opCall();
+        if (!(local_12))
         {
             return false;
         }
         if (this.LevelUnitRef.IsValid())
         {
             FECSEntity local_18;
-            if (!(::KLFlowLibrary::GetEntityByLevelUnitRef(this.LevelUnitRef, local_18)) || !((local_18.GetId() == FECSEntityId(local_20))))
+            if (!(::KLFlowLibrary::GetEntityByLevelUnitRef(this.LevelUnitRef, local_18)) || !((local_18.GetId() == FECSEntityId(int(local_12.Get().TriggerEntityId.Value)))))
             {
                 return false;
             }
         }
+        OutEvent = local_12.Get();
         return true;
     }
     void OnQuit_Implementation()
@@ -109,13 +114,13 @@ struct FKLFlowNode_ListenTrigger : FKLFlowNode
     }
     void OnLoad_Implementation(const FKLFlowNodeSnapshot &inout InSnapshot)
     {
-        int local_10 = 0;
-        if (!(FInstancedStruct::GetPtr<FKLFlowNodeMemory_ListenTrigger>(InSnapshot.Memory).opCall()))
+        TConstRawPtr<FKLFlowNodeMemory_ListenTrigger> local_6 = FInstancedStruct::GetPtr<FKLFlowNodeMemory_ListenTrigger>(InSnapshot.Memory).opCall();
+        if (!(local_6))
         {
             return;
         }
-        this.SubscriptionHandleBeginOverlap = local_10;
-        this.SubscriptionHandleEndOverlap = local_10;
+        this.SubscriptionHandleBeginOverlap = local_6.Get().HandleBeginOverlap;
+        this.SubscriptionHandleEndOverlap = local_6.Get().HandleEndOverlap;
         return;
     }
 }

@@ -415,11 +415,9 @@ FVM_CommonDropdown& Create(const UObject ContextObject, const TArray<FEUIModelCo
 {
     return FVM_CommonDropdown::CreateByManager(EUIInternal::GetContextManager(ContextObject), OptionDatas, DefaultOption, OnDropdownSelected);
 }
-FVM_CommonDropdown CreateByManager(const UEUIManagerSubsystem Manager, const TArray<FEUIModelContainer> &inout OptionDatas, const FCommonDropdownDefaultOption &inout DefaultOption, const FOnCommonDropdownSelected &inout OnDropdownSelected)
+FVM_CommonDropdown& CreateByManager(const UEUIManagerSubsystem Manager, const TArray<FEUIModelContainer> &inout OptionDatas, const FCommonDropdownDefaultOption &inout DefaultOption, const FOnCommonDropdownSelected &inout OnDropdownSelected)
 {
-    FVM_CommonDropdown __r;
-    TEUIModelRef<FVM_CommonDropdown> local_6 = TEUIModelRef<FVM_CommonDropdown>(EUIInternal::MakeModelWithManager_Generic(Manager, FVM_CommonDropdown::ModelId, 0, OptionDatas, DefaultOption, OnDropdownSelected));
-    return __r;
+    return TEUIModelRef<FVM_CommonDropdown>(EUIInternal::MakeModelWithManager_Generic(Manager, FVM_CommonDropdown::ModelId, 0, OptionDatas, DefaultOption, OnDropdownSelected)).Get();
 }
 void GetModelInfo(FEUIViewModelMetaInfo &inout Result)
 {
@@ -533,7 +531,6 @@ namespace __GeneratedProperties_FVM_CommonDropdown
 {
 UScriptStruct StaticStruct()
 {
-    UScriptStruct local_2;
-    return local_2;
+    return __GeneratedProperties_FVM_CommonDropdown.Get();
 }
 }

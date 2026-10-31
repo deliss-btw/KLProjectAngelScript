@@ -8,7 +8,6 @@ namespace FEcologyModifierUtils
 void UpdateModifiersForRegion(AECSRegionVolume &inout Region, const FEcologyModifierSummary &inout Summary, const FC_EcologyResourceModifierConfig &inout Config, const bool bAdd)
 {
     int local_54 = 0;
-    TMapIterator<FECSEntityId, FEcologyVoxelSceneUnitSummary> local_112;
     FVoxelRegionScope local_32 = FVoxelRegionScope(Region.GetVolumeBoundsWithCache().GetBox());
     FECSWorldPtr local_52 = ECS::GetECSWorld();
     FVoxelRegionIterator local_64 = local_32.Iterator();
@@ -20,10 +19,8 @@ void UpdateModifiersForRegion(AECSRegionVolume &inout Region, const FEcologyModi
         local_84.bHasEcologyModifier = true;
         for (auto& local_104 : local_80.GetCellSlotDataRef(EEcologyVoxelUnitSlot(0)))
         {
-            local_104;
-            for (; local_112.CanProceed;)
+            for (auto& local_122 : local_104.GetValue().SlotData)
             {
-                auto local_122 = local_112.Proceed();
                 if (bAdd)
                 {
                     FEcologyModifierUtils::TryAddModifierToEntity(Config, Summary, FECSEntity(local_122.GetKey()));
@@ -76,6 +73,7 @@ void TryRemoveModifierToEntity(const FECSEntityId &inout ModifierId, const FECSE
     }
     if (!(local_8.Modifiers.Contains(ModifierId)))
     {
+        local_8.Modifiers.Remove(ModifierId);
     }
     return;
 }

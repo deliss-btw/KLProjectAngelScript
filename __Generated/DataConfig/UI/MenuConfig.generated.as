@@ -3,7 +3,6 @@ namespace __FMenuConfigFunctions
 UFUNCTION()
 FText __FMenuConfig_GetMenuName(const TDataObjectPtr<FMenuConfig> &inout DataObject)
 {
-    FText __r;
     if ((DataObject == nullptr))
     {
         if (!(EUIGlobals::GIsDuringPropertyConversion))
@@ -13,12 +12,11 @@ FText __FMenuConfig_GetMenuName(const TDataObjectPtr<FMenuConfig> &inout DataObj
         FMenuConfig local_100;
         return local_100.MenuName;
     }
-    return __r;
+    return DataObject.Get().MenuName;
 }
 UFUNCTION()
 FSoftBrush __FMenuConfig_GetMenuIcon(const TDataObjectPtr<FMenuConfig> &inout DataObject)
 {
-    FSoftBrush __r;
     if ((DataObject == nullptr))
     {
         if (!(EUIGlobals::GIsDuringPropertyConversion))
@@ -28,7 +26,7 @@ FSoftBrush __FMenuConfig_GetMenuIcon(const TDataObjectPtr<FMenuConfig> &inout Da
         FMenuConfig local_100;
         return local_100.MenuIcon;
     }
-    return __r;
+    return DataObject.Get().MenuIcon;
 }
 UFUNCTION()
 TDataObjectPtr<FSystemControlConfig> __FMenuConfig_GetSystemControlConfig(const TDataObjectPtr<FMenuConfig> &inout DataObject)
@@ -42,12 +40,11 @@ TDataObjectPtr<FSystemControlConfig> __FMenuConfig_GetSystemControlConfig(const 
         FMenuConfig local_100;
         return local_100.GetSystemControlConfig();
     }
-    return GetSystemControlConfig();
+    return DataObject.Get().GetSystemControlConfig();
 }
 UFUNCTION()
 FEUIWidgetTag __FMenuConfig_GetMenuWidget(const TDataObjectPtr<FMenuConfig> &inout DataObject)
 {
-    FEUIWidgetTag __r;
     if ((DataObject == nullptr))
     {
         if (!(EUIGlobals::GIsDuringPropertyConversion))
@@ -57,7 +54,7 @@ FEUIWidgetTag __FMenuConfig_GetMenuWidget(const TDataObjectPtr<FMenuConfig> &ino
         FMenuConfig local_100;
         return local_100.MenuWidget;
     }
-    return __r;
+    return DataObject.Get().MenuWidget;
 }
 UFUNCTION()
 FRedDotNodeData __FMenuConfig_GetEntranceRedDot(const TDataObjectPtr<FMenuConfig> &inout DataObject)
@@ -78,7 +75,6 @@ FRedDotNodeData __FMenuConfig_GetEntranceRedDot(const TDataObjectPtr<FMenuConfig
 UFUNCTION()
 FEUIInputAction __FMenuConfig_GetEntryAction(const TDataObjectPtr<FMenuConfig> &inout DataObject)
 {
-    FEUIInputAction __r;
     if ((DataObject == nullptr))
     {
         if (!(EUIGlobals::GIsDuringPropertyConversion))
@@ -88,7 +84,7 @@ FEUIInputAction __FMenuConfig_GetEntryAction(const TDataObjectPtr<FMenuConfig> &
         FMenuConfig local_100;
         return local_100.EntryAction;
     }
-    return __r;
+    return DataObject.Get().EntryAction;
 }
 UFUNCTION()
 FMenuConfig CastToFMenuConfig(const TDataObjectPtr<FMenuConfig> &inout DataObject)

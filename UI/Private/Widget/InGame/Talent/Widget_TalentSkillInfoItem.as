@@ -44,7 +44,7 @@ class UWidget_TalentSkillInfoItem : UEUIUserListItemWidget
     UFUNCTION()
     void Tick_Implementation(const FGeometry &inout MyGeometry, const float32 InDeltaTime)
     {
-        if (UICommonUtil::CVar_UI_DebugSkillVideoPlayer.GetBool() && GetbIsSelected())
+        if (UICommonUtil::CVar_UI_DebugSkillVideoPlayer.GetBool() && this.SelectableItem.Get().GetbIsSelected())
         {
             bool local_1;
             const UMediaPlayer local_6 = this.VideoPlayer.GetMediaPlayerScript();
@@ -104,7 +104,7 @@ class UWidget_TalentSkillInfoItem : UEUIUserListItemWidget
         {
             return;
         }
-        bool local_5 = this.bNeedAutoPlay || (this.SelectableItem.IsValid() && GetbIsSelected());
+        bool local_5 = this.bNeedAutoPlay || (this.SelectableItem.IsValid() && this.SelectableItem.Get().GetbIsSelected());
         if (local_5)
         {
             if ((bRestart || !(this.bDesiredPlaying)))
@@ -125,7 +125,7 @@ class UWidget_TalentSkillInfoItem : UEUIUserListItemWidget
     UFUNCTION()
     void OnSkillChanged()
     {
-        UMediaSource local_4 = GetSkillPreviewMovie();
+        UMediaSource local_4 = this.TalentSkillInfo.Get().GetSkillPreviewMovie();
         if (local_4 != nullptr)
         {
             this.VideoPlayer.SetVideo(local_4);
@@ -157,7 +157,7 @@ class UWidget_TalentSkillInfoItem : UEUIUserListItemWidget
     {
         if (bSelect && this.TalentSkillInfo.IsValid())
         {
-            ConsumeRedDot();
+            this.TalentSkillInfo.Get().ConsumeRedDot();
         }
         if (this.UI_Common_Comp_BigItem_Bg != nullptr)
         {
@@ -231,10 +231,10 @@ class UWidget_TalentSkillInfoItem : UEUIUserListItemWidget
     }
     void HandleObservedModelChanges(FEUIReactiveSubscriberIterator &inout It)
     {
-        FVM_TalentSkillInfoItem& local_6;
-        FVM_SelectableItem& local_12;
         TEUIModelRef<FVM_TalentSkillInfoItem> local_2 = this.TalentSkillInfo.AsRef();
+        FVM_TalentSkillInfoItem& local_6 = local_2.Get();
         TEUIModelRef<FVM_SelectableItem> local_8 = this.SelectableItem.AsRef();
+        FVM_SelectableItem& local_12 = local_8.Get();
         for (; It; )
         {
             FEUIReactiveSubscriberTrackScope local_62 = FEUIReactiveSubscriberTrackScope(It);

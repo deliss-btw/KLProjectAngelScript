@@ -198,11 +198,9 @@ FVMS_CommonLoading& Get(const UObject ContextObject)
 {
     return FVMS_CommonLoading::GetByManager(EUIInternal::GetContextManager(ContextObject));
 }
-FVMS_CommonLoading GetByManager(const UEUIManagerSubsystem Manager)
+FVMS_CommonLoading& GetByManager(const UEUIManagerSubsystem Manager)
 {
-    FVMS_CommonLoading __r;
-    TEUIModelRef<FVMS_CommonLoading> local_6 = TEUIModelRef<FVMS_CommonLoading>(EUIInternal::MakeModelWithManager(Manager, FVMS_CommonLoading::ModelId));
-    return __r;
+    return TEUIModelRef<FVMS_CommonLoading>(EUIInternal::MakeModelWithManager(Manager, FVMS_CommonLoading::ModelId)).Get();
 }
 void GetModelInfo(FEUIViewModelMetaInfo &inout Result)
 {
@@ -262,7 +260,6 @@ namespace __GeneratedProperties_FVMS_CommonLoading
 {
 UScriptStruct StaticStruct()
 {
-    UScriptStruct local_2;
-    return local_2;
+    return __GeneratedProperties_FVMS_CommonLoading.Get();
 }
 }

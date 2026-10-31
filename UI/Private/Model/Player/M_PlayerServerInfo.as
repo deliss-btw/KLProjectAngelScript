@@ -258,11 +258,9 @@ FM_PlayerDSInfo& Create(const UObject ContextObject, const FECSEntity &inout Pla
 {
     return FM_PlayerDSInfo::CreateByManager(EUIInternal::GetContextManager(ContextObject), PlayerEntity);
 }
-FM_PlayerDSInfo CreateByManager(const UEUIManagerSubsystem Manager, const FECSEntity &inout PlayerEntity)
+FM_PlayerDSInfo& CreateByManager(const UEUIManagerSubsystem Manager, const FECSEntity &inout PlayerEntity)
 {
-    FM_PlayerDSInfo __r;
-    TEUIModelRef<FM_PlayerDSInfo> local_6 = TEUIModelRef<FM_PlayerDSInfo>(EUIInternal::MakeModelWithManager_Generic(Manager, FM_PlayerDSInfo::ModelId, 0, PlayerEntity));
-    return __r;
+    return TEUIModelRef<FM_PlayerDSInfo>(EUIInternal::MakeModelWithManager_Generic(Manager, FM_PlayerDSInfo::ModelId, 0, PlayerEntity)).Get();
 }
 void GetModelInfo(FEUIModelOnlyMetaInfo &inout Result)
 {

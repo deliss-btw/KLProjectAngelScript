@@ -19,10 +19,7 @@ FString ReplacePromptVar(const FString &inout Prompt, const TMap<FString, FStrin
     FString local_4 = Prompt;
     for (auto& local_24 : PromptVarRelaceMap)
     {
-        local_24;
-        FString local_28 = FString();
-        FString local_38;
-        local_4 = local_38;
+        local_4 = local_4.Replace(FString().AppendChar(int16(123)).AppendChar(int16(123)).Append(local_24.GetKey()).AppendChar(int16(125)).AppendChar(int16(125)), local_24.GetValue(), ESearchCase(1));
     }
     return local_4;
 }

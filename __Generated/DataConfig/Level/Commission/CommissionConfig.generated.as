@@ -3,7 +3,6 @@ namespace __FCommissionGroupConfigFunctions
 UFUNCTION()
 FText __FCommissionGroupConfig_GetDescription(const TDataObjectPtr<FCommissionGroupConfig> &inout DataObject)
 {
-    FText __r;
     if ((DataObject == nullptr))
     {
         if (!(EUIGlobals::GIsDuringPropertyConversion))
@@ -13,23 +12,21 @@ FText __FCommissionGroupConfig_GetDescription(const TDataObjectPtr<FCommissionGr
         FCommissionGroupConfig local_22;
         return local_22.Description;
     }
-    return __r;
+    return DataObject.Get().Description;
 }
 UFUNCTION()
 bool __FCommissionGroupConfig_GetCanRepeat(const TDataObjectPtr<FCommissionGroupConfig> &inout DataObject)
 {
-    bool local_1 = false;
     if ((DataObject == nullptr))
     {
-        local_1 = !(EUIGlobals::GIsDuringPropertyConversion);
-        if (local_1)
+        if (!(EUIGlobals::GIsDuringPropertyConversion))
         {
             FBlueprintDebugFunctions::ThrowScriptException("Get 'CanRepeat' from a null 'FCommissionGroupConfig' DataObject!");
         }
         FCommissionGroupConfig local_22;
         return local_22.CanRepeat;
     }
-    return local_1;
+    return DataObject.Get().CanRepeat;
 }
 UFUNCTION()
 FCommissionGroupConfig CastToFCommissionGroupConfig(const TDataObjectPtr<FCommissionGroupConfig> &inout DataObject)
@@ -43,7 +40,6 @@ namespace __FCommissionConfigFunctions
 UFUNCTION()
 FText __FCommissionConfig_GetCommissionName(const TDataObjectPtr<FCommissionConfig> &inout DataObject)
 {
-    FText __r;
     if ((DataObject == nullptr))
     {
         if (!(EUIGlobals::GIsDuringPropertyConversion))
@@ -53,12 +49,11 @@ FText __FCommissionConfig_GetCommissionName(const TDataObjectPtr<FCommissionConf
         FCommissionConfig local_432;
         return local_432.CommissionName;
     }
-    return __r;
+    return DataObject.Get().CommissionName;
 }
 UFUNCTION()
 FText __FCommissionConfig_GetCommissionAimDesc(const TDataObjectPtr<FCommissionConfig> &inout DataObject)
 {
-    FText __r;
     if ((DataObject == nullptr))
     {
         if (!(EUIGlobals::GIsDuringPropertyConversion))
@@ -68,12 +63,11 @@ FText __FCommissionConfig_GetCommissionAimDesc(const TDataObjectPtr<FCommissionC
         FCommissionConfig local_432;
         return local_432.CommissionAimDesc;
     }
-    return __r;
+    return DataObject.Get().CommissionAimDesc;
 }
 UFUNCTION()
 FText __FCommissionConfig_GetCommissionDetail(const TDataObjectPtr<FCommissionConfig> &inout DataObject)
 {
-    FText __r;
     if ((DataObject == nullptr))
     {
         if (!(EUIGlobals::GIsDuringPropertyConversion))
@@ -83,12 +77,11 @@ FText __FCommissionConfig_GetCommissionDetail(const TDataObjectPtr<FCommissionCo
         FCommissionConfig local_432;
         return local_432.CommissionDetail;
     }
-    return __r;
+    return DataObject.Get().CommissionDetail;
 }
 UFUNCTION()
 ECommissionType __FCommissionConfig_GetCommissionType(const TDataObjectPtr<FCommissionConfig> &inout DataObject)
 {
-    int local_433 = 0;
     if ((DataObject == nullptr))
     {
         if (!(EUIGlobals::GIsDuringPropertyConversion))
@@ -96,42 +89,37 @@ ECommissionType __FCommissionConfig_GetCommissionType(const TDataObjectPtr<FComm
             FBlueprintDebugFunctions::ThrowScriptException("Get 'CommissionType' from a null 'FCommissionConfig' DataObject!");
         }
         FCommissionConfig local_432;
-        local_433 = int(local_432.CommissionType);
-        return ECommissionType(local_433);
+        return local_432.CommissionType;
     }
-    return ECommissionType(local_433);
+    return DataObject.Get().CommissionType;
 }
 UFUNCTION()
 bool __FCommissionConfig_GetbDisableRecruitSend(const TDataObjectPtr<FCommissionConfig> &inout DataObject)
 {
-    bool local_1 = false;
     if ((DataObject == nullptr))
     {
-        local_1 = !(EUIGlobals::GIsDuringPropertyConversion);
-        if (local_1)
+        if (!(EUIGlobals::GIsDuringPropertyConversion))
         {
             FBlueprintDebugFunctions::ThrowScriptException("Get 'bDisableRecruitSend' from a null 'FCommissionConfig' DataObject!");
         }
         FCommissionConfig local_432;
         return local_432.bDisableRecruitSend;
     }
-    return local_1;
+    return DataObject.Get().bDisableRecruitSend;
 }
 UFUNCTION()
 bool __FCommissionConfig_GetbAllowMatchmakingEntry(const TDataObjectPtr<FCommissionConfig> &inout DataObject)
 {
-    bool local_1 = false;
     if ((DataObject == nullptr))
     {
-        local_1 = !(EUIGlobals::GIsDuringPropertyConversion);
-        if (local_1)
+        if (!(EUIGlobals::GIsDuringPropertyConversion))
         {
             FBlueprintDebugFunctions::ThrowScriptException("Get 'bAllowMatchmakingEntry' from a null 'FCommissionConfig' DataObject!");
         }
         FCommissionConfig local_432;
         return local_432.bAllowMatchmakingEntry;
     }
-    return local_1;
+    return DataObject.Get().bAllowMatchmakingEntry;
 }
 UFUNCTION()
 TDataObjectPtr<FPveCommissionMatchConfig> __FCommissionConfig_GetOverrideMatchConfig(const TDataObjectPtr<FCommissionConfig> &inout DataObject)
@@ -145,12 +133,11 @@ TDataObjectPtr<FPveCommissionMatchConfig> __FCommissionConfig_GetOverrideMatchCo
         FCommissionConfig local_432;
         return local_432.GetOverrideMatchConfig();
     }
-    return GetOverrideMatchConfig();
+    return DataObject.Get().GetOverrideMatchConfig();
 }
 UFUNCTION()
 ECommissionLoadingDisplayMode __FCommissionConfig_GetObjectiveDisplayMode(const TDataObjectPtr<FCommissionConfig> &inout DataObject)
 {
-    int local_433 = 0;
     if ((DataObject == nullptr))
     {
         if (!(EUIGlobals::GIsDuringPropertyConversion))
@@ -158,15 +145,13 @@ ECommissionLoadingDisplayMode __FCommissionConfig_GetObjectiveDisplayMode(const 
             FBlueprintDebugFunctions::ThrowScriptException("Get 'ObjectiveDisplayMode' from a null 'FCommissionConfig' DataObject!");
         }
         FCommissionConfig local_432;
-        local_433 = int(local_432.ObjectiveDisplayMode);
-        return ECommissionLoadingDisplayMode(local_433);
+        return local_432.ObjectiveDisplayMode;
     }
-    return ECommissionLoadingDisplayMode(local_433);
+    return DataObject.Get().ObjectiveDisplayMode;
 }
 UFUNCTION()
 ECommissionLoadingDisplayMode __FCommissionConfig_GetFailConditionDisplayMode(const TDataObjectPtr<FCommissionConfig> &inout DataObject)
 {
-    int local_433 = 0;
     if ((DataObject == nullptr))
     {
         if (!(EUIGlobals::GIsDuringPropertyConversion))
@@ -174,15 +159,13 @@ ECommissionLoadingDisplayMode __FCommissionConfig_GetFailConditionDisplayMode(co
             FBlueprintDebugFunctions::ThrowScriptException("Get 'FailConditionDisplayMode' from a null 'FCommissionConfig' DataObject!");
         }
         FCommissionConfig local_432;
-        local_433 = int(local_432.FailConditionDisplayMode);
-        return ECommissionLoadingDisplayMode(local_433);
+        return local_432.FailConditionDisplayMode;
     }
-    return ECommissionLoadingDisplayMode(local_433);
+    return DataObject.Get().FailConditionDisplayMode;
 }
 UFUNCTION()
 FSoftBrush __FCommissionConfig_GetCommissionIcon(const TDataObjectPtr<FCommissionConfig> &inout DataObject)
 {
-    FSoftBrush __r;
     if ((DataObject == nullptr))
     {
         if (!(EUIGlobals::GIsDuringPropertyConversion))
@@ -192,23 +175,21 @@ FSoftBrush __FCommissionConfig_GetCommissionIcon(const TDataObjectPtr<FCommissio
         FCommissionConfig local_432;
         return local_432.CommissionIcon;
     }
-    return __r;
+    return DataObject.Get().CommissionIcon;
 }
 UFUNCTION()
 bool __FCommissionConfig_GetDefaultActive(const TDataObjectPtr<FCommissionConfig> &inout DataObject)
 {
-    bool local_1 = false;
     if ((DataObject == nullptr))
     {
-        local_1 = !(EUIGlobals::GIsDuringPropertyConversion);
-        if (local_1)
+        if (!(EUIGlobals::GIsDuringPropertyConversion))
         {
             FBlueprintDebugFunctions::ThrowScriptException("Get 'DefaultActive' from a null 'FCommissionConfig' DataObject!");
         }
         FCommissionConfig local_432;
         return local_432.DefaultActive;
     }
-    return local_1;
+    return DataObject.Get().DefaultActive;
 }
 UFUNCTION()
 TDataObjectPtr<FServerConditionConfigBase> __FCommissionConfig_GetActiveCond(const TDataObjectPtr<FCommissionConfig> &inout DataObject)
@@ -222,7 +203,7 @@ TDataObjectPtr<FServerConditionConfigBase> __FCommissionConfig_GetActiveCond(con
         FCommissionConfig local_432;
         return local_432.GetActiveCond();
     }
-    return GetActiveCond();
+    return DataObject.Get().GetActiveCond();
 }
 UFUNCTION()
 int __FCommissionConfig_GetCommissionStars(const TDataObjectPtr<FCommissionConfig> &inout DataObject)
@@ -302,18 +283,16 @@ float32 __FCommissionConfig_GetCommissionDayTime(const TDataObjectPtr<FCommissio
 UFUNCTION()
 bool __FCommissionConfig_GetbLockDayTime(const TDataObjectPtr<FCommissionConfig> &inout DataObject)
 {
-    bool local_1 = false;
     if ((DataObject == nullptr))
     {
-        local_1 = !(EUIGlobals::GIsDuringPropertyConversion);
-        if (local_1)
+        if (!(EUIGlobals::GIsDuringPropertyConversion))
         {
             FBlueprintDebugFunctions::ThrowScriptException("Get 'bLockDayTime' from a null 'FCommissionConfig' DataObject!");
         }
         FCommissionConfig local_432;
         return local_432.bLockDayTime;
     }
-    return local_1;
+    return DataObject.Get().bLockDayTime;
 }
 UFUNCTION()
 TDataObjectPtr<FObjectiveConfig> __FCommissionConfig_GetCommissionTargetObjective(const TDataObjectPtr<FCommissionConfig> &inout DataObject)
@@ -327,7 +306,7 @@ TDataObjectPtr<FObjectiveConfig> __FCommissionConfig_GetCommissionTargetObjectiv
         FCommissionConfig local_432;
         return local_432.GetCommissionTargetObjective();
     }
-    return GetCommissionTargetObjective();
+    return DataObject.Get().GetCommissionTargetObjective();
 }
 UFUNCTION()
 TDataObjectPtr<FObjectiveConfig> __FCommissionConfig_GetCommissionSubTargetObjective(const TDataObjectPtr<FCommissionConfig> &inout DataObject)
@@ -341,7 +320,7 @@ TDataObjectPtr<FObjectiveConfig> __FCommissionConfig_GetCommissionSubTargetObjec
         FCommissionConfig local_432;
         return local_432.GetCommissionSubTargetObjective();
     }
-    return GetCommissionSubTargetObjective();
+    return DataObject.Get().GetCommissionSubTargetObjective();
 }
 UFUNCTION()
 TDataObjectPtr<FDropItemConfigBase> __FCommissionConfig_GetCommissionReward(const TDataObjectPtr<FCommissionConfig> &inout DataObject)
@@ -355,12 +334,11 @@ TDataObjectPtr<FDropItemConfigBase> __FCommissionConfig_GetCommissionReward(cons
         FCommissionConfig local_432;
         return local_432.GetCommissionReward();
     }
-    return GetCommissionReward();
+    return DataObject.Get().GetCommissionReward();
 }
 UFUNCTION()
 TArray<FCommissionMonsterDisplayInfo> __FCommissionConfig_GetDisplayMonsters(const TDataObjectPtr<FCommissionConfig> &inout DataObject)
 {
-    TArray<FCommissionMonsterDisplayInfo> __r;
     if ((DataObject == nullptr))
     {
         if (!(EUIGlobals::GIsDuringPropertyConversion))
@@ -370,7 +348,7 @@ TArray<FCommissionMonsterDisplayInfo> __FCommissionConfig_GetDisplayMonsters(con
         FCommissionConfig local_432;
         return local_432.DisplayMonsters;
     }
-    return __r;
+    return DataObject.Get().DisplayMonsters;
 }
 UFUNCTION()
 TDataObjectPtr<FRewardConfig> __FCommissionConfig_GetSpecialRewardConfig(const TDataObjectPtr<FCommissionConfig> &inout DataObject)
@@ -384,7 +362,7 @@ TDataObjectPtr<FRewardConfig> __FCommissionConfig_GetSpecialRewardConfig(const T
         FCommissionConfig local_432;
         return local_432.GetSpecialRewardConfig();
     }
-    return GetSpecialRewardConfig();
+    return DataObject.Get().GetSpecialRewardConfig();
 }
 UFUNCTION()
 TDataObjectPtr<FRewardConfig> __FCommissionConfig_GetMedalRewardConfig(const TDataObjectPtr<FCommissionConfig> &inout DataObject)
@@ -398,7 +376,7 @@ TDataObjectPtr<FRewardConfig> __FCommissionConfig_GetMedalRewardConfig(const TDa
         FCommissionConfig local_432;
         return local_432.GetMedalRewardConfig();
     }
-    return GetMedalRewardConfig();
+    return DataObject.Get().GetMedalRewardConfig();
 }
 UFUNCTION()
 TDataObjectPtr<FDropItemConfigBase> __FCommissionConfig_GetSPlusDropReward(const TDataObjectPtr<FCommissionConfig> &inout DataObject)
@@ -412,7 +390,7 @@ TDataObjectPtr<FDropItemConfigBase> __FCommissionConfig_GetSPlusDropReward(const
         FCommissionConfig local_432;
         return local_432.GetSPlusDropReward();
     }
-    return GetSPlusDropReward();
+    return DataObject.Get().GetSPlusDropReward();
 }
 UFUNCTION()
 TDataObjectPtr<FDropItemConfigBase> __FCommissionConfig_GetSPlusPlusDropReward(const TDataObjectPtr<FCommissionConfig> &inout DataObject)
@@ -426,7 +404,7 @@ TDataObjectPtr<FDropItemConfigBase> __FCommissionConfig_GetSPlusPlusDropReward(c
         FCommissionConfig local_432;
         return local_432.GetSPlusPlusDropReward();
     }
-    return GetSPlusPlusDropReward();
+    return DataObject.Get().GetSPlusPlusDropReward();
 }
 UFUNCTION()
 TDataObjectPtr<FRandomSeedConfig> __FCommissionConfig_GetRandomSeedConfig(const TDataObjectPtr<FCommissionConfig> &inout DataObject)
@@ -440,7 +418,7 @@ TDataObjectPtr<FRandomSeedConfig> __FCommissionConfig_GetRandomSeedConfig(const 
         FCommissionConfig local_432;
         return local_432.GetRandomSeedConfig();
     }
-    return GetRandomSeedConfig();
+    return DataObject.Get().GetRandomSeedConfig();
 }
 UFUNCTION()
 TDataObjectPtr<FRandomPolicyBlacklistConfigBase> __FCommissionConfig_GetRandomPolicyBlacklistConfig(const TDataObjectPtr<FCommissionConfig> &inout DataObject)
@@ -454,7 +432,7 @@ TDataObjectPtr<FRandomPolicyBlacklistConfigBase> __FCommissionConfig_GetRandomPo
         FCommissionConfig local_432;
         return local_432.GetRandomPolicyBlacklistConfig();
     }
-    return GetRandomPolicyBlacklistConfig();
+    return DataObject.Get().GetRandomPolicyBlacklistConfig();
 }
 UFUNCTION()
 TDataObjectPtr<FLevelInfoConfig> __FCommissionConfig_GetLevelInfoConfig(const TDataObjectPtr<FCommissionConfig> &inout DataObject)
@@ -468,12 +446,11 @@ TDataObjectPtr<FLevelInfoConfig> __FCommissionConfig_GetLevelInfoConfig(const TD
         FCommissionConfig local_432;
         return local_432.GetLevelInfoConfig();
     }
-    return GetLevelInfoConfig();
+    return DataObject.Get().GetLevelInfoConfig();
 }
 UFUNCTION()
 FText __FCommissionConfig_GetDisplayLocationName(const TDataObjectPtr<FCommissionConfig> &inout DataObject)
 {
-    FText __r;
     if ((DataObject == nullptr))
     {
         if (!(EUIGlobals::GIsDuringPropertyConversion))
@@ -483,7 +460,7 @@ FText __FCommissionConfig_GetDisplayLocationName(const TDataObjectPtr<FCommissio
         FCommissionConfig local_432;
         return local_432.DisplayLocationName;
     }
-    return __r;
+    return DataObject.Get().DisplayLocationName;
 }
 UFUNCTION()
 int __FCommissionConfig_GetMaxRandomEventCount(const TDataObjectPtr<FCommissionConfig> &inout DataObject)
@@ -518,7 +495,6 @@ float32 __FCommissionConfig_GetRandomEventFilterDistance(const TDataObjectPtr<FC
 UFUNCTION()
 TArray<FRandomEventDistanceTier> __FCommissionConfig_GetRandomEventDistanceTiers(const TDataObjectPtr<FCommissionConfig> &inout DataObject)
 {
-    TArray<FRandomEventDistanceTier> __r;
     if ((DataObject == nullptr))
     {
         if (!(EUIGlobals::GIsDuringPropertyConversion))
@@ -528,7 +504,7 @@ TArray<FRandomEventDistanceTier> __FCommissionConfig_GetRandomEventDistanceTiers
         FCommissionConfig local_432;
         return local_432.RandomEventDistanceTiers;
     }
-    return __r;
+    return DataObject.Get().RandomEventDistanceTiers;
 }
 UFUNCTION()
 TArray<TDataObjectPtr<FEcologyCreatureDefinitionRow>> __FCommissionConfig_GetRandomEventFilterTargetCreatures(const TDataObjectPtr<FCommissionConfig> &inout DataObject)
@@ -542,12 +518,11 @@ TArray<TDataObjectPtr<FEcologyCreatureDefinitionRow>> __FCommissionConfig_GetRan
         FCommissionConfig local_432;
         return local_432.GetRandomEventFilterTargetCreatures();
     }
-    return GetRandomEventFilterTargetCreatures();
+    return DataObject.Get().GetRandomEventFilterTargetCreatures();
 }
 UFUNCTION()
 TArray<FRandomEventTypeCountLimit> __FCommissionConfig_GetRandomEventTypeCountLimits(const TDataObjectPtr<FCommissionConfig> &inout DataObject)
 {
-    TArray<FRandomEventTypeCountLimit> __r;
     if ((DataObject == nullptr))
     {
         if (!(EUIGlobals::GIsDuringPropertyConversion))
@@ -557,7 +532,7 @@ TArray<FRandomEventTypeCountLimit> __FCommissionConfig_GetRandomEventTypeCountLi
         FCommissionConfig local_432;
         return local_432.RandomEventTypeCountLimits;
     }
-    return __r;
+    return DataObject.Get().RandomEventTypeCountLimits;
 }
 UFUNCTION()
 UDataTable __FCommissionConfig_GetDifficultyLevelConfig(const TDataObjectPtr<FCommissionConfig> &inout DataObject)
@@ -586,12 +561,11 @@ TDataObjectPtr<FCommissionPropAttributeConfig> __FCommissionConfig_GetPropAttrib
         FCommissionConfig local_432;
         return local_432.GetPropAttributeConfig();
     }
-    return GetPropAttributeConfig();
+    return DataObject.Get().GetPropAttributeConfig();
 }
 UFUNCTION()
 TArray<FText> __FCommissionConfig_GetCommissionProgressTexts(const TDataObjectPtr<FCommissionConfig> &inout DataObject)
 {
-    TArray<FText> __r;
     if ((DataObject == nullptr))
     {
         if (!(EUIGlobals::GIsDuringPropertyConversion))
@@ -601,7 +575,7 @@ TArray<FText> __FCommissionConfig_GetCommissionProgressTexts(const TDataObjectPt
         FCommissionConfig local_432;
         return local_432.CommissionProgressTexts;
     }
-    return __r;
+    return DataObject.Get().CommissionProgressTexts;
 }
 UFUNCTION()
 int __FCommissionConfig_GetMonsterBaseLevel(const TDataObjectPtr<FCommissionConfig> &inout DataObject)
@@ -621,34 +595,30 @@ int __FCommissionConfig_GetMonsterBaseLevel(const TDataObjectPtr<FCommissionConf
 UFUNCTION()
 bool __FCommissionConfig_GetbOverrideSetGuidingPathToTarget(const TDataObjectPtr<FCommissionConfig> &inout DataObject)
 {
-    bool local_1 = false;
     if ((DataObject == nullptr))
     {
-        local_1 = !(EUIGlobals::GIsDuringPropertyConversion);
-        if (local_1)
+        if (!(EUIGlobals::GIsDuringPropertyConversion))
         {
             FBlueprintDebugFunctions::ThrowScriptException("Get 'bOverrideSetGuidingPathToTarget' from a null 'FCommissionConfig' DataObject!");
         }
         FCommissionConfig local_432;
         return local_432.bOverrideSetGuidingPathToTarget;
     }
-    return local_1;
+    return DataObject.Get().bOverrideSetGuidingPathToTarget;
 }
 UFUNCTION()
 bool __FCommissionConfig_GetbSetGuidingPathToTarget(const TDataObjectPtr<FCommissionConfig> &inout DataObject)
 {
-    bool local_1 = false;
     if ((DataObject == nullptr))
     {
-        local_1 = !(EUIGlobals::GIsDuringPropertyConversion);
-        if (local_1)
+        if (!(EUIGlobals::GIsDuringPropertyConversion))
         {
             FBlueprintDebugFunctions::ThrowScriptException("Get 'bSetGuidingPathToTarget' from a null 'FCommissionConfig' DataObject!");
         }
         FCommissionConfig local_432;
         return local_432.bSetGuidingPathToTarget;
     }
-    return local_1;
+    return DataObject.Get().bSetGuidingPathToTarget;
 }
 UFUNCTION()
 FCommissionConfig CastToFCommissionConfig(const TDataObjectPtr<FCommissionConfig> &inout DataObject)
@@ -671,7 +641,6 @@ namespace __FHardCommissionConfigFunctions
 UFUNCTION()
 ECommissionRefreshType __FHardCommissionConfig_GetCommissionRefreshType(const TDataObjectPtr<FHardCommissionConfig> &inout DataObject)
 {
-    int local_485 = 0;
     if ((DataObject == nullptr))
     {
         if (!(EUIGlobals::GIsDuringPropertyConversion))
@@ -679,10 +648,9 @@ ECommissionRefreshType __FHardCommissionConfig_GetCommissionRefreshType(const TD
             FBlueprintDebugFunctions::ThrowScriptException("Get 'CommissionRefreshType' from a null 'FHardCommissionConfig' DataObject!");
         }
         FHardCommissionConfig local_484;
-        local_485 = int(local_484.CommissionRefreshType);
-        return ECommissionRefreshType(local_485);
+        return local_484.CommissionRefreshType;
     }
-    return ECommissionRefreshType(local_485);
+    return DataObject.Get().CommissionRefreshType;
 }
 UFUNCTION()
 TDataObjectPtr<FCommissionGroupConfig> __FHardCommissionConfig_GetCommissionGroupConfig(const TDataObjectPtr<FHardCommissionConfig> &inout DataObject)
@@ -696,7 +664,7 @@ TDataObjectPtr<FCommissionGroupConfig> __FHardCommissionConfig_GetCommissionGrou
         FHardCommissionConfig local_484;
         return local_484.GetCommissionGroupConfig();
     }
-    return GetCommissionGroupConfig();
+    return DataObject.Get().GetCommissionGroupConfig();
 }
 UFUNCTION()
 FCommissionRefreshConfig __FHardCommissionConfig_GetRefreshConfig(const TDataObjectPtr<FHardCommissionConfig> &inout DataObject)
@@ -760,7 +728,6 @@ namespace __FRaceCommissionConfigFunctions
 UFUNCTION()
 ERaceMode __FRaceCommissionConfig_GetRaceMode(const TDataObjectPtr<FRaceCommissionConfig> &inout DataObject)
 {
-    int local_441 = 0;
     if ((DataObject == nullptr))
     {
         if (!(EUIGlobals::GIsDuringPropertyConversion))
@@ -768,15 +735,13 @@ ERaceMode __FRaceCommissionConfig_GetRaceMode(const TDataObjectPtr<FRaceCommissi
             FBlueprintDebugFunctions::ThrowScriptException("Get 'RaceMode' from a null 'FRaceCommissionConfig' DataObject!");
         }
         FRaceCommissionConfig local_440;
-        local_441 = int(local_440.RaceMode);
-        return ERaceMode(local_441);
+        return local_440.RaceMode;
     }
-    return ERaceMode(local_441);
+    return DataObject.Get().RaceMode;
 }
 UFUNCTION()
 TArray<FRaceTierReward> __FRaceCommissionConfig_GetRaceTierRewards(const TDataObjectPtr<FRaceCommissionConfig> &inout DataObject)
 {
-    TArray<FRaceTierReward> __r;
     if ((DataObject == nullptr))
     {
         if (!(EUIGlobals::GIsDuringPropertyConversion))
@@ -786,7 +751,7 @@ TArray<FRaceTierReward> __FRaceCommissionConfig_GetRaceTierRewards(const TDataOb
         FRaceCommissionConfig local_440;
         return local_440.RaceTierRewards;
     }
-    return __r;
+    return DataObject.Get().RaceTierRewards;
 }
 UFUNCTION()
 FRaceCommissionConfig CastToFRaceCommissionConfig(const TDataObjectPtr<FRaceCommissionConfig> &inout DataObject)
@@ -800,7 +765,6 @@ namespace __FCommissionTypeConfigFunctions
 UFUNCTION()
 ECommissionType __FCommissionTypeConfig_GetCommissionType(const TDataObjectPtr<FCommissionTypeConfig> &inout DataObject)
 {
-    int local_97 = 0;
     if ((DataObject == nullptr))
     {
         if (!(EUIGlobals::GIsDuringPropertyConversion))
@@ -808,10 +772,9 @@ ECommissionType __FCommissionTypeConfig_GetCommissionType(const TDataObjectPtr<F
             FBlueprintDebugFunctions::ThrowScriptException("Get 'CommissionType' from a null 'FCommissionTypeConfig' DataObject!");
         }
         FCommissionTypeConfig local_96;
-        local_97 = int(local_96.CommissionType);
-        return ECommissionType(local_97);
+        return local_96.CommissionType;
     }
-    return ECommissionType(local_97);
+    return DataObject.Get().CommissionType;
 }
 UFUNCTION()
 TDataObjectPtr<FRefreshRuleConfig> __FCommissionTypeConfig_GetRefreshRuleConfig(const TDataObjectPtr<FCommissionTypeConfig> &inout DataObject)
@@ -825,12 +788,11 @@ TDataObjectPtr<FRefreshRuleConfig> __FCommissionTypeConfig_GetRefreshRuleConfig(
         FCommissionTypeConfig local_96;
         return local_96.GetRefreshRuleConfig();
     }
-    return GetRefreshRuleConfig();
+    return DataObject.Get().GetRefreshRuleConfig();
 }
 UFUNCTION()
 FText __FCommissionTypeConfig_GetCommissionTypeName(const TDataObjectPtr<FCommissionTypeConfig> &inout DataObject)
 {
-    FText __r;
     if ((DataObject == nullptr))
     {
         if (!(EUIGlobals::GIsDuringPropertyConversion))
@@ -840,12 +802,11 @@ FText __FCommissionTypeConfig_GetCommissionTypeName(const TDataObjectPtr<FCommis
         FCommissionTypeConfig local_96;
         return local_96.CommissionTypeName;
     }
-    return __r;
+    return DataObject.Get().CommissionTypeName;
 }
 UFUNCTION()
 FSoftBrush __FCommissionTypeConfig_GetCommissionTypeIcon(const TDataObjectPtr<FCommissionTypeConfig> &inout DataObject)
 {
-    FSoftBrush __r;
     if ((DataObject == nullptr))
     {
         if (!(EUIGlobals::GIsDuringPropertyConversion))
@@ -855,12 +816,11 @@ FSoftBrush __FCommissionTypeConfig_GetCommissionTypeIcon(const TDataObjectPtr<FC
         FCommissionTypeConfig local_96;
         return local_96.CommissionTypeIcon;
     }
-    return __r;
+    return DataObject.Get().CommissionTypeIcon;
 }
 UFUNCTION()
 ESystemModule __FCommissionTypeConfig_GetSystemModule(const TDataObjectPtr<FCommissionTypeConfig> &inout DataObject)
 {
-    int local_97 = 0;
     if ((DataObject == nullptr))
     {
         if (!(EUIGlobals::GIsDuringPropertyConversion))
@@ -868,10 +828,9 @@ ESystemModule __FCommissionTypeConfig_GetSystemModule(const TDataObjectPtr<FComm
             FBlueprintDebugFunctions::ThrowScriptException("Get 'SystemModule' from a null 'FCommissionTypeConfig' DataObject!");
         }
         FCommissionTypeConfig local_96;
-        local_97 = int(local_96.SystemModule);
-        return ESystemModule(local_97);
+        return local_96.SystemModule;
     }
-    return ESystemModule(local_97);
+    return DataObject.Get().SystemModule;
 }
 UFUNCTION()
 FCommissionTypeConfig CastToFCommissionTypeConfig(const TDataObjectPtr<FCommissionTypeConfig> &inout DataObject)

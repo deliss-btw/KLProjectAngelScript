@@ -96,7 +96,7 @@ class US_DamageSystem : UECSScriptSystem
             local_16.AttackTags = FGameplayTagBisSetWrapper::FromEntity(local_16.FinalDamageSource);
             if (local_16.AttackData)
             {
-                const FAttackData& local_82;
+                const FAttackData& local_82 = local_16.AttackData.Get();
                 local_16.AttackTags.Append(local_82.AttackCalculationTags);
                 ::FDamageUtils::AddAttackCategoryTagsToBitSet(int(local_82.AttackCategory), local_16.AttackTags);
             }
@@ -141,7 +141,6 @@ class US_DamageSystem : UECSScriptSystem
         float32 local_356;
         float32 local_357;
         bool local_369;
-        int local_387 = 0;
         int local_448 = 0;
         int local_526 = 0;
         int local_1020 = 0;
@@ -367,7 +366,7 @@ class US_DamageSystem : UECSScriptSystem
                     const FC_DefenseHit& local_386 = local_384.opCall();
                     if (local_386)
                     {
-                        if (local_16.AttackData && ::FDamageUtils::CanDefense(EAttackType(local_387)))
+                        if (local_16.AttackData && ::FDamageUtils::CanDefense(EAttackType(local_16.AttackData.Get().AttackType)))
                         {
                             const FDefenseHitData& local_390 = local_386.GetDefenseHitDatas()[int(local_16.HitBreakLevel)];
                             if (local_390.GetbCanDefense())
@@ -481,10 +480,10 @@ class US_DamageSystem : UECSScriptSystem
             }
             if (local_43)
             {
-                TDataObjectPtr<FComboHitDamageReduction> local_416 = GetComboDamageReduction();
+                TDataObjectPtr<FComboHitDamageReduction> local_416 = local_16.AttackData.Get().GetComboDamageReduction();
                 if (local_416)
                 {
-                    const FComboHitDamageReduction& local_442;
+                    const FComboHitDamageReduction& local_442 = local_416.Get();
                     FComboHitReductionKey local_476;
                     local_476.SetComboHitConfig(TDataObjectPtr<FComboHitDamageReduction>(local_442));
                     local_476.SetDamageCaster(local_24);
@@ -605,8 +604,7 @@ class US_DamageSystem : UECSScriptSystem
                 }
             }
             local_568.bHitWeakness = local_16.bIsWeakness;
-            bool local_351_4 = this.CheckUseEcologyPosture(local_24, local_20);
-            local_568.bUseEcologyPosture = local_351_4;
+            local_568.bUseEcologyPosture = this.CheckUseEcologyPosture(local_24, local_20);
             if (local_568.bUseEcologyPosture)
             {
                 local_568.PostureDamage = local_16.BaseDamage.GetEcologyPostureDamage();
@@ -664,8 +662,7 @@ class US_DamageSystem : UECSScriptSystem
                 {
                     local_43 = local_994.AccumulationAttribute.IsValid() && local_994.AccumulationAttributeMax.IsValid() && local_994.StateTag.IsValid();
                     local_333 = local_30.HasAttribute(local_994.AccumulationAttribute) && local_30.HasAttribute(local_994.AccumulationAttributeMax);
-                    local_351_4 = local_43 && local_333;
-                    local_334 = local_351_4;
+                    local_334 = local_43 && local_333;
                 }
                 if (local_334)
                 {
@@ -674,12 +671,12 @@ class US_DamageSystem : UECSScriptSystem
                 }
                 if (local_16.AttackData)
                 {
-                    local_568.bAbnormalEnhanced = local_351_4;
+                    local_568.bAbnormalEnhanced = local_16.AttackData.Get().bIsAbnormalEnhanced;
                 }
             }
             if (local_16.AttackData)
             {
-                local_392_4 = GetEnvBreakDamageValue();
+                local_392_4 = local_16.AttackData.Get().GetEnvBreakDamageValue();
                 local_568.EnvBreakDamage = local_392_4;
             }
             local_568.DamageBodyPart = local_16.DamageBodyPart;
@@ -718,8 +715,6 @@ class US_DamageSystem : UECSScriptSystem
         float32 local_64;
         FCE_DamageEvent local_74;
         float32 local_109;
-        float32 local_112 = 0.0f;
-        float32 local_115 = 0.0f;
         float32 local_116;
         int local_122 = 0;
         int local_128 = 0;
@@ -765,8 +760,7 @@ class US_DamageSystem : UECSScriptSystem
                 local_55 = local_20_2.GetPostureAttackRatio();
                 local_56 = local_20_2.GetBodyPartDamageRatio();
             }
-            float32 local_54 = Debug::CVar_Debug_PostureAttackRatio.GetFloat();
-            if (local_54 != 1.0f)
+            if (Debug::CVar_Debug_PostureAttackRatio.GetFloat() != 1.0f)
             {
                 float32 local_57 = Debug::CVar_Debug_PostureAttackRatio.GetFloat();
                 local_55 = local_55 * local_57;
@@ -788,8 +782,7 @@ class US_DamageSystem : UECSScriptSystem
             }
             if (local_59 && local_32.HasAttribute(Attribute::HP))
             {
-                local_54 = local_52.FinalValues.HPDamage;
-                local_58 = local_54 * local_53;
+                local_58 = local_52.FinalValues.HPDamage * local_53;
             }
             local_61 = local_58;
             float32 local_62 = 0.0f;
@@ -821,23 +814,25 @@ class US_DamageSystem : UECSScriptSystem
                 {
                     for (auto& local_98 : local_80.GetNamedInherentShields())
                     {
+                        FECSEntity local_102 = FECSEntity(local_98.GetValue());
                         Modify local_106;
                         FC_Shield& local_108 = local_106.opCall();
                         if (local_108)
                         {
+                            float32 local_115;
                             if (!(local_108.GetbShieldActive()) || local_108.GetbBroken())
                             {
                                 continue;
                             }
                             local_57_2 = local_108.GetShieldHP().Evaluate(FixedTime.Time);
                             float32 local_113 = FMath::Clamp(local_108.GetBaseData().GetAbsorbRatio().GetDamageRatio(EDamageType(local_52.DamageType)), 0.0f, 1.0f);
-                            local_112 = FMath::Clamp(local_108.GetBaseData().GetDamageRatio().GetDamageRatio(EDamageType(local_52.DamageType)), 0.0f, 1.0f);
+                            float32 local_112 = FMath::Clamp(local_108.GetBaseData().GetDamageRatio().GetDamageRatio(EDamageType(local_52.DamageType)), 0.0f, 1.0f);
                             local_115 = 0.0f;
                             if (local_112 > 0.0f)
                             {
                                 float32 local_114 = local_57_2 / local_112;
-                                local_54 = local_61 * local_113;
-                                local_115 = FMath::Min(local_114, local_54);
+                                float32 local_54_2 = local_61 * local_113;
+                                local_115 = FMath::Min(local_114, local_54_2);
                             }
                             else
                             {
@@ -881,7 +876,7 @@ class US_DamageSystem : UECSScriptSystem
             {
                 if (!(Entity.MatchGameplayTag(GameplayTags::CombatState_Endure)))
                 {
-                    FECSEntity local_102 = Entity;
+                    FECSEntity local_102_2 = Entity;
                     Get local_142;
                     const FC_DamageReceiverTransfer& local_144 = local_142.opCall();
                     if (local_144)
@@ -897,14 +892,14 @@ class US_DamageSystem : UECSScriptSystem
                         }
                         if (local_59)
                         {
-                            local_102 = local_144.GetDamageValueToEntity();
+                            local_102_2 = local_144.GetDamageValueToEntity();
                         }
                     }
                     if (local_150)
                     {
                         if (Debug::CVar_Debug_MaxPostureAttack.GetInt() > 0)
                         {
-                            local_63 = FGameAttributeUtils::GetAttributeValue(local_102, Attribute::PostureMax, FixedTime.Time, true, local_63, false, FGameAttributeModificationValue());
+                            local_63 = FGameAttributeUtils::GetAttributeValue(local_102_2, Attribute::PostureMax, FixedTime.Time, true, local_63, false, FGameAttributeModificationValue());
                         }
                         FPostureChangeData local_174;
                         local_174.SourceEntity = local_52.FinalDamageSource;
@@ -923,9 +918,8 @@ class US_DamageSystem : UECSScriptSystem
                 FDamageAbnormalChangeData local_190;
                 local_190.SourceEntity = local_52.FinalDamageSource;
                 local_190.AbnormalState = EAbnormalState(local_52.FinalValues.AbnormalState);
-                local_54 = local_64;
-                local_54 = -local_54;
-                local_190.DeltaValue = local_54;
+                float32 local_54_3 = -local_64;
+                local_190.DeltaValue = local_54_3;
                 local_190.DamageEventId = int(local_74._base_FECSEvent);
                 local_190.bEnhanced = local_52.FinalValues.bAbnormalEnhanced;
                 local_182.Changes.Add(local_190);
@@ -1006,8 +1000,7 @@ class US_DamageSystem : UECSScriptSystem
                                 local_244.AttackerEntity = local_52.FinalDamageSource;
                                 local_244.DefenderEntity = Entity;
                                 local_109 = local_244.DeltaValue;
-                                local_115 = local_109 - local_116;
-                                local_244.DeltaValue = local_115;
+                                local_244.DeltaValue = (local_109 - local_116);
                                 local_244.DamageEventId = int(local_74._base_FECSEvent);
                             }
                         }
@@ -1027,16 +1020,16 @@ class US_DamageSystem : UECSScriptSystem
             local_274 = local_52.AttackData;
             if (!((local_274 == nullptr)))
             {
-                const FAttackData& local_300;
+                const FAttackData& local_300 = local_52.AttackData.Get();
                 if (local_300.HitApplyBuffToTarget.IsValid())
                 {
-                    FECSEntity local_102_2 = FBuffUtils::AddBuff(Entity, local_300.HitApplyBuffToTarget, FixedTime.Time, local_52.FinalDamageSource, false, -1.0f, 1, false);
+                    FECSEntity local_102_3 = FBuffUtils::AddBuff(Entity, local_300.HitApplyBuffToTarget, FixedTime.Time, local_52.FinalDamageSource, false, -1.0f, 1, false);
                 }
                 if (ECS::IsAuthorityOrPrediction(local_52.FinalDamageSource))
                 {
                     if (ECS::IsAuthorityOrPrediction(local_52.FinalDamageSource) && local_300.HitApplyBuffToSelf.IsValid())
                     {
-                        FECSEntity local_102_3 = FBuffUtils::AddBuff(local_52.FinalDamageSource, local_300.HitApplyBuffToSelf, FixedTime.Time, local_52.FinalDamageSource, false, -1.0f, 1, false);
+                        FECSEntity local_102_4 = FBuffUtils::AddBuff(local_52.FinalDamageSource, local_300.HitApplyBuffToSelf, FixedTime.Time, local_52.FinalDamageSource, false, -1.0f, 1, false);
                     }
                     Get local_30;
                     local_150 = local_30.opCall();
@@ -1046,8 +1039,7 @@ class US_DamageSystem : UECSScriptSystem
                         {
                             if (local_300.bHitRecoverSkillEnergyEffectByExternalCoefficient)
                             {
-                                local_54 = local_52.ExternalCoefficient;
-                                local_109 = local_54;
+                                local_109 = local_52.ExternalCoefficient;
                             }
                             else
                             {
@@ -1059,16 +1051,16 @@ class US_DamageSystem : UECSScriptSystem
                                 {
                                     if (!(::FCombatUtils::IsHitRecoverAttributeBanned(local_52.FinalDamageSource, local_324.GetKey())))
                                     {
-                                        if (local_54 > 0.0f)
+                                        if (local_324.GetValue() > 0.0f)
                                         {
-                                            local_112 = local_115 * local_109;
-                                            FGameAttributeUtils::Recover(local_52.FinalDamageSource, local_324.GetKey(), FixedTime.Time, local_112, -1.0f);
+                                            float32 local_112_2 = local_324.GetValue() * local_109;
+                                            FGameAttributeUtils::Recover(local_52.FinalDamageSource, local_324.GetKey(), FixedTime.Time, local_112_2, -1.0f);
                                             continue;
                                         }
-                                        if (local_115 < 0.0f)
+                                        if (local_324.GetValue() < 0.0f)
                                         {
-                                            local_112 = -local_112;
-                                            FGameAttributeUtils::Consume(local_52.FinalDamageSource, local_324.GetKey(), FixedTime.Time, (local_112 * local_109));
+                                            float32 local_112_3 = -local_324.GetValue();
+                                            FGameAttributeUtils::Consume(local_52.FinalDamageSource, local_324.GetKey(), FixedTime.Time, (local_112_3 * local_109));
                                         }
                                     }
                                 }
@@ -1131,9 +1123,9 @@ class US_DamageSystem : UECSScriptSystem
                 {
                     GetGameplaySettings<UUtilitySettings> local_394;
                     local_392 = local_394;
-                    local_112 = local_52.DefenderMultiplicationValues.BodyPartRatio;
-                    local_54 = local_52.DefenderMultiplicationValues.DamageTypeRatio;
-                    local_229 = ((local_112 * local_54) < local_392.AttenuationDamageTextDamageTypeThrethold);
+                    float32 local_112_4 = local_52.DefenderMultiplicationValues.BodyPartRatio;
+                    float32 local_54_4 = local_52.DefenderMultiplicationValues.DamageTypeRatio;
+                    local_229 = ((local_112_4 * local_54_4) < local_392.AttenuationDamageTextDamageTypeThrethold);
                     local_390.bAttenuated = local_229;
                 }
             }
@@ -1163,9 +1155,10 @@ class US_DamageSystem : UECSScriptSystem
                 }
                 for (auto& local_424 : local_406.BossCombatSessions)
                 {
-                    local_424;
+                    local_250_2 = FFPTime(local_424.GetValue().FirstDamageTime);
                     if ((local_250_2 == 0.0))
                     {
+                        local_424.GetValue().FirstDamageTime = FixedTime.Time;
                     }
                 }
                 if (local_52.FinalDamageSource.IsValid())
@@ -1180,11 +1173,12 @@ class US_DamageSystem : UECSScriptSystem
                     {
                         local_426.SelfCombatSession.FirstDamageTime = FixedTime.Time;
                     }
-                    for (auto& local_424 : local_426.BossCombatSessions)
+                    for (auto& local_424_2 : local_426.BossCombatSessions)
                     {
-                        local_424;
+                        local_250_2 = FFPTime(local_424_2.GetValue().FirstDamageTime);
                         if ((local_250_2 == 0.0))
                         {
+                            local_424_2.GetValue().FirstDamageTime = FixedTime.Time;
                         }
                     }
                 }
@@ -1731,7 +1725,7 @@ class US_DamageSystem : UECSScriptSystem
                             }
                             if (local_118)
                             {
-                                local_190.SetbDestroyImmediately((0 == 1));
+                                local_190.SetbDestroyImmediately((int(local_118.Get().TargetDeathType) == 1));
                             }
                         }
                         if (int(local_40.DamageEventId) >= 0)
@@ -2106,7 +2100,6 @@ class US_DamageSystem : UECSScriptSystem
         int local_74 = 0;
         int local_84 = 0;
         int local_98 = 0;
-        UGameAttributeScaleConfig local_112;
         if (MutualClashPreChange.DeltaValue == 0.0f)
         {
             return;
@@ -2163,16 +2156,12 @@ class US_DamageSystem : UECSScriptSystem
                 local_88.opCall().TrySetHitState(Entity, MutualClashActionInfo.GetHitState(), local_48, true, 0);
             }
             FECSWorldPtr local_92 = this.GetECSWorld();
-            int local_9 = local_74.GetTotalClashCount();
-            TSoftObjectPtr<UGameAttributeScaleConfig> local_110 = local_98.GetAttributeScaleConfig();
-            float32 local_6 = local_112.MutualClashScaleData.GetScale(local_9);
+            float32 local_6 = local_98.GetAttributeScaleConfig().Get().MutualClashScaleData.GetScale(local_74.GetTotalClashCount());
             float32 local_5 = Attribute.GetAttributeValue(Attribute::MutualClashMax, FixedTime.Time);
             if (local_74.GetTotalClashCount() > 0)
             {
-                local_9 = local_74.GetTotalClashCount();
-                local_9 = local_9 - 1;
-                TSoftObjectPtr<UGameAttributeScaleConfig> local_110_2 = local_98.GetAttributeScaleConfig();
-                local_5 = local_5 / local_112.MutualClashScaleData.GetScale(local_9);
+                UGameAttributeScaleConfig local_112 = local_98.GetAttributeScaleConfig().Get();
+                local_5 = local_5 / local_112.MutualClashScaleData.GetScale((local_74.GetTotalClashCount() - 1));
             }
             FGameAttributeUtils::ChangeConsumeValue(Entity, Attribute::MutualClashMax, FixedTime.Time, local_5 * local_6, -1.0f);
             FGameAttributeUtils::ChangeConsumeValue(Entity, Attribute::MutualClash, FixedTime.Time, local_5 * local_6, -1.0f);
@@ -2198,7 +2187,7 @@ class US_DamageSystem : UECSScriptSystem
         {
             return;
         }
-        FAttackData local_56;
+        const FAttackData& local_56 = Event.AttackData.Get();
         FGameplayTag local_58 = FGameplayTag(local_56.SpecialHitType);
         if (!(local_58.IsValid()))
         {
@@ -2321,9 +2310,9 @@ class US_DamageSystem : UECSScriptSystem
                 return;
             }
         }
+        const FAttackData& local_34 = Event.AttackData.Get();
         if (!(local_40.bUseNewHitStateTransit))
         {
-            const FAttackData& local_34;
             this.Legacy_HitState_Transition(local_10, local_40, TDataObjectPtr<FAttackData>(local_34), local_22, local_16, EAttackDataHitState(local_34.HitLevel));
         }
         bool local_67 = false;
@@ -2352,7 +2341,6 @@ class US_DamageSystem : UECSScriptSystem
         }
         if (local_68)
         {
-            const FAttackData& local_34;
             if (!(local_10.MatchGameplayTag(GameplayTags::ESM_HitState_Executed)))
             {
                 local_40.SetHitStateByHitLevelESMTransitInfo(::FDamageUtils::PostProcessESMTransitHitStateName(local_40.GetToStateName(), EAttackDataHitState(local_34.HitLevel), EHitBreakLevel(local_34.HitBreakLevel), local_10, local_16));
@@ -2475,7 +2463,6 @@ class US_DamageSystem : UECSScriptSystem
     {
         bool local_4;
         int local_64 = 0;
-        const FAttackData& local_66;
         int local_84 = 0;
         float32 local_111;
         int local_128 = 0;
@@ -2493,6 +2480,7 @@ class US_DamageSystem : UECSScriptSystem
         {
             return;
         }
+        const FAttackData& local_66 = Event.AttackData.Get();
         FVector local_76(FVector::ZeroVector);
         if (int(local_66.HitDirection) == 0)
         {
@@ -2854,7 +2842,7 @@ class US_DamageSystem : UECSScriptSystem
                 local_64 = local_16.AttackData;
                 if (!((local_64 == nullptr)))
                 {
-                    const FAttackData& local_90;
+                    const FAttackData& local_90 = local_16.AttackData.Get();
                     if (local_90.bForceShowDamageNumber || (int(::FASCommonUtils::GetMonsterRank(Entity)) == 2 && (int(::FASCommonUtils::GetMonsterRank(local_28)) == 2)))
                     {
                         Get local_98;
@@ -3120,11 +3108,10 @@ class US_DamageSystem : UECSScriptSystem
     {
         TArray<FECSEntity> local_4;
         ::FASCommonUtils::GetEntityAllPlayerPawnEntities(Entity, local_4);
-        FGameAttributeRef local_38;
-        FGameAttributeRef local_52;
         for (auto& local_24 : this.AbnormalData.AbnormalStateGlobalConfig)
         {
-            local_24;
+            FGameAttributeRef local_38 = FGameAttributeRef(local_24.GetValue().AccumulationAttribute);
+            FGameAttributeRef local_52 = FGameAttributeRef(local_24.GetValue().AccumulationAttributeMax);
             if (!(local_38.IsValid()) || !(local_52.IsValid()))
             {
                 continue;
@@ -3203,7 +3190,7 @@ class US_DamageSystem : UECSScriptSystem
         {
             return;
         }
-        FAttackData local_8;
+        const FAttackData& local_8 = Event.AttackData.Get();
         EAttackDataHitState local_9 = local_8.HitLevel;
         if ((int(local_9) == 2 || (int(local_9) == 3) || (int(local_9) == 5) || (int(local_9) == 6)))
         {
@@ -3299,15 +3286,14 @@ class US_DamageSystem : UECSScriptSystem
             TArray<int> local_8;
             for (auto& local_26 : PotentialDamage.GetDataByIndex())
             {
-                if (FFPTime(GetExpireTime()).opCmp(FixedTime.Time) <= 0)
+                if (FFPTime(local_26.GetValue().GetExpireTime()).opCmp(FixedTime.Time) <= 0)
                 {
                     local_8.Add(local_26.GetKey());
                 }
             }
-            auto local_32 = local_8.Iterator();
-            for (; local_32.CanProceed;)
+            for (auto local_39 : local_8)
             {
-                int local_3 = local_32.Proceed();
+                PotentialDamage.GetModify_DataByIndex().Remove(local_39);
             }
             if (PotentialDamage.GetDataByIndex().IsEmpty())
             {
@@ -3319,9 +3305,9 @@ class US_DamageSystem : UECSScriptSystem
             {
                 for (auto& local_26_2 : PotentialDamage.GetDataByIndex())
                 {
-                    if (FFPTime(GetExpireTime()).opCmp(PotentialDamage.GetCheckTime()) > 0)
+                    if (FFPTime(local_26_2.GetValue().GetExpireTime()).opCmp(PotentialDamage.GetCheckTime()) > 0)
                     {
-                        PotentialDamage.SetCheckTime(GetExpireTime());
+                        PotentialDamage.SetCheckTime(local_26_2.GetValue().GetExpireTime());
                     }
                 }
             }
@@ -3342,17 +3328,16 @@ class US_DamageSystem : UECSScriptSystem
     void Job_CleanupExpiredComboHitRecords(const FECSEntity &inout Entity, FC_ComboHitReductionRecord &inout ComboRecord, const FCS_FixedTime &inout FixedTime) const
     {
         TArray<FComboHitReductionKey> local_4;
-        float32 local_29 = 0.0f;
         for (auto& local_24 : ComboRecord.GetHitRecord())
         {
-            if ((local_24.GetKey().GetComboHitConfig() && ((((FFPTime(GetLastHitTime()) + FFPTime(local_29))).opCmp(FixedTime.Time) < 0))))
+            if ((local_24.GetKey().GetComboHitConfig() && ((((FFPTime(local_24.GetValue().GetLastHitTime()) + FFPTime(local_24.GetKey().GetComboHitConfig().Get().Duration))).opCmp(FixedTime.Time) < 0))))
             {
                 local_4.Add(local_24.GetKey());
             }
         }
         for (auto& local_50 : local_4)
         {
-            local_50;
+            ComboRecord.GetModify_HitRecord().Remove(local_50);
         }
         if (ComboRecord.GetHitRecord().IsEmpty())
         {
@@ -3422,7 +3407,6 @@ class US_DamageSystem : UECSScriptSystem
     void Job_DamageStatistic(const FCE_DamageEvent &inout Event) const
     {
         Get local_42;
-        int local_121 = 0;
         int local_176 = 0;
         FECSEntity local_4 = Event.Receiver;
         TMap<FECSEntityId, FName> local_28;
@@ -3448,7 +3432,7 @@ class US_DamageSystem : UECSScriptSystem
         local_67.SetDamageType(Event.DamageType);
         if ((!((Event.AttackData == nullptr))))
         {
-            local_67.SetAttackCategory(local_121);
+            local_67.SetAttackCategory(Event.AttackData.Get().AttackCategory);
         }
         local_67.SetAttackerEntityId(Event.FinalDamageSource.GetId());
         local_67.SetReceiverEntityId(local_4.GetId());
@@ -3456,26 +3440,24 @@ class US_DamageSystem : UECSScriptSystem
         const FC_ControlledByPlayer& local_44_2 = local_42.opCall();
         if (local_44_2)
         {
-            FString local_54;
             local_67.SetAttackerPlayerEntityId(local_44_2.GetPlayerEntity().GetId());
-            local_54 = FECSEntity::GetDefaulted<FC_DSPlayerInfo>(local_44_2.GetPlayerEntity()).opCall().GetNickName();
-            FName local_50_2 = FName(local_54);
+            FName local_50_2 = FName(FECSEntity::GetDefaulted<FC_DSPlayerInfo>(local_44_2.GetPlayerEntity()).opCall().GetNickName());
             local_28.Add(local_44_2.GetPlayerEntity().GetId(), local_50_2);
         }
-        if (::GetAvatarConfig(Event.FinalDamageSource))
+        TDataObjectPtr<FAvatarPrefabConfig> local_146 = ::GetAvatarConfig(Event.FinalDamageSource);
+        if (local_146)
         {
-            FString local_54;
-            FName local_50_3 = FName(local_54);
+            FName local_50_3 = FName(local_146.Get().DisplayName.ToString());
             local_28.Add(Event.FinalDamageSource.GetId(), local_50_3);
         }
         else
         {
             local_28.Add(Event.FinalDamageSource.GetId(), Event.FinalDamageSource.GetEntityName());
         }
-        if (::GetAvatarConfig(local_4))
+        TDataObjectPtr<FAvatarPrefabConfig> local_170 = ::GetAvatarConfig(local_4);
+        if (local_170)
         {
-            FString local_54;
-            FName local_50_4 = FName(local_54);
+            FName local_50_4 = FName(local_170.Get().DisplayName.ToString());
             local_28.Add(local_4.GetId(), local_50_4);
         }
         else
@@ -3485,7 +3467,7 @@ class US_DamageSystem : UECSScriptSystem
         local_176.DamageStats.Add(local_67);
         for (auto& local_194 : local_176.EntityIdToName)
         {
-            local_176.EntityIdToName.Add(local_194.GetKey());
+            local_176.EntityIdToName.Add(local_194.GetKey(), local_194.GetValue());
         }
         return;
     }
@@ -3516,7 +3498,7 @@ class US_DamageSystem : UECSScriptSystem
         }
         for (auto& local_46 : Event.EntityIdToName)
         {
-            local_14.AddEntityName(local_46.GetKey());
+            local_14.AddEntityName(local_46.GetKey(), local_46.GetValue());
         }
         return;
     }

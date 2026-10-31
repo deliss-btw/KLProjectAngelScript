@@ -35,7 +35,7 @@ class UWidget_ChatHud : UEUIActivatableWidget
     {
         if (this.ChatHudPanel.IsValid())
         {
-            TickExpireHudLines();
+            this.ChatHudPanel.Get().TickExpireHudLines();
         }
         return;
     }
@@ -59,8 +59,8 @@ class UWidget_ChatHud : UEUIActivatableWidget
     }
     void HandleObservedModelChanges(FEUIReactiveSubscriberIterator &inout It)
     {
-        FVM_ChatHudPanel& local_6;
         TEUIModelRef<FVM_ChatHudPanel> local_2 = this.ChatHudPanel.AsRef();
+        FVM_ChatHudPanel& local_6 = local_2.Get();
         for (; It; )
         {
             FEUIReactiveSubscriberTrackScope local_56 = FEUIReactiveSubscriberTrackScope(It);

@@ -26,7 +26,7 @@ class UBTDecorator_CheckHitTestToTarget_WithDistanceCheck : UBTDecorator_ECSScri
         FString local_4 = "None";
         if ((!((this.TestBox == nullptr))))
         {
-            FString local_58 = FString();
+            local_4 = FString().Append(this.TestBox.Get().BoxSize);
         }
         FString local_68;
         if (this.MaxHitDistance > 0.0f)
@@ -129,7 +129,7 @@ class UBTDecorator_CheckHitTestToTarget_WithDistanceCheck : UBTDecorator_ECSScri
         {
             return FVector::ZeroVector;
         }
-        FVector local_62;
+        FVector local_62 = FVector(this.TestBox.Get().BoxSize);
         return FVector(FMath::Abs(local_62.X) * 0.5, (FMath::Abs(local_62.Y) * 0.5), (FMath::Abs(local_62.Z) * 0.5));
     }
     FOrientedBox3f BuildHitTestOrientedBox(const FVector &inout BoxCenter, const FVector &inout TestDirection, const FVector &inout TestRight, const FVector &inout HalfBoxSize) const
@@ -173,11 +173,11 @@ class UBTDecorator_CheckHitTestToTarget_WithDistanceCheck : UBTDecorator_ECSScri
     }
     bool TryGetAnimHitBoxAABB(const FC_AnimState &inout AnimState, const FC_HitBoxConfig &inout HitBox, FBox3f &inout OutBox) const
     {
-        const FESMAnimState& local_8;
         bool local_1 = false;
         int local_3 = 0;
         for (; local_3 < AnimState.GetLayerNum(); ++local_3)
         {
+            const FESMAnimState& local_8 = AnimState.Get(local_3);
             FName local_16 = (!((local_8.GetOverrideAnimKey() == NAME_None))) ? local_8.GetOverrideAnimKey() : local_8.GetTransitionToAnimKey();
             if ((local_16 == NAME_None) || !(HitBox.AnimBoxExtents.Contains(local_16)))
             {

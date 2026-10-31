@@ -27,8 +27,8 @@ class AEcoCollectableSpawner : AEcoCollectableSpawnerBase
         int local_28 = 0;
         Has local_4;
         local_4.opCall();
-        AECSPrefab local_14;
-        AEcoCollectableSpawner local_8 = (Cast<AEcoCollectableSpawner>(local_14));
+        Get local_12;
+        AEcoCollectableSpawner local_8 = (Cast<AEcoCollectableSpawner>(local_12.opCall().Prefab.Get()));
         if (local_8 != nullptr)
         {
             local_28.UID = local_8.GetConfigGUID();

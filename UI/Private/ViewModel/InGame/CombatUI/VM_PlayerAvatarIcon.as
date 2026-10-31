@@ -65,27 +65,26 @@ struct FVM_PlayerAvatarIcon : FEUIViewModel
     }
     void RefreshAvatarIconInfo()
     {
-        FSlateBrush local_48;
-        EDamageType local_2 = EDamageType(0);
-        EDamageType local_1 = local_2;
+        EDamageType local_1 = EDamageType(0);
         if (!(this.GetTargetEntity().IsValid()))
         {
             this.SetAvatarBrush(FSlateBrush());
-            local_2 = EDamageType(0);
-            local_1 = local_2;
+            local_1 = EDamageType(0);
         }
         else
         {
-            if (::GetAvatarConfig(this.GetTargetEntity()))
+            TDataObjectPtr<FAvatarPrefabConfig> local_72 = ::GetAvatarConfig(this.GetTargetEntity());
+            if (local_72)
             {
-                this.SetAvatarBrush(local_48);
-                local_1 = local_2;
+                this.SetAvatarBrush(local_72.Get().AvatarIcon.LoadBrush());
+                local_1 = local_72.Get().DamageType;
             }
             else
             {
-                if (::GetPrefabConfigPtr(this.GetTargetEntity()))
+                TDataObjectPtr<FBasePrefabConfig> local_120 = ::GetPrefabConfigPtr(this.GetTargetEntity());
+                if (local_120)
                 {
-                    this.SetAvatarBrush(local_48);
+                    this.SetAvatarBrush(local_120.Get().DisplayIcon.LoadBrush());
                 }
             }
         }
@@ -96,7 +95,7 @@ struct FVM_PlayerAvatarIcon : FEUIViewModel
         }
         else
         {
-            this.SetAvatarDamageBrush(local_48);
+            this.SetAvatarDamageBrush(local_188);
         }
         return;
     }
@@ -211,11 +210,9 @@ FVM_PlayerAvatarIcon& Create(const UObject ContextObject, const FECSEntity &inou
 {
     return FVM_PlayerAvatarIcon::CreateByManager(EUIInternal::GetContextManager(ContextObject), TargetEntity);
 }
-FVM_PlayerAvatarIcon CreateByManager(const UEUIManagerSubsystem Manager, const FECSEntity &inout TargetEntity)
+FVM_PlayerAvatarIcon& CreateByManager(const UEUIManagerSubsystem Manager, const FECSEntity &inout TargetEntity)
 {
-    FVM_PlayerAvatarIcon __r;
-    TEUIModelRef<FVM_PlayerAvatarIcon> local_6 = TEUIModelRef<FVM_PlayerAvatarIcon>(EUIInternal::MakeModelWithManager_Generic(Manager, FVM_PlayerAvatarIcon::ModelId, 0, TargetEntity));
-    return __r;
+    return TEUIModelRef<FVM_PlayerAvatarIcon>(EUIInternal::MakeModelWithManager_Generic(Manager, FVM_PlayerAvatarIcon::ModelId, 0, TargetEntity)).Get();
 }
 void GetModelInfo(FEUIViewModelMetaInfo &inout Result)
 {
@@ -288,7 +285,6 @@ namespace __GeneratedProperties_FVM_PlayerAvatarIcon
 {
 UScriptStruct StaticStruct()
 {
-    UScriptStruct local_2;
-    return local_2;
+    return __GeneratedProperties_FVM_PlayerAvatarIcon.Get();
 }
 }

@@ -47,7 +47,7 @@ struct FVM_PageIndicator : FEUIViewModel
         for (; local_2 < Total; )
         {
             TEUIModelRef<FVM_PageDot> local_6 = TEUIModelRef<FVM_PageDot>(::FVM_PageDot::Create(this.GetManager(), local_2));
-            (local_2 == 0).SetbActive();
+            local_6.Get().SetbActive((local_2 == 0));
             this.GetModify_PageDots().Add(local_6);
             ++local_2;
         }
@@ -59,7 +59,7 @@ struct FVM_PageIndicator : FEUIViewModel
         int local_1 = 0;
         for (; local_1 < this.GetPageDots().Num(); )
         {
-            (local_1 == this.GetCurrentPage()).SetbActive();
+            this.GetPageDots()[local_1].Get().SetbActive((local_1 == this.GetCurrentPage()));
             ++local_1;
         }
         return;
@@ -136,11 +136,9 @@ FVM_PageIndicator& Create(const UObject ContextObject)
 {
     return FVM_PageIndicator::CreateByManager(EUIInternal::GetContextManager(ContextObject));
 }
-FVM_PageIndicator CreateByManager(const UEUIManagerSubsystem Manager)
+FVM_PageIndicator& CreateByManager(const UEUIManagerSubsystem Manager)
 {
-    FVM_PageIndicator __r;
-    TEUIModelRef<FVM_PageIndicator> local_6 = TEUIModelRef<FVM_PageIndicator>(EUIInternal::MakeModelWithManager(Manager, FVM_PageIndicator::ModelId));
-    return __r;
+    return TEUIModelRef<FVM_PageIndicator>(EUIInternal::MakeModelWithManager(Manager, FVM_PageIndicator::ModelId)).Get();
 }
 void GetModelInfo(FEUIViewModelMetaInfo &inout Result)
 {
@@ -208,7 +206,6 @@ namespace __GeneratedProperties_FVM_PageIndicator
 {
 UScriptStruct StaticStruct()
 {
-    UScriptStruct local_2;
-    return local_2;
+    return __GeneratedProperties_FVM_PageIndicator.Get();
 }
 }

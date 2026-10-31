@@ -428,11 +428,9 @@ FVM_CommonComponentToggle& Create(const UObject ContextObject, const TArray<FTex
 {
     return FVM_CommonComponentToggle::CreateByManager(EUIInternal::GetContextManager(ContextObject), OptionTexts, DefaultIndex, OnComponentToggleSelected);
 }
-FVM_CommonComponentToggle CreateByManager(const UEUIManagerSubsystem Manager, const TArray<FText> &inout OptionTexts, const int DefaultIndex, const FOnCommonComponentToggleSelected &inout OnComponentToggleSelected)
+FVM_CommonComponentToggle& CreateByManager(const UEUIManagerSubsystem Manager, const TArray<FText> &inout OptionTexts, const int DefaultIndex, const FOnCommonComponentToggleSelected &inout OnComponentToggleSelected)
 {
-    FVM_CommonComponentToggle __r;
-    TEUIModelRef<FVM_CommonComponentToggle> local_6 = TEUIModelRef<FVM_CommonComponentToggle>(EUIInternal::MakeModelWithManager_Generic(Manager, FVM_CommonComponentToggle::ModelId, 0, OptionTexts, DefaultIndex, OnComponentToggleSelected));
-    return __r;
+    return TEUIModelRef<FVM_CommonComponentToggle>(EUIInternal::MakeModelWithManager_Generic(Manager, FVM_CommonComponentToggle::ModelId, 0, OptionTexts, DefaultIndex, OnComponentToggleSelected)).Get();
 }
 void GetModelInfo(FEUIViewModelMetaInfo &inout Result)
 {
@@ -602,7 +600,6 @@ namespace __GeneratedProperties_FVM_CommonComponentToggle
 {
 UScriptStruct StaticStruct()
 {
-    UScriptStruct local_2;
-    return local_2;
+    return __GeneratedProperties_FVM_CommonComponentToggle.Get();
 }
 }

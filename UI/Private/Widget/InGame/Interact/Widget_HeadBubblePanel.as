@@ -54,15 +54,13 @@ class UWidget_HeadBubblePanel : UEUIActivatableWidget
         FCustomWheelOptionConfig local_88;
         if (int(local_88.OptionType) == 0)
         {
-            FName local_182;
-            local_182.GetDataName();
-            this.ShowHeadBubbleInternal(Event.Sender, local_182, "", false);
+            this.ShowHeadBubbleInternal(Event.Sender, local_88.GetDefaultEmojiData().Get().GetDataName(), "", false);
         }
         else
         {
             if (int(local_88.OptionType) == 1)
             {
-                this.ShowSignalInternal(Event.Sender);
+                this.ShowSignalInternal(Event.Sender, local_88.GetDefaultSignalData().Get());
             }
         }
         return;

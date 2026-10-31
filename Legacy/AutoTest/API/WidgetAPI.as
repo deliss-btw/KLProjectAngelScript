@@ -197,7 +197,7 @@ int CreatePlayer_GetPhase()
 {
     UWidget_CreatePlayer local_4 = AutoTest::API::WidgetAPI::GetCreatePlayerWidgetOrNull();
     ThrowIf(local_4, !((local_4 != nullptr)));
-    return int(GetCreatePlayerPhase());
+    return int(local_4.CreatePlayerVM.Get().GetCreatePlayerPhase());
 }
 void CreatePlayer_SelectGender(const bool bMale)
 {
@@ -205,10 +205,10 @@ void CreatePlayer_SelectGender(const bool bMale)
     ThrowIf(local_4, !((local_4 != nullptr)));
     if (bMale)
     {
-        OnMaleSelected();
+        local_4.CreatePlayerVM.Get().OnMaleSelected();
         return;
     }
-    OnFamaleSelected();
+    local_4.CreatePlayerVM.Get().OnFamaleSelected();
     return;
 }
 void CreatePlayer_SetNickname(const FString &inout Nickname)
@@ -222,14 +222,14 @@ void CreatePlayer_Next()
 {
     UWidget_CreatePlayer local_4 = AutoTest::API::WidgetAPI::GetCreatePlayerWidgetOrNull();
     ThrowIf(local_4, !((local_4 != nullptr)));
-    OnNextPhase();
+    local_4.CreatePlayerVM.Get().OnNextPhase();
     return;
 }
 void CreatePlayer_Confirm()
 {
     UWidget_CreatePlayer local_4 = AutoTest::API::WidgetAPI::GetCreatePlayerWidgetOrNull();
     ThrowIf(local_4, !((local_4 != nullptr)));
-    OnConfirmPhase();
+    local_4.CreatePlayerVM.Get().OnConfirmPhase();
     return;
 }
 void CreatePlayer_AutoCreate(const FString &inout Nickname, const bool bMale)
@@ -238,27 +238,27 @@ void CreatePlayer_AutoCreate(const FString &inout Nickname, const bool bMale)
     ThrowIf(local_4, !((local_4 != nullptr)));
     if (bMale)
     {
-        OnMaleSelected();
+        local_4.CreatePlayerVM.Get().OnMaleSelected();
     }
     else
     {
-        OnFamaleSelected();
+        local_4.CreatePlayerVM.Get().OnFamaleSelected();
     }
     int local_6 = 0;
-    while (!(IsOnLastActivePhase()) && (local_6 < 16))
+    while (!(local_4.CreatePlayerVM.Get().IsOnLastActivePhase()) && (local_6 < 16))
     {
-        if (int(GetCreatePlayerPhase()) == 3)
+        if (int(local_4.CreatePlayerVM.Get().GetCreatePlayerPhase()) == 3)
         {
             local_4.OnInputTextChanged(FText::FromString(Nickname));
         }
-        OnNextPhase();
+        local_4.CreatePlayerVM.Get().OnNextPhase();
         local_6 = local_6 + 1;
     }
-    if (int(GetCreatePlayerPhase()) == 3)
+    if (int(local_4.CreatePlayerVM.Get().GetCreatePlayerPhase()) == 3)
     {
         local_4.OnInputTextChanged(FText::FromString(Nickname));
     }
-    OnConfirmPhase();
+    local_4.CreatePlayerVM.Get().OnConfirmPhase();
     return;
 }
 UWidget_BornSelectSpecialty GetBornSpecialtyWidgetOrNull()
@@ -287,13 +287,13 @@ void BornSpecialty_PickAndConfirm(const bool bLeft)
     ThrowIf(local_4, !((local_4 != nullptr)));
     if (bLeft)
     {
-        AB_ClickLeftAvatar();
+        local_4.SelectSpecialtyModel.Get().AB_ClickLeftAvatar();
     }
     else
     {
-        AB_ClickRightAvatar();
+        local_4.SelectSpecialtyModel.Get().AB_ClickRightAvatar();
     }
-    AB_ConfirmSpecialty();
+    local_4.SelectSpecialtyModel.Get().AB_ConfirmSpecialty();
     return;
 }
 int AutoAcceptPendingConfirms()
@@ -342,11 +342,11 @@ bool AutoConfirmMatchConfirm()
     {
         return false;
     }
-    if (GetReplyStatusIndex() != 0)
+    if (local_16.ConfirmVM.Get().GetReplyStatusIndex() != 0)
     {
         return false;
     }
-    OnAgree();
+    local_16.ConfirmVM.Get().OnAgree();
     return true;
 }
 int AcceptAllConfirms()
@@ -546,7 +546,7 @@ TArray<FString> GetCurrentSmallSideHintMessages()
         ThrowIf(local_30, !((local_30 != nullptr)));
         if (local_30.CommonSideHint.IsValid())
         {
-            local_4.Add(GetContent().ToString());
+            local_4.Add(local_30.CommonSideHint.Get().GetContent().ToString());
         }
     }
     return local_4;
@@ -561,7 +561,7 @@ TArray<FString> GetCurrentLargeSideHintMessages()
     {
         local_30 = Cast<UWidget_CommonSideHintEntry_Large>(local_26);
         ThrowIf(local_30, !((local_30 != nullptr)));
-        local_4.Add(GetContent().ToString());
+        local_4.Add(local_30.CommonSideHint.Get().GetContent().ToString());
     }
     return local_4;
 }
@@ -575,7 +575,7 @@ TArray<FString> GetCurrentWeatherHintMessages()
     {
         local_30 = Cast<UWidget_CommonSideHintEntry_Large>(local_26);
         ThrowIf(local_30, !((local_30 != nullptr)));
-        local_4.Add(GetContent().ToString());
+        local_4.Add(local_30.CommonSideHint.Get().GetContent().ToString());
     }
     return local_4;
 }
@@ -589,7 +589,7 @@ TArray<FString> GetCurrentBannerMessages()
     {
         local_30 = Cast<UWidget_CommonBanner>(local_26);
         ThrowIf(local_30, !((local_30 != nullptr)));
-        local_4.Add(GetTitle().ToString());
+        local_4.Add(local_30.Banner.Get().GetTitle().ToString());
     }
     return local_4;
 }

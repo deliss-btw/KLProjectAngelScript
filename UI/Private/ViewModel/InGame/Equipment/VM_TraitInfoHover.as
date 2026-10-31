@@ -63,13 +63,11 @@ struct FVM_TraitInfoHover : FEUIViewModel
     }
     TDataObjectPtr<FTraitConfig> GetTraitConfig() const
     {
-        TEUIModelRef<FM_Trait> local_2 = this.GetTrait();
-        return GetTraitConfig();
+        return this.GetTrait().Get().GetTraitConfig();
     }
     int GetTraitLevel() const
     {
-        TEUIModelRef<FM_Trait> local_2 = this.GetTrait();
-        return GetTraitLevel();
+        return this.GetTrait().Get().GetTraitLevel();
     }
     int GetTraitMaxLevel() const
     {
@@ -97,8 +95,7 @@ struct FVM_TraitInfoHover : FEUIViewModel
     }
     FText GetTraitName() const
     {
-        // body not fully recovered — stub [no-return]
-        FText __r; return __r;
+        return this.GetTraitConfig().Get().TraitName;
     }
     FEUIModelContainer GetTraitDetailListModel() const
     {
@@ -106,8 +103,7 @@ struct FVM_TraitInfoHover : FEUIViewModel
         {
             return FEUIModelContainer();
         }
-        TEUIModelRef<FVM_AvatarEquipmentTraitHoverTips> local_18 = this.GetTraitHoverTips();
-        return FEUIModelContainer();
+        return FEUIModelContainer(this.GetTraitHoverTips().Get());
     }
     TEUIModelRef<FM_Trait> GetTrait() const property
     {
@@ -200,11 +196,9 @@ FVM_TraitInfoHover& Create(const UObject ContextObject, const TEUIModelRef<FM_Tr
 {
     return FVM_TraitInfoHover::CreateByManager(EUIInternal::GetContextManager(ContextObject), Trait, bForbidHover);
 }
-FVM_TraitInfoHover CreateByManager(const UEUIManagerSubsystem Manager, const TEUIModelRef<FM_Trait> &inout Trait, const bool bForbidHover)
+FVM_TraitInfoHover& CreateByManager(const UEUIManagerSubsystem Manager, const TEUIModelRef<FM_Trait> &inout Trait, const bool bForbidHover)
 {
-    FVM_TraitInfoHover __r;
-    TEUIModelRef<FVM_TraitInfoHover> local_6 = TEUIModelRef<FVM_TraitInfoHover>(EUIInternal::MakeModelWithManager_Generic(Manager, FVM_TraitInfoHover::ModelId, 0, Trait, bForbidHover));
-    return __r;
+    return TEUIModelRef<FVM_TraitInfoHover>(EUIInternal::MakeModelWithManager_Generic(Manager, FVM_TraitInfoHover::ModelId, 0, Trait, bForbidHover)).Get();
 }
 void GetModelInfo(FEUIViewModelMetaInfo &inout Result)
 {
@@ -304,7 +298,6 @@ namespace __GeneratedProperties_FVM_TraitInfoHover
 {
 UScriptStruct StaticStruct()
 {
-    UScriptStruct local_2;
-    return local_2;
+    return __GeneratedProperties_FVM_TraitInfoHover.Get();
 }
 }

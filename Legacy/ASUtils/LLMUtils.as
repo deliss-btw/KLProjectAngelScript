@@ -16,7 +16,7 @@ void MergeLLMCallArgs(TMap<FString, FString> &inout ArgBaseKeyValue, const TMap<
 {
     for (auto& local_20 : ArgAdditionalKeyValue)
     {
-        ArgBaseKeyValue.Add(local_20.GetKey());
+        ArgBaseKeyValue.Add(local_20.GetKey(), local_20.GetValue());
     }
     return;
 }
@@ -46,9 +46,7 @@ FString PromptFormat(const FString &inout PromptContent, const TMap<FString, FSt
     FString local_4 = PromptContent;
     for (auto& local_24 : ReplaceMap)
     {
-        local_24;
-        FString local_30;
-        local_4 = local_30;
+        local_4 = local_4.Replace(local_24.GetKey(), local_24.GetValue(), ESearchCase(1));
     }
     return local_4;
 }

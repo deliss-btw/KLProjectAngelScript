@@ -176,11 +176,9 @@ FVM_LinkSkillEnergy& Create(const UObject ContextObject)
 {
     return FVM_LinkSkillEnergy::CreateByManager(EUIInternal::GetContextManager(ContextObject));
 }
-FVM_LinkSkillEnergy CreateByManager(const UEUIManagerSubsystem Manager)
+FVM_LinkSkillEnergy& CreateByManager(const UEUIManagerSubsystem Manager)
 {
-    FVM_LinkSkillEnergy __r;
-    TEUIModelRef<FVM_LinkSkillEnergy> local_6 = TEUIModelRef<FVM_LinkSkillEnergy>(EUIInternal::MakeModelWithManager(Manager, FVM_LinkSkillEnergy::ModelId));
-    return __r;
+    return TEUIModelRef<FVM_LinkSkillEnergy>(EUIInternal::MakeModelWithManager(Manager, FVM_LinkSkillEnergy::ModelId)).Get();
 }
 void GetModelInfo(FEUIViewModelMetaInfo &inout Result)
 {
@@ -267,7 +265,6 @@ namespace __GeneratedProperties_FVM_LinkSkillEnergy
 {
 UScriptStruct StaticStruct()
 {
-    UScriptStruct local_2;
-    return local_2;
+    return __GeneratedProperties_FVM_LinkSkillEnergy.Get();
 }
 }

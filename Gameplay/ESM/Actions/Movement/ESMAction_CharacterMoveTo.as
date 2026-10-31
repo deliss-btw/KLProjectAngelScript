@@ -109,10 +109,7 @@ class UESMAction_CharacterMoveTo : UESMBPBaseSpanTickAction
     void Tick_Implementation(const FESMContext &inout Context, const FESMActionTime &inout Time) const
     {
         int local_14 = 0;
-        float32 local_29 = 0.0f;
-        float32 local_30 = 0.0f;
         int local_66 = 0;
-        float32 local_87 = 0.0f;
         float32 local_88;
         float32 local_105;
         bool local_123;
@@ -127,12 +124,11 @@ class UESMAction_CharacterMoveTo : UESMBPBaseSpanTickAction
         FVector local_26(FVector::ZeroVector);
         if (int(this.DirectionType) != 4)
         {
-            FVector local_80;
+            float32 local_30 = this.ForwardDistScale.GetValue(Context.GetEntityBB());
             FQuat local_40;
             if (int(this.DirectionType) == 6 && this.bThroughLockTarget)
             {
-                FQuat local_52;
-                local_40 = local_52;
+                local_40 = this.GetInstanceData(Context).MoveDirection.Quaternion();
             }
             else
             {
@@ -140,8 +136,7 @@ class UESMAction_CharacterMoveTo : UESMBPBaseSpanTickAction
                 {
                     if (Context.GetEntity().GetBB_Entity(this.CustomEntity).IsValid())
                     {
-                        local_80 = (FVector(local_66.GetPosition()) - 0.GetPosition());
-                        local_40 = local_80.Rotation().Quaternion();
+                        local_40 = (FVector(local_66.GetPosition()) - 0.GetPosition()).Rotation().Quaternion();
                     }
                 }
                 else
@@ -149,21 +144,22 @@ class UESMAction_CharacterMoveTo : UESMBPBaseSpanTickAction
                     local_40 = ::FCharacterDirectionUtils::GetTargetRotationQuat(Context.GetEntity(), this.DirectionType, this.bEnableZMovement);
                 }
             }
-            local_80 = local_40.GetForwardVector();
-            local_80 = (local_80.GetSafeNormal(9.99999993922529e-9, FVector::ZeroVector) * local_30);
-            local_20 = local_80;
+            local_20 = (local_40.GetForwardVector().GetSafeNormal(9.99999993922529e-9, FVector::ZeroVector) * local_30);
             if (this.bApplyRightOffset)
             {
-                local_88 = this.bCopyForwardDistToRightOffsetDist ? local_30 : local_29;
-                local_80 = local_40.GetRightVector();
-                local_80 = (local_80.GetSafeNormal(9.99999993922529e-9, FVector::ZeroVector) * local_88);
-                local_26 = local_80;
+                if (this.bCopyForwardDistToRightOffsetDist)
+                {
+                    local_88 = local_30;
+                }
+                else
+                {
+                    local_88 = this.RightOffsetDistScale.GetValue(Context.GetEntityBB());
+                }
+                local_26 = (local_40.GetRightVector().GetSafeNormal(9.99999993922529e-9, FVector::ZeroVector) * local_88);
             }
         }
         else
         {
-            FVector local_104;
-            FVector local_80;
             if (int(this.DirectionType) == 4)
             {
                 bool local_41 = !(false);
@@ -172,24 +168,17 @@ class UESMAction_CharacterMoveTo : UESMBPBaseSpanTickAction
                 {
                     return;
                 }
+                local_20 = this.GetInstanceData(Context).DeltaMovement;
                 if (this.bApplyRightOffset)
                 {
-                    if ((local_20 == FVector::ZeroVector))
-                    {
-                        local_104 = local_66.GetRotation().GetRightVector();
-                    }
-                    else
-                    {
-                        local_80 = local_20.Rotation().Quaternion().GetRightVector();
-                        local_104 = local_80;
-                    }
+                    FVector local_104 = (local_20 == FVector::ZeroVector) ? local_66.GetRotation().GetRightVector() : local_20.Rotation().Quaternion().GetRightVector();
                     if (this.bCopyForwardDistToRightOffsetDist)
                     {
                         local_105 = float32(local_20.Size());
                     }
                     else
                     {
-                        local_105 = local_87;
+                        local_105 = this.RightOffsetDistScale.GetValue(Context.GetEntityBB());
                     }
                     local_26 = (local_104 * local_105);
                 }
@@ -198,7 +187,7 @@ class UESMAction_CharacterMoveTo : UESMBPBaseSpanTickAction
         if (this.bEnableDelayTurnSpeed)
         {
             FESMCharacterMoveToInstanceData& local_108 = this.ModifyInstanceData(Context);
-            local_87 = float32((Time.ActionTime.ToSeconds() / Time.ActionDuration.ToSeconds()));
+            float32 local_87 = float32((Time.ActionTime.ToSeconds() / Time.ActionDuration.ToSeconds()));
             FRotator local_86 = local_66.GetRotation().Rotator();
             if (this.DelayTurnWeight.GetFloatValue(local_87, 0.0f) > 0.0f)
             {
@@ -211,21 +200,20 @@ class UESMAction_CharacterMoveTo : UESMBPBaseSpanTickAction
             FRotator local_116 = local_108.DelayTurnRotation;
             local_20 = (local_116 - local_86).RotateVector(local_20);
         }
-        local_29 = float32((Time.ActionLastTime.ToSeconds() / Time.ActionDuration.ToSeconds()));
+        float32 local_29 = float32((Time.ActionLastTime.ToSeconds() / Time.ActionDuration.ToSeconds()));
         float local_110_2 = Time.ActionTime.ToSeconds();
         local_110_2 = local_110_2 / Time.ActionDuration.ToSeconds();
         local_88 = float32(local_110_2);
         local_123 = true;
         if (int(this.DirectionType) == 6)
         {
-            FVector local_104;
-            FVector local_80;
             Get local_128;
             const FC_LockTarget& local_130 = local_128.opCall();
             if (local_130)
             {
                 Get local_64;
-                local_104 = FVector(local_64.opCall().GetPosition());
+                float32 local_87_2 = this.LockTargetDistanceOffset.GetValue(Context.GetEntityBB());
+                FVector local_104_2 = FVector(local_64.opCall().GetPosition());
                 FVector local_138 = local_64.opCall().GetPosition();
                 bool local_41_2 = !(false);
                 if (!(this.bThroughLockTarget) == local_41_2)
@@ -248,7 +236,7 @@ class UESMAction_CharacterMoveTo : UESMBPBaseSpanTickAction
                     {
                         if (this.bEnableZMovement)
                         {
-                            if (local_104.Distance(local_138) < local_87)
+                            if (local_104_2.Distance(local_138) < local_87_2)
                             {
                                 local_123 = false;
                             }
@@ -257,14 +245,14 @@ class UESMAction_CharacterMoveTo : UESMBPBaseSpanTickAction
                         {
                             if (this.CalcSelfAndTargetRadius)
                             {
-                                if (::FASCommonUtils::CalculateEntityDistance2D(local_8, local_130.GetTargetEntity(), true) < local_87)
+                                if (::FASCommonUtils::CalculateEntityDistance2D(local_8, local_130.GetTargetEntity(), true) < local_87_2)
                                 {
                                     local_123 = false;
                                 }
                             }
                             else
                             {
-                                if (local_104.Dist2D(local_138) < local_87)
+                                if (local_104_2.Dist2D(local_138) < local_87_2)
                                 {
                                 }
                             }
@@ -275,12 +263,12 @@ class UESMAction_CharacterMoveTo : UESMBPBaseSpanTickAction
                 {
                     Get local_144;
                     float32 local_131 = local_144.opCall().GetScaledRadius();
-                    local_30 = local_144.opCall().GetScaledRadius();
-                    FVector local_152 = local_80;
-                    float32 local_145 = local_87 + local_131;
-                    local_110_2 = (local_145 + local_30);
-                    local_80 = (local_152 * local_110_2);
-                    if (local_152.DotProduct((((local_104 + local_80) - local_138).GetSafeNormal2D(9.99999993922529e-9, FVector::ZeroVector))) < 0.0)
+                    float32 local_30_2 = local_144.opCall().GetScaledRadius();
+                    FVector local_152(this.GetInstanceData(Context).MoveDirection.GetForwardVector());
+                    float32 local_145 = local_87_2 + local_131;
+                    local_110_2 = (local_145 + local_30_2);
+                    FVector local_80_2 = (local_152 * local_110_2);
+                    if (local_152.DotProduct((((local_104_2 + local_80_2) - local_138).GetSafeNormal2D(9.99999993922529e-9, FVector::ZeroVector))) < 0.0)
                     {
                         local_123 = false;
                     }
@@ -297,9 +285,9 @@ class UESMAction_CharacterMoveTo : UESMBPBaseSpanTickAction
         }
         if (this.bApplyRightOffset)
         {
-            local_87 = this.RightOffsetCurve.GetFloatValue(local_29, 0.0f);
-            local_30 = this.RightOffsetCurve.GetFloatValue(local_88, 0.0f);
-            local_110_2 = (local_30 - local_87);
+            float32 local_87_3 = this.RightOffsetCurve.GetFloatValue(local_29, 0.0f);
+            float32 local_30_3 = this.RightOffsetCurve.GetFloatValue(local_88, 0.0f);
+            local_110_2 = (local_30_3 - local_87_3);
             FVector local_158_2 = (local_26 * local_110_2);
             FVector local_164_2 = (local_14.GetPosDelta() + local_158_2);
             local_14.SetPosDelta(local_164_2);
@@ -309,15 +297,15 @@ class UESMAction_CharacterMoveTo : UESMBPBaseSpanTickAction
             local_14.SetPosDelta(FVector(local_14.GetPosDelta().X, local_14.GetPosDelta().Y, 0.0));
         }
         float32 local_145_3 = float32(this.ForwardBlendInOut.X);
-        local_30 = float32(this.ForwardBlendInOut.Y);
-        local_87 = float32(Time.ActionTime.ToSeconds());
-        float32 local_140 = FMathUtils::InverseLerpPreferTo(local_87, 0.0f, local_145_3);
-        float32 local_131_2 = FMathUtils::InverseLerpPreferTo(Time.ActionTime, Time.ActionDuration, (FFPTime(Time.ActionDuration) - FFPTime(local_30)));
-        local_87 = local_140 * local_131_2;
+        float32 local_30_4 = float32(this.ForwardBlendInOut.Y);
+        float32 local_87_4 = float32(Time.ActionTime.ToSeconds());
+        float32 local_140 = FMathUtils::InverseLerpPreferTo(local_87_4, 0.0f, local_145_3);
+        float32 local_131_2 = FMathUtils::InverseLerpPreferTo(Time.ActionTime, Time.ActionDuration, (FFPTime(Time.ActionDuration) - FFPTime(local_30_4)));
+        local_87_4 = local_140 * local_131_2;
         float32 local_167 = local_140 * local_131_2;
-        if (local_87 > 0.0f)
+        if (local_87_4 > 0.0f)
         {
-            local_105 = local_145_3 / local_87;
+            local_105 = local_145_3 / local_87_4;
         }
         else
         {
@@ -332,7 +320,7 @@ class UESMAction_CharacterMoveTo : UESMBPBaseSpanTickAction
             local_173 = 0.0f;
         }
         float local_4_6 = Time.ActionDeltaTime.ToSeconds();
-        local_14.SetHorizontalWeight(MathUtils::FMoveTowardsByDuration(local_14.GetHorizontalWeight(), local_87, float32(local_4_6), local_105));
+        local_14.SetHorizontalWeight(MathUtils::FMoveTowardsByDuration(local_14.GetHorizontalWeight(), local_87_4, float32(local_4_6), local_105));
         if (this.bEnableZMovement)
         {
             local_14.SetVerticalWeight(local_14.GetHorizontalWeight());

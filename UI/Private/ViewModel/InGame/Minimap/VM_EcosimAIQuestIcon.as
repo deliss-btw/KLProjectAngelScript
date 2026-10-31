@@ -78,11 +78,9 @@ FVM_EcosimAIQuestIcon& Create(const UObject ContextObject, const FECSEntityId &i
 {
     return FVM_EcosimAIQuestIcon::CreateByManager(EUIInternal::GetContextManager(ContextObject), EntityID);
 }
-FVM_EcosimAIQuestIcon CreateByManager(const UEUIManagerSubsystem Manager, const FECSEntityId &inout EntityID)
+FVM_EcosimAIQuestIcon& CreateByManager(const UEUIManagerSubsystem Manager, const FECSEntityId &inout EntityID)
 {
-    FVM_EcosimAIQuestIcon __r;
-    TEUIModelRef<FVM_EcosimAIQuestIcon> local_6 = TEUIModelRef<FVM_EcosimAIQuestIcon>(EUIInternal::MakeModelWithManager_Generic(Manager, FVM_EcosimAIQuestIcon::ModelId, 0, EntityID));
-    return __r;
+    return TEUIModelRef<FVM_EcosimAIQuestIcon>(EUIInternal::MakeModelWithManager_Generic(Manager, FVM_EcosimAIQuestIcon::ModelId, 0, EntityID)).Get();
 }
 void GetModelInfo(FEUIViewModelMetaInfo &inout Result)
 {
@@ -115,7 +113,6 @@ namespace __GeneratedProperties_FVM_EcosimAIQuestIcon
 {
 UScriptStruct StaticStruct()
 {
-    UScriptStruct local_2;
-    return local_2;
+    return __GeneratedProperties_FVM_EcosimAIQuestIcon.Get();
 }
 }

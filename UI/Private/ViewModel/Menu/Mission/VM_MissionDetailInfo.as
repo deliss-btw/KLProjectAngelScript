@@ -78,8 +78,7 @@ struct FVM_MissionDetailInfo : FEUIViewModel
     {
         if (this.GetRewardInfo())
         {
-            TEUIModelRef<FVM_CommonRewardList> local_2 = this.GetRewardInfo();
-            return GetRewards();
+            return this.GetRewardInfo().Get().GetRewards();
         }
         return TArray<TEUIModelRef<FVM_CommonRewardItem>>();
     }
@@ -99,11 +98,7 @@ struct FVM_MissionDetailInfo : FEUIViewModel
     }
     void AssignMissionConfig(const TDataObjectPtr<FMissionConfig> &inout InMissionConfig, const FText &inout RecommendLevelWarningFormat)
     {
-        bool local_4;
         const UMissionSettings local_10;
-        int local_189 = 0;
-        FMissionObjectiveInfo local_218;
-        int local_272 = 0;
         this.SetMissionConfig(InMissionConfig);
         if (this.GetMissionConfig() && (this.GetMissionConfig().opArrow().RecommendPlayerLevel > 0))
         {
@@ -113,9 +108,9 @@ struct FVM_MissionDetailInfo : FEUIViewModel
         {
             this.SetRecommendLevelWarningText(FText());
         }
-        CastTo local_276;
         if (this.GetMissionConfig())
         {
+            bool local_3;
             GetGameplaySettings<UMissionSettings> local_12;
             local_10 = local_12;
             if (local_10.MissionCategoryTextMap.Contains(this.GetMissionConfig().opArrow().MissionType))
@@ -146,36 +141,47 @@ struct FVM_MissionDetailInfo : FEUIViewModel
             }
             this.SetRecommendLevelWarningText(local_76);
             FMissionDetail local_188;
-            if (::MissionUtils::TryFindMissionDetail(this.GetContext().GetLocalPlayer(), local_189, local_188, false))
+            int local_189 = this.GetMissionConfig().Get().DataId;
+            local_3 = ::MissionUtils::TryFindMissionDetail(this.GetContext().GetLocalPlayer(), local_189, local_188, false);
+            if (local_3)
             {
                 this.SetCurrentPhaseConfig(local_188.GetActivePhaseConfig());
                 this.GetModify_ObjectiveInfos().Empty(0);
                 for (auto& local_212 : local_188.GetActiveObjectiveStatusMap())
                 {
-                    local_212;
+                    FMissionObjectiveInfo local_218 = FMissionObjectiveInfo(local_212.GetValue());
                     TDataObjectPtr<FObjectiveConfig> local_242 = ::ObjectiveUtils::FindObjectiveConfig(local_218.GetObjectiveId());
-                    local_4 = !(local_242);
-                    if (local_4)
+                    if (!(local_242))
                     {
                         XError(ELog(16), FString().Append("Failed to find objective config for objective instance: ").Append(local_218.GetObjectiveId()));
                         continue;
                     }
-                    int local_2 = local_272;
-                    if (local_2 == 1)
+                    if (int(local_242.Get().ObjectiveType) == 1)
                     {
                         continue;
                     }
-                    if (local_276.opCall() && local_4)
+                    CastTo local_276;
+                    TDataObjectPtr<FObjectiveSingleConfig> local_300 = local_276.opCall();
+                    if (!(local_300))
+                    {
+                        local_3 = false;
+                    }
+                    else
+                    {
+                        local_3 = local_300.Get().bHidden;
+                    }
+                    if (local_3)
                     {
                         continue;
                     }
                     TDataObjectPtr<FCommissionConfig> local_348;
                     FVM_ObjectiveInfo& local_350 = ::FVM_ObjectiveInfo::Create(this.GetContext().Manager, local_218.GetInstanceId(), local_242);
                     int local_1 = local_218.GetFailProgressValue();
-                    local_2 = local_218.GetFinishProgressValue();
+                    int local_2 = local_218.GetFinishProgressValue();
                     local_350.UpdateProgress(local_2, local_1);
                     if (::ObjectiveUtils::IsCommissionObjective(local_242, local_348))
                     {
+                        local_2 = local_348.Get().CommissionProgressTexts.Num();
                         int local_352 = 0;
                         local_350.UpdateTitle(local_2, local_352);
                     }
@@ -375,11 +381,9 @@ FVM_MissionDetailInfo& Create(const UObject ContextObject)
 {
     return FVM_MissionDetailInfo::CreateByManager(EUIInternal::GetContextManager(ContextObject));
 }
-FVM_MissionDetailInfo CreateByManager(const UEUIManagerSubsystem Manager)
+FVM_MissionDetailInfo& CreateByManager(const UEUIManagerSubsystem Manager)
 {
-    FVM_MissionDetailInfo __r;
-    TEUIModelRef<FVM_MissionDetailInfo> local_6 = TEUIModelRef<FVM_MissionDetailInfo>(EUIInternal::MakeModelWithManager(Manager, FVM_MissionDetailInfo::ModelId));
-    return __r;
+    return TEUIModelRef<FVM_MissionDetailInfo>(EUIInternal::MakeModelWithManager(Manager, FVM_MissionDetailInfo::ModelId)).Get();
 }
 void GetModelInfo(FEUIViewModelMetaInfo &inout Result)
 {
@@ -526,7 +530,6 @@ namespace __GeneratedProperties_FVM_MissionDetailInfo
 {
 UScriptStruct StaticStruct()
 {
-    UScriptStruct local_2;
-    return local_2;
+    return __GeneratedProperties_FVM_MissionDetailInfo.Get();
 }
 }

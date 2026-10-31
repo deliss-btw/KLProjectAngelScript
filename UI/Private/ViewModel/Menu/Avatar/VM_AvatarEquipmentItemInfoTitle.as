@@ -50,14 +50,12 @@ struct FVM_AvatarEquipmentItemInfoTitle : FEUIViewModel
     }
     void PostConstruct()
     {
-        TEUIModelRef<FVM_EquipmentInfo> local_2 = this.GetEquipmentInfo();
-        TDataObjectPtr<FEquipmentConfig> local_26;
-        local_26.GetEquipmentConfig();
+        TDataObjectPtr<FEquipmentConfig> local_26 = this.GetEquipmentInfo().Get().GetEquipmentConfig();
         if (local_26)
         {
-            FText::AsCultureInvariant("Lv.{0}");
-            FText local_60;
-            this.SetEquipmentLevelText(local_60);
+            this.SetEquipmentName(local_26.Get().ItemName);
+            this.SetEquipmentDescription(local_26.Get().ItemDescription);
+            this.SetEquipmentLevelText(FText::Format(FText::AsCultureInvariant("Lv.{0}"), local_26.Get().Level));
         }
         return;
     }
@@ -166,11 +164,9 @@ FVM_AvatarEquipmentItemInfoTitle& Create(const UObject ContextObject, const TEUI
 {
     return FVM_AvatarEquipmentItemInfoTitle::CreateByManager(EUIInternal::GetContextManager(ContextObject), EquipmentInfo);
 }
-FVM_AvatarEquipmentItemInfoTitle CreateByManager(const UEUIManagerSubsystem Manager, const TEUIModelRef<FVM_EquipmentInfo> &inout EquipmentInfo)
+FVM_AvatarEquipmentItemInfoTitle& CreateByManager(const UEUIManagerSubsystem Manager, const TEUIModelRef<FVM_EquipmentInfo> &inout EquipmentInfo)
 {
-    FVM_AvatarEquipmentItemInfoTitle __r;
-    TEUIModelRef<FVM_AvatarEquipmentItemInfoTitle> local_6 = TEUIModelRef<FVM_AvatarEquipmentItemInfoTitle>(EUIInternal::MakeModelWithManager_Generic(Manager, FVM_AvatarEquipmentItemInfoTitle::ModelId, 0, EquipmentInfo));
-    return __r;
+    return TEUIModelRef<FVM_AvatarEquipmentItemInfoTitle>(EUIInternal::MakeModelWithManager_Generic(Manager, FVM_AvatarEquipmentItemInfoTitle::ModelId, 0, EquipmentInfo)).Get();
 }
 void GetModelInfo(FEUIViewModelMetaInfo &inout Result)
 {
@@ -243,7 +239,6 @@ namespace __GeneratedProperties_FVM_AvatarEquipmentItemInfoTitle
 {
 UScriptStruct StaticStruct()
 {
-    UScriptStruct local_2;
-    return local_2;
+    return __GeneratedProperties_FVM_AvatarEquipmentItemInfoTitle.Get();
 }
 }

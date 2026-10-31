@@ -52,8 +52,10 @@ void RemoveAttackIgnoreTargetCondition(const FECSEntityAdapter &inout Entity, co
     if (AttackData)
     {
         Modify local_6;
-        if (local_6.opCall())
+        FC_AttackIgnoreSpecificTarget& local_8 = local_6.opCall();
+        if (local_8)
         {
+            local_8.GetModify_ConditionByAttackData().Remove(AttackData);
         }
     }
     return;
@@ -80,9 +82,10 @@ void UndoIgnoreAttackFromEntity(const FECSEntityAdapter &inout TargetEntity, con
         return;
     }
     Modify local_6;
-    if (local_6.opCall())
+    FC_IgnoreAttackFromEntities& local_8 = local_6.opCall();
+    if (local_8)
     {
-        FECSEntity local_12 = SourceEntity.opImplConv();
+        local_8.GetModify_IgnoredEntities().Remove(SourceEntity.opImplConv());
     }
     return;
 }
@@ -627,8 +630,7 @@ void ModifyDamageAttribute(const FAbilityHitEventData &inout EventData, const TS
             if (local_14.DamageDatas.IsValidIndex(int(EventData.DamageIndex)))
             {
                 FDamageBeforeCalculationData& local_18 = local_14.DamageDatas[int(EventData.DamageIndex)];
-                UClass local_20;
-                FGameAttributeRef local_34 = FGameAttributeRef(TSoftClassPtr<UGameAttribute>(local_20));
+                FGameAttributeRef local_34 = FGameAttributeRef(TSoftClassPtr<UGameAttribute>(Attribute.Get()));
                 if (int(ModifyType) == 1)
                 {
                     local_46.ModValue.SetBaseValue((FAttributeModificationFixedPointNum(local_46.ModValue.GetBaseValue()) + FAttributeModificationFixedPointNum(Value)));
@@ -1046,7 +1048,6 @@ TArray<FECSEntity> GetSelectedTargetEntities(const FECSEntityAdapter &inout Enti
 UFUNCTION()
 void StartSkillTargetSelectByViewport(const TDataObjectPtr<FViewportSelectTargetParams> &inout Params)
 {
-    const USkillConfig local_30;
     UEASAbility local_2 = UEASAbility::GetContextAbility();
     if ((!((local_2 != nullptr))))
     {
@@ -1058,8 +1059,7 @@ void StartSkillTargetSelectByViewport(const TDataObjectPtr<FViewportSelectTarget
     const FC_SkillInstance& local_18 = local_16.opCall();
     if (local_18)
     {
-        TSoftObjectPtr<USkillConfig> local_28 = local_18.GetSkillConfig();
-        local_7 = local_30.GetSkillName();
+        local_7 = local_18.GetSkillConfig().Get().GetSkillName();
         FTargetSelectUtils::AddSelectTargetEntityByViewportRequest(local_2.GetOwnerEntity(), local_7, ESelectTargetRequestType(1), Params);
     }
     else
@@ -1071,7 +1071,6 @@ void StartSkillTargetSelectByViewport(const TDataObjectPtr<FViewportSelectTarget
 UFUNCTION()
 void StopSkillTargetSelectByViewport(const bool bClearCurTarget = false)
 {
-    const USkillConfig local_30;
     UEASAbility local_2 = UEASAbility::GetContextAbility();
     if ((!((local_2 != nullptr))))
     {
@@ -1083,8 +1082,7 @@ void StopSkillTargetSelectByViewport(const bool bClearCurTarget = false)
     const FC_SkillInstance& local_18 = local_16.opCall();
     if (local_18)
     {
-        TSoftObjectPtr<USkillConfig> local_28 = local_18.GetSkillConfig();
-        local_7 = local_30.GetSkillName();
+        local_7 = local_18.GetSkillConfig().Get().GetSkillName();
         FTargetSelectUtils::RemoveSelectTargetEntityByViewportRequest(local_2.GetOwnerEntity(), local_7, bClearCurTarget, FFPTime(-1));
     }
     else
@@ -1096,7 +1094,6 @@ void StopSkillTargetSelectByViewport(const bool bClearCurTarget = false)
 UFUNCTION()
 void ClearSkillTargetEntity()
 {
-    const USkillConfig local_28;
     UEASAbility local_2 = UEASAbility::GetContextAbility();
     if ((!((local_2 != nullptr))))
     {
@@ -1107,8 +1104,7 @@ void ClearSkillTargetEntity()
     const FC_SkillInstance& local_16 = local_14.opCall();
     if (local_16)
     {
-        TSoftObjectPtr<USkillConfig> local_26 = local_16.GetSkillConfig();
-        FTargetSelectUtils::ClearSkillTargetEntity(local_2.GetOwnerEntity(), local_28.GetSkillName());
+        FTargetSelectUtils::ClearSkillTargetEntity(local_2.GetOwnerEntity(), local_16.GetSkillConfig().Get().GetSkillName());
     }
     else
     {
@@ -1144,7 +1140,7 @@ void StartSkillTargetPositionSelect(const TDataObjectPtr<FSkillTargetPositionSel
     }
     if (ECS::IsAuthorityOrPrediction(FECSEntity(UEASAbility::GetContextAbility().GetOwnerEntity())))
     {
-        const FSkillTargetPositionSelectParams& local_22;
+        const FSkillTargetPositionSelectParams& local_22 = Params.Get();
         local_20.SetParams(Params);
         local_34.SetAngle((float32(local_28.GetRotation().Rotator().Yaw) + local_22.InitAngle));
         local_34.SetDistance(local_22.InitDistance);

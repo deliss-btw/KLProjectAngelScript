@@ -3,7 +3,6 @@ namespace __FIntrusionPolicyConfigFunctions
 UFUNCTION()
 FText __FIntrusionPolicyConfig_GetIntrusionName(const TDataObjectPtr<FIntrusionPolicyConfig> &inout DataObject)
 {
-    FText __r;
     if ((DataObject == nullptr))
     {
         if (!(EUIGlobals::GIsDuringPropertyConversion))
@@ -13,12 +12,11 @@ FText __FIntrusionPolicyConfig_GetIntrusionName(const TDataObjectPtr<FIntrusionP
         FIntrusionPolicyConfig local_96;
         return local_96.IntrusionName;
     }
-    return __r;
+    return DataObject.Get().IntrusionName;
 }
 UFUNCTION()
 FText __FIntrusionPolicyConfig_GetIntrusionTips(const TDataObjectPtr<FIntrusionPolicyConfig> &inout DataObject)
 {
-    FText __r;
     if ((DataObject == nullptr))
     {
         if (!(EUIGlobals::GIsDuringPropertyConversion))
@@ -28,12 +26,11 @@ FText __FIntrusionPolicyConfig_GetIntrusionTips(const TDataObjectPtr<FIntrusionP
         FIntrusionPolicyConfig local_96;
         return local_96.IntrusionTips;
     }
-    return __r;
+    return DataObject.Get().IntrusionTips;
 }
 UFUNCTION()
 FText __FIntrusionPolicyConfig_GetIntrusionDescription(const TDataObjectPtr<FIntrusionPolicyConfig> &inout DataObject)
 {
-    FText __r;
     if ((DataObject == nullptr))
     {
         if (!(EUIGlobals::GIsDuringPropertyConversion))
@@ -43,12 +40,11 @@ FText __FIntrusionPolicyConfig_GetIntrusionDescription(const TDataObjectPtr<FInt
         FIntrusionPolicyConfig local_96;
         return local_96.IntrusionDescription;
     }
-    return __r;
+    return DataObject.Get().IntrusionDescription;
 }
 UFUNCTION()
 FSoftBrush __FIntrusionPolicyConfig_GetIntrusionIcon(const TDataObjectPtr<FIntrusionPolicyConfig> &inout DataObject)
 {
-    FSoftBrush __r;
     if ((DataObject == nullptr))
     {
         if (!(EUIGlobals::GIsDuringPropertyConversion))
@@ -58,12 +54,11 @@ FSoftBrush __FIntrusionPolicyConfig_GetIntrusionIcon(const TDataObjectPtr<FIntru
         FIntrusionPolicyConfig local_96;
         return local_96.IntrusionIcon;
     }
-    return __r;
+    return DataObject.Get().IntrusionIcon;
 }
 UFUNCTION()
 TSet<TSoftClassPtr<AKLLevelScriptActor>> __FIntrusionPolicyConfig_GetExtraLoadDatalayerClasses(const TDataObjectPtr<FIntrusionPolicyConfig> &inout DataObject)
 {
-    TSet<TSoftClassPtr<AKLLevelScriptActor>> __r;
     if ((DataObject == nullptr))
     {
         if (!(EUIGlobals::GIsDuringPropertyConversion))
@@ -73,7 +68,7 @@ TSet<TSoftClassPtr<AKLLevelScriptActor>> __FIntrusionPolicyConfig_GetExtraLoadDa
         FIntrusionPolicyConfig local_96;
         return local_96.ExtraLoadDatalayerClasses;
     }
-    return __r;
+    return DataObject.Get().ExtraLoadDatalayerClasses;
 }
 UFUNCTION()
 FIntrusionPolicyConfig CastToFIntrusionPolicyConfig(const TDataObjectPtr<FIntrusionPolicyConfig> &inout DataObject)

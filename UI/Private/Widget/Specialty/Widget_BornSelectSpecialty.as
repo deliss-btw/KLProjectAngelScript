@@ -68,8 +68,8 @@ class UWidget_BornSelectSpecialty : UEUIActivatableWidget
     }
     void HandleObservedModelChanges(FEUIReactiveSubscriberIterator &inout It)
     {
-        FVM_BornSelectSpecialty& local_6;
         TEUIModelRef<FVM_BornSelectSpecialty> local_2 = this.SelectSpecialtyModel.AsRef();
+        FVM_BornSelectSpecialty& local_6 = local_2.Get();
         for (; It; )
         {
             FEUIReactiveSubscriberTrackScope local_56 = FEUIReactiveSubscriberTrackScope(It);

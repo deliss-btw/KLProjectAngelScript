@@ -91,9 +91,10 @@ class UESMAction_DirectDamage : UESMBPBaseInstantAction
         {
             return;
         }
-        if (::FCombatUtils::GetAttackDataPtrFromDataTable(this.AttackDataConfig, Context.GetEntity()))
+        TDataObjectPtr<FAttackData> local_54 = ::FCombatUtils::GetAttackDataPtrFromDataTable(this.AttackDataConfig, Context.GetEntity());
+        if (local_54)
         {
-            ::FDamageUtils::AddDirectDamageByAttackData(Context.GetEntity(), Context.GetEntity(), local_4, Time.WorldTime);
+            ::FDamageUtils::AddDirectDamageByAttackData(Context.GetEntity(), Context.GetEntity(), local_4, local_54.Get(), Time.WorldTime);
         }
         return;
     }

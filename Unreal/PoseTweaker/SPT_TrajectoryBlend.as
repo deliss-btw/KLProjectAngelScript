@@ -814,7 +814,7 @@ class USPT_TrajectoryBlend_Template : USkeletalPoseTweaker
         }
         for (auto& local_338 : local_256)
         {
-            this.SetBoneTransformCS(local_338.GetKey());
+            this.SetBoneTransformCS(local_338.GetKey(), local_338.GetValue());
         }
         for (auto& local_270 : this.LegIKs)
         {
@@ -931,6 +931,8 @@ class USPT_TrajectoryBlend_Template : USkeletalPoseTweaker
                 this.SpineLeanAnchors.Add(local_92);
             }
         }
+        __Lambda_Unreal_PoseTweaker_SPT_TrajectoryBlend_687 local_94;
+        this.SpineLeanAnchors.Sort(local_94);
         if (!(this.SpineLeanAnchors.IsEmpty()))
         {
             FSpineLeanAnchor local_92;

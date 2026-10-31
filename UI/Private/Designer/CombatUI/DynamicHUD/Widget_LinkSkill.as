@@ -37,9 +37,10 @@ class UWidget_LinkSkill : UEUIUserWidget
             const FC_PropManipulator& local_16 = local_14.opCall();
             if (local_16)
             {
-                if (::FASCommonUtils::GetPropConfigDataPtr(FECSEntity(local_16.GetManipulatedPropEntity())))
+                TDataObjectPtr<FPropPrefabConfig> local_44 = ::FASCommonUtils::GetPropConfigDataPtr(FECSEntity(local_16.GetManipulatedPropEntity()));
+                if (local_44)
                 {
-                    const FPropPrefabConfig& local_70;
+                    const FPropPrefabConfig& local_70 = local_44.Get();
                     if ((int(local_70.PropType) == 2 && (int(local_70.CombatPropType) == 1)))
                     {
                         TSoftClassPtr<UEUIUserWidget> local_84 = TSoftClassPtr<UEUIUserWidget>(local_70.UI_CustomSkillInfo);
@@ -61,14 +62,14 @@ class UWidget_LinkSkill : UEUIUserWidget
     UFUNCTION()
     FEUIModelRef LinkSkill_VM_LinkSkillEnergyCrossbow() const
     {
-        FVMS_LinkSkill& local_2;
+        FVMS_LinkSkill& local_2 = this.LinkSkill.Get();
         FEUIModelRef local_8 = local_2 ? local_2.GetVM_LinkSkillEnergyCrossbow() : FEUIModelRef();
         return local_8;
     }
     void HandleObservedModelChanges(FEUIReactiveSubscriberIterator &inout It)
     {
-        FVMS_LinkSkill& local_6;
         TEUIModelRef<FVMS_LinkSkill> local_2 = this.LinkSkill.AsRef();
+        FVMS_LinkSkill& local_6 = local_2.Get();
         for (; It; )
         {
             FEUIReactiveSubscriberTrackScope local_56 = FEUIReactiveSubscriberTrackScope(It);

@@ -97,11 +97,9 @@ FVM_BossLowHpDecoractor& Create(const UObject ContextObject, const TEUIModelRef<
 {
     return FVM_BossLowHpDecoractor::CreateByManager(EUIInternal::GetContextManager(ContextObject), Spot, EPresentationSpotUsage(SpotUsage));
 }
-FVM_BossLowHpDecoractor CreateByManager(const UEUIManagerSubsystem Manager, const TEUIModelRef<FM_Spot> &inout Spot, const EPresentationSpotUsage SpotUsage)
+FVM_BossLowHpDecoractor& CreateByManager(const UEUIManagerSubsystem Manager, const TEUIModelRef<FM_Spot> &inout Spot, const EPresentationSpotUsage SpotUsage)
 {
-    FVM_BossLowHpDecoractor __r;
-    TEUIModelRef<FVM_BossLowHpDecoractor> local_6 = TEUIModelRef<FVM_BossLowHpDecoractor>(EUIInternal::MakeModelWithManager_Generic(Manager, FVM_BossLowHpDecoractor::ModelId, 0, Spot, SpotUsage));
-    return __r;
+    return TEUIModelRef<FVM_BossLowHpDecoractor>(EUIInternal::MakeModelWithManager_Generic(Manager, FVM_BossLowHpDecoractor::ModelId, 0, Spot, SpotUsage)).Get();
 }
 void GetModelInfo(FEUIViewModelMetaInfo &inout Result)
 {
@@ -138,7 +136,6 @@ namespace __GeneratedProperties_FVM_BossLowHpDecoractor
 {
 UScriptStruct StaticStruct()
 {
-    UScriptStruct local_2;
-    return local_2;
+    return __GeneratedProperties_FVM_BossLowHpDecoractor.Get();
 }
 }

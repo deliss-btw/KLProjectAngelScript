@@ -18,18 +18,13 @@ class UHTNTask_ReAllocateFlockSlot : UHTNTask_ECSScriptBase
     UFUNCTION()
     void Execute_Implementation(const FHTNContext &inout Context)
     {
-        float32 local_10 = 0.0f;
-        bool local_14 = false;
         FECSEntity local_4 = Context.GetControllerEntity();
         float32 local_9 = 1.0f;
-        FAISmartValueContext local_12 = Context.opImplConv();
-        if (local_10 != 0.0f)
+        if (this.ModCountRatiokey.GetValue(Context.opImplConv()) != 0.0f)
         {
-            FAISmartValueContext local_12_2 = Context.opImplConv();
-            local_9 = local_10;
+            local_9 = this.ModCountRatiokey.GetValue(Context.opImplConv());
         }
-        FAISmartValueContext local_12_3 = Context.opImplConv();
-        ::FEcologyBehaviorUtils::AllocateChildSlotData(local_4, local_14, local_9);
+        ::FEcologyBehaviorUtils::AllocateChildSlotData(local_4, this.NeedResetOffset.GetValue(Context.opImplConv()), local_9);
         this.FinishExecuteWithContext(Context, true);
         return;
     }

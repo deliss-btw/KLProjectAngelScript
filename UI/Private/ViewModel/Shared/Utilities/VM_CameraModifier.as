@@ -115,11 +115,9 @@ FVM_CameraModifier& Create(const UObject ContextObject)
 {
     return FVM_CameraModifier::CreateByManager(EUIInternal::GetContextManager(ContextObject));
 }
-FVM_CameraModifier CreateByManager(const UEUIManagerSubsystem Manager)
+FVM_CameraModifier& CreateByManager(const UEUIManagerSubsystem Manager)
 {
-    FVM_CameraModifier __r;
-    TEUIModelRef<FVM_CameraModifier> local_6 = TEUIModelRef<FVM_CameraModifier>(EUIInternal::MakeModelWithManager(Manager, FVM_CameraModifier::ModelId));
-    return __r;
+    return TEUIModelRef<FVM_CameraModifier>(EUIInternal::MakeModelWithManager(Manager, FVM_CameraModifier::ModelId)).Get();
 }
 void GetModelInfo(FEUIViewModelMetaInfo &inout Result)
 {
@@ -158,7 +156,6 @@ namespace __GeneratedProperties_FVM_CameraModifier
 {
 UScriptStruct StaticStruct()
 {
-    UScriptStruct local_2;
-    return local_2;
+    return __GeneratedProperties_FVM_CameraModifier.Get();
 }
 }

@@ -12,7 +12,6 @@ class UESMAction_DataTrackMonterSkill : UESMBPBaseInstantAction
     UFUNCTION()
     void Do_Implementation(const FESMContext &inout Context, const FESMActionTime &inout Time) const
     {
-        int local_13 = 0;
         const FECSEntity& local_2 = Context.GetEntity();
         FNameHandle_EntityBBVarInt local_8;
         local_8;
@@ -23,9 +22,10 @@ class UESMAction_DataTrackMonterSkill : UESMBPBaseInstantAction
             local_12 = 0;
             int local_11 = local_2.GetIdValue();
             Get local_18;
-            if (local_18.opCall())
+            const FC_MonsterInfo& local_20 = local_18.opCall();
+            if (local_20)
             {
-                local_12 = local_13;
+                local_12 = local_20.GetMonsterConfig().Get().DataId;
             }
             FPbPlayerLogDsSkillCast local_30;
             local_30.SetEntityType(2);

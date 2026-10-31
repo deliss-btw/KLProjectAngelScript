@@ -6,6 +6,8 @@ struct FGTCLockTargetAction : FGTCAction
     UPROPERTY()
     FECSEntity LockTargetEntity;
 
+    default m_ScriptOverrideMeta = Cast<UASStruct>(FGTCLockTargetAction.Get());
+
     FGTCLockTargetAction()
     {
         this.__InitDefaults();

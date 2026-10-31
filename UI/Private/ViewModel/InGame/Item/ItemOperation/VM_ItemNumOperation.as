@@ -76,8 +76,7 @@ struct FVM_ItemNumOperation : FEUIViewModel
         this.SetItemSumData(::FMS_PlayerInventory::Get(this.GetContext().Manager).GetSumItem(this.GetItemData().opArrow().GetConfig()));
         this.SetQualitySelector(TEUIModelRef<FVM_QualitySelector>(::FVM_QualitySelector::Create(this.GetContext().Manager)));
         this.GetQualitySelector().opArrow().SetMinNum(1);
-        TEUIModelRef<FM_ItemData> local_4 = this.GetItemData();
-        if (::ItemConfigUtils::IsStackable(GetConfig()))
+        if (::ItemConfigUtils::IsStackable(this.GetItemData().Get().GetConfig()))
         {
             local_11 = this.GetItemSumData().opArrow().GetNum();
         }
@@ -103,8 +102,7 @@ struct FVM_ItemNumOperation : FEUIViewModel
     void OnItemSumDataNumChanged()
     {
         int local_5;
-        TEUIModelRef<FM_ItemData> local_2 = this.GetItemData();
-        if (::ItemConfigUtils::IsStackable(GetConfig()))
+        if (::ItemConfigUtils::IsStackable(this.GetItemData().Get().GetConfig()))
         {
             local_5 = this.GetItemSumData().opArrow().GetNum();
         }
@@ -292,11 +290,9 @@ FVM_ItemNumOperation& Create(const UObject ContextObject, const TEUIModelRef<FM_
 {
     return FVM_ItemNumOperation::CreateByManager(EUIInternal::GetContextManager(ContextObject), ItemData, OperationConfig, ResultPreview);
 }
-FVM_ItemNumOperation CreateByManager(const UEUIManagerSubsystem Manager, const TEUIModelRef<FM_ItemData> &inout ItemData, const UItemOperationConfig_NumOperationBase OperationConfig, const TEUIModelRef<FVM_CommonRewardList> &inout ResultPreview)
+FVM_ItemNumOperation& CreateByManager(const UEUIManagerSubsystem Manager, const TEUIModelRef<FM_ItemData> &inout ItemData, const UItemOperationConfig_NumOperationBase OperationConfig, const TEUIModelRef<FVM_CommonRewardList> &inout ResultPreview)
 {
-    FVM_ItemNumOperation __r;
-    TEUIModelRef<FVM_ItemNumOperation> local_6 = TEUIModelRef<FVM_ItemNumOperation>(EUIInternal::MakeModelWithManager_Generic(Manager, FVM_ItemNumOperation::ModelId, 0, ItemData, OperationConfig, ResultPreview));
-    return __r;
+    return TEUIModelRef<FVM_ItemNumOperation>(EUIInternal::MakeModelWithManager_Generic(Manager, FVM_ItemNumOperation::ModelId, 0, ItemData, OperationConfig, ResultPreview)).Get();
 }
 void GetModelInfo(FEUIViewModelMetaInfo &inout Result)
 {
@@ -428,7 +424,6 @@ namespace __GeneratedProperties_FVM_ItemNumOperation
 {
 UScriptStruct StaticStruct()
 {
-    UScriptStruct local_2;
-    return local_2;
+    return __GeneratedProperties_FVM_ItemNumOperation.Get();
 }
 }

@@ -69,8 +69,7 @@ struct FSyncFloatValueVariant
         }
         if ((int(this.GetValueMode())) == 2)
         {
-            UCurveFloat local_12;
-            return local_12.GetFloatValue(SampleTime);
+            return this.GetCustomValueCurve().Get().GetFloatValue(SampleTime);
         }
         return 0.0f;
     }

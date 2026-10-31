@@ -24,12 +24,11 @@ class US_ObjectiveSystem : UECSScriptSystem
     UFUNCTION()
     void ServerJob_HandleGSConditionCurrentValueUpdate(const FCE_GSConditionCurrentValueUpdate &inout Event, FCS_ObjectiveManager &inout ObjectiveManager) const
     {
-        FObjectiveInstance& local_32;
         XLog(ELog(65), FString().Append("Handle GSCondition Current Value Update"));
         FECSEntity local_10 = FECSEntity(Event.Sender);
         for (auto& local_30 : ObjectiveManager.ActiveObjectives)
         {
-            local_30;
+            FObjectiveInstance& local_32 = local_30.GetValue();
             if (int(local_32.Context.ConditionUsage) == 0)
             {
                 continue;
@@ -54,7 +53,25 @@ class US_ObjectiveSystem : UECSScriptSystem
     UFUNCTION()
     void ServerJob_HandleConditionCurrentValueUpdate(const FCE_ConditionCurrentValueUpdate &inout Event, FCS_ObjectiveManager &inout ObjectiveManager) const
     {
-        // body not fully recovered — stub [argmismatch:argint]
+        XLog(ELog(65), FString().Append("Condition Current Value Update: ").Append(Event.ConditionInstance.GetLocalConditionInstanceID()));
+        int local_5 = ::ConditionUtils::GetCurrentValue(Event.ConditionInstance);
+        for (auto& local_28 : ObjectiveManager.ActiveObjectives)
+        {
+            FConditionInstanceHandle local_54;
+            if (local_54.opCmp(Event.ConditionInstance) == 0)
+            {
+                local_28.GetValue().FinishConditionInfo.ProgressValue = local_5;
+                XLog(ELog(65), FString().Append("Finish Progress Updated: ").Append(local_28.GetValue().ObjectiveId).Append("(").Append(local_28.GetKey()).Append(")  => ").Append(local_5));
+                ::ObjectiveUtils::SendProgressUpdatedEvent(local_28.GetValue(), true, local_5);
+            }
+            if (local_54.opCmp(Event.ConditionInstance) == 0)
+            {
+                local_28.GetValue().FailConditionInfo.ProgressValue = local_5;
+                XLog(ELog(65), FString().Append("Fail Progress Updated: ").Append(local_28.GetValue().ObjectiveId).Append("(").Append(local_28.GetKey()).Append(")  => ").Append(local_5));
+                ::ObjectiveUtils::SendProgressUpdatedEvent(local_28.GetValue(), false, local_5);
+            }
+        }
+        return;
     }
     UFUNCTION()
     void ServerJob_HandleConditionReachStateUpdate(const FCE_ConditionReachStateUpdate &inout Event, FCS_ObjectiveManager &inout ObjectiveManager) const
@@ -100,9 +117,8 @@ class US_ObjectiveSystem : UECSScriptSystem
         for (auto& local_20 : ManualSetObjectiveStatus.ObjectiveStatusMap)
         {
             FObjectiveInstance& local_22 = ObjectiveManager.ActiveObjectives.FindOrAdd(local_20.GetKey());
-            EObjectiveStatus local_23;
-            local_22.Status = EObjectiveStatus(local_23);
-            XLog(ELog(65), FString().Append("Status changed: ").Append(local_22.ObjectiveId).Append("(").Append(local_20.GetKey()).Append(") = ").Append());
+            local_22.Status = EObjectiveStatus(local_20.GetValue());
+            XLog(ELog(65), FString().Append("Status changed: ").Append(local_22.ObjectiveId).Append("(").Append(local_20.GetKey()).Append(") = ").Append(local_20.GetValue()));
             this.SendStatusChangeEvent(ObjectiveManager, ObjectiveManager.ActiveObjectives[local_20.GetKey()]);
         }
         FECSWorldPtr local_32 = ECS::GetECSWorld();
@@ -112,7 +128,78 @@ class US_ObjectiveSystem : UECSScriptSystem
     }
     void SendStatusChangeEvent(FCS_ObjectiveManager &inout ObjectiveManager, FObjectiveInstance &inout ObjectiveInstance) const
     {
-        // body not fully recovered — stub [argmismatch:argint]
+        FCE_ObjectiveGroupNewChildActivated local_222;
+        int local_1 = int(ObjectiveInstance.InstanceId);
+        XLog(ELog(65), FString().Append("Status changed: ").Append(ObjectiveInstance.ObjectiveId).Append("(").Append(local_1).Append(") = ").Append(ObjectiveInstance.Status));
+        FFPTime local_16 = FFPTime(-1);
+        FECSWorldPtr local_10 = ECS::GetECSWorld();
+        FCE_ObjectiveStatusChanged local_20;
+        local_20.ObjectiveInstanceId = local_1;
+        local_20.ObjectiveId = int(ObjectiveInstance.ObjectiveId);
+        local_20.Status = EObjectiveStatus(ObjectiveInstance.Status);
+        TArray<uint> local_26;
+        for (auto& local_46 : ObjectiveManager.ActiveObjectives)
+        {
+            if (!(::ObjectiveUtils::GroupContainsChildInstance(local_46.GetValue(), local_1)))
+            {
+                continue;
+            }
+            FObjectiveInstance& local_48 = ObjectiveManager.ActiveObjectives[local_46.GetKey()];
+            EObjectiveStatus local_21 = this.CalculateObjectiveGroupStatus(ObjectiveManager, local_48);
+            if (int(local_21) != int(local_48.Status))
+            {
+                FCE_ObjectiveStatusChanged local_52;
+                if (int(local_21) == 2)
+                {
+                    local_48.FinishConditionInfo.ProgressValue = 1;
+                    XLog(ELog(65), FString().Append("Group Finish Progress Updated: ").Append(local_46.GetValue().ObjectiveId).Append("(").Append(local_46.GetKey()).Append(") 0 => 1"));
+                    ::ObjectiveUtils::SendProgressUpdatedEvent(local_48, true, 1);
+                }
+                else
+                {
+                    if (int(local_21) == 3)
+                    {
+                        local_48.FailConditionInfo.ProgressValue = 1;
+                        XLog(ELog(65), FString().Append("Group Fail Progress Updated: ").Append(local_46.GetValue().ObjectiveId).Append("(").Append(local_46.GetKey()).Append(") 0 => 1"));
+                        ::ObjectiveUtils::SendProgressUpdatedEvent(local_48, false, 1);
+                    }
+                }
+                XLog(ELog(65), FString().Append("Group Status changed: ").Append(local_46.GetValue().ObjectiveId).Append("(").Append(local_46.GetKey()).Append(") ").Append(local_46.GetValue().Status).Append(" => ").Append(local_21));
+                local_48.Status = EObjectiveStatus(local_21);
+                FFPTime local_16_2 = FFPTime(-1);
+                FECSWorldPtr local_10_2 = ECS::GetECSWorld();
+                local_52.ObjectiveInstanceId = local_46.GetKey();
+                int local_2 = local_46.GetValue().ObjectiveId;
+                local_52.ObjectiveId = local_2;
+                local_52.Status = EObjectiveStatus(local_46.GetValue().Status);
+            }
+            if (int(local_46.GetValue().FinishType) == 2 && (int(ObjectiveInstance.Status) == 2))
+            {
+                local_26.Add(local_46.GetKey());
+            }
+        }
+        for (auto local_67 : local_26)
+        {
+            FObjectiveInstance local_214;
+            if (!(::ObjectiveUtils::TryFindActivetedObjectiveInstance(local_67, local_214)))
+            {
+                continue;
+            }
+            if (int(local_214.Status) != 1)
+            {
+                continue;
+            }
+            int local_2_2 = ::ObjectiveUtils::TryActivateNextSequenceChild(local_67, local_214.Context);
+            if (local_2_2 == 0)
+            {
+                continue;
+            }
+            FFPTime local_16_3 = FFPTime(-1);
+            FECSWorldPtr local_10_3 = ECS::GetECSWorld();
+            local_222.GroupInstanceId = local_67;
+            local_222.NewChildInstanceId = local_2_2;
+        }
+        return;
     }
     EObjectiveStatus CalculateObjectiveGroupStatus(const FCS_ObjectiveManager &inout ObjectiveManager, const FObjectiveInstance &inout ObjectiveInfo) const
     {
@@ -123,7 +210,8 @@ class US_ObjectiveSystem : UECSScriptSystem
             local_6 = true;
             for (auto& local_24 : ObjectiveInfo.ChildObjectiveMap)
             {
-                if (0 == 0)
+                int local_25 = local_24.GetValue();
+                if (local_25 == 0)
                 {
                     local_6 = false;
                     continue;
@@ -132,9 +220,9 @@ class US_ObjectiveSystem : UECSScriptSystem
                 {
                     continue;
                 }
-                if (!(ObjectiveManager.ActiveObjectives.Find(local_172)))
+                if (!(ObjectiveManager.ActiveObjectives.Find(local_24.GetValue(), local_172)))
                 {
-                    XWarning(ELog(65), FString().Append("CalculateObjectiveGroupStatus(All): child instance ").Append().Append(" not found in ActiveObjectives"));
+                    XWarning(ELog(65), FString().Append("CalculateObjectiveGroupStatus(All): child instance ").Append(local_24.GetValue()).Append(" not found in ActiveObjectives"));
                     local_6 = false;
                     continue;
                 }
@@ -159,15 +247,15 @@ class US_ObjectiveSystem : UECSScriptSystem
             if (int(ObjectiveInfo.FinishType) == 1)
             {
                 local_6 = true;
-                for (auto& local_24 : ObjectiveInfo.ChildObjectiveMap)
+                for (auto& local_24_2 : ObjectiveInfo.ChildObjectiveMap)
                 {
-                    if (this.ShouldIgnoreChildForGroupStatus(local_24.GetKey()))
+                    if (this.ShouldIgnoreChildForGroupStatus(local_24_2.GetKey()))
                     {
                         continue;
                     }
-                    if (!(ObjectiveManager.ActiveObjectives.Find(local_172)))
+                    if (!(ObjectiveManager.ActiveObjectives.Find(local_24_2.GetValue(), local_172)))
                     {
-                        XWarning(ELog(65), FString().Append("CalculateObjectiveGroupStatus(Any): child instance ").Append().Append(" not found in ActiveObjectives"));
+                        XWarning(ELog(65), FString().Append("CalculateObjectiveGroupStatus(Any): child instance ").Append(local_24_2.GetValue()).Append(" not found in ActiveObjectives"));
                         local_6 = false;
                         continue;
                     }
@@ -190,13 +278,22 @@ class US_ObjectiveSystem : UECSScriptSystem
     }
     bool ShouldIgnoreChildForGroupStatus(const uint ChildObjectiveId) const
     {
-        bool local_103 = false;
-        if (!(::ObjectiveUtils::FindObjectiveConfig(ChildObjectiveId).IsSet()))
+        bool local_49 = !(::ObjectiveUtils::FindObjectiveConfig(ChildObjectiveId).IsSet());
+        if (local_49)
         {
             return false;
         }
         CastTo local_54;
-        return local_54.opCall().IsSet() && local_103;
+        TDataObjectPtr<FObjectiveSingleConfig> local_78 = local_54.opCall();
+        if (!(local_78.IsSet()))
+        {
+            local_49 = false;
+        }
+        else
+        {
+            local_49 = local_78.Get().bIgnoreStatusInGroup;
+        }
+        return local_49;
     }
     bool TryUpdateObjectiveProgress(FObjectiveConditionInfo &inout ConditionInfo, const FCE_GSConditionCurrentValueUpdate &inout Event) const
     {

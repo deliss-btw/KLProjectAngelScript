@@ -72,15 +72,12 @@ struct FVM_SpotInfo : FEUIViewModel
     }
     FEUIModelContainer GetGuideDecoractorModel() const
     {
-        FEUIModelContainer __return;
-        if (this.GetDecoractors().Find(EPresentationSpotDecoractor(0)))
+        TConstRawPtr<FEUIModelContainer> local_4 = this.GetDecoractors().Find(EPresentationSpotDecoractor(0));
+        if (local_4)
         {
+            return local_4.Get();
         }
-        else
-        {
-            __return = FEUIModelContainer();
-        }
-        return __return;
+        return FEUIModelContainer();
     }
     bool HasMarkDecoractor() const
     {
@@ -88,15 +85,12 @@ struct FVM_SpotInfo : FEUIViewModel
     }
     FEUIModelContainer GetMarkDecoractorModel() const
     {
-        FEUIModelContainer __return;
-        if (this.GetDecoractors().Find(EPresentationSpotDecoractor(1)))
+        TConstRawPtr<FEUIModelContainer> local_4 = this.GetDecoractors().Find(EPresentationSpotDecoractor(1));
+        if (local_4)
         {
+            return local_4.Get();
         }
-        else
-        {
-            __return = FEUIModelContainer();
-        }
-        return __return;
+        return FEUIModelContainer();
     }
     bool HasMissionDecoractor() const
     {
@@ -104,15 +98,12 @@ struct FVM_SpotInfo : FEUIViewModel
     }
     FEUIModelContainer GetMissionDecoractorModel() const
     {
-        FEUIModelContainer __return;
-        if (this.GetDecoractors().Find(EPresentationSpotDecoractor(2)))
+        TConstRawPtr<FEUIModelContainer> local_4 = this.GetDecoractors().Find(EPresentationSpotDecoractor(2));
+        if (local_4)
         {
+            return local_4.Get();
         }
-        else
-        {
-            __return = ::PresentationSpotDisplayUtils::CreateDecoractor(this.GetSpot(), this.GetSpotUsage());
-        }
-        return __return;
+        return ::PresentationSpotDisplayUtils::CreateDecoractor(this.GetSpot(), this.GetSpotUsage());
     }
     bool HasBossLowHPDecoractor() const
     {
@@ -120,15 +111,12 @@ struct FVM_SpotInfo : FEUIViewModel
     }
     FEUIModelContainer GetBossLowHPDecoractorModel() const
     {
-        FEUIModelContainer __return;
-        if (this.GetDecoractors().Find(EPresentationSpotDecoractor(3)))
+        TConstRawPtr<FEUIModelContainer> local_4 = this.GetDecoractors().Find(EPresentationSpotDecoractor(3));
+        if (local_4)
         {
+            return local_4.Get();
         }
-        else
-        {
-            __return = FEUIModelContainer();
-        }
-        return __return;
+        return FEUIModelContainer();
     }
     bool IsNPCSpot() const
     {
@@ -209,10 +197,9 @@ struct FVM_SpotInfo : FEUIViewModel
                 local_8.Add(local_28.GetKey());
             }
         }
-        auto local_36 = local_8.Iterator();
-        for (; local_36.CanProceed;)
+        for (auto& local_44 : local_8)
         {
-            int& local_44 = int(local_36.Proceed());
+            this.GetModify_Decoractors().Remove(int(local_44));
         }
         int local_45 = 0;
         for (; local_45 < 4; ++local_45)
@@ -366,11 +353,9 @@ FVM_SpotInfo& Create(const UObject ContextObject, const TEUIModelRef<FM_Spot> &i
 {
     return FVM_SpotInfo::CreateByManager(EUIInternal::GetContextManager(ContextObject), Spot, EPresentationSpotUsage(SpotUsage));
 }
-FVM_SpotInfo CreateByManager(const UEUIManagerSubsystem Manager, const TEUIModelRef<FM_Spot> &inout Spot, const EPresentationSpotUsage SpotUsage)
+FVM_SpotInfo& CreateByManager(const UEUIManagerSubsystem Manager, const TEUIModelRef<FM_Spot> &inout Spot, const EPresentationSpotUsage SpotUsage)
 {
-    FVM_SpotInfo __r;
-    TEUIModelRef<FVM_SpotInfo> local_6 = TEUIModelRef<FVM_SpotInfo>(EUIInternal::MakeModelWithManager_Generic(Manager, FVM_SpotInfo::ModelId, 0, Spot, SpotUsage));
-    return __r;
+    return TEUIModelRef<FVM_SpotInfo>(EUIInternal::MakeModelWithManager_Generic(Manager, FVM_SpotInfo::ModelId, 0, Spot, SpotUsage)).Get();
 }
 void GetModelInfo(FEUIViewModelMetaInfo &inout Result)
 {
@@ -560,7 +545,6 @@ namespace __GeneratedProperties_FVM_SpotInfo
 {
 UScriptStruct StaticStruct()
 {
-    UScriptStruct local_2;
-    return local_2;
+    return __GeneratedProperties_FVM_SpotInfo.Get();
 }
 }
