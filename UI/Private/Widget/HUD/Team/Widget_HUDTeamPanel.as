@@ -162,6 +162,7 @@ namespace UWidget_HUDTeamPanel
 void GetModelInfo(FEUIWidgetMetaInfo &inout Result)
 {
     Result.WidgetType = UWidget_HUDTeamPanel;
+    Result.ObservedModelChangesSubscriberCount = 1;
     Result.ObservedModelChangesSubscriberNames.Add(FString("OnGamepadLeftShoulderPressChanged"));
     return;
 }

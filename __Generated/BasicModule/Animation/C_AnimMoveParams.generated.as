@@ -11,7 +11,7 @@ namespace __INTENRAL_FC_AnimMoveParamsTempHistory_NS
 }
 struct FC_AnimMoveParamsHistory : FECSComponent
 {
-    TInterpoHistory<FC_AnimMoveParams, auto> History;
+    TInterpoHistory<FC_AnimMoveParams, 30> History;
 
     FC_AnimMoveParamsHistory()
     {
@@ -49,7 +49,7 @@ struct FC_AnimMoveParamsHistory : FECSComponent
 
 struct FC_AnimMoveParamsTempHistory : FECSComponent
 {
-    TInterpoHistory<FC_AnimMoveParamsTemp, auto> History;
+    TInterpoHistory<FC_AnimMoveParamsTemp, 30> History;
 
     FC_AnimMoveParamsTempHistory()
     {

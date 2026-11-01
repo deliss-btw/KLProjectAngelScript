@@ -249,6 +249,7 @@ namespace UWidget_Breakthrough
 void GetModelInfo(FEUIWidgetMetaInfo &inout Result)
 {
     Result.WidgetType = UWidget_Breakthrough;
+    Result.ObservedModelChangesSubscriberCount = 2;
     Result.ObservedModelChangesSubscriberNames.Add(FString("OnBreakthroughStatusChanged"));
     Result.ObservedModelChangesSubscriberNames.Add(FString("OnReadyBreakthroughChanged"));
     return;

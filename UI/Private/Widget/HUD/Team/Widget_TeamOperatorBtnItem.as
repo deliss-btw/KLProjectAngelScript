@@ -66,7 +66,9 @@ class UWidget_TeamOperatorBtnItem : UEUIUserWidget
     void UpdateButtonImage()
     {
         const UTeamSettings local_2;
+        TEUIModelWeakRef<FVM_TeamPanel> local_14;
         int local_21;
+        int local_24;
         GetGameplaySettings<UTeamSettings> local_4;
         local_2 = local_4;
         if (local_2 == nullptr)
@@ -81,56 +83,85 @@ class UWidget_TeamOperatorBtnItem : UEUIUserWidget
             {
                 this.SetIconAndHover(local_2.OperatorPlayerIconConfigs[local_8]);
             }
-            int local_10 = int(local_8);
-            if (local_10 <= 2)
+            switch (int(local_8))
             {
-                if (local_10 != 1)
+            case 1:
+            {
+                TEUIModelWeakRef<FVM_TeamPanel> local_16 = this.BunttonItem.Get().GetTeamPanel();
+                if (!(local_14.IsValid()))
                 {
-                    if (local_10 != 2)
-                    {
-                        return;
-                    }
+                    return;
                 }
                 else
                 {
-                    TEUIModelWeakRef<FVM_TeamPanel> local_14;
-                    TEUIModelWeakRef<FVM_TeamPanel> local_16 = this.BunttonItem.Get().GetTeamPanel();
-                    if (!(local_14.IsValid()))
-                    {
-                        return;
-                    }
-                    else
-                    {
                         ETeamListenState local_17;
-                        int local_18 = int(local_14.Get().GetListenState());
-                        local_17 = ETeamListenState(local_18);
-                        bool local_7 = local_14.Get().IsSpecialMapForVoice();
-                        if (local_7 && (int(local_17) != 0))
+                    int local_18 = int(local_14.Get().GetListenState());
+                    local_17 = ETeamListenState(local_18);
+                    bool local_7 = local_14.Get().IsSpecialMapForVoice();
+                    if (local_7 && (int(local_17) != 0))
+                    {
+                        if (::FTeamUtils::GetIsInCityTeamState() || !(local_14.Get().HasSocialTeam()))
                         {
-                            if (::FTeamUtils::GetIsInCityTeamState() || !(local_14.Get().HasSocialTeam()))
-                            {
-                                local_18 = 3;
-                                local_21 = local_18;
-                            }
-                            else
-                            {
-                                local_21 = local_17;
-                            }
-                            if (local_2.OperatorTeamMuteIconConfigs.Contains(ETeamListenState(local_21)))
-                            {
-                                this.SetIconAndHover(local_2.OperatorTeamMuteIconConfigs[ETeamListenState(local_21)]);
-                            }
+                            local_18 = 3;
+                            local_21 = local_18;
                         }
                         else
                         {
-                            if (local_2.OperatorTeamMuteIconConfigs.Contains(local_17))
-                            {
-                                this.SetIconAndHover(local_2.OperatorTeamMuteIconConfigs[local_17]);
-                            }
+                            local_21 = local_17;
                         }
-                        return;
+                        if (local_2.OperatorTeamMuteIconConfigs.Contains(ETeamListenState(local_21)))
+                        {
+                            this.SetIconAndHover(local_2.OperatorTeamMuteIconConfigs[ETeamListenState(local_21)]);
+                        }
                     }
+                    else
+                    {
+                        if (local_2.OperatorTeamMuteIconConfigs.Contains(local_17))
+                        {
+                            this.SetIconAndHover(local_2.OperatorTeamMuteIconConfigs[local_17]);
+                        }
+                    }
+                    return;
                 }
+            }
+            case 2:
+            {
+                TEUIModelWeakRef<FVM_TeamPanel> local_16_2 = this.BunttonItem.Get().GetTeamPanel();
+                if (!(local_14.IsValid()))
+                {
+                    return;
+                }
+                else
+                {
+                        ETeamSpeakState local_22;
+                    int local_23 = int(local_14.Get().GetSpeakState());
+                    local_22 = ETeamSpeakState(local_23);
+                    if ((local_14.Get().IsSpecialMapForVoice()) && (int(local_22) != 0))
+                    {
+                        if (::FTeamUtils::GetIsInCityTeamState() || !(local_14.Get().HasSocialTeam()))
+                        {
+                            local_23 = 3;
+                            local_24 = local_23;
+                        }
+                        else
+                        {
+                            local_24 = local_22;
+                        }
+                        if (local_2.OperatorTeamSpeakIconConfigs.Contains(ETeamSpeakState(local_24)))
+                        {
+                            this.SetIconAndHover(local_2.OperatorTeamSpeakIconConfigs[ETeamSpeakState(local_24)]);
+                        }
+                    }
+                    else
+                    {
+                        if (local_2.OperatorTeamSpeakIconConfigs.Contains(local_22))
+                        {
+                            this.SetIconAndHover(local_2.OperatorTeamSpeakIconConfigs[local_22]);
+                        }
+                    }
+                    return;
+                }
+            }
             }
         }
     }
@@ -224,6 +255,7 @@ namespace UWidget_TeamOperatorBtnItem
 void GetModelInfo(FEUIWidgetMetaInfo &inout Result)
 {
     Result.WidgetType = UWidget_TeamOperatorBtnItem;
+    Result.ObservedModelChangesSubscriberCount = 2;
     Result.ObservedModelChangesSubscriberNames.Add(FString("OnButtonTypeChanged"));
     Result.ObservedModelChangesSubscriberNames.Add(FString("OnButtonStateVersionChanged"));
     return;

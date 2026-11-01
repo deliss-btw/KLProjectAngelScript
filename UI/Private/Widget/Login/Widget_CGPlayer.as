@@ -139,6 +139,7 @@ namespace UWidget_CGPlayer
 void GetModelInfo(FEUIWidgetMetaInfo &inout Result)
 {
     Result.WidgetType = UWidget_CGPlayer;
+    Result.ObservedModelChangesSubscriberCount = 2;
     Result.ObservedModelChangesSubscriberNames.Add(FString("OnNextButtonStateChanged"));
     Result.ObservedModelChangesSubscriberNames.Add(FString("OnCanCloseChanged"));
     return;

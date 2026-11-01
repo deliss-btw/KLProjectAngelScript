@@ -88,7 +88,7 @@ class USPT_ReptileA_LookAt : USPT_ReptileA_FootIK_Base
         int local_182 = 0;
         for (; local_182 < local_20; )
         {
-            local_180[local_182] = this.SpineRotationRatio.GetFloatValue(((local_182 + 1) / local_20), 0.0f);
+            local_180[local_182] = this.SpineRotationRatio.GetFloatValue((float32((local_182 + 1)) / local_20), 0.0f);
             local_181 = local_181 + local_180[local_182];
             ++local_182;
         }

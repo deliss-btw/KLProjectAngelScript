@@ -69,25 +69,24 @@ class UPVPTDMGameModeFlow : UPVPGameModeFlowBase
         {
             return;
         }
-        switch (int(local_8.GetRoundStage()))
+        switch (local_8.GetRoundStage())
         {
-        case 0:
+        case EPVPTDMRoundStage::RoundPrep:
         {
             this.TickRoundPrep(local_8);
             return;
         }
-        case 1:
+        case EPVPTDMRoundStage::RoundCombat:
         {
             this.TickRoundCombat(local_8);
             return;
         }
-        case 2:
+        case EPVPTDMRoundStage::RoundIntermission:
         {
             this.TickRoundIntermission(local_8);
             return;
         }
         }
-        return;
     }
     void OnHandleDeath(const FCS_GameModeProfile &inout Profile, FCE_DeathEvent &inout Event) const
     {

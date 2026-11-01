@@ -138,6 +138,7 @@ namespace UWidget_SwitchSpecialty
 void GetModelInfo(FEUIWidgetMetaInfo &inout Result)
 {
     Result.WidgetType = UWidget_SwitchSpecialty;
+    Result.ObservedModelChangesSubscriberCount = 2;
     Result.ObservedModelChangesSubscriberNames.Add(FString("OnSelectSpecialty"));
     Result.ObservedModelChangesSubscriberNames.Add(FString("OnSpecialtyChangeSucc"));
     return;

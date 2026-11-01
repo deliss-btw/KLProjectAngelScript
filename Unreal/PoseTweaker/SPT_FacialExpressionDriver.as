@@ -227,7 +227,7 @@ class USPT_FacialExpressionDriver : USkeletalPoseTweaker
             {
                 continue;
             }
-            bool local_15 = (FName(local_18.Attribute) == this.CtrlAttr_Scale);
+            bool local_15 = (local_18.Attribute == this.CtrlAttr_Scale);
             if (local_18.Value >= 0.0f)
             {
                 local_37 = local_18.Value;

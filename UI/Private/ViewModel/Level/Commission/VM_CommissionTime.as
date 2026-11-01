@@ -224,8 +224,9 @@ struct FVMS_CommissionTime : FEUIViewModelSingleton
     }
     FWidgetTransform GetPercentageToTransform() const
     {
-        float local_16 = this.GetProgressAngle();
-        return FWidgetTransform();
+        FWidgetTransform local_14;
+        local_14.Angle = float32(this.GetProgressAngle());
+        return local_14;
     }
     FEUIModelContainer MakeHoverModels()
     {
@@ -920,16 +921,18 @@ void GetModelInfo(FEUIViewModelMetaInfo &inout Result)
     Result.GeneratedPropertyStruct = __GeneratedProperties_FVMS_CommissionTime;
     FEUIModelWatcherProperty local_19;
     local_19.PropertyName = FName("RemainCounterDown");
-    int local_2_2 = FVMS_CommissionTime::__IndexOf_RemainCounterDown();
+    local_19.DirtyBitIndex = FVMS_CommissionTime::__IndexOf_RemainCounterDown();
     Result.WatcherProperties.Add(local_19);
     local_19.PropertyName = FName("TimeProgress");
-    int local_2_3 = FVMS_CommissionTime::__IndexOf_TimeProgress();
+    local_19.DirtyBitIndex = FVMS_CommissionTime::__IndexOf_TimeProgress();
     Result.WatcherProperties.Add(local_19);
     FEUIModelMonitorDefine local_32;
     local_32.FunctionName = "__MonitorCommissionInfo";
+    local_32.MonitorTarget = EEUIModelMonitorTarget(2);
     local_32.ComponentType = FCS_CommissionInfo;
     Result.MonitorFunctions.Add(local_32);
     local_32.FunctionName = "__MonitorPVXScoreData";
+    local_32.MonitorTarget = EEUIModelMonitorTarget(2);
     local_32.ComponentType = FCS_GameMode_ScoreData;
     Result.MonitorFunctions.Add(local_32);
     FEUIModelEffectDefine local_38;
@@ -1101,7 +1104,7 @@ void GetModelInfo(FEUIViewModelMetaInfo &inout Result)
     Result.GeneratedPropertyStruct = __GeneratedProperties_FVM_CommissionTimeHover;
     FEUIModelWatcherProperty local_19;
     local_19.PropertyName = FName("RemainCounterDown");
-    int local_2_2 = FVM_CommissionTimeHover::__IndexOf_RemainCounterDown();
+    local_19.DirtyBitIndex = FVM_CommissionTimeHover::__IndexOf_RemainCounterDown();
     Result.WatcherProperties.Add(local_19);
     FEUIModelEffectDefine local_26;
     local_26.FunctionName = "RefreshRemainCounterDown";

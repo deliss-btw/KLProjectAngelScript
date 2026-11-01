@@ -142,6 +142,7 @@ namespace UWidget_MissionInfoTitle
 void GetModelInfo(FEUIWidgetMetaInfo &inout Result)
 {
     Result.WidgetType = UWidget_MissionInfoTitle;
+    Result.ObservedModelChangesSubscriberCount = 2;
     Result.ObservedModelChangesSubscriberNames.Add(FString("OnContentChange"));
     Result.ObservedModelChangesSubscriberNames.Add(FString("CloseInfoTitle"));
     return;

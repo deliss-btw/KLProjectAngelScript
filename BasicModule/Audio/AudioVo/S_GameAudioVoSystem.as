@@ -168,7 +168,7 @@ class US_GameAudioVoSystem : UECSScriptSystem
     {
         FECSEntity local_8 = FECSEntity(Event.Sender);
         EInvincibleCounterType local_9 = Event.Type;
-        FFPTime local_12 = FFPTime(FixedTime.Time);
+        FFPTime local_12 = FixedTime.Time;
         if (int(local_9) == 1)
         {
             int local_27;

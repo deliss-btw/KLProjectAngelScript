@@ -23,17 +23,25 @@ void MergeLLMCallArgs(TMap<FString, FString> &inout ArgBaseKeyValue, const TMap<
 UFUNCTION()
 void RequestChatForGPT(const FECSEntity &inout PawnEntity, const FString &inout LLMContent)
 {
-    // body not fully recovered — stub [opcode-uncovered]
+    TMap<FString, FString> local_20 = {{"Url", "https://preklgpttest02.openai.azure.com/openai/deployments/gpt-4o/chat/completions?api-version=2024-02-15-preview"}, {"APIKEy", "be3d2ba80e3e4711945fd447d6a8130d"}, {"LLMContent", LLMContent}, {"temperature", "0.7"}, {"top_p", "0.95"}, {"stream", "true"}};
+    Story::HttpRequestForGPT(local_20, PawnEntity, FLLMCallDelegate(US_CompanionBehaviorSystem.GetDefaultObject(), n"HandleChatForGPTCallBack"));
+    return;
 }
 UFUNCTION()
 void RequestQuestForGPTWithEntity(const FECSEntity &inout PawnEntity, const FString &inout LLMContent, const TMap<FString, FString> &inout ArgAdditionalKeyValue, const UObject Object, const FName &inout CallBackName)
 {
-    // body not fully recovered — stub [opcode-uncovered]
+    TMap<FString, FString> local_20 = {{"Url", "https://preklgpttest02.openai.azure.com/openai/deployments/gpt-4o/chat/completions?api-version=2024-02-15-preview"}, {"APIKEy", "be3d2ba80e3e4711945fd447d6a8130d"}, {"LLMContent", LLMContent}, {"temperature", "0.7"}, {"top_p", "0.95"}, {"stream", "true"}};
+    FLLMUtils::MergeLLMCallArgs(local_20, ArgAdditionalKeyValue);
+    Story::HttpRequestForGPT(local_20, PawnEntity, FLLMCallDelegate(Object, CallBackName));
+    return;
 }
 UFUNCTION()
 void RequestQuestForGPTWithCallContext(const FString &inout CallContext, const FString &inout LLMContent, const TMap<FString, FString> &inout ArgAdditionalKeyValue, const UObject Object, const FName &inout CallBackName)
 {
-    // body not fully recovered — stub [opcode-uncovered]
+    TMap<FString, FString> local_20 = {{"Url", "https://preklgpttest02.openai.azure.com/openai/deployments/gpt-4o/chat/completions?api-version=2024-02-15-preview"}, {"APIKEy", "be3d2ba80e3e4711945fd447d6a8130d"}, {"CallContext", CallContext}, {"LLMContent", LLMContent}, {"temperature", "0.7"}, {"top_p", "0.95"}, {"stream", "true"}};
+    FLLMUtils::MergeLLMCallArgs(local_20, ArgAdditionalKeyValue);
+    Story::HttpRequestForGPTWithCallContext(local_20, FLLMCallWithCallContextDelegate(Object, CallBackName));
+    return;
 }
 UFUNCTION()
 bool EntitySpeak(const FECSEntity &inout PawnEntity, const FString &inout Content)

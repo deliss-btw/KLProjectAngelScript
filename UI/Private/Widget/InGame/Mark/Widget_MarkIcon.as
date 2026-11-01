@@ -37,6 +37,7 @@ namespace UWidget_MarkIcon
 void GetModelInfo(FEUIWidgetMetaInfo &inout Result)
 {
     Result.WidgetType = UWidget_MarkIcon;
+    Result.ObservedModelChangesSubscriberCount = 0;
     return;
 }
 FEUIWidgetRef CreateWidget(const APlayerController OwningPlayer, const TSoftClassPtr<UEUIUserWidget> &inout WidgetClass)

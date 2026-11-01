@@ -354,6 +354,7 @@ namespace UWidget_AvatarMainWardrobe
 void GetModelInfo(FEUIWidgetMetaInfo &inout Result)
 {
     Result.WidgetType = UWidget_AvatarMainWardrobe;
+    Result.ObservedModelChangesSubscriberCount = 2;
     Result.ObservedModelChangesSubscriberNames.Add(FString("HandleWardrobeActionStateChanged"));
     Result.ObservedModelChangesSubscriberNames.Add(FString("HandleWardrobeMainTabStateChanged"));
     return;
@@ -372,6 +373,7 @@ namespace UWidget_AvatarWardrobeEntrance
 void GetModelInfo(FEUIWidgetMetaInfo &inout Result)
 {
     Result.WidgetType = UWidget_AvatarWardrobeEntrance;
+    Result.ObservedModelChangesSubscriberCount = 0;
     return;
 }
 FEUIWidgetRef CreateWidget(const APlayerController OwningPlayer, const TSoftClassPtr<UEUIUserWidget> &inout WidgetClass)

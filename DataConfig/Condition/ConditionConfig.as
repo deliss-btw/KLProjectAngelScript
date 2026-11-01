@@ -29,6 +29,7 @@ enum ECondGroupLogicType
     MaxCount,
 }
 
+
 struct FConditionConfig : FServerConditionConfigBase
 {
     FServerConditionConfigBase _base_FServerConditionConfigBase;
@@ -68,8 +69,59 @@ struct FConditionConfig : FServerConditionConfigBase
     }
     UScriptStruct GetCondRefDataType() const
     {
-        // body not fully recovered — stub [opcode-uncovered]
-        return nullptr;
+        UScriptStruct local_6;
+        switch (int(this.CondType))
+        {
+        case 1:
+        {
+            return FCommissionConfig;
+        }
+        case 3:
+        {
+            return FItemConfig;
+        }
+        case 6:
+        {
+            return FItemConfig;
+        }
+        case 4:
+        {
+            return FMissionConfig;
+        }
+        case 5:
+        {
+            return FMissionPhaseConfig;
+        }
+        case 102:
+        {
+            return FCommissionConfig;
+        }
+        case 105:
+        {
+            return FStigmataConfig;
+        }
+        case 106:
+        {
+            return FTalentConfig;
+        }
+        case 7:
+        {
+            return FPlayerLevelConfig;
+        }
+        case 103:
+        {
+            return FItemConfig;
+        }
+        case 8:
+        {
+            return FSystemControlConfig;
+        }
+        default:
+        {
+            local_6 = FDataObject;
+        }
+        }
+        return local_6;
     }
     const TArray<TDataObjectPtr<FDataObject>> GetRefData() const property
     {

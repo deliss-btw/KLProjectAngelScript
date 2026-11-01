@@ -32,6 +32,7 @@ class USPT_BackWeaponPointControl : USkeletalPoseTweaker
     TArray<FQuat> SmoothedCorrections;
     bool bInitialized = false;
 
+
     UFUNCTION()
     void OnInitialization_Implementation()
     {

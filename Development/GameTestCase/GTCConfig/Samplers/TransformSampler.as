@@ -59,6 +59,7 @@ struct FGTCTransformSampler : FGTCSampler
         this.bIsRelative = true;
         this.bSamplePosition = true;
         this.bSampleRotation = false;
+        this.ActionType = EGTCActionType(2);
         this.__InitDefaults();
         return;
     }

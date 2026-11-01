@@ -243,6 +243,7 @@ namespace UWidget_PVX_Match
 void GetModelInfo(FEUIWidgetMetaInfo &inout Result)
 {
     Result.WidgetType = UWidget_PVX_Match;
+    Result.ObservedModelChangesSubscriberCount = 2;
     Result.ObservedModelChangesSubscriberNames.Add(FString("HandlePVXMatchChage"));
     Result.ObservedModelChangesSubscriberNames.Add(FString("HandlePVXOpenPeriodChange"));
     return;

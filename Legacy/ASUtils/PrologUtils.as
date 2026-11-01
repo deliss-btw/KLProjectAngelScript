@@ -414,7 +414,7 @@ bool GetRandomQueryMapResult(const FString &inout QueryContent, TMap<FString, FS
         return false;
     }
     bool local_57 = false;
-    int local_59 = FMath::RandRange(0, (int(local_48.Num) - 1));
+    int local_59 = FMath::RandRange(0, (local_48.Num - 1));
     int local_60 = 0;
     for (; local_60 < local_48.ArgsNum(); ++local_60)
     {
@@ -520,7 +520,7 @@ bool GetRandomQueryMapResultByArgName(const FString &inout QueryContent, const F
     {
         return false;
     }
-    int local_42 = FMath::RandRange(0, (int(local_32.Num) - 1));
+    int local_42 = FMath::RandRange(0, (local_32.Num - 1));
     int local_43 = 0;
     for (; local_43 < local_32.ArgsNum(); ++local_43)
     {

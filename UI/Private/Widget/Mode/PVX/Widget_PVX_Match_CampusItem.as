@@ -215,6 +215,7 @@ namespace UWidget_PVX_Match_CampusItem
 void GetModelInfo(FEUIWidgetMetaInfo &inout Result)
 {
     Result.WidgetType = UWidget_PVX_Match_CampusItem;
+    Result.ObservedModelChangesSubscriberCount = 2;
     Result.ObservedModelChangesSubscriberNames.Add(FString("HandleCampusItemSelected"));
     Result.ObservedModelChangesSubscriberNames.Add(FString("HandleCampusItemCanMatch"));
     return;

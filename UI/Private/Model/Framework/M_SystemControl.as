@@ -810,10 +810,13 @@ void GetModelInfo(FEUIModelOnlyMetaInfo &inout Result)
     Result.MessageHandleFunctions.Add(local_14);
     FEUIModelProtoRspDefine local_24;
     local_24.FunctionName = "__GS_OnSystemControlAllNotify";
+    local_24.ProtoCmdId = uint16(2201);
     Result.ProtoRspDefines.Add(local_24);
     local_24.FunctionName = "__GS_OnSystemControlOpenNotify";
+    local_24.ProtoCmdId = uint16(2202);
     Result.ProtoRspDefines.Add(local_24);
     local_24.FunctionName = "__GS_OnSystemControlLimitNotify";
+    local_24.ProtoCmdId = uint16(2203);
     Result.ProtoRspDefines.Add(local_24);
     FEUIModelEventDefine local_32;
     local_32.FunctionName = "__OnLBPDisableSystemControl";

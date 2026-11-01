@@ -5,6 +5,7 @@ enum EDebugLevelUnitAction
     UnloadAndLoad,
 }
 
+
 struct FDebugTriggerActionBase
 {
     FDebugTriggerActionBase()
@@ -47,6 +48,7 @@ struct FDebugTriggerAction_LevelUnit : FDebugTriggerActionBase
     UPROPERTY()
     EDebugLevelUnitAction Action = EDebugLevelUnitAction(0);
 
+
 }
 
 class ADebugActionTriggerBox : AEntityTriggerBox
@@ -87,7 +89,34 @@ class ADebugActionTriggerBox : AEntityTriggerBox
     }
     void DispatchAction(const FInstancedStruct &inout ActionStruct, const FECSContext &inout Context, const FECSEntity &inout Entity)
     {
-        // body not fully recovered — stub [argmismatch:argtype]
+        TConstRawPtr<FDebugTriggerAction_ConsoleCommand> local_6 = FInstancedStruct::GetPtr(ActionStruct).opCall();
+        if (local_6)
+        {
+            if (!(local_6.Get().Command.IsEmpty()))
+            {
+                System::ExecuteConsoleCommand(__GetWorldContext(), local_6.Get().Command, nullptr);
+            }
+            return;
+        }
+        else
+        {
+            TConstRawPtr<FDebugTriggerAction_SpawnMonster> local_18 = FInstancedStruct::GetPtr(ActionStruct).opCall();
+            if (local_18)
+            {
+                FVector local_38 = (this.GetActorLocation() + local_18.Get().SpawnOffset);
+                ::FSingleMonsterSpawnHelper::SpawnAtLocation(local_18.Get().Config, local_38, this.GetActorQuat());
+                return;
+            }
+            else
+            {
+                TConstRawPtr<FDebugTriggerAction_LevelUnit> local_58 = FInstancedStruct::GetPtr(ActionStruct).opCall();
+                if (local_58)
+                {
+                    this.ExecuteLevelUnitAction(local_58.Get().UnitRef, local_58.Get().Action);
+                    return;
+                }
+            }
+        }
     }
     void ExecuteLevelUnitAction(const FLevelUnitReference &inout UnitRef, const EDebugLevelUnitAction Action)
     {
@@ -119,7 +148,7 @@ class ADebugActionTriggerBox : AEntityTriggerBox
     void AddConsoleCommandAction(TArray<FInstancedStruct> &inout Actions, const FString &inout Command)
     {
         FDebugTriggerAction_ConsoleCommand local_4;
-        local_4._base_FDebugTriggerActionBase = Command;
+        local_4.Command = Command;
         Actions.Add(FInstancedStruct::Make(local_4));
         return;
     }

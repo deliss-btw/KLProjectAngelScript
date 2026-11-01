@@ -427,10 +427,10 @@ void GetModelInfo(FEUIViewModelMetaInfo &inout Result)
     Result.GeneratedPropertyStruct = __GeneratedProperties_FVMS_Crosshair;
     FEUIModelWatcherProperty local_19;
     local_19.PropertyName = FName("ChargeEnergySource");
-    int local_2_2 = FVMS_Crosshair::__IndexOf_ChargeEnergySource();
+    local_19.DirtyBitIndex = FVMS_Crosshair::__IndexOf_ChargeEnergySource();
     Result.WatcherProperties.Add(local_19);
     local_19.PropertyName = FName("CrossbowTagSource");
-    int local_2_3 = FVMS_Crosshair::__IndexOf_CrossbowTagSource();
+    local_19.DirtyBitIndex = FVMS_Crosshair::__IndexOf_CrossbowTagSource();
     Result.WatcherProperties.Add(local_19);
     FEUIModelEffectDefine local_26;
     local_26.FunctionName = "SyncCrosshairSources";

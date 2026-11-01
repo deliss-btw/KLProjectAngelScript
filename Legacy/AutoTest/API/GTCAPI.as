@@ -64,8 +64,18 @@ bool IsTestFinished(const uint GameTestId)
 }
 TArray<FString> GetGameTestLogFiles(const uint GameTestId)
 {
-    // body not fully recovered — stub [opcode-uncovered]
-    TArray<FString> __r; return __r;
+    int local_10 = 0;
+    FECSWorldPtr local_2 = ECS::GetECSWorld();
+    if (!(local_10))
+    {
+        return {};
+    }
+    FGTCInfo local_24;
+    if (!(local_10.GTCMap.Find(GameTestId, local_24)))
+    {
+        return {};
+    }
+    return local_24.LogFiles;
 }
 TMap<uint, FGTCInfo> GetGameTestSummary()
 {

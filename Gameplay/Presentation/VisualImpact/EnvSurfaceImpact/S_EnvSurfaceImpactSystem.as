@@ -62,7 +62,7 @@ class US_EnvSurfaceImpactSystem : UECSScriptSystem
             }
             return;
         }
-        FFPTime local_174 = FFPTime(LocalTime.Time);
+        FFPTime local_174 = LocalTime.Time;
         FVector local_162 = local_16.StrikeDirection.opNeg();
         FRotator local_192 = local_162.ToOrientationRotator();
         FVector local_198(FVector::ZeroVector);

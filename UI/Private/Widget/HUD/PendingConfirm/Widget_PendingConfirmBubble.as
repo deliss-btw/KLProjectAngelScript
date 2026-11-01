@@ -201,6 +201,7 @@ namespace UWidget_PendingConfirmBubble
 void GetModelInfo(FEUIWidgetMetaInfo &inout Result)
 {
     Result.WidgetType = UWidget_PendingConfirmBubble;
+    Result.ObservedModelChangesSubscriberCount = 1;
     Result.ObservedModelChangesSubscriberNames.Add(FString("OnSelectMainTabUpdated"));
     return;
 }

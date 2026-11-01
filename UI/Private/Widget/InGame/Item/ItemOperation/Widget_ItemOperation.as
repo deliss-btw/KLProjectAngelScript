@@ -137,6 +137,7 @@ namespace UWidget_ItemOperation
 void GetModelInfo(FEUIWidgetMetaInfo &inout Result)
 {
     Result.WidgetType = UWidget_ItemOperation;
+    Result.ObservedModelChangesSubscriberCount = 1;
     Result.ObservedModelChangesSubscriberNames.Add(FString("OnShowListChanged"));
     return;
 }

@@ -126,8 +126,7 @@ class UESMAction_CameraState : UESMBPBaseSpanTickAction
         }
         if ((local_1 && this.bAlignActionTime))
         {
-            FFPTime local_18 = FFPTime(Time.ActionLastTime);
-            if ((local_18 == 0.0))
+            if ((Time.ActionLastTime == 0.0))
             {
                 FCameraUtils::UpdateState(Context.GetEntity(), Time.WorldLastTime, this.StateKey);
             }

@@ -125,6 +125,7 @@ namespace UWidget_LinkSkill
 void GetModelInfo(FEUIWidgetMetaInfo &inout Result)
 {
     Result.WidgetType = UWidget_LinkSkill;
+    Result.ObservedModelChangesSubscriberCount = 1;
     Result.ObservedModelChangesSubscriberNames.Add(FString("ShowUI"));
     return;
 }

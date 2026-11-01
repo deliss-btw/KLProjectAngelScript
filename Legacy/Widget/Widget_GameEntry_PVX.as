@@ -207,6 +207,7 @@ namespace UWidget_GameEntry_PVX
 void GetModelInfo(FEUIWidgetMetaInfo &inout Result)
 {
     Result.WidgetType = UWidget_GameEntry_PVX;
+    Result.ObservedModelChangesSubscriberCount = 0;
     return;
 }
 FEUIWidgetRef CreateWidget(const APlayerController OwningPlayer, const TSoftClassPtr<UEUIUserWidget> &inout WidgetClass)

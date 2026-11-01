@@ -146,8 +146,7 @@ class US_ASGameModeSystemDSTest : US_ECSScriptGameModeSystemBase
             }
             local_146.SetTeam(uint8(local_147));
             int local_148 = (local_146.GetTeam() - 1) % this.TeamSpawnerInfo.Num();
-            int local_156 = local_160.Num() - 1;
-            const DSTest::FDSTestSpawnLocAndRot& local_166 = local_160[FMath::RandRange(0, local_156)];
+            const DSTest::FDSTestSpawnLocAndRot& local_166 = local_160[FMath::RandRange(0, (local_160.Num() - 1))];
             TDataObjectPtr<FLevelInfoConfig> local_214 = ::FLevelUtils::GetCurrentLevelInfoConfig(nullptr);
             ::FGameModeUtils::SpwanAvatarAt(local_140, local_146, local_166.Location, local_166.Rotation.Quaternion(), local_214, false);
             FC_PlayerStates local_234;
@@ -155,7 +154,8 @@ class US_ASGameModeSystemDSTest : US_ECSScriptGameModeSystemBase
             local_228.opCall(local_234);
             FECSEntity local_244 = FECSEntity(local_140.GetId());
             FECSWorldPtr local_2_4 = this.GetECSWorld();
-            local_156 = local_146.GetPlayerId();
+            FCE_PlayerSpawnEvent local_246;
+            local_246.PlayerID = local_146.GetPlayerId();
         }
         local_8.SetStageType(EFCS_GameStageType(3));
         return;

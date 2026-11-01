@@ -6,7 +6,7 @@ namespace __INTENRAL_FC_AnimFloorInfoHistory_NS
 }
 struct FC_AnimFloorInfoHistory : FECSComponent
 {
-    TInterpoHistory<FC_AnimFloorInfo, auto> History;
+    TInterpoHistory<FC_AnimFloorInfo, 30> History;
 
     FC_AnimFloorInfoHistory()
     {

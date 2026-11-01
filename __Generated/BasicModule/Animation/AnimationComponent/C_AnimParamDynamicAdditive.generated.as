@@ -11,7 +11,7 @@ namespace __INTENRAL_FC_AnimParamDynamicAdditiveHistory_NS
 }
 struct FC_AnimParamDynamicAdditiveConfigHistory : FECSComponent
 {
-    TInterpoHistory<FC_AnimParamDynamicAdditiveConfig, auto> History;
+    TInterpoHistory<FC_AnimParamDynamicAdditiveConfig, 30> History;
 
     FC_AnimParamDynamicAdditiveConfigHistory()
     {
@@ -49,7 +49,7 @@ struct FC_AnimParamDynamicAdditiveConfigHistory : FECSComponent
 
 struct FC_AnimParamDynamicAdditiveHistory : FECSComponent
 {
-    TInterpoHistory<FC_AnimParamDynamicAdditive, auto> History;
+    TInterpoHistory<FC_AnimParamDynamicAdditive, 30> History;
 
     FC_AnimParamDynamicAdditiveHistory()
     {

@@ -981,8 +981,8 @@ void GetModelInfo(FEUIViewModelMetaInfo &inout Result)
     local_22.ApplySort();
     FEUIModelRefPropertyDirty local_30;
     local_30.PropertyName = FName("Node");
-    int local_2_2 = FM_TalentNode::ModelId;
-    int local_2_3 = local_22.GetMappingDirtyOffset(0);
+    local_30.PropertyModelId = FM_TalentNode::ModelId;
+    local_30.MappingDirtyOffset = local_22.GetMappingDirtyOffset(0);
     local_30.RelatedDirtyMask.SetBit(FM_TalentNode::__IndexOf_EquipRevision(), true);
     local_30.RelatedDirtyMask.SetBit(FM_TalentNode::__IndexOf_StateType(), true);
     local_30.RelatedDirtyMask.SetBit(FM_TalentNode::__IndexOf_ActiveLevel(), true);

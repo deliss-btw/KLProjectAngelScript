@@ -283,8 +283,29 @@ struct FVM_Item : FEUIViewModel
     }
     FText GetItemNumRichText() const
     {
-        // body not fully recovered — stub [opcode-uncovered]
-        FText __r; return __r;
+        switch (this.GetNumStyle())
+        {
+        case EItemViewModelNumStyle::Default:
+        {
+            return FText::AsNumber(this.GetNum(), FNumberFormattingOptions::DefaultWithGrouping());
+        }
+        case EItemViewModelNumStyle::HideNum:
+        {
+            return FText();
+        }
+        case EItemViewModelNumStyle::Ranged:
+        {
+            return FText::Format(INVTEXT("{0}~{1}"), this.GetOptionalNum(), this.GetNum());
+        }
+        case EItemViewModelNumStyle::NumSelect:
+        {
+            if (this.GetNum() < this.GetOptionalNum())
+            {
+                return FText::Format(INVTEXT("<Red24B>{0}</>/{1}"), this.GetOptionalNum(), this.GetNum());
+            }
+            return FText::Format(INVTEXT("{0}/{1}"), this.GetOptionalNum(), this.GetNum());
+        }
+        }
     }
     FText GetItemNumTimesText() const
     {
@@ -835,6 +856,7 @@ struct __GeneratedProperties_FVM_Item
     UPROPERTY()
     TEUIModelRef<FVM_Item> Self;
 
+
 }
 
 struct __GeneratedProperties_FVM_ItemIconAdapter
@@ -1047,8 +1069,8 @@ void GetModelInfo(FEUIViewModelMetaInfo &inout Result)
     local_22.ApplySort();
     FEUIModelRefPropertyDirty local_30;
     local_30.PropertyName = FName("ItemDataModel");
-    int local_2_2 = FM_ItemData::ModelId;
-    int local_2_3 = local_22.GetMappingDirtyOffset(0);
+    local_30.PropertyModelId = FM_ItemData::ModelId;
+    local_30.MappingDirtyOffset = local_22.GetMappingDirtyOffset(0);
     local_30.RelatedDirtyMask.SetBit(FM_ItemData::__IndexOf_Num(), true);
     Result.ListeningModelRefDirties.Add(local_30);
     FEUIModelDirtyDefine local_40;

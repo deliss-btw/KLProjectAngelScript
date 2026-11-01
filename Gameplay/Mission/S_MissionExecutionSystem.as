@@ -7,7 +7,32 @@ class US_MissionExecutionSystem : UECSScriptSystem
     UFUNCTION()
     void ServerJob_TickMissionExecution(const FECSEntity &inout Entity, FC_MissionExecution &inout MissionExecution) const
     {
-        // body not fully recovered — stub [argmismatch:argtype]
+        TArray<int> local_4;
+        for (auto& local_24 : MissionExecution.ExecutionEntries)
+        {
+            bool local_21 = local_24.GetValue().Tick(Entity);
+            if (local_21)
+            {
+                FCE_MissionExecutionCompleted local_34;
+                local_4.Add(local_24.GetKey());
+                FFPTime local_32 = FFPTime(-1);
+                local_34.ExecutionEntryId = local_24.GetKey();
+                for (auto& local_48 : local_24.GetValue().ActionInstances)
+                {
+                    local_34.ActionStatuses.Add(local_48.ActionStatus);
+                }
+            }
+        }
+        for (auto local_62 : local_4)
+        {
+            MissionExecution.ExecutionEntries.Remove(local_62);
+        }
+        if (MissionExecution.ExecutionEntries.IsEmpty())
+        {
+            Remove local_66;
+            local_66.opCall();
+        }
+        return;
     }
     UFUNCTION()
     void ClientJob_TickMissionExecution(const FECSEntity &inout Entity, FC_MissionClientExecution &inout MissionClientExecution) const

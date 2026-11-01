@@ -260,6 +260,7 @@ namespace UWidget_TeamPanel
 void GetModelInfo(FEUIWidgetMetaInfo &inout Result)
 {
     Result.WidgetType = UWidget_TeamPanel;
+    Result.ObservedModelChangesSubscriberCount = 2;
     Result.ObservedModelChangesSubscriberNames.Add(FString("OnExecuteBuffStateChanged"));
     Result.ObservedModelChangesSubscriberNames.Add(FString("UpdateLinkEnergy"));
     return;

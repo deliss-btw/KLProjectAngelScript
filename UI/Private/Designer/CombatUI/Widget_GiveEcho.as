@@ -141,6 +141,7 @@ namespace UWidget_GiveEcho
 void GetModelInfo(FEUIWidgetMetaInfo &inout Result)
 {
     Result.WidgetType = UWidget_GiveEcho;
+    Result.ObservedModelChangesSubscriberCount = 1;
     Result.ObservedModelChangesSubscriberNames.Add(FString("OnShouldClose"));
     return;
 }

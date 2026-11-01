@@ -169,6 +169,7 @@ namespace UWidget_GuideTargetIcon
 void GetModelInfo(FEUIWidgetMetaInfo &inout Result)
 {
     Result.WidgetType = UWidget_GuideTargetIcon;
+    Result.ObservedModelChangesSubscriberCount = 1;
     Result.ObservedModelChangesSubscriberNames.Add(FString("OnIconIndexSet"));
     return;
 }
@@ -186,6 +187,7 @@ namespace UWidget_GuideTargetMinimapIcon
 void GetModelInfo(FEUIWidgetMetaInfo &inout Result)
 {
     Result.WidgetType = UWidget_GuideTargetMinimapIcon;
+    Result.ObservedModelChangesSubscriberCount = 0;
     return;
 }
 FEUIWidgetRef CreateWidget(const APlayerController OwningPlayer, const TSoftClassPtr<UEUIUserWidget> &inout WidgetClass)

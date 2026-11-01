@@ -127,6 +127,7 @@ void GetModelInfo(FEUIModelOnlyMetaInfo &inout Result)
     Result.SetbCanDefaultConstruct(true);
     FEUIModelMonitorDefine local_14;
     local_14.FunctionName = "__DS_OnLocalPlayerCombatTeamChanged";
+    local_14.MonitorTarget = EEUIModelMonitorTarget(3);
     local_14.ComponentType = FC_PlayerInTeam;
     Result.MonitorFunctions.Add(local_14);
     return;

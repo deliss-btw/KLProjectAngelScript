@@ -235,8 +235,21 @@ namespace CommonPopup_Internal
 {
 FGameplayTag GetTipsPopupType(const ECommonTipsType Type)
 {
-    // body not fully recovered — stub [opcode-uncovered]
-    FGameplayTag __r; return __r;
+    switch (Type)
+    {
+    case ECommonTipsType::Normal:
+    {
+        return FGameplayTag::RequestGameplayTag(n"UI.Type.Commonpupop.SideHint.SimpleTips", true);
+    }
+    case ECommonTipsType::Weak:
+    {
+        return FGameplayTag::RequestGameplayTag(n"UI.Type.Commonpupop.SideHint.WeakTips", true);
+    }
+    case ECommonTipsType::Important:
+    {
+        return FGameplayTag::RequestGameplayTag(n"UI.Type.Commonpupop.SideHint.ImportantTips", true);
+    }
+    }
 }
 bool IsSameTipsContentPendingOrDisplaying(FCS_CommonTipsManager &inout Manager, const ECommonTipsType Type, const FText &inout Content)
 {

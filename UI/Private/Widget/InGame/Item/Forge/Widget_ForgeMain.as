@@ -390,6 +390,7 @@ namespace UWidget_ForgeMain
 void GetModelInfo(FEUIWidgetMetaInfo &inout Result)
 {
     Result.WidgetType = UWidget_ForgeMain;
+    Result.ObservedModelChangesSubscriberCount = 6;
     Result.ObservedModelChangesSubscriberNames.Add(FString("HandleForgeOrCraftChanged"));
     Result.ObservedModelChangesSubscriberNames.Add(FString("HandleIsCurrentSelectItemLockChanged"));
     Result.ObservedModelChangesSubscriberNames.Add(FString("HandleCostInsufficientChanged"));

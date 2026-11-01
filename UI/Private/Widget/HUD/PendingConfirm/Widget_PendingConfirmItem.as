@@ -89,6 +89,7 @@ namespace UWidget_PendingConfirmItem
 void GetModelInfo(FEUIWidgetMetaInfo &inout Result)
 {
     Result.WidgetType = UWidget_PendingConfirmItem;
+    Result.ObservedModelChangesSubscriberCount = 0;
     return;
 }
 FEUIWidgetRef CreateWidget(const APlayerController OwningPlayer, const TSoftClassPtr<UEUIUserWidget> &inout WidgetClass)

@@ -78,16 +78,12 @@ class UBTTask_SCtrlFinishCheck : UBTTask_ECSScriptBase
     }
     bool CheckCurrentBehaviorFinished(const FECSEntity &inout Entity, const EScriptControlBehaviorName BehaviorName, const bool bIsCombat) const
     {
-        int local_1 = int(BehaviorName);
-        if (local_1 <= 1)
+        switch (int(BehaviorName))
         {
-            if (local_1 != 1)
-            {
-            }
-            else
-            {
-                return this.CheckEcologyMove(Entity, bIsCombat);
-            }
+        case 1:
+        {
+            return this.CheckEcologyMove(Entity, bIsCombat);
+        }
         }
         return false;
     }

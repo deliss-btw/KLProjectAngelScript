@@ -6,7 +6,7 @@ namespace __INTENRAL_FC_GlimmeringWolfTailGroomHistory_NS
 }
 struct FC_GlimmeringWolfTailGroomHistory : FECSComponent
 {
-    TInterpoHistory<FC_GlimmeringWolfTailGroom, auto> History;
+    TInterpoHistory<FC_GlimmeringWolfTailGroom, 30> History;
 
     FC_GlimmeringWolfTailGroomHistory()
     {

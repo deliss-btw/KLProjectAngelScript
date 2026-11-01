@@ -1557,7 +1557,7 @@ class US_GuidingPathSystem : UECSScriptSystem
         if (!((this.ShowGuidingPathTrigger == nullptr)))
         {
             FActiveTriggerResult local_22 = this.ShowGuidingPathTrigger.opArrow().TestTrigger(Input.State, LocalTime.LastTime, LocalTime.Time, ESMTrigger.Storage);
-            if (local_22.bActive && (FFPTime(local_22.TriggerTime).opCmp(LocalTime.Time) <= 0) && (local_22.GetTriggerExpireTime().opCmp(LocalTime.LastTime) >= 0))
+            if (local_22.bActive && ((local_22.TriggerTime.opCmp(LocalTime.Time) <= 0)) && (local_22.GetTriggerExpireTime().opCmp(LocalTime.LastTime) >= 0))
             {
                 if (this.ShowGuidingPathCooldown > 0.0f)
                 {
@@ -2852,13 +2852,12 @@ class US_GuidingPathSystem : UECSScriptSystem
             for (; local_99 < local_102_3; )
             {
                 FSplinePoint local_156;
-                float32 local_109 = local_99;
+                local_156.InputKey = local_99;
                 local_156.Position = local_8.SplineComponent.Get().GetWorldTransform().InverseTransformPosition(local_106[local_99]);
                 if (local_99 == 0 && (local_102_3 > 1))
                 {
                     FVector local_62_3 = (FVector(local_106[1]) - local_106[0]);
-                    FVector local_90_2 = (local_62_3.GetSafeNormal(9.99999993922529e-9, FVector::ZeroVector) * 100.0);
-                    local_156.ArriveTangent = local_90_2;
+                    local_156.ArriveTangent = (local_62_3.GetSafeNormal(9.99999993922529e-9, FVector::ZeroVector) * 100.0);
                 }
                 else
                 {
@@ -2874,7 +2873,7 @@ class US_GuidingPathSystem : UECSScriptSystem
                         {
                             FVector local_62_5 = (FVector(local_106[local_99]) - local_106[local_99 - 1]);
                             float local_52_3 = local_62_5.Size();
-                            local_109 = float32(local_52_3);
+                            float32 local_109 = float32(local_52_3);
                             local_42 = local_99 + 1;
                             FVector local_90_4 = (FVector(local_106[local_42]) - local_106[local_99]);
                             local_52_3 = local_90_4.Size();
@@ -2905,6 +2904,7 @@ class US_GuidingPathSystem : UECSScriptSystem
                     }
                 }
                 local_156.LeaveTangent = local_156.ArriveTangent;
+                local_156.Type = ESplinePointType(4);
                 local_8.SplineComponent.Get().AddPoint(local_156, false);
                 ++local_99;
             }

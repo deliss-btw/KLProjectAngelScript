@@ -1154,12 +1154,16 @@ void GetModelInfo(FEUIModelOnlyMetaInfo &inout Result)
     Result.TickFunction.FunctionName = "__Tick";
     FEUIModelProtoRspDefine local_10;
     local_10.FunctionName = "__GS_OnRedPointNotify";
+    local_10.ProtoCmdId = uint16(2101);
     Result.ProtoRspDefines.Add(local_10);
     local_10.FunctionName = "__GS_OnRedPointRsp";
+    local_10.ProtoCmdId = uint16(2103);
     Result.ProtoRspDefines.Add(local_10);
     local_10.FunctionName = "__GS_OnStoreRedPointRsp";
+    local_10.ProtoCmdId = uint16(2105);
     Result.ProtoRspDefines.Add(local_10);
     local_10.FunctionName = "__GS_OnPlayerLoginRsp";
+    local_10.ProtoCmdId = uint16(2);
     Result.ProtoRspDefines.Add(local_10);
     return;
 }

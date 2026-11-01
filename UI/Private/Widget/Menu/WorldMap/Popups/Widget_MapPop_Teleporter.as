@@ -101,6 +101,7 @@ namespace UWidget_MapPop_Teleporter
 void GetModelInfo(FEUIWidgetMetaInfo &inout Result)
 {
     Result.WidgetType = UWidget_MapPop_Teleporter;
+    Result.ObservedModelChangesSubscriberCount = 1;
     Result.ObservedModelChangesSubscriberNames.Add(FString("OnTeleporterStateChanged"));
     return;
 }

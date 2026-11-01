@@ -188,6 +188,7 @@ namespace UWidget_SearchFriendInput
 void GetModelInfo(FEUIWidgetMetaInfo &inout Result)
 {
     Result.WidgetType = UWidget_SearchFriendInput;
+    Result.ObservedModelChangesSubscriberCount = 2;
     Result.ObservedModelChangesSubscriberNames.Add(FString("OnAlreadyInputTextChanged"));
     Result.ObservedModelChangesSubscriberNames.Add(FString("OnShowSearchResultChanged"));
     return;

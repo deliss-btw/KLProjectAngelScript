@@ -17,6 +17,7 @@ struct FAutoRiggingBone
     UPROPERTY()
     FVector InfluenceBoneOirentAxis;
 
+
     void Init()
     {
         FTransform local_24 = FTransform(this.MainBoneRef.GetRefPoseTransform());
@@ -190,6 +191,7 @@ struct FBoneDrivenInfo
     UPROPERTY()
     FTransform EvaluatedPose;
 
+
     bool AddDrivenKey(const float32 driverValue, const FTransform &inout keyPose)
     {
         int local_1 = 1008981770;
@@ -309,6 +311,7 @@ struct FSkinInfluencer
     float32 PositionGain = 1.0f;
     UPROPERTY()
     float32 RotationGain = 1.0f;
+
 
     void ComputeRelTransforms()
     {

@@ -1287,8 +1287,8 @@ void GetModelInfo(FEUIModelOnlyMetaInfo &inout Result)
     local_10.ApplySort();
     FEUIModelRefPropertyDirty local_18;
     local_18.PropertyName = FName("ExternalItemData");
-    int local_2_2 = FM_ItemData::ModelId;
-    int local_2_3 = local_10.GetMappingDirtyOffset(0);
+    local_18.PropertyModelId = FM_ItemData::ModelId;
+    local_18.MappingDirtyOffset = local_10.GetMappingDirtyOffset(0);
     local_18.RelatedDirtyMask.SetBit(FM_ItemData::__IndexOf_Num(), true);
     Result.ListeningModelRefDirties.Add(local_18);
     FEUIModelDirtyDefine local_28;
@@ -1333,11 +1333,14 @@ void GetModelInfo(FEUIModelOnlyMetaInfo &inout Result)
     Result.SetbCanDefaultConstruct(true);
     FEUIModelProtoRspDefine local_10;
     local_10.FunctionName = "__GS_OnUseItemRsp";
+    local_10.ProtoCmdId = uint16(717);
     Result.ProtoRspDefines.Add(local_10);
     local_10.FunctionName = "__GS_OnItemDecomposeRsp";
+    local_10.ProtoCmdId = uint16(710);
     Result.ProtoRspDefines.Add(local_10);
     FEUIModelMonitorDefine local_22;
     local_22.FunctionName = "__MonitorGameplayInventoryChange";
+    local_22.MonitorTarget = EEUIModelMonitorTarget(3);
     local_22.ComponentType = FC_GameplayInventory;
     Result.MonitorFunctions.Add(local_22);
     FEUIModelEventDefine local_32;
@@ -1345,10 +1348,13 @@ void GetModelInfo(FEUIModelOnlyMetaInfo &inout Result)
     local_32.EventType = FCE_GameplayInventoryItemAddedNotify;
     Result.EventFunctions.Add(local_32);
     local_10.FunctionName = "__GS_OnPlayerInventoryInit";
+    local_10.ProtoCmdId = uint16(701);
     Result.ProtoRspDefines.Add(local_10);
     local_10.FunctionName = "__GS_OnInventoryItemUpdate";
+    local_10.ProtoCmdId = uint16(702);
     Result.ProtoRspDefines.Add(local_10);
     local_10.FunctionName = "__GS_OnInventoryItemRemoved";
+    local_10.ProtoCmdId = uint16(703);
     Result.ProtoRspDefines.Add(local_10);
     return;
 }

@@ -76,7 +76,7 @@ class US_InteractionInputSystem : UECSScriptSystem
                 if (local_7)
                 {
                     FActiveTriggerResult local_34 = local_12.InputTriggerEnd.opArrow().TestTrigger(Input.State, LocalTime.LastTime, LocalTime.Time, ESMTrigger.Storage);
-                    if (local_34.bActive && (FFPTime(local_34.TriggerTime).opCmp(LocalTime.Time) <= 0) && (local_34.GetTriggerExpireTime().opCmp(LocalTime.LastTime) >= 0))
+                    if (local_34.bActive && ((local_34.TriggerTime.opCmp(LocalTime.Time) <= 0)) && (local_34.GetTriggerExpireTime().opCmp(LocalTime.LastTime) >= 0))
                     {
                         this.SendEndInteractEvent(Entity, local_6.TargetEntity, local_6.InteractTargetPointAndBehaviorIndex, local_12, local_34.TriggerTime);
                         Remove local_42;
@@ -120,7 +120,7 @@ class US_InteractionInputSystem : UECSScriptSystem
                         if (!((local_14 == nullptr)))
                         {
                             FActiveTriggerResult local_24 = local_12.InputTriggerEnd.opArrow().TestTrigger(Input.State, LocalTime.LastTime, LocalTime.Time, ESMTrigger.Storage);
-                            if ((local_24.bActive && (FFPTime(local_24.TriggerTime).opCmp(LocalTime.Time) <= 0)) && (local_24.GetTriggerExpireTime().opCmp(LocalTime.LastTime) >= 0))
+                            if ((local_24.bActive && ((local_24.TriggerTime.opCmp(LocalTime.Time) <= 0))) && (local_24.GetTriggerExpireTime().opCmp(LocalTime.LastTime) >= 0))
                             {
                                 this.SendEndAutoInteractEvent(Entity, local_12, local_24.TriggerTime);
                             }
@@ -140,7 +140,7 @@ class US_InteractionInputSystem : UECSScriptSystem
                         if (!((local_14 == nullptr)))
                         {
                             FActiveTriggerResult local_34_2 = local_12.InputTriggerEnd.opArrow().TestTrigger(Input.State, LocalTime.LastTime, LocalTime.Time, ESMTrigger.Storage);
-                            local_55 = local_34_2.bActive && (FFPTime(local_34_2.TriggerTime).opCmp(LocalTime.Time) <= 0);
+                            local_55 = local_34_2.bActive && ((local_34_2.TriggerTime.opCmp(LocalTime.Time) <= 0));
                             if (local_55 && (local_34_2.GetTriggerExpireTime().opCmp(LocalTime.LastTime) >= 0))
                             {
                                 this.SendEndInteractEvent(Entity, local_48.GetTargetEntity(), local_48.GetTargetPointAndBehaviorIndex(), local_12, local_34_2.TriggerTime);
@@ -168,7 +168,7 @@ class US_InteractionInputSystem : UECSScriptSystem
                 if (local_12 != nullptr)
                 {
                     FActiveTriggerResult local_24_2 = local_12.InputTriggerBegin.opArrow().TestTrigger(Input.State, LocalTime.LastTime, LocalTime.Time, ESMTrigger.Storage);
-                    local_56 = local_24_2.bActive && (FFPTime(local_24_2.TriggerTime).opCmp(LocalTime.Time) <= 0);
+                    local_56 = local_24_2.bActive && ((local_24_2.TriggerTime.opCmp(LocalTime.Time) <= 0));
                     if (local_56 && (local_24_2.GetTriggerExpireTime().opCmp(LocalTime.LastTime) >= 0))
                     {
                         this.SendBeginInteractEvent(Entity, local_72.TargetEntity, local_72.InteractTargetPointAndBehaviorIndex, local_12, local_24_2.TriggerTime, false, EInteractMode(1));
@@ -189,7 +189,7 @@ class US_InteractionInputSystem : UECSScriptSystem
                 if (local_12 != nullptr)
                 {
                     FActiveTriggerResult local_34_3 = local_12.InputTriggerBegin.opArrow().TestTrigger(Input.State, LocalTime.LastTime, LocalTime.Time, ESMTrigger.Storage);
-                    if ((local_34_3.bActive && (FFPTime(local_34_3.TriggerTime).opCmp(LocalTime.Time) <= 0)) && (local_34_3.GetTriggerExpireTime().opCmp(LocalTime.LastTime) >= 0))
+                    if ((local_34_3.bActive && ((local_34_3.TriggerTime.opCmp(LocalTime.Time) <= 0))) && (local_34_3.GetTriggerExpireTime().opCmp(LocalTime.LastTime) >= 0))
                     {
                         this.SendBeginInteractEvent(Entity, local_54.TargetEntity, local_54.InteractTargetPointAndBehaviorIndex, local_12, local_34_3.TriggerTime, local_54.bIsSecondaryTarget, EInteractMode(0));
                     }
@@ -233,7 +233,7 @@ class US_InteractionInputSystem : UECSScriptSystem
                         {
                             if (local_24_3.bActive)
                             {
-                                if (FFPTime(local_24_3.TriggerTime).opCmp(LocalTime.Time) <= 0 && (local_24_3.GetTriggerExpireTime().opCmp(LocalTime.LastTime) >= 0))
+                                if (local_24_3.TriggerTime.opCmp(LocalTime.Time) <= 0 && (local_24_3.GetTriggerExpireTime().opCmp(LocalTime.LastTime) >= 0))
                                 {
                                     this.SendBeginAutoInteractEvent(Entity, local_12, local_24_3.GetTriggerExpireTime());
                                     local_88.opCall();
@@ -241,7 +241,7 @@ class US_InteractionInputSystem : UECSScriptSystem
                                 else
                                 {
                                     local_94.TriggerTime = local_24_3.TriggerTime;
-                                    local_94.ExpireTime = (FFPTime(local_24_3.TriggerTime) + FFPTime(local_12.InputTriggerBegin.Get().CoreTriggerItem.ValidateTime));
+                                    local_94.ExpireTime = (local_24_3.TriggerTime + FFPTime(local_12.InputTriggerBegin.Get().CoreTriggerItem.ValidateTime));
                                 }
                             }
                         }

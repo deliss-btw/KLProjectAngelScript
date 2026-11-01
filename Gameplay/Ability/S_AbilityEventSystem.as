@@ -371,7 +371,7 @@ class US_AbilityEventSystem : UECSScriptSystem
     UFUNCTION()
     void ServerJob_DispatchPlayerControllerBeginOverlap(const FCE_PlayerControllerBeginOverlap &inout Event) const
     {
-        FECSEntity local_4 = FECSEntity(Event.OverlappingEntity);
+        FECSEntity local_4 = Event.OverlappingEntity;
         Has local_8;
         if (!(local_8.opCall()))
         {
@@ -383,7 +383,7 @@ class US_AbilityEventSystem : UECSScriptSystem
     UFUNCTION()
     void ServerJob_DispatchPlayerControllerEndOverlap(const FCE_PlayerControllerEndOverlap &inout Event) const
     {
-        FECSEntity local_4 = FECSEntity(Event.OverlappingEntity);
+        FECSEntity local_4 = Event.OverlappingEntity;
         Has local_8;
         if (!(local_8.opCall()))
         {

@@ -980,6 +980,7 @@ namespace UWidget_InventoryMain
 void GetModelInfo(FEUIWidgetMetaInfo &inout Result)
 {
     Result.WidgetType = UWidget_InventoryMain;
+    Result.ObservedModelChangesSubscriberCount = 4;
     Result.ObservedModelChangesSubscriberNames.Add(FString("OnSelectListOpenChanged"));
     Result.ObservedModelChangesSubscriberNames.Add(FString("OnCurrentDisplayItemsChanged"));
     Result.ObservedModelChangesSubscriberNames.Add(FString("OnSelectedItemIndexChanged"));
@@ -1000,6 +1001,7 @@ namespace UWidget_InventoryMainItem
 void GetModelInfo(FEUIWidgetMetaInfo &inout Result)
 {
     Result.WidgetType = UWidget_InventoryMainItem;
+    Result.ObservedModelChangesSubscriberCount = 2;
     Result.ObservedModelChangesSubscriberNames.Add(FString("OnPinnedTipRequestChanged"));
     Result.ObservedModelChangesSubscriberNames.Add(FString("OnSelectableItemSelectionChanged"));
     return;

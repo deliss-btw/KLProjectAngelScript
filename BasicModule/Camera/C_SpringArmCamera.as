@@ -94,7 +94,9 @@ struct FSpringArmCameraPresentation
     {
         FCameraBlendConfig local_76;
         const FTPCameraStateConfig& local_78 = this.Params.CameraConfig.Get();
+        local_76.BlendInDuration = int(local_78.BlendInDuration);
         local_76.BlendInEasing = local_78.BlendInEasing;
+        local_76.BlendOutDuration = int(local_78.BlendOutToDefaultDuration);
         local_76.BlendOutEasing = local_78.BlendOutEasing;
         return local_76;
     }

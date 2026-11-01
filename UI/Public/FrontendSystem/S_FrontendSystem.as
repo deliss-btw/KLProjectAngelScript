@@ -109,11 +109,9 @@ void EnterSystem(const FECSEntity &inout PlayerEntity, const UFrontendSystemConf
     const FC_FrontendSystem& local_16 = local_14.opCall();
     if (local_16)
     {
-        EFrontendSystemAllowMultipleInstance local_17;
-        local_17 = FrontendSystem.AllowMultipleInstance;
-        switch (int(local_17))
+        switch (FrontendSystem.AllowMultipleInstance)
         {
-        case 0:
+        case EFrontendSystemAllowMultipleInstance::AllowIfNotFocused:
         {
             local_22 = local_16.OpenedSystemInstances.Last(0).Config;
             if (local_22 != FrontendSystem)
@@ -122,12 +120,12 @@ void EnterSystem(const FECSEntity &inout PlayerEntity, const UFrontendSystemConf
             }
             break;
         }
-        case 1:
+        case EFrontendSystemAllowMultipleInstance::AllowAlways:
         {
             FrontendSystem_Internal::CreateAndEnterNewSystem(PlayerEntity, FrontendSystem);
             break;
         }
-        case 2:
+        case EFrontendSystemAllowMultipleInstance::Disallow:
         {
             if (FrontendSystem_Internal::FindLastIndexByConfig(PlayerEntity, FrontendSystem) == INDEX_NONE)
             {
@@ -135,7 +133,7 @@ void EnterSystem(const FECSEntity &inout PlayerEntity, const UFrontendSystemConf
             }
             break;
         }
-        case 3:
+        case EFrontendSystemAllowMultipleInstance::DisallowAndReenterSystem:
         {
             int local_19 = FrontendSystem_Internal::FindLastIndexByConfig(PlayerEntity, FrontendSystem);
             if (local_19 == INDEX_NONE)

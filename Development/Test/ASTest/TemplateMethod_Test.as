@@ -12,7 +12,22 @@ struct FTestArraySorter
 
 void Test_ArrayTemplateMethod(FUnitTest &inout T)
 {
-    // body not fully recovered — stub [opcode-uncovered]
+    TArray<FString> local_4 = {"1", "4", "9", "14", "94"};
+    FTestArraySorter local_12;
+    TArray::Sort(local_4).opCall(local_12);
+    T.AssertEquals("9", local_4[0], "");
+    T.AssertEquals("94", local_4[1], "");
+    T.AssertEquals("4", local_4[2], "");
+    T.AssertEquals("14", local_4[3], "");
+    T.AssertEquals("1", local_4[4], "");
+    TArray<FString> local_18 = {"1", "4", "9", "14", "94"};
+    local_18.Sort(local_12);
+    T.AssertEquals("9", local_18[0], "");
+    T.AssertEquals("94", local_18[1], "");
+    T.AssertEquals("4", local_18[2], "");
+    T.AssertEquals("14", local_18[3], "");
+    T.AssertEquals("1", local_18[4], "");
+    return;
 }
 void Test_ECSComponentTemplateMethod(FUnitTest &inout T)
 {

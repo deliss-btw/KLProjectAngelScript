@@ -6,7 +6,7 @@ namespace __INTENRAL_FC_LookRequestHistory_NS
 }
 struct FC_LookRequestHistory : FECSComponent
 {
-    TInterpoHistory<FC_LookRequest, auto> History;
+    TInterpoHistory<FC_LookRequest, 30> History;
 
     FC_LookRequestHistory()
     {

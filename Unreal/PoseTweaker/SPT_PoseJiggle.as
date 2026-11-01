@@ -143,8 +143,9 @@ class USPT_PoseJiggleBase : USkeletalPoseTweaker
                     if (!(local_20.InputImpulseDisplacement.IsNearlyZero(9.999999747378752e-5)))
                     {
                         FSpringDynamicsBoneState local_74;
-                        float32 local_27_2 = this.SpringSettings.SpringStiffness;
-                        this.SpringSettings.SpringStiffness = this.SpringSettings.SpringDamping;
+                        local_74.AnimStiffness = this.SpringSettings.SpringStiffness;
+                        local_74.LengthStiffness = this.SpringSettings.SpringStiffness;
+                        local_74.Damping = this.SpringSettings.SpringDamping;
                         local_74.MaxLocalDeformScale = this.SpringSettings.SpringMaxDisplacement;
                         TArray<FSpringDynamicsBoneState> local_78;
                         local_78.Add(local_74);
@@ -229,12 +230,12 @@ class USPT_PoseJiggleBase : USkeletalPoseTweaker
                 float local_190 = 0.0;
                 float local_192 = 0.0;
                 local_30_2.GetTimeRange(local_190, local_192);
-                float32 local_27_3 = this.CurrentDeltaSeconds;
-                local_20_2.Time = (local_20_2.Time + local_27_3);
-                local_27_3 = local_20_2.Time;
-                if (local_27_3 > local_192)
+                float32 local_27_2 = this.CurrentDeltaSeconds;
+                local_20_2.Time = (local_20_2.Time + local_27_2);
+                local_27_2 = local_20_2.Time;
+                if (local_27_2 > local_192)
                 {
-                    local_27_3 = -1.0f;
+                    local_27_2 = -1.0f;
                     local_20_2.Time = -1.0f;
                 }
                 continue;

@@ -222,6 +222,7 @@ void GetModelInfo(FEUIModelOnlyMetaInfo &inout Result)
     Result.SetbCanDefaultConstruct(true);
     FEUIModelMonitorDefine local_14;
     local_14.FunctionName = "__OnPlayerLevelObjectStatChanged";
+    local_14.MonitorTarget = EEUIModelMonitorTarget(3);
     local_14.ComponentType = FC_PlayerLevelObjectStat;
     Result.MonitorFunctions.Add(local_14);
     FEUIModelEventDefine local_24;

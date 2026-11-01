@@ -6,7 +6,7 @@ namespace __INTENRAL_FC_AnimResolvedSyncedHistory_NS
 }
 struct FC_AnimResolvedSyncedHistory : FECSComponent
 {
-    TInterpoHistory<FC_AnimResolvedSynced, auto> History;
+    TInterpoHistory<FC_AnimResolvedSynced, 30> History;
 
     FC_AnimResolvedSyncedHistory()
     {

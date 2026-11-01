@@ -268,8 +268,8 @@ void GetModelInfo(FEUIViewModelMetaInfo &inout Result)
     local_22.ApplySort();
     FEUIModelRefPropertyDirty local_30;
     local_30.PropertyName = FName("ChatDataModel");
-    int local_2_2 = FMS_ChatDataModel::ModelId;
-    int local_2_3 = local_22.GetMappingDirtyOffset(0);
+    local_30.PropertyModelId = FMS_ChatDataModel::ModelId;
+    local_30.MappingDirtyOffset = local_22.GetMappingDirtyOffset(0);
     local_30.RelatedDirtyMask.SetBit(FMS_ChatDataModel::__IndexOf_RecentMessages(), true);
     Result.ListeningModelRefDirties.Add(local_30);
     FEUIModelMsgHandleDefine local_42;

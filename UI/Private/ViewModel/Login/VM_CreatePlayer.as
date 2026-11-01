@@ -1109,7 +1109,7 @@ struct FVM_CreatePlayer : FEUIViewModel
         }
         const FAvatarPrefabConfig& local_6 = local_4.GetAvatar().Get();
         FUIShowcaseActorSpawnParams local_66;
-        int local_67 = int(local_6.DataId);
+        local_66.AvatarId = int(local_6.DataId);
         local_66.ActorClass = local_6.ShowcaseActor;
         local_66.Offset = local_6.ShowcaseOffset;
         local_66.DynamicRainControl = RainDynamicControl;
@@ -1120,7 +1120,7 @@ struct FVM_CreatePlayer : FEUIViewModel
             local_66.FashionIds.Empty(0);
             if (this.GetCreatePlayerConfig().bGenderPhaseUseSelectFace)
             {
-                int local_67_2 = this.GetFaceDataIdAtIndex(this.ResolveDefaultFaceIndex());
+                local_66.FacePresetId = this.GetFaceDataIdAtIndex(this.ResolveDefaultFaceIndex());
             }
             if (this.GetCreatePlayerConfig().bGenderPhaseUseSelectHair)
             {
@@ -1136,10 +1136,10 @@ struct FVM_CreatePlayer : FEUIViewModel
                 }
                 else
                 {
-                    int local_67_3 = this.ResolveDefaultFashionId(this.GetCreatePlayerConfig().GetAvailableTop(), this.GetCreatePlayerConfig().DefaultTopIndex);
-                    if (local_67_3 > 0)
+                    int local_67 = this.ResolveDefaultFashionId(this.GetCreatePlayerConfig().GetAvailableTop(), this.GetCreatePlayerConfig().DefaultTopIndex);
+                    if (local_67 > 0)
                     {
-                        this.AppendFashionId(local_66.FashionIds, local_67_3);
+                        this.AppendFashionId(local_66.FashionIds, local_67);
                     }
                     local_69 = this.GetCreatePlayerConfig().DefaultBottomIndex;
                     int local_73 = this.ResolveDefaultFashionId(this.GetCreatePlayerConfig().GetAvailableBottom(), local_69);
@@ -1153,7 +1153,7 @@ struct FVM_CreatePlayer : FEUIViewModel
         if (bUseFashion)
         {
             local_66.FashionIds.Empty(0);
-            int local_74 = this.GetSelectedFaceID();
+            local_66.FacePresetId = this.GetSelectedFaceID();
             this.AppendFashionId(local_66.FashionIds, this.GetSelectedHairID());
             if (this.GetSelectedSuitID() > 0)
             {
@@ -1184,19 +1184,15 @@ struct FVM_CreatePlayer : FEUIViewModel
     }
     EUIShowcaseAvatarType GenderTypeToShowcaseType(const EGenderType Gender) const
     {
-        int local_1 = int(Gender);
-        if (local_1 <= 1)
+        switch (int(Gender))
         {
-            if (local_1 != 0)
-            {
-                if (local_1 != 1)
-                {
-                }
-                else
-                {
-                    return EUIShowcaseAvatarType(1);
-                }
-            }
+        case 1:
+        {
+            return EUIShowcaseAvatarType(1);
+        }
+        default:
+        {
+        }
         }
         return EUIShowcaseAvatarType(0);
     }

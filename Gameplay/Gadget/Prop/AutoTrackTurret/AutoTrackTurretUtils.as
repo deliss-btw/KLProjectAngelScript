@@ -151,7 +151,6 @@ FECSEntity SeekTarget(const FECSEntity &inout Entity)
 {
     FC_AutoTrackTurretConfig local_6;
     int local_14 = 0;
-    FECSEntity __return;
     if (!(local_6))
     {
         return ENTITY_NULL;
@@ -160,19 +159,14 @@ FECSEntity SeekTarget(const FECSEntity &inout Entity)
     {
         return ENTITY_NULL;
     }
-    int local_16 = int(local_6.TargetingMode);
-    if (local_16 <= 0)
+    switch (int(local_6.TargetingMode))
     {
-        if (local_16 != 0)
-        {
-        }
-        else
-        {
-            __return = AutoTrackTurret::FilterMonster(Entity, local_6);
-        }
+    case 0:
+    {
+        return AutoTrackTurret::FilterMonster(Entity, local_6);
     }
-    __return = ENTITY_NULL;
-    return __return;
+    }
+    return ENTITY_NULL;
 }
 FECSEntity FilterMonster(const FECSEntity &inout Entity, const FC_AutoTrackTurretConfig &inout TurretConfig)
 {
@@ -271,8 +265,73 @@ bool PassesBlackboardConditions(const TArray<FESMBlackboardCondition> &inout Con
 }
 bool ValidateTarget(const FECSEntity &inout TurretEntity, const FC_AutoTrackTurretConfig &inout Config, const FAutoTrackTurretTargetingCondition_Monster &inout Condition, const FECSEntity &inout Candidate)
 {
-    // body not fully recovered — stub [opcode-uncovered]
-    bool __r; return __r;
+    int local_6 = 0;
+    int local_8 = 0;
+    if ((!(local_6) || !(local_8)))
+    {
+        return false;
+    }
+    FVector local_16 = local_6.GetPosition();
+    FVector local_34 = (FVector(local_8.GetPosition()) - local_16);
+    if (Condition._base_FAutoTrackTurretTargetingConditionBase > 0.0f)
+    {
+        if (float32(local_34.SizeSquared()) > (Condition._base_FAutoTrackTurretTargetingConditionBase * Condition._base_FAutoTrackTurretTargetingConditionBase))
+        {
+            return false;
+        }
+    }
+    if ((Condition.MaxAngle > 0.0f && (Condition.MaxAngle < 180.0f)))
+    {
+        if (float32(FVector(local_6.GetRotation().GetForwardVector()).GetSafeNormal(9.99999993922529e-9, FVector::ZeroVector).DotProduct(local_34.GetSafeNormal(9.99999993922529e-9, FVector::ZeroVector))) < FMath::Cos(FMath::DegreesToRadians(Condition.MaxAngle)))
+        {
+            return false;
+        }
+    }
+    if (!(AutoTrackTurret::PassesBlackboardConditions(Condition.ConditionsForTargetEntity, Candidate)))
+    {
+        return false;
+    }
+    if (int(Condition.ConditionType) == 1)
+    {
+        if (int(FASCommonUtils::GetMonsterRank(Candidate)) != int(Condition.MonsterRank))
+        {
+            return false;
+        }
+    }
+    if (Config.bCheckVisibility)
+    {
+        TArray<uint> local_160;
+        FVector local_28 = (local_16 + local_6.GetRotation().RotateVector(Config.VisibilityTraceOriginOffset));
+        FHitResult local_118;
+        FCollisionQueryParams local_156;
+        local_156.bTraceComplex = false;
+        local_160 = {TurretEntity.GetIdValue()};
+        local_156.AddIgnoredEntityIds(local_160);
+        ECollisionChannel local_166 = FPhysicsUtils::ConvertToCollisionChannel(Config.VisibilityTraceChannel);
+        FCollisionResponseParams local_175;
+        bool local_10 = FPhysicsUtils::LineTraceSingle(TurretEntity, false, EPhysicsTraceTag(15), local_118, local_28, local_8.GetPosition(), local_166, local_156, local_175);
+        if (local_10 && (int(local_118.ECSEntityId) != Candidate.GetIdValue()))
+        {
+            FECSDebugDraw::DrawDebugLine(n"AutoTrackTurret", local_28, local_118.ImpactPoint, FColor::Orange, FColor::Orange, 0.5f, uint8(0), 3.0f);
+            FECSDebugDraw::DrawDebugPoint(n"AutoTrackTurret", local_118.ImpactPoint, 20.0f, FColor::Red, FColor::Red, 0.5f, uint8(0));
+            if (int(local_118.ECSEntityId) == 0)
+            {
+                UPrimitiveComponent local_184 = local_118.GetComponent();
+                int local_163 = Candidate.GetIdValue();
+                int local_177 = TurretEntity.GetIdValue();
+                AutoTrackTurretDebug::Log(FString().Append("[AutoTrackTurret] ValidateTarget visibility blocked: Turret[").Append(local_177).Append("] -> Candidate[").Append(local_163).Append("] blocked by static geometry (").Append(local_184).Append(")"));
+            }
+            else
+            {
+                int local_177_2 = Candidate.GetIdValue();
+                int local_163_2 = TurretEntity.GetIdValue();
+                AutoTrackTurretDebug::Log(FString().Append("[AutoTrackTurret] ValidateTarget visibility blocked: Turret[").Append(local_163_2).Append("] -> Candidate[").Append(local_177_2).Append("] blocked by Entity[").Append(local_118.ECSEntityId).Append("]"));
+            }
+            return false;
+        }
+        FECSDebugDraw::DrawDebugLine(n"AutoTrackTurret", local_28, local_8.GetPosition(), FColor::Cyan, FColor::Cyan, 0.5f, uint8(0), 1.0f);
+    }
+    return true;
 }
 void ComputeDesiredAngles(const FECSEntity &inout TurretEntity, const FECSEntity &inout TargetEntity, const FC_AutoTrackTurretConfig &inout Config, float32 &inout OutYaw, float32 &inout OutPitch)
 {

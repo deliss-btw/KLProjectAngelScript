@@ -133,18 +133,18 @@ struct FVMS_SideHint : FEUIViewModelSingleton
                     }
                     else
                     {
-                        int local_24 = int(::GetPrefabType(local_38));
-                        if (local_24 <= 2)
+                        switch (int(::GetPrefabType(local_38)))
                         {
-                            if (local_24 != 2)
-                            {
-                            }
-                            else
-                            {
-                                local_34 = "<BossName>";
-                            }
+                        case 2:
+                        {
+                            local_34 = "<BossName>";
+                            break;
                         }
-                        local_34 = "<Default>";
+                        default:
+                        {
+                            local_34 = "<Default>";
+                        }
+                        }
                         if (int(::GetPrefabType(local_38)) == 1)
                         {
                             local_3 = true;

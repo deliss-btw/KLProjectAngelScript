@@ -104,6 +104,7 @@ namespace UWidget_ChatMainTab
 void GetModelInfo(FEUIWidgetMetaInfo &inout Result)
 {
     Result.WidgetType = UWidget_ChatMainTab;
+    Result.ObservedModelChangesSubscriberCount = 1;
     Result.ObservedModelChangesSubscriberNames.Add(FString("OnVMSelected"));
     return;
 }

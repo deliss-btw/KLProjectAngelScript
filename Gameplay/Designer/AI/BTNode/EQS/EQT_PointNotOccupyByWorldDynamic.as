@@ -11,7 +11,7 @@ class UEQT_PointNotOccupyByWorldDynamic : UEnvQueryTest_ECS_BlueprintBase
     void RunTest_Implementation(FEnvQueryTest_ECSContext &inout Context, const FEnvQueryTest_ECSItemIterator &inout Item) const
     {
         int local_18 = 0;
-        FECSEntity local_4 = FECSEntity(Context.QueryEntity);
+        FECSEntity local_4 = Context.QueryEntity;
         Has local_10;
         if (!(local_4.IsValid()) || !(local_10.opCall()))
         {

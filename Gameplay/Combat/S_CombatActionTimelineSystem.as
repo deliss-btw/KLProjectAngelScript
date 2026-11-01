@@ -109,8 +109,7 @@ class US_CombatActionTimelineSystem : UECSScriptSystem
         for (; local_32 < ActionPendingTrigger.GetWaitingActionTriggers().Num(); ++local_32)
         {
             const FCombatActionTrigger& local_36 = ActionPendingTrigger.GetWaitingActionTriggers()[local_32];
-            FFPTime local_38 = FFPTime(FixedTime.Time);
-            if (local_38.opCmp(local_36.GetTriggerTime()) >= 0)
+            if (FixedTime.Time.opCmp(local_36.GetTriggerTime()) >= 0)
             {
                 if (ActionConfig.ActionTimePoints.IsValidIndex(local_36.GetIndexInConfig()))
                 {

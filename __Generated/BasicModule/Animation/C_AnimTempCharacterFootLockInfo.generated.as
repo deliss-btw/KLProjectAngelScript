@@ -6,7 +6,7 @@ namespace __INTENRAL_FC_CharacterFootLockInfoHistory_NS
 }
 struct FC_CharacterFootLockInfoHistory : FECSComponent
 {
-    TInterpoHistory<FC_CharacterFootLockInfo, auto> History;
+    TInterpoHistory<FC_CharacterFootLockInfo, 30> History;
 
     FC_CharacterFootLockInfoHistory()
     {

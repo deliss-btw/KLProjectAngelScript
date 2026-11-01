@@ -45,7 +45,9 @@ struct FVM_DialogueOptionItem : FEUIViewModel
     }
     void PostConstruct()
     {
-        this.SetEmptyIcon(FSlateBrush());
+        FSlateBrush local_44;
+        local_44.DrawAs = ESlateBrushDrawType(0);
+        this.SetEmptyIcon(local_44);
         return;
     }
     FText GetOptionText() const

@@ -816,8 +816,7 @@ void SpwanAvatarAt(const FECSEntity &inout PlayerProxy, FC_PlayerController &ino
     bool local_25 = false;
     if (local_2 != nullptr)
     {
-        int local_26 = int(local_22.Team);
-        PlayerController.SetTeam(uint8(local_26));
+        PlayerController.SetTeam(uint8(local_22.Team));
         local_25 = !(local_22.bOnlyOverrideTeam);
     }
     bool local_27 = false;
@@ -1042,18 +1041,13 @@ void TryInitStartPlayerUids()
         {
             ELevelType local_57;
             local_57 = local_32.Get().LevelType;
-            int local_59 = int(local_57);
-            if (local_59 <= 3)
+            switch (int(local_57))
             {
-                if (local_59 != 3)
-                {
-                    return;
-                }
-                else
-                {
-                    FGameModeUtils::InitStartPlayerUidsFromTeamMembers();
-                    return;
-                }
+            case 3:
+            {
+                FGameModeUtils::InitStartPlayerUidsFromTeamMembers();
+                return;
+            }
             }
         }
     }

@@ -6,7 +6,7 @@ namespace __INTENRAL_FC_AnimParamRigidBodyPhysicsControlHistory_NS
 }
 struct FC_AnimParamRigidBodyPhysicsControlHistory : FECSComponent
 {
-    TInterpoHistory<FC_AnimParamRigidBodyPhysicsControl, auto> History;
+    TInterpoHistory<FC_AnimParamRigidBodyPhysicsControl, 30> History;
 
     FC_AnimParamRigidBodyPhysicsControlHistory()
     {

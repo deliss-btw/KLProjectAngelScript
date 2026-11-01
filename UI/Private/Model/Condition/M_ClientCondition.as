@@ -65,7 +65,7 @@ struct FMS_ClientCondition : FEUIModelSingleton
     }
     void OnWidgetPresenceChanged(const FMsg_WidgetPresence &inout Msg)
     {
-        this.ApplyWidgetPresence(Msg.WidgetTag, (int(Msg.bPresented) != 0));
+        this.ApplyWidgetPresence(Msg.WidgetTag, Msg.bPresented);
         return;
     }
     void OnSubPagePresenceChanged(const FMsg_SubPagePresence &inout Msg)
@@ -218,10 +218,9 @@ struct FMS_ClientCondition : FEUIModelSingleton
         TConstRawPtr<FClientCond_TriggerReason> local_50 = FInstancedStruct::GetPtr(Cond).opCall();
         if (local_50)
         {
-            int local_53;
-            local_53 = int(local_50.Get()._base_FClientConditionBase);
-            int local_55 = local_53;
-            return (local_55 != 0 && (local_53 == int(Reason)));
+            EClientConditionTriggerReason local_53;
+            local_53 = local_50.Get().Reason;
+            return (int(local_53) != 0 && (int(local_53) == int(Reason)));
         }
         return false;
     }
@@ -229,14 +228,14 @@ struct FMS_ClientCondition : FEUIModelSingleton
     {
         FMS_LocalPlayerTeamData& local_4 = ::FMS_LocalPlayerTeamData::Get(this.GetManager());
         bool local_5 = !(((local_4.GetTeamMemberCount(ETeamType(1)) >= 2) || (local_4.GetTeamMemberCount(ETeamType(2)) >= 2)));
-        bool local_10 = !(Cond._base_FClientConditionBase);
+        bool local_10 = !(Cond.bRequireInTeam);
         local_5 = (local_5 == local_10);
         return local_5;
     }
     bool IsLevelTypeMet(const FClientCond_LevelType &inout Cond) const
     {
         int local_3 = int(::FLevelUtils::GetCurrentLevelType());
-        int local_4 = int(Cond._base_FClientConditionBase);
+        int local_4 = int(Cond.LevelType);
         return (local_3 == local_4);
     }
     bool IsInputTypeMet(const FClientCond_InputType &inout Cond) const
@@ -247,13 +246,13 @@ struct FMS_ClientCondition : FEUIModelSingleton
             return false;
         }
         int local_8 = int(local_4.GetCurrentInputType());
-        int local_9 = int(Cond._base_FClientConditionBase);
+        int local_9 = int(Cond.InputType);
         return (local_8 == local_9);
     }
     bool IsCommissionInMapMet(const FClientCond_CommissionInMap &inout Cond) const
     {
-        TDataObjectPtr<FCommissionConfig> local_24;
-        if ((!(TDataObjectPtr<FCommissionConfig>())))
+        TDataObjectPtr<FCommissionConfig> local_24 = Cond.CommissionConfig;
+        if (!(local_24))
         {
             return false;
         }

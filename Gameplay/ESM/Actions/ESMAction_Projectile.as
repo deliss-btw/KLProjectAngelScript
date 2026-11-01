@@ -262,7 +262,8 @@ class UESMAction_FireProjectile : UESMBPBaseSpanTickAction
                 FC_LifeTime& local_26 = local_30.opCall();
                 if (local_26)
                 {
-                    FFPTime local_40 = (FFPTime(Time.WorldTime) + FFPTime(((Time.ActionDuration.ToSeconds() / Time.PlaySpeed) * (1.0 - (Time.ActionTime.ToSeconds() / Time.ActionDuration.ToSeconds())))));
+                    FFPTime local_38 = Time.WorldTime;
+                    FFPTime local_40 = (local_38 + FFPTime(((Time.ActionDuration.ToSeconds() / Time.PlaySpeed) * (1.0 - (Time.ActionTime.ToSeconds() / Time.ActionDuration.ToSeconds())))));
                     FFPTime local_38_2 = (local_40 - local_26.GetSpawnTime());
                     local_26.SetLifeDuration(local_38_2);
                 }
@@ -279,8 +280,8 @@ class UESMAction_FireProjectile : UESMBPBaseSpanTickAction
                     FC_CurveMovementOverride& local_46 = local_44.opCall();
                     if (local_46)
                     {
-                        float32 local_11_3 = float32(Time.StateTime.ToSeconds());
-                        local_46.SetSampleTime(local_11_3);
+                        float32 local_11_2 = float32(Time.StateTime.ToSeconds());
+                        local_46.SetSampleTime(local_11_2);
                     }
                 }
                 if (this.bHasCurveRotation)
@@ -290,8 +291,8 @@ class UESMAction_FireProjectile : UESMBPBaseSpanTickAction
                     if (local_52)
                     {
                         float local_32_2 = Time.StateTime.ToSeconds();
-                        float32 local_11_4 = float32(local_32_2);
-                        local_52.SetSampleTime(local_11_4);
+                        float32 local_11_3 = float32(local_32_2);
+                        local_52.SetSampleTime(local_11_3);
                     }
                 }
             }
@@ -339,7 +340,8 @@ class UESMAction_FireProjectile : UESMBPBaseSpanTickAction
                     }
                     else
                     {
-                        FFPTime local_40 = (FFPTime(Time.WorldTime) + FFPTime(((Time.ActionDuration.ToSeconds() / Time.PlaySpeed) * (1.0 - (Time.ActionTime.ToSeconds() / Time.ActionDuration.ToSeconds())))));
+                        FFPTime local_38 = Time.WorldTime;
+                        FFPTime local_40 = (local_38 + FFPTime(((Time.ActionDuration.ToSeconds() / Time.PlaySpeed) * (1.0 - (Time.ActionTime.ToSeconds() / Time.ActionDuration.ToSeconds())))));
                         FFPTime local_38_2 = (local_40 - local_22.GetSpawnTime());
                         local_22.SetLifeDuration(local_38_2);
                     }

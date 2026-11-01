@@ -114,6 +114,7 @@ namespace UWidget_DisplayItem
 void GetModelInfo(FEUIWidgetMetaInfo &inout Result)
 {
     Result.WidgetType = UWidget_DisplayItem;
+    Result.ObservedModelChangesSubscriberCount = 1;
     Result.ObservedModelChangesSubscriberNames.Add(FString("HandleDisplayItemVMChanged"));
     return;
 }

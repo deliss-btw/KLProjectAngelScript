@@ -19,6 +19,7 @@ enum ELookDevTODLighting
     OvercastNight,
 }
 
+
 class AKLLookDevLightingTool : AKLEditorTickableActor
 {
     UPROPERTY()
@@ -131,7 +132,22 @@ class AKLLookDevLightingTool : AKLEditorTickableActor
     }
     void SetupLightingByCurrentConfig()
     {
-        // body not fully recovered — stub [opcode-uncovered]
+        switch (this.LightingMode)
+        {
+        case ELookDevLightingMode::AssetReview:
+        {
+            this.SetupAssetReviewLighting();
+            break;
+        }
+        case ELookDevLightingMode::TOD:
+        {
+            this.SetupTODLighting();
+            break;
+        }
+        }
+        this.UpdateShowStates();
+        this.bNeedResetLighting = false;
+        return;
     }
     void SetupAssetReviewLighting()
     {

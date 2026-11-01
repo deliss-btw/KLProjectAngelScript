@@ -132,6 +132,7 @@ namespace UWidget_TalentUpgradeConfirm
 void GetModelInfo(FEUIWidgetMetaInfo &inout Result)
 {
     Result.WidgetType = UWidget_TalentUpgradeConfirm;
+    Result.ObservedModelChangesSubscriberCount = 2;
     Result.ObservedModelChangesSubscriberNames.Add(FString("OnPendingClose"));
     Result.ObservedModelChangesSubscriberNames.Add(FString("OnCanUpgrade"));
     return;

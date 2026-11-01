@@ -96,7 +96,8 @@ class US_EnergyBallSystem : UECSScriptSystem
     void ClientJob_EnergyBallLifeTime(const FECSEntity &inout Entity, const FC_LifeTime &inout LifeTime, const FC_EnergyBall &inout EnergyBall, const FCS_FixedTime &inout FixedTime) const
     {
         Get local_10;
-        if (FFPTime(FProjectileTimeUtils::GetFrameTime(LifeTime, local_10.opCall(), FixedTime.LastTime, FixedTime.Time).CurrentTime).opCmp(LifeTime.GetLifeDuration()) >= 0)
+        FFPTime local_18 = FProjectileTimeUtils::GetFrameTime(LifeTime, local_10.opCall(), FixedTime.LastTime, FixedTime.Time).CurrentTime;
+        if (local_18.opCmp(LifeTime.GetLifeDuration()) >= 0)
         {
             Entity.DestroyDeferred();
         }

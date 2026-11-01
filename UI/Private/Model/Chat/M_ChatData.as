@@ -335,6 +335,7 @@ struct FMsg_SubmitChatText : FEUIMessage
     UPROPERTY()
     FString Text;
 
+
 }
 
 struct FMsg_ChatDataUpdated : FEUIMessage
@@ -360,6 +361,7 @@ struct FMsg_OnReceiveChatMessage : FEUIMessage
     UPROPERTY()
     TEUIModelRef<FM_ChatMessage> MessageRef;
 
+
 }
 
 struct FMsg_ChatReadAllMessages : FEUIMessage
@@ -368,6 +370,7 @@ struct FMsg_ChatReadAllMessages : FEUIMessage
     EChatChannelTab ChannelTab;
     UPROPERTY()
     uint PeerUid;
+
 
 }
 
@@ -384,6 +387,7 @@ struct FMsg_PrivateChatUpdated : FEUIMessage
     UPROPERTY()
     uint PeerUid = 0;
 
+
 }
 
 struct FMsg_GenSystemMsg : FEUIMessage
@@ -394,6 +398,7 @@ struct FMsg_GenSystemMsg : FEUIMessage
     uint SystemContentDataId = 0;
     UPROPERTY()
     TArray<FChatSystemSerializedArg> SystemContentArgs;
+
 
 }
 
@@ -423,6 +428,7 @@ struct FChatPrivatePeerThread
     FString CachedLastMessagePreview;
     UPROPERTY()
     uint64 LastActivitySendTime = 0;
+
 
 }
 
@@ -2670,18 +2676,24 @@ void GetModelInfo(FEUIModelOnlyMetaInfo &inout Result)
     Result.SetbCanDefaultConstruct(true);
     FEUIModelMonitorDefine local_14;
     local_14.FunctionName = "__OnLocalPlayerEntityChanged";
+    local_14.MonitorTarget = EEUIModelMonitorTarget(3);
     local_14.ComponentType = FC_PlayerController;
     Result.MonitorFunctions.Add(local_14);
     FEUIModelProtoRspDefine local_24;
     local_24.FunctionName = "__GS_OnSendChatMsgRsp";
+    local_24.ProtoCmdId = uint16(1802);
     Result.ProtoRspDefines.Add(local_24);
     local_24.FunctionName = "__GS_OnSyncChatMsgNotify";
+    local_24.ProtoCmdId = uint16(1803);
     Result.ProtoRspDefines.Add(local_24);
     local_24.FunctionName = "__GS_OnSyncOfflineChatMsgNotify";
+    local_24.ProtoCmdId = uint16(1810);
     Result.ProtoRspDefines.Add(local_24);
     local_24.FunctionName = "__GS_OnGetChatHistoryRsp";
+    local_24.ProtoCmdId = uint16(1807);
     Result.ProtoRspDefines.Add(local_24);
     local_24.FunctionName = "__GS_OnGetOfflineChatMsgRsp";
+    local_24.ProtoCmdId = uint16(1809);
     Result.ProtoRspDefines.Add(local_24);
     FEUIModelEventDefine local_32;
     local_32.FunctionName = "__OnReceiveServerSendChat";

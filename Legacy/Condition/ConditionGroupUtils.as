@@ -201,14 +201,15 @@ bool ValidateConditionGroupRecursive(const TDataObjectPtr<FConditionGroupConfig>
     VisitedConfigs.Add(local_4.opCall());
     for (auto& local_44 : ConditionGroupConfig.opArrow().ConditionSpecs)
     {
-        switch (int(local_44.ConditionConfig.opArrow().LocalConditionType))
+        int local_46 = int(local_44.ConditionConfig.opArrow().LocalConditionType);
+        switch (ELocalConditionConfigType(local_46))
         {
-        case 0:
+        case ELocalConditionConfigType::Invalid:
         {
             OutErrorMessage = FString().Append("Invalid condition config ").Append(local_44.ConditionConfig.GetDataName());
             return false;
         }
-        case 1:
+        case ELocalConditionConfigType::Single:
         {
             if (VisitedConfigs.Contains(local_44.ConditionConfig))
             {
@@ -217,7 +218,7 @@ bool ValidateConditionGroupRecursive(const TDataObjectPtr<FConditionGroupConfig>
             }
             break;
         }
-        case 2:
+        case ELocalConditionConfigType::Group:
         {
                 CastTo local_58;
             if (VisitedConfigs.Contains(local_44.ConditionConfig))
@@ -286,31 +287,29 @@ bool RecursiveRegisterConditionOrConditionGroupInstance(const FECSEntity &inout 
             OutErrorMessage = FString().Append("Failed to find proper context entity for condition \"").Append(local_16.ConditionConfig.GetDataName().ToString()).Append("\" in condition group \"").Append(ConditionGroupConfig.GetDataName().ToString()).Append("\" by group context entity \"").Append(ContextEntity.ToString()).Append("\" with context type ").Append(local_16.ContextType);
             return false;
         }
-        int local_42 = int(local_16.ConditionConfig.opArrow().LocalConditionType);
-        if (local_42 <= 2)
+        switch (int(local_16.ConditionConfig.opArrow().LocalConditionType))
         {
-            if (local_42 != 1)
+        case 1:
+        {
+            CastTo local_48;
+            FConditionInstanceHandle local_98 = ConditionUtils_Internal::RegisterLocalConditionInstance(local_20, local_48.opCall());
+            if (!(local_98.IsValid()))
             {
-                if (local_42 != 2)
-                {
-                }
+                OutErrorMessage = FString().Append("Failed to register local condition instance for \"").Append(local_16.ConditionConfig.GetDataName().ToString()).Append("\"");
+                return false;
             }
-            else
-            {
-                CastTo local_48;
-                FConditionInstanceHandle local_98 = ConditionUtils_Internal::RegisterLocalConditionInstance(local_20, local_48.opCall());
-                if (!(local_98.IsValid()))
-                {
-                    OutErrorMessage = FString().Append("Failed to register local condition instance for \"").Append(local_16.ConditionConfig.GetDataName().ToString()).Append("\"");
-                    return false;
-                }
-                OutConditionInstanceHandles.Add(local_98);
+            OutConditionInstanceHandles.Add(local_98);
+            break;
+        }
+        case 2:
+        {
                 CastTo local_128;
-                if (!(ConditionGroupUtils_Internal::RecursiveRegisterConditionOrConditionGroupInstance(local_20, local_128.opCall(), OutConditionInstanceHandles, OutErrorMessage)))
-                {
-                    return false;
-                }
+            if (!(ConditionGroupUtils_Internal::RecursiveRegisterConditionOrConditionGroupInstance(local_20, local_128.opCall(), OutConditionInstanceHandles, OutErrorMessage)))
+            {
+                return false;
             }
+            break;
+        }
         }
     }
     return true;

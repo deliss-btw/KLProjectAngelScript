@@ -584,8 +584,8 @@ void GetModelInfo(FEUIViewModelMetaInfo &inout Result)
     local_22.ApplySort();
     FEUIModelRefPropertyDirty local_30;
     local_30.PropertyName = FName("ItemCraft");
-    int local_2_2 = FVM_ItemCraft::ModelId;
-    int local_2_3 = local_22.GetMappingDirtyOffset(0);
+    local_30.PropertyModelId = FVM_ItemCraft::ModelId;
+    local_30.MappingDirtyOffset = local_22.GetMappingDirtyOffset(0);
     local_30.RelatedDirtyMask.SetBit(FVM_ItemCraft::__IndexOf_AllCraftableItems(), true);
     Result.ListeningModelRefDirties.Add(local_30);
     FEUIModelDirtyDefine local_40;

@@ -83,7 +83,7 @@ class US_NumLimitSystem : UECSScriptSystem
                 if (local_5)
                 {
                     ModifyOrAdd local_26;
-                    local_26.opCall().DestroyType = (4 != 0);
+                    local_26.opCall().DestroyType = EDestroyType(4);
                     Has local_32;
                     local_5 = local_32.opCall();
                     if (local_5)
@@ -112,18 +112,13 @@ class US_NumLimitSystem : UECSScriptSystem
     }
     FECSEntity GetManagerEntity(const FECSEntity &inout Entity, const FC_NumLimited &inout NumLimited) const
     {
-        FECSEntity __return;
-        int local_2 = int(NumLimited.ManagerType);
-        if (local_2 <= 0)
+        switch (int(NumLimited.ManagerType))
         {
-            if (local_2 != 0)
-            {
-            }
-            else
-            {
-                GetDefaulted local_8;
-                __return = local_8.opCall().GetOwnerEntity();
-            }
+        case 0:
+        {
+            GetDefaulted local_8;
+            return local_8.opCall().GetOwnerEntity();
+        }
         }
         return ENTITY_NULL;
     }

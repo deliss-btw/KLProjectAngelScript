@@ -49,7 +49,7 @@ class US_InitialLevelLoadingPassSystem : UECSScriptSystem
                 XWarning(ELog(22), FString().Append("Server InitialLevelLoadingPass Prepare: Group not found, level: ").Append(local_88).Append(", name: ").Append(local_66));
                 continue;
             }
-            FName local_96(local_94.LoadingPass);
+            FName local_96 = local_94.LoadingPass;
             if (local_94.bIsSubGroup)
             {
                 local_94.ParentGroupRef.IsValid();
@@ -80,7 +80,7 @@ class US_InitialLevelLoadingPassSystem : UECSScriptSystem
             local_102.GroupStatus.Add(local_110);
             local_102.Status = EPassLoadingStatus(0);
         }
-        if (local_12.bLoadedDefaultGroup && (FName(local_12.CurrentLoadingPass) == NAME_None))
+        if ((local_12.bLoadedDefaultGroup && (local_12.CurrentLoadingPass == NAME_None)))
         {
             local_12.CurrentLoadingPass = local_52.TryGetNextAvailablePass(NAME_None, true);
         }

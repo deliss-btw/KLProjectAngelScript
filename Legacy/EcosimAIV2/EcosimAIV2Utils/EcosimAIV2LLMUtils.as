@@ -66,7 +66,7 @@ void HandleEntityPublicSpeakBySimpleLLMCallBack(const FString &inout Query, cons
     XLog(ELog(0), FString().Append("HandleDebugGenerateLLMWithPromptCallBack: Query:\n").Append(Query).Append(" \n\nCallBackContent:").Append(local_4).Append("\n"));
     if (!(NPCInfoMap.ContextEntityList.IsEmpty()))
     {
-        FECSEntity local_16 = FECSEntity(NPCInfoMap.ContextEntityList[0]);
+        FECSEntity local_16 = NPCInfoMap.ContextEntityList[0];
         FEcosimAIV2Utils::AddLLMSpeakMemoryToEntity(local_16, local_4);
         FEcosimAIV2Utils::EntityPublicSpeak(local_16, local_4, 5.0f);
     }

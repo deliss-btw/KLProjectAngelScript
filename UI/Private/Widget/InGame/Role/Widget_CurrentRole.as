@@ -269,6 +269,7 @@ namespace UWidget_CurrentRole
 void GetModelInfo(FEUIWidgetMetaInfo &inout Result)
 {
     Result.WidgetType = UWidget_CurrentRole;
+    Result.ObservedModelChangesSubscriberCount = 1;
     Result.ObservedModelChangesSubscriberNames.Add(FString("OnOpenChangeRole"));
     return;
 }

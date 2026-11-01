@@ -385,13 +385,13 @@ class USPT_Qiongqi_FootIK_Base : USPT_Quadruped_FootIK_Base
         this.Leg_BR_IK.EffectorBoneName = n"Bn_R_ToeBase";
         this.BodyRootBone.SetBoneName(n"Bn_M_Hips");
         this.Leg_FL_DetailedIK.SetEnable(true);
-        this.Leg_FL_DetailedIK.Damper.MinInterpSpeed = 1112014848;
+        this.Leg_FL_DetailedIK.Damper.MinInterpSpeed = 50.0f;
         this.Leg_FR_DetailedIK.SetEnable(true);
-        this.Leg_FR_DetailedIK.Damper.MinInterpSpeed = 1112014848;
+        this.Leg_FR_DetailedIK.Damper.MinInterpSpeed = 50.0f;
         this.Leg_BL_DetailedIK.SetEnable(true);
-        this.Leg_BL_DetailedIK.Damper.MinInterpSpeed = 1112014848;
+        this.Leg_BL_DetailedIK.Damper.MinInterpSpeed = 50.0f;
         this.Leg_BR_DetailedIK.SetEnable(true);
-        this.Leg_BR_DetailedIK.Damper.MinInterpSpeed = 1112014848;
+        this.Leg_BR_DetailedIK.Damper.MinInterpSpeed = 50.0f;
         return;
     }
 }
@@ -415,13 +415,13 @@ class USPT_QiongQiD3_FootIK_Base : USPT_Quadruped_FootIK_Base
         this.Leg_BR_IK.EffectorBoneName = n"ball_r";
         this.BodyRootBone.SetBoneName(n"pelvis");
         this.Leg_FL_DetailedIK.SetEnable(true);
-        this.Leg_FL_DetailedIK.Damper.MinInterpSpeed = 1112014848;
+        this.Leg_FL_DetailedIK.Damper.MinInterpSpeed = 50.0f;
         this.Leg_FR_DetailedIK.SetEnable(true);
-        this.Leg_FR_DetailedIK.Damper.MinInterpSpeed = 1112014848;
+        this.Leg_FR_DetailedIK.Damper.MinInterpSpeed = 50.0f;
         this.Leg_BL_DetailedIK.SetEnable(true);
-        this.Leg_BL_DetailedIK.Damper.MinInterpSpeed = 1112014848;
+        this.Leg_BL_DetailedIK.Damper.MinInterpSpeed = 50.0f;
         this.Leg_BR_DetailedIK.SetEnable(true);
-        this.Leg_BR_DetailedIK.Damper.MinInterpSpeed = 1112014848;
+        this.Leg_BR_DetailedIK.Damper.MinInterpSpeed = 50.0f;
         return;
     }
 }

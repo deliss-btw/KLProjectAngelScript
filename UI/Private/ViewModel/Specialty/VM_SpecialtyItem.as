@@ -916,6 +916,7 @@ void GetModelInfo(FEUIViewModelMetaInfo &inout Result)
     Result.EffectFunctions.Add(local_20);
     FEUIModelMonitorDefine local_30;
     local_30.FunctionName = "__OnPlayerSpecialtyChanged";
+    local_30.MonitorTarget = EEUIModelMonitorTarget(3);
     local_30.ComponentType = FC_DSPlayerInfo;
     Result.MonitorFunctions.Add(local_30);
     return;

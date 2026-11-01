@@ -138,21 +138,21 @@ void PersistModes(const EVOXVoiceMode MicMode, const EVOXVoiceMode SpeakerMode)
     {
         return;
     }
-    switch (int(local_2))
+    switch (local_2)
     {
-    case 0:
+    case EVOXContextSlot::City:
     {
         local_10.CityMicMode = MicMode;
         local_10.CitySpeakerMode = SpeakerMode;
         break;
     }
-    case 1:
+    case EVOXContextSlot::NonCityNoSocial:
     {
         local_10.NonCityNoSocialMicMode = MicMode;
         local_10.NonCityNoSocialSpeakerMode = SpeakerMode;
         break;
     }
-    case 2:
+    case EVOXContextSlot::NonCitySocial:
     {
         local_10.NonCitySocialMicMode = MicMode;
         local_10.NonCitySocialSpeakerMode = SpeakerMode;

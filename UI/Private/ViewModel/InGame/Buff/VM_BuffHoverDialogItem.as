@@ -962,13 +962,14 @@ void GetModelInfo(FEUIViewModelMetaInfo &inout Result)
     Result.GeneratedPropertyStruct = __GeneratedProperties_FVM_BuffHoverDialogItem;
     FEUIModelWatcherProperty local_19;
     local_19.PropertyName = FName("RemainingCounterDown");
-    int local_2_2 = FVM_BuffHoverDialogItem::__IndexOf_RemainingCounterDown();
+    local_19.DirtyBitIndex = FVM_BuffHoverDialogItem::__IndexOf_RemainingCounterDown();
     Result.WatcherProperties.Add(local_19);
     FEUIModelEffectDefine local_26;
     local_26.FunctionName = "RefreshRemainingCounterDown";
     Result.EffectFunctions.Add(local_26);
     FEUIModelMonitorDefine local_36;
     local_36.FunctionName = "__OnPlayerMetaBuffChanged";
+    local_36.MonitorTarget = EEUIModelMonitorTarget(3);
     local_36.ComponentType = FC_PlayerMetaBuffList;
     Result.MonitorFunctions.Add(local_36);
     return;

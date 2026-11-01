@@ -853,10 +853,10 @@ void GetModelInfo(FEUIViewModelMetaInfo &inout Result)
     Result.GeneratedPropertyStruct = __GeneratedProperties_FVM_MiniHPBarV2;
     FEUIModelWatcherProperty local_19;
     local_19.PropertyName = FName("HpRatioSource");
-    int local_2_2 = FVM_MiniHPBarV2::__IndexOf_HpRatioSource();
+    local_19.DirtyBitIndex = FVM_MiniHPBarV2::__IndexOf_HpRatioSource();
     Result.WatcherProperties.Add(local_19);
     local_19.PropertyName = FName("PreviewHpBarRatioSource");
-    int local_2_3 = FVM_MiniHPBarV2::__IndexOf_PreviewHpBarRatioSource();
+    local_19.DirtyBitIndex = FVM_MiniHPBarV2::__IndexOf_PreviewHpBarRatioSource();
     Result.WatcherProperties.Add(local_19);
     FEUIModelEffectDefine local_26;
     local_26.FunctionName = "SyncMiniHpBarSources";

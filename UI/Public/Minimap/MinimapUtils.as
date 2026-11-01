@@ -80,7 +80,7 @@ void UpdateIconPosition(const FMinimapIconHandle &inout Handle, const FVector2D 
             return;
         }
         FMinimapIconInfo local_48 = local_4.GetIconInfo(Handle);
-        if ((FVector2D(local_48.WorldPosition) == WorldPosition))
+        if ((local_48.WorldPosition == WorldPosition))
         {
             return;
         }

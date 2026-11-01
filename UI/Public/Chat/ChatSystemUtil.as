@@ -349,9 +349,9 @@ FString FormatHex(const uint8 Value)
 FString LinearColorToRichTag(const FLinearColor &inout Lin)
 {
     FColor local_3 = Lin.ToFColor(true);
-    FString local_12 = ((FString("<#") + ChatSystemUtil::FormatHex(uint8(int(local_3.R)))) + ChatSystemUtil::FormatHex(uint8(int(local_3.G))));
+    FString local_12 = ((FString("<#") + ChatSystemUtil::FormatHex(local_3.R)) + ChatSystemUtil::FormatHex(local_3.G));
     FString local_16_2 = (local_12 + ChatSystemUtil::FormatHex(uint8(int(local_3.DWColor))));
-    FString local_12_2 = (local_16_2 + ChatSystemUtil::FormatHex(uint8(int(local_3.A))));
+    FString local_12_2 = (local_16_2 + ChatSystemUtil::FormatHex(local_3.A));
     return (local_12_2 + ">");
 }
 FString WrapStringWithColorRichText(const FString &inout InText, const FLinearColor &inout NameColor)

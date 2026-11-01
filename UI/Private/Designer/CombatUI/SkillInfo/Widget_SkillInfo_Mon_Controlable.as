@@ -37,28 +37,20 @@ class UWidget_SkillInfo_Mon_Controlable : UEUIUserWidget
         }
         else
         {
-            int local_7 = int(::UICommonUtil::GetCurrentInputType(this.GetOwningLocalPlayer()));
-            if (local_7 <= 1)
+            switch (int(::UICommonUtil::GetCurrentInputType(this.GetOwningLocalPlayer())))
             {
-                if (local_7 != 0)
-                {
-                    if (local_7 != 1)
-                    {
-                        return;
-                    }
-                    else
-                    {
-                        this.KeyboardInputPanel.SetVisibility(ESlateVisibility(2));
-                        this.GamepadInputPanel.SetVisibility(ESlateVisibility(0));
-                        return;
-                    }
-                }
-                else
-                {
-                    this.KeyboardInputPanel.SetVisibility(ESlateVisibility(0));
-                    this.GamepadInputPanel.SetVisibility(ESlateVisibility(2));
-                    return;
-                }
+            case 1:
+            {
+                this.KeyboardInputPanel.SetVisibility(ESlateVisibility(2));
+                this.GamepadInputPanel.SetVisibility(ESlateVisibility(0));
+                return;
+            }
+            case 0:
+            {
+                this.KeyboardInputPanel.SetVisibility(ESlateVisibility(0));
+                this.GamepadInputPanel.SetVisibility(ESlateVisibility(2));
+                return;
+            }
             }
         }
     }
@@ -107,6 +99,7 @@ namespace UWidget_SkillInfo_Mon_Controlable
 void GetModelInfo(FEUIWidgetMetaInfo &inout Result)
 {
     Result.WidgetType = UWidget_SkillInfo_Mon_Controlable;
+    Result.ObservedModelChangesSubscriberCount = 0;
     return;
 }
 FEUIWidgetRef CreateWidget(const APlayerController OwningPlayer, const TSoftClassPtr<UEUIUserWidget> &inout WidgetClass)

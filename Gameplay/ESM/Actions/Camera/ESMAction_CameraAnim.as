@@ -205,7 +205,7 @@ class UESMAction_CameraAnim : UESMBPBaseSpanTickAction
                 local_22.BlendParam = this.CalculateBlendParam(Context.GetEntity(), local_22.OriginPosition);
             }
         }
-        FFPTime local_80 = FFPTime(Time.WorldTime);
+        FFPTime local_80 = Time.WorldTime;
         local_20.OriginPosition = local_22.OriginPosition;
         local_20.OriginRotation = local_22.OriginRotation;
         if (this.bLoop)
@@ -246,8 +246,7 @@ class UESMAction_CameraAnim : UESMBPBaseSpanTickAction
                 return;
             }
         }
-        local_85 = Time.PlaySpeed;
-        if (local_85 > 0.0f && (int(local_20.BlendPhase) != 1))
+        if (Time.PlaySpeed > 0.0f && (int(local_20.BlendPhase) != 1))
         {
             local_85 = float32(((FFPTime(Time.ActionDuration) - Time.ActionTime).ToSeconds()));
             float32 local_81_2 = local_85;
@@ -308,7 +307,7 @@ class UESMAction_CameraAnim : UESMBPBaseSpanTickAction
         {
             return;
         }
-        FFPTime local_82 = FFPTime(Time.WorldTime);
+        FFPTime local_82 = Time.WorldTime;
         float32 local_83 = local_80.GetRawBlendWeight(local_82);
         FFPTime local_86 = 0.1;
         FFPTime local_92 = (local_82 + FFPTime(local_6_2.BreakFadeOutDuration));
@@ -431,7 +430,7 @@ class UESMAction_CameraAnim : UESMBPBaseSpanTickAction
         InstanceData.MuteViewControlCounterModified = true;
         ModifyOrAdd local_80;
         local_80.opCall().MuteViewControlCounter = (int(local_80.opCall().MuteViewControlCounter) + 1);
-        FFPTime local_84 = FFPTime(Time.WorldTime);
+        FFPTime local_84 = Time.WorldTime;
         local_74.BlendStartTime = local_84;
         local_74.BlendEndTime = (local_84 + FFPTime(Config.FadeInDuration));
         local_74.AnimData = this.AnimKey;
@@ -611,7 +610,7 @@ class UESMAction_CameraAnim : UESMBPBaseSpanTickAction
                 AnimatedCamera.SetbCollisionBlocked(true);
                 InstanceData.bCollisionBlocked = true;
                 InstanceData.bCollisionCheckComplete = true;
-                FFPTime local_18 = FFPTime(Time.WorldTime);
+                FFPTime local_18 = Time.WorldTime;
                 float32 local_20 = AnimatedCamera.GetRawBlendWeight(local_18);
                 AnimatedCamera.BlendStartTime = local_18;
                 AnimatedCamera.BlendEndTime = (local_18 + FFPTime(Config.BreakFadeOutDuration));

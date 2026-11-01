@@ -13,11 +13,13 @@ enum EInteractionBehaviorAction_MessageHintParameterType
     DataObjectPtr,
 }
 
+
 UCLASS(Abstract)
 class UInteractionBehaviorActionBase : UObject
 {
     UPROPERTY()
     bool bPresentationOnly = false;
+
 
     void TriggerAction(const FECSEntity &inout InteractSource, const FECSEntity &inout InteractTarget, const FInteractionPointAndBehaviorIndex &inout InteractTargetPointAndBehaviorIndex)
     {
@@ -80,6 +82,7 @@ class UInteractionBehaviorAction_TargetESMTrigger : UInteractionBehaviorAction_E
     UPROPERTY()
     bool bSecondaryInteractSource = false;
 
+
     FECSEntity GetTriggerEntity(const FECSEntity &inout InteractSource, const FECSEntity &inout InteractTarget, const FInteractionPointAndBehaviorIndex &inout InteractTargetPointAndBehaviorIndex)
     {
         if (this.bSecondaryInteractSource)
@@ -108,6 +111,7 @@ class UInteractionBehaviorAction_TriggerTargetAbility : UInteractionBehaviorActi
     bool bSecondaryInteractSource = false;
     UPROPERTY()
     FName CustomEventName;
+
 
     void TriggerAction(const FECSEntity &inout InteractSource, const FECSEntity &inout InteractTarget, const FInteractionPointAndBehaviorIndex &inout InteractTargetPointAndBehaviorIndex)
     {
@@ -338,6 +342,7 @@ class UInteractionBehaviorAction_StartProgressOperation : UInteractionBehaviorAc
     UPROPERTY()
     bool bTryJoinWhenTargetInOperation = true;
 
+
     void TriggerAction(const FECSEntity &inout InteractSource, const FECSEntity &inout InteractTarget, const FInteractionPointAndBehaviorIndex &inout InteractTargetPointAndBehaviorIndex)
     {
         if (int(ECS::GetRuntimeInfo().IsServer) != 0)
@@ -366,6 +371,7 @@ class UInteractionBehaviorAction_JoinProgressOperation : UInteractionBehaviorAct
     bool bCanJoinByOperationEntity = true;
     UPROPERTY()
     bool bCanJoinByTarget = true;
+
 
     void TriggerAction(const FECSEntity &inout InteractSource, const FECSEntity &inout InteractTarget, const FInteractionPointAndBehaviorIndex &inout InteractTargetPointAndBehaviorIndex)
     {
@@ -447,6 +453,7 @@ class UInteractionBehaviorAction_ConsumeItem : UInteractionBehaviorActionBase
     TDataObjectPtr<FItemConfig> ItemConfig;
     UPROPERTY()
     int ItemNumber = 1;
+
 
     void TriggerAction(const FECSEntity &inout InteractSource, const FECSEntity &inout InteractTarget, const FInteractionPointAndBehaviorIndex &inout InteractTargetPointAndBehaviorIndex)
     {
@@ -661,6 +668,7 @@ struct FAddBuffConfigItem
     UPROPERTY()
     int AddStackNum = 1;
 
+
 }
 
 class UInteractionBehaviorAction_SourceAddBuff : UInteractionBehaviorActionBase
@@ -700,6 +708,7 @@ class UInteractionBehaviorAction_PropAddBuffToPlayer : UInteractionBehaviorActio
     UPROPERTY()
     TArray<FName> BuffTagNames;
 
+
     void TriggerAction(const FECSEntity &inout InteractSource, const FECSEntity &inout InteractTarget, const FInteractionPointAndBehaviorIndex &inout InteractTargetPointAndBehaviorIndex)
     {
         if (!(ECS::GetRuntimeInfo().IsServer))
@@ -729,6 +738,7 @@ struct FInteractionBehaviorAction_MessageHintParameter
     UPROPERTY()
     FDataObjectPtr DataObjectPtrValue;
 
+
 }
 
 class UInteractionBehaviorAction_MessageHint : UInteractionBehaviorActionBase
@@ -742,9 +752,85 @@ class UInteractionBehaviorAction_MessageHint : UInteractionBehaviorActionBase
     UPROPERTY()
     TArray<FInteractionBehaviorAction_MessageHintParameter> CustomParameters;
 
+
     void TriggerAction(const FECSEntity &inout InteractSource, const FECSEntity &inout InteractTarget, const FInteractionPointAndBehaviorIndex &inout InteractTargetPointAndBehaviorIndex)
     {
-        // body not fully recovered — stub [opcode-uncovered]
+        Make local_60;
+        if (!(ECS::GetRuntimeInfo().IsServer))
+        {
+            return;
+        }
+        if (!(this.MessageHintConfig))
+        {
+            XError(ELog(46), FString().Append("Message hint config is null when interacting with ").Append(InteractTarget.ToString()));
+            return;
+        }
+        TArray<FECSEntity> local_16;
+        switch (this.SendTarget)
+        {
+        case EInteractionBehaviorAction_SendMessageHintTarget::InteractSource:
+        {
+            local_16.Add(InteractSource);
+            break;
+        }
+        case EInteractionBehaviorAction_SendMessageHintTarget::RangeBroadcast:
+        {
+            if (!(InteractTarget))
+            {
+                XWarning(ELog(46), "Interaction target is invalid, failed to broadcast message hint.");
+                break;
+            }
+            else
+            {
+                FVector local_28 = FTransformUtils::GetLocation(InteractTarget, FFPTime(-1));
+                local_16 = ::FASCommonUtils::GetAllPlayerPawnEntitiesInRange(local_28, this.BroadcastRange, false);
+                break;
+            }
+        }
+        }
+        if (local_16.IsEmpty())
+        {
+            return;
+        }
+        TArray<FTextArgument> local_38;
+        for (auto& local_52 : this.CustomParameters)
+        {
+            switch (local_52.ParameterType)
+            {
+            case EInteractionBehaviorAction_MessageHintParameterType::InteractSource:
+            {
+                local_38.Add(local_60.opImplConv());
+                break;
+            }
+            case EInteractionBehaviorAction_MessageHintParameterType::InteractSourcePlayer:
+            {
+                ::FASCommonUtils::GetUniquePlayerEntity(InteractSource);
+                local_38.Add(local_60.opImplConv());
+                break;
+            }
+            case EInteractionBehaviorAction_MessageHintParameterType::InteractTarget:
+            {
+                local_38.Add(local_60.opImplConv());
+                break;
+            }
+            case EInteractionBehaviorAction_MessageHintParameterType::NumericValue:
+            {
+                local_38.Add(FTextArgument(local_52.NumericValue));
+                break;
+            }
+            case EInteractionBehaviorAction_MessageHintParameterType::DataObjectPtr:
+            {
+                Make local_78;
+                local_38.Add(local_78.opImplConv());
+                break;
+            }
+            }
+        }
+        for (auto& local_92 : local_16)
+        {
+            ::MessageHintUtils::ShowMessageHint(::FASCommonUtils::GetUniquePlayerEntity(local_92), this.MessageHintConfig, local_38);
+        }
+        return;
     }
 }
 

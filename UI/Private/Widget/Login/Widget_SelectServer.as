@@ -94,6 +94,7 @@ namespace UWidget_SelectServer
 void GetModelInfo(FEUIWidgetMetaInfo &inout Result)
 {
     Result.WidgetType = UWidget_SelectServer;
+    Result.ObservedModelChangesSubscriberCount = 1;
     Result.ObservedModelChangesSubscriberNames.Add(FString("OnNeedCloseChanged"));
     return;
 }

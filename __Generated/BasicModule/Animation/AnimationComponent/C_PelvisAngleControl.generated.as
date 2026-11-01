@@ -6,7 +6,7 @@ namespace __INTENRAL_FC_PelvisAngleControlHistory_NS
 }
 struct FC_PelvisAngleControlHistory : FECSComponent
 {
-    TInterpoHistory<FC_PelvisAngleControl, auto> History;
+    TInterpoHistory<FC_PelvisAngleControl, 30> History;
 
     FC_PelvisAngleControlHistory()
     {

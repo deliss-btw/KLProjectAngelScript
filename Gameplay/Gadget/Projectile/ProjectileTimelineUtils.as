@@ -25,6 +25,7 @@ struct FProjectileTimelineActionContext
     UPROPERTY()
     FFPTime WorldTime;
 
+
 }
 
 void ReplaceComponentAssign(const FECSEntity &inout Entity, const UScriptStruct ComponentType, const FSyncStructRef &inout Data, const FFPTime &inout WorldTime)
@@ -136,13 +137,120 @@ void TryClearMovementComponent(const FECSEntity &inout Entity, const UScriptStru
 }
 FQuat4f GetRotationByConfig(const FECSEntity &inout Entity, const EProjectileTimelineRotationBaseType RotationBaseType, const EProjectileTimelineTransformOffsetType RotationOffsetType, const FQuat4f &inout ContextRotation, const FQuat4f &inout RotationOffset)
 {
-    // body not fully recovered — stub [opcode-uncovered]
-    FQuat4f __r; return __r;
+    GetDefaulted local_20;
+    FQuat4f local_4 = FQuat4f(FQuat4f::Identity);
+    switch (RotationBaseType)
+    {
+    case EProjectileTimelineRotationBaseType::ZeroRotation:
+    {
+        break;
+    }
+    case EProjectileTimelineRotationBaseType::EntityRotation:
+    {
+        GetDefaulted local_10;
+        local_4 = FQuat4f(local_10.opCall().GetRotation());
+        break;
+    }
+    case EProjectileTimelineRotationBaseType::MoveDirection:
+    {
+        local_4 = FQuat4f(local_20.opCall().GetVelocity().ToOrientationQuat());
+        break;
+    }
+    case EProjectileTimelineRotationBaseType::MoveDirection2D:
+    {
+        FVector local_34(local_20.opCall().GetVelocity());
+        local_34.Z = 0.0;
+        local_4 = FQuat4f(local_34.ToOrientationQuat());
+        break;
+    }
+    case EProjectileTimelineRotationBaseType::ContextRotation:
+    {
+        local_4 = ContextRotation;
+        break;
+    }
+    }
+    if (!(RotationOffset.IsIdentity(1e-8f)))
+    {
+        switch (RotationOffsetType)
+        {
+        case EProjectileTimelineTransformOffsetType::LocalSpace:
+        {
+            local_4 = (local_4 * RotationOffset);
+            break;
+        }
+        case EProjectileTimelineTransformOffsetType::WorldSpace:
+        {
+            local_4 = (RotationOffset * local_4);
+            break;
+        }
+        }
+    }
+    return local_4;
 }
 bool GetPositionByConfig(const FECSEntity &inout Entity, const EProjectileTimelinePositionBaseType PositionBaseType, const EProjectileTimelineTransformOffsetType PositionOffsetType, const FVector &inout ContextPosition, const FVector &inout PositionOffset, const FQuat4f &inout Rotation, const float32 GroundHeightCheck, FVector &inout OutPosition)
 {
-    // body not fully recovered — stub [opcode-uncovered]
-    bool __r; return __r;
+    GetDefaulted local_12;
+    FVector local_6(FVector::ZeroVector);
+    switch (PositionBaseType)
+    {
+    case EProjectileTimelinePositionBaseType::ZeroPosition:
+    {
+        break;
+    }
+    case EProjectileTimelinePositionBaseType::EntityPosition:
+    {
+        local_6 = local_12.opCall().GetPosition();
+        break;
+    }
+    case EProjectileTimelinePositionBaseType::ContextPosition:
+    {
+        local_6 = ContextPosition;
+        break;
+    }
+    case EProjectileTimelinePositionBaseType::SpawnOnGround:
+    {
+        local_6 = local_12.opCall().GetPosition();
+        break;
+    }
+    }
+    if (!(PositionOffset.IsZero()))
+    {
+        switch (PositionOffsetType)
+        {
+        case EProjectileTimelineTransformOffsetType::LocalSpace:
+        {
+            local_6 = (local_6 + FQuat(Rotation).RotateVector(PositionOffset));
+            break;
+        }
+        case EProjectileTimelineTransformOffsetType::WorldSpace:
+        {
+            local_6 = (local_6 + PositionOffset);
+            break;
+        }
+        }
+    }
+    if (int(PositionBaseType) == 3)
+    {
+        FVector local_42 = local_6;
+        FVector local_30 = (local_6 - (FVector(FVector::UpVector) * GroundHeightCheck));
+        FHitResult local_116;
+        FCollisionQueryParams local_154;
+        local_154.bTraceComplex = false;
+        local_154.AddIgnoredEntityId(Entity.GetId().GetIdValue());
+        FCollisionResponseParams local_166;
+        bool local_168 = FPhysicsUtils::LineTraceSingle(Entity, false, EPhysicsTraceTag(38), local_116, local_42, local_30, FPhysicsUtils::ConvertToCollisionChannel(ETraceTypeQuery(5)), local_154, local_166);
+        if (local_168)
+        {
+            local_6 = local_116.Location;
+        }
+        else
+        {
+            OutPosition = local_6;
+            return false;
+        }
+    }
+    OutPosition = local_6;
+    return true;
 }
 FECSEntity FindAbilityOwner(const FECSEntity &inout Entity)
 {
@@ -191,7 +299,7 @@ void BeginAction_ReplaceComponent(const FProjectileTimelineUtils::FProjectileTim
                     local_30.SetAttackRecoverEnergyData(FDamageUtils::CalcAttackRecoverEnergyValue(local_42, local_68, Ctx.WorldTime, local_69));
                 }
             }
-            local_30.GetModify_AttackInfo().HitType = (2 != 0);
+            local_30.GetModify_AttackInfo().HitType = EHitRecordType(2);
         }
         else
         {
@@ -331,8 +439,7 @@ void BeginAction_PlayFX(const FProjectileTimelineUtils::FProjectileTimelineActio
         FECSEntity local_20_2 = ECSFX::PlayFXDurationalEx(Ctx.Entity, local_284, Ctx.WorldTime, 1.0f, true, local_4, EAttachFXStopMethod(local_378), false);
         if (local_20_2.IsValid())
         {
-            FFPTime local_386 = FFPTime(Ctx.ActionDataWithTime.BeginTime);
-            if ((local_386 == 0.0) && ((FFPTime(Controller.GetTimelineInfos()[int(Ctx.TimelineIndexInArray)].GetTimeOffset()) == 0.0)))
+            if ((Ctx.ActionDataWithTime.BeginTime == 0.0) && ((FFPTime(Controller.GetTimelineInfos()[int(Ctx.TimelineIndexInArray)].GetTimeOffset()) == 0.0)))
             {
                 Get local_392;
                 const FC_ProjectileInfo& local_394 = local_392.opCall();
@@ -388,7 +495,7 @@ void BeginAction_HitTest(const FProjectileTimelineUtils::FProjectileTimelineActi
         local_46.TransformRot = local_12;
         local_46.SweepFromOffset = FVector3f::ZeroVector;
         local_46.Shape = HitTestData.HitTestShape;
-        local_46.AttackInfo.HitType = (2 != 0);
+        local_46.AttackInfo.HitType = EHitRecordType(2);
         local_46.AttackInfo.AttackData = HitTestData.AttackData;
         local_46.StrikeEventData.StrikeShape = HitTestData.StrikeShape;
         local_46.StrikeEventData.StrikeDirection = FQuat(local_12).GetForwardVector();
@@ -607,7 +714,11 @@ void EndAction_AbilityEffectEvent(const FECSEntity &inout Entity, const FProject
 }
 void EndAction_ChangeMaterialParam(const FECSEntity &inout Entity, const FProjectileTimelineActionData_ChangeMaterialParamSpan &inout ChangeMaterialParamData)
 {
-    // body not fully recovered — stub [argmismatch:argtype]
+    if (!(ChangeMaterialParamData.MaterialParams.IsEmpty()))
+    {
+        FMaterialUtils::RemoveShowMaterialSectionRequest(Entity, ChangeMaterialParamData._base_FProjectileTimelineActionData_ChangeMaterialParam.RequestName);
+    }
+    return;
 }
 void EndAction_DurationalSFX(const FECSEntity &inout Entity, const int TimelineIndex, const int ActionIndex)
 {

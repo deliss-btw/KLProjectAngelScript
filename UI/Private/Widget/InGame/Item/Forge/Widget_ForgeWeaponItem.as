@@ -124,6 +124,7 @@ namespace UWidget_ForgeWeaponItem
 void GetModelInfo(FEUIWidgetMetaInfo &inout Result)
 {
     Result.WidgetType = UWidget_ForgeWeaponItem;
+    Result.ObservedModelChangesSubscriberCount = 1;
     Result.ObservedModelChangesSubscriberNames.Add(FString("HandleItemSelectedChanged"));
     return;
 }

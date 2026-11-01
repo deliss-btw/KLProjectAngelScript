@@ -564,6 +564,9 @@ struct FVM_SettingItem : FEUIViewModel
     void CreateComponentWidget()
     {
         FEUIDynamicWidgetData local_24;
+        int local_56 = 0;
+        int local_156 = 0;
+        int local_194 = 0;
         if (this.GetKeyMappingVM().Get().GetbIsKeyMapping())
         {
             if (!(this.GetKeyMappingVM().IsValid()))
@@ -603,7 +606,7 @@ struct FVM_SettingItem : FEUIViewModel
             {
                 local_24.WidgetClass = this.GetSettingComponentWidgetClass().DropDownWidgetClass;
                 local_24.ModelContainer = FEUIModelContainer();
-                TArray<FSettingOption> local_64;
+                TArray<FSettingOption> local_64 = local_56.Options;
                 ::SettingUtils::BuildOptions(this.GetApplyEffect(), local_64);
                 TArray<FText> local_68;
                 for (auto& local_82 : local_64)
@@ -636,7 +639,7 @@ struct FVM_SettingItem : FEUIViewModel
                     local_24.ModelContainer = FEUIModelContainer();
                     FVM_CommonComponentSliderConfig local_130;
                     local_130.MinValue = local_118.MinValue;
-                    local_130.MaxValue = local_118._base_FSettingItemBase;
+                    local_130.MaxValue = local_118.MaxValue;
                     local_130.Step = local_118.Step;
                     local_130.DefaultValue = this.GetDefaultValue();
                     local_130.CurrentValue = this.GetCurrentValue();
@@ -653,13 +656,13 @@ struct FVM_SettingItem : FEUIViewModel
                 {
                     if (this.GetItemConfig().Get().VisualConfig.GetScriptStruct().IsChildOf(FSettingLink))
                     {
+                        FGameplayTag local_168;
                         local_24.WidgetClass = this.GetSettingComponentWidgetClass().LinkWidgetClass;
                         local_24.ModelContainer = FEUIModelContainer();
-                        FGameplayTag local_168;
                         local_168;
+                        FVM_CommonComponentFilterConfig local_166 = FVM_CommonComponentFilterConfig(local_156.Name, local_168);
                         FOnCommonComponentFilterSelected local_190;
                         local_190.Add(::FVMS_SettingPage::Get(this.GetContext().UELocalPlayer), FVMS_SettingPage::BroadcastSettingsChanged);
-                        FVM_CommonComponentFilterConfig local_166;
                         this.SetLinkVM(TEUIModelWeakRef<FVM_CommonComponentFilter>(::FVM_CommonComponentFilter::Create(this.GetContext().Manager, local_166, local_190)));
                         FEUIModelRef local_48_5 = FEUIModelRef(this.GetLinkVM().Get());
                         local_24.ModelContainer.AddModel(local_48_5, false);
@@ -670,7 +673,7 @@ struct FVM_SettingItem : FEUIViewModel
                         {
                             local_24.WidgetClass = this.GetSettingComponentWidgetClass().ToggleWidgetClass;
                             local_24.ModelContainer = FEUIModelContainer();
-                            TArray<FSettingOption> local_64;
+                            TArray<FSettingOption> local_64 = local_194.Options;
                             ::SettingUtils::BuildOptions(this.GetApplyEffect(), local_64);
                             TArray<FText> local_68;
                             for (auto& local_82 : local_64)
@@ -1395,8 +1398,8 @@ void GetModelInfo(FEUIViewModelMetaInfo &inout Result)
     local_22.ApplySort();
     FEUIModelRefPropertyDirty local_30;
     local_30.PropertyName = FName("KeyMappingVM");
-    int local_2_2 = FVM_PlayerKeyMappingPair::ModelId;
-    int local_2_3 = local_22.GetMappingDirtyOffset(2);
+    local_30.PropertyModelId = FVM_PlayerKeyMappingPair::ModelId;
+    local_30.MappingDirtyOffset = local_22.GetMappingDirtyOffset(2);
     local_30.RelatedDirtyMask.SetBit(FVM_PlayerKeyMappingPair::__IndexOf_bNeedRefreshHover(), true);
     Result.ListeningModelRefDirties.Add(local_30);
     FEUIModelDirtyDefine local_40;

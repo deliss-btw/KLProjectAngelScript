@@ -27,7 +27,7 @@ struct FEcologyPointUnitConfig : FEcologyUnitConfig
     bool Activate_Implementation(const FLevelUnitExecuteContext &inout Context)
     {
         int local_12 = 0;
-        FECSEntity local_4 = FECSEntity(Context.UnitInstanceEntity);
+        FECSEntity local_4 = Context.UnitInstanceEntity;
         local_12.DomainTag = this.ConfigData.DomainTag;
         local_4.InitTransform(this.Transform.GetLocation(), this.Transform.GetRotation());
         Assign local_30;

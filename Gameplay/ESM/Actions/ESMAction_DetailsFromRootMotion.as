@@ -127,8 +127,7 @@ class UESMAction_DetailsFromRootMotionParam : UESMBPBaseSpanTickAction
             FC_CharacterAccelerationFromRootMotion& local_8 = local_6.opCall();
             if (local_8)
             {
-                FFPTime local_12 = FFPTime(Time.ActionDuration);
-                if (local_12.opCmp(0.0) >= 0)
+                if (Time.ActionDuration.opCmp(0.0) >= 0)
                 {
                     local_17 = float32((FFPTime(Time.ActionTime) / Time.ActionDuration));
                 }

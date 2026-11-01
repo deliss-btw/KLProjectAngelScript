@@ -30,6 +30,7 @@ struct FGTCInputAction : FGTCAction
     FGTCInputAction()
     {
         this.bIsLocalInput = false;
+        this.ActionType = EGTCActionType(2);
         this.__InitDefaults();
         return;
     }

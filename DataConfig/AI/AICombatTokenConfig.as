@@ -27,20 +27,22 @@ struct FAISpecialCombatTokenGenNum
     int CalculateNum(const int ReceiverNum) const
     {
         int local_2 = int(this.Type);
-        if (local_2 <= 1)
+        switch (local_2)
         {
-            if (local_2 != 0)
-            {
-                if (local_2 != 1)
-                {
-                }
-            }
-            else
-            {
-                return FMath::CeilToInt((this.Num * ReceiverNum));
-            }
+        case 0:
+        {
+            return FMath::CeilToInt((this.Num * ReceiverNum));
         }
-        return 0;
+        case 1:
+        {
+            return FMath::CeilToInt(this.Num);
+        }
+        default:
+        {
+            local_2 = 0;
+        }
+        }
+        return local_2;
     }
 }
 

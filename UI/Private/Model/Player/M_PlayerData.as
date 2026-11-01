@@ -630,6 +630,7 @@ void GetModelInfo(FEUIModelOnlyMetaInfo &inout Result)
     Result.SetbCanDefaultConstruct(true);
     FEUIModelMonitorDefine local_14;
     local_14.FunctionName = "__OnPlayerEntitySummaryChanged";
+    local_14.MonitorTarget = EEUIModelMonitorTarget(2);
     local_14.ComponentType = FCS_PlayerEntitySummary;
     Result.MonitorFunctions.Add(local_14);
     return;
@@ -671,6 +672,7 @@ void GetModelInfo(FEUIModelOnlyMetaInfo &inout Result)
     Result.SetbCanDefaultConstruct(true);
     FEUIModelMonitorDefine local_14;
     local_14.FunctionName = "__OnLocalPlayerEntityChanged";
+    local_14.MonitorTarget = EEUIModelMonitorTarget(3);
     local_14.ComponentType = FC_PlayerController;
     Result.MonitorFunctions.Add(local_14);
     return;

@@ -208,27 +208,36 @@ bool GetPVXPlayerProgressData(const FECSEntity &inout PlayerEntity, FPVX_PlayerP
 EPVXPlayerFinishReason GetPlayerFinishReasonFromWorld(const EPVXPlayerFinishReason Reason, const bool bIsWinner)
 {
     int local_3;
-    int local_1 = int(Reason);
-    if (local_1 <= 2)
+    int local_4;
+    switch (int(Reason))
     {
-        if (local_1 != 1)
+    case 1:
+    {
+        if (bIsWinner)
         {
-            if (local_1 != 2)
-            {
-            }
+            local_3 = 1;
         }
         else
         {
-            if (bIsWinner)
-            {
-                local_3 = 1;
-            }
-            else
-            {
-                local_3 = 2;
-            }
-            return EPVXPlayerFinishReason(local_3);
+            local_3 = 2;
         }
+        return EPVXPlayerFinishReason(local_3);
+    }
+    case 2:
+    {
+        if (bIsWinner)
+        {
+            local_4 = 2;
+        }
+        else
+        {
+            local_4 = 1;
+        }
+        return EPVXPlayerFinishReason(local_4);
+    }
+    default:
+    {
+    }
     }
     return Reason;
 }

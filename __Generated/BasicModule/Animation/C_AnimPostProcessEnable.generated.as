@@ -6,7 +6,7 @@ namespace __INTENRAL_FC_AnimPostProcessEnableHistory_NS
 }
 struct FC_AnimPostProcessEnableHistory : FECSComponent
 {
-    TInterpoHistory<FC_AnimPostProcessEnable, auto> History;
+    TInterpoHistory<FC_AnimPostProcessEnable, 30> History;
 
     FC_AnimPostProcessEnableHistory()
     {

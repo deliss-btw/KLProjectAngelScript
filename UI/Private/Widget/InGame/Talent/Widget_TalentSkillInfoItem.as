@@ -330,6 +330,7 @@ namespace UWidget_TalentSkillInfoItem
 void GetModelInfo(FEUIWidgetMetaInfo &inout Result)
 {
     Result.WidgetType = UWidget_TalentSkillInfoItem;
+    Result.ObservedModelChangesSubscriberCount = 3;
     Result.ObservedModelChangesSubscriberNames.Add(FString("OnSkillChanged"));
     Result.ObservedModelChangesSubscriberNames.Add(FString("OnHoverTalentDetailsChange"));
     Result.ObservedModelChangesSubscriberNames.Add(FString("OnSelectChanged"));

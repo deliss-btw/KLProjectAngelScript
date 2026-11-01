@@ -205,7 +205,7 @@ void GetModelInfo(FEUIViewModelMetaInfo &inout Result)
     Result.GeneratedPropertyStruct = __GeneratedProperties_FVM_CommonAnnularProgressBar;
     FEUIModelWatcherProperty local_19;
     local_19.PropertyName = FName("TimeProgress");
-    int local_2_2 = FVM_CommonAnnularProgressBar::__IndexOf_TimeProgress();
+    local_19.DirtyBitIndex = FVM_CommonAnnularProgressBar::__IndexOf_TimeProgress();
     Result.WatcherProperties.Add(local_19);
     FEUIModelEffectDefine local_26;
     local_26.FunctionName = "RefreshTimeProgress";

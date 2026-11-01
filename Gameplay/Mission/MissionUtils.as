@@ -30,22 +30,24 @@ TDataObjectPtr<FMissionPhaseConfig> FindMissionPhaseConfig(const uint MissionPha
 }
 EMissionTabType MissionTypeToTabType(const EMissionType MissionType)
 {
-    int local_1 = int(MissionType);
-    if (local_1 <= 1)
+    int local_3 = 0;
+    switch (int(MissionType))
     {
-        if (local_1 != 0)
-        {
-            if (local_1 != 1)
-            {
-            }
-        }
-        else
-        {
-            return EMissionTabType(2);
-        }
+    case 0:
+    {
+        return EMissionTabType(2);
     }
-    XError(ELog(63), FString().Append("Invalid mission type: ").Append(MissionType));
-    return EMissionTabType(2);
+    case 1:
+    {
+        return EMissionTabType(3);
+    }
+    default:
+    {
+        XError(ELog(63), FString().Append("Invalid mission type: ").Append(MissionType));
+        local_3 = 2;
+    }
+    }
+    return EMissionTabType(local_3);
 }
 TArray<FMissionDetail> GetAllMissionDetails(const FECSEntity &inout PlayerEntity)
 {

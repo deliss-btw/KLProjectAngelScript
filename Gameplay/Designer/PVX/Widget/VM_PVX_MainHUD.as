@@ -1597,12 +1597,15 @@ void GetModelInfo(FEUIViewModelMetaInfo &inout Result)
     Result.EventFunctions.Add(local_22);
     FEUIModelMonitorDefine local_32;
     local_32.FunctionName = "__HandleCalc";
+    local_32.MonitorTarget = EEUIModelMonitorTarget(2);
     local_32.ComponentType = FCS_PVX_ScoreData;
     Result.MonitorFunctions.Add(local_32);
     local_32.FunctionName = "__HandleUniversalScoreChanged";
+    local_32.MonitorTarget = EEUIModelMonitorTarget(2);
     local_32.ComponentType = FCS_GameMode_ScoreData;
     Result.MonitorFunctions.Add(local_32);
     local_32.FunctionName = "__HandleProgressDataChanged";
+    local_32.MonitorTarget = EEUIModelMonitorTarget(2);
     local_32.ComponentType = FCS_PVX_ProgressData;
     Result.MonitorFunctions.Add(local_32);
     Result.TickFunction.FunctionName = "__Tick";

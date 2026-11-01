@@ -156,6 +156,7 @@ namespace UWidget_ChatPlayerItem
 void GetModelInfo(FEUIWidgetMetaInfo &inout Result)
 {
     Result.WidgetType = UWidget_ChatPlayerItem;
+    Result.ObservedModelChangesSubscriberCount = 1;
     Result.ObservedModelChangesSubscriberNames.Add(FString("OnSelected"));
     return;
 }

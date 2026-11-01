@@ -336,6 +336,7 @@ void GetModelInfo(FEUIViewModelMetaInfo &inout Result)
     Result.GeneratedPropertyStruct = __GeneratedProperties_FVM_HeadsUpDisplayItem_Basic;
     FEUIModelMonitorDefine local_26;
     local_26.FunctionName = "__HandlePVXProgressChanged";
+    local_26.MonitorTarget = EEUIModelMonitorTarget(2);
     local_26.ComponentType = FCS_PVX_ProgressData;
     Result.MonitorFunctions.Add(local_26);
     return;

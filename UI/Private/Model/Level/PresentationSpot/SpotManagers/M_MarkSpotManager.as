@@ -406,7 +406,7 @@ void GetModelInfo(FEUIModelOnlyMetaInfo &inout Result)
     Result.SetbCanDefaultConstruct(false);
     FEUIModelMetaPropertyModelRef local_6;
     local_6.PropertyName = FName("Player");
-    int local_2_2 = FM_Player::ModelId;
+    local_6.PropertyRefModelTypeId = FM_Player::ModelId;
     Result.FunctionalPropertyModelRefs.Add(local_6);
     FEUIModelMsgHandleDefine local_18;
     local_18.FunctionName = "__OnPlayerEntityChanged";
@@ -415,9 +415,11 @@ void GetModelInfo(FEUIModelOnlyMetaInfo &inout Result)
     Result.MessageHandleFunctions.Add(local_18);
     FEUIModelMonitorDefine local_32;
     local_32.FunctionName = "__OnPlayerMarksChanged";
+    local_32.MonitorTarget = EEUIModelMonitorTarget(1);
     local_32.ComponentType = FC_PlayerMarks;
     local_32.MonitorPropertyName = FName("PlayerEntity");
-    int local_2_3 = FM_PlayerMarkSpotManager::__IndexOf_PlayerEntity();
+    int local_37 = FM_PlayerMarkSpotManager::__IndexOf_PlayerEntity();
+    local_32.MonitorPropertyDirtyIndex = int8(local_37);
     Result.MonitorFunctions.Add(local_32);
     return;
 }

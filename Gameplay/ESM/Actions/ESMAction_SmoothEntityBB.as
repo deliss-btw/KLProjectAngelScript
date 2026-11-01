@@ -28,20 +28,18 @@ class UESMAction_SmoothEntityBB : UESMBPBaseSpanTickAction
             return;
         }
         float32 local_6 = 0.0f;
-        int local_8 = int(this.SmoothType);
-        if (local_8 <= 1)
+        switch (int(this.SmoothType))
         {
-            if (local_8 != 0)
-            {
-                if (local_8 != 1)
-                {
-                }
-            }
-            else
-            {
-                local_6 = FMathUtils::MoveTowards(local_1, local_2, float32(Time.ActionDeltaTime.ToSeconds()), this.SmoothSpeed);
-                local_6 = float32(FRotator::NormalizeAxis((FMathUtils::MoveTowardsDegree(local_1, FMathUtils::LerpDegree(local_1, local_2, this.SmoothLerpSpeed), float32(Time.ActionDeltaTime.ToSeconds()), this.SmoothSpeed))));
-            }
+        case 0:
+        {
+            local_6 = FMathUtils::MoveTowards(local_1, local_2, float32(Time.ActionDeltaTime.ToSeconds()), this.SmoothSpeed);
+            break;
+        }
+        case 1:
+        {
+            local_6 = float32(FRotator::NormalizeAxis((FMathUtils::MoveTowardsDegree(local_1, FMathUtils::LerpDegree(local_1, local_2, this.SmoothLerpSpeed), float32(Time.ActionDeltaTime.ToSeconds()), this.SmoothSpeed))));
+            break;
+        }
         }
         Context.GetEntity().SetBB_Float(this.DestNameHandle, local_6);
         return;

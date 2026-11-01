@@ -563,6 +563,7 @@ void GetModelInfo(FEUIViewModelMetaInfo &inout Result)
     Result.GeneratedPropertyStruct = __GeneratedProperties_FVMS_ProgressOperation;
     FEUIModelMonitorDefine local_26;
     local_26.FunctionName = "__OnMonitorProgressLocalPredicationHide";
+    local_26.MonitorTarget = EEUIModelMonitorTarget(4);
     local_26.ComponentType = FC_ProgressLocalPredicationHide;
     Result.MonitorFunctions.Add(local_26);
     Result.TickFunction.FunctionName = "__Tick";

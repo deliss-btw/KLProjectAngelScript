@@ -1232,10 +1232,10 @@ void GetModelInfo(FEUIViewModelMetaInfo &inout Result)
     Result.GeneratedPropertyStruct = __GeneratedProperties_FVM_BonfirePage_Supply;
     FEUIModelWatcherProperty local_19;
     local_19.PropertyName = FName("RefillTimesSource");
-    int local_2_2 = FVM_BonfirePage_Supply::__IndexOf_RefillTimesSource();
+    local_19.DirtyBitIndex = FVM_BonfirePage_Supply::__IndexOf_RefillTimesSource();
     Result.WatcherProperties.Add(local_19);
     local_19.PropertyName = FName("RefillTimesMaxSource");
-    int local_2_3 = FVM_BonfirePage_Supply::__IndexOf_RefillTimesMaxSource();
+    local_19.DirtyBitIndex = FVM_BonfirePage_Supply::__IndexOf_RefillTimesMaxSource();
     Result.WatcherProperties.Add(local_19);
     FEUIModelEffectDefine local_26;
     local_26.FunctionName = "SyncRefillSources";

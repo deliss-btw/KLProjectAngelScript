@@ -104,6 +104,7 @@ namespace UWidget_StaminaBar
 void GetModelInfo(FEUIWidgetMetaInfo &inout Result)
 {
     Result.WidgetType = UWidget_StaminaBar;
+    Result.ObservedModelChangesSubscriberCount = 1;
     Result.ObservedModelChangesSubscriberNames.Add(FString("OnStaminaLowChanged"));
     return;
 }

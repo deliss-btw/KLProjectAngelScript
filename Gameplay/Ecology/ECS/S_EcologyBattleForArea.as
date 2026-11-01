@@ -23,7 +23,106 @@ class US_EcologyBattleForAreaSystem : UECSScriptSystem
     UFUNCTION()
     void Job_BossBattleForAreaRunner(const FECSEntity &inout Entity, const FCS_FixedTime &inout FixedTime, const FC_EcologyFlockBehaviorComponent &inout BehaviorComponent) const
     {
-        // body not fully recovered — stub [opcode-uncovered]
+        FC_EcologyFlockBossBattleForAreaComponent local_6;
+        int local_32 = 0;
+        int local_34 = 0;
+        FC_EcologyFlockBehaviorComponent local_40;
+        FC_EcologyFlockBehaviorComponent local_42;
+        Has local_58;
+        if (!(local_6))
+        {
+            return;
+        }
+        FECSEntity local_12 = local_6.InstanceContext.AttackerFlock;
+        FECSEntity local_16 = FECSEntity(local_6.InstanceContext.DefenderFlock);
+        if (!(local_16.IsValid()))
+        {
+            return;
+        }
+        FECSEntity local_20 = local_6.InstanceContext.AttackerBoss;
+        FECSEntity local_24 = local_6.InstanceContext.DefenderBoss;
+        if (!(local_20.IsValid()) || !(local_24.IsValid()))
+        {
+            return;
+        }
+        if (!(local_32) || !(local_34))
+        {
+            return;
+        }
+        if (!(local_40) || !(local_42))
+        {
+            return;
+        }
+        bool local_43 = local_40.bIsInEmergency;
+        bool local_7 = local_42.bIsInEmergency;
+        bool local_44 = local_7;
+        if (local_43 || local_44)
+        {
+            if (local_43 && local_44)
+            {
+                ::FEcologyBattleForAreaUtils::BossBattleForAreaEndImmediately(local_12, local_16);
+                return;
+            }
+            if (int(local_40.MainState) == 2)
+            {
+                XLog(ELog(0), FString().Append("[BattleForArea]: 提前退出 - Reason: Attacker换区"));
+                ::FEcologyBattleForAreaUtils::ModifyBattleForAreaStateByFinish(local_12, local_16);
+                return;
+            }
+            if (int(local_42.MainState) == 2)
+            {
+                XLog(ELog(0), FString().Append("[BattleForArea]: 提前退出 - Reason: Defender换区"));
+                ::FEcologyBattleForAreaUtils::ModifyBattleForAreaStateByFinish(local_16, local_12);
+                return;
+            }
+        }
+        if (local_58.opCall())
+        {
+            local_7 = true;
+        }
+        else
+        {
+            local_7 = local_58.opCall();
+        }
+        if (local_7)
+        {
+            XLog(ELog(0), FString().Append("[BattleForArea]: 提前退出 - Reason 一方死亡"));
+            ::FEcologyBattleForAreaUtils::BossBattleForAreaEndImmediately(local_12, local_16);
+            return;
+        }
+        switch (local_6.BattleForAreaState)
+        {
+        case EBossBattleForAreaState::None:
+        {
+            return;
+        }
+        case EBossBattleForAreaState::Marked:
+        {
+            return;
+        }
+        case EBossBattleForAreaState::Prepare:
+        {
+            if (float32(((FFPTime(ECS::GetECSWorld().GetFixedTime().Time) - local_6.EnterStateTime).ToSeconds())) > 10.0f)
+            {
+                XLog(ELog(30), FString().Append("[BattleForArea]: Prepare状态超时，强制进入InBattle"));
+                ::FEcologyBattleForAreaUtils::BossBattleForAreaStartInBattle(local_12, local_20, local_16, local_24);
+            }
+            return;
+        }
+        case EBossBattleForAreaState::InBattle:
+        {
+            ::FEcologyBattleForAreaUtils::BossBattleForAreaWinnerCheck(local_12, local_16, local_6.InstanceContext);
+            return;
+        }
+        case EBossBattleForAreaState::FinishChangeArea:
+        {
+            return;
+        }
+        case EBossBattleForAreaState::FinishStay:
+        {
+            return;
+        }
+        }
     }
     UFUNCTION()
     void Job_BossBattleForAreaFinishHandle(const FECSEntity &inout Entity, const FCS_FixedTime &inout FixedTime, FC_EcologyFlockBehaviorComponent &inout BehaviorComponent, const FC_EcologyFlockComponent &inout FlockComp, const FC_EcologyFlockBossBattleForAreaComponent &inout BattleForAreaInfo) const

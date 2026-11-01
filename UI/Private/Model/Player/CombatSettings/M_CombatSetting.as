@@ -800,10 +800,13 @@ void GetModelInfo(FEUIModelOnlyMetaInfo &inout Result)
     Result.SetbCanDefaultConstruct(true);
     FEUIModelProtoRspDefine local_10;
     local_10.FunctionName = "__GS_OnPlayerAvatarDataNotify";
+    local_10.ProtoCmdId = uint16(1101);
     Result.ProtoRspDefines.Add(local_10);
     local_10.FunctionName = "__GS_OnChangeAvatarSettingRsp";
+    local_10.ProtoCmdId = uint16(1106);
     Result.ProtoRspDefines.Add(local_10);
     local_10.FunctionName = "__GS_OnChangeMainAvatarSpecialtyRsp";
+    local_10.ProtoCmdId = uint16(1120);
     Result.ProtoRspDefines.Add(local_10);
     return;
 }

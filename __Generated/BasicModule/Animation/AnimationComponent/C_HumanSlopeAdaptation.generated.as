@@ -6,7 +6,7 @@ namespace __INTENRAL_FC_SlopeAdaptControlHistory_NS
 }
 struct FC_SlopeAdaptControlHistory : FECSComponent
 {
-    TInterpoHistory<FC_SlopeAdaptControl, auto> History;
+    TInterpoHistory<FC_SlopeAdaptControl, 30> History;
 
     FC_SlopeAdaptControlHistory()
     {

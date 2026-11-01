@@ -269,6 +269,7 @@ namespace UWidget_CommissionFinishPage
 void GetModelInfo(FEUIWidgetMetaInfo &inout Result)
 {
     Result.WidgetType = UWidget_CommissionFinishPage;
+    Result.ObservedModelChangesSubscriberCount = 4;
     Result.ObservedModelChangesSubscriberNames.Add(FString("OnPendingCloseChanged"));
     Result.ObservedModelChangesSubscriberNames.Add(FString("OnbMarkAChanged"));
     Result.ObservedModelChangesSubscriberNames.Add(FString("OnSkipCountdownChanged"));
@@ -289,6 +290,7 @@ namespace UWidget_CommissionFinishWidget
 void GetModelInfo(FEUIWidgetMetaInfo &inout Result)
 {
     Result.WidgetType = UWidget_CommissionFinishWidget;
+    Result.ObservedModelChangesSubscriberCount = 0;
     return;
 }
 FEUIWidgetRef CreateWidget(const APlayerController OwningPlayer, const TSoftClassPtr<UEUIUserWidget> &inout WidgetClass)

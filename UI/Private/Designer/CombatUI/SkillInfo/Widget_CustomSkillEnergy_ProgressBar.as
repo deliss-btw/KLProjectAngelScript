@@ -195,6 +195,7 @@ namespace UWidget_CustomSkillEnergy_ProgressBar
 void GetModelInfo(FEUIWidgetMetaInfo &inout Result)
 {
     Result.WidgetType = UWidget_CustomSkillEnergy_ProgressBar;
+    Result.ObservedModelChangesSubscriberCount = 1;
     Result.ObservedModelChangesSubscriberNames.Add(FString("OnCustomSkillEnergyRatioChanged"));
     return;
 }

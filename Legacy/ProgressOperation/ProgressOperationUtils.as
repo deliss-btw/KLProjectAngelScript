@@ -18,11 +18,11 @@ FECSEntity StartProgressOperation(const FECSEntity &inout InitiatorEntity, const
     const FProgressOperationConfig& local_16 = ConfigPtr.Get();
     FECSEntity local_6 = ECS::CreateEmptyEntity(ECS::GetECSWorld(), EECSRegType(0), 9, n"ProgressOperation", false);
     ModifyOrAdd local_28;
-    local_28.opCall().RelevancePolicyType = false;
+    local_28.opCall().RelevancePolicyType = ENetRelevancePolicyType(0);
     if (bLocalPrediction)
     {
         local_36.SetOwnerEntity(InitiatorEntity);
-        local_28.opCall().RelevancePolicyType = (4 != 0);
+        local_28.opCall().RelevancePolicyType = ENetRelevancePolicyType(4);
         Get local_40;
         const FC_NetPredict& local_42 = local_40.opCall();
         if (local_42)

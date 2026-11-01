@@ -310,7 +310,8 @@ class US_ASGameModeSystemPVX : US_ECSScriptGameModeSystemBase
             }
             local_142.GetId();
             FECSWorldPtr local_2_5 = this.GetECSWorld();
-            local_194_2 = local_148.GetPlayerId();
+            FCE_PlayerSpawnEvent local_308;
+            local_308.PlayerID = local_148.GetPlayerId();
             ++local_21;
             FECSWorldPtr local_2_6 = this.GetECSWorld();
             if (!(local_312.opCall().GetbHasStarted()))

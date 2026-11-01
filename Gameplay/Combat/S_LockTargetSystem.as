@@ -34,7 +34,7 @@ class US_LockTargetSystem : UECSScriptSystem
     UFUNCTION()
     void ServerJob_HandleLockTargetSettingInputFirstEvent(const FCE_LockTargetSettingInputFirstEvent &inout Event) const
     {
-        0.SetbEnabled((int(Event.bEnabled) != 0));
+        0.SetbEnabled(Event.bEnabled);
         return;
     }
     UFUNCTION()
@@ -43,8 +43,6 @@ class US_LockTargetSystem : UECSScriptSystem
         Get local_10;
         int local_12 = 0;
         ULockTargetConfig local_66;
-        int local_214 = 0;
-        int local_215 = 0;
         FECSEntity local_22;
         if (local_12)
         {
@@ -97,7 +95,11 @@ class US_LockTargetSystem : UECSScriptSystem
             {
                 FECSWorldPtr local_70 = this.GetECSWorld();
                 local_76.PreTargetEntity = local_22;
+                local_76.ChangeTargetReason = EPreChangeTargetReason(0);
                 local_76.TargetEntity = ENTITY_NULL;
+                local_76.LockTargetType = ELockTargetType(0);
+                int local_25 = -1;
+                local_76.LockPointIndex = local_25;
             }
             else
             {
@@ -106,17 +108,22 @@ class US_LockTargetSystem : UECSScriptSystem
                 if (!((local_154.LockTarget == ENTITY_NULL)))
                 {
                     FECSWorldPtr local_70_2 = this.GetECSWorld();
+                    local_76.ChangeTargetReason = EPreChangeTargetReason(0);
                     local_76.PreTargetEntity = local_22;
+                    local_76.LockTargetType = ELockTargetType(2);
                     local_76.TargetEntity = local_154.LockTarget;
-                    int local_50 = local_154.LockPointIndex;
+                    local_76.LockPointIndex = int(local_154.LockPointIndex);
                 }
                 else
                 {
                     if (local_27)
                     {
                         FECSWorldPtr local_70_3 = this.GetECSWorld();
+                        local_76.ChangeTargetReason = EPreChangeTargetReason(0);
                         local_76.PreTargetEntity = local_22;
                         local_76.TargetEntity = ENTITY_NULL;
+                        local_76.LockTargetType = ELockTargetType(0);
+                        local_76.LockPointIndex = -1;
                     }
                 }
             }
@@ -142,12 +149,15 @@ class US_LockTargetSystem : UECSScriptSystem
             {
                 if (local_12 && (int(local_12.GetType()) == 2))
                 {
+                    int local_215;
+                    int local_214;
                     FVector local_176 = FCharacterInputUtils::GetViewPosition(Entity, TransformHistory, this.GetECSRuntime().Time);
                     FCharacterInputUtils::GetViewInputDir(Entity, this.GetECSRuntime().Time);
                     FRotator local_182 = FRotator::MakeFromXZ((FVector(local_12.GetLogicLockTargetPosition()) - local_176), FVector::UpVector);
                     FECSEntity local_204 = FECSEntity(ENTITY_NULL);
                     FECSEntity local_208 = FECSEntity(ENTITY_NULL);
                     FECSEntity local_212 = FECSEntity(ENTITY_NULL);
+                    int local_213 = -1;
                     local_214 = -1;
                     local_215 = -1;
                     float local_218 = -3.4028234663852886e38;
@@ -212,19 +222,24 @@ class US_LockTargetSystem : UECSScriptSystem
                     if (local_163 > 0 && !((local_212 == ENTITY_NULL)))
                     {
                         local_204 = local_212;
+                        local_213 = local_215;
                     }
                     else
                     {
                         if (local_163 < 0 && !((local_208 == ENTITY_NULL)))
                         {
                             local_204 = local_208;
+                            local_213 = local_214;
                         }
                     }
                     if (!((local_204 == ENTITY_NULL)))
                     {
                         FECSWorldPtr local_70_4 = this.GetECSWorld();
+                        local_76.ChangeTargetReason = EPreChangeTargetReason(0);
                         local_76.PreTargetEntity = local_22;
                         local_76.TargetEntity = local_204;
+                        local_76.LockTargetType = ELockTargetType(2);
+                        local_76.LockPointIndex = local_213;
                     }
                 }
             }
@@ -260,9 +275,11 @@ class US_LockTargetSystem : UECSScriptSystem
                     {
                         FCE_LockTargetChangeEvent local_48;
                         FECSWorldPtr local_42 = this.GetECSWorld();
+                        local_48.ChangeTargetReason = EPreChangeTargetReason(0);
                         local_48.PreTargetEntity = local_10;
                         local_48.TargetEntity = ENTITY_NULL;
-                        ELockTargetType local_11 = ELockTargetType(0);
+                        local_48.LockTargetType = ELockTargetType(ELockTargetType(0));
+                        local_48.LockPointIndex = -1;
                         local_54.opCall();
                     }
                 }

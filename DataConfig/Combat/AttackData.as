@@ -591,21 +591,23 @@ struct FAttackData : FDataObject
     }
     float32 GetHitImpulseZ() const
     {
-        int local_2 = int(this.HitLevel);
-        if (local_2 <= 6)
+        float32 local_4 = 0.0f;
+        switch (int(this.HitLevel))
         {
-            if (local_2 != 5)
-            {
-                if (local_2 != 6)
-                {
-                }
-            }
-            else
-            {
-                return this.BlowHitImpulseZ;
-            }
+        case 5:
+        {
+            return this.BlowHitImpulseZ;
         }
-        return 0.0f;
+        case 6:
+        {
+            return this.BlowHeavyHitImpulseZ;
+        }
+        default:
+        {
+            local_4 = 0.0f;
+        }
+        }
+        return local_4;
     }
     UCurveFloat GetFreezeAttenuationCurve() const
     {

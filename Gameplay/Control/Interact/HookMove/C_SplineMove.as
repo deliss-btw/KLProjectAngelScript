@@ -585,6 +585,7 @@ struct FC_SplineInfo : FECSComponent
     UPROPERTY()
     float32 PeekPointSplineDistance = 0.0f;
 
+
     USplineComponent GetSpline() const
     {
         ASplinePointPrefab local_4;
@@ -610,6 +611,7 @@ struct FSuperHookFlyMovementConfig
     float32 DistanceCurveTime = 1.0f;
     UPROPERTY()
     float32 DistanceCurveValuePct = 1.0f;
+
 
 }
 
@@ -640,6 +642,7 @@ struct FC_SuperHookFlyItem : FECSComponent
     FSuperHookFlyMovementConfig MovementConfig;
     UPROPERTY()
     TWeakObjectPtr<USplineComponent> Spline;
+
 
 }
 

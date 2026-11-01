@@ -454,8 +454,8 @@ void GetModelInfo(FEUIViewModelMetaInfo &inout Result)
     local_22.ApplySort();
     FEUIModelRefPropertyDirty local_30;
     local_30.PropertyName = FName("ItemOperationList");
-    int local_2_2 = FVM_ItemOperationList::ModelId;
-    int local_2_3 = local_22.GetMappingDirtyOffset(3);
+    local_30.PropertyModelId = FVM_ItemOperationList::ModelId;
+    local_30.MappingDirtyOffset = local_22.GetMappingDirtyOffset(3);
     local_30.RelatedDirtyMask.SetBit(FVM_ItemOperationList::__IndexOf_bShowList(), true);
     Result.ListeningModelRefDirties.Add(local_30);
     FEUIModelMsgHandleDefine local_42;

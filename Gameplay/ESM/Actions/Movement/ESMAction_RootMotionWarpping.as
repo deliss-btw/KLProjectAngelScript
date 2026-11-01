@@ -164,8 +164,7 @@ class UESMAction_RootMotionWarping : UESMBPBaseSpanTickAction
     void Tick_Implementation(const FESMContext &inout Context, const FESMActionTime &inout Time) const
     {
         int local_12 = 0;
-        FFPTime local_2 = FFPTime(Time.ActionTime);
-        if ((local_2 == 0.0))
+        if ((Time.ActionTime == 0.0))
         {
             return;
         }

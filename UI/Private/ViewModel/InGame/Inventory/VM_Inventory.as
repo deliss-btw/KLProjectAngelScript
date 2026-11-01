@@ -1350,8 +1350,8 @@ void GetModelInfo(FEUIViewModelMetaInfo &inout Result)
     local_22.ApplySort();
     FEUIModelRefPropertyDirty local_30;
     local_30.PropertyName = FName("HoverManager");
-    int local_2_2 = FMS_CommonHoverManager::ModelId;
-    int local_2_3 = local_22.GetMappingDirtyOffset(0);
+    local_30.PropertyModelId = FMS_CommonHoverManager::ModelId;
+    local_30.MappingDirtyOffset = local_22.GetMappingDirtyOffset(0);
     local_30.RelatedDirtyMask.SetBit(FMS_CommonHoverManager::__IndexOf_DisplayingHovers(), true);
     Result.ListeningModelRefDirties.Add(local_30);
     FEUIModelDirtyDefine local_40;

@@ -1,4 +1,40 @@
 void Test_FixedArray(FUnitTest &inout T)
 {
-    // body not fully recovered — stub [opcode-uncovered]
+    TFixedArray<int, 10> local_12;
+    T.AssertEquals(0, local_12.Num(), "");
+    T.AssertEquals(10, local_12.Max(), "");
+    local_12.SetNum(6);
+    T.AssertEquals(6, local_12.Num(), "");
+    T.AssertFalse(local_12.IsEmpty(), "");
+    local_12.Empty();
+    T.AssertEquals(0, local_12.Num(), "");
+    T.AssertTrue(local_12.IsEmpty(), "");
+    local_12.Add(123);
+    local_12.Add(456);
+    local_12.Add(789);
+    T.AssertEquals(3, local_12.Num(), "");
+    T.AssertEquals(123, local_12[0], "");
+    T.AssertEquals(456, local_12[1], "");
+    T.AssertEquals(789, local_12[2], "");
+    local_12[1] = 246;
+    T.AssertEquals(246, local_12[1], "");
+    T.AssertEquals(3, local_12.Num(), "");
+    T.AssertEquals(10, local_12.Max(), "");
+    T.AssertEquals(123, local_12[0], "");
+    T.AssertEquals(246, local_12[1], "");
+    T.AssertEquals(789, local_12[2], "");
+    local_12[0] = 999;
+    local_12.Add(147);
+    local_12.Add(258);
+    T.AssertEquals(5, local_12.Num(), "");
+    T.AssertEquals(999, local_12[0], "");
+    T.AssertEquals(147, local_12[3], "");
+    T.AssertEquals(258, local_12[4], "");
+    TFixedArray<FString, 3> local_42 = {"Foo", "Bar", "Baz"};
+    T.AssertEquals(3, local_42.Num(), "");
+    T.AssertEquals(3, local_42.Max(), "");
+    T.AssertEquals("Foo", local_42[0], "");
+    T.AssertEquals("Bar", local_42[1], "");
+    T.AssertEquals("Baz", local_42[2], "");
+    return;
 }

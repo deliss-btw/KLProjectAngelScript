@@ -1279,8 +1279,8 @@ void GetModelInfo(FEUIViewModelMetaInfo &inout Result)
     local_22.ApplySort();
     FEUIModelRefPropertyDirty local_30;
     local_30.PropertyName = FName("SelectableItem");
-    int local_2_2 = FVM_SelectableItem::ModelId;
-    int local_2_3 = local_22.GetMappingDirtyOffset(2);
+    local_30.PropertyModelId = FVM_SelectableItem::ModelId;
+    local_30.MappingDirtyOffset = local_22.GetMappingDirtyOffset(2);
     local_30.RelatedDirtyMask.SetBit(FVM_SelectableItem::__IndexOf_bIsSelected(), true);
     Result.ListeningModelRefDirties.Add(local_30);
     FEUIModelDirtyDefine local_40;
@@ -1483,13 +1483,13 @@ void GetModelInfo(FEUIViewModelMetaInfo &inout Result)
     local_22.ApplySort();
     FEUIModelRefPropertyDirty local_30;
     local_30.PropertyName = FName("CraftQuality");
-    int local_2_2 = FVM_QualitySelector::ModelId;
-    int local_2_3 = local_22.GetMappingDirtyOffset(1);
+    local_30.PropertyModelId = FVM_QualitySelector::ModelId;
+    local_30.MappingDirtyOffset = local_22.GetMappingDirtyOffset(1);
     local_30.RelatedDirtyMask.SetBit(FVM_QualitySelector::__IndexOf_CurrentNum(), true);
     Result.ListeningModelRefDirties.Add(local_30);
     local_30.PropertyName = FName("CraftModel");
-    int local_23 = FMS_Craft::ModelId;
-    int local_23_2 = local_22.GetMappingDirtyOffset(0);
+    local_30.PropertyModelId = FMS_Craft::ModelId;
+    local_30.MappingDirtyOffset = local_22.GetMappingDirtyOffset(0);
     local_30.RelatedDirtyMask.SetBit(FMS_Craft::__IndexOf_UnlockedCraftConfigs(), true);
     Result.ListeningModelRefDirties.Add(local_30);
     FEUIModelDirtyDefine local_40;
@@ -1514,6 +1514,7 @@ void GetModelInfo(FEUIViewModelMetaInfo &inout Result)
     Result.DirtyFunctions.Add(local_40);
     FEUIModelMonitorDefine local_64;
     local_64.FunctionName = "__MonitorGameplayItemBankChange";
+    local_64.MonitorTarget = EEUIModelMonitorTarget(3);
     local_64.ComponentType = FC_GameplayItemBank;
     Result.MonitorFunctions.Add(local_64);
     local_40.FunctionName = "__RefreshMaxCraftNum";

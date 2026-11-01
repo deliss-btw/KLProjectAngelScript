@@ -616,6 +616,7 @@ struct FGTCSourceData
                     continue;
                 }
                 FGTCInputAction local_110;
+                local_110.ActionType = EGTCActionType(2);
                 local_110.StartTime = FFPTime(local_74.RangeInfo.StartTimeOffset);
                 local_60 = local_74.RangeInfo.EndTimeOffset;
                 local_110.EndTime = FFPTime(local_60);
@@ -841,6 +842,7 @@ struct FGTCSourceData
             }
             FGTCFixedInputAction local_180;
             local_180.InputGroup = local_64;
+            local_180.ActionType = EGTCActionType(1);
             local_180.StartTime = FFPTime(local_55);
             local_180.EndTime = FFPTime(local_55);
             local_180.TargetUniqueName = this.PlayerPawnUniqueName;
@@ -1142,6 +1144,7 @@ struct FGTCSourceData
             local_66.TargetUniqueName = this.EntityConfigs[this.SamplerConfigs.Num()].UniqueName;
             local_66.StartTime = FFPTime(0);
             local_66.EndTime = FFPTime(this.CaseDuration);
+            local_66.ActionType = EGTCActionType(2);
             local_66.TargetAnimLayer = "MainLayer";
             local_3 = false;
             local_66.bNeedValidation = local_3;
@@ -1257,8 +1260,9 @@ struct FGTCSourceData
     }
     void ParseActionArrayFromJson(FJsonObject &inout RootObj, const FString &inout FieldName, TArray<FInstancedStruct> &inout OutActions)
     {
+        int local_22;
+        int local_23;
         FJsonArray local_4;
-        int local_23 = 0;
         if (!(RootObj.TryGetArrayField(FieldName, local_4)))
         {
             return;
@@ -1272,14 +1276,16 @@ struct FGTCSourceData
             {
                 continue;
             }
+            int local_21 = 0;
             local_23 = 0;
+            local_22 = local_23;
             FFPTime local_26;
             FFPTime local_28;
             FName local_30;
             float local_32 = 0.0;
             if (local_20.TryGetNumberField("ActionID", local_32))
             {
-                int local_8 = int(local_32);
+                local_21 = int(local_32);
             }
             FString local_38;
             if (local_20.TryGetStringField("ActionType", local_38))
@@ -1287,12 +1293,14 @@ struct FGTCSourceData
                 if ((local_38 == "Span"))
                 {
                     local_23 = 2;
+                    local_22 = local_23;
                 }
                 else
                 {
                     if ((local_38 == "Instant"))
                     {
                         local_23 = 1;
+                        local_22 = local_23;
                     }
                 }
             }
@@ -1320,6 +1328,8 @@ struct FGTCSourceData
             if ((local_60 == "GTCInputAction"))
             {
                 FGTCInputAction local_78;
+                local_78.ActionID = local_21;
+                local_78.ActionType = EGTCActionType(local_22);
                 local_78.StartTime = local_26;
                 local_78.EndTime = local_28;
                 local_78.TargetUniqueName = local_30;
@@ -1332,6 +1342,8 @@ struct FGTCSourceData
                 if ((local_60 == "GTCFixedInputAction"))
                 {
                     FGTCFixedInputAction local_98;
+                    local_98.ActionID = local_21;
+                    local_98.ActionType = EGTCActionType(local_22);
                     local_98.StartTime = local_26;
                     local_98.EndTime = local_28;
                     local_98.TargetUniqueName = local_30;
@@ -1343,6 +1355,8 @@ struct FGTCSourceData
                     if ((local_60 == "GTCTransitESMStateAction"))
                     {
                         FGTCTransitESMStateAction local_112;
+                        local_112.ActionID = local_21;
+                        local_112.ActionType = EGTCActionType(local_22);
                         local_112.StartTime = local_26;
                         local_112.EndTime = local_28;
                         local_112.TargetUniqueName = local_30;
@@ -1358,6 +1372,8 @@ struct FGTCSourceData
                         if ((local_60 == "GTCSetTransformAction"))
                         {
                             FGTCSetTransformAction local_144;
+                            local_144.ActionID = local_21;
+                            local_144.ActionType = EGTCActionType(local_22);
                             local_144.StartTime = local_26;
                             local_144.EndTime = local_28;
                             local_144.TargetUniqueName = local_30;
@@ -1392,6 +1408,8 @@ struct FGTCSourceData
                             if ((local_60 == "GTCLockTargetAction"))
                             {
                                 FGTCLockTargetAction local_190;
+                                local_190.ActionID = local_21;
+                                local_190.ActionType = EGTCActionType(local_22);
                                 local_190.StartTime = local_26;
                                 local_190.EndTime = local_28;
                                 local_190.TargetUniqueName = local_30;
@@ -1407,6 +1425,8 @@ struct FGTCSourceData
                                 if ((local_60 == "GTCTriggerAction"))
                                 {
                                     FGTCTriggerAction local_206;
+                                    local_206.ActionID = local_21;
+                                    local_206.ActionType = EGTCActionType(local_22);
                                     local_206.StartTime = local_26;
                                     local_206.EndTime = local_28;
                                     local_206.TargetUniqueName = local_30;
@@ -1417,6 +1437,8 @@ struct FGTCSourceData
                                     if ((local_60 == "GTCAICommandAction"))
                                     {
                                         FGTCAICommandAction local_232;
+                                        local_232.ActionID = local_21;
+                                        local_232.ActionType = EGTCActionType(local_22);
                                         local_232.StartTime = local_26;
                                         local_232.EndTime = local_28;
                                         local_232.TargetUniqueName = local_30;
@@ -1447,6 +1469,8 @@ struct FGTCSourceData
                                         if ((local_60 == "GTCTransformSampler"))
                                         {
                                             FGTCTransformSampler local_302;
+                                            local_302.ActionID = local_21;
+                                            local_302.ActionType = EGTCActionType(local_22);
                                             local_302.StartTime = local_26;
                                             local_302.EndTime = local_28;
                                             local_302.TargetUniqueName = local_30;
@@ -1458,6 +1482,8 @@ struct FGTCSourceData
                                             if ((local_60 == "GTCESMStateSampler"))
                                             {
                                                 FGTCESMStateSampler local_364;
+                                                local_364.ActionID = local_21;
+                                                local_364.ActionType = EGTCActionType(local_22);
                                                 local_364.StartTime = local_26;
                                                 local_364.EndTime = local_28;
                                                 local_364.TargetUniqueName = local_30;
@@ -1473,6 +1499,8 @@ struct FGTCSourceData
                                             else
                                             {
                                                 FGTCAction local_376;
+                                                local_376.ActionID = local_21;
+                                                local_376.ActionType = EGTCActionType(local_22);
                                                 local_376.StartTime = local_26;
                                                 local_376.EndTime = local_28;
                                                 local_376.TargetUniqueName = local_30;

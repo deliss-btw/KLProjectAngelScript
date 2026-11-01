@@ -996,23 +996,23 @@ struct FVM_CommonItemTip : FEUIViewModel
     }
     void AddTipAction(const FItemTipActionRequest &inout Request)
     {
-        int local_2 = int(Request.ActionId);
-        if (local_2 <= 5)
+        switch (int(Request.ActionId))
         {
-            if (local_2 != 1)
-            {
-                if (local_2 != 5)
-                {
-                }
-            }
-            else
-            {
-                this.AddAutoItemMainAction();
-                return;
-            }
+        case 1:
+        {
+            this.AddAutoItemMainAction();
+            return;
         }
-        this.AddCustomTipAction(Request);
-        return;
+        case 5:
+        {
+            this.AddMoreAction(Request);
+            return;
+        }
+        default:
+        {
+            this.AddCustomTipAction(Request);
+        }
+        }
     }
     void AddAutoItemMainAction()
     {

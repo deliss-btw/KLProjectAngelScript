@@ -40,27 +40,27 @@ struct FVMS_HUDHintManager : FEUIViewModelSingleton
         {
             if (HintData.GetbIsShow())
             {
-                int local_11 = int(HintData.GetHUDHintType());
-                if (local_11 <= 1)
+                switch (int(HintData.GetHUDHintType()))
                 {
-                    if (local_11 != 0)
+                case 0:
+                {
+                    if (HintData.GetHintTextData())
                     {
-                        if (local_11 != 1)
-                        {
-                        }
+                        FCommonTipsParam local_16;
+                        local_16.LifetimeOverride = HintData.GetShowHintTime();
+                        ::CommonPopup::WeakTips(HintData.GetHintTextData().opArrow().Text, local_16);
                     }
-                    else
-                    {
-                        if (HintData.GetHintTextData())
-                        {
-                            FCommonTipsParam local_16;
-                            local_16.LifetimeOverride = HintData.GetShowHintTime();
-                            ::CommonPopup::WeakTips(HintData.GetHintTextData().opArrow().Text, local_16);
-                        }
-                        return;
-                    }
+                    return;
                 }
-                return;
+                case 1:
+                {
+                    if (HintData.GetSideHintConfig())
+                    {
+                        ::FVMS_SideHint::Get(this.GetContext().Manager).AddSideHintItem(HintData.GetSideHintConfig().Get(), HintData.GetShowHintTime(), HintData.GetSpecifiedShowEntity(), HintData.GetCustomEntity_1(), HintData.GetCustomEntity_2(), HintData.GetCustomContent_1());
+                    }
+                    return;
+                }
+                }
             }
         }
     }

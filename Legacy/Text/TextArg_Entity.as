@@ -13,6 +13,7 @@ enum ETextArgParser_EntityRelationType
     Neutral,
 }
 
+
 struct FTextArgConfig_Entity : FTextArgConfig
 {
     FTextArgConfig _base_FTextArgConfig;
@@ -20,6 +21,7 @@ struct FTextArgConfig_Entity : FTextArgConfig
     ETextArgEntityProperty Property;
     UPROPERTY()
     TMap<ETextArgParser_EntityRelationType, FText> FormatByRelation;
+
 
 }
 

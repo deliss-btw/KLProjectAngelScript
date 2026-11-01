@@ -229,21 +229,21 @@ EItemSortCompareResult CompareSequence(const TArray<UItemSorterBase> &inout Sort
 {
     for (auto local_16 : Sorters)
     {
-        int local_19 = int((ItemSorterUtils::Compare(local_16, A, B)));
-        if (local_19 <= 2)
+        switch (int((ItemSorterUtils::Compare(local_16, A, B))))
         {
-            if (local_19 != 0)
-            {
-                if (local_19 != 2)
-                {
-                }
-            }
-            else
-            {
-                return EItemSortCompareResult(0);
-            }
+        case 0:
+        {
+            return EItemSortCompareResult(0);
         }
-        continue;
+        case 2:
+        {
+            return EItemSortCompareResult(2);
+        }
+        default:
+        {
+            break;
+        }
+        }
     }
     return EItemSortCompareResult(1);
 }

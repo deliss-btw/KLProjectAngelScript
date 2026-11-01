@@ -26,15 +26,57 @@ struct FActionImpactConfigSFX : FDataObject
     {
         return;
     }
-    const FActionImpactSFXData GetDataRaw(const ELandedMaterialType Value) const
+    const FActionImpactSFXData& GetDataRaw(const ELandedMaterialType Value) const
     {
-        // body not fully recovered — stub [opcode-uncovered]
-        const FActionImpactSFXData __r; return __r;
+        switch (int8(Value))
+        {
+        case 1:
+            return this.Flesh;
+        case 2:
+            return this.Grass;
+        case 3:
+            return this.LandGrass;
+        case 4:
+            return this.LandSoil;
+        case 5:
+            return this.LandStone;
+        case 6:
+            return this.Metal;
+        case 7:
+            return this.Stone;
+        case 8:
+            return this.Water;
+        case 9:
+            return this.Wood;
+        default:
+            return this.Default;
+        }
     }
-    FActionImpactSFXData ModifyDataRaw(const ELandedMaterialType Value)
+    FActionImpactSFXData& ModifyDataRaw(const ELandedMaterialType Value)
     {
-        // body not fully recovered — stub [opcode-uncovered]
-        FActionImpactSFXData __r; return __r;
+        switch (int8(Value))
+        {
+        case 1:
+            return this.Flesh;
+        case 2:
+            return this.Grass;
+        case 3:
+            return this.LandGrass;
+        case 4:
+            return this.LandSoil;
+        case 5:
+            return this.LandStone;
+        case 6:
+            return this.Metal;
+        case 7:
+            return this.Stone;
+        case 8:
+            return this.Water;
+        case 9:
+            return this.Wood;
+        default:
+            return this.Default;
+        }
     }
     const FActionImpactSFXData GetDataRawByName(const FName &inout EnumName) const
     {
@@ -128,15 +170,33 @@ struct FActionImpactConfigSFX : FDataObject
         const FActionSFXData& local_6 = this.GetDataRawByThirdType(local_4, EActionImpactType(ThirdType));
         return local_6;
     }
-    const FAICharacterSizeSFXData GetDataRawBySecondType(const FActionImpactSFXData &inout Data, const EPrefabSize Value) const
+    const FAICharacterSizeSFXData& GetDataRawBySecondType(const FActionImpactSFXData &inout Data, const EPrefabSize Value) const
     {
-        // body not fully recovered — stub [opcode-uncovered]
-        const FAICharacterSizeSFXData __r; return __r;
+        switch (int8(Value))
+        {
+        case 1:
+            return Data.Small;
+        case 2:
+            return Data.Medium;
+        case 3:
+            return Data.Large;
+        case 4:
+            return Data.ExtraLarge;
+        default:
+            return Data.Default;
+        }
     }
-    const FActionSFXData GetDataRawByThirdType(const FAICharacterSizeSFXData &inout Data, const EActionImpactType Value) const
+    const FActionSFXData& GetDataRawByThirdType(const FAICharacterSizeSFXData &inout Data, const EActionImpactType Value) const
     {
-        // body not fully recovered — stub [opcode-uncovered]
-        const FActionSFXData __r; return __r;
+        switch (int8(Value))
+        {
+        case 1:
+            return Data.Jump;
+        case 2:
+            return Data.Land;
+        default:
+            return Data.Default;
+        }
     }
     void CopyFallbackData(const ELandedMaterialType Src, const ELandedMaterialType Dst)
     {
@@ -204,15 +264,57 @@ struct FActionImpactConfigVFX : FDataObject
     {
         return;
     }
-    const FActionImpactVFXData GetDataRaw(const ELandedMaterialType Value) const
+    const FActionImpactVFXData& GetDataRaw(const ELandedMaterialType Value) const
     {
-        // body not fully recovered — stub [opcode-uncovered]
-        const FActionImpactVFXData __r; return __r;
+        switch (int8(Value))
+        {
+        case 1:
+            return this.Flesh;
+        case 2:
+            return this.Grass;
+        case 3:
+            return this.LandGrass;
+        case 4:
+            return this.LandSoil;
+        case 5:
+            return this.LandStone;
+        case 6:
+            return this.Metal;
+        case 7:
+            return this.Stone;
+        case 8:
+            return this.Water;
+        case 9:
+            return this.Wood;
+        default:
+            return this.Default;
+        }
     }
-    FActionImpactVFXData ModifyDataRaw(const ELandedMaterialType Value)
+    FActionImpactVFXData& ModifyDataRaw(const ELandedMaterialType Value)
     {
-        // body not fully recovered — stub [opcode-uncovered]
-        FActionImpactVFXData __r; return __r;
+        switch (int8(Value))
+        {
+        case 1:
+            return this.Flesh;
+        case 2:
+            return this.Grass;
+        case 3:
+            return this.LandGrass;
+        case 4:
+            return this.LandSoil;
+        case 5:
+            return this.LandStone;
+        case 6:
+            return this.Metal;
+        case 7:
+            return this.Stone;
+        case 8:
+            return this.Water;
+        case 9:
+            return this.Wood;
+        default:
+            return this.Default;
+        }
     }
     const FActionImpactVFXData GetDataRawByName(const FName &inout EnumName) const
     {
@@ -306,15 +408,33 @@ struct FActionImpactConfigVFX : FDataObject
         const FActionVFXData& local_6 = this.GetDataRawByThirdType(local_4, EActionImpactType(ThirdType));
         return local_6;
     }
-    const FAICharacterSizeVFXData GetDataRawBySecondType(const FActionImpactVFXData &inout Data, const EPrefabSize Value) const
+    const FAICharacterSizeVFXData& GetDataRawBySecondType(const FActionImpactVFXData &inout Data, const EPrefabSize Value) const
     {
-        // body not fully recovered — stub [opcode-uncovered]
-        const FAICharacterSizeVFXData __r; return __r;
+        switch (int8(Value))
+        {
+        case 1:
+            return Data.Small;
+        case 2:
+            return Data.Medium;
+        case 3:
+            return Data.Large;
+        case 4:
+            return Data.ExtraLarge;
+        default:
+            return Data.Default;
+        }
     }
-    const FActionVFXData GetDataRawByThirdType(const FAICharacterSizeVFXData &inout Data, const EActionImpactType Value) const
+    const FActionVFXData& GetDataRawByThirdType(const FAICharacterSizeVFXData &inout Data, const EActionImpactType Value) const
     {
-        // body not fully recovered — stub [opcode-uncovered]
-        const FActionVFXData __r; return __r;
+        switch (int8(Value))
+        {
+        case 1:
+            return Data.Jump;
+        case 2:
+            return Data.Land;
+        default:
+            return Data.Default;
+        }
     }
     void CopyFallbackData(const ELandedMaterialType Src, const ELandedMaterialType Dst)
     {

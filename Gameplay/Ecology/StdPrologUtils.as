@@ -32,8 +32,8 @@ void RetractFact(const FEcoFunctorDeclare &inout Declare, const TArray<FPlTerm> 
 }
 FLegacyEcoQueryContext Context(const FEcoFunctorDeclare &inout Declare)
 {
-    // body not fully recovered — stub [opcode-uncovered]
-    FLegacyEcoQueryContext __r; return __r;
+    TArray<FPlTerm> local_8 = {};
+    return FLegacyEcoQueryContext::Create(Declare, local_8);
 }
 FLegacyEcoQueryContext Context(const FEcoFunctorDeclare &inout Declare, const FPlTerm &inout Arg1)
 {

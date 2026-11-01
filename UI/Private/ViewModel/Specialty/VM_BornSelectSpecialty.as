@@ -611,6 +611,7 @@ void GetModelInfo(FEUIViewModelMetaInfo &inout Result)
     Result.MessageHandleFunctions.Add(local_26);
     FEUIModelMonitorDefine local_40;
     local_40.FunctionName = "__OnPlayerBornStateChanged";
+    local_40.MonitorTarget = EEUIModelMonitorTarget(3);
     local_40.ComponentType = FC_PlayerBornState;
     Result.MonitorFunctions.Add(local_40);
     return;

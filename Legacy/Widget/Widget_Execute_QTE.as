@@ -158,6 +158,7 @@ namespace UWidget_Execute_QTE
 void GetModelInfo(FEUIWidgetMetaInfo &inout Result)
 {
     Result.WidgetType = UWidget_Execute_QTE;
+    Result.ObservedModelChangesSubscriberCount = 1;
     Result.ObservedModelChangesSubscriberNames.Add(FString("OnStateChanged"));
     return;
 }

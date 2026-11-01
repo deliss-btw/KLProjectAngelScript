@@ -233,6 +233,7 @@ FVector GetEntityPosition(const FECSEntity &inout Entity, const FECSEntity &inou
 void GetModelInfo(FEUIWidgetMetaInfo &inout Result)
 {
     Result.WidgetType = UWidget_NavigationBar;
+    Result.ObservedModelChangesSubscriberCount = 1;
     Result.ObservedModelChangesSubscriberNames.Add(FString("OnHasLockTargetChanged"));
     return;
 }

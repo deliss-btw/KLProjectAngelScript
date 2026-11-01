@@ -106,7 +106,7 @@ FECSEntity CreateTeam(const FECSEntity &inout Leader, const int TeamID = 0)
     FECSEntity local_18 = Leader.GetWorld().Create(EEntityType(9), n"Team");
     FC_NetRelevancePolicy local_23;
     Assign local_22;
-    local_22.opCall(local_23).RelevancePolicyType = (5 != 0);
+    local_22.opCall(local_23).RelevancePolicyType = ENetRelevancePolicyType(5);
     local_30.SetTeamID(TeamID);
     local_30.AddMember(Leader);
     ModifyOrAdd local_34;

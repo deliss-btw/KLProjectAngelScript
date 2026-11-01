@@ -352,9 +352,11 @@ void GetModelInfo(FEUIViewModelMetaInfo &inout Result)
     Result.DirtyFunctions.Add(local_24);
     FEUIModelMonitorDefine local_34;
     local_34.FunctionName = "__OnBuffChanged";
+    local_34.MonitorTarget = EEUIModelMonitorTarget(1);
     local_34.ComponentType = FC_Buff;
     local_34.MonitorPropertyName = FName("TargetEntity");
-    int local_2_2 = FVM_BuffInfo::__IndexOf_TargetEntity();
+    int local_38 = FVM_BuffInfo::__IndexOf_TargetEntity();
+    local_34.MonitorPropertyDirtyIndex = int8(local_38);
     Result.MonitorFunctions.Add(local_34);
     return;
 }

@@ -45,8 +45,7 @@ struct FGTCTriggerAction : FGTCAction
             {
                 continue;
             }
-            FFPTime local_34 = FFPTime(Context.FixedTime.Time);
-            FESMTriggerUtils::ActivateTrigger(TargetEntity, local_12.Storage, local_28, local_34, local_26.TriggerValidTime, 0);
+            FESMTriggerUtils::ActivateTrigger(TargetEntity, local_12.Storage, local_28, Context.FixedTime.Time, local_26.TriggerValidTime, 0);
         }
         return;
     }

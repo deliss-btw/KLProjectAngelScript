@@ -309,7 +309,7 @@ class US_ChainSystem : UECSScriptSystem
         FC_InterpoBlend& local_16 = local_14.opCall();
         if (local_16)
         {
-            FFPTime local_18 = FFPTime(FixedTime.Time);
+            FFPTime local_18 = FixedTime.Time;
             float32 local_8 = local_16.GetValue(local_18);
             float32 local_19 = (1.0f - local_8) / 0.5f;
             float32 local_22 = FMath::Max(0.1f, local_19);
@@ -454,11 +454,10 @@ class US_ChainSystem : UECSScriptSystem
         if (ChainParam.GetLinkInfo().GetbRigid())
         {
             FVector local_248_2 = local_92.GetRotation().GetForwardVector();
-            EJointRotationFreedom local_283 = ChainParam.GetParentJointInfo().GetRotationFreedom();
             FVector3f local_282;
-            switch (int(local_283))
+            switch (ChainParam.GetParentJointInfo().GetRotationFreedom())
             {
-            case 0:
+            case EJointRotationFreedom::Free:
             {
                 local_282 = local_235.GetSafeNormal(1e-8f, FVector3f::ZeroVector);
                 if (ChainParam.GetParentJointInfo().GetDeflectionAngleLimit() >= 0.0f)
@@ -467,7 +466,7 @@ class US_ChainSystem : UECSScriptSystem
                 }
                 break;
             }
-            case 1:
+            case EJointRotationFreedom::ByAxis:
             {
                 FVector3f local_276 = FVector3f(local_92.GetRotation().GetRotationAxis());
                 local_282 = FVector3f(local_235).VectorPlaneProject(local_276).GetSafeNormal(1e-8f, FVector3f::ZeroVector);
@@ -477,7 +476,7 @@ class US_ChainSystem : UECSScriptSystem
                 }
                 break;
             }
-            case 2:
+            case EJointRotationFreedom::Locked:
             {
                 local_282 = FVector3f(local_248_2).opNeg();
                 break;
@@ -520,10 +519,10 @@ class US_ChainSystem : UECSScriptSystem
         FQuat local_336;
         FVector local_266_3 = local_44.TransformPosition(FVector(ChainParam.GetChildCenterInfo().GetLocationOffset()));
         bool local_337 = false;
-        switch (int(ChainParam.GetChildJointInfo().GetRotationFreedom()))
+        switch (ChainParam.GetChildJointInfo().GetRotationFreedom())
         {
             FVector3f local_282;
-        case 0:
+        case EJointRotationFreedom::Free:
         {
             FVector3f local_310 = FVector3f((local_168.GetLocation() - local_266_3));
             local_282 = (local_279 - local_235);
@@ -542,7 +541,7 @@ class US_ChainSystem : UECSScriptSystem
             }
             break;
         }
-        case 1:
+        case EJointRotationFreedom::ByAxis:
         {
             FVector local_328_2 = local_168.GetRotation().GetRotationAxis();
             local_242_2 = (local_168.GetLocation() - local_266_3);
@@ -564,7 +563,7 @@ class US_ChainSystem : UECSScriptSystem
             }
             break;
         }
-        case 2:
+        case EJointRotationFreedom::Locked:
         {
             local_336 = (FQuat::MakeFromXZ(FVector(local_279.opNeg()), FVector::UpVector) * local_168.GetRotation().Inverse());
             break;
@@ -601,19 +600,19 @@ class US_ChainSystem : UECSScriptSystem
             local_360 = FQuat::Slerp(local_44.GetRotation(), local_360, float32((this.CalcDampCoefficient(FixedTime, 0.1f))));
         }
         FVector local_214_5 = FVector(ChainParam.GetChildJointInfo().GetLocationOffset());
-        switch (int(ChainParam.GetChildJointInfo().GetRotationSpace()))
+        switch (ChainParam.GetChildJointInfo().GetRotationSpace())
         {
-        case 1:
+        case EJointParamSpace::World:
         {
             local_242_2 = (local_272 - local_214_5);
             break;
         }
-        case 0:
+        case EJointParamSpace::Entity:
         {
             local_242_2 = (local_272 - local_360.RotateVector(local_214_5));
             break;
         }
-        case 2:
+        case EJointParamSpace::Local:
         {
             local_242_2 = (local_272 - ((local_336 * local_144.GetRotation()).RotateVector(local_214_5)));
             break;
@@ -728,37 +727,37 @@ class US_ChainSystem : UECSScriptSystem
             }
         }
         RawTargetTransform = local_24;
-        switch (int(JointInfo.GetLocationSpace()))
+        switch (JointInfo.GetLocationSpace())
         {
-        case 1:
+        case EJointParamSpace::World:
         {
             local_24.SetLocation((local_24.GetLocation() + FVector(JointInfo.GetLocationOffset())));
             break;
         }
-        case 0:
+        case EJointParamSpace::Entity:
         {
             local_24.SetLocation((local_24.GetLocation() + EntityTransform.TransformVector(FVector(JointInfo.GetLocationOffset()))));
             break;
         }
-        case 2:
+        case EJointParamSpace::Local:
         {
             local_24.SetLocation((local_24.GetLocation() + local_24.TransformVector(FVector(JointInfo.GetLocationOffset()))));
             break;
         }
         }
-        switch (int(JointInfo.GetRotationSpace()))
+        switch (JointInfo.GetRotationSpace())
         {
-        case 1:
+        case EJointParamSpace::World:
         {
             local_24.SetRotation(JointInfo.GetRotationOffset());
             break;
         }
-        case 0:
+        case EJointParamSpace::Entity:
         {
             local_24.SetRotation(EntityTransform.TransformRotation(JointInfo.GetRotationOffset()));
             break;
         }
-        case 2:
+        case EJointParamSpace::Local:
         {
             local_24.SetRotation(local_24.TransformRotation(JointInfo.GetRotationOffset()));
             break;

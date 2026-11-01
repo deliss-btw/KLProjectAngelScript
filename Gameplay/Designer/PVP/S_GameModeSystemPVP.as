@@ -314,7 +314,7 @@ class US_ASGameModeSystemPVP : US_ECSScriptGameModeSystemBase
         int local_20 = 0;
         int local_26 = 0;
         int local_152 = 0;
-        int local_158;
+        FCE_PlayerSpawnEvent local_170;
         int local_230 = 0;
         int local_248 = 0;
         FECSWorldPtr local_2 = this.GetECSWorld();
@@ -347,8 +347,8 @@ class US_ASGameModeSystemPVP : US_ECSScriptGameModeSystemBase
             }
             FECSEntity local_168 = FECSEntity(local_146.GetId());
             FECSWorldPtr local_2_5 = this.GetECSWorld();
-            local_158 = local_152.GetPlayerId();
-            local_158 = local_152.GetTeam();
+            local_170.PlayerID = local_152.GetPlayerId();
+            local_170.Team = local_152.GetTeam();
             ++local_27;
             const TArray<FECSEntity>& local_172 = local_152.GetAllPlayerPawnEntities();
             auto local_178 = local_172.Iterator();
@@ -369,7 +369,7 @@ class US_ASGameModeSystemPVP : US_ECSScriptGameModeSystemBase
         local_230.SetWinnerTeamId(0);
         const UAS_GameModeSettingsPVP local_234 = this.GetPVPSettings();
         local_230.SetKillScoreLimit(this.ResolveBrawlLimitFromSettings(local_234, local_27));
-        local_158 = local_234 != nullptr ? int(local_234.BrawlPrepDurationSeconds) : 30;
+        int local_158 = local_234 != nullptr ? int(local_234.BrawlPrepDurationSeconds) : 30;
         if (local_158 < 0)
         {
             local_158 = 0;
@@ -412,6 +412,7 @@ class US_ASGameModeSystemPVP : US_ECSScriptGameModeSystemBase
         int local_20 = 0;
         int local_26 = 0;
         int local_150 = 0;
+        FCE_PlayerSpawnEvent local_170;
         int local_216 = 0;
         FECSWorldPtr local_2 = this.GetECSWorld();
         FECSWorldPtr local_2_2 = this.GetECSWorld();
@@ -442,8 +443,8 @@ class US_ASGameModeSystemPVP : US_ECSScriptGameModeSystemBase
             }
             FECSEntity local_168 = FECSEntity(local_144.GetId());
             FECSWorldPtr local_2_5 = this.GetECSWorld();
-            int local_157 = local_150.GetPlayerId();
-            int local_157_2 = local_150.GetTeam();
+            local_170.PlayerID = local_150.GetPlayerId();
+            local_170.Team = local_150.GetTeam();
         }
         this.SetupPVPCombatTeams();
         this.SpawnBotPlayers(local_26, local_20);
@@ -590,29 +591,28 @@ class US_ASGameModeSystemPVP : US_ECSScriptGameModeSystemBase
     {
         int local_8 = 0;
         FECSWorldPtr local_2 = this.GetECSWorld();
-        if (local_8.GetMatchWinnerTeamId() != 0)
+        if ((local_8.GetMatchWinnerTeamId()) != 0)
         {
             return;
         }
-        switch (int(local_8.GetRoundStage()))
+        switch (local_8.GetRoundStage())
         {
-        case 0:
+        case EPVPTDMRoundStage::RoundPrep:
         {
             this.TDM_TickRoundPrep(local_8);
             return;
         }
-        case 1:
+        case EPVPTDMRoundStage::RoundCombat:
         {
             this.TDM_TickRoundCombat(local_8);
             return;
         }
-        case 2:
+        case EPVPTDMRoundStage::RoundIntermission:
         {
             this.TDM_TickRoundIntermission(local_8);
             return;
         }
         }
-        return;
     }
     void TDM_BeginNewRound() const
     {

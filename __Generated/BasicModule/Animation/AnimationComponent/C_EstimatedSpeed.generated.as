@@ -6,7 +6,7 @@ namespace __INTENRAL_FC_EstimatedSpeedHistory_NS
 }
 struct FC_EstimatedSpeedHistory : FECSComponent
 {
-    TInterpoHistory<FC_EstimatedSpeed, auto> History;
+    TInterpoHistory<FC_EstimatedSpeed, 30> History;
 
     FC_EstimatedSpeedHistory()
     {

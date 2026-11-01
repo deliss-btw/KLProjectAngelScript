@@ -163,7 +163,7 @@ class US_PresentationCameraSystem : UECSScriptSystem
         {
             return;
         }
-        FECSEntity local_18 = FECSEntity(LocalPlayer.PlayerEntity);
+        FECSEntity local_18 = LocalPlayer.PlayerEntity;
         if (!(local_18.IsValid()))
         {
             return;
@@ -229,7 +229,7 @@ class US_PresentationCameraSystem : UECSScriptSystem
         {
             return;
         }
-        FECSEntity local_24 = FECSEntity(LocalPlayer.PlayerEntity);
+        FECSEntity local_24 = LocalPlayer.PlayerEntity;
         PrintToScreen(FString().Append("Blend : ").Append(this.DebugCameraBlendWeight(local_20.CurrentCameraInstanceData, ECS::GetRuntimeInfo().Time)), 0.0f, FLinearColor::Blue);
         FCameraPairIndex local_26;
         local_26.GetCameraName();
@@ -299,7 +299,7 @@ class US_PresentationCameraSystem : UECSScriptSystem
         {
             return;
         }
-        FECSEntity local_24 = FECSEntity(LocalPlayer.PlayerEntity);
+        FECSEntity local_24 = LocalPlayer.PlayerEntity;
         Has local_28;
         if (!(local_28.opCall()))
         {

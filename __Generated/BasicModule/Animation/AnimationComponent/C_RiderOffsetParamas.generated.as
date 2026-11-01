@@ -6,7 +6,7 @@ namespace __INTENRAL_FC_RiderOffsetParamasHistory_NS
 }
 struct FC_RiderOffsetParamasHistory : FECSComponent
 {
-    TInterpoHistory<FC_RiderOffsetParamas, auto> History;
+    TInterpoHistory<FC_RiderOffsetParamas, 30> History;
 
     FC_RiderOffsetParamasHistory()
     {

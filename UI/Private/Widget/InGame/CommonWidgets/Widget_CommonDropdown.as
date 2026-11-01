@@ -52,6 +52,7 @@ class UWidget_CommonDropdown : UEUIUserWidget
     UPROPERTY()
     FGetEUIModelRef CommonDropdownDelegate;
 
+
     UFUNCTION()
     void PreConstruct_Implementation(const bool IsDesignTime)
     {
@@ -197,6 +198,7 @@ class UWidget_CommonDropdownList : UEUIUserWidget
     FGetEUIModelRef CommonDropdownListDelegate;
     UPROPERTY()
     FGetEUIModelRef DropdownWidgetRefDelegate;
+
 
     UFUNCTION()
     void OnInitialized_Implementation()
@@ -382,7 +384,57 @@ class UWidget_CommonDropdownListCanvas : UEUIActivatableWidget
     UFUNCTION()
     void Tick_Implementation(const FGeometry &inout MyGeometry, const float32 InDeltaTime)
     {
-        // body not fully recovered — stub [opcode-uncovered]
+        int local_49 = 0;
+        int local_55;
+        if (!(this.DropdownWidgetRef.IsValid()))
+        {
+            return;
+        }
+        UWidget_CommonDropdown local_8 = (Cast<UWidget_CommonDropdown>(this.DropdownWidgetRef.opArrow().GetWidget()));
+        if ((!((local_8 != nullptr))))
+        {
+            return;
+        }
+        if (!(this.IsInFocusPath()) && !(local_8.IsInFocusPath()))
+        {
+            local_8.NotifyCloseFromDropdownList();
+            return;
+        }
+        const FGeometry& local_12 = local_8.GetTickSpaceGeometry();
+        const FGeometry& local_16 = this.DropdownListBoundary.GetParent().GetTickSpaceGeometry();
+        UPanelSlot local_18 = this.DropdownListBoundary.Slot;
+        UCanvasPanelSlot local_22 = (Cast<UCanvasPanelSlot>(local_18));
+        USizeBoxSlot local_28 = (Cast<USizeBoxSlot>(this.DropdownListBoundary.GetContentSlot()));
+        ECommonDropdownExpandDirection local_29 = local_8.ExpandDirection;
+        float32 local_31 = local_8.DropdownListMaxHeight;
+        float32 local_32 = float32(local_12.GetAbsoluteSize().X);
+        FVector2D local_44;
+        FVector2D local_48;
+        switch (local_29)
+        {
+        case ECommonDropdownExpandDirection::Up:
+        {
+            local_44 = local_12.LocalToAbsolute(FVector2D::ZeroVector);
+            local_48 = FVector2D(0.0, 1.0);
+            local_55 = 3;
+            local_49 = local_55;
+            break;
+        }
+        case ECommonDropdownExpandDirection::Down:
+        {
+            local_44 = local_12.LocalToAbsolute(FVector2D(0.0, local_12.GetLocalSize().Y));
+            local_48 = FVector2D::ZeroVector;
+            local_55 = 1;
+            local_49 = local_55;
+            break;
+        }
+        }
+        local_22.SetAlignment(local_48);
+        local_22.SetPosition(local_16.AbsoluteToLocal(local_44));
+        this.DropdownListBoundary.SetWidthOverride(Slate::Scalar_AbsoluteToLocal(local_16, local_32));
+        this.DropdownListBoundary.SetMaxDesiredHeight(local_31);
+        local_28.SetVerticalAlignment(EVerticalAlignment(local_49));
+        return;
     }
     UFUNCTION()
     void CloseDropdown()
@@ -633,6 +685,7 @@ namespace UWidget_CommonDropdown
 void GetModelInfo(FEUIWidgetMetaInfo &inout Result)
 {
     Result.WidgetType = UWidget_CommonDropdown;
+    Result.ObservedModelChangesSubscriberCount = 1;
     Result.ObservedModelChangesSubscriberNames.Add(FString("OnDropdownOpenChanged"));
     return;
 }
@@ -650,6 +703,7 @@ namespace UWidget_CommonDropdownList
 void GetModelInfo(FEUIWidgetMetaInfo &inout Result)
 {
     Result.WidgetType = UWidget_CommonDropdownList;
+    Result.ObservedModelChangesSubscriberCount = 2;
     Result.ObservedModelChangesSubscriberNames.Add(FString("OnDropdownWidgetRefChanged"));
     Result.ObservedModelChangesSubscriberNames.Add(FString("SyncDropdownListFocus"));
     return;
@@ -668,6 +722,7 @@ namespace UWidget_CommonDropdownListCanvas
 void GetModelInfo(FEUIWidgetMetaInfo &inout Result)
 {
     Result.WidgetType = UWidget_CommonDropdownListCanvas;
+    Result.ObservedModelChangesSubscriberCount = 0;
     return;
 }
 FEUIWidgetRef CreateWidget(const APlayerController OwningPlayer, const TSoftClassPtr<UEUIUserWidget> &inout WidgetClass)
@@ -684,6 +739,7 @@ namespace UWidget_CommonDropdownOption
 void GetModelInfo(FEUIWidgetMetaInfo &inout Result)
 {
     Result.WidgetType = UWidget_CommonDropdownOption;
+    Result.ObservedModelChangesSubscriberCount = 0;
     return;
 }
 FEUIWidgetRef CreateWidget(const APlayerController OwningPlayer, const TSoftClassPtr<UEUIUserWidget> &inout WidgetClass)
@@ -700,6 +756,7 @@ namespace UWidget_CommonDropdownButton
 void GetModelInfo(FEUIWidgetMetaInfo &inout Result)
 {
     Result.WidgetType = UWidget_CommonDropdownButton;
+    Result.ObservedModelChangesSubscriberCount = 0;
     return;
 }
 FEUIWidgetRef CreateWidget(const APlayerController OwningPlayer, const TSoftClassPtr<UEUIUserWidget> &inout WidgetClass)
@@ -716,6 +773,7 @@ namespace UWidget_TextDropdownOption
 void GetModelInfo(FEUIWidgetMetaInfo &inout Result)
 {
     Result.WidgetType = UWidget_TextDropdownOption;
+    Result.ObservedModelChangesSubscriberCount = 0;
     return;
 }
 FEUIWidgetRef CreateWidget(const APlayerController OwningPlayer, const TSoftClassPtr<UEUIUserWidget> &inout WidgetClass)
@@ -732,6 +790,7 @@ namespace UWidget_TextDropdownButton
 void GetModelInfo(FEUIWidgetMetaInfo &inout Result)
 {
     Result.WidgetType = UWidget_TextDropdownButton;
+    Result.ObservedModelChangesSubscriberCount = 0;
     return;
 }
 FEUIWidgetRef CreateWidget(const APlayerController OwningPlayer, const TSoftClassPtr<UEUIUserWidget> &inout WidgetClass)

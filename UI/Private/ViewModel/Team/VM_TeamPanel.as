@@ -316,19 +316,18 @@ struct FVM_TeamPanel : FEUIViewModel
         if ((int(this.GetTeamType())) == 2)
         {
             ECombatTeamRule local_5 = ::FTeamUtils::GetCombatTeamRule();
-            int local_3 = int(local_5);
-            if (local_3 <= 1)
+            switch (int(local_5))
             {
-                if (local_3 != 1)
-                {
-                }
-                else
-                {
-                    this.LeaveTeamOpenDialog();
-                    return;
-                }
+            case 1:
+            {
+                this.LeaveTeamOpenDialog();
+                return;
             }
-            XError(ELog(16), FString().Append("Invalid combat team rule for leaving team: ").Append(::FTeamUtils::GetCombatTeamRule()));
+            default:
+            {
+                XError(ELog(16), FString().Append("Invalid combat team rule for leaving team: ").Append(::FTeamUtils::GetCombatTeamRule()));
+            }
+            }
         }
         return;
     }
@@ -513,73 +512,73 @@ struct FVM_TeamPanel : FEUIViewModel
     }
     EVOXVoiceMode ListenStateToVoiceMode(const ETeamListenState State) const
     {
-        int local_1 = int(State);
-        if (local_1 <= 2)
+        switch (int(State))
         {
-            if (local_1 != 1)
-            {
-                if (local_1 != 2)
-                {
-                }
-            }
-            else
-            {
-                return EVOXVoiceMode(0);
-            }
+        case 1:
+        {
+            return EVOXVoiceMode(0);
+        }
+        case 2:
+        {
+            return EVOXVoiceMode(1);
+        }
+        default:
+        {
+        }
         }
         return EVOXVoiceMode(2);
     }
     EVOXVoiceMode SpeakStateToVoiceMode(const ETeamSpeakState State) const
     {
-        int local_1 = int(State);
-        if (local_1 <= 2)
+        switch (int(State))
         {
-            if (local_1 != 1)
-            {
-                if (local_1 != 2)
-                {
-                }
-            }
-            else
-            {
-                return EVOXVoiceMode(0);
-            }
+        case 1:
+        {
+            return EVOXVoiceMode(0);
+        }
+        case 2:
+        {
+            return EVOXVoiceMode(1);
+        }
+        default:
+        {
+        }
         }
         return EVOXVoiceMode(2);
     }
     ETeamListenState VoiceModeToListenState(const EVOXVoiceMode Mode) const
     {
-        int local_1 = int(Mode);
-        if (local_1 <= 1)
+        switch (int(Mode))
         {
-            if (local_1 != 0)
-            {
-                if (local_1 != 1)
-                {
-                }
-            }
-            else
-            {
-                return ETeamListenState(1);
-            }
+        case 0:
+        {
+            return ETeamListenState(1);
+        }
+        case 1:
+        {
+            return ETeamListenState(2);
+        }
+        default:
+        {
+        }
         }
         return ETeamListenState(0);
     }
     ETeamSpeakState VoiceModeToSpeakState(const EVOXVoiceMode Mode) const
     {
-        int local_1 = int(Mode);
-        if (local_1 <= 1)
+        switch (int(Mode))
         {
-            if (local_1 != 0)
-            {
-                if (local_1 != 1)
-                {
-                }
-            }
-            else
-            {
-                return ETeamSpeakState(1);
-            }
+        case 0:
+        {
+            return ETeamSpeakState(1);
+        }
+        case 1:
+        {
+            return ETeamSpeakState(2);
+        }
+        default:
+        {
+        }
         }
         return ETeamSpeakState(0);
     }

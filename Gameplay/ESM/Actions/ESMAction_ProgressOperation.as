@@ -41,27 +41,23 @@ class UESMAction_StartProgressOperation : UESMBPBaseInstantAction
     }
     FECSEntity GetEntityByType(const FESMContext &inout Context, const EProgressOperationEntityType Type) const
     {
-        FECSEntity __return;
-        int local_1 = int(Type);
-        if (local_1 <= 1)
+        switch (int(Type))
         {
-            if (local_1 != 0)
-            {
-                if (local_1 != 1)
-                {
-                }
-            }
-            else
-            {
+        case 0:
+        {
+            return Context.GetEntity();
+        }
+        case 1:
+        {
                 FNameHandle_EntityBBVarEntity local_10;
-                __return = Context.GetEntity();
-                local_10;
-                FECSEntity local_14 = Context.GetEntity().GetBB_Entity(local_10);
-                if (local_14.IsValid())
-                {
-                    return local_14;
-                }
+            local_10;
+            FECSEntity local_14 = Context.GetEntity().GetBB_Entity(local_10);
+            if (local_14.IsValid())
+            {
+                return local_14;
             }
+            break;
+        }
         }
         return ENTITY_NULL;
     }
@@ -113,27 +109,23 @@ class UESMAction_BreakProgressOperation : UESMBPBaseSpanAction
     }
     FECSEntity GetEntityByType(const FESMContext &inout Context, const EProgressOperationEntityType Type) const
     {
-        FECSEntity __return;
-        int local_1 = int(Type);
-        if (local_1 <= 1)
+        switch (int(Type))
         {
-            if (local_1 != 0)
-            {
-                if (local_1 != 1)
-                {
-                }
-            }
-            else
-            {
+        case 0:
+        {
+            return Context.GetEntity();
+        }
+        case 1:
+        {
                 FNameHandle_EntityBBVarEntity local_10;
-                __return = Context.GetEntity();
-                local_10;
-                FECSEntity local_14 = Context.GetEntity().GetBB_Entity(local_10);
-                if (local_14.IsValid())
-                {
-                    return local_14;
-                }
+            local_10;
+            FECSEntity local_14 = Context.GetEntity().GetBB_Entity(local_10);
+            if (local_14.IsValid())
+            {
+                return local_14;
             }
+            break;
+        }
         }
         return ENTITY_NULL;
     }
@@ -186,27 +178,23 @@ class UESMAction_LeaveProgressOperation : UESMBPBaseSpanAction
     }
     FECSEntity GetEntityByType(const FESMContext &inout Context, const EProgressOperationEntityType Type) const
     {
-        FECSEntity __return;
-        int local_1 = int(Type);
-        if (local_1 <= 1)
+        switch (int(Type))
         {
-            if (local_1 != 0)
-            {
-                if (local_1 != 1)
-                {
-                }
-            }
-            else
-            {
+        case 0:
+        {
+            return Context.GetEntity();
+        }
+        case 1:
+        {
                 FNameHandle_EntityBBVarEntity local_10;
-                __return = Context.GetEntity();
-                local_10;
-                FECSEntity local_14 = Context.GetEntity().GetBB_Entity(local_10);
-                if (local_14.IsValid())
-                {
-                    return local_14;
-                }
+            local_10;
+            FECSEntity local_14 = Context.GetEntity().GetBB_Entity(local_10);
+            if (local_14.IsValid())
+            {
+                return local_14;
             }
+            break;
+        }
         }
         return ENTITY_NULL;
     }

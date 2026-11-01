@@ -230,11 +230,11 @@ struct FDebugMovementCollisionInfo
 struct FDebugMovementStatInfo
 {
     UPROPERTY()
-    TFixedArray<float32, auto> SpeedBuff;
+    TFixedArray<float32, 30> SpeedBuff;
     UPROPERTY()
-    TFixedArray<float32, auto> SpeedHorizontalBuff;
+    TFixedArray<float32, 30> SpeedHorizontalBuff;
     UPROPERTY()
-    TFixedArray<float32, auto> SpeedVerticalBuff;
+    TFixedArray<float32, 30> SpeedVerticalBuff;
     UPROPERTY()
     FVector LastPosition;
     UPROPERTY()
@@ -567,6 +567,7 @@ class US_DebugEntityMovementSystem : UECSScriptSystem
         }
         if (CharacterMovement.GetFloorInfo().bTouchingFloor == false)
         {
+            local_206.A = uint8(128);
         }
         StatInfo.ShapeInfo.SetbValid(true);
         StatInfo.ShapeInfo.SetCollisionPosition(local_178);

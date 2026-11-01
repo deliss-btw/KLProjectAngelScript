@@ -77,7 +77,6 @@ struct FVM_CommissionEcologyElement : FEUIViewModel
     }
     FSoftBrush GetElementIcon() const
     {
-        FSoftBrush __return;
         if (this.GetbIsUnknown())
         {
             return FSoftBrush();
@@ -85,29 +84,26 @@ struct FVM_CommissionEcologyElement : FEUIViewModel
         TEUIModelRef<FM_Commission> local_50 = this.GetCommissionModel();
         if (local_50)
         {
-            int local_54 = int(this.GetElementType());
-            if (local_54 <= 1)
+            switch (int(this.GetElementType()))
             {
-                if (local_54 != 0)
-                {
-                    if (local_54 != 1)
-                    {
-                    }
-                }
-                else
-                {
-                    __return = local_50.opArrow().GetWeatherConfig().opArrow().DisplayIcon;
-                    __return = local_50.opArrow().GetIntrusionPolicyConfig().opArrow().IntrusionIcon;
-                }
+            case 0:
+            {
+                return local_50.opArrow().GetWeatherConfig().opArrow().DisplayIcon;
+            }
+            case 1:
+            {
+                return local_50.opArrow().GetIntrusionPolicyConfig().opArrow().IntrusionIcon;
+            }
             }
             return FSoftBrush();
         }
-        __return = FSoftBrush();
-        return __return;
+        else
+        {
+            return FSoftBrush();
+        }
     }
     FText GetElementName() const
     {
-        FText __return;
         if (this.GetbIsUnknown())
         {
             return FText();
@@ -115,29 +111,26 @@ struct FVM_CommissionEcologyElement : FEUIViewModel
         TEUIModelRef<FM_Commission> local_8 = this.GetCommissionModel();
         if (local_8)
         {
-            int local_12 = int(this.GetElementType());
-            if (local_12 <= 1)
+            switch (int(this.GetElementType()))
             {
-                if (local_12 != 0)
-                {
-                    if (local_12 != 1)
-                    {
-                    }
-                }
-                else
-                {
-                    __return = local_8.opArrow().GetWeatherConfig().opArrow().DisplayName;
-                    __return = local_8.opArrow().GetIntrusionPolicyConfig().opArrow().IntrusionName;
-                }
+            case 0:
+            {
+                return local_8.opArrow().GetWeatherConfig().opArrow().DisplayName;
+            }
+            case 1:
+            {
+                return local_8.opArrow().GetIntrusionPolicyConfig().opArrow().IntrusionName;
+            }
             }
             return FText();
         }
-        __return = FText();
-        return __return;
+        else
+        {
+            return FText();
+        }
     }
     FText GetElementDesc() const
     {
-        FText __return;
         if (this.GetbIsUnknown())
         {
             return this.GetUnknownElementDescription();
@@ -145,29 +138,26 @@ struct FVM_CommissionEcologyElement : FEUIViewModel
         TEUIModelRef<FM_Commission> local_4 = this.GetCommissionModel();
         if (local_4)
         {
-            int local_8 = int(this.GetElementType());
-            if (local_8 <= 1)
+            switch (int(this.GetElementType()))
             {
-                if (local_8 != 0)
-                {
-                    if (local_8 != 1)
-                    {
-                    }
-                }
-                else
-                {
-                    __return = local_4.opArrow().GetWeatherConfig().opArrow().DisplayHintContent;
-                    __return = local_4.opArrow().GetIntrusionPolicyConfig().opArrow().IntrusionDescription;
-                }
+            case 0:
+            {
+                return local_4.opArrow().GetWeatherConfig().opArrow().DisplayHintContent;
+            }
+            case 1:
+            {
+                return local_4.opArrow().GetIntrusionPolicyConfig().opArrow().IntrusionDescription;
+            }
             }
             return FText();
         }
-        __return = FText();
-        return __return;
+        else
+        {
+            return FText();
+        }
     }
     FText GetAdditionalElementDesc() const
     {
-        FText __return;
         if (this.GetbIsUnknown())
         {
             return FText();
@@ -175,21 +165,19 @@ struct FVM_CommissionEcologyElement : FEUIViewModel
         TEUIModelRef<FM_Commission> local_8 = this.GetCommissionModel();
         if (local_8)
         {
-            int local_12 = int(this.GetElementType());
-            if (local_12 <= 0)
+            switch (int(this.GetElementType()))
             {
-                if (local_12 != 0)
-                {
-                }
-                else
-                {
-                    __return = local_8.opArrow().GetWeatherConfig().opArrow().WeatherAbilityDescription;
-                }
+            case 0:
+            {
+                return local_8.opArrow().GetWeatherConfig().opArrow().WeatherAbilityDescription;
+            }
             }
             return FText();
         }
-        __return = FText();
-        return __return;
+        else
+        {
+            return FText();
+        }
     }
     bool IsSelected() const
     {

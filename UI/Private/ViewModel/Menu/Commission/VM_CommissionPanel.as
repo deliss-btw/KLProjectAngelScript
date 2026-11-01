@@ -813,7 +813,7 @@ void GetModelInfo(FEUIViewModelMetaInfo &inout Result)
     Result.GeneratedPropertyStruct = __GeneratedProperties_FVM_CommissionPanel;
     FEUIModelWatcherProperty local_19;
     local_19.PropertyName = FName("RecruitCooldown");
-    int local_2_2 = FVM_CommissionPanel::__IndexOf_RecruitCooldown();
+    local_19.DirtyBitIndex = FVM_CommissionPanel::__IndexOf_RecruitCooldown();
     Result.WatcherProperties.Add(local_19);
     FEUIModelEffectDefine local_26;
     local_26.FunctionName = "OnSelectedCommissionTypeChanged";

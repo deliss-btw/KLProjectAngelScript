@@ -9,6 +9,7 @@ struct FDelaySpawnFlockTask
     UPROPERTY()
     float32 UsedCost;
 
+
     void opCall()
     {
         int local_4 = 0;
@@ -133,7 +134,149 @@ void DelaySpawnFlockEntityByFlockSpawner(const FCS_FixedTime &inout FixedTime, c
 }
 void SpawnFlockEntityByFlockSpawner(const FCS_FixedTime &inout FixedTime, const FECSEntity &inout SpawnerEntity, FC_EcologyRuntimeClassicFlockSpawner &inout Spawner, const int SpawnerInfoIndex, const FRandomGenerator &inout InRandomGenerator, const float32 UsedCost = 0.0f)
 {
-    // body not fully recovered — stub [argmismatch:argtype]
+    int local_12 = 0;
+    int local_16 = 0;
+    bool local_203;
+    int local_210 = 0;
+    int local_317;
+    FC_EcologyResourceProviderSummary local_324;
+    FDataObjectPtr local_372;
+    int local_378 = 0;
+    bool local_411;
+    int local_1 = true;
+    FScopeCycleCounter local_3 = FScopeCycleCounter(FStatID(n"SpawnFlockEntityByFlockSpawner"), false);
+    FRandomGenerator local_6 = InRandomGenerator;
+    FFlockSpawnerData& local_8 = Spawner.SpawnerData[SpawnerInfoIndex];
+    FECSWorldPtr local_10 = ECS::GetECSWorld();
+    int local_4 = FEcologySceneInfoUtils::GetCurrentTimeSegments(local_12);
+    FECSWorldPtr local_10_2 = ECS::GetECSWorld();
+    const FGameplayTagContainer& local_18 = FEcologySceneInfoUtils::GetTimeSegmentsGameplayTagContaiers(local_16, local_4);
+    if (!(local_8.CreatureType.GetCreatureType()))
+    {
+        return;
+    }
+    float32 local_43 = 1.0f;
+    if (local_8.bAcceptSpawnRatio)
+    {
+        local_43 = FEcologySpawnerUtils::GetFlockInfoBatchRatio(local_12, SpawnerEntity, Spawner, SpawnerInfoIndex);
+    }
+    int local_45 = FMath::CeilToInt((int(local_8.MaxBatch) * local_43)) - FMath::FloorToInt(UsedCost);
+    if (local_45 <= 0)
+    {
+        return;
+    }
+    int local_47 = 0;
+    int local_48 = int(local_8.MaxCount);
+    int local_49 = int(local_8.MinCount);
+    int local_46 = local_8.FlockEntities.Num();
+    FRuntimeSpawnerReference local_52;
+    local_52.SubIndex = SpawnerInfoIndex;
+    local_52.SpawnerEntity = SpawnerEntity.GetId();
+    TArray<FResourceSummaryForFlockSpawner> local_58;
+    TArray<FResourceSummaryForFlockSpawner> local_62;
+    TSet<FDataObjectPtr> local_82 = FEcologyUtils::FindAllCareResourceType(local_8.CreatureType.GetCreatureType());
+    FECSRuntimeQuery local_144 = FECSRuntimeQueryHelper::MakeRuntimeQuery(SpawnerEntity, EECSQueryRegsitryType(4), false);
+    Include local_188;
+    local_188.opCall();
+    Include local_192;
+    local_192.opCall();
+    Exclude(local_144).opCall();
+    bool local_2 = !(Spawner.Region.IsNull());
+    AECSRegionVolume local_202 = Spawner.Region.Get();
+    if (local_2 && !((local_202 != nullptr)))
+    {
+        XError(ELog(30), FString().Append("Spawner find spawn volume failed ").Append(local_210.ConfigRef.GetIdValue()).Append(" "));
+        local_2 = false;
+    }
+    if (local_2)
+    {
+        FBox local_244 = local_202.GetBounds().GetBox();
+        local_144.FilterByBox(local_244.GetCenter(), local_244.GetExtent());
+    }
+    FECSRuntimeQueryIterator local_292 = local_144.Iterator();
+    for (; local_292.CanProceed;)
+    {
+        const FECSEntity& local_316 = local_292.Proceed();
+        local_317 = 1;
+        local_372;
+        FDataObjectPtr local_348 = local_372;
+        if (!(local_82.Contains(local_348)))
+        {
+            continue;
+        }
+        if (local_2)
+        {
+            if (!(local_202.EncompassesPoint(local_378.GetPosition(), 0.0f)))
+            {
+                continue;
+            }
+        }
+        int local_379 = int(local_324.MaxTeamCount);
+        if (int(local_324.PinedTeamCount) >= local_379)
+        {
+            continue;
+        }
+        local_379 = int(local_324.MaxTeamCount);
+        local_317 = local_379 - int(local_324.PinedTeamCount);
+        local_379 = FEcologySceneInfoUtils::GetUnitCountInCell(local_12, FVoxelPosition(local_378.GetPosition()), EEcologyVoxelUnitSlot(2));
+        local_317 = FMath::Min(local_317, 2 - local_379);
+        if (local_317 <= 0)
+        {
+            continue;
+        }
+        FResourceSummaryForFlockSpawner local_410;
+        local_411 = true;
+        Has local_416;
+        local_203 = local_416.opCall();
+        if (local_203)
+        {
+            int local_422;
+            for (auto& local_440 : local_422.Modifiers)
+            {
+                TConstRawPtr<FVirtualConfigData> local_446 = local_440.GetValue().GetModifierConfig().FindModifierByClass(FEcologyResourceModifier_SpecialTimeSegments);
+                if (local_446)
+                {
+                    TConstRawPtr<FEcologyResourceModifier_SpecialTimeSegments> local_454 = FInstancedStruct::GetPtr(local_446.opArrow().GetConfigData()).opCall();
+                    if (local_454)
+                    {
+                        local_411 = local_411 && local_18.HasAll(local_454.Get().IncludeDaySegment);
+                    }
+                }
+                if (!(local_411))
+                {
+                    break;
+                }
+            }
+        }
+        if (!(local_411))
+        {
+            continue;
+        }
+        local_410.Resource = local_316;
+        local_410.LeftCount = local_317;
+        local_410.Cell = FVoxelPosition(local_378.GetPosition());
+        if (local_324.bHighPriorityResource)
+        {
+            local_62.Add(local_410);
+        }
+        else
+        {
+            local_58.Add(local_410);
+        }
+        local_47 = local_47 + local_317;
+    }
+    local_45 = FMath::Min(local_45, local_47);
+    if (local_45 <= 0)
+    {
+        return;
+    }
+    int local_392 = FEcologySpawnerUtils::InternalSpawnFlockWithResource(Spawner, local_8, local_52, local_62, local_6, local_45);
+    if (local_392 < local_45)
+    {
+        int local_379_2 = local_45 - local_392;
+        FEcologySpawnerUtils::InternalSpawnFlockWithResource(Spawner, local_8, local_52, local_58, local_6, local_379_2);
+    }
+    return;
 }
 int InternalSpawnFlockWithResource(FC_EcologyRuntimeClassicFlockSpawner &inout Spawner, FFlockSpawnerData &inout FlockInfo, const FRuntimeSpawnerReference &inout SpawnDataRef, TArray<FResourceSummaryForFlockSpawner> &inout SpwanableResource, FRandomGenerator &inout RandomGenerator, const int MatchBatches)
 {
@@ -875,7 +1018,7 @@ bool ApplySpawnInitEntry(const FECSEntity &inout Entity, const FName &inout Entr
     local_12.opCall().SetInitEntryName(EntryName);
     if (local_6.HasESMOverride())
     {
-        local_18.Add(uint8(int(local_6.ESMEntryStateOverride.SMIndex)), local_6.ESMEntryStateOverride.EntryState);
+        local_18.Add(local_6.ESMEntryStateOverride.SMIndex, local_6.ESMEntryStateOverride.EntryState);
     }
     return true;
 }

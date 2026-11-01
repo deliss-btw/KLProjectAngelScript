@@ -42,12 +42,11 @@ class UESMAction_CameraLockTargetModifier : UESMBPBaseSpanTickAction
         FLockPointModifyConfig local_6;
         float32 local_7 = 1.0f;
         float32 local_9 = 1.0f;
-        FFPTime local_12 = FFPTime(Time.ActionTime);
-        if (local_12.opCmp(this.BlendIn) < 0 && (this.BlendIn > 0.0f))
+        if (Time.ActionTime.opCmp(this.BlendIn) < 0 && (this.BlendIn > 0.0f))
         {
             local_7 = float32(Time.ActionTime.ToSeconds()) / this.BlendIn;
         }
-        FFPTime local_12_2 = FFPTime(Time.ActionDuration);
+        FFPTime local_12_2 = Time.ActionDuration;
         if (local_12_2.opCmp(0.0) > 0 && ((((FFPTime(Time.ActionDuration) - Time.ActionTime)).opCmp(this.BlendOut) < 0)) && (this.BlendOut > 0.0f))
         {
             local_9 = (float32(((FFPTime(Time.ActionDuration) - Time.ActionTime).ToSeconds()))) / this.BlendOut;

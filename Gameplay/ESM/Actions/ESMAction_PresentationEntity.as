@@ -129,7 +129,8 @@ class UESMAction_SpawnPresentationEntity : UESMBPBaseSpanTickAction
                 FC_LifeTime& local_14 = local_18.opCall();
                 if (local_14)
                 {
-                    FFPTime local_34 = (FFPTime(Time.WorldTime) + FFPTime(((Time.ActionDuration.ToSeconds() / Time.PlaySpeed) * (1.0 - (Time.ActionTime.ToSeconds() / Time.ActionDuration.ToSeconds())))));
+                    FFPTime local_32 = Time.WorldTime;
+                    FFPTime local_34 = (local_32 + FFPTime(((Time.ActionDuration.ToSeconds() / Time.PlaySpeed) * (1.0 - (Time.ActionTime.ToSeconds() / Time.ActionDuration.ToSeconds())))));
                     FFPTime local_32_2 = (local_34 - local_14.GetSpawnTime());
                     local_14.SetLifeDuration(local_32_2);
                 }
@@ -154,7 +155,8 @@ class UESMAction_SpawnPresentationEntity : UESMBPBaseSpanTickAction
             FC_LifeTime& local_16 = local_14.opCall();
             if (local_16)
             {
-                FFPTime local_32 = (FFPTime(Time.WorldTime) + FFPTime(((Time.ActionDuration.ToSeconds() / Time.PlaySpeed) * (1.0 - (Time.ActionTime.ToSeconds() / Time.ActionDuration.ToSeconds())))));
+                FFPTime local_30 = Time.WorldTime;
+                FFPTime local_32 = (local_30 + FFPTime(((Time.ActionDuration.ToSeconds() / Time.PlaySpeed) * (1.0 - (Time.ActionTime.ToSeconds() / Time.ActionDuration.ToSeconds())))));
                 FFPTime local_30_2 = (local_32 - local_16.GetSpawnTime());
                 local_16.SetLifeDuration(local_30_2);
             }

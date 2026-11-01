@@ -111,6 +111,7 @@ class US_EcoCollectableScriptSystem : UECSScriptSystem
                 FFloatParamRequestData local_76;
                 local_76.ParamName = FName("Dither 透明度");
                 local_76.bUseNormalizedBlendInCurve = true;
+                local_76.BlendTime = 0.3f;
                 local_52.GetModify_FloatParams().Add(local_76);
                 local_6.Add(local_52);
             }
@@ -136,12 +137,18 @@ class US_EcoCollectableScriptSystem : UECSScriptSystem
                 FFloatParamRequestData local_78;
                 local_78.ParamName = FName("UseInteractive");
                 local_78.bUseNormalizedBlendInCurve = true;
+                local_78.BlendTime = 0.1f;
+                local_78.TargetValue = 1.0f;
                 local_52.GetModify_FloatParams().Add(local_78);
                 local_78.ParamName = FName("InteractiveStart");
                 local_78.bUseNormalizedBlendInCurve = true;
+                local_78.BlendTime = 0.2f;
+                local_78.TargetValue = 1.0f;
                 local_52.GetModify_FloatParams().Add(local_78);
                 local_78.ParamName = FName("InteractiveTime");
                 local_78.bUseNormalizedBlendInCurve = true;
+                local_78.BlendTime = 1.2f;
+                local_78.TargetValue = 1.0f;
                 local_52.GetModify_FloatParams().Add(local_78);
                 local_6.Add(local_52);
             }

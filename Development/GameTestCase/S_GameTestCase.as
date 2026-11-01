@@ -138,9 +138,8 @@ class US_GameTestCase : UECSScriptSystem
     UFUNCTION()
     void ServerJob_GameTestBeginByTimer(const FECSEntity &inout Entity, FC_GameTestStartTimer &inout Timer, const FCS_FixedTime &inout FixedTime) const
     {
-        FFPTime local_2 = FFPTime(FixedTime.Time);
-        int local_3 = local_2.opCmp(Timer.StartAtTime);
-        FFPTime local_2_2 = FFPTime(FixedTime.Time);
+        int local_3 = FixedTime.Time.opCmp(Timer.StartAtTime);
+        FFPTime local_2_2 = FixedTime.Time;
         if (local_2_2.opCmp(Timer.StartAtTime) >= 0)
         {
             FC_GameTestInitPrefabTag local_10;
@@ -416,7 +415,7 @@ class US_GameTestCase : UECSScriptSystem
             local_658.opCall(local_660);
             FC_NetRelevancePolicy local_665;
             Assign local_664;
-            local_664.opCall(local_665).RelevancePolicyType = false;
+            local_664.opCall(local_665).RelevancePolicyType = ENetRelevancePolicyType(0);
         }
         return;
     }
@@ -499,9 +498,8 @@ class US_GameTestCase : UECSScriptSystem
         {
             return;
         }
-        FFPTime local_4 = FFPTime(FixedTime.Time);
-        int local_5 = local_4.opCmp(Timer.GetResetAtTime());
-        FFPTime local_4_2 = FFPTime(FixedTime.Time);
+        int local_5 = FixedTime.Time.opCmp(Timer.GetResetAtTime());
+        FFPTime local_4_2 = FixedTime.Time;
         if (local_4_2.opCmp(Timer.GetResetAtTime()) < 0)
         {
             return;
@@ -678,9 +676,8 @@ class US_GameTestCase : UECSScriptSystem
     UFUNCTION()
     void ServerJob_TestCaseStartByTimer(const FECSEntity &inout Entity, const FC_TestCase &inout TestCase, FC_TestCaseStartTimer &inout Timer, const FCS_FixedTime &inout FixedTime) const
     {
-        FFPTime local_2 = FFPTime(FixedTime.Time);
-        int local_3 = local_2.opCmp(Timer.StartAtTime);
-        FFPTime local_2_2 = FFPTime(FixedTime.Time);
+        int local_3 = FixedTime.Time.opCmp(Timer.StartAtTime);
+        FFPTime local_2_2 = FixedTime.Time;
         if (local_2_2.opCmp(Timer.StartAtTime) >= 0)
         {
             Remove local_8;
@@ -698,9 +695,8 @@ class US_GameTestCase : UECSScriptSystem
         {
             return;
         }
-        FFPTime local_4 = FFPTime(FixedTime.Time);
-        int local_5 = local_4.opCmp(Timer.StartAtTime);
-        FFPTime local_4_2 = FFPTime(FixedTime.Time);
+        int local_5 = FixedTime.Time.opCmp(Timer.StartAtTime);
+        FFPTime local_4_2 = FixedTime.Time;
         if (local_4_2.opCmp(Timer.StartAtTime) >= 0)
         {
             Remove local_10;
@@ -901,6 +897,7 @@ class US_GameTestCase : UECSScriptSystem
         int local_220 = 0;
         int local_226 = 0;
         int local_240 = 0;
+        FC_GTCOverrideRandomSeed local_254;
         int local_262 = 0;
         Remove local_4;
         local_4.opCall();
@@ -1097,7 +1094,8 @@ class US_GameTestCase : UECSScriptSystem
                         local_246 = 1;
                     }
                 }
-                int local_6_2 = int(local_30.RandomSeed);
+                local_254.OverrideSeed = int(local_30.RandomSeed);
+                local_254.OverrideInitTicks = local_246;
                 XLog(ELog(40), FString().Append("[GTC] Assigned override seed for ").Append(local_30.UniqueName).Append(": Seed=").Append(local_30.RandomSeed).Append(", NewInitTicks=").Append(local_246));
             }
         }
@@ -1131,9 +1129,8 @@ class US_GameTestCase : UECSScriptSystem
     UFUNCTION()
     void ServerJob_TestCaseRunByTimer(const FECSEntity &inout Entity, const FC_TestCase &inout TestCase, FC_TestCaseRoundCache &inout RoundCache, FC_TestCaseRunTimer &inout Timer, FC_TestCaseResetTimer &inout ResetTimer, const FCS_FixedTime &inout FixedTime) const
     {
-        FFPTime local_2 = FFPTime(FixedTime.Time);
-        int local_3 = local_2.opCmp(Timer.RunAtTime);
-        FFPTime local_2_2 = FFPTime(FixedTime.Time);
+        int local_3 = FixedTime.Time.opCmp(Timer.RunAtTime);
+        FFPTime local_2_2 = FixedTime.Time;
         if (local_2_2.opCmp(Timer.RunAtTime) < 0)
         {
             return;
@@ -1254,8 +1251,7 @@ class US_GameTestCase : UECSScriptSystem
         {
             return;
         }
-        FFPTime local_4 = FFPTime(FixedTime.Time);
-        if (local_4.opCmp(Timer.RunAtTime) >= 0)
+        if (FixedTime.Time.opCmp(Timer.RunAtTime) >= 0)
         {
             return;
         }
@@ -1314,7 +1310,7 @@ class US_GameTestCase : UECSScriptSystem
             local_6 = 0;
         }
         RoundCache.BeginFrame = local_11;
-        FFPTime local_18 = FFPTime(FixedTime.Time);
+        FFPTime local_18 = FixedTime.Time;
         RoundCache.BeginTime = (local_18 - FFPTime((FixedTime.DeltaTime.ToSeconds() * local_6)));
         RoundCache.DetailedDataCurrentIndex = 0;
         for (auto& local_34 : RoundCache.EntityConfigs)
@@ -2168,7 +2164,7 @@ class US_GameTestCase : UECSScriptSystem
         local_32.TestCaseEntityId = InEntityId;
         local_32.FixedTime = InFixedTime;
         local_32.LocalTime = InLocalTime;
-        int local_33 = int(InFixedTime.Frame) - InBeginFrame;
+        local_32.CurFrame = (InFixedTime.Frame - InBeginFrame);
         local_32.CurTime = (FFPTime(InFixedTime.Time) - InBeginTime);
         local_32.LastTime = (FFPTime(InFixedTime.LastTime) - InBeginTime);
         return local_32;
@@ -2583,7 +2579,7 @@ class US_GameTestCase : UECSScriptSystem
                 continue;
             }
             FGTCAction& local_16 = local_12.Get();
-            FFPTime local_18 = FFPTime(local_16.StartTime);
+            FFPTime local_18 = local_16.StartTime;
             if (local_18.opCmp(Context.CurTime) > 0)
             {
                 continue;
@@ -2600,8 +2596,7 @@ class US_GameTestCase : UECSScriptSystem
             }
             if (int(local_16.ActionType) == 2)
             {
-                local_18 = FFPTime(Context.LastTime);
-                if (local_18.opCmp(local_16.EndTime) < 0)
+                if (Context.LastTime.opCmp(local_16.EndTime) < 0)
                 {
                     local_16.Execute(Entity, Context);
                 }
@@ -2633,7 +2628,7 @@ class US_GameTestCase : UECSScriptSystem
                 continue;
             }
             FGTCAction& local_18 = local_14.Get();
-            FFPTime local_20 = FFPTime(local_18.StartTime);
+            FFPTime local_20 = local_18.StartTime;
             if (local_20.opCmp(Context.CurTime) > 0)
             {
                 continue;
@@ -2651,8 +2646,7 @@ class US_GameTestCase : UECSScriptSystem
             }
             if (int(local_18.ActionType) == 2)
             {
-                local_20 = FFPTime(Context.LastTime);
-                if (local_20.opCmp(local_18.EndTime) >= 0)
+                if (Context.LastTime.opCmp(local_18.EndTime) >= 0)
                 {
                     local_8.Add(local_4_2);
                 }

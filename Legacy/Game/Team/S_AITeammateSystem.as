@@ -22,10 +22,12 @@ class US_AITeammateSystem : UECSScriptSystem
             FECSEntity local_24 = FECSEntity(local_16.GetControllerEntity());
             if (local_24.IsValid())
             {
+                FCE_PlayerSpawnEvent local_34;
                 ::FTeamUtils::JoinCombatTeam(local_4, local_24);
                 FFPTime local_30 = FFPTime(-1);
+                local_34.PlayerID = -1;
                 Get local_38;
-                int local_39 = local_38.opCall().GetTeam();
+                local_34.Team = local_38.opCall().GetTeam();
                 local_10.opCall();
             }
         }

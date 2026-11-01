@@ -54,7 +54,7 @@ class UESMAction_ExecutionDamage : UESMBPBaseInstantAction
                             }
                             FBuffConfigRef local_154 = local_76.GetExecuteBuff();
                             TDataObjectPtr<FMessageHintConfig> local_202 = local_76.GetMessageHintConfig();
-                            FFPTime local_230 = FFPTime(Time.WorldTime);
+                            FFPTime local_230 = Time.WorldTime;
                             float32 local_69 = local_86.Get().ExecuteBuffDelayAddTime;
                             FFPTime local_236 = (local_230 + FFPTime(local_69));
                             local_237 = 0.0f;

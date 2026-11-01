@@ -90,6 +90,7 @@ void GetModelInfo(FEUIModelOnlyMetaInfo &inout Result)
     Result.SetbCanDefaultConstruct(true);
     FEUIModelMonitorDefine local_14;
     local_14.FunctionName = "__Monitor_OnPlayerWaitReborn";
+    local_14.MonitorTarget = EEUIModelMonitorTarget(4);
     local_14.ComponentType = FC_LevelEntryInteractPresentationTag;
     Result.MonitorFunctions.Add(local_14);
     return;

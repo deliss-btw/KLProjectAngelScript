@@ -381,7 +381,7 @@ struct FVM_RegionMap : FEUIViewModel
                 local_172.WorldPosition = local_52.opArrow().GetTransform().GetPosition2D();
                 local_172.IconSize = this.GetSpotIconSize(local_52);
                 local_172.UserData = FInstancedStruct::Make(local_90.ModelContainer);
-                int local_55 = this.GetSpotIconZOrder(local_52);
+                local_172.ZOrder = this.GetSpotIconZOrder(local_52);
                 FMinimapIconHandle local_183 = this.GetRegistry().AddIcon(local_172);
                 this.GetModify_SpotIconHandles().Add(local_52, local_183);
                 this.GetModify_SpotIconHandlesToSpot().Add(local_183, local_90.ModelContainer);

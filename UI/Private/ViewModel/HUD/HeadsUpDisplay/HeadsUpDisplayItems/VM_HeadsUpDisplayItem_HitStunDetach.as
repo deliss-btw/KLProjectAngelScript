@@ -484,7 +484,7 @@ void GetModelInfo(FEUIViewModelMetaInfo &inout Result)
     Result.GeneratedPropertyStruct = __GeneratedProperties_FVM_HeadsUpDisplayItem_HitStunDetach;
     FEUIModelWatcherProperty local_19;
     local_19.PropertyName = FName("HitStunDetachInterpSource");
-    int local_2_2 = FVM_HeadsUpDisplayItem_HitStunDetach::__IndexOf_HitStunDetachInterpSource();
+    local_19.DirtyBitIndex = FVM_HeadsUpDisplayItem_HitStunDetach::__IndexOf_HitStunDetachInterpSource();
     Result.WatcherProperties.Add(local_19);
     Result.TickFunction.FunctionName = "__Tick";
     FEUIModelEffectDefine local_26;

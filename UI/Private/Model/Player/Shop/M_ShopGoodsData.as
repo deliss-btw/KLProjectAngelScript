@@ -318,10 +318,13 @@ void GetModelInfo(FEUIModelOnlyMetaInfo &inout Result)
     Result.SetbCanDefaultConstruct(true);
     FEUIModelProtoRspDefine local_10;
     local_10.FunctionName = "__GS_OnDoShoppingRsp";
+    local_10.ProtoCmdId = uint16(1304);
     Result.ProtoRspDefines.Add(local_10);
     local_10.FunctionName = "__GS_OnPlayerShopDataNotify";
+    local_10.ProtoCmdId = uint16(1301);
     Result.ProtoRspDefines.Add(local_10);
     local_10.FunctionName = "__GS_OnShopUpdateNotify";
+    local_10.ProtoCmdId = uint16(1302);
     Result.ProtoRspDefines.Add(local_10);
     return;
 }

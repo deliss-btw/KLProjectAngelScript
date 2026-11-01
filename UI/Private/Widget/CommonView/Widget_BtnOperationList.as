@@ -143,6 +143,7 @@ namespace UWidget_BtnOperationList
 void GetModelInfo(FEUIWidgetMetaInfo &inout Result)
 {
     Result.WidgetType = UWidget_BtnOperationList;
+    Result.ObservedModelChangesSubscriberCount = 1;
     Result.ObservedModelChangesSubscriberNames.Add(FString("OnBtnListChanged"));
     return;
 }

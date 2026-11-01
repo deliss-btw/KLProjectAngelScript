@@ -371,6 +371,7 @@ namespace UWidget_CommissionPanel
 void GetModelInfo(FEUIWidgetMetaInfo &inout Result)
 {
     Result.WidgetType = UWidget_CommissionPanel;
+    Result.ObservedModelChangesSubscriberCount = 6;
     Result.ObservedModelChangesSubscriberNames.Add(FString("OnSelectedCommissionChanged"));
     Result.ObservedModelChangesSubscriberNames.Add(FString("OnSelectedCommissionCanMatchChanged"));
     Result.ObservedModelChangesSubscriberNames.Add(FString("OnSelectedCommissionMatchingChanged"));

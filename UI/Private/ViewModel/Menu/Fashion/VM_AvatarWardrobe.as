@@ -35,6 +35,7 @@ struct FMsg_AvatarWardrobeRedDotChanged : FEUIMessage
     UPROPERTY()
     uint FashionId = 0;
 
+
 }
 
 struct FVM_AvatarWardrobeSlotItem : FEUIViewModel
@@ -4732,6 +4733,7 @@ struct __GeneratedProperties_FVM_AvatarMainWardrobe
     UPROPERTY()
     TEUIModelRef<FVM_AvatarMainWardrobe> Self;
 
+
 }
 
 struct __GeneratedProperties_FVM_AvatarWardrobeEntrance
@@ -4744,6 +4746,7 @@ struct __GeneratedProperties_FVM_AvatarWardrobeEntrance
     bool IsSelectedAvatarLocked;
     UPROPERTY()
     TEUIModelRef<FVM_AvatarWardrobeEntrance> Self;
+
 
 }
 

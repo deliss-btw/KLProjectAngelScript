@@ -333,7 +333,7 @@ struct FLevelSpotViewers
 struct FLevelSpotData
 {
     UPROPERTY()
-    TInlineArray<FDataObjectPtr, auto> m_PresentationRuleConfigs;
+    TInlineArray<FDataObjectPtr, 5> m_PresentationRuleConfigs;
     UPROPERTY()
     FBitSet32 m_PresentationRuleConfigFlags;
 
@@ -557,17 +557,17 @@ struct FLevelSpotData
         this.ClearConfigInternal(4);
         return;
     }
-    const TInlineArray<FDataObjectPtr, auto> GetPresentationRuleConfigs() const property
+    const TInlineArray<FDataObjectPtr, 5> GetPresentationRuleConfigs() const property
     {
-        const TInlineArray<FDataObjectPtr, auto> __r;
+        const TInlineArray<FDataObjectPtr, 5> __r;
         return __r;
     }
-    TInlineArray<FDataObjectPtr, auto> GetPresentationRuleConfigs() property
+    TInlineArray<FDataObjectPtr, 5> GetPresentationRuleConfigs() property
     {
-        TInlineArray<FDataObjectPtr, auto> __r;
+        TInlineArray<FDataObjectPtr, 5> __r;
         return __r;
     }
-    void SetPresentationRuleConfigs(const TInlineArray<FDataObjectPtr, auto> &inout __Value) property
+    void SetPresentationRuleConfigs(const TInlineArray<FDataObjectPtr, 5> &inout __Value) property
     {
         this.m_PresentationRuleConfigs = __Value;
         return;

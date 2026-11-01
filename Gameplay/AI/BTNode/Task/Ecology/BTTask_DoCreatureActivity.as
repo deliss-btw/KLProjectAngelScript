@@ -50,6 +50,8 @@ class UBTTask_EcologySyncCreatureActivityData : UBTTask_ECSScriptBase
             return EBTNodeResult(0);
         }
         local_18.SetValueAsBool(this.HasConfigSlot.SelectedKeyName, local_14.RuntimeSlotData.bHasSlotConfig);
+        local_18.SetValueAsVector(this.TargetPosition.SelectedKeyName, local_14.RuntimeSlotData.TargetPosition);
+        local_18.SetValueAsVector(this.TargetLookAt.SelectedKeyName, local_14.RuntimeSlotData.TargetLookAt);
         FName local_32;
         if (local_16.Get() != nullptr)
         {

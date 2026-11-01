@@ -341,6 +341,7 @@ namespace UWidget_SettingSubTitle
 void GetModelInfo(FEUIWidgetMetaInfo &inout Result)
 {
     Result.WidgetType = UWidget_SettingSubTitle;
+    Result.ObservedModelChangesSubscriberCount = 0;
     return;
 }
 FEUIWidgetRef CreateWidget(const APlayerController OwningPlayer, const TSoftClassPtr<UEUIUserWidget> &inout WidgetClass)
@@ -357,6 +358,7 @@ namespace UWidget_SettingItem
 void GetModelInfo(FEUIWidgetMetaInfo &inout Result)
 {
     Result.WidgetType = UWidget_SettingItem;
+    Result.ObservedModelChangesSubscriberCount = 3;
     Result.ObservedModelChangesSubscriberNames.Add(FString("ApplyDisplayAndGraphicOptions"));
     Result.ObservedModelChangesSubscriberNames.Add(FString("RequireSaveItem"));
     Result.ObservedModelChangesSubscriberNames.Add(FString("OnComponentWidgetDataChanged"));

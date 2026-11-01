@@ -94,6 +94,7 @@ namespace UWidget_PlayerHitStunDetachBar
 void GetModelInfo(FEUIWidgetMetaInfo &inout Result)
 {
     Result.WidgetType = UWidget_PlayerHitStunDetachBar;
+    Result.ObservedModelChangesSubscriberCount = 1;
     Result.ObservedModelChangesSubscriberNames.Add(FString("HandleMaxMaintainTriggerCounterChanged"));
     return;
 }

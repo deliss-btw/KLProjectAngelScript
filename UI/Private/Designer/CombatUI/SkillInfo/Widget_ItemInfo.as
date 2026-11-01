@@ -31,25 +31,20 @@ class UWidget_ItemInfo : UEUIUserWidget
         }
         else
         {
-            int local_17 = int(::UICommonUtil::GetCurrentInputType(this.GetOwningLocalPlayer()));
-            if (local_17 <= 1)
+            switch (int(::UICommonUtil::GetCurrentInputType(this.GetOwningLocalPlayer())))
             {
-                if (local_17 != 0)
-                {
-                    if (local_17 != 1)
-                    {
-                    }
-                    else
-                    {
-                        this.KeyboardInputPanel.SetVisibility(ESlateVisibility(2));
-                        this.GamepadInputPanel.SetVisibility(ESlateVisibility(0));
-                    }
-                }
-                else
-                {
-                    this.KeyboardInputPanel.SetVisibility(ESlateVisibility(0));
-                    this.GamepadInputPanel.SetVisibility(ESlateVisibility(2));
-                }
+            case 1:
+            {
+                this.KeyboardInputPanel.SetVisibility(ESlateVisibility(2));
+                this.GamepadInputPanel.SetVisibility(ESlateVisibility(0));
+                break;
+            }
+            case 0:
+            {
+                this.KeyboardInputPanel.SetVisibility(ESlateVisibility(0));
+                this.GamepadInputPanel.SetVisibility(ESlateVisibility(2));
+                break;
+            }
             }
         }
         return;
@@ -107,6 +102,7 @@ namespace UWidget_ItemInfo
 void GetModelInfo(FEUIWidgetMetaInfo &inout Result)
 {
     Result.WidgetType = UWidget_ItemInfo;
+    Result.ObservedModelChangesSubscriberCount = 0;
     return;
 }
 FEUIWidgetRef CreateWidget(const APlayerController OwningPlayer, const TSoftClassPtr<UEUIUserWidget> &inout WidgetClass)

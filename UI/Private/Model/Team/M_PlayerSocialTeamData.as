@@ -504,16 +504,22 @@ void GetModelInfo(FEUIModelOnlyMetaInfo &inout Result)
     Result.SetbCanDefaultConstruct(true);
     FEUIModelProtoRspDefine local_10;
     local_10.FunctionName = "__GS_OnSocialTeamInfoNotify";
+    local_10.ProtoCmdId = uint16(405);
     Result.ProtoRspDefines.Add(local_10);
     local_10.FunctionName = "__GS_OnQueryTargetTeamStatusRsp";
+    local_10.ProtoCmdId = uint16(429);
     Result.ProtoRspDefines.Add(local_10);
     local_10.FunctionName = "__GS_OnTeamInviteNotify";
+    local_10.ProtoCmdId = uint16(414);
     Result.ProtoRspDefines.Add(local_10);
     local_10.FunctionName = "__GS_OnTeamInviteResultNotify";
+    local_10.ProtoCmdId = uint16(417);
     Result.ProtoRspDefines.Add(local_10);
     local_10.FunctionName = "__GS_OnTeamApplyNotify";
+    local_10.ProtoCmdId = uint16(418);
     Result.ProtoRspDefines.Add(local_10);
     local_10.FunctionName = "__GS_OnTeamApplyResultNotify";
+    local_10.ProtoCmdId = uint16(421);
     Result.ProtoRspDefines.Add(local_10);
     return;
 }

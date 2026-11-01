@@ -6,7 +6,7 @@ namespace __INTENRAL_FC_AnimIdleHeadControlHistory_NS
 }
 struct FC_AnimIdleHeadControlHistory : FECSComponent
 {
-    TInterpoHistory<FC_AnimIdleHeadControl, auto> History;
+    TInterpoHistory<FC_AnimIdleHeadControl, 30> History;
 
     FC_AnimIdleHeadControlHistory()
     {

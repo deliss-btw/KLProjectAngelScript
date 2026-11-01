@@ -223,6 +223,7 @@ namespace UWidget_AvatarButton
 void GetModelInfo(FEUIWidgetMetaInfo &inout Result)
 {
     Result.WidgetType = UWidget_AvatarButton;
+    Result.ObservedModelChangesSubscriberCount = 3;
     Result.ObservedModelChangesSubscriberNames.Add(FString("HandleSwitchAvatarInCDChanged"));
     Result.ObservedModelChangesSubscriberNames.Add(FString("HandleEnergyRatioChanged"));
     Result.ObservedModelChangesSubscriberNames.Add(FString("HandleAvatarDamageTypeChanged"));

@@ -142,21 +142,16 @@ struct FVM_TaskPanel : FEUIViewModel
     void AddTask(const TEUIModelRef<FM_Task> &inout Task)
     {
         int local_20 = 0;
-        int local_2 = int(Task.Get().GetDataSource());
-        if (local_2 <= 1)
+        switch (int(Task.Get().GetDataSource()))
         {
-            if (local_2 != 1)
-            {
-                return;
-            }
-            else
-            {
-                FVM_TaskGroup& local_6 = ::FVM_TaskGroup::Create(this.GetContext().Manager, Task);
-                TSoftClassPtr<UUserWidget> local_16 = this.GetTaskGroupEntryWidgetClass();
-                FEUIModelRef local_18 = FEUIModelRef(local_6);
-                this.GetModify_TaskList().Add(FEUIModelRef(local_20));
-                return;
-            }
+        case 1:
+        {
+            FVM_TaskGroup& local_6 = ::FVM_TaskGroup::Create(this.GetContext().Manager, Task);
+            TSoftClassPtr<UUserWidget> local_16 = this.GetTaskGroupEntryWidgetClass();
+            FEUIModelRef local_18 = FEUIModelRef(local_6);
+            this.GetModify_TaskList().Add(FEUIModelRef(local_20));
+            return;
+        }
         }
         return;
     }

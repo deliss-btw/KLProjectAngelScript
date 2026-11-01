@@ -122,7 +122,7 @@ class US_ThrowSystem : UECSScriptSystem
             {
                 return false;
             }
-            if ((FVector(local_132.Velocity).Size() > local_124_2 || ((((FVector(local_132.Location) - local_130.Location).Size()) > ((local_124_2 * local_119_5) + 10.0f)))))
+            if ((FVector(local_132.Velocity).Size() > local_124_2 || ((((local_132.Location - local_130.Location).Size()) > ((local_124_2 * local_119_5) + 10.0f)))))
             {
                 return false;
             }
@@ -426,9 +426,8 @@ class US_ThrowSystem : UECSScriptSystem
                 local_212.Add(local_226.Location);
             }
             local_212.Add(::FThrowUtils::GetFinalPredictPathPoint(local_80));
-            FVector local_232(local_80.HitLocation);
             FQuat local_184 = FQuat(local_80.HitImpactNormal.ToOrientationRotator().Quaternion());
-            local_140 = FTransform(FQuat(local_184), local_232, FVector::OneVector);
+            local_140 = FTransform(FQuat(local_184), local_80.HitLocation, FVector::OneVector);
             local_20.UpdateSpline(local_212);
             local_20.UpdateEndPoint(local_140);
             if (int(UpdateThrowPredictPath.GetTargetInfo().GetTargetType()) == 0 || (int(UpdateThrowPredictPath.GetTargetInfo().GetTargetType()) == 1))
@@ -507,6 +506,7 @@ class US_ThrowSystem : UECSScriptSystem
         FC_VisualTransformOffset local_102;
         local_102.PositionOffset = FVector3f(local_54);
         local_102.RotationOffset = FQuat4f((local_76 * local_48.GetRotation().Inverse()));
+        local_102.BlendWeight = 1.0f;
         local_102.bUseOffsetAsTransformDirectly = false;
         return;
     }
@@ -519,9 +519,8 @@ class US_ThrowSystem : UECSScriptSystem
             return;
         }
         float32 local_7 = FMath::Min(local_5, 0.033333335f) / 0.2f;
-        float32 local_1_2 = VisualOffset.BlendWeight - local_7;
-        float32 local_7_2 = VisualOffset.BlendWeight;
-        if (local_7_2 <= 0.0f)
+        VisualOffset.BlendWeight = (VisualOffset.BlendWeight - local_7);
+        if (VisualOffset.BlendWeight <= 0.0f)
         {
             Remove local_14;
             local_14.opCall();
@@ -529,8 +528,8 @@ class US_ThrowSystem : UECSScriptSystem
             local_18.opCall();
             return;
         }
-        float32 local_7_3 = VisualOffset.BlendWeight;
-        float32 local_19 = FMath::Clamp(local_7_3, 0.0f, 1.0f);
+        float32 local_7_2 = VisualOffset.BlendWeight;
+        VisualOffset.BlendWeight = FMath::Clamp(local_7_2, 0.0f, 1.0f);
         return;
     }
     UFUNCTION()

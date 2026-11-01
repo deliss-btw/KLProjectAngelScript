@@ -307,6 +307,7 @@ namespace UWidget_PVX_MainHUD
 void GetModelInfo(FEUIWidgetMetaInfo &inout Result)
 {
     Result.WidgetType = UWidget_PVX_MainHUD;
+    Result.ObservedModelChangesSubscriberCount = 2;
     Result.ObservedModelChangesSubscriberNames.Add(FString("OnTriggerAddExpAnim"));
     Result.ObservedModelChangesSubscriberNames.Add(FString("OnWinnerFactionTextChanged"));
     return;

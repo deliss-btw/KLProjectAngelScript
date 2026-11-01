@@ -150,6 +150,7 @@ void GetModelInfo(FEUIModelOnlyMetaInfo &inout Result)
     Result.SetbCanDefaultConstruct(true);
     FEUIModelProtoRspDefine local_10;
     local_10.FunctionName = "__GS_OnMessageHintNewsTickerNotify";
+    local_10.ProtoCmdId = uint16(214);
     Result.ProtoRspDefines.Add(local_10);
     FEUIModelMsgHandleDefine local_22;
     local_22.FunctionName = "__OnECSWorldBegin";

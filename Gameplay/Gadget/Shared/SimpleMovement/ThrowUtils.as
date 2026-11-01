@@ -284,11 +284,11 @@ void MatchPredictPath(const FECSEntity &inout Entity)
 }
 FVector GetFinalPredictPathPoint(const FKLPredictProjectilePathResult &inout PredictPath)
 {
-    FVector local_6(PredictPath.HitImpactPoint);
+    FVector local_6 = PredictPath.HitImpactPoint;
     if (PredictPath.PathData.Num() > 2)
     {
         int local_7 = PredictPath.PathData.Num() - 1;
-        FVector local_16(PredictPath.PathData[local_7].Location);
+        FVector local_16 = PredictPath.PathData[local_7].Location;
         FVector local_22(PredictPath.PathData[(local_7 - 1)].Location);
         FVector local_28(PredictPath.PathData[(local_7 - 2)].Location);
         FVector local_34 = (local_28 - local_16);

@@ -388,6 +388,7 @@ namespace UWidget_TalentUpgradeTree
 void GetModelInfo(FEUIWidgetMetaInfo &inout Result)
 {
     Result.WidgetType = UWidget_TalentUpgradeTree;
+    Result.ObservedModelChangesSubscriberCount = 1;
     Result.ObservedModelChangesSubscriberNames.Add(FString("HandleFormulaTreeNodeListChanged"));
     return;
 }

@@ -214,6 +214,7 @@ namespace UWidget_PVX_Settlement_Main
 void GetModelInfo(FEUIWidgetMetaInfo &inout Result)
 {
     Result.WidgetType = UWidget_PVX_Settlement_Main;
+    Result.ObservedModelChangesSubscriberCount = 4;
     Result.ObservedModelChangesSubscriberNames.Add(FString("OnDynamicWidgetChanged"));
     Result.ObservedModelChangesSubscriberNames.Add(FString("OnCountdownSecondsChanged"));
     Result.ObservedModelChangesSubscriberNames.Add(FString("OnAllPhasesCompletedChanged"));

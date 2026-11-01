@@ -32,8 +32,8 @@ AFXActor DoSurfaceTrace(const FKLSpawnFxActorHelper &inout SpawnFxActorHelper, c
     {
         return nullptr;
     }
-    FECSEntity local_10 = FECSEntity(SpawnFxActorHelper.OwnerEntity);
-    FECSEntity local_14 = FECSEntity(SpawnFxActorHelper.Entity);
+    FECSEntity local_10 = SpawnFxActorHelper.OwnerEntity;
+    FECSEntity local_14 = SpawnFxActorHelper.Entity;
     FSurfaceLineTraceConfig local_56;
     local_56.TraceStartBoneOrSocketName = local_2.GetTraceStartBoneOrSocketName();
     local_56.TraceLength = local_2.GetTraceLength();

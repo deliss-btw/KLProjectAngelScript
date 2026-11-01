@@ -22,6 +22,7 @@ struct FPresentationCameraConfig
     UPROPERTY()
     FAnimatedCameraParamsInput AnimatedCameraParamsInput;
 
+
     bool IsValid() const
     {
         switch (this.CameraType)
@@ -291,22 +292,35 @@ FCameraHandle PushPresentationAnimatedCamera(const FECSEntity &inout PlayerEntit
 }
 FCameraHandle PushPresentationCameraByConfig(const FECSEntity &inout PlayerEntity, const FName &inout CameraName, const EPresentationCameraLayer Layer, const FPresentationCameraConfig &inout CameraConfig, const FECSEntity &inout FixedCameraFollowTarget)
 {
-    // body not fully recovered — stub [opcode-uncovered]
-    FCameraHandle __r; return __r;
+    switch (CameraConfig.CameraType)
+    {
+    case EPresentationCameraType::Fixed:
+    {
+        return PresentationCameraUtils::PushPresentationFixedCamera(PlayerEntity, CameraName, EPresentationCameraLayer(Layer), CameraConfig.FixedCameraConfig, FixedCameraFollowTarget);
+    }
+    case EPresentationCameraType::SpringArm:
+    {
+        return PresentationCameraUtils::PushPresentationSpringArmCamera(PlayerEntity, CameraName, EPresentationCameraLayer(Layer), CameraConfig.SpringArmCameraConfig);
+    }
+    case EPresentationCameraType::Animated:
+    {
+        return PresentationCameraUtils::PushPresentationAnimatedCamera(PlayerEntity, CameraName, EPresentationCameraLayer(Layer), CameraConfig.AnimatedCameraConfig, CameraConfig.AnimatedCameraParamsInput);
+    }
+    }
 }
 void GenericLerp(const FCameraResult &inout A, const FCameraResult &inout B, FCameraResult &inout Out, const float32 WeightToB)
 {
     Out.Position = FMath::Lerp(A.Position, B.Position, WeightToB);
     FQuat4f local_20 = FQuat4f::Slerp(A.Rotation.Quaternion(), B.Rotation.Quaternion(), WeightToB);
     Out.Rotation = local_20.Rotator();
-    float32 local_24 = FMath::Lerp(A.FOV, Out.Rotation, WeightToB);
+    Out.FOV = FMath::Lerp(A.FOV, Out.Rotation, WeightToB);
     return;
 }
 void WriteToCameraResult(FCameraResult &inout CameraResult, const FC_Camera &inout Camera)
 {
     CameraResult.Position = FVector3f(Camera.GetPosition());
     CameraResult.Rotation = FRotator3f(Camera.GetRotation());
-    float32 local_7 = Camera.GetFOV();
+    CameraResult.FOV = Camera.GetFOV();
     return;
 }
 void WriteToCameraComp(FC_Camera &inout Camera, const FCameraResult &inout CameraResult)

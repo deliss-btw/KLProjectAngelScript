@@ -4,6 +4,7 @@ enum EEcosimAIV2PredicateNominal
     Mount,
 }
 
+
 class UEcosimAIV2UnitAsset : UObject
 {
     UPROPERTY()
@@ -108,7 +109,8 @@ UEcosimAIV2TeamGlobalAsset GetTeamGlobalAsset() property
 }
 void __Init_TeamGlobalAsset(const UEcosimAIV2TeamGlobalAsset TeamGlobalAsset)
 {
-    // body not fully recovered — stub [opcode-uncovered]
+    TeamGlobalAsset.TeamMap = {{n"Team_Trade", EcosimAIV2Unit::GetTeam_Trade()}};
+    return;
 }
 UEcosimAIV2UnitAsset GetUnit_BusinessOwner() property
 {
@@ -212,7 +214,8 @@ UEcosimAIV2GroupAsset GetGroup_HumanBusinessOwner() property
 }
 void __Init_Group_HumanBusinessOwner(const UEcosimAIV2GroupAsset Group_HumanBusinessOwner)
 {
-    // body not fully recovered — stub [opcode-uncovered]
+    Group_HumanBusinessOwner.UnitMap = {{n"BusinessOwner", EcosimAIV2Unit::GetUnit_BusinessOwner()}, {n"Mount", EcosimAIV2Unit::GetUnit_Mount()}};
+    return;
 }
 UEcosimAIV2GroupAsset GetGroup_HumanHorngGuard() property
 {
@@ -232,7 +235,8 @@ UEcosimAIV2GroupAsset GetGroup_HumanHorngGuard() property
 }
 void __Init_Group_HumanHorngGuard(const UEcosimAIV2GroupAsset Group_HumanHorngGuard)
 {
-    // body not fully recovered — stub [opcode-uncovered]
+    Group_HumanHorngGuard.UnitMap = {{n"HorngGuard", EcosimAIV2Unit::GetUnit_HorngGuard()}, {n"Mount", EcosimAIV2Unit::GetUnit_Mount()}};
+    return;
 }
 UEcosimAIV2GroupAsset GetGroup_Coach() property
 {
@@ -252,7 +256,8 @@ UEcosimAIV2GroupAsset GetGroup_Coach() property
 }
 void __Init_Group_Coach(const UEcosimAIV2GroupAsset Group_Coach)
 {
-    // body not fully recovered — stub [opcode-uncovered]
+    Group_Coach.UnitMap = {{n"Coach", EcosimAIV2Unit::GetUnit_Coach()}};
+    return;
 }
 UEcosimAIV2GroupAsset GetGroup_Mount() property
 {
@@ -272,7 +277,8 @@ UEcosimAIV2GroupAsset GetGroup_Mount() property
 }
 void __Init_Group_Mount(const UEcosimAIV2GroupAsset Group_Mount)
 {
-    // body not fully recovered — stub [opcode-uncovered]
+    Group_Mount.UnitMap = {{n"Mount", EcosimAIV2Unit::GetUnit_Mount()}};
+    return;
 }
 UEcosimAIV2TeamAsset GetTeam_Trade() property
 {

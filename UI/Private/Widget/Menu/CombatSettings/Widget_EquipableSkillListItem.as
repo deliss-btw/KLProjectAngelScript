@@ -124,6 +124,7 @@ namespace UWidget_EquipableSkillListItem
 void GetModelInfo(FEUIWidgetMetaInfo &inout Result)
 {
     Result.WidgetType = UWidget_EquipableSkillListItem;
+    Result.ObservedModelChangesSubscriberCount = 1;
     Result.ObservedModelChangesSubscriberNames.Add(FString("OnSelectedChanged"));
     return;
 }

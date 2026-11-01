@@ -60,7 +60,7 @@ class US_ESMLowCostSystem : UECSScriptSystem
         {
             return;
         }
-        FFPTime local_6 = FFPTime(TimerComp.NextTickTime);
+        FFPTime local_6 = TimerComp.NextTickTime;
         FName local_8 = FName("S_ESMLowCostSystem::Job_ExitLowCostFreezeOnTimeExceed");
         if (local_6.opCmp(0.0) >= 0 && (local_6.opCmp(FPTIME_MAX) < 0))
         {
@@ -74,7 +74,7 @@ class US_ESMLowCostSystem : UECSScriptSystem
         {
             return;
         }
-        FFPTime local_6 = FFPTime(TimerComp.NextTickTime);
+        FFPTime local_6 = TimerComp.NextTickTime;
         FName local_8 = FName("S_ESMLowCostSystem::Job_ExitLowCostFreezeOnTimeExceed");
         if (local_6.opCmp(0.0) >= 0 && (local_6.opCmp(FPTIME_MAX) < 0))
         {
@@ -88,7 +88,7 @@ class US_ESMLowCostSystem : UECSScriptSystem
         {
             return;
         }
-        FFPTime local_6 = FFPTime(TimerComp.NextTickTime);
+        FFPTime local_6 = TimerComp.NextTickTime;
         FName local_8 = FName("S_ESMLowCostSystem::Job_ExitLowCostFreezeOnTimeExceed");
         if (local_6.opCmp(0.0) >= 0 && (local_6.opCmp(FPTIME_MAX) < 0))
         {

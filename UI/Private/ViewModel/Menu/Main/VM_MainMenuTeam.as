@@ -882,13 +882,13 @@ void GetModelInfo(FEUIViewModelMetaInfo &inout Result)
     local_22.ApplySort();
     FEUIModelRefPropertyDirty local_30;
     local_30.PropertyName = FName("PlayerOwnedAvatarInfo");
-    int local_2_2 = FVMS_PlayerOwnedAvatarInfo::ModelId;
-    int local_2_3 = local_22.GetMappingDirtyOffset(2);
+    local_30.PropertyModelId = FVMS_PlayerOwnedAvatarInfo::ModelId;
+    local_30.MappingDirtyOffset = local_22.GetMappingDirtyOffset(2);
     local_30.RelatedDirtyMask.SetBit(FVMS_PlayerOwnedAvatarInfo::__IndexOf_CurrentTeamAvatars(), true);
     Result.ListeningModelRefDirties.Add(local_30);
     FEUIModelMetaPropertyModelRef local_35;
     local_35.PropertyName = FName("CombatSettingData");
-    int local_24 = FMS_CombatSettingData::ModelId;
+    local_35.PropertyRefModelTypeId = FMS_CombatSettingData::ModelId;
     Result.FunctionalPropertyModelRefs.Add(local_35);
     FEUIModelMsgHandleDefine local_46;
     local_46.FunctionName = "__OnWidgetPresenceChanged";

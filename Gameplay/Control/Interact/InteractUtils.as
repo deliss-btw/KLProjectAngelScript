@@ -24,6 +24,7 @@ const FInteractionPointHUDIconSettings& GetInteractionPointHUDIconSettings(const
 }
 bool GetCurrentInteractTargetInfoForUI(const FECSEntity &inout Entity, const EInteractMode InteractMode, FVector &out HUDDisplayLocation, FVector2D &out HUDDisplayUIOffset, FString &out InteractHUDContent, bool &out bIsFailContent, FSoftBrush &out HUDIcon, FVector &out HUDIconDisplayLocation, FVector2D &out HUDIconDisplayUIOffset, bool &out bForceShowPointWithIcon, FECSEntity &out TargetEntity)
 {
+    bool local_76;
     FVector local_6;
     HUDDisplayLocation = local_6;
     HUDDisplayUIOffset = FVector2D();
@@ -34,6 +35,7 @@ bool GetCurrentInteractTargetInfoForUI(const FECSEntity &inout Entity, const EIn
     HUDIconDisplayUIOffset = FVector2D();
     bForceShowPointWithIcon = false;
     TargetEntity = FECSEntity();
+    bool local_75 = false;
     FECSEntity local_80 = FASCommonUtils::GetRiderEntity(Entity);
     FASCommonUtils::GetUniquePlayerEntity(local_80);
     Get local_92;
@@ -47,38 +49,92 @@ bool GetCurrentInteractTargetInfoForUI(const FECSEntity &inout Entity, const EIn
     }
     FInteractionPointAndBehaviorIndex local_98;
     int local_99 = -1;
-    int local_100 = int(InteractMode);
-    if (local_100 <= 1)
+    bool local_101 = false;
+    switch (int(InteractMode))
     {
-        if (local_100 != 0)
+    case 0:
+    {
+        Get local_106;
+        const FC_BestInteractionTargetInfo& local_108 = local_106.opCall();
+        if (local_108)
         {
-            if (local_100 != 1)
-            {
-            }
+            TargetEntity = local_108.TargetEntity;
+            local_98 = local_108.InteractTargetPointAndBehaviorIndex;
+            local_99 = int(local_108.ShowFailConditionIndex);
+            local_101 = local_108.bShowFailFromSource;
         }
-        else
+        break;
+    }
+    case 1:
+    {
+        Get local_112;
+        const FC_BestInteractionTargetInfoModeZ& local_114 = local_112.opCall();
+        if (local_114)
         {
-            Get local_106;
-            const FC_BestInteractionTargetInfo& local_108 = local_106.opCall();
-            if (local_108)
+            TargetEntity = local_114.TargetEntity;
+            local_98 = local_114.InteractTargetPointAndBehaviorIndex;
+            local_99 = int(local_114.ShowFailConditionIndex);
+            local_101 = local_114.bShowFailFromSource;
+        }
+        break;
+    }
+    default:
+    {
+        return false;
+    }
+    }
+    Get local_118;
+    const FC_InteractionTargetConfig& local_120 = local_118.opCall();
+    if (local_120)
+    {
+        int local_121;
+        local_121 = local_98.GetPointIndex();
+        if (local_121 >= 0 && (local_121 < local_120.InteractionPoints.Num()))
+        {
+            const FInteractionPoint& local_124 = local_120.InteractionPoints[local_121];
+            FVector local_130;
+            FQuat local_140;
+            FInteractUtils::GetInteractTargetLocationAndRotationForClient(TargetEntity, local_124, local_130, local_140, true, true);
+            local_130 = (local_140.RotateVector(local_124.UIDisplayOffsetFromInteractPoint) + local_130);
+            HUDDisplayLocation = local_130;
+            HUDDisplayUIOffset = local_124.InteractTargetHUDDisplayUIOffset;
+            local_76 = false;
+            bIsFailContent = local_76;
+            UInteractionBehaviorBase local_156 = FInteractUtils::GetInteractionBehaviorFromEntity(TargetEntity, local_98);
+            if (local_156 != nullptr)
             {
-                TargetEntity = local_108.TargetEntity;
-                local_98 = local_108.InteractTargetPointAndBehaviorIndex;
-                local_99 = int(local_108.ShowFailConditionIndex);
-                bool local_101_2 = local_108.bShowFailFromSource;
+                local_75 = true;
+                local_76 = (local_99 >= 0);
+                bIsFailContent = local_76;
+                if (bIsFailContent || !(local_124.bUsePointHUDContent))
+                {
+                    InteractHUDContent = local_156.GetHUDContent(local_80, TargetEntity, local_99, local_101).ToString();
+                }
+                else
+                {
+                    InteractHUDContent = local_124.GetHUDContent().ToString();
+                }
+                Get local_168;
+                const FC_DropGroundBagInfo& local_170 = local_168.opCall();
+                if (local_170)
+                {
+                    if (local_170.GetGroundBagConfig() && !(local_170.GetGroundBagConfig().Get().GroundBagInteractText.IsEmpty()))
+                    {
+                        InteractHUDContent = local_170.GetGroundBagConfig().Get().GroundBagInteractText.ToString();
+                    }
+                }
             }
-            Get local_112;
-            const FC_BestInteractionTargetInfoModeZ& local_114 = local_112.opCall();
-            if (local_114)
+            const FInteractionPointHUDIconSettings& local_172 = FInteractUtils::GetInteractionPointHUDIconSettings(local_124, local_156);
+            if (local_172.bUseHUDIcon)
             {
-                TargetEntity = local_114.TargetEntity;
-                local_98 = local_114.InteractTargetPointAndBehaviorIndex;
-                local_99 = int(local_114.ShowFailConditionIndex);
-                bool local_101_3 = local_114.bShowFailFromSource;
+                HUDIcon = local_172.HUDIcon;
+                HUDIconDisplayLocation = local_130;
+                HUDIconDisplayUIOffset = local_172.HUDIconUIOffset;
+                bForceShowPointWithIcon = local_172.bForceShowInteractPointWithIcon;
             }
         }
     }
-    return false;
+    return local_75;
 }
 bool GetCurrentInteractTipTargetInfoForUI(const FECSEntity &inout Entity, TArray<FInteractTipTargetHUDRenderInfo> &out InteractTipTargets)
 {
@@ -327,8 +383,19 @@ void SetEntityInteractTargetPointEnabled(const FECSEntity &inout Entity, const i
 }
 TArray<FECSEntity> GetInteractingEntitiesAtPointWithBehavior(const FECSEntity &inout InteractTargetEntity, const int PointIndex, const int BehaviorIdx)
 {
-    // body not fully recovered — stub [opcode-uncovered]
-    TArray<FECSEntity> __r; return __r;
+    Get local_4;
+    const FC_RuntimeInteractTargetStatus& local_6 = local_4.opCall();
+    if (local_6)
+    {
+        for (auto& local_22 : local_6.GetInteractionPointStatus())
+        {
+            if (local_22.GetPointAndBehaviorIndex().GetPointIndex() == PointIndex && (local_22.GetPointAndBehaviorIndex().GetBehaviorIndex() == BehaviorIdx))
+            {
+                return local_22.GetInteractingSourceEntities();
+            }
+        }
+    }
+    return {};
 }
 TArray<FECSEntity> GetInteractingEntitiesWithBehavior(const FECSEntity &inout InteractTargetEntity, const int BehaviorIdx)
 {

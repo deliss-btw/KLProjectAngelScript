@@ -281,8 +281,10 @@ void GetModelInfo(FEUIModelOnlyMetaInfo &inout Result)
     Result.SetbCanDefaultConstruct(true);
     FEUIModelProtoRspDefine local_10;
     local_10.FunctionName = "__OnPlayerCreateRsp";
+    local_10.ProtoCmdId = uint16(15);
     Result.ProtoRspDefines.Add(local_10);
     local_10.FunctionName = "__HandlEnterInitSceneRsp";
+    local_10.ProtoCmdId = uint16(17);
     Result.ProtoRspDefines.Add(local_10);
     FEUIModelMsgHandleDefine local_22;
     local_22.FunctionName = "__HandleCGPlayerEnd";

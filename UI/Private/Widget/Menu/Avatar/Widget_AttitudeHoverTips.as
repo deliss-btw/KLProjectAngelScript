@@ -146,6 +146,7 @@ namespace UWidget_AttitudeHoverTips
 void GetModelInfo(FEUIWidgetMetaInfo &inout Result)
 {
     Result.WidgetType = UWidget_AttitudeHoverTips;
+    Result.ObservedModelChangesSubscriberCount = 2;
     Result.ObservedModelChangesSubscriberNames.Add(FString("OnAvatarConfigChanged"));
     Result.ObservedModelChangesSubscriberNames.Add(FString("OnIllustrateChanged"));
     return;

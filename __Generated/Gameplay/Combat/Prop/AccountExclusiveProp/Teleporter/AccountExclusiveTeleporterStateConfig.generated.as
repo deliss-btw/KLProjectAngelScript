@@ -15,15 +15,37 @@ struct FAccountExclusiveTeleporterStateConfig
     {
         return;
     }
-    const FAccountExclusiveTeleporterStateData GetDataRaw(const ETeleporterState Value) const
+    const FAccountExclusiveTeleporterStateData& GetDataRaw(const ETeleporterState Value) const
     {
-        // body not fully recovered — stub [opcode-uncovered]
-        const FAccountExclusiveTeleporterStateData __r; return __r;
+        switch (int8(Value))
+        {
+        case 0:
+            return this.Locked;
+        case 1:
+            return this.Unlocked;
+        case 2:
+            return this.Active;
+        case 3:
+            return this.Activating;
+        default:
+            return this.Default;
+        }
     }
-    FAccountExclusiveTeleporterStateData ModifyDataRaw(const ETeleporterState Value)
+    FAccountExclusiveTeleporterStateData& ModifyDataRaw(const ETeleporterState Value)
     {
-        // body not fully recovered — stub [opcode-uncovered]
-        FAccountExclusiveTeleporterStateData __r; return __r;
+        switch (int8(Value))
+        {
+        case 0:
+            return this.Locked;
+        case 1:
+            return this.Unlocked;
+        case 2:
+            return this.Active;
+        case 3:
+            return this.Activating;
+        default:
+            return this.Default;
+        }
     }
     const FAccountExclusiveTeleporterStateData GetDataRawByName(const FName &inout EnumName) const
     {

@@ -52,37 +52,25 @@ struct FM_Task : FEUIModel
     }
     FText GetGroupTitle() const
     {
-        FText __return;
-        int local_2 = int(this.GetDataSource());
-        if (local_2 <= 1)
+        switch (int(this.GetDataSource()))
         {
-            if (local_2 != 1)
-            {
-            }
-            else
-            {
-                __return = this.AccessCommissionConfig().opArrow().CommissionName;
-            }
+        case 1:
+        {
+            return this.AccessCommissionConfig().opArrow().CommissionName;
+        }
         }
         return FText();
     }
     FText GetGroupDesc() const
     {
-        FText __return;
-        int local_2 = int(this.GetDataSource());
-        FText local_32;
-        if (local_2 <= 1)
+        switch (int(this.GetDataSource()))
         {
-            if (local_2 != 1)
-            {
-            }
-            else
-            {
-                local_32 = FText::AsNumber(this.AccessCommissionConfig().opArrow().CommissionStars, FNumberFormattingOptions::DefaultNoGrouping());
-                __return = local_32;
-            }
+        case 1:
+        {
+            return FText::AsNumber(this.AccessCommissionConfig().opArrow().CommissionStars, FNumberFormattingOptions::DefaultNoGrouping());
         }
-        return local_32;
+        }
+        return FText();
     }
     FText GetTaskTitle() const
     {
@@ -90,175 +78,144 @@ struct FM_Task : FEUIModel
     }
     FText GetTaskDesc() const
     {
-        FText __return;
-        int local_2 = int(this.GetDataSource());
+        ETaskDataSource local_1 = this.GetDataSource();
         FText local_24;
         FText local_20;
-        if (local_2 <= 1)
+        switch (int(local_1))
         {
-            if (local_2 != 1)
+        case 1:
+        {
+            float local_6 = this.GetDistanceToCommissionTarget();
+            if (local_6 >= 0.0)
             {
+                FNumberFormattingOptions local_15;
+                local_15.SetMaximumFractionalDigits(0);
+                local_20 = FText::AsNumber(local_6 / 100.0, local_15);
+                local_24 = FText::AsCultureInvariant("{0}m");
+                return FText::Format(local_24, local_20);
             }
-            else
-            {
-                float local_6 = this.GetDistanceToCommissionTarget();
-                if (local_6 >= 0.0)
-                {
-                    FNumberFormattingOptions local_15;
-                    local_15.SetMaximumFractionalDigits(0);
-                    local_20 = FText::AsNumber(local_6 / 100.0, local_15);
-                    local_24 = FText::AsCultureInvariant("{0}m");
-                    return FText::Format(local_24, local_20);
-                }
-                __return = local_20;
-            }
+            return local_20;
+        }
         }
         return local_24;
     }
     FText GetTaskDetailShort() const
     {
-        FText __return;
-        int local_2 = int(this.GetDataSource());
-        if (local_2 <= 1)
+        switch (int(this.GetDataSource()))
         {
-            if (local_2 != 1)
-            {
-            }
-            else
-            {
-                __return = this.AccessCommissionConfig().opArrow().CommissionName;
-            }
+        case 1:
+        {
+            return this.AccessCommissionConfig().opArrow().CommissionName;
+        }
         }
         return FText();
     }
     FText GetTaskDetailLong() const
     {
-        FText __return;
-        int local_2 = int(this.GetDataSource());
-        if (local_2 <= 1)
+        switch (int(this.GetDataSource()))
         {
-            if (local_2 != 1)
-            {
-            }
-            else
-            {
-                __return = this.AccessCommissionConfig().opArrow().CommissionDetail;
-            }
+        case 1:
+        {
+            return this.AccessCommissionConfig().opArrow().CommissionDetail;
+        }
         }
         return FText();
     }
     int GetTaskTargetNum() const
     {
         int local_2 = int(this.GetDataSource());
-        if (local_2 <= 1)
+        switch (local_2)
         {
-            if (local_2 != 1)
-            {
-            }
-            else
-            {
-                return 1;
-            }
+        case 1:
+        {
+            return 1;
         }
-        return 0;
+        default:
+        {
+            local_2 = 0;
+        }
+        }
+        return local_2;
     }
     bool IsTaskTargetCompleted(const int TargetIndex) const
     {
-        int local_2 = int(this.GetDataSource());
-        if (local_2 <= 1)
+        switch (int(this.GetDataSource()))
         {
-            if (local_2 != 1)
+        case 1:
+        {
+            if (TargetIndex != 0)
             {
-            }
-            else
-            {
-                if (TargetIndex != 0)
-                {
-                    return false;
-                }
-                FECSWorldPtr local_6 = ECS::GetECSWorld();
-                Get local_10;
-                const FCS_CommissionFinish& local_12 = local_10.opCall();
-                if (local_12)
-                {
-                    return local_12.GetbSuccess();
-                }
                 return false;
             }
+            FECSWorldPtr local_6 = ECS::GetECSWorld();
+            Get local_10;
+            const FCS_CommissionFinish& local_12 = local_10.opCall();
+            if (local_12)
+            {
+                return local_12.GetbSuccess();
+            }
+            return false;
+        }
         }
         return false;
     }
     FText GetTaskTargetDesc(const int TargetIndex) const
     {
-        FText __return;
-        int local_2 = int(this.GetDataSource());
-        if (local_2 <= 1)
+        switch (int(this.GetDataSource()))
         {
-            if (local_2 != 1)
+        case 1:
+        {
+            if (TargetIndex == 0)
             {
-            }
-            else
-            {
-                if (TargetIndex == 0)
+                FECSWorldPtr local_6 = ECS::GetECSWorld();
+                Get local_10;
+                const FCS_CommissionInfo& local_12 = local_10.opCall();
+                if (local_12)
                 {
-                    FECSWorldPtr local_6 = ECS::GetECSWorld();
-                    Get local_10;
-                    const FCS_CommissionInfo& local_12 = local_10.opCall();
-                    if (local_12)
-                    {
-                        return ::ObjectiveUtils::GetObjectiveDesc(local_12.CommissionTargetObjective, local_12.Progress.GetSuccessProgressValue(), 0);
-                    }
+                    return ::ObjectiveUtils::GetObjectiveDesc(local_12.CommissionTargetObjective, local_12.Progress.GetSuccessProgressValue(), 0);
                 }
-                __return = FText();
             }
+            return FText();
+        }
         }
         return FText();
     }
     FText GetTaskTargetProgress(const int TargetIndex) const
     {
-        FText __return;
-        int local_2 = int(this.GetDataSource());
-        if (local_2 <= 1)
+        switch (int(this.GetDataSource()))
         {
-            if (local_2 != 1)
+        case 1:
+        {
+            if (TargetIndex == 0)
             {
-            }
-            else
-            {
-                if (TargetIndex == 0)
+                FECSWorldPtr local_6 = ECS::GetECSWorld();
+                Get local_10;
+                const FCS_CommissionInfo& local_12 = local_10.opCall();
+                if (local_12)
                 {
-                    FECSWorldPtr local_6 = ECS::GetECSWorld();
-                    Get local_10;
-                    const FCS_CommissionInfo& local_12 = local_10.opCall();
-                    if (local_12)
-                    {
-                        return ::ObjectiveUtils::GetObjectiveProgress(local_12.CommissionTargetObjective, local_12.Progress.GetSuccessProgressValue(), 0);
-                    }
+                    return ::ObjectiveUtils::GetObjectiveProgress(local_12.CommissionTargetObjective, local_12.Progress.GetSuccessProgressValue(), 0);
                 }
-                __return = FText();
             }
+            return FText();
+        }
         }
         return FText();
     }
     bool IsCompleted() const
     {
-        int local_2 = int(this.GetDataSource());
-        if (local_2 <= 1)
+        switch (int(this.GetDataSource()))
         {
-            if (local_2 != 1)
+        case 1:
+        {
+            FECSWorldPtr local_6 = ECS::GetECSWorld();
+            Get local_10;
+            const FCS_CommissionFinish& local_12 = local_10.opCall();
+            if (local_12)
             {
+                return local_12.GetbSuccess();
             }
-            else
-            {
-                FECSWorldPtr local_6 = ECS::GetECSWorld();
-                Get local_10;
-                const FCS_CommissionFinish& local_12 = local_10.opCall();
-                if (local_12)
-                {
-                    return local_12.GetbSuccess();
-                }
-                return false;
-            }
+            return false;
+        }
         }
         return false;
     }

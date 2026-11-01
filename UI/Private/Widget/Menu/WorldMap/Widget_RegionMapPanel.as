@@ -186,6 +186,7 @@ namespace UWidget_RegionMapPanel
 void GetModelInfo(FEUIWidgetMetaInfo &inout Result)
 {
     Result.WidgetType = UWidget_RegionMapPanel;
+    Result.ObservedModelChangesSubscriberCount = 3;
     Result.ObservedModelChangesSubscriberNames.Add(FString("InitMapScale"));
     Result.ObservedModelChangesSubscriberNames.Add(FString("OnSelectedSpotChanged"));
     Result.ObservedModelChangesSubscriberNames.Add(FString("OnSelectedLevelInfoChanged"));

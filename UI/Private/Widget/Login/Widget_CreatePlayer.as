@@ -376,6 +376,7 @@ namespace UWidget_CreatePlayer
 void GetModelInfo(FEUIWidgetMetaInfo &inout Result)
 {
     Result.WidgetType = UWidget_CreatePlayer;
+    Result.ObservedModelChangesSubscriberCount = 4;
     Result.ObservedModelChangesSubscriberNames.Add(FString("OnSelectedFashionSlotTypeIndexChanged"));
     Result.ObservedModelChangesSubscriberNames.Add(FString("OnCreatePlayerPhaseChanged"));
     Result.ObservedModelChangesSubscriberNames.Add(FString("OnCreatePlayerPhaseChanged_ResetFocus"));

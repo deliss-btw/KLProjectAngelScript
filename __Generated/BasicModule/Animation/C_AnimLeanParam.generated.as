@@ -6,7 +6,7 @@ namespace __INTENRAL_FC_AnimLeanParamsHistory_NS
 }
 struct FC_AnimLeanParamsHistory : FECSComponent
 {
-    TInterpoHistory<FC_AnimLeanParams, auto> History;
+    TInterpoHistory<FC_AnimLeanParams, 30> History;
 
     FC_AnimLeanParamsHistory()
     {

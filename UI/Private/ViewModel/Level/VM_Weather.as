@@ -412,7 +412,7 @@ void GetModelInfo(FEUIViewModelMetaInfo &inout Result)
     Result.GeneratedPropertyStruct = __GeneratedProperties_FVMS_CurrentWeather;
     FEUIModelMetaPropertyModelRef local_19;
     local_19.PropertyName = FName("WeatherData");
-    int local_2_2 = FMS_WeatherData::ModelId;
+    local_19.PropertyRefModelTypeId = FMS_WeatherData::ModelId;
     Result.FunctionalPropertyModelRefs.Add(local_19);
     FEUIModelMsgHandleDefine local_32;
     local_32.FunctionName = "__ShowWeatherChangePopup";

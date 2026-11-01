@@ -129,6 +129,11 @@ bool ApplyRouteOverride(const FM_ForgeNode &inout ParentNode, const FM_ForgeNode
         {
             continue;
         }
+        Connection.FromPort = EEUIAutoLinePort(local_16.FromPort);
+        Connection.ToPort = EEUIAutoLinePort(local_16.ToPort);
+        Connection.FromExtend = local_16.FromExtend;
+        Connection.ToExtend = local_16.ToExtend;
+        Connection.RouteMode = local_16.RouteMode;
         return true;
     }
     return false;
@@ -185,15 +190,19 @@ void BuildGraphConnections(const UObject ContextObject, const TArray<TEUIModelWe
         local_34.ToNodeId = ForgeWeaponRuntimeAutoLineBuilder::MakeNodeId(local_18.Get());
         if (int(local_24.Get().GetBranchType()) == (int(local_18.Get().GetBranchType())))
         {
-            (int(ForgeWeaponRuntimeAutoLineBuilder::GetSameBranchFromPort(local_24.Get(), local_18.Get()))) = int(ForgeWeaponRuntimeAutoLineBuilder::GetSameBranchToPort(local_24.Get(), local_18.Get()));
+            local_34.FromPort = EEUIAutoLinePort((int(ForgeWeaponRuntimeAutoLineBuilder::GetSameBranchFromPort(local_24.Get(), local_18.Get()))));
+            local_34.ToPort = EEUIAutoLinePort((int(ForgeWeaponRuntimeAutoLineBuilder::GetSameBranchToPort(local_24.Get(), local_18.Get()))));
             local_34.FromExtend = SameBranchFromExtend;
             local_34.ToExtend = SameBranchToExtend;
+            local_34.RouteMode = EEUIAutoLineRouteMode(2);
         }
         else
         {
-            (int(ForgeWeaponRuntimeAutoLineBuilder::GetParentOutPort(local_24.Get(), local_18.Get()))) = int(ForgeWeaponRuntimeAutoLineBuilder::GetChildInPort(local_24.Get(), local_18.Get()));
+            local_34.FromPort = EEUIAutoLinePort((int(ForgeWeaponRuntimeAutoLineBuilder::GetParentOutPort(local_24.Get(), local_18.Get()))));
+            local_34.ToPort = EEUIAutoLinePort((int(ForgeWeaponRuntimeAutoLineBuilder::GetChildInPort(local_24.Get(), local_18.Get()))));
             local_34.FromExtend = BranchFromExtend;
             local_34.ToExtend = BranchToExtend;
+            local_34.RouteMode = EEUIAutoLineRouteMode(0);
             ForgeWeaponRuntimeAutoLineBuilder::ApplyRouteOverride(local_24.Get(), local_18.Get(), RouteOverrides, local_34);
         }
         OutConnections.Add(local_34);

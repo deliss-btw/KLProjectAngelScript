@@ -6,7 +6,7 @@ namespace __INTENRAL_FC_RiderHandIKControlHistory_NS
 }
 struct FC_RiderHandIKControlHistory : FECSComponent
 {
-    TInterpoHistory<FC_RiderHandIKControl, auto> History;
+    TInterpoHistory<FC_RiderHandIKControl, 30> History;
 
     FC_RiderHandIKControlHistory()
     {

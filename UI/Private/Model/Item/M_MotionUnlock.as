@@ -119,8 +119,10 @@ void GetModelInfo(FEUIModelOnlyMetaInfo &inout Result)
     Result.SetbCanDefaultConstruct(true);
     FEUIModelProtoRspDefine local_10;
     local_10.FunctionName = "__GS_OnMotionListNotify";
+    local_10.ProtoCmdId = uint16(1131);
     Result.ProtoRspDefines.Add(local_10);
     local_10.FunctionName = "__GS_OnMotionUnlockNotify";
+    local_10.ProtoCmdId = uint16(1134);
     Result.ProtoRspDefines.Add(local_10);
     return;
 }

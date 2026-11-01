@@ -22,7 +22,7 @@ struct FBeShakeBodyInfo
 struct FAnimFloatStack
 {
     UPROPERTY()
-    TInlineArray<float32, auto> Value;
+    TInlineArray<float32, 2> Value;
 
     FAnimFloatStack()
     {

@@ -164,7 +164,7 @@ class US_CombatZoneSystem : UECSScriptSystem
             const FAISpecialCombatTokenConfig& local_20 = SpecialTokenGen.TokenConfg.Get();
             bool local_17 = !(local_20.FilterByTags.IsEmpty());
             local_27 = int(local_20.FilterByTokenType) == 1 || !(local_20.GetFilterByTokens().IsEmpty());
-            TInlineArray<FECSEntity, auto> local_64;
+            TInlineArray<FECSEntity, 8> local_64;
             if (int(SpecialTokenGen.DispatchMode) == 1)
             {
                 for (auto& local_80 : SpecialTokenGen.TargetEntities)
@@ -197,7 +197,7 @@ class US_CombatZoneSystem : UECSScriptSystem
                     }
                 }
             }
-            TInlineArray<FECSEntity, auto> local_140;
+            TInlineArray<FECSEntity, 8> local_140;
             int local_141 = 0;
             for (; local_141 < local_64.Num(); ++local_141)
             {
@@ -215,7 +215,7 @@ class US_CombatZoneSystem : UECSScriptSystem
             int local_25 = local_140.Num();
             if (local_25 > 0)
             {
-                FFPTime local_150 = FFPTime(FixedTime.Time);
+                FFPTime local_150 = FixedTime.Time;
                 local_25 = local_20.GenerateTokenNum.CalculateNum(local_140.Num());
                 if (local_25 >= local_140.Num())
                 {

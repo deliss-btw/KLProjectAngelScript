@@ -213,6 +213,7 @@ struct __GeneratedProperties_FVM_LevelUp
     UPROPERTY()
     TEUIModelRef<FVM_LevelUp> Self;
 
+
 }
 
 namespace FVM_LevelUp

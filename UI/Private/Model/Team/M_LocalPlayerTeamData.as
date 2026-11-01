@@ -55,23 +55,16 @@ struct FMS_LocalPlayerTeamData : FEUIModelSingleton
     }
     bool IsInTeam(const ETeamType TeamType) const
     {
-        int local_1 = int(TeamType);
-        if (local_1 <= 2)
+        switch (int(TeamType))
         {
-            if (local_1 != 1)
-            {
-                if (local_1 != 2)
-                {
-                }
-                else
-                {
-                    return this.GetLocalPlayerCombatTeam().IsValid();
-                }
-            }
-            else
-            {
-                return this.GetLocalPlayerSocialTeam().IsValid();
-            }
+        case 2:
+        {
+            return this.GetLocalPlayerCombatTeam().IsValid();
+        }
+        case 1:
+        {
+            return this.GetLocalPlayerSocialTeam().IsValid();
+        }
         }
         return false;
     }
@@ -473,7 +466,7 @@ void GetModelInfo(FEUIModelOnlyMetaInfo &inout Result)
     Result.SetbCanDefaultConstruct(true);
     FEUIModelMetaPropertyModelRef local_6;
     local_6.PropertyName = FName("LocalPlayerCombatTeam");
-    int local_2_2 = FM_CombatTeam::ModelId;
+    local_6.PropertyRefModelTypeId = FM_CombatTeam::ModelId;
     Result.FunctionalPropertyModelRefs.Add(local_6);
     FEUIModelMsgHandleDefine local_18;
     local_18.FunctionName = "__OnLocalPlayerCombatTeamChanged";

@@ -6,7 +6,7 @@ namespace __INTENRAL_FC_AniParamSampleTrajectoryHistory_NS
 }
 struct FC_AniParamSampleTrajectoryHistory : FECSComponent
 {
-    TInterpoHistory<FC_AniParamSampleTrajectory, auto> History;
+    TInterpoHistory<FC_AniParamSampleTrajectory, 30> History;
 
     FC_AniParamSampleTrajectoryHistory()
     {

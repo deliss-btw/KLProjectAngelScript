@@ -177,6 +177,7 @@ namespace UWidget_PlayerRename
 void GetModelInfo(FEUIWidgetMetaInfo &inout Result)
 {
     Result.WidgetType = UWidget_PlayerRename;
+    Result.ObservedModelChangesSubscriberCount = 1;
     Result.ObservedModelChangesSubscriberNames.Add(FString("OnShouldClose"));
     return;
 }

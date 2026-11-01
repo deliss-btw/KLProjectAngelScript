@@ -907,6 +907,7 @@ struct FAvatarEquippedTalentInfo
     UPROPERTY()
     TArray<uint> ChooseIds;
 
+
 }
 
 struct FAvatarUnlockTalentInfo
@@ -992,7 +993,19 @@ struct FMS_Talent : FEUIModelSingleton
     }
     void DebugFillTestData()
     {
-        // body not fully recovered — stub [opcode-uncovered]
+        FPbPlayerAvatarDataNotify local_4;
+        TArray<uint> local_8 = {uint(1), uint(2), uint(3), uint(4)};
+        TArray<uint> local_16;
+        for (auto local_30 : local_8)
+        {
+            local_4.AddAvatarUnlockedTalentList(local_30);
+        }
+        for (auto local_30 : local_16)
+        {
+            local_4.AddAvatarUnlockableTalentList(local_30);
+        }
+        XLog(ELog(68), FString().Append("[M_Talent]DebugFillTestData: Unlocked:[").Append(local_4.GetAvatarUnlockedTalentList_Num()).Append("], Unlockable:[").Append(local_4.GetAvatarUnlockableTalentList_Num()).Append("]"));
+        return;
     }
     void RegisterTalentToNode(const uint TalentId, const uint NodePrimaryId)
     {
@@ -2489,6 +2502,7 @@ struct FMsg_TalentTreeDataUpdate : FEUIMessage
     UPROPERTY()
     bool bStructural = true;
 
+
 }
 
 struct FMsg_TalentTreeUpdateFinish : FEUIMessage
@@ -2499,6 +2513,7 @@ struct FMsg_TalentTreeUpdateFinish : FEUIMessage
     TEUIModelWeakRef<FVM_TalentUpgradeItem> FirstItemNodeM;
     UPROPERTY()
     TEUIModelWeakRef<FVM_TalentUpgradeFormulaTree> FormulaTreeVM;
+
 
 }
 
@@ -2513,6 +2528,7 @@ struct FMsg_TalentItemHoverStateChagne : FEUIMessage
     UPROPERTY()
     UWidget SourceWidget = nullptr;
 
+
 }
 
 struct FMsg_TalentUnlockOrUpgradeOpenConfirm : FEUIMessage
@@ -2522,6 +2538,7 @@ struct FMsg_TalentUnlockOrUpgradeOpenConfirm : FEUIMessage
     UPROPERTY()
     int ChoiceIndex;
 
+
 }
 
 struct FMsg_TalentUnlockOrUpgradeRequest : FEUIMessage
@@ -2530,6 +2547,7 @@ struct FMsg_TalentUnlockOrUpgradeRequest : FEUIMessage
     TEUIModelWeakRef<FM_TalentNode> TalentNode;
     UPROPERTY()
     int ChoiceIndex;
+
 
 }
 
@@ -2562,6 +2580,7 @@ struct FMsg_TalentSetEquipChoiceTalent : FEUIMessage
     UPROPERTY()
     int NewChoice;
 
+
 }
 
 struct FMsg_TalentSetEquipSkillSlot : FEUIMessage
@@ -2570,6 +2589,7 @@ struct FMsg_TalentSetEquipSkillSlot : FEUIMessage
     TEUIModelWeakRef<FM_TalentNode> TalentNode;
     UPROPERTY()
     int ChoiceIndex;
+
 
 }
 
@@ -2590,6 +2610,7 @@ struct FMsg_TalentNodeHoverOpenDetails : FEUIMessage
     TEUIModelWeakRef<FM_TalentNode> TalentNode;
     UPROPERTY()
     int ChoiceIndex = 0;
+
 
 }
 
@@ -2778,10 +2799,13 @@ void GetModelInfo(FEUIModelOnlyMetaInfo &inout Result)
     Result.MessageHandleFunctions.Add(local_14);
     FEUIModelProtoRspDefine local_24;
     local_24.FunctionName = "__GS_OnPlayerAvatarDataNotify";
+    local_24.ProtoCmdId = uint16(1101);
     Result.ProtoRspDefines.Add(local_24);
     local_24.FunctionName = "__GS_OnTalentStatusNotify";
+    local_24.ProtoCmdId = uint16(1111);
     Result.ProtoRspDefines.Add(local_24);
     local_24.FunctionName = "__GS_OnManageTalentRsp";
+    local_24.ProtoCmdId = uint16(1118);
     Result.ProtoRspDefines.Add(local_24);
     local_14.FunctionName = "__OnPlayerAvatarDataInitialized";
     local_14.MessageTypeName = "Msg_PlayerAvatarDataInitialized";
@@ -2792,6 +2816,7 @@ void GetModelInfo(FEUIModelOnlyMetaInfo &inout Result)
     local_14.SourcePropertyModelRefs = FBitSet64(0);
     Result.MessageHandleFunctions.Add(local_14);
     local_24.FunctionName = "__GS_OnTalentUnlockOrUpgradeRsp";
+    local_24.ProtoCmdId = uint16(1110);
     Result.ProtoRspDefines.Add(local_24);
     return;
 }

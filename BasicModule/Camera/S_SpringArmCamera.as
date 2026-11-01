@@ -2,6 +2,7 @@ class US_SpringArmCameraSystem : UECSScriptSystem
 {
     float32 DamperMagicNumber = 26.0f;
 
+
     void CalculateSpringArmPosition(const FVector &inout FollowTargetLocation, const FQuat &inout CameraRotation, const FVector &inout TargetOffset, const FVector &inout SocketOffset, FVector3f &inout OutPosition) const
     {
         FVector local_12 = (CameraRotation * FVector::ForwardVector);
@@ -189,7 +190,7 @@ class US_SpringArmCameraSystem : UECSScriptSystem
         FQuat4f local_20 = FQuat4f::Slerp(SpringArmA._base_FCameraRuntimeDataBasic.Rotation.Quaternion(), SpringArmB._base_FCameraRuntimeDataBasic.Rotation.Quaternion(), WeightToB);
         FinalData.Rotation = local_20.Rotator();
         FinalData.Rotation.Roll = 0.0f;
-        float32 local_24 = FMath::Lerp(SpringArmA._base_FCameraRuntimeDataBasic.FOV, SpringArmB._base_FCameraRuntimeDataBasic.FOV, WeightToB);
+        FinalData.FOV = FMath::Lerp(SpringArmA._base_FCameraRuntimeDataBasic.FOV, SpringArmB._base_FCameraRuntimeDataBasic.FOV, WeightToB);
         return;
     }
     void LerpAsSpringArmCamera(const FSpringArmCameraPresentationData &inout SpringArmA, const FSpringArmCameraPresentationData &inout SpringArmB, FCameraResult &inout FinalData, const float32 WeightToB) const
@@ -198,16 +199,26 @@ class US_SpringArmCameraSystem : UECSScriptSystem
         FQuat4f local_20 = FQuat4f::Slerp(SpringArmA._base_FSpringArmCameraData.Rotation.Quaternion(), SpringArmB._base_FSpringArmCameraData.Rotation.Quaternion(), WeightToB);
         FinalData.Rotation = local_20.Rotator();
         FinalData.Rotation.Roll = 0.0f;
-        float32 local_24 = FMath::Lerp(SpringArmA._base_FSpringArmCameraData.FOV, SpringArmB._base_FSpringArmCameraData.FOV, WeightToB);
+        FinalData.FOV = FMath::Lerp(SpringArmA._base_FSpringArmCameraData.FOV, SpringArmB._base_FSpringArmCameraData.FOV, WeightToB);
         return;
     }
     void BlendToSpringArmCamera(const FSpringArmCameraData &inout SpringArmCamera, FCameraInstancedData &inout LastCameraData, FCameraInstancedData &inout CurrentCameraData, const float32 CameraWeight) const
     {
-        // body not fully recovered — stub [argmismatch:argtype]
+        if (int(LastCameraData.RunningCameraType) == 3)
+        {
+            return;
+        }
+        ::PresentationCameraUtils::GenericLerp(LastCameraData.CameraResult, SpringArmCamera._base_FCameraRuntimeDataBasic.CameraResult, CurrentCameraData.CameraResult, CameraWeight);
+        return;
     }
     void BlendToSpringArmCamera(const FSpringArmCameraPresentationData &inout SpringArmCamera, FCameraInstancedData &inout LastCameraData, FCameraInstancedData &inout CurrentCameraData, const float32 CameraWeight) const
     {
-        // body not fully recovered — stub [argmismatch:argtype]
+        if (int(LastCameraData.RunningCameraType) == 3)
+        {
+            return;
+        }
+        ::PresentationCameraUtils::GenericLerp(LastCameraData.CameraResult, SpringArmCamera._base_FSpringArmCameraData._base_FCameraRuntimeDataBasic.CameraResult, CurrentCameraData.CameraResult, CameraWeight);
+        return;
     }
     void TryPreBlendCameraParams(FTPCameraStateParams &inout OutStateParams, const FTPCameraStateConfig &inout Config, FCameraInstancedData &inout LastCameraData, const float32 BlendWeightTowardCurrent) const
     {
@@ -322,7 +333,7 @@ class US_SpringArmCameraSystem : UECSScriptSystem
             {
                 if (local_142.bPendingRecordFreeze)
                 {
-                    float32 local_3_2 = local_46.InputDir.Yaw;
+                    local_142.FreezeYaw = local_46.InputDir.Yaw;
                     local_142.bPendingRecordFreeze = false;
                 }
                 local_30.BaseDir.Yaw = local_142.FreezeYaw;
@@ -393,7 +404,22 @@ class US_SpringArmCameraSystem : UECSScriptSystem
     UFUNCTION()
     void ClientJob_BlendSpringArmCamera(const FECSEntity &inout Entity, const FCS_LocalPlayer &inout LocalPlayer) const
     {
-        // body not fully recovered — stub [argmismatch:argtype]
+        int local_8 = 0;
+        if (!(LocalPlayer.PlayerEntity.IsValid()) || !((Entity == LocalPlayer.PlayerEntity)))
+        {
+            return;
+        }
+        FSpringArmCameraPresentation local_550 = local_8.CurrentCameraInstanceData.GetSpringArmCamera();
+        float32 local_552 = local_550.CameraRuntimeData.UpdateBlend(FFPTime(ECS::GetRuntimeInfo().Time));
+        if (int(local_8.LastCameraInstanceData.RunningCameraType) == 3)
+        {
+            local_8.CurrentCameraInstanceData.CameraResult = local_550.CameraRuntimeData._base_FSpringArmCameraData._base_FCameraRuntimeDataBasic.CameraResult;
+        }
+        else
+        {
+            this.BlendToSpringArmCamera(local_550.CameraRuntimeData, local_8.LastCameraInstanceData, local_8.CurrentCameraInstanceData, local_552);
+        }
+        return;
     }
     UFUNCTION()
     void Run_ClientJob_ApplySpringArmCameraModification_LookAt() const

@@ -125,22 +125,23 @@ struct FVM_CommonItem : FEUIViewModel
             if (local_54.IsSet())
             {
                 this.SetRarityColor(local_54.Get().DefaultColor);
-                int local_55 = int(DisplayType);
-                if (local_55 <= 2)
+                switch (int(DisplayType))
                 {
-                    if (local_55 != 1)
-                    {
-                        if (local_55 != 2)
-                        {
-                        }
-                    }
-                    else
-                    {
-                        this.SetItemImageBG(local_54.Get().RarityImage);
-                        this.SetItemImageBG(local_54.Get().RectangleRarityImage);
-                    }
+                case 1:
+                {
+                    this.SetItemImageBG(local_54.Get().RarityImage);
+                    break;
                 }
-                this.SetItemImageBG(local_54.Get().RarityImage);
+                case 2:
+                {
+                    this.SetItemImageBG(local_54.Get().RectangleRarityImage);
+                    break;
+                }
+                default:
+                {
+                    this.SetItemImageBG(local_54.Get().RarityImage);
+                }
+                }
                 return;
             }
             this.SetRarityColor(FLinearColor::White);

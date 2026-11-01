@@ -795,7 +795,7 @@ struct FC_ProjectileFXLifeTime : FECSComponent
         FC_PoolEntityVersionNonSync local_12;
         if (!(!(local_6)) && local_12)
         {
-            return (FName(local_12.PrefabPathName) == local_6.GetPrefabPathName()) && (int(local_12.PopFrame) == local_6.GetPopFrame());
+            return (local_12.PrefabPathName == local_6.GetPrefabPathName()) && (int(local_12.PopFrame) == local_6.GetPopFrame());
         }
         return false;
     }

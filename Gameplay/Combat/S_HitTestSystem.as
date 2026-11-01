@@ -509,17 +509,20 @@ class US_HitTestSystemAS : UECSScriptSystem
                         }
                         else
                         {
-                            FVector local_268_2(local_166.HitPoint);
+                            FVector local_268_2 = local_166.HitPoint;
                             FVector local_292 = (Event.GetTransform().GetLocation() + FVector(Event.SweepFromOffset));
                             FVector local_256_2 = (local_292 - (local_108 * Event.Shape.GetRadius()));
-                            FVector local_282 = (FVector(local_166.HitPoint) - local_292);
+                            FVector local_250_2 = local_166.HitPoint;
+                            FVector local_282 = (local_250_2 - local_292);
                             FECSDebugDraw::DrawDebugSphere(DebugDrawKey_ArealStrikeHit, local_166.HitPoint, 5.0f, 12, FColor::Orange, FColor::Orange, 5.0f, uint8(10), 0.0f);
-                            FVector local_240_2 = (FVector(local_166.HitPointNormal) * 100.0);
-                            FECSDebugDraw::DrawDebugLine(DebugDrawKey_ArealStrikeHit, local_166.HitPoint, (FVector(local_166.HitPoint) + local_240_2), FColor::Green, FColor::Green, 5.0f, uint8(0), 0.0f);
+                            local_250_2 = local_166.HitPoint;
+                            FVector local_276_2 = local_166.HitPointNormal;
+                            FVector local_240_2 = (local_276_2 * 100.0);
+                            FECSDebugDraw::DrawDebugLine(DebugDrawKey_ArealStrikeHit, local_166.HitPoint, (local_250_2 + local_240_2), FColor::Green, FColor::Green, 5.0f, uint8(0), 0.0f);
                             if (local_166.HitPointNormal.DotProduct((Event.GetTransform().GetRotation() * FVector::ForwardVector)) > 0.0)
                             {
                                 FVector local_262_2 = (Event.GetTransform().GetRotation() * FVector::UpVector);
-                                FVector local_276_2 = (local_256_2 + (local_262_2 * local_262_2.DotProduct(local_282)));
+                                local_276_2 = (local_256_2 + (local_262_2 * local_262_2.DotProduct(local_282)));
                                 FHitResult local_378;
                                 local_379 = false;
                                 const FCollisionInPhysSceneData& local_382 = local_166.TryGetPhysSceneData(local_379);
@@ -539,8 +542,8 @@ class US_HitTestSystemAS : UECSScriptSystem
                             if (int(Event.StrikeEventData.StrikeShape.PreferDivisionIndex) < 0)
                             {
                                 FVector local_306_2 = (local_108 * local_108.DotProduct(local_312));
-                                FVector local_276_3 = (local_256_2 + local_306_2);
-                                float local_285 = float32(((local_276_3 - local_268_2).Size()));
+                                local_276_2 = (local_256_2 + local_306_2);
+                                float local_285 = float32(((local_276_2 - local_268_2).Size()));
                                 local_386 = int(local_285);
                             }
                             else
@@ -549,10 +552,10 @@ class US_HitTestSystemAS : UECSScriptSystem
                                 FAreaStrikeShape local_414 = local_412 = (FQuat(Event.SweepFromRotation) * Event.GetTransform().GetRotation());
                                 int local_417 = FMath::Clamp(int(local_414.NumDivision), 2, 16);
                                 int local_415 = FMath::IntegerDivisionTrunc(local_417, 2);
-                                FVector local_276_4 = local_412.GetUpVector();
-                                FVector local_306_3 = local_412.GetForwardVector().RotateAngleAxis(((local_414.Angle / local_417) * (int(local_414.PreferDivisionIndex) - local_415)), local_276_4);
-                                local_276_4 = (local_306_3 * (local_306_3.DotProduct((local_268_2 - local_292))));
-                                FVector local_250_2 = (local_292 + local_276_4);
+                                local_276_2 = local_412.GetUpVector();
+                                FVector local_306_3 = local_412.GetForwardVector().RotateAngleAxis(((local_414.Angle / local_417) * (int(local_414.PreferDivisionIndex) - local_415)), local_276_2);
+                                local_276_2 = (local_306_3 * (local_306_3.DotProduct((local_268_2 - local_292))));
+                                local_250_2 = (local_292 + local_276_2);
                                 local_386 = int((float32(((local_250_2 - local_268_2).Size()))));
                                 FVector local_262_3 = (local_306_3 * (local_306_3.DotProduct((local_268_2 - local_292))));
                                 FECSDebugDraw::DrawDebugLine(DebugDrawKey_ArealStrikeHit, local_292, (local_292 + local_262_3), FColor::Cyan, FColor::Cyan, 5.0f, uint8(0), 0.0f);
@@ -883,7 +886,7 @@ class US_HitTestSystemAS : UECSScriptSystem
     FFPTime CalculateOffsetTime(const FECSEntity &inout Entity, const FCS_FixedTime &inout FixedTime) const
     {
         GetDefaulted local_4;
-        return local_4.opCall().GetOffsetTime((int(FixedTime.Frame) - 1));
+        return local_4.opCall().GetOffsetTime((FixedTime.Frame - 1));
     }
     void CalcFilterTime(const FECSEntity &inout Entity, FC_ArealStrikeTimeFilter &inout TimeFilter, const FCS_FixedTime &inout FixedTime) const
     {
@@ -936,7 +939,7 @@ class US_HitTestSystemAS : UECSScriptSystem
         FFPTime local_14_2 = -1;
         this.GetFilterTime(Event.Sender, FixedTime, local_10_2, local_14_2);
         bool local_15 = false;
-        if (int(Event.CreatedFrame) == int(FixedTime.Frame) || (int(Event.CreatedFrame) == (int(FixedTime.Frame) - 1) && Event.IsCreatedAfterCurrentJob()))
+        if (int(Event.CreatedFrame) == int(FixedTime.Frame) || (int(Event.CreatedFrame) == (FixedTime.Frame - 1) && Event.IsCreatedAfterCurrentJob()))
         {
             FFPTime local_20 = FFPTime(Event.Time);
             if (local_20.opCmp(local_10_2) >= 0 && ((FFPTime(Event.Time).opCmp(local_14_2) <= 0)))
@@ -956,7 +959,7 @@ class US_HitTestSystemAS : UECSScriptSystem
         {
             FECSWorldPtr local_22 = this.GetECSWorld();
             GetEvent local_26 = FECSWorldPtr::GetEvent(local_22);
-            this.HandleArealStrike(local_26.opCall(int(Event.ArealStrikeRequestEventId)), FixedTime, true, Event.Sender, FixedTime.LastTime);
+            this.HandleArealStrike(local_26.opCall(Event.ArealStrikeRequestEventId), FixedTime, true, Event.Sender, FixedTime.LastTime);
             if (this.GetECSRuntime().IsServer)
             {
                 FECSWorldPtr local_22_2 = this.GetECSWorld();
@@ -1055,7 +1058,7 @@ class US_HitTestSystemAS : UECSScriptSystem
             local_30.opCall();
             return;
         }
-        FFPTime local_32 = FFPTime(FixedTime.Time);
+        FFPTime local_32 = FixedTime.Time;
         if (DelayArealStrike.DelayTime.opCmp(0.0) > 0)
         {
             local_32 += DelayArealStrike.DelayTime;

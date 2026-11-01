@@ -207,6 +207,7 @@ namespace UWidget_Crosshair
 void GetModelInfo(FEUIWidgetMetaInfo &inout Result)
 {
     Result.WidgetType = UWidget_Crosshair;
+    Result.ObservedModelChangesSubscriberCount = 3;
     Result.ObservedModelChangesSubscriberNames.Add(FString("ShowCrosshair"));
     Result.ObservedModelChangesSubscriberNames.Add(FString("Scale"));
     Result.ObservedModelChangesSubscriberNames.Add(FString("ChangeChargeState"));

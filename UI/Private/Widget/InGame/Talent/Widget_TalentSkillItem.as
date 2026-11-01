@@ -149,6 +149,7 @@ namespace UWidget_TalentSkillItem
 void GetModelInfo(FEUIWidgetMetaInfo &inout Result)
 {
     Result.WidgetType = UWidget_TalentSkillItem;
+    Result.ObservedModelChangesSubscriberCount = 1;
     Result.ObservedModelChangesSubscriberNames.Add(FString("OnSkillBtnBigStateChanged"));
     return;
 }

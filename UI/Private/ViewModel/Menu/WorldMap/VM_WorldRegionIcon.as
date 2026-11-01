@@ -364,7 +364,7 @@ void GetModelInfo(FEUIViewModelMetaInfo &inout Result)
     Result.GeneratedPropertyStruct = __GeneratedProperties_FVM_WorldRegionIcon;
     FEUIModelMetaPropertyModelRef local_19;
     local_19.PropertyName = FName("MissionSpotView");
-    int local_2_2 = FM_SpotView::ModelId;
+    local_19.PropertyRefModelTypeId = FM_SpotView::ModelId;
     Result.FunctionalPropertyModelRefs.Add(local_19);
     FEUIModelMsgHandleDefine local_32;
     local_32.FunctionName = "__OnMissionSpotAdded";

@@ -113,6 +113,7 @@ namespace UWidget_Execute_SingleRipple
 void GetModelInfo(FEUIWidgetMetaInfo &inout Result)
 {
     Result.WidgetType = UWidget_Execute_SingleRipple;
+    Result.ObservedModelChangesSubscriberCount = 1;
     Result.ObservedModelChangesSubscriberNames.Add(FString("OnStateChanged"));
     return;
 }

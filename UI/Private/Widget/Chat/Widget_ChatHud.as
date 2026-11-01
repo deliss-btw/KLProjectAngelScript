@@ -120,6 +120,7 @@ namespace UWidget_ChatHud
 void GetModelInfo(FEUIWidgetMetaInfo &inout Result)
 {
     Result.WidgetType = UWidget_ChatHud;
+    Result.ObservedModelChangesSubscriberCount = 1;
     Result.ObservedModelChangesSubscriberNames.Add(FString("HandleHunLinesChanged"));
     return;
 }

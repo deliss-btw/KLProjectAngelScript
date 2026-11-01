@@ -188,6 +188,7 @@ namespace UWidget_TaskPanel
 void GetModelInfo(FEUIWidgetMetaInfo &inout Result)
 {
     Result.WidgetType = UWidget_TaskPanel;
+    Result.ObservedModelChangesSubscriberCount = 1;
     Result.ObservedModelChangesSubscriberNames.Add(FString("OnTaskListChanged"));
     return;
 }

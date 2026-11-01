@@ -662,8 +662,10 @@ class UInteractionBehavior_EcoCollectable : UInteractionBehavior_Collect
             local_46.SetStaticEntityId(local_2.GetId());
             FC_NetRelevancePolicy local_51;
             Assign local_50;
-            if (local_50.opCall(local_51))
+            FC_NetRelevancePolicy& local_54 = local_50.opCall(local_51);
+            if (local_54)
             {
+                local_54.RelevancePolicyType = ENetRelevancePolicyType(0);
             }
         }
         else

@@ -17,6 +17,7 @@ struct FKLFlowNodeMemory_ListenLevelGroup
     UPROPERTY()
     int HandleECSBeginPlay = 0;
 
+
 }
 
 struct FKLFlowNode_ListenLevelGroup : FKLFlowNode
@@ -48,7 +49,9 @@ struct FKLFlowNode_ListenLevelGroup : FKLFlowNode
     }
     void OnBuild_Implementation()
     {
-        // body not fully recovered — stub [opcode-uncovered]
+        this.bIsEntryNode = true;
+        this.OutputPins = {ListenLevelGroupPins::OnGroupReady, ListenLevelGroupPins::OnPassReady, ListenLevelGroupPins::OnAnyPassReady, ListenLevelGroupPins::OnECSBeginPlay};
+        return;
     }
     void OnInit_Implementation()
     {

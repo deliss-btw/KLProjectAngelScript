@@ -106,6 +106,7 @@ namespace UWidget_PlayerHpBar
 void GetModelInfo(FEUIWidgetMetaInfo &inout Result)
 {
     Result.WidgetType = UWidget_PlayerHpBar;
+    Result.ObservedModelChangesSubscriberCount = 1;
     Result.ObservedModelChangesSubscriberNames.Add(FString("HandleHpRatioReduceCounterChanged"));
     return;
 }

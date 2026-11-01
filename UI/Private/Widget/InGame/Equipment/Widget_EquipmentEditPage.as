@@ -195,6 +195,7 @@ namespace UWidget_EquipmentEditPage
 void GetModelInfo(FEUIWidgetMetaInfo &inout Result)
 {
     Result.WidgetType = UWidget_EquipmentEditPage;
+    Result.ObservedModelChangesSubscriberCount = 1;
     Result.ObservedModelChangesSubscriberNames.Add(FString("OnSelectedEquipmentInfoChange"));
     return;
 }

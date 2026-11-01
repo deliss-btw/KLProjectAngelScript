@@ -227,6 +227,7 @@ namespace UWidget_TalentUpgradeItem
 void GetModelInfo(FEUIWidgetMetaInfo &inout Result)
 {
     Result.WidgetType = UWidget_TalentUpgradeItem;
+    Result.ObservedModelChangesSubscriberCount = 1;
     Result.ObservedModelChangesSubscriberNames.Add(FString("OnUpgradeAnimIndexChanged"));
     return;
 }

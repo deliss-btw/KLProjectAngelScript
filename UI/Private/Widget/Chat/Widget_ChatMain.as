@@ -330,6 +330,7 @@ namespace UWidget_ChatMain
 void GetModelInfo(FEUIWidgetMetaInfo &inout Result)
 {
     Result.WidgetType = UWidget_ChatMain;
+    Result.ObservedModelChangesSubscriberCount = 1;
     Result.ObservedModelChangesSubscriberNames.Add(FString("OnCurrentMessagesUpdated"));
     return;
 }

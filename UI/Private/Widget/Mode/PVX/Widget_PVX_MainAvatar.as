@@ -334,6 +334,7 @@ namespace UWidget_PVX_MainAvatar
 void GetModelInfo(FEUIWidgetMetaInfo &inout Result)
 {
     Result.WidgetType = UWidget_PVX_MainAvatar;
+    Result.ObservedModelChangesSubscriberCount = 4;
     Result.ObservedModelChangesSubscriberNames.Add(FString("HandleConfirmButtonEnabledChange"));
     Result.ObservedModelChangesSubscriberNames.Add(FString("HandleAvatarReadyChage"));
     Result.ObservedModelChangesSubscriberNames.Add(FString("HandleCampusChange"));

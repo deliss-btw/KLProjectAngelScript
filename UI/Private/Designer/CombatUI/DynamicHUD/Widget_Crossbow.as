@@ -97,6 +97,7 @@ namespace UWidget_Crossbow
 void GetModelInfo(FEUIWidgetMetaInfo &inout Result)
 {
     Result.WidgetType = UWidget_Crossbow;
+    Result.ObservedModelChangesSubscriberCount = 1;
     Result.ObservedModelChangesSubscriberNames.Add(FString("ChangeText"));
     return;
 }

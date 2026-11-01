@@ -26,6 +26,7 @@ class USPT_SimplePoseBlend1D : USkeletalPoseTweaker
         local_16.SourceBone = this.SourceBone;
         local_16.OnlyDriveBones = this.OnlyDriveBones;
         local_16.PoseAsset = this.PoseAsset;
+        local_16.RotationAxis = this.RotationAxis;
         if (!(this.PoseBlendSolver.ReInitIfNeeded(local_16)))
         {
             return;

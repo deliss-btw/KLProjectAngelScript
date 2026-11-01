@@ -57,7 +57,7 @@ struct FLevelUnitConfigEcoCollectable : FSceneUnitConfigWithJsonData
     void SetupByActor(const AEcoCollectablePrefabBase Actor)
     {
         this.GUID = Actor.GetConfigGUID();
-        int local_1 = Actor.GetUnitId();
+        this.UnitId = Actor.GetUnitId();
         this.Transform = Actor.GetActorTransform();
         this.bInitialInactive = (Actor.bInitialInactive != 0);
         this.bAutoLoad = (Actor.IsAutoLoad() != 0);

@@ -1609,16 +1609,22 @@ void GetModelInfo(FEUIModelOnlyMetaInfo &inout Result)
     Result.TickFunction.FunctionName = "__Tick";
     FEUIModelProtoRspDefine local_24;
     local_24.FunctionName = "__GS_OnStartMatchRsp";
+    local_24.ProtoCmdId = uint16(602);
     Result.ProtoRspDefines.Add(local_24);
     local_24.FunctionName = "__GS_OnCancelMatchRsp";
+    local_24.ProtoCmdId = uint16(604);
     Result.ProtoRspDefines.Add(local_24);
     local_24.FunctionName = "__GS_OnMatchKeepaliveRsp";
+    local_24.ProtoCmdId = uint16(606);
     Result.ProtoRspDefines.Add(local_24);
     local_24.FunctionName = "__GS_OnMatchConfirmRsp";
+    local_24.ProtoCmdId = uint16(608);
     Result.ProtoRspDefines.Add(local_24);
     local_24.FunctionName = "__GS_OnMatchInfoNotify";
+    local_24.ProtoCmdId = uint16(609);
     Result.ProtoRspDefines.Add(local_24);
     local_24.FunctionName = "__GS_OnMatchRecruitNotify";
+    local_24.ProtoCmdId = uint16(611);
     Result.ProtoRspDefines.Add(local_24);
     return;
 }

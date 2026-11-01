@@ -64,7 +64,7 @@ class US_MovementSystem : UECSScriptSystem
         {
             return;
         }
-        FFPTime local_6 = FFPTime(FixedTime.LastTime);
+        FFPTime local_6 = FixedTime.LastTime;
         if (FFPTime(FixedTime.LastTime).opCmp(MovementInfo.GetMoveBeginTime()) < 0)
         {
             local_6 = MovementInfo.GetMoveBeginTime();
@@ -1332,6 +1332,7 @@ class US_MovementSystem : UECSScriptSystem
         int local_138 = 0;
         bool local_179;
         int local_198 = 0;
+        Remove local_202;
         int local_222 = 0;
         int local_234 = 0;
         int local_240 = 0;
@@ -1363,7 +1364,8 @@ class US_MovementSystem : UECSScriptSystem
                     local_134.AddIgnoredEntityId(local_160.GetId());
                 }
             }
-            local_161 = false;
+            bool local_29 = false;
+            local_161 = local_29;
             if (int(EntityHitCollider.GetExtraConfig().GetPropMovementCollisionCheckMode()) == 1)
             {
                 if (EntityHitCollider.GetExtraConfig().GetbIncludeOverlapCollisionResponse())
@@ -1406,70 +1408,73 @@ class US_MovementSystem : UECSScriptSystem
                         local_188.SetMoveTotalTime(FFPTime(0));
                     }
                 }
-                int local_164_2 = int(EntityHitCollider.GetExtraConfig().GetHitSceneEventProcessMode());
-                if (local_164_2 <= 1)
+                switch (int(EntityHitCollider.GetExtraConfig().GetHitSceneEventProcessMode()))
                 {
-                    if (local_164_2 != 0)
+                case 0:
+                {
+                    local_29 = !(local_198);
+                    if (local_29)
                     {
-                        if (local_164_2 != 1)
-                        {
-                        }
+                        local_202.opCall();
+                        return;
+                    }
+                    FECSEntityId local_215 = FECSEntityId(local_198.GetInstanceEntityId(FSoftClassPath(EntityHitCollider.GetExtraConfig().GetHitSceneAbilityClass().Get())));
+                    if (FECSEntity(local_215).IsValid())
+                    {
+                        FAbilityEffectEventContext& local_228 = FAbilityUtils::CreateAbilityEffectEvent(local_222, EAbilityEffectEvent(0), EntityHitCollider.GetExtraConfig().GetHitSceneEventName(), Time.Time);
+                        FAbilityEffectEventContext::InitializeEventData(local_228);
+                        local_234.SetEntity(Entity);
+                        local_234.SetPosition(local_96.ImpactPoint);
+                    }
+                    break;
+                }
+                case 1:
+                {
+                    if (!(local_240))
+                    {
+                        local_29 = false;
                     }
                     else
                     {
-                        bool local_29 = !(local_198);
-                        if (local_29)
+                        local_29 = local_246;
+                    }
+                    if (!(local_29))
+                    {
+                        local_179 = false;
+                    }
+                    else
+                    {
+                        local_179 = local_252;
+                    }
+                    if (local_179)
+                    {
+                        int local_254 = 0;
+                        for (; local_254 < 8; ++local_254)
                         {
-                            Remove local_202;
-                            local_202.opCall();
-                            return;
-                        }
-                        FECSEntityId local_215 = FECSEntityId(local_198.GetInstanceEntityId(FSoftClassPath(EntityHitCollider.GetExtraConfig().GetHitSceneAbilityClass().Get())));
-                        if (FECSEntity(local_215).IsValid())
-                        {
-                            FAbilityEffectEventContext& local_228 = FAbilityUtils::CreateAbilityEffectEvent(local_222, EAbilityEffectEvent(0), EntityHitCollider.GetExtraConfig().GetHitSceneEventName(), Time.Time);
-                            FAbilityEffectEventContext::InitializeEventData(local_228);
-                            local_234.SetEntity(Entity);
-                            local_234.SetPosition(local_96.ImpactPoint);
-                        }
-                        if (!(local_240))
-                        {
-                            local_29 = false;
-                        }
-                        else
-                        {
-                            local_29 = local_246;
-                        }
-                        if (!(local_29))
-                        {
-                            local_179 = false;
-                        }
-                        else
-                        {
-                            local_179 = local_252;
-                        }
-                        if (local_179)
-                        {
-                            int local_254 = 0;
-                            for (; local_254 < 8; ++local_254)
+                            int local_164_2 = (1 << local_254) & local_246.GetActivatedIndexMask();
+                            if (local_164_2 != 0 && (local_254 < local_240.PropMovementHitSceneEventFilter.Num()))
                             {
-                                local_164_2 = 1 << local_254;
-                                local_164_2 = local_164_2 & local_246.GetActivatedIndexMask();
-                                if (local_164_2 != 0 && (local_254 < local_240.PropMovementHitSceneEventFilter.Num()))
+                                const FEventToESMTriggerFilterConfigItem_PropMovementHitSceneEvent& local_260 = local_240.PropMovementHitSceneEventFilter[local_254];
+                                if (local_260.EvaluateAndTrigger(local_96, Entity))
                                 {
-                                    const FEventToESMTriggerFilterConfigItem_PropMovementHitSceneEvent& local_260 = local_240.PropMovementHitSceneEventFilter[local_254];
-                                    if (local_260.EvaluateAndTrigger(local_96, Entity))
-                                    {
-                                        break;
-                                    }
+                                    break;
                                 }
                             }
                         }
                     }
+                    break;
                 }
-                return;
+                default:
+                {
+                    return;
+                }
+                }
+                local_202.opCall();
             }
-            EntityHitCollider.SetLastPosition(local_6);
+            else
+            {
+                EntityHitCollider.SetLastPosition(local_6);
+            }
         }
         return;
     }
@@ -1479,6 +1484,7 @@ class US_MovementSystem : UECSScriptSystem
         int local_138 = 0;
         bool local_183;
         int local_202 = 0;
+        Remove local_206;
         int local_226 = 0;
         int local_238 = 0;
         int local_244 = 0;
@@ -1510,7 +1516,8 @@ class US_MovementSystem : UECSScriptSystem
                     local_134.AddIgnoredEntityId(local_160.GetId());
                 }
             }
-            local_161 = false;
+            bool local_29 = false;
+            local_161 = local_29;
             if (int(EntityHitCollider.GetExtraConfig().GetPropMovementCollisionCheckMode()) == 1)
             {
                 if (EntityHitCollider.GetExtraConfig().GetbIncludeOverlapCollisionResponse())
@@ -1552,70 +1559,73 @@ class US_MovementSystem : UECSScriptSystem
                         local_192.SetMoveTotalTime(FFPTime(0));
                     }
                 }
-                int local_164_2 = int(EntityHitCollider.GetExtraConfig().GetHitSceneEventProcessMode());
-                if (local_164_2 <= 1)
+                switch (int(EntityHitCollider.GetExtraConfig().GetHitSceneEventProcessMode()))
                 {
-                    if (local_164_2 != 0)
+                case 0:
+                {
+                    local_29 = !(local_202);
+                    if (local_29)
                     {
-                        if (local_164_2 != 1)
-                        {
-                        }
+                        local_206.opCall();
+                        return;
+                    }
+                    FECSEntityId local_219 = FECSEntityId(local_202.GetInstanceEntityId(FSoftClassPath(EntityHitCollider.GetExtraConfig().GetHitSceneAbilityClass().Get())));
+                    if (FECSEntity(local_219).IsValid())
+                    {
+                        FAbilityEffectEventContext& local_232 = FAbilityUtils::CreateAbilityEffectEvent(local_226, EAbilityEffectEvent(0), EntityHitCollider.GetExtraConfig().GetHitSceneEventName(), Time.Time);
+                        FAbilityEffectEventContext::InitializeEventData(local_232);
+                        local_238.SetEntity(Entity);
+                        local_238.SetPosition(local_96.ImpactPoint);
+                    }
+                    break;
+                }
+                case 1:
+                {
+                    if (!(local_244))
+                    {
+                        local_29 = false;
                     }
                     else
                     {
-                        bool local_29 = !(local_202);
-                        if (local_29)
+                        local_29 = local_250;
+                    }
+                    if (!(local_29))
+                    {
+                        local_183 = false;
+                    }
+                    else
+                    {
+                        local_183 = local_256;
+                    }
+                    if (local_183)
+                    {
+                        int local_258 = 0;
+                        for (; local_258 < 8; ++local_258)
                         {
-                            Remove local_206;
-                            local_206.opCall();
-                            return;
-                        }
-                        FECSEntityId local_219 = FECSEntityId(local_202.GetInstanceEntityId(FSoftClassPath(EntityHitCollider.GetExtraConfig().GetHitSceneAbilityClass().Get())));
-                        if (FECSEntity(local_219).IsValid())
-                        {
-                            FAbilityEffectEventContext& local_232 = FAbilityUtils::CreateAbilityEffectEvent(local_226, EAbilityEffectEvent(0), EntityHitCollider.GetExtraConfig().GetHitSceneEventName(), Time.Time);
-                            FAbilityEffectEventContext::InitializeEventData(local_232);
-                            local_238.SetEntity(Entity);
-                            local_238.SetPosition(local_96.ImpactPoint);
-                        }
-                        if (!(local_244))
-                        {
-                            local_29 = false;
-                        }
-                        else
-                        {
-                            local_29 = local_250;
-                        }
-                        if (!(local_29))
-                        {
-                            local_183 = false;
-                        }
-                        else
-                        {
-                            local_183 = local_256;
-                        }
-                        if (local_183)
-                        {
-                            int local_258 = 0;
-                            for (; local_258 < 8; ++local_258)
+                            int local_164_2 = (1 << local_258) & local_250.GetActivatedIndexMask();
+                            if (local_164_2 != 0 && (local_258 < local_244.PropMovementHitSceneEventFilter.Num()))
                             {
-                                local_164_2 = 1 << local_258;
-                                local_164_2 = local_164_2 & local_250.GetActivatedIndexMask();
-                                if (local_164_2 != 0 && (local_258 < local_244.PropMovementHitSceneEventFilter.Num()))
+                                const FEventToESMTriggerFilterConfigItem_PropMovementHitSceneEvent& local_264 = local_244.PropMovementHitSceneEventFilter[local_258];
+                                if (local_264.EvaluateAndTrigger(local_96, Entity))
                                 {
-                                    const FEventToESMTriggerFilterConfigItem_PropMovementHitSceneEvent& local_264 = local_244.PropMovementHitSceneEventFilter[local_258];
-                                    if (local_264.EvaluateAndTrigger(local_96, Entity))
-                                    {
-                                        break;
-                                    }
+                                    break;
                                 }
                             }
                         }
                     }
+                    break;
                 }
-                return;
+                default:
+                {
+                    return;
+                }
+                }
+                local_206.opCall();
             }
-            EntityHitCollider.SetLastPosition(local_6);
+            else
+            {
+                EntityHitCollider.SetLastPosition(local_6);
+            }
         }
         return;
     }

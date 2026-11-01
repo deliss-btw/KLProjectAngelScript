@@ -10,6 +10,7 @@ enum EBTCheckDirectionAnchorType
     Socket,
 }
 
+
 class UBTDecorator_CheckDirectionAngleToTarget : UBTDecorator_ECSScriptBase
 {
     UPROPERTY()
@@ -32,6 +33,7 @@ class UBTDecorator_CheckDirectionAngleToTarget : UBTDecorator_ECSScriptBase
     FName OriginSocketName;
     UPROPERTY()
     EBTCheckDirectionAnchorType OriginForwardType;
+
 
     UFUNCTION()
     bool CalculateRawConditionValue_Implementation(const FAIBehaviorTreeContext &inout Context, const FBTNodeMemory &inout NodeMemory) const
@@ -99,7 +101,8 @@ class UBTDecorator_CheckDirectionAngleToTarget : UBTDecorator_ECSScriptBase
             }
         }
         float32 local_140_2 = this.EndDegree.GetValue(Context.opImplConv());
-        if (this.bDegreeSigned)
+        bool local_81 = this.bDegreeSigned;
+        if (local_81)
         {
             local_152 = this.StartDegree.GetValue(Context.opImplConv());
         }
@@ -114,28 +117,46 @@ class UBTDecorator_CheckDirectionAngleToTarget : UBTDecorator_ECSScriptBase
             local_152 = local_140_2;
             local_140_2 = local_153;
         }
-        int local_47 = int(this.CompareType);
-        if (local_47 <= 1)
+        switch (int(this.CompareType))
         {
-            if (local_47 != 0)
-            {
-                if (local_47 != 1)
-                {
-                }
-            }
-            else
-            {
-                return local_139 >= local_152 && (local_139 <= local_140_2);
-            }
+        case 0:
+        {
+            return local_139 >= local_152 && (local_139 <= local_140_2);
         }
-        XError(ELog(14), FString().Append("Unsupported compare type").Append(this.CompareType));
-        return false;
+        case 1:
+        {
+            return local_139 < local_152 || (local_139 > local_140_2);
+        }
+        default:
+        {
+            XError(ELog(14), FString().Append("Unsupported compare type").Append(this.CompareType));
+            local_81 = false;
+        }
+        }
+        return local_81;
     }
     UFUNCTION()
     FString GetStaticDescription_Implementation() const
     {
-        // body not fully recovered — stub [opcode-uncovered]
-        FString __r; return __r;
+        FString local_4;
+        switch (this.CompareType)
+        {
+        case EBTCheckDirectionAngleCompareType::InRange:
+        {
+            local_4 = "In Range";
+            break;
+        }
+        case EBTCheckDirectionAngleCompareType::OutOfRange:
+        {
+            local_4 = "Out of Range";
+            break;
+        }
+        }
+        if (this.bDegreeSigned)
+        {
+            return (FString(FString().Append("\n\n  ").Append(this.OriginEntity).Append(" -> ").Append(this.TargetEntity)) + FString().Append("\n  ").Append(local_4).Append(" [ ").Append(this.StartDegree).Append(" , ").Append(this.EndDegree).Append(" ]"));
+        }
+        return (FString(FString().Append("\n\n  ").Append(this.OriginEntity).Append(" -> ").Append(this.TargetEntity)) + FString().Append("\n  ").Append(local_4).Append(" [ -").Append(this.EndDegree).Append(" , ").Append(this.EndDegree).Append(" ]"));
     }
 }
 

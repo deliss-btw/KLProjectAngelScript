@@ -69,8 +69,7 @@ class US_CutScene : UECSScriptSystem
                 }
             }
         }
-        FFPTime local_12 = FFPTime(FixedTime.Time);
-        if (local_12.opCmp((FFPTime(CutSceneLogicData.GetStartTime()) + CutSceneLogicData.GetDuration())) < 0)
+        if (FixedTime.Time.opCmp((FFPTime(CutSceneLogicData.GetStartTime()) + CutSceneLogicData.GetDuration())) < 0)
         {
             return;
         }

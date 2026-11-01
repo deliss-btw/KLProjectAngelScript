@@ -559,6 +559,7 @@ namespace UWidget_MinimapIconTemplate
 void GetModelInfo(FEUIWidgetMetaInfo &inout Result)
 {
     Result.WidgetType = UWidget_MinimapIconTemplate;
+    Result.ObservedModelChangesSubscriberCount = 2;
     Result.ObservedModelChangesSubscriberNames.Add(FString("HandleMinimapSelectionChanged"));
     Result.ObservedModelChangesSubscriberNames.Add(FString("HandleMinimapIconConfigChanged"));
     return;

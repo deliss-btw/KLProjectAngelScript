@@ -152,7 +152,7 @@ class US_VisualComponentToggleScriptSystem : UECSScriptSystem
         int local_10 = 0;
         Remove local_16;
         int local_28;
-        FECSEntity local_4 = FECSEntity(ActorData.LogicEntity);
+        FECSEntity local_4 = ActorData.LogicEntity;
         if (!(local_10))
         {
             local_16.opCall();
@@ -177,7 +177,7 @@ class US_VisualComponentToggleScriptSystem : UECSScriptSystem
                 local_24.AddUnique(local_10.Names[local_25]);
             }
         }
-        FFPTime local_30 = FFPTime(FixedTime.Time);
+        FFPTime local_30 = FixedTime.Time;
         if (local_20.Num() > 0)
         {
             ::VisualComponentToggleUtils::ApplyViewToggle(local_4, local_10, local_20, false, local_30);

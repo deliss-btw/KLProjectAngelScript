@@ -145,6 +145,7 @@ void GetModelInfo(FEUIModelOnlyMetaInfo &inout Result)
     Result.SetbCanDefaultConstruct(true);
     FEUIModelMonitorDefine local_14;
     local_14.FunctionName = "__OnWeatherEffectChanged";
+    local_14.MonitorTarget = EEUIModelMonitorTarget(2);
     local_14.ComponentType = FCS_ClientWeatherEffect;
     Result.MonitorFunctions.Add(local_14);
     FEUIModelMsgHandleDefine local_28;

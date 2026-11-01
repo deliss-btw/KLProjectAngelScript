@@ -70,24 +70,24 @@ struct FVM_ItemAction : FEUIViewModel
                 if (::ItemActionUtils::CanExecuteAction(this.GetItemConfig(), this.GetItemActionSource(), EItemActionType(local_44)))
                 {
                     FSimpleModelEvent local_76;
-                    switch (int(local_44))
+                    switch (local_44)
                     {
-                    case 0:
+                    case EItemActionType::Use:
                     {
                         local_76.Add(this, FVM_ItemAction::UseItem);
                         break;
                     }
-                    case 1:
+                    case EItemActionType::Drop:
                     {
                         local_76.Add(this, FVM_ItemAction::DropItem);
                         break;
                     }
-                    case 2:
+                    case EItemActionType::Destroy:
                     {
                         local_76.Add(this, FVM_ItemAction::DestroyItem);
                         break;
                     }
-                    case 3:
+                    case EItemActionType::Equip:
                     {
                         local_76.Add(this, FVM_ItemAction::EquipItem);
                         break;

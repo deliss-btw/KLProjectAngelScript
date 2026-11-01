@@ -153,6 +153,7 @@ namespace UWidget_HPBar
 void GetModelInfo(FEUIWidgetMetaInfo &inout Result)
 {
     Result.WidgetType = UWidget_HPBar;
+    Result.ObservedModelChangesSubscriberCount = 2;
     Result.ObservedModelChangesSubscriberNames.Add(FString("OnHPLowChanged"));
     Result.ObservedModelChangesSubscriberNames.Add(FString("HandleCurrentHPBarSegmentIndexChanged"));
     return;

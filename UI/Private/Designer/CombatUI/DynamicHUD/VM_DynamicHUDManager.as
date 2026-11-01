@@ -270,6 +270,7 @@ void GetModelInfo(FEUIViewModelMetaInfo &inout Result)
     Result.EffectFunctions.Add(local_20);
     FEUIModelMonitorDefine local_30;
     local_30.FunctionName = "__OnMonitorShowCrosshairEvent";
+    local_30.MonitorTarget = EEUIModelMonitorTarget(4);
     local_30.ComponentType = FC_HUDShowHideCrosshair;
     Result.MonitorFunctions.Add(local_30);
     return;

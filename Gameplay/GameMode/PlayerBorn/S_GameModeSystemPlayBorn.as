@@ -292,7 +292,8 @@ class US_ASGameModeSystemPlayerBorn : US_ECSScriptGameModeSystemBase
             this.TrySpawnSpecialtyAvatar(local_140, local_152);
             FECSEntity local_168 = FECSEntity(local_140.GetId());
             FECSWorldPtr local_2_3 = this.GetECSWorld();
-            int local_171 = local_152.GetPlayerId();
+            FCE_PlayerSpawnEvent local_170;
+            local_170.PlayerID = local_152.GetPlayerId();
         }
         FECSWorldPtr local_2_4 = this.GetECSWorld();
         local_178.SetStageType(EFCS_GameStageType(3));

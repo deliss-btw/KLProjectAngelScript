@@ -402,6 +402,7 @@ namespace UWidget_UserKeySelector
 void GetModelInfo(FEUIWidgetMetaInfo &inout Result)
 {
     Result.WidgetType = UWidget_UserKeySelector;
+    Result.ObservedModelChangesSubscriberCount = 2;
     Result.ObservedModelChangesSubscriberNames.Add(FString("ChangeButtonVisibility0"));
     Result.ObservedModelChangesSubscriberNames.Add(FString("ChangeButtonVisibility1"));
     return;

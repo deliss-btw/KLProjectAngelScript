@@ -6,7 +6,7 @@ namespace __INTENRAL_FC_AnimParamSocketAimControlHistory_NS
 }
 struct FC_AnimParamSocketAimControlHistory : FECSComponent
 {
-    TInterpoHistory<FC_AnimParamSocketAimControl, auto> History;
+    TInterpoHistory<FC_AnimParamSocketAimControl, 30> History;
 
     FC_AnimParamSocketAimControlHistory()
     {

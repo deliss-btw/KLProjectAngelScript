@@ -28,6 +28,7 @@ class US_AIPathSimulateSystem : UECSScriptSystem
     UPROPERTY()
     float32 PathAnimationPredictionNextDeltaTime = 0.1f;
 
+
     void EnableAIPathSimulateDebugDraw() const
     {
         FECSDebugDraw::SetDebugKeyEnable(DebugDrawKey_AIPathSimulate, true);

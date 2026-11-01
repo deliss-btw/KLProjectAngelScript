@@ -169,6 +169,7 @@ namespace UWidget_TeamMemberConfirmPopup
 void GetModelInfo(FEUIWidgetMetaInfo &inout Result)
 {
     Result.WidgetType = UWidget_TeamMemberConfirmPopup;
+    Result.ObservedModelChangesSubscriberCount = 3;
     Result.ObservedModelChangesSubscriberNames.Add(FString("OnReplyCountdownSecondsChanged"));
     Result.ObservedModelChangesSubscriberNames.Add(FString("OnIsOpenChanged"));
     Result.ObservedModelChangesSubscriberNames.Add(FString("OnReplyStatusChanged"));

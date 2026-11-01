@@ -6,9 +6,10 @@ class US_SignificanceSystemAS : UECSScriptSystem
     }
     void UpdateSignificance(const FECSEntity &inout Entity) const
     {
-        int local_7 = int(::Significance::GetSignificanceType(Entity));
+        EECSSignificanceType local_7 = ::Significance::GetSignificanceType(Entity);
         FC_Significance local_6;
-        int local_8 = ::Significance::GetSignificanceOffset(Entity, local_6.SignificanceType);
+        local_6.SignificanceType = local_7;
+        local_6.SignificanceOffset = ::Significance::GetSignificanceOffset(Entity, local_6.SignificanceType);
         Get local_12;
         const FC_SignificanceConfig& local_14 = local_12.opCall();
         if (local_14)
@@ -19,7 +20,7 @@ class US_SignificanceSystemAS : UECSScriptSystem
                 return;
             }
             local_6.Config = local_40.opImplConv();
-            int local_115 = int(::Significance::GetSignificanceValue(local_40.Get(), local_6.SignificanceType, int(local_6.SignificanceOffset)));
+            local_6.Significance = ::Significance::GetSignificanceValue(local_40.Get(), local_6.SignificanceType, int(local_6.SignificanceOffset));
         }
         return;
     }
@@ -61,15 +62,16 @@ class US_SignificanceSystemAS : UECSScriptSystem
         {
             local_114 = FXData.AttachEntity;
         }
-        int local_115 = int(::Significance::GetSignificanceType(local_114));
+        EECSSignificanceType local_115 = ::Significance::GetSignificanceType(local_114);
         FC_Significance local_104;
-        int local_116 = ::Significance::GetSignificanceOffset(local_114, local_104.SignificanceType);
+        local_104.SignificanceType = local_115;
+        local_104.SignificanceOffset = ::Significance::GetSignificanceOffset(local_114, local_104.SignificanceType);
         if (!(local_24.IsSet()))
         {
             return;
         }
         local_104.Config = FXData.BakedData.Significance;
-        int local_117 = int(::Significance::GetSignificanceValue(local_24.Get(), local_104.SignificanceType, int(local_104.SignificanceOffset)));
+        local_104.Significance = ::Significance::GetSignificanceValue(local_24.Get(), local_104.SignificanceType, int(local_104.SignificanceOffset));
         return;
     }
     UFUNCTION()

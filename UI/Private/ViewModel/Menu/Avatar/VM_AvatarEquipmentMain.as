@@ -1801,6 +1801,7 @@ void GetModelInfo(FEUIViewModelMetaInfo &inout Result)
     Result.GeneratedPropertyStruct = __GeneratedProperties_FVM_AvatarEquipmentMain;
     FEUIModelMonitorDefine local_26;
     local_26.FunctionName = "__OnAvatarEquipmentChanged";
+    local_26.MonitorTarget = EEUIModelMonitorTarget(3);
     local_26.ComponentType = FC_DSPlayerAvatarInfo;
     Result.MonitorFunctions.Add(local_26);
     FEUIModelMsgHandleDefine local_38;

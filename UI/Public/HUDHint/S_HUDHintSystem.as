@@ -110,7 +110,180 @@ class US_HUDHintSystem : UECSScriptSystem
     UFUNCTION()
     void ClientJob_HandleBuffHints(const FCE_HUDBuffAddHintEvent &inout Event) const
     {
-        // body not fully recovered — stub [argmismatch:argtype]
+        bool local_69;
+        TArray<FBuffModifierAttributeDescriptionInfos> local_4;
+        int local_100 = 0;
+        const UAttributeSettingsSettings local_330;
+        int local_440 = 0;
+        float32 local_653;
+        const UUtilitySettings local_658;
+        TArray<FTextArgument> local_8;
+        Has local_12;
+        Has local_98;
+        if (!(local_12.opCall()))
+        {
+            if (FDataObjectPtr(TDataObjectPtr<FBuffConfig>(Event.BuffConfig).opArrow().PresentationConfig))
+            {
+                int local_76;
+                int local_64;
+                local_4.Empty(0);
+                local_64 = 0;
+                Has local_68;
+                if (!(Event.BuffEntity.IsValid()) || !(local_68.opCall()))
+                {
+                    return;
+                }
+                for (auto& local_90 : local_76.GetBuffData())
+                {
+                    if (!(FECSEntity(local_90.BuffEntityId).IsValid()) || !(local_98.opCall()))
+                    {
+                        continue;
+                    }
+                    if (!(local_100.GetConfig().IsValid()))
+                    {
+                        continue;
+                    }
+                    if ((local_100.GetConfig().GetBuffName() == Event.BuffConfig.GetBuffName()))
+                    {
+                        local_64 = local_100.GetStackCount();
+                        Make local_114;
+                        local_8.Add(local_114.opImplConv());
+                        local_4 = FBuffUtils::GetBuffModifierAttributeDescriptionInfos(TDataObjectPtr<FBuffConfig>(Event.BuffConfig).Get(), local_64);
+                        break;
+                    }
+                }
+                if (Event.bMetaBuff)
+                {
+                    TArray<uint> local_128;
+                    if (!(::FASCommonUtils::GetUniquePlayerEntity(Event.BuffEntity).IsValid()))
+                    {
+                        local_69 = false;
+                    }
+                    else
+                    {
+                        Has local_136;
+                        local_69 = local_136.opCall();
+                    }
+                    if (local_69)
+                    {
+                        int local_138;
+                        for (auto& local_156 : local_138.GetMetaBuffs())
+                        {
+                            if (local_156.GetMetaBuffConfig().Get().BuffConfig.GetUniqueID() == Event.BuffConfig.GetUniqueID())
+                            {
+                                local_128 = local_156.GetModifiersDataIDs();
+                            }
+                        }
+                        TArray<TDataObjectPtr<FGameplayModifierConfig>> local_164;
+                        for (auto local_177 : local_128)
+                        {
+                            TDataObjectPtr<FGameplayModifierConfig> local_202 = ::FGameplayModifier::GetByDataId(local_177);
+                            if (!((local_202 == nullptr)))
+                            {
+                                local_164.Add(local_202);
+                            }
+                        }
+                        local_4.Append(FGameplayModifierUtils::GetModifierAttributeDescriptionBGameplayModifierConfig(local_164));
+                    }
+                }
+                TDataObjectPtr<FBuffConfig> local_38 = TDataObjectPtr<FBuffConfig>(Event.BuffConfig);
+                Make local_232;
+                local_8.Add(local_232.opImplConv());
+                TDataObjectPtr<FBuffPresentationConfig> local_256;
+                FSoftBrush local_324 = FSoftBrush(local_256.opArrow().IconBrush);
+                TArray<FBuffHintDescParamItem> local_328;
+                GetGameplaySettings<UAttributeSettingsSettings> local_332;
+                local_330 = local_332;
+                if (!(local_256.opArrow().HintDescAdditional.IsEmpty()))
+                {
+                    FBuffHintDescParamItem local_388;
+                    local_388.Icon = local_256.opArrow().HintDescAdditionalIcon;
+                    FString local_392;
+                    FBuffUtils::ParseModifierAttributeFormattedString(local_256.opArrow().HintDescAdditional.ToString(), local_392, TDataObjectPtr<FBuffConfig>(Event.BuffConfig).Get(), local_64);
+                    local_388.Desc = FText::FromString(local_392);
+                    local_388.bAdditional = true;
+                    local_328.Add(local_388);
+                }
+                for (auto& local_414 : local_4)
+                {
+                    if (local_414.bUseDefaultDescription)
+                    {
+                        if (local_330.GetAttributeConfig(local_414.Attribute))
+                        {
+                            FBuffHintDescParamItem local_388;
+                            TDataObjectPtr<FAttributeConfig> local_438 = local_330.GetAttributeConfig(local_414.Attribute);
+                            if (UICommonUtil::CVar_UI_UseAttributePresentation.GetBool())
+                            {
+                                local_388.Icon = local_440.Presentation.GetIcon();
+                            }
+                            else
+                            {
+                                local_388.Icon = local_440.AttributeIcon;
+                            }
+                            TArray<FTextArgument> local_488;
+                            FDataObjectPtr local_518 = local_330.GetAttributeConfig(local_414.Attribute).opImplConv();
+                            Make local_494;
+                            local_488.Add(local_494.opImplConv());
+                            FInstancedStruct local_526 = FInstancedStruct::Make(local_414);
+                            if (local_526.IsValid())
+                            {
+                                local_488.Add(FTextArgument(local_526));
+                                local_388.Desc = ::MessageHintUtils::ParseText(local_256.opArrow().DefaultAttributeDesc, local_488);
+                                local_328.Add(local_388);
+                            }
+                        }
+                    }
+                }
+                FText local_400 = ::MessageHintUtils::ParseText(local_256.opArrow().DefaultLargeHintTile, local_8);
+                FText local_542 = local_256.opArrow().bSmallSideHint ? ::MessageHintUtils::ParseText(local_256.opArrow().DefaultSmallHintTile, local_8) : FText();
+                FBuffHintDescParamItemListParam local_648;
+                local_648._base_FCommonLargeSideHintData = local_324;
+                if (local_400.IsEmpty())
+                {
+                }
+                else
+                {
+                }
+                if (local_256.opArrow().HintLifeTimeOverride > 0.0f)
+                {
+                    local_653 = local_256.opArrow().HintLifeTimeOverride;
+                }
+                else
+                {
+                    local_653 = ::CommonPopupSettings::Get().DefaultLargeSideHintLifetime;
+                }
+                local_648.Lifetime = local_653;
+                local_648.DescList.BuffHintDescParamItem = local_328;
+                if (local_256.opArrow().bLargeSideHint)
+                {
+                    GetGameplaySettings<UUtilitySettings> local_660;
+                    local_658 = local_660;
+                    Make local_676;
+                    ::CommonPopup::LargeHintCustom(local_658.BuffLargeSideHint, local_676.opImplConv(), 0);
+                }
+                FCommonHintParam local_692;
+                local_692.LifetimeOverride = float32(local_648.Lifetime.ToSeconds());
+                bool local_13 = local_256.opArrow().bSmallSideHint;
+                if (local_13)
+                {
+                    if (int((TDataObjectPtr<FBuffConfig>(Event.BuffConfig)).opArrow().ClientPresentationType) == 2)
+                    {
+                        this.SmallHintWithBuffStack(local_648._base_FCommonLargeSideHintData._base_FCommonSideHintData.Icon, local_542, int(TDataObjectPtr<FBuffConfig>(Event.BuffConfig).opArrow().MaxBuffCount), local_64, local_692);
+                    }
+                    for (auto& local_708 : local_648.DescList.BuffHintDescParamItem)
+                    {
+                        ::CommonPopup::SmallHint(local_708.Icon, local_708.Desc, local_692, 0);
+                    }
+                }
+                FCommonTipsParam local_712;
+                local_712.LifetimeOverride = float32(local_648.Lifetime.ToSeconds());
+                if (local_256.opArrow().bTipsHint)
+                {
+                    ::CommonPopup::Tips(local_648.Title, local_712);
+                }
+            }
+        }
+        return;
     }
     UFUNCTION()
     void Job_HandleHealHPEvent(const FCE_HealHpAudioVo &inout Event) const

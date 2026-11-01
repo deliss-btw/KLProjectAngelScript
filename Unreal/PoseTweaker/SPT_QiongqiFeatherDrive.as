@@ -25,17 +25,18 @@ struct FActiveFeatherPair
     UPROPERTY()
     float Scale;
 
+
 }
 
 class USPT_QiongqiFeatherDrive : USkeletalPoseTweaker
 {
     UPROPERTY()
-    TArray<FFeatherDriveConfig> DriveConfigs;
+    TArray<FFeatherDriveConfig> DriveConfigs = {FFeatherDriveConfig(n"Bn_L_BigFeather_B02", n"Bn_L_BigFeatherLow_B", 0.8), FFeatherDriveConfig(n"Bn_L_BigFeather_C02", n"Bn_L_BigFeatherLow_C", 0.7), FFeatherDriveConfig(n"Bn_L_BigFeather_D02", n"Bn_L_BigFeatherLow_D", 0.5), FFeatherDriveConfig(n"Bn_L_BigFeather_E02", n"Bn_L_BigFeatherLow_E", 0.5), FFeatherDriveConfig(n"Bn_L_BigFeather_F02", n"Bn_L_BigFeatherLow_F", 0.3), FFeatherDriveConfig(n"Bn_L_BigFeather_G02", n"Bn_L_BigFeatherLow_G", 0.3), FFeatherDriveConfig(n"Bn_L_BigFeather_H02", n"Bn_L_BigFeatherLow_H", 0.3), FFeatherDriveConfig(n"Bn_L_BigFeather_I02", n"Bn_L_BigFeatherLow_I", 0.3), FFeatherDriveConfig(n"Bn_R_BigFeather_B02", n"Bn_R_BigFeatherLow_B", 0.8), FFeatherDriveConfig(n"Bn_R_BigFeather_C02", n"Bn_R_BigFeatherLow_C", 0.7), FFeatherDriveConfig(n"Bn_R_BigFeather_D02", n"Bn_R_BigFeatherLow_D", 0.5), FFeatherDriveConfig(n"Bn_R_BigFeather_E02", n"Bn_R_BigFeatherLow_E", 0.5), FFeatherDriveConfig(n"Bn_R_BigFeather_F02", n"Bn_R_BigFeatherLow_F", 0.3), FFeatherDriveConfig(n"Bn_R_BigFeather_G02", n"Bn_R_BigFeatherLow_G", 0.3), FFeatherDriveConfig(n"Bn_R_BigFeather_H02", n"Bn_R_BigFeatherLow_H", 0.3), FFeatherDriveConfig(n"Bn_R_BigFeather_I02", n"Bn_R_BigFeatherLow_I", 0.3)};
     TArray<FActiveFeatherPair> ActiveFeatherPairs;
 
     USPT_QiongqiFeatherDrive()
     {
-        // body not fully recovered — stub [opcode-uncovered]
+        return;
     }
     UFUNCTION()
     void OnInitialization_Implementation()

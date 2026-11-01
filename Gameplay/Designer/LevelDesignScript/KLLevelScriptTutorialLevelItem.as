@@ -66,6 +66,7 @@ class AKLLevelScriptTutorialLevelItem : AKLLevelScriptTutorialActor
     TArray<FECSEntityId> ExplodeBarrelRemainingIds;
     int LastStep = 10;
 
+
     UFUNCTION()
     void OnTutorialStep_Implementation(const int InStepIndex)
     {
@@ -155,10 +156,31 @@ class AKLLevelScriptTutorialLevelItem : AKLLevelScriptTutorialActor
         this.RegisterLevelEventCallback(n"OnRemnantSlotChanged", FCE_RemnantSlotChangedEvent, this.PlayerEntity);
         return;
     }
-    FTutorialInfo GetStepInfo(const int InStepIndex)
+    FTutorialInfo& GetStepInfo(const int InStepIndex)
     {
-        // body not fully recovered — stub [opcode-uncovered]
-        FTutorialInfo __r; return __r;
+        switch (InStepIndex)
+        {
+        case 1:
+            return this.Step1Info;
+        case 2:
+            return this.Step2Info;
+        case 3:
+            return this.Step3Info;
+        case 4:
+            return this.Step4Info;
+        case 5:
+            return this.Step5Info;
+        case 6:
+            return this.Step6Info;
+        case 7:
+            return this.Step7Info;
+        case 8:
+            return this.Step8Info;
+        case 9:
+            return this.Step9Info;
+        default:
+            return this.Step10Info;
+        }
     }
     void SetupStep_LifeChain()
     {

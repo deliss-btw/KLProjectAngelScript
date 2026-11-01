@@ -16,15 +16,37 @@ struct FTreasureBoxStateConfig : FDataObject
     {
         return;
     }
-    const FTreasureBoxStateData GetDataRaw(const ETreasureBoxState Value) const
+    const FTreasureBoxStateData& GetDataRaw(const ETreasureBoxState Value) const
     {
-        // body not fully recovered — stub [opcode-uncovered]
-        const FTreasureBoxStateData __r; return __r;
+        switch (int8(Value))
+        {
+        case 1:
+            return this.CoolDown;
+        case 2:
+            return this.Ready;
+        case 3:
+            return this.FirstEncounter;
+        case 4:
+            return this.Opening;
+        default:
+            return this.Default;
+        }
     }
-    FTreasureBoxStateData ModifyDataRaw(const ETreasureBoxState Value)
+    FTreasureBoxStateData& ModifyDataRaw(const ETreasureBoxState Value)
     {
-        // body not fully recovered — stub [opcode-uncovered]
-        FTreasureBoxStateData __r; return __r;
+        switch (int8(Value))
+        {
+        case 1:
+            return this.CoolDown;
+        case 2:
+            return this.Ready;
+        case 3:
+            return this.FirstEncounter;
+        case 4:
+            return this.Opening;
+        default:
+            return this.Default;
+        }
     }
     const FTreasureBoxStateData GetDataRawByName(const FName &inout EnumName) const
     {

@@ -9,8 +9,7 @@ struct FMinimapBorderInfo
 
     bool IsValid() const
     {
-        int local_3 = this.BorderMask == nullptr ? 0 : int(this.BorderWorldPosition.bIsValid);
-        return (local_3 != 0);
+        return (this.BorderMask != nullptr && this.BorderWorldPosition.bIsValid);
     }
 }
 
@@ -130,7 +129,8 @@ bool CheckEntityInsideBorder(const FECSEntity &inout Entity, const FECSEntity &i
             {
                 FKLBorderQueryInfo local_46;
                 local_46.InAgentLocation = local_20.GetPosition();
-                float32 local_47 = local_14.GetRelevantDistance();
+                local_46.InAgentRadius = 1.0f;
+                local_46.InGuardingRadius = local_14.GetRelevantDistance();
                 local_14.Query(local_46);
                 return local_46.OutIsInside;
             }

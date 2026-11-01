@@ -272,14 +272,18 @@ void GetModelInfo(FEUIViewModelMetaInfo &inout Result)
     Result.TickFunction.FunctionName = "__Tick";
     FEUIModelMonitorDefine local_26;
     local_26.FunctionName = "__OnProjectileHealthConfigChanged";
+    local_26.MonitorTarget = EEUIModelMonitorTarget(1);
     local_26.ComponentType = FC_ProjectileHealthConfig;
     local_26.MonitorPropertyName = FName("ValidPawnEntity");
-    int local_2_2 = FVM_HeadsUpDisplayItem_HP::__IndexOf_ValidPawnEntity();
+    int local_30 = FVM_HeadsUpDisplayItem_HP::__IndexOf_ValidPawnEntity();
+    local_26.MonitorPropertyDirtyIndex = int8(local_30);
     Result.MonitorFunctions.Add(local_26);
     local_26.FunctionName = "__OnMiniHPBarConfigChanged";
+    local_26.MonitorTarget = EEUIModelMonitorTarget(1);
     local_26.ComponentType = FC_MiniHPBarConfig;
     local_26.MonitorPropertyName = FName("ValidPawnEntity");
-    int local_2_3 = FVM_HeadsUpDisplayItem_HP::__IndexOf_ValidPawnEntity();
+    int local_30_2 = FVM_HeadsUpDisplayItem_HP::__IndexOf_ValidPawnEntity();
+    local_26.MonitorPropertyDirtyIndex = int8(local_30_2);
     Result.MonitorFunctions.Add(local_26);
     return;
 }

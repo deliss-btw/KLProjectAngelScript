@@ -937,16 +937,16 @@ void GetModelInfo(FEUIViewModelMetaInfo &inout Result)
     Result.GeneratedPropertyStruct = __GeneratedProperties_FVMS_PlayerStatusV2;
     FEUIModelWatcherProperty local_19;
     local_19.PropertyName = FName("HpMaxSource");
-    int local_2_2 = FVMS_PlayerStatusV2::__IndexOf_HpMaxSource();
+    local_19.DirtyBitIndex = FVMS_PlayerStatusV2::__IndexOf_HpMaxSource();
     Result.WatcherProperties.Add(local_19);
     local_19.PropertyName = FName("StaminaRatioSource");
-    int local_2_3 = FVMS_PlayerStatusV2::__IndexOf_StaminaRatioSource();
+    local_19.DirtyBitIndex = FVMS_PlayerStatusV2::__IndexOf_StaminaRatioSource();
     Result.WatcherProperties.Add(local_19);
     local_19.PropertyName = FName("StaminaRecoverFasterTag");
-    int local_2_4 = FVMS_PlayerStatusV2::__IndexOf_StaminaRecoverFasterTag();
+    local_19.DirtyBitIndex = FVMS_PlayerStatusV2::__IndexOf_StaminaRecoverFasterTag();
     Result.WatcherProperties.Add(local_19);
     local_19.PropertyName = FName("StaminaRecoverLowerTag");
-    int local_2_5 = FVMS_PlayerStatusV2::__IndexOf_StaminaRecoverLowerTag();
+    local_19.DirtyBitIndex = FVMS_PlayerStatusV2::__IndexOf_StaminaRecoverLowerTag();
     Result.WatcherProperties.Add(local_19);
     FEUIModelEffectDefine local_26;
     local_26.FunctionName = "SyncPlayerAttributeSources";
@@ -959,6 +959,7 @@ void GetModelInfo(FEUIViewModelMetaInfo &inout Result)
     Result.EffectFunctions.Add(local_26);
     FEUIModelMonitorDefine local_36;
     local_36.FunctionName = "__MonitorPlayerControllerChanged";
+    local_36.MonitorTarget = EEUIModelMonitorTarget(3);
     local_36.ComponentType = FC_PlayerController;
     Result.MonitorFunctions.Add(local_36);
     return;

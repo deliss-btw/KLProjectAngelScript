@@ -52,6 +52,7 @@ class AKLLevelScriptTutorialCombatDouble : AKLLevelScriptTutorialActor
     bool bPendingMobMoveOnly = false;
     bool bPendingMobInvincible = false;
 
+
     UFUNCTION()
     void OnTutorialStep_Implementation(const int InStepIndex)
     {
@@ -149,10 +150,27 @@ class AKLLevelScriptTutorialCombatDouble : AKLLevelScriptTutorialActor
         this.StepConfigKeys[7] = n"CombatTutorialDouble_8_FreePractice";
         return;
     }
-    FTutorialInfo GetStepInfo(const int Step)
+    FTutorialInfo& GetStepInfo(const int Step)
     {
-        // body not fully recovered — stub [opcode-uncovered]
-        FTutorialInfo __r; return __r;
+        switch (Step)
+        {
+        case 2:
+            return this.Step2Info;
+        case 3:
+            return this.Step3Info;
+        case 4:
+            return this.Step4Info;
+        case 5:
+            return this.Step5Info;
+        case 6:
+            return this.Step6Info;
+        case 7:
+            return this.Step7Info;
+        case 8:
+            return this.Step8Info;
+        default:
+            return this.Step1Info;
+        }
     }
     void InitAllStepInfos()
     {

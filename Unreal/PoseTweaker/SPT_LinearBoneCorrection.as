@@ -45,20 +45,18 @@ struct FLinearBoneCorrectionDebugSetting
     FQuat GetRotation()
     {
         FVector local_12 = FVector(1.0, 0.0, 0.0);
-        int local_20 = int(this.RotationAxis);
-        if (local_20 <= 3)
+        switch (int(this.RotationAxis))
         {
-            if (local_20 != 2)
-            {
-                if (local_20 != 3)
-                {
-                }
-            }
-            else
-            {
-                local_12 = FVector(0.0, 1.0, 0.0);
-                local_12 = FVector(0.0, 0.0, 1.0);
-            }
+        case 2:
+        {
+            local_12 = FVector(0.0, 1.0, 0.0);
+            break;
+        }
+        case 3:
+        {
+            local_12 = FVector(0.0, 0.0, 1.0);
+            break;
+        }
         }
         float32 local_22 = FMath::DegreesToRadians(this.AngleDegree);
         return FQuat();

@@ -82,8 +82,8 @@ void GetModelInfo(FEUIModelOnlyMetaInfo &inout Result)
     local_10.ApplySort();
     FEUIModelRefPropertyDirty local_18;
     local_18.PropertyName = FName("Settings");
-    int local_2_2 = FVMS_SettingPage::ModelId;
-    int local_2_3 = local_10.GetMappingDirtyOffset(0);
+    local_18.PropertyModelId = FVMS_SettingPage::ModelId;
+    local_18.MappingDirtyOffset = local_10.GetMappingDirtyOffset(0);
     local_18.RelatedDirtyMask.SetBit(FVMS_SettingPage::__IndexOf_SelectedCategoryIndex(), true);
     Result.ListeningModelRefDirties.Add(local_18);
     FEUIModelDirtyDefine local_28;

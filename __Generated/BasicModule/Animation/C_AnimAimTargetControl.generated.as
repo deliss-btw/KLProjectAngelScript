@@ -6,7 +6,7 @@ namespace __INTENRAL_FC_AnimAimTargetControlHistory_NS
 }
 struct FC_AnimAimTargetControlHistory : FECSComponent
 {
-    TInterpoHistory<FC_AnimAimTargetControl, auto> History;
+    TInterpoHistory<FC_AnimAimTargetControl, 30> History;
 
     FC_AnimAimTargetControlHistory()
     {

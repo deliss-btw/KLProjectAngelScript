@@ -171,6 +171,7 @@ void GetModelInfo(FEUIModelOnlyMetaInfo &inout Result)
     Result.SetbCanDefaultConstruct(true);
     FEUIModelProtoRspDefine local_10;
     local_10.FunctionName = "__GS_OnRewardNotify";
+    local_10.ProtoCmdId = uint16(715);
     Result.ProtoRspDefines.Add(local_10);
     FEUIModelEventDefine local_18;
     local_18.FunctionName = "__OnRewardPopupNotify";

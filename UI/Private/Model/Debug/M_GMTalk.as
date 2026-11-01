@@ -72,6 +72,7 @@ void GetModelInfo(FEUIModelOnlyMetaInfo &inout Result)
     Result.SetbCanDefaultConstruct(true);
     FEUIModelProtoRspDefine local_10;
     local_10.FunctionName = "__GS_OnGMTalkResponse";
+    local_10.ProtoCmdId = uint16(207);
     Result.ProtoRspDefines.Add(local_10);
     return;
 }

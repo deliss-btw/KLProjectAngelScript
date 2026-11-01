@@ -88,6 +88,7 @@ namespace UWidget_LocalPlayerUid
 void GetModelInfo(FEUIWidgetMetaInfo &inout Result)
 {
     Result.WidgetType = UWidget_LocalPlayerUid;
+    Result.ObservedModelChangesSubscriberCount = 1;
     Result.ObservedModelChangesSubscriberNames.Add(FString("RefreshUid"));
     return;
 }

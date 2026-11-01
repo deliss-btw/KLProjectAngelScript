@@ -95,6 +95,7 @@ namespace UWidget_ExitLevel
 void GetModelInfo(FEUIWidgetMetaInfo &inout Result)
 {
     Result.WidgetType = UWidget_ExitLevel;
+    Result.ObservedModelChangesSubscriberCount = 1;
     Result.ObservedModelChangesSubscriberNames.Add(FString("OnWillAutoLeaveLevelChanged"));
     return;
 }

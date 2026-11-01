@@ -832,6 +832,7 @@ namespace UWidget_CommonHoverItemTips
 void GetModelInfo(FEUIWidgetMetaInfo &inout Result)
 {
     Result.WidgetType = UWidget_CommonHoverItemTips;
+    Result.ObservedModelChangesSubscriberCount = 4;
     Result.ObservedModelChangesSubscriberNames.Add(FString("OnDisplayTipChanged"));
     Result.ObservedModelChangesSubscriberNames.Add(FString("OnOperationListShowStateChanged"));
     Result.ObservedModelChangesSubscriberNames.Add(FString("OnDisplayTipActionFingerprintChanged"));

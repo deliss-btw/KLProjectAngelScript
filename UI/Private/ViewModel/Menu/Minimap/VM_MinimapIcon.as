@@ -67,7 +67,7 @@ struct FVM_MinimapIcon : FEUIViewModel
     }
     void HandleSelectionChanged(const FMsg_OnItemSelectionChanged &inout Changed)
     {
-        this.SetbIsSelected((int(Changed.bIsSelected) != 0));
+        this.SetbIsSelected(Changed.bIsSelected);
         return;
     }
     void HandleSpotChanged(const FMsg_SpotPresentationDataModified &inout Msg)
@@ -212,7 +212,7 @@ void GetModelInfo(FEUIViewModelMetaInfo &inout Result)
     Result.GeneratedPropertyStruct = __GeneratedProperties_FVM_MinimapIcon;
     FEUIModelMetaPropertyModelRef local_19;
     local_19.PropertyName = FName("Spot");
-    int local_2_2 = FM_Spot::ModelId;
+    local_19.PropertyRefModelTypeId = FM_Spot::ModelId;
     Result.FunctionalPropertyModelRefs.Add(local_19);
     FEUIModelMsgHandleDefine local_32;
     local_32.FunctionName = "__HandleSelectionChanged";

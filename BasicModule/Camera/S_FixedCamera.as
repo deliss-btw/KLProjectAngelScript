@@ -10,7 +10,7 @@ class US_FixedCameraSystem : UECSScriptSystem
         FQuat4f local_20 = FQuat4f::Slerp(FixedA._base_FCameraRuntimeDataBasic.Rotation.Quaternion(), FixedB._base_FCameraRuntimeDataBasic.Rotation.Quaternion(), WeightToB);
         FinalData.Rotation = local_20.Rotator();
         FinalData.Rotation.Roll = 0.0f;
-        float32 local_24 = FMath::Lerp(FixedA._base_FCameraRuntimeDataBasic.FOV, FixedB._base_FCameraRuntimeDataBasic.FOV, WeightToB);
+        FinalData.FOV = FMath::Lerp(FixedA._base_FCameraRuntimeDataBasic.FOV, FixedB._base_FCameraRuntimeDataBasic.FOV, WeightToB);
         return;
     }
     void LerpAsFixedCamera(const FFixedCameraPresentationData &inout FixedA, const FFixedCameraPresentationData &inout FixedB, FCameraResult &inout FinalData, const float32 WeightToB) const
@@ -19,16 +19,28 @@ class US_FixedCameraSystem : UECSScriptSystem
         FQuat4f local_20 = FQuat4f::Slerp(FixedA._base_FFixedCameraData.Rotation.Quaternion(), FixedB._base_FFixedCameraData.Rotation.Quaternion(), WeightToB);
         FinalData.Rotation = local_20.Rotator();
         FinalData.Rotation.Roll = 0.0f;
-        float32 local_24 = FMath::Lerp(FixedA._base_FFixedCameraData.FOV, FixedB._base_FFixedCameraData.FOV, WeightToB);
+        FinalData.FOV = FMath::Lerp(FixedA._base_FFixedCameraData.FOV, FixedB._base_FFixedCameraData.FOV, WeightToB);
         return;
     }
     void BlendToFixedCamera(const FFixedCameraData &inout FixedCamera, FCameraInstancedData &inout LastCameraData, FCameraInstancedData &inout CurrentCameraData, const float32 CameraWeight) const
     {
-        // body not fully recovered — stub [argmismatch:argtype]
+        if (int(LastCameraData.RunningCameraType) == 2)
+        {
+            this.LerpAsFixedCamera(LastCameraData.GetFixedCamera().CameraRuntimeData, FixedCamera, CurrentCameraData.CameraResult, CameraWeight);
+            return;
+        }
+        ::PresentationCameraUtils::GenericLerp(LastCameraData.CameraResult, FixedCamera._base_FCameraRuntimeDataBasic.CameraResult, CurrentCameraData.CameraResult, CameraWeight);
+        return;
     }
     void BlendToFixedCamera(const FFixedCameraPresentationData &inout FixedCamera, FCameraInstancedData &inout LastCameraData, FCameraInstancedData &inout CurrentCameraData, const float32 CameraWeight) const
     {
-        // body not fully recovered — stub [argmismatch:argtype]
+        if (int(LastCameraData.RunningCameraType) == 2)
+        {
+            this.LerpAsFixedCamera(LastCameraData.GetFixedCamera().CameraRuntimeData, FixedCamera, CurrentCameraData.CameraResult, CameraWeight);
+            return;
+        }
+        ::PresentationCameraUtils::GenericLerp(LastCameraData.CameraResult, FixedCamera._base_FFixedCameraData._base_FCameraRuntimeDataBasic.CameraResult, CurrentCameraData.CameraResult, CameraWeight);
+        return;
     }
     UFUNCTION()
     void ClientJob_UpdateFixedCamera(const FECSEntity &inout Entity, const FCS_LocalPlayer &inout LocalPlayer) const

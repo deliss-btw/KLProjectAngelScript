@@ -13,7 +13,7 @@ class UEQT_IsUnderSky : UEnvQueryTest_ECS_BlueprintBase
         int local_2 = 0;
         int local_1 = local_2;
         FVector local_14 = Item.GetItemLocation();
-        FECSEntity local_18 = FECSEntity(Context.QueryEntity);
+        FECSEntity local_18 = Context.QueryEntity;
         if (::FASCommonUtils::IsLocationUnderSky(local_14, Context.QueryEntity))
         {
             Item.SetScore(1.0f);

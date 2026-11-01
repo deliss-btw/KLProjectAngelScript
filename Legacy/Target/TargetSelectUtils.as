@@ -25,42 +25,40 @@ void RemoveSelectTargetEntityByViewportRequest(const FECSEntity &inout Entity, c
             TConstRawPtr<FSelectTargetRuntimeData> local_12 = local_6.GetDataByRequestName().Find(RequestName);
             if (local_12)
             {
-                int local_14 = int(local_12.Get().GetRequestType());
-                if (local_14 <= 1)
+                switch (int(local_12.Get().GetRequestType()))
                 {
-                    if (local_14 != 0)
+                case 0:
+                {
+                    if (local_22)
                     {
-                        if (local_14 != 1)
+                        FSelectTargetResult& local_24 = local_22.GetModify_TargetEntitiesByRequestName().FindOrAdd(RequestName);
+                        local_24.SetExpireTime((FFPTime(Entity.GetWorld().GetFixedTime().Time) + ResultExpireTime));
+                        FFPTime local_28 = FFPTime(local_22.GetNextExpireTime());
+                        if (local_28.opCmp(0.0) < 0 || (FFPTime(local_22.GetNextExpireTime()).opCmp(local_24.GetExpireTime()) > 0))
                         {
+                            local_22.SetNextExpireTime(local_24.GetExpireTime());
                         }
                     }
-                    else
+                    break;
+                }
+                case 1:
+                {
+                    Get local_38;
+                    const FC_Skill& local_40 = local_38.opCall();
+                    if (local_40)
                     {
-                        if (local_22)
+                        if (local_40.GetSkillInstanceEntity(FSkillUtils::GetSkillIndex(Entity, RequestName)))
                         {
-                            FSelectTargetResult& local_24 = local_22.GetModify_TargetEntitiesByRequestName().FindOrAdd(RequestName);
-                            local_24.SetExpireTime((FFPTime(Entity.GetWorld().GetFixedTime().Time) + ResultExpireTime));
-                            FFPTime local_28 = FFPTime(local_22.GetNextExpireTime());
-                            if (local_28.opCmp(0.0) < 0 || (FFPTime(local_22.GetNextExpireTime()).opCmp(local_24.GetExpireTime()) > 0))
+                            Modify local_54;
+                            FC_SkillTarget& local_56 = local_54.opCall();
+                            if (local_56)
                             {
-                                local_22.SetNextExpireTime(local_24.GetExpireTime());
-                            }
-                        }
-                        Get local_38;
-                        const FC_Skill& local_40 = local_38.opCall();
-                        if (local_40)
-                        {
-                            if (local_40.GetSkillInstanceEntity(FSkillUtils::GetSkillIndex(Entity, RequestName)))
-                            {
-                                Modify local_54;
-                                FC_SkillTarget& local_56 = local_54.opCall();
-                                if (local_56)
-                                {
-                                    local_56.GetModify_TargetEntities().Reset(0);
-                                }
+                                local_56.GetModify_TargetEntities().Reset(0);
                             }
                         }
                     }
+                    break;
+                }
                 }
             }
         }

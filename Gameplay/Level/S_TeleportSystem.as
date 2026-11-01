@@ -1384,8 +1384,7 @@ class US_TeleportSystemAS : UECSScriptSystem
             this.FailOpenSameDSTeleportBarrier(Entity, Transaction.Serial, "GuardReadyTimeout");
             return;
         }
-        FFPTime local_14 = FFPTime(FixedTime.Time);
-        if (local_14.opCmp(Transaction.ForceCloseTime) < 0)
+        if (FixedTime.Time.opCmp(Transaction.ForceCloseTime) < 0)
         {
             return;
         }

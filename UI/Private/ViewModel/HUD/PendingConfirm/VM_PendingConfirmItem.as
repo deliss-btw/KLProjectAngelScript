@@ -482,7 +482,7 @@ void GetModelInfo(FEUIViewModelMetaInfo &inout Result)
     Result.GeneratedPropertyStruct = __GeneratedProperties_FVM_PendingConfirmItem;
     FEUIModelWatcherProperty local_19;
     local_19.PropertyName = FName("TimeProgress");
-    int local_2_2 = FVM_PendingConfirmItem::__IndexOf_TimeProgress();
+    local_19.DirtyBitIndex = FVM_PendingConfirmItem::__IndexOf_TimeProgress();
     Result.WatcherProperties.Add(local_19);
     return;
 }

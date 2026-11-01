@@ -71,19 +71,28 @@ FECSEntity GetInstrumentTargetEntity(const FECSEntity &inout Entity)
 UFUNCTION()
 FName GetInstrumentIdFromSubType(const EInteractionSubTypeForESM SubType)
 {
-
-    switch (int8(SubType))
+    switch (int(SubType))
     {
     case 24:
+    {
         return n"Piano";
+    }
     case 55:
+    {
         return n"WeavingOud";
-    case 56:
-        return n"VitalityDrum";
+    }
     case 57:
+    {
         return n"NetFlute";
+    }
     case 58:
+    {
         return n"FuXiString";
+    }
+    case 56:
+    {
+        return n"VitalityDrum";
+    }
     }
     return n"None";
 }

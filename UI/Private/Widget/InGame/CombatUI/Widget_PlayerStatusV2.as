@@ -354,6 +354,7 @@ namespace UWidget_PlayerStatusV2
 void GetModelInfo(FEUIWidgetMetaInfo &inout Result)
 {
     Result.WidgetType = UWidget_PlayerStatusV2;
+    Result.ObservedModelChangesSubscriberCount = 6;
     Result.ObservedModelChangesSubscriberNames.Add(FString("HandlePlayerHpBarScaleChanged"));
     Result.ObservedModelChangesSubscriberNames.Add(FString("HandlePlayerStaminaBarScaleChanged"));
     Result.ObservedModelChangesSubscriberNames.Add(FString("HandlePlayerPawnIndexChanged"));

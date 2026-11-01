@@ -428,10 +428,12 @@ void GetModelInfo(FEUIViewModelMetaInfo &inout Result)
     Result.GeneratedPropertyStruct = __GeneratedProperties_FVM_Minimap;
     FEUIModelMonitorDefine local_26;
     local_26.FunctionName = "__OnActiveBordersChanged";
+    local_26.MonitorTarget = EEUIModelMonitorTarget(2);
     local_26.ComponentType = FCS_ActiveBorders;
     Result.MonitorFunctions.Add(local_26);
     Result.TickFunction.FunctionName = "__Tick";
     local_26.FunctionName = "__OnGuidingPathChange";
+    local_26.MonitorTarget = EEUIModelMonitorTarget(3);
     local_26.ComponentType = FC_GuidingMinimapPath;
     Result.MonitorFunctions.Add(local_26);
     return;

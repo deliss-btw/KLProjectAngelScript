@@ -15,6 +15,7 @@ struct FKLFlowEvent_EntityLifecycle : FKLFlowEvent_Base
     UPROPERTY()
     FKLFlowECSEntityId TargetEntityId;
 
+
 }
 
 struct FKLFlowNodeMemory_ListenSingleEntity
@@ -27,6 +28,7 @@ struct FKLFlowNodeMemory_ListenSingleEntity
     int HandleDestroy = 0;
     UPROPERTY()
     bool bIsActive = false;
+
 
 }
 
@@ -59,7 +61,9 @@ struct FKLFlowNode_ListenSingleEntity : FKLFlowNode
     }
     void OnBuild_Implementation()
     {
-        // body not fully recovered — stub [opcode-uncovered]
+        this.InputPins = {ListenSingleEntityPins::Activate, ListenSingleEntityPins::Deactivate};
+        this.OutputPins = {ListenSingleEntityPins::Out, ListenSingleEntityPins::OnEntityReady, ListenSingleEntityPins::OnEntityDie, ListenSingleEntityPins::OnEntityDestroy};
+        return;
     }
     void OnInit_Implementation()
     {

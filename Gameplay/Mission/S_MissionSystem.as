@@ -399,21 +399,21 @@ class US_MissionSystem : UECSScriptSystem
             TDataObjectPtr<FObjectiveConfig> local_42 = local_16.GetActivePhaseConfig().Get().GetObjective();
             if (local_42.IsSet() && (local_42.Get().DataId == ObjectiveId))
             {
-                int local_18 = int(ObjectiveStatus);
-                if (local_18 <= 3)
+                switch (int(ObjectiveStatus))
                 {
-                    if (local_18 != 2)
-                    {
-                        if (local_18 != 3)
-                        {
-                        }
-                    }
-                    else
-                    {
-                        return EMissionStatus(2);
-                    }
+                case 2:
+                {
+                    return EMissionStatus(2);
+                }
+                case 3:
+                {
+                    return EMissionStatus(3);
+                }
                 }
                 return EMissionStatus(1);
+            }
+            else
+            {
             }
         }
         return EMissionStatus(1);

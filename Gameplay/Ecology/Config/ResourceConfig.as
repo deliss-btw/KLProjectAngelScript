@@ -77,7 +77,7 @@ struct FSingleResourceConfig : FEcologyResourceConfig
         int local_248 = 0;
         int local_250 = 0;
         int local_262 = 0;
-        FECSEntity local_4 = FECSEntity(Context.OuterEntity);
+        FECSEntity local_4 = Context.OuterEntity;
         FECSEntity local_14 = ECS::GetECSWorld().Create(EECSRegType(2), EEntityType(10), n"EcologyResourceProvider");
         FConfigReference local_90 = FConfigReference(local_4.GetId());
         FC_EcologyResourceProviderSummary local_88;
@@ -126,7 +126,7 @@ struct FResourceAreaConfig : FEcologyResourceConfig
     FECSEntity GenerateRuntimeEntity_Implementation(const FEcologyConfigGenerateContext &inout Context) const
     {
         int local_88 = 0;
-        FECSEntity local_4 = FECSEntity(Context.OuterEntity);
+        FECSEntity local_4 = Context.OuterEntity;
         FECSEntity local_14 = ECS::GetECSWorld().Create(EECSRegType(2), EEntityType(10), n"EcologyResourceProvider");
         FConfigReference local_90 = FConfigReference(local_4.GetId());
         local_88.ResourceType = this.ResourceType;

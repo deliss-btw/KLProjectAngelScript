@@ -749,13 +749,13 @@ void GetModelInfo(FEUIViewModelMetaInfo &inout Result)
     Result.GeneratedPropertyStruct = __GeneratedProperties_FVM_WorldEventMinimapIcon;
     FEUIModelWatcherProperty local_19;
     local_19.PropertyName = FName("StatusCountdown");
-    int local_2_2 = FVM_WorldEventMinimapIcon::__IndexOf_StatusCountdown();
+    local_19.DirtyBitIndex = FVM_WorldEventMinimapIcon::__IndexOf_StatusCountdown();
     Result.WatcherProperties.Add(local_19);
     local_19.PropertyName = FName("InProgressElapsed");
-    int local_2_3 = FVM_WorldEventMinimapIcon::__IndexOf_InProgressElapsed();
+    local_19.DirtyBitIndex = FVM_WorldEventMinimapIcon::__IndexOf_InProgressElapsed();
     Result.WatcherProperties.Add(local_19);
     local_19.PropertyName = FName("StatusProgress");
-    int local_2_4 = FVM_WorldEventMinimapIcon::__IndexOf_StatusProgress();
+    local_19.DirtyBitIndex = FVM_WorldEventMinimapIcon::__IndexOf_StatusProgress();
     Result.WatcherProperties.Add(local_19);
     FEUIModelEffectDefine local_26;
     local_26.FunctionName = "RefreshEventTimeWatchers";

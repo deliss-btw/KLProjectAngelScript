@@ -147,7 +147,7 @@ class UESMAction_AimControl : UESMBPBaseSpanTickAction
                     if (local_116.bActive)
                     {
                         FFPTime local_134;
-                        if (FFPTime(local_116.TriggerTime).opCmp(Time.WorldLastTime) > 0)
+                        if (local_116.TriggerTime.opCmp(Time.WorldLastTime) > 0)
                         {
                             local_134 = local_116.TriggerTime;
                         }

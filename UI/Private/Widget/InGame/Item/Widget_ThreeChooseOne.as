@@ -99,6 +99,7 @@ namespace UWidget_ThreeChooseOne
 void GetModelInfo(FEUIWidgetMetaInfo &inout Result)
 {
     Result.WidgetType = UWidget_ThreeChooseOne;
+    Result.ObservedModelChangesSubscriberCount = 1;
     Result.ObservedModelChangesSubscriberNames.Add(FString("OnHandleClose"));
     return;
 }

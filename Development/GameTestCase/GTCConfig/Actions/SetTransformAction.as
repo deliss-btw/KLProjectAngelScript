@@ -10,6 +10,7 @@ struct FGTCSetTransformAction : FGTCAction
 
     FGTCSetTransformAction()
     {
+        this.ActionType = EGTCActionType(1);
         this.__InitDefaults();
         return;
     }

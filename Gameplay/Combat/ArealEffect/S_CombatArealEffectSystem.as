@@ -795,7 +795,7 @@ class US_CombatArealEffectSystem : UECSScriptSystem
             FFPTime local_2_2 = FFPTime(Runtime.GetNextCheckTime());
             if (local_2_2.opCmp(0.0) <= 0)
             {
-                FFPTime local_2_3 = FFPTime(FixedTime.Time);
+                FFPTime local_2_3 = FixedTime.Time;
                 local_60 = ConfigData.AreaData.GetRangeCheckInterval();
                 Runtime.SetNextCheckTime((local_2_3 + FFPTime(local_60)));
             }

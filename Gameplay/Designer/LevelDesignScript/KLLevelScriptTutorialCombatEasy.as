@@ -451,7 +451,7 @@ class AKLLevelScriptTutorialCombatEasy : AKLLevelScriptTutorialActor
     UFUNCTION()
     void OnLockEvent(const FCE_LockTargetChangeEvent &inout Event)
     {
-        FECSEntity local_4 = FECSEntity(Event.TargetEntity);
+        FECSEntity local_4 = Event.TargetEntity;
         if (this.CurrentStep == 1)
         {
             if (!(this.LastLockTarget.IsValid()) && local_4.IsValid())

@@ -97,7 +97,7 @@ int SpawnProjectileEvent(const FECSEntity &inout OwnerEntity, const FFPTime &ino
         {
             local_74.ProjectileEntity = local_18;
             local_74.PoolType = local_20 != nullptr ? int(local_20.GetEntityPoolType()) : -1;
-            local_74.AttackInfo.HitType = (2 != 0);
+            local_74.AttackInfo.HitType = EHitRecordType(2);
             local_74.AttackInfo.AttackData = FireConfig.AttackDataConfig;
             local_74.FireConfig = FFireProjectileData(FireConfig);
             local_74.FireConfig.SetbLocalPrediction(local_21);
@@ -187,14 +187,14 @@ bool CalculateProjectileSpawnTransform(const FECSEntity &inout Sender, const FFP
             }
         }
     }
-    switch (int(FireConfig.GetSpawnRotationType()))
+    switch (FireConfig.GetSpawnRotationType())
     {
-    case 0:
+    case EProjectileSpawnRotationType::EntityRotation:
     {
         SpawnRotation = (FQuat4f(SenderWorldTrans.GetRotation()) * FireConfig.GetRotationOffset().Quaternion());
         break;
     }
-    case 1:
+    case EProjectileSpawnRotationType::SocketRotation:
     {
         if (local_8)
         {
@@ -206,7 +206,7 @@ bool CalculateProjectileSpawnTransform(const FECSEntity &inout Sender, const FFP
         }
         break;
     }
-    case 2:
+    case EProjectileSpawnRotationType::WorldSpace:
     {
         SpawnRotation = FireConfig.GetRotationOffset().Quaternion();
         break;

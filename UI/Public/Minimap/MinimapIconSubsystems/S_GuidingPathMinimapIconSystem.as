@@ -168,6 +168,7 @@ class US_GuidingPathMinimapIconSystem : UECSScriptSystem
         local_48.DisplaySettings = this.IconDisplaySettings;
         local_48.IconSize = this.IconSize;
         local_48.WorldPosition = WorldPosition;
+        local_48.ZOrder = this.ZOrder;
         FInstancedStruct::InitializeAs(local_48.UserData).opCall(Creater);
         return this.IconRegistry.GetDefaultObject().GetIconRegistry(__GetWorldContext()).AddIcon(local_48);
     }

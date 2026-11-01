@@ -340,8 +340,37 @@ struct FHermiteCurveSpline
     }
     float GetLength(const float32 ParamT) const
     {
-        // body not fully recovered — stub [opcode-uncovered]
-        float __r; return __r;
+        float32 local_4 = FMath::Clamp(ParamT, 0.0f, 1.0f);
+        TArray<FLegendreGaussCoefficient> local_8 = {FLegendreGaussCoefficient(0.0f, 0.5688889f), FLegendreGaussCoefficient(-0.5384693f, 0.47862867f), FLegendreGaussCoefficient(0.5384693f, 0.47862867f), FLegendreGaussCoefficient(-0.90617985f, 0.23692688f), FLegendreGaussCoefficient(0.90617985f, 0.23692688f)};
+        FCurveParamValue local_34 = this.Eval(0.0);
+        FCurveParamValue local_54 = this.Eval(local_4);
+        FVector local_80 = local_34.Location;
+        FVector local_86 = local_54.Location;
+        FVector local_92 = local_34.Tangent;
+        FVector local_98 = local_54.Tangent;
+        FVector local_110 = (local_80 - local_86);
+        FVector local_110_2 = ((local_110 * 2.0) + local_92);
+        FVector local_116_2 = (local_110_2 + local_98);
+        FVector local_110_3 = (local_116_2 * 3.0);
+        FVector local_116_3 = (local_86 - local_80);
+        FVector local_104 = (local_116_3 * 6.0);
+        FVector local_116_4 = (local_92 * 4.0);
+        FVector local_128 = (local_104 - local_116_4);
+        FVector local_116_5 = (local_98 * 2.0);
+        FVector local_104_2 = (local_128 - local_116_5);
+        FVector local_134 = local_92;
+        float32 local_2 = local_4 * 0.5f;
+        float local_138 = 0.0;
+        for (auto& local_154 : local_8)
+        {
+            float32 local_3 = local_2 * (local_154.Abscissa + 1.0f);
+            FVector local_122 = (local_110_3 * local_3);
+            FVector local_128_2 = (local_122 + local_104_2);
+            local_122 = (local_128_2 * local_3);
+            local_138 = local_138 + (((local_122 + local_134).Size()) * local_154.Weight);
+        }
+        local_138 = local_138 * local_2;
+        return local_138;
     }
     FVector ProjectNormalToTangentPlane(const FVector &inout RefUp, const FVector &inout Tangent, const FVector &inout PrevNormal) const
     {
@@ -356,8 +385,28 @@ struct FHermiteCurveSpline
     }
     float ComputeHermiteArcLength(const FVector &inout P0, const FVector &inout P1, const FVector &inout T0, const FVector &inout T1) const
     {
-        // body not fully recovered — stub [opcode-uncovered]
-        float __r; return __r;
+        TArray<FLegendreGaussCoefficient> local_4 = {FLegendreGaussCoefficient(0.0f, 0.5688889f), FLegendreGaussCoefficient(-0.5384693f, 0.47862867f), FLegendreGaussCoefficient(0.5384693f, 0.47862867f), FLegendreGaussCoefficient(-0.90617985f, 0.23692688f), FLegendreGaussCoefficient(0.90617985f, 0.23692688f)};
+        FVector local_22 = (P0 - P1);
+        FVector local_22_2 = ((local_22 * 2.0) + T0);
+        FVector local_30_2 = (local_22_2 + T1);
+        FVector local_22_3 = (local_30_2 * 3.0);
+        FVector local_30_3 = (P1 - P0);
+        FVector local_16 = (local_30_3 * 6.0);
+        FVector local_30_4 = (T0 * 4.0);
+        FVector local_42 = (local_16 - local_30_4);
+        FVector local_30_5 = (T1 * 2.0);
+        FVector local_16_2 = (local_42 - local_30_5);
+        int64 local_50 = 4602678819172646912;
+        float local_52 = 0.0;
+        for (auto& local_68 : local_4)
+        {
+            float local_70 = ((local_68.Abscissa + 1.0f) * 0.5f);
+            FVector local_42_2 = ((local_22_3 * local_70) + local_16_2);
+            FVector local_30_6 = (local_42_2 * local_70);
+            local_52 = local_52 + (((local_30_6 + T0).Size()) * local_68.Weight);
+        }
+        local_52 = local_52 * 0.5;
+        return local_52;
     }
     float SolveTangentScale(const FVector &inout P0, const FVector &inout P1, const FVector &inout T0, const FVector &inout T1, const float DesiredLength, const int Iterations = 16, const float MaxScale = 10.0) const
     {
@@ -428,6 +477,7 @@ struct FHermite2DPoint
     FVector2D Location;
     UPROPERTY()
     FVector2D Tangent;
+
 
     float32 GetAngle() const
     {
@@ -575,8 +625,28 @@ struct FHermiteCurve2D
     }
     float ComputeArcLength2D(const FVector2D &inout P0, const FVector2D &inout P1, const FVector2D &inout T0, const FVector2D &inout T1) const
     {
-        // body not fully recovered — stub [opcode-uncovered]
-        float __r; return __r;
+        TArray<FLegendreGaussCoefficient> local_4 = {FLegendreGaussCoefficient(0.0f, 0.5688889f), FLegendreGaussCoefficient(-0.5384693f, 0.47862867f), FLegendreGaussCoefficient(0.5384693f, 0.47862867f), FLegendreGaussCoefficient(-0.90617985f, 0.23692688f), FLegendreGaussCoefficient(0.90617985f, 0.23692688f)};
+        FVector2D local_18 = (P0 - P1);
+        FVector2D local_18_2 = ((local_18 * 2.0) + T0);
+        FVector2D local_24_2 = (local_18_2 + T1);
+        FVector2D local_18_3 = (local_24_2 * 3.0);
+        FVector2D local_24_3 = (P1 - P0);
+        FVector2D local_14 = (local_24_3 * 6.0);
+        FVector2D local_24_4 = (T0 * 4.0);
+        FVector2D local_32 = (local_14 - local_24_4);
+        FVector2D local_24_5 = (T1 * 2.0);
+        FVector2D local_14_2 = (local_32 - local_24_5);
+        int64 local_38 = 4602678819172646912;
+        float local_40 = 0.0;
+        for (auto& local_56 : local_4)
+        {
+            float local_58 = ((local_56.Abscissa + 1.0f) * 0.5f);
+            FVector2D local_32_2 = ((local_18_3 * local_58) + local_14_2);
+            FVector2D local_24_6 = (local_32_2 * local_58);
+            local_40 = local_40 + (((local_24_6 + T0).Size()) * local_56.Weight);
+        }
+        local_40 = local_40 * 0.5;
+        return local_40;
     }
     float SolveP1X(const FVector2D &inout P0, const FVector2D &inout T0, const FVector2D &inout Target2D, const float P1_Lateral, const float TailIntensity, const float DesiredLength, const int Iterations = 16)
     {

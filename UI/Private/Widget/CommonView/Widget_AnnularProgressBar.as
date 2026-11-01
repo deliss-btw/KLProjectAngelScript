@@ -100,6 +100,7 @@ namespace UWidget_AnnularProgressBar
 void GetModelInfo(FEUIWidgetMetaInfo &inout Result)
 {
     Result.WidgetType = UWidget_AnnularProgressBar;
+    Result.ObservedModelChangesSubscriberCount = 1;
     Result.ObservedModelChangesSubscriberNames.Add(FString("SetProgress"));
     return;
 }

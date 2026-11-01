@@ -227,8 +227,7 @@ FRotator3f CalculatePresentationLookAtDirectionWithState(const FVector &inout Pa
         local_13 = local_17.Z;
         if ((local_17.X == 0.0f && ((local_17.Y == 0.0f))))
         {
-            float32 local_11_2 = LookAtConfig.MinDistanceProtectionForPitch;
-            local_17 = (BaseDirForPitchProtection.Vector() * local_11_2);
+            local_17 = (BaseDirForPitchProtection.Vector() * LookAtConfig.MinDistanceProtectionForPitch);
         }
         else
         {
@@ -238,10 +237,10 @@ FRotator3f CalculatePresentationLookAtDirectionWithState(const FVector &inout Pa
     FRotator3f local_40;
     if (LookAtConfig.LookAtYawOffsetRadiusRatio != 1.0f)
     {
-        float32 local_11_4 = 1.0f;
-        float32 local_14_2 = local_11_4 - LookAtConfig.LookAtYawOffsetRadiusRatio;
+        float32 local_11_2 = 1.0f;
+        float32 local_14_2 = local_11_2 - LookAtConfig.LookAtYawOffsetRadiusRatio;
         FVector3f local_20_2 = (local_17 + (local_9 * local_14_2));
-        local_11_4 = local_17.ToOrientationRotator().Pitch;
+        local_11_2 = local_17.ToOrientationRotator().Pitch;
         local_14_2 = local_20_2.ToOrientationRotator().Yaw;
     }
     else
@@ -303,8 +302,8 @@ void ApplyPresentationSpringArmLookAtSmooth(const FVector &inout Position, const
     LookAtMod.bHasBaseDir = true;
     float32 local_17 = 1.0f;
     float32 local_19 = 1.0f;
-    FCameraBlendSpeed local_23 = FCameraBlendSpeed(LookAtConfig.LookAtYawSpeed);
-    FCameraBlendSpeed local_27 = FCameraBlendSpeed(LookAtConfig.LookAtPitchSpeed);
+    FCameraBlendSpeed local_23 = LookAtConfig.LookAtYawSpeed;
+    FCameraBlendSpeed local_27 = LookAtConfig.LookAtPitchSpeed;
     if (LookAtTargetConfig.GetbOverrideLockYawTolerance())
     {
         local_18 = LookAtTargetConfig.OverrideYawTolerance;

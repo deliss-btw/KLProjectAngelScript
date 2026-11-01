@@ -299,6 +299,7 @@ void GetModelInfo(FEUIViewModelMetaInfo &inout Result)
     Result.DirtyFunctions.Add(local_24);
     FEUIModelMonitorDefine local_34;
     local_34.FunctionName = "__OnAvatarEquipmentChanged";
+    local_34.MonitorTarget = EEUIModelMonitorTarget(3);
     local_34.ComponentType = FC_DSPlayerAvatarInfo;
     Result.MonitorFunctions.Add(local_34);
     return;

@@ -27,27 +27,27 @@ int CalcVisibilityPriority(const FECSEntity &inout Target, const FAIVisibilityPr
         }
         else
         {
-            switch (int(FASCommonUtils::GetMonsterRank(Target)))
+            switch (FASCommonUtils::GetMonsterRank(Target))
             {
-            case 2:
+            case EMonsterRank(2):
             {
                 int local_2_4 = 2;
                 local_1 = local_2_4;
                 break;
             }
-            case 1:
+            case EMonsterRank(1):
             {
                 int local_2_5 = 3;
                 local_1 = local_2_5;
                 break;
             }
-            case 0:
+            case EMonsterRank(0):
             {
                 int local_2_6 = 4;
                 local_1 = local_2_6;
                 break;
             }
-            case 3:
+            case EMonsterRank(3):
             {
                 int local_2_7 = 5;
                 local_1 = local_2_7;
@@ -155,8 +155,16 @@ void InvalidateVisibilityCache(FC_AIVisibilityCache &inout VisCache, const FTarg
 }
 bool DoVisibilityLineTrace(const FECSEntity &inout Source, const FVector &inout SourcePos, const FVector &inout TargetPos, const uint TargetEntityId)
 {
-    // body not fully recovered — stub [opcode-uncovered]
-    bool __r; return __r;
+    FVector local_28 = (TargetPos + FVector(0.0, 0.0, (FMath::RandRange(0.0f, 20.0f))));
+    FHitResult local_94;
+    TArray<uint> local_102 = {Source.GetIdValue()};
+    FCollisionQueryParams local_144;
+    local_144.bTraceComplex = false;
+    local_144.AddIgnoredActors(TArray<AActor>());
+    local_144.AddIgnoredEntityIds(local_102);
+    FCollisionResponseParams local_156;
+    bool local_158 = FPhysicsUtils::LineTraceSingle(Source, false, EPhysicsTraceTag(15), local_94, SourcePos, local_28, FPhysicsUtils::ConvertToCollisionChannel(ETraceTypeQuery(5)), local_144, local_156);
+    return !((local_158 && (int(local_94.ECSEntityId) != TargetEntityId)));
 }
 bool ResolveVisibility(const FECSEntity &inout Source, const FECSEntity &inout Target, const FVector &inout SourcePos, const FVector &inout TargetPos, const EVisibilityTier SourceLODTier, const FFPTime &inout Now, FC_AIVisibilityCache &inout VisCache, FCS_AIVisibilityBudget &inout Budget, const FAIVisibilityCacheConfig &inout CacheConfig)
 {

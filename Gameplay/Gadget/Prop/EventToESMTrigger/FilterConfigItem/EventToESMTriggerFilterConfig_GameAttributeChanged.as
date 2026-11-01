@@ -22,35 +22,33 @@ struct FEventToESMTriggerFilterConfigItem_GameAttributeChanged : FEventToESMTrig
 
     bool CompareValues(const float32 Left, const float32 Right) const
     {
-        bool local_4 = false;
-        switch (int(this.ComparisonType))
+        switch (this.ComparisonType)
         {
-        case 0:
+        case EArithmeticKeyOperation(0):
         {
             return (Left == Right);
         }
-        case 1:
+        case EArithmeticKeyOperation(1):
         {
             return (Left != Right);
         }
-        case 2:
+        case EArithmeticKeyOperation(2):
         {
             return (Left < Right);
         }
-        case 3:
+        case EArithmeticKeyOperation(3):
         {
             return (Left <= Right);
         }
-        case 4:
+        case EArithmeticKeyOperation(4):
         {
             return (Left > Right);
         }
-        case 5:
+        case EArithmeticKeyOperation(5):
         {
             return (Left >= Right);
         }
         }
-        return local_4;
     }
     bool EvaluateAndTrigger(const FECSEntity &inout Entity, const FC_GameAttribute &inout GameAttribute, const FC_GameAttributeChanged &inout GameAttributeChanged) const
     {

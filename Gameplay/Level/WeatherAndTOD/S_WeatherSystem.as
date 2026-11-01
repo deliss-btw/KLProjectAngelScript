@@ -23,21 +23,21 @@ class US_WeatherSystem : UECSScriptSystem
         {
             local_113 = local_88.Get().InitWeatherPolicy;
         }
-        int local_116 = int(local_113);
-        if (local_116 <= 2)
+        switch (int(local_113))
         {
-            if (local_116 != 1)
+        case 1:
+        {
+            ::FWeatherUtils::BuildWeatherInitConfigFromCommission(local_16);
+            return;
+        }
+        case 2:
+        {
+            if (local_88.IsSet())
             {
-                if (local_116 != 2)
-                {
-                    return;
-                }
+                ::FWeatherUtils::BuildWeatherInitConfigFromOverride(local_16, local_88.Get().GetWeatherAreaTemplateOverride());
             }
-            else
-            {
-                ::FWeatherUtils::BuildWeatherInitConfigFromCommission(local_16);
-                return;
-            }
+            return;
+        }
         }
         return;
     }
@@ -312,7 +312,7 @@ class US_WeatherSystem : UECSScriptSystem
             local_56.opCall().SetOwnerEntity(WeatherEntity);
             FC_NetRelevancePolicy local_61;
             Assign local_60;
-            local_60.opCall(local_61).RelevancePolicyType = (3 != 0);
+            local_60.opCall(local_61).RelevancePolicyType = ENetRelevancePolicyType(3);
             FAbilityUtils::AddAbility(local_30, WeatherEffect.GetWeatherConfig().Get().Ability.Get(), false, n"WeatherAbility", false, false, true, false, FFPTime(0));
         }
         return;

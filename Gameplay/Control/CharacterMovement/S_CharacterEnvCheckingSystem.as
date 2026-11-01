@@ -61,7 +61,7 @@ class US_CharacterEnvCheckingSystem : UECSScriptSystem
         int local_126 = 18;
         int local_125 = local_126;
         FCollisionShape local_134 = Collision.GetScaledShape();
-        float32 local_53_2 = Collision.GetScaledRadius();
+        float32 local_53 = Collision.GetScaledRadius();
         float32 local_135 = Collision.GetScaledHalfHeight();
         FCollisionQueryParams local_174;
         local_174.AddIgnoredEntityId(Entity.GetIdValue());
@@ -92,7 +92,7 @@ class US_CharacterEnvCheckingSystem : UECSScriptSystem
             local_253 = !(local_242);
             if ((local_253 || local_235))
             {
-                FVector local_182_2 = (local_34 * local_53_2);
+                FVector local_182_2 = (local_34 * local_53);
                 FVector local_52_2 = (local_210 + local_182_2);
                 bool local_255 = FPhysicsUtils::SweepSingle(Entity, false, EPhysicsTraceTag(20), local_124, (local_52_2 + FVector(0.0, 0.0, local_58)), local_52_2, local_16, ECollisionChannel(local_125), local_134, local_174, local_250);
                 local_253 = local_255 && (this.CheckHitResultIsWalkable(local_124, CharacterMovementParam.WalkableSlopDegree) || (local_124.ImpactNormal.DotProduct(local_34) > 0.0));
@@ -101,7 +101,7 @@ class US_CharacterEnvCheckingSystem : UECSScriptSystem
                     local_234 = FVector(local_124.Location.X, local_124.Location.Y, local_124.Location.Z);
                     if (CVar_DebugCharacterEnvChecking.GetBool())
                     {
-                        DebugDraw::DrawDebugCapsule(ECS::GetUEWorld(), local_234, local_135, local_53_2, Transform.GetRotation(), FColor::Green, false, 0.1f, uint8(0), 0.0f);
+                        DebugDraw::DrawDebugCapsule(ECS::GetUEWorld(), local_234, local_135, local_53, Transform.GetRotation(), FColor::Green, false, 0.1f, uint8(0), 0.0f);
                     }
                 }
                 else
@@ -111,7 +111,7 @@ class US_CharacterEnvCheckingSystem : UECSScriptSystem
                         local_234 = FVector(local_210.X, local_210.Y, local_262.Z);
                         if (CVar_DebugCharacterEnvChecking.GetBool())
                         {
-                            DebugDraw::DrawDebugCapsule(ECS::GetUEWorld(), local_234, local_135, local_53_2, Transform.GetRotation(), FColor::Blue, false, 0.1f, uint8(0), 0.0f);
+                            DebugDraw::DrawDebugCapsule(ECS::GetUEWorld(), local_234, local_135, local_53, Transform.GetRotation(), FColor::Blue, false, 0.1f, uint8(0), 0.0f);
                         }
                     }
                     else
@@ -157,7 +157,7 @@ class US_CharacterEnvCheckingSystem : UECSScriptSystem
                 CharacterMovementEnvInfo.SetWallNormal(local_228);
                 if (CVar_DebugCharacterEnvChecking.GetBool())
                 {
-                    DebugDraw::DrawDebugCapsule(ECS::GetUEWorld(), CharacterMovementEnvInfo.GetWallRunTargetLocation(), local_135, local_53_2, Transform.GetRotation(), FColor::Blue, false, 0.1f, uint8(0), 0.0f);
+                    DebugDraw::DrawDebugCapsule(ECS::GetUEWorld(), CharacterMovementEnvInfo.GetWallRunTargetLocation(), local_135, local_53, Transform.GetRotation(), FColor::Blue, false, 0.1f, uint8(0), 0.0f);
                 }
             }
         }
@@ -183,7 +183,7 @@ class US_CharacterEnvCheckingSystem : UECSScriptSystem
         int local_174 = local_175;
         FVector local_192 = (local_6 + FVector(0.0, 0.0, local_57));
         FVector local_204 = ((local_6 + local_22) + FVector(0.0, 0.0, local_57));
-        float32 local_53_2 = Collision.GetScaledRadius();
+        float32 local_53 = Collision.GetScaledRadius();
         float32 local_205 = Collision.GetScaledHalfHeight();
         Has local_212;
         bool local_38 = local_212.opCall();

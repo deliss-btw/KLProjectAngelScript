@@ -36,7 +36,7 @@ struct FVM_SelectableItem : FEUIViewModel
     }
     void OnItemSelectionChanged(const FMsg_OnItemSelectionChanged &inout Changed)
     {
-        this.SetbIsSelected((int(Changed.bIsSelected) != 0));
+        this.SetbIsSelected(Changed.bIsSelected);
         return;
     }
     bool GetbIsSelected() const property

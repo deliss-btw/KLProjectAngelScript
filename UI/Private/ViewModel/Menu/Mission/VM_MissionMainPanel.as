@@ -351,7 +351,7 @@ struct FVM_MissionMainPanel : FEUIViewModel
     }
     bool IsHidedByMissionPresentationRule(const TDataObjectPtr<FMissionConfig> &inout MissionConfig, const TDataObjectPtr<FMissionPhaseConfig> &inout ActivePhaseConfig)
     {
-        int local_97;
+        int local_97 = 0;
         EMissionHideType local_98;
         TDataObjectPtr<FMissionPhaseConfig> local_24 = MissionConfig.Get().GetFirstPhase();
         TDataObjectPtr<FMissionPresentationRuleConfig> local_72 = ::MissionUtils::GetMissionPresentationRuleConfig(MissionConfig);
@@ -363,29 +363,30 @@ struct FVM_MissionMainPanel : FEUIViewModel
         {
             local_98 = EMissionHideType::None;
         }
-        int local_101 = int(local_98);
-        if (local_101 <= 2)
+        switch (int(local_98))
         {
-            if (local_101 != 1)
+        case 1:
+        {
+            if (!(ActivePhaseConfig.IsSet()))
             {
-                if (local_101 != 2)
-                {
-                }
+                local_97 = 0;
             }
             else
             {
-                if (!(ActivePhaseConfig.IsSet()))
-                {
-                    local_97 = 0;
-                }
-                else
-                {
-                    local_97 = (ActivePhaseConfig.Get().DataId == local_24.Get().DataId);
-                }
-                return (local_97 != 0);
+                local_97 = (ActivePhaseConfig.Get().DataId == local_24.Get().DataId);
             }
+            return (local_97 != 0);
         }
-        return false;
+        case 2:
+        {
+            return true;
+        }
+        default:
+        {
+            local_97 = 0;
+        }
+        }
+        return (local_97 != 0);
     }
     void InitMissionList()
     {
@@ -822,8 +823,8 @@ void GetModelInfo(FEUIViewModelMetaInfo &inout Result)
     local_22.ApplySort();
     FEUIModelRefPropertyDirty local_30;
     local_30.PropertyName = FName("MissionList");
-    int local_2_2 = FVM_MissionList::ModelId;
-    int local_2_3 = local_22.GetMappingDirtyOffset(1);
+    local_30.PropertyModelId = FVM_MissionList::ModelId;
+    local_30.MappingDirtyOffset = local_22.GetMappingDirtyOffset(1);
     local_30.RelatedDirtyMask.SetBit(FVM_MissionList::__IndexOf_SelectedMissionEntry(), true);
     local_30.RelatedDirtyMask.SetBit(FVM_MissionList::__IndexOf_bShowTrackingButton(), true);
     local_30.RelatedDirtyMask.SetBit(FVM_MissionList::__IndexOf_HighlightedEntry(), true);
@@ -843,6 +844,7 @@ void GetModelInfo(FEUIViewModelMetaInfo &inout Result)
     Result.DirtyFunctions.Add(local_40);
     FEUIModelMonitorDefine local_50;
     local_50.FunctionName = "__OnTrackingMissionChanged";
+    local_50.MonitorTarget = EEUIModelMonitorTarget(3);
     local_50.ComponentType = FC_TrackingMission;
     Result.MonitorFunctions.Add(local_50);
     return;

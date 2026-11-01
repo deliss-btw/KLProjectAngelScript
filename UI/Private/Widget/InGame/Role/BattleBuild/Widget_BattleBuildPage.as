@@ -208,6 +208,7 @@ namespace UWidget_BattleBuildPage
 void GetModelInfo(FEUIWidgetMetaInfo &inout Result)
 {
     Result.WidgetType = UWidget_BattleBuildPage;
+    Result.ObservedModelChangesSubscriberCount = 2;
     Result.ObservedModelChangesSubscriberNames.Add(FString("OnSelectedQuickSlotChanged"));
     Result.ObservedModelChangesSubscriberNames.Add(FString("OnQuickSlotChanged"));
     return;

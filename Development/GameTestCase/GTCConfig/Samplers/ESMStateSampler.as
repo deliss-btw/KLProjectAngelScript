@@ -116,6 +116,7 @@ struct FGTCESMStateSampler : FGTCSampler
         this.bSampleClient = true;
         this.CachedClientTimeOffsetTime = 0.0f;
         this.CachedClientTimeOffsetFrame = 0;
+        this.ActionType = EGTCActionType(2);
         this.__InitDefaults();
         return;
     }

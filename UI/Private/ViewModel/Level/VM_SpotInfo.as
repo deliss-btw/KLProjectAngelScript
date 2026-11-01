@@ -345,6 +345,7 @@ struct __GeneratedProperties_FVM_SpotInfo
     UPROPERTY()
     TEUIModelRef<FVM_SpotInfo> Self;
 
+
 }
 
 namespace FVM_SpotInfo
@@ -442,7 +443,7 @@ void GetModelInfo(FEUIViewModelMetaInfo &inout Result)
     Result.GeneratedPropertyStruct = __GeneratedProperties_FVM_SpotInfo;
     FEUIModelMetaPropertyModelRef local_19;
     local_19.PropertyName = FName("Spot");
-    int local_2_2 = FM_Spot::ModelId;
+    local_19.PropertyRefModelTypeId = FM_Spot::ModelId;
     Result.FunctionalPropertyModelRefs.Add(local_19);
     FEUIModelMsgHandleDefine local_32;
     local_32.FunctionName = "__OnSpotPresentationDataModified";

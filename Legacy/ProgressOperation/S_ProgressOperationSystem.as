@@ -20,7 +20,7 @@ class US_ProgressOperationSystem : UECSScriptSystem
             if ((Member.GetbIsInitiator() && (int(local_26.InputType) == 0 || (int(local_26.InputType) == 2))) || (!(Member.GetbIsInitiator()) && (int(local_26.InputType) == 1 || (int(local_26.InputType) == 2))))
             {
                 FActiveTriggerResult local_46 = local_26.InputTrigger.TestTrigger(Input.State, FixedTime.LastTime, FixedTime.Time, ESMTrigger.Storage);
-                if ((local_46.bActive && ((FFPTime(local_46.TriggerTime).opCmp(FixedTime.Time) <= 0))) && ((local_46.GetTriggerExpireTime().opCmp(FixedTime.LastTime) >= 0)))
+                if ((local_46.bActive && ((local_46.TriggerTime.opCmp(FixedTime.Time) <= 0))) && ((local_46.GetTriggerExpireTime().opCmp(FixedTime.LastTime) >= 0)))
                 {
                     local_58.SetProgressValueWhenAccurateInput(local_58.GetProgressValue());
                     for (auto& local_78 : local_26.Actions)

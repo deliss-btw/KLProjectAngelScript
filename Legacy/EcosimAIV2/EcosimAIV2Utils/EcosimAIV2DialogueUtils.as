@@ -24,7 +24,7 @@ void UpdateSyncSpeakToAndOptionInfoByPlayerEntity(const FECSEntity &inout Entity
 }
 bool ChooseInteractOption(const FECSEntity &inout InteractSource, const FECSEntity &inout InteractTarget, const TDataObjectPtr<FInteractSimpleSpeakToAndOption> &inout Data, const int SelectIndex)
 {
-    FEcosimAIV2DialogueOptionConditionBase local_52;
+    TDataObjectPtr<FItemConfig> local_52;
     if (SelectIndex >= Data.Get().OptionList.Num())
     {
         return false;
@@ -245,7 +245,7 @@ bool GetValidInteractSimpleSpeakToAndOptionByTargetPlayerEntity(const FECSEntity
                     FEcosimAIV2SpeakToMemory local_62;
                     if (local_16.SpeakToMemoryMap.Find(local_4, local_62))
                     {
-                        for (auto& local_76 : local_54.Get()._base_FInteractSimpleSpeakToAndOptionConditionBase)
+                        for (auto& local_76 : local_54.Get().CareAboutSpeakToContentKeyList)
                         {
                             if (local_62.SpokenToNameKeyList.Contains(local_76))
                             {
@@ -258,7 +258,7 @@ bool GetValidInteractSimpleSpeakToAndOptionByTargetPlayerEntity(const FECSEntity
                 {
                     for (auto& local_94 : local_16.SpeakToMemoryMap)
                     {
-                        for (auto& local_76 : local_54.Get()._base_FInteractSimpleSpeakToAndOptionConditionBase)
+                        for (auto& local_76 : local_54.Get().CareAboutSpeakToContentKeyList)
                         {
                             if (local_94.GetValue().SpokenToNameKeyList.Contains(local_76))
                             {

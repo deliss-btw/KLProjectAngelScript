@@ -13,34 +13,34 @@ class UBTDecorator_CheckPlayerTargetNum : UBTDecorator_ECSScriptBase
     FString GetStaticDescription_Implementation() const
     {
         FString local_4 = "";
-        switch (int(this.ComparisonType))
+        switch (this.ComparisonType)
         {
-        case 0:
+        case EArithmeticKeyOperation(0):
         {
             local_4 = "==";
             break;
         }
-        case 1:
+        case EArithmeticKeyOperation(1):
         {
             local_4 = "!=";
             break;
         }
-        case 2:
+        case EArithmeticKeyOperation(2):
         {
             local_4 = "<";
             break;
         }
-        case 3:
+        case EArithmeticKeyOperation(3):
         {
             local_4 = "<=";
             break;
         }
-        case 4:
+        case EArithmeticKeyOperation(4):
         {
             local_4 = ">";
             break;
         }
-        case 5:
+        case EArithmeticKeyOperation(5):
         {
             local_4 = ">=";
             break;
@@ -58,34 +58,34 @@ class UBTDecorator_CheckPlayerTargetNum : UBTDecorator_ECSScriptBase
         }
         int local_15 = ::FAITargetingUtils::GetPlayerTargetCount(local_12);
         bool local_16 = false;
-        switch (int(this.ComparisonType))
+        switch (this.ComparisonType)
         {
-        case 0:
+        case EArithmeticKeyOperation(0):
         {
             local_16 = (local_15 == this.TargetNum);
             break;
         }
-        case 1:
+        case EArithmeticKeyOperation(1):
         {
             local_16 = (local_15 != this.TargetNum);
             break;
         }
-        case 2:
+        case EArithmeticKeyOperation(2):
         {
             local_16 = (local_15 < this.TargetNum);
             break;
         }
-        case 3:
+        case EArithmeticKeyOperation(3):
         {
             local_16 = (local_15 <= this.TargetNum);
             break;
         }
-        case 4:
+        case EArithmeticKeyOperation(4):
         {
             local_16 = (local_15 > this.TargetNum);
             break;
         }
-        case 5:
+        case EArithmeticKeyOperation(5):
         {
             local_16 = (local_15 >= this.TargetNum);
             break;

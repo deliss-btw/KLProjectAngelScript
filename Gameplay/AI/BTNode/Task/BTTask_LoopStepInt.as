@@ -35,31 +35,29 @@ class UBTTask_LoopStepInt : UBTTask_ECSScriptBase
         int local_11 = local_10 + local_9_2;
         if ((local_11 > local_13 || (local_11 < 0)))
         {
-            int local_12 = int(this.LoopStepType);
-            if (local_12 <= 1)
+            switch (int(this.LoopStepType))
             {
-                if (local_12 != 0)
+            case 0:
+            {
+                local_11 = local_10 - local_9_2;
+                local_2.SetValueAsBool(this.LoopForward.SelectedKeyName, !(local_8));
+                break;
+            }
+            case 1:
+            {
+                if (local_11 > local_13)
                 {
-                    if (local_12 != 1)
-                    {
-                    }
+                    local_11 = 0;
                 }
                 else
                 {
-                    local_11 = local_10 - local_9_2;
-                    local_2.SetValueAsBool(this.LoopForward.SelectedKeyName, !(local_8));
-                    if (local_11 > local_13)
+                    if (local_11 < 0)
                     {
-                        local_11 = 0;
-                    }
-                    else
-                    {
-                        if (local_11 < 0)
-                        {
-                            local_11 = local_13;
-                        }
+                        local_11 = local_13;
                     }
                 }
+                break;
+            }
             }
         }
         local_11 = FMath::Clamp(local_11, 0, local_13);

@@ -630,7 +630,7 @@ class US_BorderSystemAS : UECSScriptSystem
     void Job_HandleBorderDestroy(const FCE_DestroyBorder &inout Event) const
     {
         int local_18 = 0;
-        FECSEntity local_4 = FECSEntity(Event.BorderEntity);
+        FECSEntity local_4 = Event.BorderEntity;
         if (!(local_4.IsValid()))
         {
             return;
@@ -712,8 +712,8 @@ class US_BorderSystemAS : UECSScriptSystem
                     FKLBorderQueryInfo local_112;
                     local_112.InAgentLocation = local_16;
                     Get local_116;
-                    float32 local_26 = local_116.opCall().GetScaledRadius() + 50.0f;
-                    float32 local_118 = FMath::Max(local_66.GetRelevantDistance(), (local_112.InAgentRadius + 1.0f));
+                    local_112.InAgentRadius = (local_116.opCall().GetScaledRadius() + 50.0f);
+                    local_112.InGuardingRadius = FMath::Max(local_66.GetRelevantDistance(), (local_112.InAgentRadius + 1.0f));
                     local_66.Query(local_112);
                     if (!(local_112.OutIsInside))
                     {
@@ -753,8 +753,10 @@ class US_BorderSystemAS : UECSScriptSystem
         }
         FKLBorderQueryInfo local_42;
         local_42.InAgentLocation = local_8.GetPosition();
+        local_42.InAgentRadius = 1.0f;
+        local_42.InGuardingRadius = 100.0f;
         BorderActor.Query(local_42);
-        FVector local_50(local_42.OutClosestBorderPoint);
+        FVector local_50 = local_42.OutClosestBorderPoint;
         local_50.Z = (local_8.GetPosition().Z + (local_14.GetScaledHalfHeight() * 0.5f));
         FFXParamValueVector local_62;
         local_62.Value = local_50;
@@ -778,8 +780,10 @@ class US_BorderSystemAS : UECSScriptSystem
         }
         FKLBorderQueryInfo local_40;
         local_40.InAgentLocation = local_8.GetPosition();
+        local_40.InAgentRadius = 1.0f;
+        local_40.InGuardingRadius = 100.0f;
         BorderActor.Query(local_40);
-        FVector local_48(local_40.OutClosestBorderPoint);
+        FVector local_48 = local_40.OutClosestBorderPoint;
         float local_52 = local_8.GetPosition().Z;
         float32 local_41_3 = local_14.GetScaledHalfHeight() * 0.5f;
         local_52 = local_52 + local_41_3;

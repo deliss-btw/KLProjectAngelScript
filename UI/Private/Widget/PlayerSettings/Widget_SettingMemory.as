@@ -114,6 +114,7 @@ namespace UWidget_SettingMemory
 void GetModelInfo(FEUIWidgetMetaInfo &inout Result)
 {
     Result.WidgetType = UWidget_SettingMemory;
+    Result.ObservedModelChangesSubscriberCount = 1;
     Result.ObservedModelChangesSubscriberNames.Add(FString("OnIsFullChanged"));
     return;
 }

@@ -120,6 +120,7 @@ int GetSignificanceOffset(const FECSEntity &inout Entity, const EECSSignificance
 EECSSignificanceType GetSignificanceType(const FECSEntity &inout Entity)
 {
     Has local_4;
+    int local_6 = 0;
     if (local_4.opCall())
     {
         return EECSSignificanceType(7);
@@ -135,115 +136,109 @@ EECSSignificanceType GetSignificanceType(const FECSEntity &inout Entity)
     }
     if (FASCommonUtils::IsMonsterPrefab(Entity))
     {
-        int local_13 = int(FASCommonUtils::GetMonsterRank(Entity));
-        if (local_13 <= 2)
+        switch (int(FASCommonUtils::GetMonsterRank(Entity)))
         {
-            if (local_13 != 1)
-            {
-                if (local_13 != 2)
-                {
-                }
-                else
-                {
-                    return EECSSignificanceType(4);
-                }
-            }
-            else
-            {
-                return EECSSignificanceType(5);
-            }
+        case 2:
+        {
+            return EECSSignificanceType(4);
+        }
+        case 1:
+        {
+            return EECSSignificanceType(5);
+        }
         }
         return EECSSignificanceType(6);
     }
-    if (FASCommonUtils::IsAvatarPrefab(Entity))
+    else
     {
-        return EECSSignificanceType(1);
+        if (FASCommonUtils::IsAvatarPrefab(Entity))
+        {
+            return EECSSignificanceType(1);
+        }
+        Has local_18;
+        if (local_18.opCall())
+        {
+            return EECSSignificanceType(13);
+        }
+        Get local_22;
+        if (local_22.opCall())
+        {
+            return EECSSignificanceType(11);
+        }
+        Has local_28;
+        if (local_28.opCall())
+        {
+            return EECSSignificanceType(10);
+        }
+        if (FASCommonUtils::IsPropPrefab(Entity))
+        {
+            return EECSSignificanceType(10);
+        }
+        local_6 = 0;
     }
-    Has local_18;
-    if (local_18.opCall())
-    {
-        return EECSSignificanceType(13);
-    }
-    Get local_22;
-    if (local_22.opCall())
-    {
-        return EECSSignificanceType(11);
-    }
-    Has local_28;
-    if (local_28.opCall())
-    {
-        return EECSSignificanceType(10);
-    }
-    if (FASCommonUtils::IsPropPrefab(Entity))
-    {
-        return EECSSignificanceType(10);
-    }
-    return EECSSignificanceType(0);
+    return EECSSignificanceType(local_6);
 }
 EECSSignificanceValue GetSignificanceDefaultValue(const FSignificanceConfig &inout Config, const EECSSignificanceType Type)
 {
-    int local_3 = 0;
-    switch (int(Type))
+    switch (Type)
     {
-    case 0:
+    case EECSSignificanceType(0):
     {
         return Config.Default;
     }
-    case 2:
+    case EECSSignificanceType::NamedNPC:
     {
         return Config.NamedNPC;
     }
-    case 3:
+    case EECSSignificanceType::CommonNPC:
     {
         return Config.CommonNPC;
     }
-    case 1:
+    case EECSSignificanceType::Avatar:
     {
         return Config.Avatar;
     }
-    case 4:
+    case EECSSignificanceType::Boss:
     {
         return Config.Boss;
     }
-    case 5:
+    case EECSSignificanceType::EliteMonster:
     {
         return Config.EliteMonster;
     }
-    case 6:
+    case EECSSignificanceType::NormalMonster:
     {
         return Config.NormalMonster;
     }
-    case 7:
+    case EECSSignificanceType::Mount:
     {
         return Config.Mount;
     }
-    case 8:
+    case EECSSignificanceType::Projectile:
     {
         return Config.Projectile;
     }
-    case 9:
+    case EECSSignificanceType::StaticObject:
     {
         return Config.StaticObject;
     }
-    case 10:
+    case EECSSignificanceType::DynamicObject:
     {
         return Config.DynamicObject;
     }
-    case 11:
+    case EECSSignificanceType::CommonInteractive:
     {
         return Config.CommonInteractive;
     }
-    case 12:
+    case EECSSignificanceType::SpecialInteractive:
     {
         return Config.SpecialInteractive;
     }
-    case 13:
+    case EECSSignificanceType::Pickup:
     {
-        local_3 = int(Config.Pickup);
-        return EECSSignificanceValue(local_3);
+        return Config.Pickup;
     }
     }
-    return EECSSignificanceValue(local_3);
 }
 EECSSignificanceValue GetSignificanceValue(const FSignificanceConfig &inout Config, const EECSSignificanceType Type, const int Offset)
 {

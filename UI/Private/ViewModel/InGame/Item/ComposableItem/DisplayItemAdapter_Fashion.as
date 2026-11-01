@@ -177,27 +177,29 @@ bool IsEquippedOnAvatar(const TDataObjectPtr<FFashionConfig> &inout FashionConfi
 }
 bool IsEquippedOnPlayer(const TDataObjectPtr<FFashionConfig> &inout FashionConfig, const FMS_FashionModel &inout FashionModel)
 {
-    if (!(FashionConfig))
+    bool local_1 = !(FashionConfig);
+    if (local_1)
     {
         return false;
     }
     int local_3 = FashionConfig.Get().DataId;
     int local_2 = local_3;
-    int local_5 = int(FashionConfig.Get().SlotType);
-    if (local_5 <= -54)
+    switch (int(FashionConfig.Get().SlotType))
     {
-        if (local_5 != -55)
-        {
-            if (local_5 != -54)
-            {
-            }
-        }
-        else
-        {
-            return (FashionModel.GetMountID() == local_2);
-        }
+    case -55:
+    {
+        return (FashionModel.GetMountID() == local_2);
     }
-    return false;
+    case -54:
+    {
+        return (FashionModel.GetMountDecoID() == local_2);
+    }
+    default:
+    {
+        local_1 = false;
+    }
+    }
+    return local_1;
 }
 FDisplayItemFashionRuntimeState MakeRuntimeState(const TDataObjectPtr<FFashionConfig> &inout FashionConfig, const FMS_FashionModel &inout FashionModel, const uint AvatarId = 0)
 {

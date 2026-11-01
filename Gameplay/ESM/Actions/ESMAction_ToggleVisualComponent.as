@@ -5,6 +5,7 @@ class UESMAction_ToggleComponentsForDuration : UESMBPBaseSpanAction
     UPROPERTY()
     FNameToComponentLogicNames LogicNames;
 
+
     UFUNCTION()
     EESMActionExclusiveType GetExclusiveType_Implementation() const
     {
@@ -18,12 +19,34 @@ class UESMAction_ToggleComponentsForDuration : UESMBPBaseSpanAction
     UFUNCTION()
     void Enter_Implementation(const FESMContext &inout Context, const FESMActionTime &inout Time) const
     {
-        // body not fully recovered — stub [argmismatch:argtype]
+        int local_18 = 0;
+        if ((int(Context.GetEntity().GetRegistryType())) == 2 || (int(Context.GetEntity().GetRegistryType()) == 1))
+        {
+            XError(ELog(5), FString().Append("ESMAction_ToggleVisualComponent will only have effect on Synced entities."));
+            return;
+        }
+        if (local_18)
+        {
+            FName local_20 = FName(this.GetDisplayName());
+            ::VisualComponentToggleUtils::SetVisualComponentHiddenWithPotentialDelay(Context.GetEntity(), local_18, this.LogicNames.LogicNames, this.bHidden, Time.WorldTime, local_20, true);
+        }
+        return;
     }
     UFUNCTION()
     void Exit_Implementation(const FESMContext &inout Context, const FESMActionTime &inout Time) const
     {
-        // body not fully recovered — stub [argmismatch:argtype]
+        int local_18 = 0;
+        if ((int(Context.GetEntity().GetRegistryType())) == 2 || (int(Context.GetEntity().GetRegistryType()) == 1))
+        {
+            XError(ELog(5), FString().Append("ESMAction_ToggleVisualComponent will only have effect on Synced entities."));
+            return;
+        }
+        if (local_18)
+        {
+            FName local_20 = FName(this.GetDisplayName());
+            ::VisualComponentToggleUtils::SetVisualComponentHiddenWithPotentialDelay(Context.GetEntity(), local_18, this.LogicNames.LogicNames, !(this.bHidden), Time.WorldTime, local_20, true);
+        }
+        return;
     }
 }
 
@@ -31,6 +54,7 @@ struct FESMToggleComponentsWithConditionData
 {
     UPROPERTY()
     bool bActive = false;
+
 
 }
 
@@ -44,6 +68,7 @@ class UESMAction_ToggleComponentsWithCondition : UESMBPBaseSpanTickAction
     FESMBlackboardConditionAndArray ActiveCondition;
     UPROPERTY()
     float32 CheckInterval = -1.0f;
+
 
     UFUNCTION()
     FESMInstanceDataInfo GetInstanceDataInfo_Implementation() const
@@ -165,8 +190,14 @@ class UESMAction_ToggleComponentsWithCondition : UESMBPBaseSpanTickAction
     }
     bool UpdateHidden(const FESMContext &inout Context, const FESMActionTime &inout Time, const bool bFlag) const
     {
-        // body not fully recovered — stub [argmismatch:argtype]
-        bool __r; return __r;
+        int local_6 = 0;
+        if (!(local_6))
+        {
+            return false;
+        }
+        FName local_14 = FName(this.GetDisplayName());
+        ::VisualComponentToggleUtils::SetVisualComponentHiddenWithPotentialDelay(Context.GetEntity(), local_6, this.LogicNames.LogicNames, bFlag, Time.WorldTime, local_14, true);
+        return true;
     }
 }
 
@@ -176,6 +207,7 @@ class UESMAction_ToggleComponentsInstantly : UESMBPBaseInstantAction
     bool bHidden = true;
     UPROPERTY()
     FNameToComponentLogicNames LogicNames;
+
 
     UFUNCTION()
     EESMActionType GetActionType_Implementation() const
@@ -190,7 +222,18 @@ class UESMAction_ToggleComponentsInstantly : UESMBPBaseInstantAction
     UFUNCTION()
     void Do_Implementation(const FESMContext &inout Context, const FESMActionTime &inout Time) const
     {
-        // body not fully recovered — stub [argmismatch:argtype]
+        int local_18 = 0;
+        if ((int(Context.GetEntity().GetRegistryType())) == 2 || (int(Context.GetEntity().GetRegistryType()) == 1))
+        {
+            XError(ELog(5), FString().Append("ESMAction_ToggleVisualComponent will only have effect on Synced entities."));
+            return;
+        }
+        if (local_18)
+        {
+            FName local_20 = FName(this.GetDisplayName());
+            ::VisualComponentToggleUtils::SetVisualComponentHiddenWithPotentialDelay(Context.GetEntity(), local_18, this.LogicNames.LogicNames, this.bHidden, Time.WorldTime, local_20, true);
+        }
+        return;
     }
 }
 

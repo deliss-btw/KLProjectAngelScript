@@ -98,8 +98,9 @@ class US_ViewTurnLimitSystem : UECSScriptSystem
         if (Limit.GetCounter() > 0)
         {
             FECSWorldPtr local_12 = this.GetECSWorld();
+            FC_CorrectedInputDeltaRecords local_10;
             FCS_FixedTime local_18;
-            int local_1 = int(local_18.Frame);
+            local_10.StartFrame = int(local_18.Frame);
             ModifyOrAdd local_22;
             local_22.opCall();
         }
@@ -126,6 +127,7 @@ class US_ViewTurnLimitSystem : UECSScriptSystem
         FName local_20 = FCharacterInputUtils::GetCorrectedViewDirInputName();
         FC_ServerViewDirCache local_18;
         local_18.CachedServerDir = Input.State.GetAxisAsRotatorNoCheck(local_20, local_8.Time);
+        local_18.CachedServerFrame = int(local_8.Frame);
         return;
     }
     UFUNCTION()
@@ -231,8 +233,7 @@ class US_ViewTurnLimitSystem : UECSScriptSystem
         {
             return;
         }
-        FRotator local_26 = FRotator(Cache.CachedServerDir);
-        FRotator local_32 = FRotator(InputLocal.ViewDir);
+        FRotator local_32 = InputLocal.ViewDir;
         FRotator local_38 = FRotator(FRotator::ZeroRotator);
         FRotator local_44 = FRotator(FRotator::ZeroRotator);
         FRotator local_50 = FRotator(FRotator::ZeroRotator);
@@ -251,7 +252,7 @@ class US_ViewTurnLimitSystem : UECSScriptSystem
             local_50 += local_58;
             ++local_10_2;
         }
-        FRotator local_78 = ((local_26 + local_38) - InputLocal.ViewDir).GetNormalized();
+        FRotator local_78 = ((Cache.CachedServerDir + local_38) - InputLocal.ViewDir).GetNormalized();
         if (!(CVar_Camera_ViewTurnLimitEnableCorrection.GetBool()))
         {
             if (!(local_78.IsNearlyZero(0.01)))
@@ -279,7 +280,7 @@ class US_ViewTurnLimitSystem : UECSScriptSystem
         {
             return;
         }
-        FRotator local_8 = FRotator(Correction.ErrorToCorrect);
+        FRotator local_8 = Correction.ErrorToCorrect;
         int local_9 = 1092616192;
         if (FMath::Abs(local_8.Yaw) > 10.0 || (FMath::Abs(local_8.Pitch) > 10.0))
         {

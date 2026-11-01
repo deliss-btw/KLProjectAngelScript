@@ -114,6 +114,7 @@ namespace UWidget_ComposableItem
 void GetModelInfo(FEUIWidgetMetaInfo &inout Result)
 {
     Result.WidgetType = UWidget_ComposableItem;
+    Result.ObservedModelChangesSubscriberCount = 1;
     Result.ObservedModelChangesSubscriberNames.Add(FString("HandleComposableItemVMChanged"));
     return;
 }

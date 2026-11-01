@@ -1,40 +1,40 @@
 struct FFixedArraySerializationTestAS
 {
     UPROPERTY()
-    TFixedArray<int, auto> m_Value1;
+    TFixedArray<int, 10> m_Value1;
     UPROPERTY()
-    TFixedArray<FString, auto> m_Value2;
+    TFixedArray<FString, 10> m_Value2;
 
     FFixedArraySerializationTestAS()
     {
         return;
     }
-    const TFixedArray<int, auto> GetValue1() const property
+    const TFixedArray<int, 10> GetValue1() const property
     {
-        const TFixedArray<int, auto> __r;
+        const TFixedArray<int, 10> __r;
         return __r;
     }
-    TFixedArray<int, auto> GetValue1() property
+    TFixedArray<int, 10> GetValue1() property
     {
-        TFixedArray<int, auto> __r;
+        TFixedArray<int, 10> __r;
         return __r;
     }
-    void SetValue1(const TFixedArray<int, auto> &inout __Value) property
+    void SetValue1(const TFixedArray<int, 10> &inout __Value) property
     {
         this.m_Value1 = __Value;
         return;
     }
-    const TFixedArray<FString, auto> GetValue2() const property
+    const TFixedArray<FString, 10> GetValue2() const property
     {
-        const TFixedArray<FString, auto> __r;
+        const TFixedArray<FString, 10> __r;
         return __r;
     }
-    TFixedArray<FString, auto> GetValue2() property
+    TFixedArray<FString, 10> GetValue2() property
     {
-        TFixedArray<FString, auto> __r;
+        TFixedArray<FString, 10> __r;
         return __r;
     }
-    void SetValue2(const TFixedArray<FString, auto> &inout __Value) property
+    void SetValue2(const TFixedArray<FString, 10> &inout __Value) property
     {
         this.m_Value2 = __Value;
         return;

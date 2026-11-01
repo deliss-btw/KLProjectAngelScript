@@ -19,10 +19,9 @@ class UESMAction_AnimFootPhase : UESMBPBaseSpanTickAction
         if (local_6)
         {
             float32 local_13 = float32((FFPTime(Time.ActionLastTime) / Time.ActionDuration));
-            FFPTime local_16 = FFPTime(Time.WorldLastTime);
             float32 local_8 = FMath::Lerp(this.FootPhaseStart, this.FootPhaseEnd, local_13);
             float32 local_19 = ((this.FootPhaseEnd - this.FootPhaseStart) / Time.ActionDuration) * Time.PlaySpeed;
-            if (FMath::Abs((local_6.SampleFootPhase(local_16) - local_8)) > 0.01f)
+            if (FMath::Abs((local_6.SampleFootPhase(Time.WorldLastTime) - local_8)) > 0.01f)
             {
                 local_28.SetFootPhaseBaseTime(Time.WorldLastTime);
                 local_28.SetFootPhaseBase(local_8);

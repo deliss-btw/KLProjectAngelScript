@@ -115,6 +115,7 @@ namespace UWidget_BossHpSegmentIcon
 void GetModelInfo(FEUIWidgetMetaInfo &inout Result)
 {
     Result.WidgetType = UWidget_BossHpSegmentIcon;
+    Result.ObservedModelChangesSubscriberCount = 1;
     Result.ObservedModelChangesSubscriberNames.Add(FString("HandleIconActiveChanged"));
     return;
 }

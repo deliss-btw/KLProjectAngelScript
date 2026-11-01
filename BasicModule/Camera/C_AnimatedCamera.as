@@ -161,7 +161,9 @@ struct FAnimatedCameraPresentation
     {
         FCameraBlendConfig local_76;
         const FAnimCameraData& local_78 = this.Params.CameraConfig.Get();
+        local_76.BlendInDuration = int(local_78.FadeInDuration);
         local_76.BlendInEasing = local_78.FadeInType;
+        local_76.BlendOutDuration = int(local_78.FadeOutDuration);
         local_76.BlendOutEasing = local_78.FadeOutType;
         return local_76;
     }

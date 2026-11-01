@@ -573,38 +573,30 @@ struct FVMS_SettingPage : FEUIViewModelSingleton
     }
     void CheckHasSettingsReset(const ECommonDialogAnswerType State)
     {
-        int local_1 = int(State);
-        if (local_1 <= 1)
+        switch (int(State))
         {
-            if (local_1 != 1)
-            {
-                return;
-            }
-            else
-            {
-                this.ResetChangedSettings();
-                return;
-            }
+        case 1:
+        {
+            this.ResetChangedSettings();
+            return;
+        }
         }
         return;
     }
     void CheckHasSettingsChangedForClose(const ECommonDialogAnswerType State)
     {
-        int local_1 = int(State);
-        if (local_1 <= 2)
+        switch (int(State))
         {
-            if (local_1 != 1)
-            {
-                if (local_1 != 2)
-                {
-                    return;
-                }
-            }
-            else
-            {
-                this.SaveChangedSettings();
-                return;
-            }
+        case 1:
+        {
+            this.SaveChangedSettings();
+            return;
+        }
+        case 2:
+        {
+            this.RevertUnsavedSettings();
+            return;
+        }
         }
         return;
     }
@@ -1751,8 +1743,8 @@ void GetModelInfo(FEUIViewModelMetaInfo &inout Result)
     local_22.ApplySort();
     FEUIModelRefPropertyDirty local_30;
     local_30.PropertyName = FName("KeyMappings");
-    int local_2_2 = FVMS_PlayerKeyMappings::ModelId;
-    int local_2_3 = local_22.GetMappingDirtyOffset(0);
+    local_30.PropertyModelId = FVMS_PlayerKeyMappings::ModelId;
+    local_30.MappingDirtyOffset = local_22.GetMappingDirtyOffset(0);
     local_30.RelatedDirtyMask.SetBit(FVMS_PlayerKeyMappings::__IndexOf_bCanRevert(), true);
     local_30.RelatedDirtyMask.SetBit(FVMS_PlayerKeyMappings::__IndexOf_bIsKeySelecting(), true);
     Result.ListeningModelRefDirties.Add(local_30);

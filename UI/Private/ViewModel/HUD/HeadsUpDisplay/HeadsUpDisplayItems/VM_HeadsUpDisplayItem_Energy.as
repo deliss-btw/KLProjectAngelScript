@@ -261,7 +261,7 @@ void GetModelInfo(FEUIViewModelMetaInfo &inout Result)
     Result.GeneratedPropertyStruct = __GeneratedProperties_FVM_HeadsUpDisplayItem_Energy;
     FEUIModelWatcherProperty local_19;
     local_19.PropertyName = FName("EnergySource");
-    int local_2_2 = FVM_HeadsUpDisplayItem_Energy::__IndexOf_EnergySource();
+    local_19.DirtyBitIndex = FVM_HeadsUpDisplayItem_Energy::__IndexOf_EnergySource();
     Result.WatcherProperties.Add(local_19);
     Result.TickFunction.FunctionName = "__Tick";
     FEUIModelEffectDefine local_26;

@@ -490,13 +490,13 @@ void GetModelInfo(FEUIViewModelMetaInfo &inout Result)
     Result.GeneratedPropertyStruct = __GeneratedProperties_FVM_AbnormalIcon;
     FEUIModelWatcherProperty local_19;
     local_19.PropertyName = FName("Accumulation");
-    int local_2_2 = FVM_AbnormalIcon::__IndexOf_Accumulation();
+    local_19.DirtyBitIndex = FVM_AbnormalIcon::__IndexOf_Accumulation();
     Result.WatcherProperties.Add(local_19);
     local_19.PropertyName = FName("ActiveState");
-    int local_2_3 = FVM_AbnormalIcon::__IndexOf_ActiveState();
+    local_19.DirtyBitIndex = FVM_AbnormalIcon::__IndexOf_ActiveState();
     Result.WatcherProperties.Add(local_19);
     local_19.PropertyName = FName("ActiveTimeProgress");
-    int local_2_4 = FVM_AbnormalIcon::__IndexOf_ActiveTimeProgress();
+    local_19.DirtyBitIndex = FVM_AbnormalIcon::__IndexOf_ActiveTimeProgress();
     Result.WatcherProperties.Add(local_19);
     FEUIModelEffectDefine local_26;
     local_26.FunctionName = "SyncAbnormalWatchSources";

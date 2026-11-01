@@ -135,6 +135,11 @@ bool ApplyRouteOverride(const FM_TalentNode &inout ParentNode, const FM_TalentNo
         {
             continue;
         }
+        Connection.FromPort = EEUIAutoLinePort(local_16.FromPort);
+        Connection.ToPort = EEUIAutoLinePort(local_16.ToPort);
+        Connection.FromExtend = local_16.FromExtend;
+        Connection.ToExtend = local_16.ToExtend;
+        Connection.RouteMode = local_16.RouteMode;
         return true;
     }
     return false;
@@ -444,18 +449,72 @@ UWidget ResolveTalentItemIconWidget(const FM_TalentNode &inout Node, const int C
 }
 UWidget ResolveTalentItemPlateWidget(const UWidget_TalentUpgradeItem ItemWidget)
 {
-    // body not fully recovered — stub [opcode-uncovered]
-    return nullptr;
+    TArray<FString> local_4 = {"UI_Talent_Comp_Skill_Bg_Activated", "UI_Talent_Comp_Skill_Bg_CanActivate", "UI_Talent_Comp_Skill_Bg_CanActivate_1", "UI_Talent_Comp_Skill_Bg_Gray", "UI_Talent_Comp_Skill_Bg", "UI_Talent_Comp_Skill_Bg_CostNotEnouh", "w_img_chooseBg"};
+    for (auto& local_22 : local_4)
+    {
+        UWidget local_24 = TalentUpgradeRuntimeAutoLineBuilder::FindVisibleTalentItemStateWidgetByName(ItemWidget, local_22);
+        if (local_24 != nullptr)
+        {
+            return local_24;
+        }
+    }
+    UWidget local_26;
+    return local_26;
 }
 UWidget ResolveTalentChoiceBranchPlateWidget(const UWidget_TalentUpgradeItem ItemWidget)
 {
-    // body not fully recovered — stub [opcode-uncovered]
-    return nullptr;
+    UWidget local_24;
+    TArray<FString> local_4 = {"UI_Talent_Comp_Skill_Bg_Activated", "UI_Talent_Comp_Skill_Bg_CanActivate", "UI_Talent_Comp_Skill_Bg_CanActivate_1", "UI_Talent_Comp_Skill_Bg_Gray", "UI_Talent_Comp_Skill_Bg", "UI_Talent_Comp_Skill_Bg_CostNotEnouh"};
+    for (auto& local_22 : local_4)
+    {
+        local_24 = TalentUpgradeRuntimeAutoLineBuilder::FindVisibleTalentItemStateWidgetByName(ItemWidget, local_22);
+        if (local_24 != nullptr)
+        {
+            return local_24;
+        }
+    }
+    local_24 = TalentUpgradeRuntimeAutoLineBuilder::FindLaidOutTalentItemStateWidgetByName(ItemWidget, "w_img_chooseBg");
+    if (local_24 != nullptr)
+    {
+        return local_24;
+    }
+    return TalentUpgradeRuntimeAutoLineBuilder::ResolveTalentItemPlateWidget(ItemWidget);
 }
 UWidget ResolveTalentChoiceBranchStablePortWidget(const UWidget_TalentUpgradeItem ItemWidget)
 {
-    // body not fully recovered — stub [opcode-uncovered]
-    return nullptr;
+    UWidget local_10;
+    UWidget local_32;
+    if (ItemWidget != nullptr)
+    {
+        local_10 = ItemWidget.GetAutoLineStablePortWidget();
+    }
+    else
+    {
+    }
+    UWidget local_2 = local_10;
+    if (local_2 != nullptr)
+    {
+        return local_2;
+    }
+    TArray<FString> local_14 = {"w_btn_click", "SizeBox_0", "w_switcher_state"};
+    for (auto& local_30 : local_14)
+    {
+        local_32 = TalentUpgradeRuntimeAutoLineBuilder::FindVisibleTalentItemWidgetByName(ItemWidget, local_30);
+        if (local_32 != nullptr)
+        {
+            return local_32;
+        }
+    }
+    for (auto& local_30 : local_14)
+    {
+        local_32 = TalentUpgradeRuntimeAutoLineBuilder::FindLaidOutTalentItemWidgetByName(ItemWidget, local_30);
+        if (local_32 != nullptr)
+        {
+            return local_32;
+        }
+    }
+    UWidget local_8;
+    return local_8;
 }
 UWidget ResolveTalentItemPortWidget(const FM_TalentNode &inout Node, const int ChoiceIndex, const UWidget_TalentUpgradeItem ItemWidget)
 {
@@ -691,14 +750,17 @@ bool IsChoiceWidgetOnLeft(const UWidget_TalentSkillUpgradeNode ItemWidget, const
 }
 void AddChoiceBranchConnection(const FM_TalentNode &inout Node, const int ChoiceIndex, const bool bLeftChoice, const FName &inout LineId, FEUIAutoLineConnection &inout OutConnection)
 {
-    int local_3 = 0;
+    int local_2;
+    int local_3;
     if (bLeftChoice)
     {
         local_3 = 2;
+        local_2 = local_3;
     }
     else
     {
         local_3 = 3;
+        local_2 = local_3;
     }
     if (bLeftChoice)
     {
@@ -709,8 +771,13 @@ void AddChoiceBranchConnection(const FM_TalentNode &inout Node, const int Choice
         local_3 = 2;
     }
     OutConnection.LineId = LineId;
+    OutConnection.FromPort = EEUIAutoLinePort(local_2);
+    OutConnection.ToPort = EEUIAutoLinePort(local_3);
     OutConnection.FromNodeId = TalentUpgradeRuntimeAutoLineBuilder::MakeChoiceHubPortId(Node, OutConnection.FromPort);
     OutConnection.ToNodeId = TalentUpgradeRuntimeAutoLineBuilder::MakeChoiceNodePortId(Node, ChoiceIndex, OutConnection.ToPort);
+    OutConnection.FromExtend = 0.0f;
+    OutConnection.ToExtend = 0.0f;
+    OutConnection.RouteMode = EEUIAutoLineRouteMode(1);
     OutConnection.bPreservePathDirection = true;
     return;
 }
@@ -737,8 +804,8 @@ void BuildChoiceBranchConnections(const TArray<TEUIModelWeakRef<FM_TalentNode>> 
             }
             FEUIAutoLineConnection local_38;
             TalentUpgradeRuntimeAutoLineBuilder::AddChoiceBranchConnection(local_16.Get(), local_22, TalentUpgradeRuntimeAutoLineBuilder::IsChoiceWidgetOnLeft(local_20, local_26, local_22), TalentUpgradeRuntimeAutoLineBuilder::ResolveChoiceBranchLineId(local_16, local_22), local_38);
-            local_38.FromNodeId = TalentUpgradeRuntimeAutoLineBuilder::MakeChoiceHubPortId(local_16.Get(), EEUIAutoLinePort(local_38.FromPort));
-            local_38.ToNodeId = TalentUpgradeRuntimeAutoLineBuilder::MakeChoiceNodePortId(local_16.Get(), local_22, EEUIAutoLinePort(local_38.ToPort));
+            local_38.FromNodeId = TalentUpgradeRuntimeAutoLineBuilder::MakeChoiceHubPortId(local_16.Get(), local_38.FromPort);
+            local_38.ToNodeId = TalentUpgradeRuntimeAutoLineBuilder::MakeChoiceNodePortId(local_16.Get(), local_22, local_38.ToPort);
             OutConnections.Add(local_38);
         }
     }
@@ -751,6 +818,7 @@ void BuildGraphConnections(const UObject ContextObject, const TArray<TEUIModelWe
     EEUIAutoLinePort local_59;
     EEUIAutoLinePort local_61;
     EEUIAutoLineRouteMode local_62;
+    float local_68;
     OutConnections.Reset(0);
     FMS_Talent& local_4 = FMS_Talent::Get(ContextObject);
     FName local_58;
@@ -791,22 +859,29 @@ void BuildGraphConnections(const UObject ContextObject, const TArray<TEUIModelWe
             local_61 = EEUIAutoLinePort(0);
             local_62 = EEUIAutoLineRouteMode(0);
             TalentUpgradeAutoLineAdapter::ResolvePorts(local_44.Get(), local_20.Get(), local_59, local_61, local_62);
+            local_56.FromPort = EEUIAutoLinePort(local_59);
+            local_56.ToPort = EEUIAutoLinePort(local_61);
+            local_56.RouteMode = EEUIAutoLineRouteMode(local_62);
             if (bUsePortChoiceGraph)
             {
                 if ((int(local_59) == 2 || (int(local_59) == 3)) || (int(local_59) == 1 && (local_44.Get().GetMaxLevel() <= 1)))
                 {
+                    local_68 = 0.0;
                 }
                 else
                 {
-                    float local_68_2 = FromExtend;
+                    local_68 = FromExtend;
                 }
+                local_56.FromExtend = float32(local_68);
                 if (int(local_61) == 2 || (int(local_61) == 3) || (int(local_61) == 1 && (local_20.Get().GetMaxLevel() <= 1)))
                 {
+                    local_68 = 0.0;
                 }
                 else
                 {
-                    float local_68_4 = ToExtend;
+                    local_68 = ToExtend;
                 }
+                local_56.ToExtend = float32(local_68);
             }
             else
             {
@@ -817,8 +892,7 @@ void BuildGraphConnections(const UObject ContextObject, const TArray<TEUIModelWe
             FName local_75;
             if (bUsePortChoiceGraph)
             {
-                int local_60 = int(local_56.FromPort);
-                local_75 = TalentUpgradeRuntimeAutoLineBuilder::ResolveConnectionNodeId(local_44.Get(), EEUIAutoLinePort(local_60));
+                local_75 = TalentUpgradeRuntimeAutoLineBuilder::ResolveConnectionNodeId(local_44.Get(), local_56.FromPort);
             }
             else
             {
@@ -827,8 +901,7 @@ void BuildGraphConnections(const UObject ContextObject, const TArray<TEUIModelWe
             local_56.FromNodeId = local_75;
             if (bUsePortChoiceGraph)
             {
-                int local_60_2 = int(local_56.ToPort);
-                local_75 = TalentUpgradeRuntimeAutoLineBuilder::ResolveConnectionNodeId(local_20.Get(), EEUIAutoLinePort(local_60_2));
+                local_75 = TalentUpgradeRuntimeAutoLineBuilder::ResolveConnectionNodeId(local_20.Get(), local_56.ToPort);
                 local_58 = local_75;
             }
             else

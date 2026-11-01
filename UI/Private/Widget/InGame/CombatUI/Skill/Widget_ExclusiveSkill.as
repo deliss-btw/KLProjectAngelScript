@@ -856,6 +856,7 @@ namespace UWidget_GramherExclusiveSkill
 void GetModelInfo(FEUIWidgetMetaInfo &inout Result)
 {
     Result.WidgetType = UWidget_GramherExclusiveSkill;
+    Result.ObservedModelChangesSubscriberCount = 0;
     return;
 }
 FEUIWidgetRef CreateWidget(const APlayerController OwningPlayer, const TSoftClassPtr<UEUIUserWidget> &inout WidgetClass)
@@ -872,6 +873,7 @@ namespace UWidget_SwordExclusiveSkill
 void GetModelInfo(FEUIWidgetMetaInfo &inout Result)
 {
     Result.WidgetType = UWidget_SwordExclusiveSkill;
+    Result.ObservedModelChangesSubscriberCount = 7;
     Result.ObservedModelChangesSubscriberNames.Add(FString("OnCustomSkillEnergyRatioChanged"));
     Result.ObservedModelChangesSubscriberNames.Add(FString("OnbMarkAChanged"));
     Result.ObservedModelChangesSubscriberNames.Add(FString("OnbMarkBChanged"));
@@ -895,6 +897,7 @@ namespace UWidget_WizardExclusiveSkill
 void GetModelInfo(FEUIWidgetMetaInfo &inout Result)
 {
     Result.WidgetType = UWidget_WizardExclusiveSkill;
+    Result.ObservedModelChangesSubscriberCount = 4;
     Result.ObservedModelChangesSubscriberNames.Add(FString("OnMagicUseCountChanged"));
     Result.ObservedModelChangesSubscriberNames.Add(FString("OnCastProgressChanged"));
     Result.ObservedModelChangesSubscriberNames.Add(FString("OnChargeLevelChanged"));
@@ -915,6 +918,7 @@ namespace UWidget_ShuijingExclusiveSkill
 void GetModelInfo(FEUIWidgetMetaInfo &inout Result)
 {
     Result.WidgetType = UWidget_ShuijingExclusiveSkill;
+    Result.ObservedModelChangesSubscriberCount = 1;
     Result.ObservedModelChangesSubscriberNames.Add(FString("OnChargeStateChanged"));
     return;
 }
@@ -932,6 +936,7 @@ namespace UWidget_QiongExclusiveSkill
 void GetModelInfo(FEUIWidgetMetaInfo &inout Result)
 {
     Result.WidgetType = UWidget_QiongExclusiveSkill;
+    Result.ObservedModelChangesSubscriberCount = 0;
     return;
 }
 FEUIWidgetRef CreateWidget(const APlayerController OwningPlayer, const TSoftClassPtr<UEUIUserWidget> &inout WidgetClass)
@@ -948,6 +953,7 @@ namespace UWidget_FakeCharacterProgress
 void GetModelInfo(FEUIWidgetMetaInfo &inout Result)
 {
     Result.WidgetType = UWidget_FakeCharacterProgress;
+    Result.ObservedModelChangesSubscriberCount = 0;
     return;
 }
 FEUIWidgetRef CreateWidget(const APlayerController OwningPlayer, const TSoftClassPtr<UEUIUserWidget> &inout WidgetClass)

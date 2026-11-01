@@ -1415,7 +1415,7 @@ class US_CharacterVaultingSystem : UECSScriptSystem
         }
         if (FixedTime.bLatestFrame)
         {
-            VaultInfoCache.PushSteerYaw(float32((FMath::Atan2(local_8.Y, local_8.X))), int(FixedTime.Frame));
+            VaultInfoCache.PushSteerYaw(float32((FMath::Atan2(local_8.Y, local_8.X))), FixedTime.Frame);
         }
         FFPTime local_20 = FFPTime(Vaulting.GetLastRequestTime());
         if (local_20.opCmp(0.0) > 0 && ((((FFPTime(FixedTime.Time) - Vaulting.GetLastRequestTime())).opCmp(this.RequestIntervalLimit) < 0)))

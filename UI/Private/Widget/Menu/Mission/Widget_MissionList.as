@@ -199,6 +199,7 @@ namespace UWidget_MissionList
 void GetModelInfo(FEUIWidgetMetaInfo &inout Result)
 {
     Result.WidgetType = UWidget_MissionList;
+    Result.ObservedModelChangesSubscriberCount = 1;
     Result.ObservedModelChangesSubscriberNames.Add(FString("OnHighlightedChapterExpandedChanged"));
     return;
 }

@@ -45,7 +45,7 @@ class US_SwitchPlayerSystem : UECSScriptSystem
             SendEvent local_32;
             FESMSimpleTrigger local_20 = ESMTrigger.Storage.GetTriggerByName(this.SwitchPlayerInput.Get().OutputTrigger);
             FFPTime local_22 = local_20.IsTriggered(FixedTime.LastTime, FixedTime.Time);
-            if (local_22.opCmp(0.0) > 0 && ((FFPTime(local_20.TriggerTime).opCmp(FixedTime.LastTime) >= 0)))
+            if (local_22.opCmp(0.0) > 0 && ((local_20.TriggerTime.opCmp(FixedTime.LastTime) >= 0)))
             {
                 if (this.SwitchPlayerConditions(Entity, FixedTime.Time))
                 {
@@ -66,7 +66,7 @@ class US_SwitchPlayerSystem : UECSScriptSystem
             SendEvent local_32;
             FESMSimpleTrigger local_20_2 = ESMTrigger.Storage.GetTriggerByName(this.SwitchPlayerNormalInput.Get().OutputTrigger);
             FFPTime local_22_2 = local_20_2.IsTriggered(FixedTime.LastTime, FixedTime.Time);
-            if (local_22_2.opCmp(0.0) > 0 && ((FFPTime(local_20_2.TriggerTime).opCmp(FixedTime.LastTime) >= 0)))
+            if (local_22_2.opCmp(0.0) > 0 && ((local_20_2.TriggerTime.opCmp(FixedTime.LastTime) >= 0)))
             {
                 if (this.SwitchPlayerConditions(Entity, FixedTime.Time))
                 {

@@ -184,6 +184,7 @@ namespace UWidget_SkillBtns
 void GetModelInfo(FEUIWidgetMetaInfo &inout Result)
 {
     Result.WidgetType = UWidget_SkillBtns;
+    Result.ObservedModelChangesSubscriberCount = 2;
     Result.ObservedModelChangesSubscriberNames.Add(FString("OnGamepadRightShoulderPressChanged"));
     Result.ObservedModelChangesSubscriberNames.Add(FString("OnPlayerPawnEntityChanged"));
     return;

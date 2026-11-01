@@ -395,7 +395,7 @@ class US_CharacterMovementScriptSystem : UECSScriptSystem
                 {
                     ::BlueprintFunctions_Common::TeleportEntityToLocation(FECSEntityAdapter(Entity), local_136.GetLastGroundPosition(), Movement.GetRotation().Rotator(), false, FRotator::ZeroRotator, true, false, ELoadingScreenAction(0), false);
                 }
-                if (!(!(this.GetECSRuntime().bAdvanceNewFrame)) && FixedTime.bLatestFrame)
+                if (this.GetECSRuntime().bAdvanceNewFrame && FixedTime.bLatestFrame)
                 {
                     FDebugReportUtils::UploadLog(ELog(11), "StuckRecord", FString().Append("DebugStuck ").Append(local_24.GetStartPosition().X).Append(", ").Append(local_24.GetStartPosition().Y).Append(", ").Append(local_24.GetStartPosition().Z).Append(", ").Append(MovementNew.GetStepUpHeight()).Append(" @ ").Append(Gameplay::GetCurrentLevelName(__GetWorldContext(), true)).Append(", ").Append(Entity));
                 }
@@ -412,7 +412,7 @@ class US_CharacterMovementScriptSystem : UECSScriptSystem
             FFPTime local_76 = (local_78 - FixedTime.DeltaTime);
             if (local_76.opCmp(4.0) <= 0)
             {
-                if (!(!(this.GetECSRuntime().bAdvanceNewFrame)) && FixedTime.bLatestFrame)
+                if ((this.GetECSRuntime().bAdvanceNewFrame) && FixedTime.bLatestFrame)
                 {
                     FDebugReportUtils::UploadLog(ELog(11), "StuckRecordVerbose", FString().Append("DebugStuck ").Append(local_24.GetStartPosition().X).Append(", ").Append(local_24.GetStartPosition().Y).Append(", ").Append(local_24.GetStartPosition().Z).Append(", ").Append(MovementNew.GetStepUpHeight()).Append(" @ ").Append(Gameplay::GetCurrentLevelName(__GetWorldContext(), true)).Append(", ").Append(Entity));
                 }

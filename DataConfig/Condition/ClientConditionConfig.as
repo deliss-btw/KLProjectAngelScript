@@ -49,7 +49,7 @@ struct FClientCond_InputType : FClientConditionBase
 {
     FClientConditionBase _base_FClientConditionBase;
     UPROPERTY()
-    EEUIInputType InputType;
+    EEUIInputType InputType = EEUIInputType(0);
 
 }
 
@@ -57,7 +57,7 @@ struct FClientCond_TriggerReason : FClientConditionBase
 {
     FClientConditionBase _base_FClientConditionBase;
     UPROPERTY()
-    EClientConditionTriggerReason Reason;
+    EClientConditionTriggerReason Reason = EClientConditionTriggerReason(0);
 
 }
 
@@ -65,7 +65,7 @@ struct FClientCond_InTeam : FClientConditionBase
 {
     FClientConditionBase _base_FClientConditionBase;
     UPROPERTY()
-    bool bRequireInTeam;
+    bool bRequireInTeam = true;
 
 }
 

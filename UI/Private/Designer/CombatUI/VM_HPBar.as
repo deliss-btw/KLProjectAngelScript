@@ -483,10 +483,10 @@ void GetModelInfo(FEUIViewModelMetaInfo &inout Result)
     Result.GeneratedPropertyStruct = __GeneratedProperties_FVM_HPBar;
     FEUIModelWatcherProperty local_19;
     local_19.PropertyName = FName("CurrentHPRatioSource");
-    int local_2_2 = FVM_HPBar::__IndexOf_CurrentHPRatioSource();
+    local_19.DirtyBitIndex = FVM_HPBar::__IndexOf_CurrentHPRatioSource();
     Result.WatcherProperties.Add(local_19);
     local_19.PropertyName = FName("HPRatioSource");
-    int local_2_3 = FVM_HPBar::__IndexOf_HPRatioSource();
+    local_19.DirtyBitIndex = FVM_HPBar::__IndexOf_HPRatioSource();
     Result.WatcherProperties.Add(local_19);
     FEUIModelEffectDefine local_26;
     local_26.FunctionName = "SyncHPRatioSource";

@@ -126,7 +126,7 @@ FHitTestCheckResult CheckHitTestResult(const FECSEntity &inout HitCaster, const 
     int local_68 = 0;
     local_2.Relation = EFactionRelationSplitSelf(1);
     local_2.CheckResult = EHitTestCheckResult(1);
-    FECSEntity local_8 = FECSEntity(Result.HitEntity);
+    FECSEntity local_8 = Result.HitEntity;
     if (!(local_8.IsValid()))
     {
         return local_2;
@@ -436,18 +436,18 @@ void MakeInvincibleCounterEvent(const FECSEntity &inout EventSender, const FECSE
     {
         FCE_InvincibleCounterEvent local_6;
         local_6.Attacker = Attacker;
-        int local_1 = int(CheckResult);
-        if (local_1 <= 5)
+        switch (int(CheckResult))
         {
-            if (local_1 != 5)
-            {
-            }
-            else
-            {
-                local_6.Type = EInvincibleCounterType(1);
-            }
+        case 5:
+        {
+            local_6.Type = EInvincibleCounterType(1);
+            break;
         }
-        local_6.Type = EInvincibleCounterType(0);
+        default:
+        {
+            local_6.Type = EInvincibleCounterType(0);
+        }
+        }
         local_6.SetbPredictable(bPredictable);
         return;
     }
@@ -634,8 +634,10 @@ void TriggerCombatTimelineAction(const FECSEntity &inout Entity, const ECombatTi
             {
                 if (int(local_14.BaseTime) == 2)
                 {
+                    EDestroyType local_21;
                     GetDefaulted local_20;
-                    if ((int(local_14.DestroyTypeFilter) & int(local_20.opCall().DestroyType)) == 0)
+                    local_21 = local_20.opCall().DestroyType;
+                    if ((int(local_14.DestroyTypeFilter) & int(local_21)) == 0)
                     {
                         continue;
                     }

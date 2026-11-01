@@ -58,7 +58,7 @@ bool CheckEnvSurfaceHit(FEnvHitPresentationData &inout Result, const FECSEntity 
     while (true)
     {
         int local_277 = local_200_2;
-        FVector local_284(StrikeEventData.StrikeDirection);
+        FVector local_284 = StrikeEventData.StrikeDirection;
         float local_286 = 100000.0;
         int local_287 = 0;
         for (; local_287 <= local_201_2; ++local_287)

@@ -38,7 +38,7 @@ class US_CharacterMovementNewCollisionSystem : UECSScriptSystem
             XError(ELog(11), FString().Append(Entity).Append(" has invalid Collision config with ShapeType=None"));
             return;
         }
-        FFPTime local_12 = FFPTime(FixedTime.Time);
+        FFPTime local_12 = FixedTime.Time;
         FCollisionShape local_20 = Collision.GetScaledShape();
         FVector local_26 = CharacterMovement.GetPosition();
         FQuat local_36 = CharacterMovement.GetRotation();
@@ -113,8 +113,7 @@ class US_CharacterMovementNewCollisionSystem : UECSScriptSystem
         bool local_4_2 = !(false);
         local_197 = (local_197 == local_4_2);
         local_192.Param.bSnapOnFloor = local_197;
-        bool local_197_2 = CharacterMovement.GetMutePreventEdgeFalling() <= 0 && (CharacterMovement.GetPreventEdgeFalling() > 0);
-        local_192.Param.bPreventEdgeFalling = local_197_2;
+        local_192.Param.bPreventEdgeFalling = CharacterMovement.GetMutePreventEdgeFalling() <= 0 && (CharacterMovement.GetPreventEdgeFalling() > 0);
         float32 local_195_3 = CharacterMovementParam.WalkableSlopDegree;
         float32 local_200_2 = CharacterMovementControl.GetWalkableSlopDegreeScale();
         local_195_3 = local_195_3 * local_200_2;
@@ -127,8 +126,7 @@ class US_CharacterMovementNewCollisionSystem : UECSScriptSystem
         local_192.Param.bImmovableByPlayer = CharacterMovementParam.bImmovableByPlayer;
         local_192.Param.bHardSnapToFloor = (CharacterMovementNew.GetHardSnapToFloorCount() > 0);
         local_192.Param.bEnableOnGroundPenetratingSlide = (CharacterMovementNew.GetEnableOnGroundPenetratingSlideCount() > 0);
-        bool local_197_5 = (CharacterMovementNew.GetRestrictInNavmeshCount() > 0);
-        local_192.Param.bRestrictInNavmesh = local_197_5;
+        local_192.Param.bRestrictInNavmesh = (CharacterMovementNew.GetRestrictInNavmeshCount() > 0);
         local_192.Param.bAllowAirborne = (CharacterMovementControl.GetAllowAirborne() > 0);
         if (CharacterMovementControl.GetbFlyingMovement() && CharacterMovementControl.GetbFlyFloating())
         {
@@ -143,8 +141,7 @@ class US_CharacterMovementNewCollisionSystem : UECSScriptSystem
             local_192.Param.bIgnorePawn = true;
         }
         local_192.Param.SlideRatioForDynamic = FKinematicMoveCollisionUtils::GetSlideRatioFromConfigRatio(this.DefaultSlideModifyRatio);
-        local_200_2 = local_192.Param.SlideRatioForDynamic;
-        local_192.Param.SlideRatioForStatic = local_200_2;
+        local_192.Param.SlideRatioForStatic = local_192.Param.SlideRatioForDynamic;
         local_200_2 = FKinematicMoveCollisionUtils::GetSlideNerfFromConfigAngle(this.DefaultNerfSlideAngle);
         local_192.Param.SlideNerfForDynamic = local_200_2;
         local_192.Param.SlideNerfForStatic = local_192.Param.SlideNerfForDynamic;

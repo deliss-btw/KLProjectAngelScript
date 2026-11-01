@@ -539,9 +539,11 @@ void GetModelInfo(FEUIModelOnlyMetaInfo &inout Result)
     Result.SetbCanDefaultConstruct(false);
     FEUIModelMonitorDefine local_14;
     local_14.FunctionName = "__OnEntityLoadOrUnloadOnClient";
+    local_14.MonitorTarget = EEUIModelMonitorTarget(1);
     local_14.ComponentType = FC_Transform;
     local_14.MonitorPropertyName = FName("Entity");
-    int local_2_2 = FM_TeleporterSpotUpdater::__IndexOf_Entity();
+    int local_21 = FM_TeleporterSpotUpdater::__IndexOf_Entity();
+    local_14.MonitorPropertyDirtyIndex = int8(local_21);
     Result.MonitorFunctions.Add(local_14);
     return;
 }
@@ -596,6 +598,7 @@ void GetModelInfo(FEUIModelOnlyMetaInfo &inout Result)
     Result.MessageHandleFunctions.Add(local_14);
     FEUIModelMonitorDefine local_28;
     local_28.FunctionName = "__DS_OnTeleportersModified";
+    local_28.MonitorTarget = EEUIModelMonitorTarget(2);
     local_28.ComponentType = FCS_Teleporters;
     Result.MonitorFunctions.Add(local_28);
     local_14.FunctionName = "__OnTeleporterStateChanged";

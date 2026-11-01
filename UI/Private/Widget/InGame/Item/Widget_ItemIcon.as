@@ -370,6 +370,7 @@ namespace UWidget_ItemIcon
 void GetModelInfo(FEUIWidgetMetaInfo &inout Result)
 {
     Result.WidgetType = UWidget_ItemIcon;
+    Result.ObservedModelChangesSubscriberCount = 1;
     Result.ObservedModelChangesSubscriberNames.Add(FString("RefreshAdapter"));
     return;
 }

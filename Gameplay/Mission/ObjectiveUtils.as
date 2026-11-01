@@ -467,14 +467,124 @@ bool IsCommissionObjective(const TDataObjectPtr<FObjectiveConfig> &inout Objecti
 UFUNCTION()
 FText GetObjectiveDesc(const TDataObjectPtr<FObjectiveConfig> &inout ObjectiveConfig, const int ProgressValue = 0, const int FailProgressValue = 0)
 {
-    // body not fully recovered — stub [opcode-uncovered]
-    FText __r; return __r;
+    int local_15;
+    if (!(ObjectiveConfig))
+    {
+        return FText();
+    }
+    FText local_10;
+    int local_11 = 1;
+    int local_13 = 1;
+    int local_12 = int(ObjectiveConfig.opArrow().ObjectiveType);
+    switch (EObjectiveType(local_12))
+    {
+    case EObjectiveType::Single:
+    {
+        CastTo local_44;
+        TDataObjectPtr<FObjectiveSingleConfig> local_68 = local_44.opCall();
+        local_10 = local_68.opArrow().ObjectiveTitle;
+        if (local_68.opArrow().GetFinishCondition().IsSet())
+        {
+            local_12 = ConditionUtils::GetTargetValue(local_68.opArrow().GetFinishCondition());
+        }
+        else
+        {
+            local_12 = 1;
+        }
+        local_11 = local_12;
+        if (local_68.opArrow().GetFailCondition().IsSet())
+        {
+            local_15 = ConditionUtils::GetTargetValue(local_68.opArrow().GetFailCondition());
+        }
+        else
+        {
+            local_15 = 1;
+        }
+        local_13 = local_15;
+        break;
+    }
+    case EObjectiveType::Group:
+    {
+            CastTo local_72;
+        for (auto& local_110 : local_72.opCall().opArrow().GetChildObjectives())
+        {
+            local_10 = local_110.opArrow().ObjectiveTitle;
+            break;
+        }
+        break;
+    }
+    }
+    TMap<FString, FFormatArgumentValue> local_130;
+    local_130.Add("ProgressValue", FFormatArgumentValue(ProgressValue));
+    local_130.Add("TargetValue", FFormatArgumentValue(local_11));
+    int local_12_2 = local_11 - ProgressValue;
+    local_130.Add("RemainValue", FFormatArgumentValue(local_12_2));
+    local_130.Add("FailProgressValue", FFormatArgumentValue(FailProgressValue));
+    local_130.Add("FailTargetValue", FFormatArgumentValue(local_13));
+    local_15 = local_13 - FailProgressValue;
+    local_130.Add("FailRemainValue", FFormatArgumentValue(local_15));
+    return FText::Format(local_10, local_130);
 }
 UFUNCTION()
 FText GetObjectiveProgress(const TDataObjectPtr<FObjectiveConfig> &inout ObjectiveConfig, const int ProgressValue = 0, const int FailProgressValue = 0)
 {
-    // body not fully recovered — stub [opcode-uncovered]
-    FText __r; return __r;
+    int local_15;
+    if (!(ObjectiveConfig))
+    {
+        return FText();
+    }
+    FText local_10;
+    int local_11 = 1;
+    int local_13 = 1;
+    int local_12 = int(ObjectiveConfig.opArrow().ObjectiveType);
+    switch (EObjectiveType(local_12))
+    {
+    case EObjectiveType::Single:
+    {
+        CastTo local_44;
+        TDataObjectPtr<FObjectiveSingleConfig> local_68 = local_44.opCall();
+        local_10 = local_68.opArrow().ObjectiveProgressFormat;
+        if (local_68.opArrow().GetFinishCondition().IsSet())
+        {
+            local_12 = ConditionUtils::GetTargetValue(local_68.opArrow().GetFinishCondition());
+        }
+        else
+        {
+            local_12 = 1;
+        }
+        local_11 = local_12;
+        if (local_68.opArrow().GetFailCondition().IsSet())
+        {
+            local_15 = ConditionUtils::GetTargetValue(local_68.opArrow().GetFailCondition());
+        }
+        else
+        {
+            local_15 = 1;
+        }
+        local_13 = local_15;
+        break;
+    }
+    case EObjectiveType::Group:
+    {
+            CastTo local_72;
+        for (auto& local_110 : local_72.opCall().opArrow().GetChildObjectives())
+        {
+            local_10 = local_110.opArrow().ObjectiveProgressFormat;
+            break;
+        }
+        break;
+    }
+    }
+    TMap<FString, FFormatArgumentValue> local_130;
+    local_130.Add("ProgressValue", FFormatArgumentValue(ProgressValue));
+    local_130.Add("TargetValue", FFormatArgumentValue(local_11));
+    int local_12_2 = local_11 - ProgressValue;
+    local_130.Add("RemainValue", FFormatArgumentValue(local_12_2));
+    local_130.Add("FailProgressValue", FFormatArgumentValue(FailProgressValue));
+    local_130.Add("FailTargetValue", FFormatArgumentValue(local_13));
+    local_15 = local_13 - FailProgressValue;
+    local_130.Add("FailRemainValue", FFormatArgumentValue(local_15));
+    return FText::Format(local_10, local_130);
 }
 FGuideContext CreateGuideContext(const FECSEntity &inout RequesterPlayer, const TDataObjectPtr<FLevelInfoConfig> &inout LevelInfo, const TDataObjectPtr<FObjectiveSingleConfig> &inout ObjectiveSingle, const int GuideIndex, const FGuideDataSourceConfig &inout InGuideDataSource, const TDataObjectPtr<FGuidePresentationConfig> &inout GuidePresentationConfig, const bool bClientAutoSelectIcon = false, const bool bShowGuidingPath = false)
 {

@@ -276,7 +276,7 @@ struct FClassicSpawnerConfig : FSpawnerConfig
         {
             return ENTITY_NULL;
         }
-        FECSEntity local_8 = FECSEntity(Context.OuterEntity);
+        FECSEntity local_8 = Context.OuterEntity;
         FECSEntity local_12 = ECS::GetECSWorld().Create(EECSRegType(2), EEntityType(10), n"EcologySpawnerProvider");
         local_22.ConfigRef = Context.OuterEntity.GetId();
         local_22.ConfigType = FClassicSpawnerConfig;
@@ -422,7 +422,7 @@ struct FMixedRandomBossSpawnerConfig : FSpawnerConfig
         {
             return ENTITY_NULL;
         }
-        FECSEntity local_8 = FECSEntity(Context.OuterEntity);
+        FECSEntity local_8 = Context.OuterEntity;
         FECSWorldPtr local_14 = ECS::GetECSWorld();
         FECSEntity local_12 = ECS::GetECSWorld().Create(EECSRegType(2), EEntityType(10), n"EcologySpawnerProvider");
         const FTransform& local_24 = Context.GetDefaultedTransform();

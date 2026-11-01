@@ -333,13 +333,13 @@ void GetModelInfo(FEUIViewModelMetaInfo &inout Result)
     local_22.ApplySort();
     FEUIModelRefPropertyDirty local_30;
     local_30.PropertyName = FName("QualitySelector");
-    int local_2_2 = FVM_QualitySelector::ModelId;
-    int local_2_3 = local_22.GetMappingDirtyOffset(3);
+    local_30.PropertyModelId = FVM_QualitySelector::ModelId;
+    local_30.MappingDirtyOffset = local_22.GetMappingDirtyOffset(3);
     local_30.RelatedDirtyMask.SetBit(FVM_QualitySelector::__IndexOf_CurrentNum(), true);
     Result.ListeningModelRefDirties.Add(local_30);
     local_30.PropertyName = FName("ItemSumData");
-    int local_23 = FM_ItemData::ModelId;
-    int local_23_2 = local_22.GetMappingDirtyOffset(2);
+    local_30.PropertyModelId = FM_ItemData::ModelId;
+    local_30.MappingDirtyOffset = local_22.GetMappingDirtyOffset(2);
     local_30.RelatedDirtyMask.SetBit(FM_ItemData::__IndexOf_Num(), true);
     Result.ListeningModelRefDirties.Add(local_30);
     FEUIModelDirtyDefine local_40;

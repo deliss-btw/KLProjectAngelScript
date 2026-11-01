@@ -299,9 +299,9 @@ FVector ComputeSpotLocation(const TEUIModelRef<FM_Spot> &inout Spot)
         {
             FPresentationSpotOffset local_86;
             FECSEntity local_80 = FASCommonUtils::GetControlledPawnEntity(local_70);
-            switch (int(local_86.OffsetType))
+            switch (local_86.OffsetType)
             {
-            case 1:
+            case EPresentationSpotOffsetType::UseAnchor:
             {
                 if (!(local_96))
                 {
@@ -309,22 +309,22 @@ FVector ComputeSpotLocation(const TEUIModelRef<FM_Spot> &inout Spot)
                 }
                 else
                 {
-                    switch (int(local_86.AnchorType))
+                    switch (local_86.AnchorType)
                     {
-                    case 0:
+                    case EPresentationSpotAnchorType::Top:
                     {
                         float32 local_105 = local_96.GetScaledHalfHeight();
                         local_66 = (FVector(FVector::UpVector) * local_105);
                         break;
                     }
-                    case 1:
+                    case EPresentationSpotAnchorType::Bottom:
                     {
                         FVector local_104_2 = FVector(FVector::DownVector);
                         float32 local_105_2 = local_96.GetScaledHalfHeight();
                         local_66 = (local_104_2 * local_105_2);
                         break;
                     }
-                    case 2:
+                    case EPresentationSpotAnchorType::Center:
                     {
                         break;
                     }
@@ -332,7 +332,7 @@ FVector ComputeSpotLocation(const TEUIModelRef<FM_Spot> &inout Spot)
                     break;
                 }
             }
-            case 2:
+            case EPresentationSpotOffsetType::UseSocket:
             {
                 FName local_116 = local_86.SocketName;
                 if (local_116.IsNone())
@@ -353,7 +353,7 @@ FVector ComputeSpotLocation(const TEUIModelRef<FM_Spot> &inout Spot)
                     }
                 }
             }
-            case 0:
+            case EPresentationSpotOffsetType::NoOffset:
             {
                 break;
             }

@@ -310,12 +310,15 @@ struct FMS_MissionTargetSpotManager : FEUIModelSingleton
             UMinimapIconRegistry local_82 = ::MinimapUtils::GetIconRegistry(local_2.GuideIconRegistry);
             if (local_82 != nullptr)
             {
+                FMinimapIconDisplaySettings local_102;
+                local_102.ScaleRule = EMinimapIconScaleRule(3);
                 FMinimapIconInfo local_146;
                 local_146.IconWidget = local_2.MiniMapRegionIconWidget;
-                local_146.DisplaySettings = FMinimapIconDisplaySettings();
+                local_146.DisplaySettings = local_102;
                 local_146.WorldPosition = FVector2D(Position.X, Position.Y);
                 float local_80 = GuideInfo.GetRegionRadius() * 2.0;
                 local_146.IconSize = FVector2D(local_80, local_80);
+                local_146.ZOrder = -1;
                 FGuideMinimapIconUserData local_176;
                 local_146.UserData = FInstancedStruct::Make(local_176);
                 this.GetModify_GuideMinimapIconHandleLists().FindOrAdd(local_8).IconHandles.Add(local_82.AddIcon(local_146));
@@ -664,9 +667,11 @@ void GetModelInfo(FEUIModelOnlyMetaInfo &inout Result)
     Result.SetbCanDefaultConstruct(true);
     FEUIModelMonitorDefine local_14;
     local_14.FunctionName = "__OnGuidingInfoListModify";
+    local_14.MonitorTarget = EEUIModelMonitorTarget(3);
     local_14.ComponentType = FC_GuidingInfoList;
     Result.MonitorFunctions.Add(local_14);
     local_14.FunctionName = "__OnCommissionInfoModify";
+    local_14.MonitorTarget = EEUIModelMonitorTarget(2);
     local_14.ComponentType = FCS_CommissionInfo;
     Result.MonitorFunctions.Add(local_14);
     return;

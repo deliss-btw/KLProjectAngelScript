@@ -379,8 +379,29 @@ struct FVM_CommissionFinish : FEUIViewModel
     }
     FText GetScoreItemDisplayText(const FCommissionFinishScoreItem &inout ScoreItem) const
     {
-        // body not fully recovered — stub [opcode-uncovered]
-        FText __r; return __r;
+        switch (ScoreItem.GetType())
+        {
+        case ECommissionFinishScoreType::MainObjective:
+        {
+            return NSLOCTEXT("MainObjectDesc", "完成主要目标");
+        }
+        case ECommissionFinishScoreType::SubObjective:
+        {
+            return NSLOCTEXT("SubObjectDesc", "完成次要目标");
+        }
+        case ECommissionFinishScoreType::FinishTime:
+        {
+            return FText::Format(NSLOCTEXT("FinishTimeRemainDesc", "剩余时间超过{0}分钟"), FText::AsNumber(ScoreItem.GetNum(), FNumberFormattingOptions::DefaultNoGrouping()));
+        }
+        case ECommissionFinishScoreType::TeamDeath:
+        {
+            return FText::Format(INVTEXT("{0}x{1}"), NSLOCTEXT("TeamDeathDesc", "全队力竭次数"), FText::AsNumber(ScoreItem.GetNum(), FNumberFormattingOptions::DefaultNoGrouping()));
+        }
+        case ECommissionFinishScoreType::TeamNearDeath:
+        {
+            return FText::Format(INVTEXT("{0}x{1}"), NSLOCTEXT("TeamNearDeathDesc", "全队濒死次数"), FText::AsNumber(ScoreItem.GetNum(), FNumberFormattingOptions::DefaultNoGrouping()));
+        }
+        }
     }
     FText GetCurCommissionRatingResurlt(const TArray<FCommissionRating> &inout RatingRule, const int CurScore, const int FullScore, int &inout BestRatingImageIndex)
     {
@@ -1450,6 +1471,7 @@ struct __GeneratedProperties_FVM_CommissionFinish
     bool IsNotRaceCommission;
     UPROPERTY()
     TEUIModelRef<FVM_CommissionFinish> Self;
+
 
 }
 

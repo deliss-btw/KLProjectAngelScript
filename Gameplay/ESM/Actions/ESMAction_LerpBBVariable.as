@@ -43,7 +43,7 @@ class UESMAction_LerpBBVar : UESMBPBaseSpanAction
             FESMBBVarLerpKey local_24;
             local_24.SetVarName(this.VarName.Name);
             local_24.SetTimeStart(Time.WorldTime);
-            FFPTime local_30 = FFPTime(Time.WorldTime);
+            FFPTime local_30 = Time.WorldTime;
             local_24.SetTimeEnd((local_30 + (this.LerpInDuration * Time.PlaySpeed)));
             local_24.SetFromValue(local_2.GetBB_Float(this.VarName, local_24.GetTimeStart()));
             local_24.SetTargetValue(this.Value);
@@ -67,7 +67,7 @@ class UESMAction_LerpBBVar : UESMBPBaseSpanAction
             FESMBBVarLerpKey local_24;
             local_24.SetVarName(this.VarName.Name);
             local_24.SetTimeStart(Time.WorldTime);
-            FFPTime local_30 = FFPTime(Time.WorldTime);
+            FFPTime local_30 = Time.WorldTime;
             local_24.SetTimeEnd((local_30 + (this.LerpOutDuration * Time.PlaySpeed)));
             local_24.SetFromValue(this.Value);
             local_2.SetBB_Float(this.VarName, local_24.GetTimeStart(), local_24.GetFromValue());

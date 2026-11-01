@@ -142,6 +142,7 @@ namespace UWidget_TutorialHandbook
 void GetModelInfo(FEUIWidgetMetaInfo &inout Result)
 {
     Result.WidgetType = UWidget_TutorialHandbook;
+    Result.ObservedModelChangesSubscriberCount = 1;
     Result.ObservedModelChangesSubscriberNames.Add(FString("OnHasHoveredEntryChanged"));
     return;
 }

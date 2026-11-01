@@ -117,8 +117,7 @@ class UESMAction_RootMotionSourceOverride : UESMBPBaseSpanTickAction
         float32 local_8;
         float32 local_9;
         float32 local_7 = float32((Time.ActionTime.ToSeconds() - Time.ActionLastTime.ToSeconds()));
-        FFPTime local_12 = FFPTime(Time.ActionDuration);
-        if (local_12.opCmp(0.0) > 0)
+        if (Time.ActionDuration.opCmp(0.0) > 0)
         {
             float local_4_2 = (FFPTime(Time.ActionLastTime) / Time.ActionDuration);
             local_8 = float32(local_4_2);
@@ -143,7 +142,7 @@ class UESMAction_RootMotionSourceOverride : UESMBPBaseSpanTickAction
         local_20.Z = local_1_2;
         Comp.PosDelta += local_20;
         local_1_2 = this.ComputeAxisDelta(this.Data.Yaw, local_7, local_8, local_9);
-        float32 local_27 = Comp.YawDelta + local_1_2;
+        Comp.YawDelta += local_1_2;
         return;
     }
     void InitSampleAxisConfigs(FC_RootMotionOverrideSampleInfo &inout SampleInfo) const
@@ -156,15 +155,18 @@ class UESMAction_RootMotionSourceOverride : UESMBPBaseSpanTickAction
     }
     void UpdateSampleTime(FC_RootMotionOverrideSampleInfo &inout SampleInfo, const FESMActionTime &inout Time) const
     {
-        FFPTime local_2 = FFPTime(Time.ActionDuration);
-        if (local_2.opCmp(0.0) > 0)
+        if (Time.ActionDuration.opCmp(0.0) > 0)
         {
-            float32 local_7 = float32((FFPTime(Time.ActionLastTime) / Time.ActionDuration));
-            local_7 = float32((FFPTime(Time.ActionTime) / Time.ActionDuration));
-            local_7 = float32(Time.ActionDuration.ToSeconds());
-            float32 local_12 = FMath::Max(float32(((FFPTime(Time.ActionDuration) - Time.ActionTime).ToSeconds())), 0.0f);
+            SampleInfo.LastNormalizedTime = float32((FFPTime(Time.ActionLastTime) / Time.ActionDuration));
+            SampleInfo.CurrentNormalizedTime = float32((FFPTime(Time.ActionTime) / Time.ActionDuration));
+            SampleInfo.ActionDurationSeconds = float32(Time.ActionDuration.ToSeconds());
+            SampleInfo.RemainingSeconds = FMath::Max(float32(((FFPTime(Time.ActionDuration) - Time.ActionTime).ToSeconds())), 0.0f);
             return;
         }
+        SampleInfo.LastNormalizedTime = 0.0f;
+        SampleInfo.CurrentNormalizedTime = 0.0f;
+        SampleInfo.ActionDurationSeconds = 0.0f;
+        SampleInfo.RemainingSeconds = 0.0f;
         return;
     }
     float32 ComputeAxisDelta(const FRootMotionSourceOverrideAxis &inout Axis, const float32 DeltaSeconds, const float32 LastT, const float32 T) const

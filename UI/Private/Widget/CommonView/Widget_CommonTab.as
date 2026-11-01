@@ -32,6 +32,8 @@ class UWidget_CommonTab : UUserWidget
             local_16.SetHorizontalAlignment(EHorizontalAlignment(0));
             local_16.SetVerticalAlignment(EVerticalAlignment(2));
             FSlateChildSize local_20;
+            local_20.SizeRule = ESlateSizeRule(1);
+            local_20.Value = 1.0f;
             local_16.SetSize(local_20);
             local_12.SetIsSelectedInternal((local_1 == this.SelectedTabIndex));
             ++local_1;

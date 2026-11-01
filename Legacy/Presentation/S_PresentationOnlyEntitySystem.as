@@ -15,11 +15,11 @@ class US_PresentationOnlyEntitySystem : UECSScriptSystem
             return;
         }
         FQuat local_16 = FQuat(FQuat::Identity);
-        switch (int(InitData.GetSpawnRotationType()))
+        switch (InitData.GetSpawnRotationType())
         {
             const FC_Transform& local_26;
             Get local_24;
-        case 1:
+        case ESpawnPresentationEntityRotType::EntityRotation:
         {
             local_26 = local_24.opCall();
             if (local_26)
@@ -28,7 +28,7 @@ class US_PresentationOnlyEntitySystem : UECSScriptSystem
             }
             break;
         }
-        case 0:
+        case ESpawnPresentationEntityRotType::SocketRotation:
         {
             const USceneComponent local_60 = InitData.GetParentEntity().GetActorVisualSceneRoot();
             if (local_60 != nullptr)
@@ -45,7 +45,7 @@ class US_PresentationOnlyEntitySystem : UECSScriptSystem
             }
             break;
         }
-        case 2:
+        case ESpawnPresentationEntityRotType::WorldSpace:
         {
             local_16 = FQuat(InitData.GetRotationOffset().Quaternion());
             break;

@@ -75,6 +75,7 @@ bool GetRoutePointInfo(const UObject WorldContextObject, const FName &inout Rout
     }
     OutInfo.PointId = NPCDailyRouteRuntimeLibrary::GetEffectivePointId(local_26);
     OutInfo.Location = local_26.GetWorldLocation();
+    OutInfo.AcceptRadius = int(local_26.AcceptRadius);
     return true;
 }
 bool GetRouteConnectionInfo(const UObject WorldContextObject, const FName &inout RouteSourceId, const FName &inout FromPointId, const FName &inout ToPointId, FNPCDailyRouteRuntimeConnectionInfo &out OutInfo)
@@ -100,8 +101,8 @@ bool GetRouteConnectionInfo(const UObject WorldContextObject, const FName &inout
     }
     for (auto& local_38 : local_18.Connections)
     {
-        local_23 = (FName(local_38.FromPointName) == FromPointId) && (FName(local_38.ToPointName) == ToPointId);
-        bool local_39 = (FName(local_38.FromPointName) == ToPointId) && (FName(local_38.ToPointName) == FromPointId);
+        local_23 = (local_38.FromPointName == FromPointId) && (local_38.ToPointName == ToPointId);
+        bool local_39 = (local_38.FromPointName == ToPointId) && (local_38.ToPointName == FromPointId);
         if (!(local_23) && !(local_39))
         {
             continue;
@@ -111,6 +112,7 @@ bool GetRouteConnectionInfo(const UObject WorldContextObject, const FName &inout
             return false;
         }
         OutInfo.bValid = true;
+        OutInfo.Length = local_38.Length;
         FTransform local_96 = local_18.GetWorldTransform();
         int local_97 = 0;
         for (; local_97 < local_38.LocalSplinePoints.Num(); )
@@ -955,7 +957,7 @@ void GetNPCDailyRouteConfigStartPreview(const TDataObjectPtr<FNPCDailyRouteConfi
     bHasPreview = true;
     FirstPathPointCount = local_76.WorldPathPoints.Num();
     FirstTargetLocation = local_70.Location;
-    FirstTargetAcceptRadius = int(local_70.AcceptRadius);
+    FirstTargetAcceptRadius = local_70.AcceptRadius;
     Summary = FString().Append("Start[").Append(StartPointId).Append("]=").Append(StartLocation).Append(", FirstTarget[").Append(FirstTargetNodeIndex).Append("]=").Append(FirstTargetPointId).Append(", PathPointCount=").Append(FirstPathPointCount).Append(", Target=").Append(FirstTargetLocation).Append(", AcceptRadius=").Append(FirstTargetAcceptRadius);
     return;
 }

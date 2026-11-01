@@ -124,33 +124,23 @@ FText GetSystemName()
 FText GetMainTabText(const EFashionSlotMainTab MainTab)
 {
     FText local_4;
-    FText __return;
     if (FashionSettings::Get().MainTabTextMap.Find(MainTab, local_4) && !(local_4.IsEmpty()))
     {
         return local_4;
     }
-    int local_9 = int(MainTab);
-    if (local_9 <= 1)
+    switch (int(MainTab))
     {
-        if (local_9 != 0)
-        {
-            if (local_9 != 1)
-            {
-            }
-            else
-            {
-                __return = NSLOCTEXT("FashionSettings", "FashionSettings_DefaultMainTab_Mount", "坐骑");
-            }
-        }
+    case 1:
+    {
+        return NSLOCTEXT("FashionSettings", "FashionSettings_DefaultMainTab_Mount", "坐骑");
     }
-    __return = NSLOCTEXT("FashionSettings", "FashionSettings_DefaultMainTab_Cloth", "时装");
-    return __return;
+    }
+    return NSLOCTEXT("FashionSettings", "FashionSettings_DefaultMainTab_Cloth", "时装");
 }
 FText GetSubTabText(const EFashionSlotMainTab MainTab, const EFashionSlotSubTab SubTab)
 {
     bool local_27;
     FFashionSubTabTextConfig local_20;
-    FText __return;
     FText local_24;
     if (!(FashionSettings::Get().SubTabTextMap.Find(MainTab, local_20)))
     {
@@ -165,22 +155,14 @@ FText GetSubTabText(const EFashionSlotMainTab MainTab, const EFashionSlotSubTab 
     {
         return local_24;
     }
-    int local_29 = int(SubTab);
-    if (local_29 <= 1)
+    switch (int(SubTab))
     {
-        if (local_29 != 0)
-        {
-            if (local_29 != 1)
-            {
-            }
-            else
-            {
-                __return = NSLOCTEXT("FashionSettings", "FashionSettings_DefaultSubTab_Deco", "配饰");
-            }
-        }
+    case 1:
+    {
+        return NSLOCTEXT("FashionSettings", "FashionSettings_DefaultSubTab_Deco", "配饰");
     }
-    __return = NSLOCTEXT("FashionSettings", "FashionSettings_DefaultSubTab_Major", "主体");
-    return __return;
+    }
+    return NSLOCTEXT("FashionSettings", "FashionSettings_DefaultSubTab_Major", "主体");
 }
 TDataObjectPtr<FMessageHintConfig> GetNewUnlockLargeHint()
 {

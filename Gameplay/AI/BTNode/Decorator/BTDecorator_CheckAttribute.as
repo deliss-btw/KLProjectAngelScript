@@ -23,34 +23,34 @@ class UBTDecorator_CheckAttribute : UBTDecorator_ECSScriptBase
     FString GetStaticDescription_Implementation() const
     {
         FString local_4 = "?";
-        switch (int(this.ComparisonType))
+        switch (this.ComparisonType)
         {
-        case 0:
+        case EArithmeticKeyOperation(0):
         {
             local_4 = "==";
             break;
         }
-        case 1:
+        case EArithmeticKeyOperation(1):
         {
             local_4 = "!=";
             break;
         }
-        case 2:
+        case EArithmeticKeyOperation(2):
         {
             local_4 = "<";
             break;
         }
-        case 3:
+        case EArithmeticKeyOperation(3):
         {
             local_4 = "<=";
             break;
         }
-        case 4:
+        case EArithmeticKeyOperation(4):
         {
             local_4 = ">";
             break;
         }
-        case 5:
+        case EArithmeticKeyOperation(5):
         {
             local_4 = ">=";
             break;
@@ -88,35 +88,33 @@ class UBTDecorator_CheckAttribute : UBTDecorator_ECSScriptBase
     }
     bool CompareValues(const float32 Left, const float32 Right) const
     {
-        bool local_4 = false;
-        switch (int(this.ComparisonType))
+        switch (this.ComparisonType)
         {
-        case 0:
+        case EArithmeticKeyOperation(0):
         {
             return (Left == Right);
         }
-        case 1:
+        case EArithmeticKeyOperation(1):
         {
             return (Left != Right);
         }
-        case 2:
+        case EArithmeticKeyOperation(2):
         {
             return (Left < Right);
         }
-        case 3:
+        case EArithmeticKeyOperation(3):
         {
             return (Left <= Right);
         }
-        case 4:
+        case EArithmeticKeyOperation(4):
         {
             return (Left > Right);
         }
-        case 5:
+        case EArithmeticKeyOperation(5):
         {
             return (Left >= Right);
         }
         }
-        return local_4;
     }
 }
 

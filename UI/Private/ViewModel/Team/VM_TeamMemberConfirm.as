@@ -590,7 +590,7 @@ void GetModelInfo(FEUIViewModelMetaInfo &inout Result)
     Result.GeneratedPropertyStruct = __GeneratedProperties_FVM_TeamMemberConfirm;
     FEUIModelWatcherProperty local_19;
     local_19.PropertyName = FName("ReplyCountdown");
-    int local_2_2 = FVM_TeamMemberConfirm::__IndexOf_ReplyCountdown();
+    local_19.DirtyBitIndex = FVM_TeamMemberConfirm::__IndexOf_ReplyCountdown();
     Result.WatcherProperties.Add(local_19);
     Result.TickFunction.FunctionName = "__Tick";
     FEUIModelEffectDefine local_26;

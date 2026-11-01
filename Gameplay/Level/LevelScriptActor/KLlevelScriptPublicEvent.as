@@ -317,7 +317,7 @@ class AKLLevelScriptPublicEvent : AKLLevelScriptAreaEventBase
             {
                 FC_NetRelevancePolicy local_137;
                 Assign local_136;
-                local_136.opCall(local_137).RelevancePolicyType = (5 != 0);
+                local_136.opCall(local_137).RelevancePolicyType = ENetRelevancePolicyType(5);
             }
             Get local_142;
             const FC_PlayerController& local_144 = local_142.opCall();

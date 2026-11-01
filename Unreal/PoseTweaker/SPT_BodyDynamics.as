@@ -139,7 +139,7 @@ class USPT_SkirtDynamicBonesBase : USkeletalPoseTweaker
         this.bWantKawaii = true;
         this.CollisionBoneIndex = 2;
         this.WantPelvisWrapper = true;
-        this.LowerBodyBonePose.Thickness = 0;
+        this.LowerBodyBonePose.Thickness = 0.0f;
         this.SkirtChains.SetNum(8);
         this.SkirtChains[0].ChainRootBone = n"Bn_M_Skirt_A01";
         this.SkirtChains[1].ChainRootBone = n"Bn_L_Skirt_A01";
@@ -164,11 +164,11 @@ class USPT_SkirtDynamicBonesBase : USkeletalPoseTweaker
         this.BoneChainModConfigs.Add(FBoneModifyConfig(0.1f, 0.6f, 1.0f, 1.0f));
         this.BoneChainModConfigs.Add(FBoneModifyConfig(0.0f, 0.4f, 1.0f, 1.0f));
         this.BoneChainModConfigs.Add(FBoneModifyConfig(0.0f, 0.1f, 1.0f, 1.0f));
-        this.SharedKawaiiPhysicsSettings.Damping = 1045220557;
-        this.SharedKawaiiPhysicsSettings.Stiffness = 1022739087;
-        this.SharedKawaiiPhysicsSettings.LimitAngle = 1112014848;
-        this.SharedKawaiiPhysicsSettings.WorldDampingLocation = 1064514355;
-        this.SharedKawaiiPhysicsSettings.WorldDampingRotation = 1061997773;
+        this.SharedKawaiiPhysicsSettings.Damping = 0.2f;
+        this.SharedKawaiiPhysicsSettings.Stiffness = 0.03f;
+        this.SharedKawaiiPhysicsSettings.LimitAngle = 50.0f;
+        this.SharedKawaiiPhysicsSettings.WorldDampingLocation = 0.95f;
+        this.SharedKawaiiPhysicsSettings.WorldDampingRotation = 0.8f;
         this.PelvisWrapper.ScaleAxisX = 1.6f;
         this.SkirtWrapper.ScaleAxisX = 1.5f;
         return;
@@ -423,12 +423,12 @@ class USPT_StdF_Base_SkirtDynamics : USPT_SkirtDynamicBonesBase
         this.KawaiiChains[7].RootBone.SetBoneName(n"Bn_R_LowCloth_A01");
         this.CollisionBoneIndex = 1;
         this.SharedKawaiiPhysicsSettings.CollisionIterationCnt = 1;
-        this.SharedKawaiiPhysicsSettings.Damping = 1045220557;
-        this.SharedKawaiiPhysicsSettings.Stiffness = 1061997773;
-        this.SharedKawaiiPhysicsSettings.WorldDampingLocation = 1064514355;
-        this.SharedKawaiiPhysicsSettings.WorldDampingRotation = 1061997773;
-        this.SharedKawaiiPhysicsSettings.Radius = 1077936128;
-        this.SharedKawaiiPhysicsSettings.LimitAngle = 1106247680;
+        this.SharedKawaiiPhysicsSettings.Damping = 0.2f;
+        this.SharedKawaiiPhysicsSettings.Stiffness = 0.8f;
+        this.SharedKawaiiPhysicsSettings.WorldDampingLocation = 0.95f;
+        this.SharedKawaiiPhysicsSettings.WorldDampingRotation = 0.8f;
+        this.SharedKawaiiPhysicsSettings.Radius = 3.0f;
+        this.SharedKawaiiPhysicsSettings.LimitAngle = 30.0f;
         return;
     }
 }

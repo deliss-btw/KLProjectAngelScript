@@ -198,7 +198,6 @@ class US_DivineSkillSystem : UECSScriptSystem
         int local_12 = 0;
         USkillConfig local_22;
         int local_1 = 1092616192;
-        FFPTime local_4 = FFPTime(FixedTime.Time);
         bool local_6 = false;
         bool local_5 = local_6;
         if (!(local_12))
@@ -225,7 +224,7 @@ class US_DivineSkillSystem : UECSScriptSystem
             local_5 = local_23;
         }
         bool local_17 = !(local_5);
-        if (local_17 && (float32(((local_4 - Pending.StartTime).ToSeconds())) >= 10.0f))
+        if (local_17 && (float32(((FixedTime.Time - Pending.StartTime).ToSeconds())) >= 10.0f))
         {
             local_5 = true;
         }

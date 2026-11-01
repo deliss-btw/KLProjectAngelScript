@@ -55,7 +55,7 @@ class UESMAnimInstance_Prop : UKLAnimInstance
     {
         for (auto& local_16 : this.AnimLayerInfo)
         {
-            if ((FName(local_16.Layer) == AnimState.GetLayer()))
+            if ((local_16.Layer == AnimState.GetLayer()))
             {
                 return local_16.ForceTransit;
             }

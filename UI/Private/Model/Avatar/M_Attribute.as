@@ -83,29 +83,24 @@ struct FM_Attribute : FEUIModel
     FText GetAttributeValueText() const
     {
         FNumberFormattingOptions local_6;
-        FText __return;
         local_6.SetMaximumFractionalDigits(1).SetMinimumFractionalDigits(0);
         EAttributeDisplayType local_15 = this.GetDisplayType();
         if (this.GetAttributeConfig().IsSet())
         {
             local_15 = this.GetAttributeConfig().Get().DisplayType;
         }
-        int local_13 = int(local_15);
         FText local_22;
-        if (local_13 <= 1)
+        switch (int(local_15))
         {
-            if (local_13 != 0)
-            {
-                if (local_13 != 1)
-                {
-                }
-            }
-            else
-            {
-                __return = FText::AsNumber(this.GetValue(), local_6);
-                local_22 = FText::AsNumber((this.GetValue() * 100.0f), local_6);
-                __return = FText::Format(FText::AsCultureInvariant("{0}%"), local_22);
-            }
+        case 0:
+        {
+            return FText::AsNumber(this.GetValue(), local_6);
+        }
+        case 1:
+        {
+            local_22 = FText::AsNumber((this.GetValue() * 100.0f), local_6);
+            return FText::Format(FText::AsCultureInvariant("{0}%"), local_22);
+        }
         }
         return local_22;
     }

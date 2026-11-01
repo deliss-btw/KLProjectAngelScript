@@ -16,9 +16,10 @@ bool IsLevelObjectRecorded(const FECSEntity &inout InPlayerEntity, const TDataOb
     int local_17 = local_18;
     for (auto& local_32 : local_16.GetLevelObjectStatInfoList())
     {
-        switch (int(LevelObjectStatConfig.Get().ObjectType))
+        int local_34 = int(LevelObjectStatConfig.Get().ObjectType);
+        switch (ELevelObjectStatType(local_34))
         {
-        case 2:
+        case ELevelObjectStatType::Portal:
         {
             if (local_32.GetPortalIdList().Contains(local_17))
             {
@@ -26,7 +27,7 @@ bool IsLevelObjectRecorded(const FECSEntity &inout InPlayerEntity, const TDataOb
             }
             break;
         }
-        case 1:
+        case ELevelObjectStatType::Oculus:
         {
             if (local_32.GetOculusIdList().Contains(local_17))
             {
@@ -34,7 +35,7 @@ bool IsLevelObjectRecorded(const FECSEntity &inout InPlayerEntity, const TDataOb
             }
             break;
         }
-        case 0:
+        case ELevelObjectStatType::TreasureBox:
         {
             for (auto& local_50 : local_32.GetTreasureBoxList())
             {
@@ -45,7 +46,7 @@ bool IsLevelObjectRecorded(const FECSEntity &inout InPlayerEntity, const TDataOb
             }
             break;
         }
-        case 4:
+        case ELevelObjectStatType::CollectionPrefab:
         {
             if (local_32.GetCollectionPrefabList().Contains(local_17))
             {
@@ -53,7 +54,7 @@ bool IsLevelObjectRecorded(const FECSEntity &inout InPlayerEntity, const TDataOb
             }
             break;
         }
-        case 3:
+        case ELevelObjectStatType::Teleporter:
         {
             break;
         }
@@ -113,19 +114,20 @@ void RecordLevelObject(const FECSEntity &inout InPlayerEntity, const TDataObject
     FLevelObjectStatInfo& local_44 = local_20.GetModify_LevelObjectStatInfoList()[local_23];
     int local_22 = LevelObjectStatConfig.Get().DataId;
     int local_45 = local_22;
-    switch (int(LevelObjectStatConfig.Get().ObjectType))
+    int local_12 = int(LevelObjectStatConfig.Get().ObjectType);
+    switch (ELevelObjectStatType(local_12))
     {
-    case 2:
+    case ELevelObjectStatType::Portal:
     {
         local_44.GetModify_PortalIdList().AddUnique(local_45);
         break;
     }
-    case 1:
+    case ELevelObjectStatType::Oculus:
     {
         local_44.GetModify_OculusIdList().AddUnique(local_45);
         break;
     }
-    case 0:
+    case ELevelObjectStatType::TreasureBox:
     {
             bool local_51;
         int local_22_2 = FDateTime::UtcNow().ToUnixTimestamp();
@@ -149,12 +151,12 @@ void RecordLevelObject(const FECSEntity &inout InPlayerEntity, const TDataObject
         }
         break;
     }
-    case 4:
+    case ELevelObjectStatType::CollectionPrefab:
     {
         local_44.GetModify_CollectionPrefabList().AddUnique(local_45);
         break;
     }
-    case 3:
+    case ELevelObjectStatType::Teleporter:
     {
         break;
     }

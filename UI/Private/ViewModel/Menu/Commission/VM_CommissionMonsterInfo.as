@@ -238,13 +238,13 @@ void GetModelInfo(FEUIViewModelMetaInfo &inout Result)
     local_22.ApplySort();
     FEUIModelRefPropertyDirty local_30;
     local_30.PropertyName = FName("MonsterSelector");
-    int local_2_2 = FVM_DynamicWidgetSelector::ModelId;
-    int local_2_3 = local_22.GetMappingDirtyOffset(1);
+    local_30.PropertyModelId = FVM_DynamicWidgetSelector::ModelId;
+    local_30.MappingDirtyOffset = local_22.GetMappingDirtyOffset(1);
     local_30.RelatedDirtyMask.SetBit(FVM_DynamicWidgetSelector::__IndexOf_SelectedIndex(), true);
     Result.ListeningModelRefDirties.Add(local_30);
     local_30.PropertyName = FName("CommissionModel");
-    int local_23 = FM_Commission::ModelId;
-    int local_23_2 = local_22.GetMappingDirtyOffset(0);
+    local_30.PropertyModelId = FM_Commission::ModelId;
+    local_30.MappingDirtyOffset = local_22.GetMappingDirtyOffset(0);
     local_30.RelatedDirtyMask.SetBit(FM_Commission::__IndexOf_InstanceData(), true);
     Result.ListeningModelRefDirties.Add(local_30);
     FEUIModelDirtyDefine local_40;

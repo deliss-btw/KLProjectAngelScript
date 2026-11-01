@@ -266,6 +266,7 @@ namespace UWidget_MinimapIconDecoratorTooltip
 void GetModelInfo(FEUIWidgetMetaInfo &inout Result)
 {
     Result.WidgetType = UWidget_MinimapIconDecoratorTooltip;
+    Result.ObservedModelChangesSubscriberCount = 0;
     return;
 }
 FEUIWidgetRef CreateWidget(const APlayerController OwningPlayer, const TSoftClassPtr<UEUIUserWidget> &inout WidgetClass)
@@ -282,6 +283,7 @@ namespace UWidget_MinimapIconDecoratorTooltipPanel
 void GetModelInfo(FEUIWidgetMetaInfo &inout Result)
 {
     Result.WidgetType = UWidget_MinimapIconDecoratorTooltipPanel;
+    Result.ObservedModelChangesSubscriberCount = 2;
     Result.ObservedModelChangesSubscriberNames.Add(FString("UpdateDesiredWidth"));
     Result.ObservedModelChangesSubscriberNames.Add(FString("UpdateExtraModel"));
     return;

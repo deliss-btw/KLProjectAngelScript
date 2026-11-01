@@ -497,17 +497,7 @@ bool DepenetrateSweepBackTest(TArray<FHitResult> &inout OutResults, const FKMCCo
 }
 bool AddVirtualNavHitIfNeeded(const FKMCContext &inout Context, const FVector &inout Start, const FVector &inout End, TArray<FHitResult> &inout OutResults)
 {
-    bool local_1 = !(ECS::GetRuntimeInfo().IsServer);
-    if (local_1)
-    {
-        local_1 = true;
-    }
-    else
-    {
-        local_1 = Context.State.bControlledByPlayer;
-    }
-    local_1 = local_1 || !(Context.Param.bRestrictInNavmesh);
-    if (local_1)
+    if (((!(ECS::GetRuntimeInfo().IsServer) || Context.State.bControlledByPlayer) || !(Context.Param.bRestrictInNavmesh)))
     {
         return false;
     }
@@ -1014,8 +1004,8 @@ void GetDynamicDepenetrateDeltaMove(const FKMCContext &inout Context, const FHit
     int local_25;
     float32 local_91;
     float32 local_101;
-    FFPTime local_2 = FFPTime(Context.Env.RollbackTime);
-    FFPTime local_4 = FFPTime(Context.Env.LastRollbackTime);
+    FFPTime local_2 = Context.Env.RollbackTime;
+    FFPTime local_4 = Context.Env.LastRollbackTime;
     FECSEntity local_8 = FECSEntity(int(HitResult.ECSEntityId));
     int local_10 = int(HitResult.ECSIndex);
     int local_15 = int(HitResult.ECSType);
@@ -1430,9 +1420,7 @@ FDetectEdgeResult GroundMove_DetectEdge(const FKMCContext &inout Context, const 
     }
     else
     {
-        float32 local_98_2 = local_75.Y;
-        float32 local_115_2 = local_75.X;
-        local_97_2 = FMath::Max(local_115_2, local_98_2);
+        local_97_2 = FMath::Max(local_75.X, local_75.Y);
     }
     float32 local_99_2 = local_97_2 / FMath::Sqrt(2.0f);
     FVector local_124 = InPosition;
@@ -1534,7 +1522,8 @@ FDetectEdgeResult GroundMove_DetectEdge(const FKMCContext &inout Context, const 
     SortResultByDistanceAndFilter(Context, local_516, true, false, false);
     if (local_516.Num() == 0 || ((local_109.DotProduct(FVector3f(local_516[0].Normal)) <= 0.0f)))
     {
-        if (local_72.RefHit.Time < 1.0f)
+        float32 local_115_2 = local_72.RefHit.Time;
+        if (local_115_2 < 1.0f)
         {
             local_106 = local_72.EdgeNormal.opNeg();
         }
@@ -2529,29 +2518,30 @@ FKMCResult ConstrainCharacterFlyMove(const FKMCContext &inout Context, const FVe
     if (Context.Param.FloatingHeight >= 0.0f)
     {
         float32 local_7;
-        float32 local_1_2 = Context.Param.FloatingAdjustSpeed;
-        float32 local_2 = local_1_2 * DeltaTime;
-        float32 local_1_3 = Context.Param.FloatingHeight;
-        float32 local_1_5 = GetFloatingFloorDist(Context, ((local_1_3 + local_2) + Context.State.GetStepUpHeight()));
+        float32 local_2 = Context.Param.FloatingAdjustSpeed * DeltaTime;
+        float32 local_4 = Context.Param.FloatingHeight + local_2;
+        float32 local_1 = Context.State.GetStepUpHeight();
+        local_4 = local_4 + local_1;
+        local_1 = GetFloatingFloorDist(Context, local_4);
         local_7 = 0.0f;
         if ((Context.Param.FloatingHeightMin > 0.0f && (Context.Param.FloatingHeightMin < Context.Param.FloatingHeight)))
         {
-            if (local_1_5 > Context.Param.FloatingHeight)
+            if (local_1 > Context.Param.FloatingHeight)
             {
-                local_7 = FMath::Clamp((Context.Param.FloatingHeight - local_1_5), -local_2, local_2);
+                local_7 = FMath::Clamp((Context.Param.FloatingHeight - local_1), -local_2, local_2);
             }
             else
             {
-                if (local_1_5 < Context.Param.FloatingHeightMin)
+                if (local_1 < Context.Param.FloatingHeightMin)
                 {
-                    local_7 = FMath::Clamp(Context.Param.FloatingHeightMin - local_1_5, -local_2, local_2);
+                    local_7 = FMath::Clamp(Context.Param.FloatingHeightMin - local_1, -local_2, local_2);
                 }
             }
         }
         else
         {
             float32 local_5_3 = -local_2;
-            local_7 = FMath::Clamp(Context.Param.FloatingHeight - local_1_5, local_5_3, local_2);
+            local_7 = FMath::Clamp(Context.Param.FloatingHeight - local_1, local_5_3, local_2);
         }
         FVector local_22 = FVector(DeltaMove.X, DeltaMove.Y, local_7);
         FKMCResult local_180 = ConstrainCharacterAirborneMove(Context, Velocity, local_22, DeltaTime);
@@ -2582,13 +2572,23 @@ FKMCResult ConstrainCharacterFlyMove(const FKMCContext &inout Context, const FVe
 }
 bool NeedDebugDrawMoveHit()
 {
-    if (ECS::GetRuntimeInfo().IsServer)
+    bool local_1 = ECS::GetRuntimeInfo().IsServer;
+    if (local_1)
     {
         return CVar_DebugDrawMoveHitOnServer.GetBool();
     }
     else
     {
-        return (CVar_DebugDrawMoveHitOnClient.GetBool() || FECSDebugDraw::IsDebugKeyEnabled(n"MoveHit")) && (int(ECS::GetECSWorld().GetFixedTime().bLatestFrame) != 0);
+        if (!(CVar_DebugDrawMoveHitOnClient.GetBool() || FECSDebugDraw::IsDebugKeyEnabled(n"MoveHit")))
+        {
+            local_1 = false;
+        }
+        else
+        {
+            FECSWorldPtr local_6 = ECS::GetECSWorld();
+            local_1 = local_6.GetFixedTime().bLatestFrame;
+        }
+        return local_1;
     }
 }
 namespace FKinematicMoveCollisionUtils
@@ -2802,8 +2802,7 @@ FKMCFloorInfo FindFloor(const FKMCContext &inout Context, const FVector &inout P
                 local_162.ImpactNormal = FVector(local_246.CorrectedNormal);
                 local_162.Normal = local_162.ImpactNormal;
                 FillFloorInfoByCenterHit(local_26, local_162);
-                float32 local_29_4 = Context.Param.SlopDegreeMax;
-                if (local_26.GetFloorSlope() <= local_29_4)
+                if (local_26.GetFloorSlope() <= Context.Param.SlopDegreeMax)
                 {
                     local_26.SetValidFloor();
                     return local_26;

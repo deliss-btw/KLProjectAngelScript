@@ -8,6 +8,7 @@ struct FGTCFixedInputAction : FGTCAction
 
     FGTCFixedInputAction()
     {
+        this.ActionType = EGTCActionType(1);
         this.__InitDefaults();
         return;
     }
@@ -32,8 +33,8 @@ struct FGTCFixedInputAction : FGTCAction
             }
             else
             {
-                FFPTime local_48 = FFPTime(Context.FixedTime.Time);
-                FFPTime local_50 = FFPTime(Context.LocalTime.Time);
+                FFPTime local_48 = Context.FixedTime.Time;
+                FFPTime local_50 = Context.LocalTime.Time;
                 FFPTime local_52 = (local_50.opCmp((local_48 - Context.FixedTime.DeltaTime)) > 0 && (local_50.opCmp(local_48) <= 0)) ? local_50 : local_48;
                 local_34 = (local_52 + FFPTime(local_30.TimeOffset));
             }

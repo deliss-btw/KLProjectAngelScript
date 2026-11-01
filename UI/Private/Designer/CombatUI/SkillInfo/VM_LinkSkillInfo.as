@@ -120,6 +120,7 @@ void GetModelInfo(FEUIViewModelMetaInfo &inout Result)
     Result.GeneratedPropertyStruct = __GeneratedProperties_FVMS_LinkSkillInfo;
     FEUIModelMonitorDefine local_26;
     local_26.FunctionName = "__OnQuickSlotChanged";
+    local_26.MonitorTarget = EEUIModelMonitorTarget(3);
     local_26.ComponentType = FC_DivineSkill;
     Result.MonitorFunctions.Add(local_26);
     return;

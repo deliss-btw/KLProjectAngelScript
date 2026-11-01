@@ -6,7 +6,7 @@ namespace __INTENRAL_FC_AnimFocusTargetHistory_NS
 }
 struct FC_AnimFocusTargetHistory : FECSComponent
 {
-    TInterpoHistory<FC_AnimFocusTarget, auto> History;
+    TInterpoHistory<FC_AnimFocusTarget, 30> History;
 
     FC_AnimFocusTargetHistory()
     {

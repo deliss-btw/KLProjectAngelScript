@@ -864,20 +864,28 @@ void GetModelInfo(FEUIModelOnlyMetaInfo &inout Result)
     Result.SetbCanDefaultConstruct(true);
     FEUIModelProtoRspDefine local_10;
     local_10.FunctionName = "__GS_OnMailLoginDataNotify";
+    local_10.ProtoCmdId = uint16(1914);
     Result.ProtoRspDefines.Add(local_10);
     local_10.FunctionName = "__GS_OnGetMailListRsp";
+    local_10.ProtoCmdId = uint16(1902);
     Result.ProtoRspDefines.Add(local_10);
     local_10.FunctionName = "__GS_OnReadMailRsp";
+    local_10.ProtoCmdId = uint16(1904);
     Result.ProtoRspDefines.Add(local_10);
     local_10.FunctionName = "__GS_OnClaimMailAttachmentRsp";
+    local_10.ProtoCmdId = uint16(1906);
     Result.ProtoRspDefines.Add(local_10);
     local_10.FunctionName = "__GS_OnClaimAllMailAttachmentRsp";
+    local_10.ProtoCmdId = uint16(1908);
     Result.ProtoRspDefines.Add(local_10);
     local_10.FunctionName = "__GS_OnDeleteMailRsp";
+    local_10.ProtoCmdId = uint16(1910);
     Result.ProtoRspDefines.Add(local_10);
     local_10.FunctionName = "__GS_OnDeleteAllReadMailRsp";
+    local_10.ProtoCmdId = uint16(1912);
     Result.ProtoRspDefines.Add(local_10);
     local_10.FunctionName = "__GS_OnNewMailNotify";
+    local_10.ProtoCmdId = uint16(1913);
     Result.ProtoRspDefines.Add(local_10);
     return;
 }

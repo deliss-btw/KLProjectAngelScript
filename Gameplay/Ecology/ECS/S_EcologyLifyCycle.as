@@ -376,7 +376,7 @@ class US_EcologyLifyCycle : UECSScriptSystem
         }
         if (local_10.HasESMOverride())
         {
-            local_22.Add(uint8(int(local_10.ESMEntryStateOverride.SMIndex)), local_10.ESMEntryStateOverride.EntryState);
+            local_22.Add(local_10.ESMEntryStateOverride.SMIndex, local_10.ESMEntryStateOverride.EntryState);
         }
         return;
     }

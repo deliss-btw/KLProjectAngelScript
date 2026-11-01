@@ -640,6 +640,7 @@ void GetModelInfo(FEUIModelOnlyMetaInfo &inout Result)
     Result.EventFunctions.Add(local_10);
     FEUIModelMonitorDefine local_22;
     local_22.FunctionName = "__OnPlayerChangeSkillPanel";
+    local_22.MonitorTarget = EEUIModelMonitorTarget(3);
     local_22.ComponentType = FC_ChangeSkillPanel;
     Result.MonitorFunctions.Add(local_22);
     Result.TickFunction.FunctionName = "__Tick";

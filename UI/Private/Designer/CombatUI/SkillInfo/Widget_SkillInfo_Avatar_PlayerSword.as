@@ -106,28 +106,20 @@ class UWidget_SkillInfo_Avatar_PlayerSword : UEUIUserWidget
         }
         else
         {
-            int local_7 = int(::UICommonUtil::GetCurrentInputType(this.GetOwningLocalPlayer()));
-            if (local_7 <= 1)
+            switch (int(::UICommonUtil::GetCurrentInputType(this.GetOwningLocalPlayer())))
             {
-                if (local_7 != 0)
-                {
-                    if (local_7 != 1)
-                    {
-                        return;
-                    }
-                    else
-                    {
-                        this.KeyboardInputPanel.SetVisibility(ESlateVisibility(2));
-                        this.GamepadInputPanel.SetVisibility(ESlateVisibility(0));
-                        return;
-                    }
-                }
-                else
-                {
-                    this.KeyboardInputPanel.SetVisibility(ESlateVisibility(0));
-                    this.GamepadInputPanel.SetVisibility(ESlateVisibility(2));
-                    return;
-                }
+            case 1:
+            {
+                this.KeyboardInputPanel.SetVisibility(ESlateVisibility(2));
+                this.GamepadInputPanel.SetVisibility(ESlateVisibility(0));
+                return;
+            }
+            case 0:
+            {
+                this.KeyboardInputPanel.SetVisibility(ESlateVisibility(0));
+                this.GamepadInputPanel.SetVisibility(ESlateVisibility(2));
+                return;
+            }
             }
         }
     }
@@ -650,6 +642,7 @@ namespace UWidget_SkillInfo_Avatar_PlayerSword
 void GetModelInfo(FEUIWidgetMetaInfo &inout Result)
 {
     Result.WidgetType = UWidget_SkillInfo_Avatar_PlayerSword;
+    Result.ObservedModelChangesSubscriberCount = 9;
     Result.ObservedModelChangesSubscriberNames.Add(FString("OnCustomSkillEnergyRatioChanged"));
     Result.ObservedModelChangesSubscriberNames.Add(FString("OnbMarkAChanged"));
     Result.ObservedModelChangesSubscriberNames.Add(FString("OnbMarkBChanged"));

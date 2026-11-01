@@ -124,6 +124,7 @@ namespace UWidget_GamepadTips
 void GetModelInfo(FEUIWidgetMetaInfo &inout Result)
 {
     Result.WidgetType = UWidget_GamepadTips;
+    Result.ObservedModelChangesSubscriberCount = 1;
     Result.ObservedModelChangesSubscriberNames.Add(FString("OnGamepadLeftShoulderPressChanged"));
     return;
 }

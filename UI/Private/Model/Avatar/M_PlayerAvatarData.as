@@ -326,13 +326,16 @@ void GetModelInfo(FEUIModelOnlyMetaInfo &inout Result)
     Result.SetbCanDefaultConstruct(true);
     FEUIModelMonitorDefine local_14;
     local_14.FunctionName = "__OnDSPlayerAvatarInfoChanged";
+    local_14.MonitorTarget = EEUIModelMonitorTarget(3);
     local_14.ComponentType = FC_DSPlayerAvatarInfo;
     Result.MonitorFunctions.Add(local_14);
     local_14.FunctionName = "__OnLocalPlayerChanged";
+    local_14.MonitorTarget = EEUIModelMonitorTarget(3);
     local_14.ComponentType = FC_PlayerController;
     Result.MonitorFunctions.Add(local_14);
     FEUIModelProtoRspDefine local_24;
     local_24.FunctionName = "__GS_OnUnlockAvatarNotify";
+    local_24.ProtoCmdId = uint16(1116);
     Result.ProtoRspDefines.Add(local_24);
     return;
 }

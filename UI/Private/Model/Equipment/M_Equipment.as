@@ -958,13 +958,17 @@ void GetModelInfo(FEUIModelOnlyMetaInfo &inout Result)
     Result.SetbCanDefaultConstruct(true);
     FEUIModelProtoRspDefine local_10;
     local_10.FunctionName = "__GS_OnPlayerInventoryInit";
+    local_10.ProtoCmdId = uint16(701);
     Result.ProtoRspDefines.Add(local_10);
     local_10.FunctionName = "__GS_OnInventoryItemUpdate";
+    local_10.ProtoCmdId = uint16(702);
     Result.ProtoRspDefines.Add(local_10);
     local_10.FunctionName = "__GS_OnInventoryItemRemoved";
+    local_10.ProtoCmdId = uint16(703);
     Result.ProtoRspDefines.Add(local_10);
     FEUIModelMonitorDefine local_22;
     local_22.FunctionName = "__OnAvatarEquipmentChanged";
+    local_22.MonitorTarget = EEUIModelMonitorTarget(3);
     local_22.ComponentType = FC_DSPlayerAvatarInfo;
     Result.MonitorFunctions.Add(local_22);
     return;
@@ -1032,10 +1036,13 @@ void GetModelInfo(FEUIModelOnlyMetaInfo &inout Result)
     Result.SetbCanDefaultConstruct(true);
     FEUIModelProtoRspDefine local_10;
     local_10.FunctionName = "__GS_OnPlayerAvatarDataNotify";
+    local_10.ProtoCmdId = uint16(1101);
     Result.ProtoRspDefines.Add(local_10);
     local_10.FunctionName = "__GS_OnTalismanSlotUnlockNotify";
+    local_10.ProtoCmdId = uint16(1115);
     Result.ProtoRspDefines.Add(local_10);
     local_10.FunctionName = "__GS_OnManageTalismanRsp";
+    local_10.ProtoCmdId = uint16(1114);
     Result.ProtoRspDefines.Add(local_10);
     return;
 }

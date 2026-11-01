@@ -6,12 +6,17 @@ class US_LayeredConduitCameraSystem : UECSScriptSystem
     }
     void BlendToLayeredConduitCamera(const FLayerConduitCamera &inout LayerConduitCamera, FCameraInstancedData &inout LastCameraData, FCameraInstancedData &inout CurrentCameraData, const float32 CameraWeight) const
     {
-        // body not fully recovered — stub [argmismatch:argtype]
+        ::PresentationCameraUtils::GenericLerp(LastCameraData.CameraResult, LayerConduitCamera._base_FCameraRuntimeDataBasic.CameraResult, CurrentCameraData.CameraResult, CameraWeight);
+        return;
     }
     UFUNCTION()
     void ClientJob_UpdateLayerConduitCamera(const FECSEntity &inout Entity) const
     {
-        // body not fully recovered — stub [argmismatch:argtype]
+        int local_12 = 0;
+        FInstancedStruct::GetMutable(0.CurrentCameraInstanceData.PresentationCamera);
+        Get local_16;
+        ::PresentationCameraUtils::WriteToCameraResult(local_12._base_FCameraRuntimeDataBasic.CameraResult, local_16.opCall());
+        return;
     }
     UFUNCTION()
     void ClientJob_BlendLayerConduitCamera(const FECSEntity &inout Entity) const

@@ -95,7 +95,7 @@ struct FVM_PlayerKeyMapping : FEUIViewModel
         }
         this.SetIndex(uint16(InIndex));
         this.SetCategory(EGameUseKeyCategory(InCategory));
-        this.SetbConfigurable((int(UserKeyMapping.bConfigurable) != 0));
+        this.SetbConfigurable(UserKeyMapping.bConfigurable);
         this.SetCurrentKey(UserKeyMapping.CurrentKey);
         this.SetDefaultKey(UserKeyMapping.DefaultKey);
         this.SetChordKey(UserKeyMapping.ChordKey);
@@ -1356,6 +1356,7 @@ struct FPlayerKeyMappingModification
     UPROPERTY()
     TEUIModelRef<FVM_PlayerKeyMapping> KeyMapping1;
 
+
     void Backup(const FVM_PlayerKeyMapping &inout InMapping)
     {
         ++this.ModificationNum;
@@ -2268,6 +2269,7 @@ struct __GeneratedProperties_FVM_PlayerKeyMapping
     UPROPERTY()
     TEUIModelRef<FVM_PlayerKeyMapping> Self;
 
+
 }
 
 struct __GeneratedProperties_FVM_PlayerMappableKey
@@ -2314,6 +2316,7 @@ struct __GeneratedProperties_FVM_PlayerKeyMappingPair
     UPROPERTY()
     TEUIModelRef<FVM_PlayerKeyMappingPair> Self;
 
+
 }
 
 struct __GeneratedProperties_FVMS_PlayerKeyMappings
@@ -2330,6 +2333,7 @@ struct __GeneratedProperties_FVMS_PlayerKeyMappings
     bool ShowExitSelectingKey;
     UPROPERTY()
     TEUIModelRef<FVMS_PlayerKeyMappings> Self;
+
 
 }
 
@@ -2757,15 +2761,15 @@ void GetModelInfo(FEUIViewModelMetaInfo &inout Result)
     local_22.ApplySort();
     FEUIModelRefPropertyDirty local_30;
     local_30.PropertyName = FName("Mapping1");
-    int local_2_2 = FVM_PlayerKeyMapping::ModelId;
-    int local_2_3 = local_22.GetMappingDirtyOffset(1);
+    local_30.PropertyModelId = FVM_PlayerKeyMapping::ModelId;
+    local_30.MappingDirtyOffset = local_22.GetMappingDirtyOffset(1);
     local_30.RelatedDirtyMask.SetBit(FVM_PlayerKeyMapping::__IndexOf_bNeedRefreshHover(), true);
     local_30.RelatedDirtyMask.SetBit(FVM_PlayerKeyMapping::__IndexOf_bHasChanged(), true);
     local_30.RelatedDirtyMask.SetBit(FVM_PlayerKeyMapping::__IndexOf_CurrentKey(), true);
     Result.ListeningModelRefDirties.Add(local_30);
     local_30.PropertyName = FName("Mapping0");
-    int local_23 = FVM_PlayerKeyMapping::ModelId;
-    int local_23_2 = local_22.GetMappingDirtyOffset(0);
+    local_30.PropertyModelId = FVM_PlayerKeyMapping::ModelId;
+    local_30.MappingDirtyOffset = local_22.GetMappingDirtyOffset(0);
     local_30.RelatedDirtyMask.SetBit(FVM_PlayerKeyMapping::__IndexOf_bHasChanged(), true);
     local_30.RelatedDirtyMask.SetBit(FVM_PlayerKeyMapping::__IndexOf_bNeedRefreshHover(), true);
     local_30.RelatedDirtyMask.SetBit(FVM_PlayerKeyMapping::__IndexOf_ChordKey(), true);

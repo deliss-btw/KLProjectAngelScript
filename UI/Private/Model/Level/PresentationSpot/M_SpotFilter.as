@@ -1122,7 +1122,7 @@ void GetModelInfo(FEUIModelOnlyMetaInfo &inout Result)
     Result.SetbCanDefaultConstruct(false);
     FEUIModelMetaPropertyModelRef local_6;
     local_6.PropertyName = FName("SpotView");
-    int local_2_2 = FM_SpotView::ModelId;
+    local_6.PropertyRefModelTypeId = FM_SpotView::ModelId;
     Result.FunctionalPropertyModelRefs.Add(local_6);
     FEUIModelMsgHandleDefine local_18;
     local_18.FunctionName = "__OnSpotAdded";

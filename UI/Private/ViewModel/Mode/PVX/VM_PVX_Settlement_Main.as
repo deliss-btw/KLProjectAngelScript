@@ -217,21 +217,16 @@ struct FVM_PVX_Settlement_Main : FEUIViewModel
     }
     FEUIModelContainer CreatePhaseViewModel(const EPVX_SettlementPhaseType PhaseType)
     {
-        FEUIModelContainer __return;
-        int local_1 = int(PhaseType);
-        if (local_1 <= 1)
+        switch (int(PhaseType))
         {
-            if (local_1 != 0)
-            {
-                if (local_1 != 1)
-                {
-                }
-            }
-            else
-            {
-                __return = FEUIModelContainer(::FVM_PVX_Settlement_PhaseResult::Create(this.GetContext().Manager, this.GetLocalPlayerFaction(), this.GetbIsSuccess()));
-                __return = FEUIModelContainer(::FVM_PVX_Settlement_PhasePerformance::Create(this.GetContext().Manager));
-            }
+        case 0:
+        {
+            return FEUIModelContainer(::FVM_PVX_Settlement_PhaseResult::Create(this.GetContext().Manager, this.GetLocalPlayerFaction(), this.GetbIsSuccess()));
+        }
+        case 1:
+        {
+            return FEUIModelContainer(::FVM_PVX_Settlement_PhasePerformance::Create(this.GetContext().Manager));
+        }
         }
         return FEUIModelContainer();
     }

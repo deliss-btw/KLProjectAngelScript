@@ -118,8 +118,9 @@ class US_DebugMovementToolkitSystem : UECSScriptSystem
                             local_125 = false;
                             for (auto& local_140 : Progress.StuckPoints)
                             {
+                                FVector local_38 = local_124.FinalPosition;
                                 float32 local_55_4 = this.MergeStuckPointDist;
-                                if (((FVector(local_124.FinalPosition) - local_140).SizeSquared()) < (this.MergeStuckPointDist * local_55_4))
+                                if (((local_38 - local_140).SizeSquared()) < (this.MergeStuckPointDist * local_55_4))
                                 {
                                     local_125 = true;
                                     break;

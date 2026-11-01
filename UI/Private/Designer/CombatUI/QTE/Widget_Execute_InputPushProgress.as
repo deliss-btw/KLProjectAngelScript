@@ -161,6 +161,7 @@ namespace UWidget_Execute_InputPushProgress
 void GetModelInfo(FEUIWidgetMetaInfo &inout Result)
 {
     Result.WidgetType = UWidget_Execute_InputPushProgress;
+    Result.ObservedModelChangesSubscriberCount = 2;
     Result.ObservedModelChangesSubscriberNames.Add(FString("OnProgressRatioChanged"));
     Result.ObservedModelChangesSubscriberNames.Add(FString("OnStateChanged"));
     return;

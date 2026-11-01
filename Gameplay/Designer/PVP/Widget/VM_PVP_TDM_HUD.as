@@ -793,23 +793,23 @@ struct FVMS_PVP_TDM_HUD : FEUIViewModelSingleton
         }
         FString local_10 = (String::Conv_IntToString(Data.GetTeam1RoundWins()) + " - ");
         this.SetRoundScoreText(FText::FromString((local_10 + String::Conv_IntToString(Data.GetTeam2RoundWins()))));
-        switch (int(Data.GetRoundStage()))
+        switch (Data.GetRoundStage())
         {
-        case 0:
+        case EPVPTDMRoundStage::RoundPrep:
         {
             this.SetRoundStageText(FText::FromString("准备阶段"));
             this.SetRoundStageEndTime(Data.GetRoundPrepEndTime());
             this.SetbRoundStageHintVisible(true);
             break;
         }
-        case 1:
+        case EPVPTDMRoundStage::RoundCombat:
         {
             this.SetRoundStageText(FText::FromString("战斗阶段"));
             this.SetRoundStageEndTime(Data.GetRoundCombatEndTime());
             this.SetbRoundStageHintVisible(false);
             break;
         }
-        case 2:
+        case EPVPTDMRoundStage::RoundIntermission:
         {
             this.SetRoundStageText(FText::FromString("等待下一回合开始"));
             this.SetRoundStageEndTime(Data.GetRoundIntermissionEndTime());
@@ -2129,12 +2129,15 @@ void GetModelInfo(FEUIViewModelMetaInfo &inout Result)
     Result.GeneratedPropertyStruct = __GeneratedProperties_FVMS_PVP_TDM_HUD;
     FEUIModelMonitorDefine local_26;
     local_26.FunctionName = "__OnBrawlScoreChanged";
+    local_26.MonitorTarget = EEUIModelMonitorTarget(2);
     local_26.ComponentType = FCS_PVP_TDM_ScoreData;
     Result.MonitorFunctions.Add(local_26);
     local_26.FunctionName = "__OnTDMRoundDataChanged";
+    local_26.MonitorTarget = EEUIModelMonitorTarget(2);
     local_26.ComponentType = FCS_PVP_TDM_RoundData;
     Result.MonitorFunctions.Add(local_26);
     local_26.FunctionName = "__OnGameModeScoreDataChanged";
+    local_26.MonitorTarget = EEUIModelMonitorTarget(2);
     local_26.ComponentType = FCS_GameMode_ScoreData;
     Result.MonitorFunctions.Add(local_26);
     Result.TickFunction.FunctionName = "__TickMatchHUD";

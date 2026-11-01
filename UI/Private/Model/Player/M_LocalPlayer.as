@@ -448,16 +448,7 @@ struct FM_LocalPlayerLevel : FEUIModelSingleton
     void OnWidgetPresenceChanged(const FMsg_WidgetPresence &inout Msg)
     {
         const UPlayerInfoSettings local_8;
-        bool local_3 = !((FGameplayTag(Msg.WidgetTag) == GameplayTags::UI_Type_StigmataDetail));
-        if (local_3)
-        {
-            local_3 = true;
-        }
-        else
-        {
-            local_3 = Msg.bPresented;
-        }
-        if (local_3)
+        if (((!((FGameplayTag(Msg.WidgetTag) == GameplayTags::UI_Type_StigmataDetail))) || Msg.bPresented))
         {
             return;
         }
@@ -803,10 +794,13 @@ void GetModelInfo(FEUIModelOnlyMetaInfo &inout Result)
     Result.SetbCanDefaultConstruct(true);
     FEUIModelProtoRspDefine local_10;
     local_10.FunctionName = "__GS_OnPlayerLevelNotify";
+    local_10.ProtoCmdId = uint16(10);
     Result.ProtoRspDefines.Add(local_10);
     local_10.FunctionName = "__GS_OnPlayerLoginRsp";
+    local_10.ProtoCmdId = uint16(6);
     Result.ProtoRspDefines.Add(local_10);
     local_10.FunctionName = "__GS_OnChangeNameNotify";
+    local_10.ProtoCmdId = uint16(1502);
     Result.ProtoRspDefines.Add(local_10);
     FEUIModelMsgHandleDefine local_22;
     local_22.FunctionName = "__OnWidgetPresenceChanged";

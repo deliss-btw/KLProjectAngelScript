@@ -363,8 +363,8 @@ void GetModelInfo(FEUIViewModelMetaInfo &inout Result)
     local_22.ApplySort();
     FEUIModelRefPropertyDirty local_30;
     local_30.PropertyName = FName("Player");
-    int local_2_2 = FM_Player::ModelId;
-    int local_2_3 = local_22.GetMappingDirtyOffset(0);
+    local_30.PropertyModelId = FM_Player::ModelId;
+    local_30.MappingDirtyOffset = local_22.GetMappingDirtyOffset(0);
     local_30.RelatedDirtyMask.SetBit(FM_Player::__IndexOf_CurrentAvatarAttr(), true);
     local_30.RelatedDirtyMask.SetBit(FM_Player::__IndexOf_LevelAttr(), true);
     local_30.RelatedDirtyMask.SetBit(FM_Player::__IndexOf_DivineSkillAttr(), true);

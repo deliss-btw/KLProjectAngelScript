@@ -182,7 +182,7 @@ void GetModelInfo(FEUIViewModelMetaInfo &inout Result)
     Result.GeneratedPropertyStruct = __GeneratedProperties_FVM_CommissionEntry;
     FEUIModelWatcherProperty local_19;
     local_19.PropertyName = FName("RefreshCounterDown");
-    int local_2_2 = FVM_CommissionEntry::__IndexOf_RefreshCounterDown();
+    local_19.DirtyBitIndex = FVM_CommissionEntry::__IndexOf_RefreshCounterDown();
     Result.WatcherProperties.Add(local_19);
     FEUIModelEffectDefine local_26;
     local_26.FunctionName = "RefreshCounterDownState";

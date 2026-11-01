@@ -58,34 +58,34 @@ class UBTDecorator_CheckArealEffectNumByStrikeKey : UBTDecorator_ECSScriptBase
             }
         }
         bool local_183 = false;
-        switch (int(this.ComparisonType))
+        switch (this.ComparisonType)
         {
-        case 0:
+        case EArithmeticKeyOperation(0):
         {
             local_183 = (local_19 == this.TargetNum);
             break;
         }
-        case 1:
+        case EArithmeticKeyOperation(1):
         {
             local_183 = (local_19 != this.TargetNum);
             break;
         }
-        case 2:
+        case EArithmeticKeyOperation(2):
         {
             local_183 = (local_19 < this.TargetNum);
             break;
         }
-        case 3:
+        case EArithmeticKeyOperation(3):
         {
             local_183 = (local_19 <= this.TargetNum);
             break;
         }
-        case 4:
+        case EArithmeticKeyOperation(4):
         {
             local_183 = (local_19 > this.TargetNum);
             break;
         }
-        case 5:
+        case EArithmeticKeyOperation(5):
         {
             local_183 = (local_19 >= this.TargetNum);
             break;

@@ -6,7 +6,7 @@ namespace __INTENRAL_FC_AnimRiderHandIKHistory_NS
 }
 struct FC_AnimRiderHandIKHistory : FECSComponent
 {
-    TInterpoHistory<FC_AnimRiderHandIK, auto> History;
+    TInterpoHistory<FC_AnimRiderHandIK, 30> History;
 
     FC_AnimRiderHandIKHistory()
     {

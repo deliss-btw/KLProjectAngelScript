@@ -127,6 +127,7 @@ namespace UWidget_Crossbow_Carriage
 void GetModelInfo(FEUIWidgetMetaInfo &inout Result)
 {
     Result.WidgetType = UWidget_Crossbow_Carriage;
+    Result.ObservedModelChangesSubscriberCount = 2;
     Result.ObservedModelChangesSubscriberNames.Add(FString("OnSmoothedEnergyChanged"));
     Result.ObservedModelChangesSubscriberNames.Add(FString("OnEnergyChanged"));
     return;

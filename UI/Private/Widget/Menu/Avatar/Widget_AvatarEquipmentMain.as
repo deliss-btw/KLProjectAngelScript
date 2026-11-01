@@ -556,6 +556,7 @@ namespace UWidget_AvatarEquipmentMain
 void GetModelInfo(FEUIWidgetMetaInfo &inout Result)
 {
     Result.WidgetType = UWidget_AvatarEquipmentMain;
+    Result.ObservedModelChangesSubscriberCount = 5;
     Result.ObservedModelChangesSubscriberNames.Add(FString("HandleSelectedItemsChanged"));
     Result.ObservedModelChangesSubscriberNames.Add(FString("HandleCurSlotEquipedItemUIdChanged"));
     Result.ObservedModelChangesSubscriberNames.Add(FString("HandleItemComparedChanged"));

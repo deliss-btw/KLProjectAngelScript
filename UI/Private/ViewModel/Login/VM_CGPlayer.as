@@ -713,10 +713,10 @@ void GetModelInfo(FEUIViewModelMetaInfo &inout Result)
     Result.GeneratedPropertyStruct = __GeneratedProperties_FVM_CGPlayer;
     FEUIModelWatcherProperty local_19;
     local_19.PropertyName = FName("ClickCounterDown");
-    int local_2_2 = FVM_CGPlayer::__IndexOf_ClickCounterDown();
+    local_19.DirtyBitIndex = FVM_CGPlayer::__IndexOf_ClickCounterDown();
     Result.WatcherProperties.Add(local_19);
     local_19.PropertyName = FName("PageFadeProgress");
-    int local_2_3 = FVM_CGPlayer::__IndexOf_PageFadeProgress();
+    local_19.DirtyBitIndex = FVM_CGPlayer::__IndexOf_PageFadeProgress();
     Result.WatcherProperties.Add(local_19);
     FEUIModelEffectDefine local_26;
     local_26.FunctionName = "RefreshActionTimeDisplayText";

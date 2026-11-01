@@ -88,6 +88,7 @@ namespace UWidget_BlackScreen
 void GetModelInfo(FEUIWidgetMetaInfo &inout Result)
 {
     Result.WidgetType = UWidget_BlackScreen;
+    Result.ObservedModelChangesSubscriberCount = 1;
     Result.ObservedModelChangesSubscriberNames.Add(FString("OnPendingClose"));
     return;
 }

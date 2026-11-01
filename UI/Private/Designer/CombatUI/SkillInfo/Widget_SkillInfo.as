@@ -98,6 +98,7 @@ namespace UWidget_SkillInfo
 void GetModelInfo(FEUIWidgetMetaInfo &inout Result)
 {
     Result.WidgetType = UWidget_SkillInfo;
+    Result.ObservedModelChangesSubscriberCount = 1;
     Result.ObservedModelChangesSubscriberNames.Add(FString("OnPlayerPawnEntityChanged"));
     return;
 }

@@ -202,6 +202,7 @@ namespace UWidget_AvatarSelection
 void GetModelInfo(FEUIWidgetMetaInfo &inout Result)
 {
     Result.WidgetType = UWidget_AvatarSelection;
+    Result.ObservedModelChangesSubscriberCount = 1;
     Result.ObservedModelChangesSubscriberNames.Add(FString("OnSelectedAvatarChangedForShowcase"));
     return;
 }

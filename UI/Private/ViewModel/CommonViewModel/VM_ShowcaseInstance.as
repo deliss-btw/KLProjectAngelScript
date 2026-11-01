@@ -451,6 +451,7 @@ struct FVM_AvatarShowcase : FEUIViewModel
                 {
                     FUIShowcaseActorSpawnParams local_134;
                     const FAvatarPrefabConfig& local_196 = local_74.AvatarConfig.Get();
+                    local_134.AvatarId = int(local_196.DataId);
                     local_134.ActorClass = local_196.ShowcaseActor;
                     if (local_74.WeaponConfig)
                     {
@@ -467,6 +468,7 @@ struct FVM_AvatarShowcase : FEUIViewModel
                     local_134.LightActorClass = local_196.ShowcaseLightActor;
                     local_134.Offset = local_196.ShowcaseOffset;
                     local_134.SetAvatarType(this.GenderTypeToShowcaseType(local_196.GenderType));
+                    local_134.DynamicRainControl = local_7;
                     local_134.bUseFaceAnim = (local_5 != 0);
                     this.ApplyFashionFromModel(local_134, local_196);
                     local_4.Add(local_134);
@@ -481,10 +483,12 @@ struct FVM_AvatarShowcase : FEUIViewModel
                 {
                     const FAvatarPrefabConfig& local_196_2 = local_234.Get();
                     FUIShowcaseActorSpawnParams local_194;
+                    local_194.AvatarId = int(local_196_2.DataId);
                     local_194.ActorClass = local_196_2.ShowcaseActor;
                     local_194.LightActorClass = local_196_2.ShowcaseLightActor;
                     local_194.Offset = local_196_2.ShowcaseOffset;
                     local_194.SetAvatarType(this.GenderTypeToShowcaseType(local_196_2.GenderType));
+                    local_194.DynamicRainControl = local_7;
                     local_194.bUseFaceAnim = (local_5 != 0);
                     this.ApplyFashionFromModel(local_194, local_196_2);
                     local_4.Add(local_194);
@@ -566,7 +570,7 @@ struct FVM_AvatarShowcase : FEUIViewModel
         FMS_FashionModel& local_8 = ::FMS_FashionModel::Get(this.GetContext().Manager);
         if (AvatarConfig.bIsMainPlayer)
         {
-            int local_9 = local_8.GetFacePresetID();
+            Actor.FacePresetId = local_8.GetFacePresetID();
         }
         if (!(local_8.GetAvatarFashionMap().Find(AvatarConfig.DataId, local_22)))
         {
@@ -598,19 +602,15 @@ struct FVM_AvatarShowcase : FEUIViewModel
     }
     EUIShowcaseAvatarType GenderTypeToShowcaseType(const EGenderType Gender) const
     {
-        int local_1 = int(Gender);
-        if (local_1 <= 1)
+        switch (int(Gender))
         {
-            if (local_1 != 0)
-            {
-                if (local_1 != 1)
-                {
-                }
-                else
-                {
-                    return EUIShowcaseAvatarType(1);
-                }
-            }
+        case 1:
+        {
+            return EUIShowcaseAvatarType(1);
+        }
+        default:
+        {
+        }
         }
         return EUIShowcaseAvatarType(0);
     }
@@ -913,7 +913,7 @@ void ApplyViewAppearanceToSpawnParams(FUIShowcaseActorSpawnParams &inout Actor, 
     Actor.FashionIds.Empty(0);
     if ((bIsMainPlayer && (int(ViewAppearance.FacePresetId) > 0)))
     {
-        int local_2 = int(ViewAppearance.FacePresetId);
+        Actor.FacePresetId = int(ViewAppearance.FacePresetId);
     }
     Actor.bUseBathrobe = (ViewAppearance.FashionInfo.GetbUseBathrobe() != 0);
     for (auto local_19 : ViewAppearance.FashionInfo.GetFashionIds())

@@ -36,79 +36,72 @@ struct FPresentationIcon
     FSoftBrush GetIconBrush(const TDataObjectPtr<FPresentationConfig> &inout PresentationConfig) const
     {
         const UPresentationSpotSettings local_52;
-        FSoftBrush __return;
-        int local_2 = int(this.IconType);
-        if (local_2 <= -1)
+        GetGameplaySettings<UPresentationSpotSettings> local_54;
+        switch (int(this.IconType))
         {
-            if (local_2 != -2)
-            {
-                if (local_2 != -1)
-                {
-                }
-            }
-            else
-            {
-                __return = FSoftBrush();
-                __return = this.OverrideIcon;
-            }
+        case -2:
+        {
+            return FSoftBrush();
         }
-        if (!(PresentationConfig))
+        case -1:
         {
-            GetGameplaySettings<UPresentationSpotSettings> local_54;
-            local_52 = local_54;
-            return local_52.NoConfigIcon;
+            return this.OverrideIcon;
         }
-        else
+        default:
         {
-            GetGameplaySettings<UPresentationSpotSettings> local_54;
-            FSoftBrush local_100;
-            if (!(PresentationConfig.opArrow().Icons.Find(this.IconType, local_100)))
+            if (!(PresentationConfig))
             {
                 local_52 = local_54;
                 return local_52.NoConfigIcon;
             }
             else
             {
-                __return = local_100;
+                FSoftBrush local_100;
+                if (!(PresentationConfig.opArrow().Icons.Find(this.IconType, local_100)))
+                {
+                    local_52 = local_54;
+                    return local_52.NoConfigIcon;
+                }
+                else
+                {
+                    return local_100;
+                }
             }
         }
-        return __return;
+        }
     }
     FMargin GetIconPadding(const TDataObjectPtr<FPresentationConfig> &inout PresentationConfig) const
     {
-        FMargin __return;
-        int local_2 = int(this.IconType);
-        if (local_2 <= -1)
+        switch (int(this.IconType))
         {
-            if (local_2 != -2)
-            {
-                if (local_2 != -1)
-                {
-                }
-            }
-            else
-            {
-                __return = FMargin();
-                __return = FMargin();
-            }
-        }
-        if (!(PresentationConfig))
+        case -2:
         {
             return FMargin();
         }
-        else
+        case -1:
         {
-            FMargin local_12;
-            if (!(PresentationConfig.opArrow().IconsPadding.Find(this.IconType, local_12)))
+            return FMargin();
+        }
+        default:
+        {
+            if (!(PresentationConfig))
             {
                 return FMargin();
             }
             else
             {
-                __return = local_12;
+                FMargin local_12;
+                if (!(PresentationConfig.opArrow().IconsPadding.Find(this.IconType, local_12)))
+                {
+                    return FMargin();
+                }
+                else
+                {
+                    return local_12;
+                }
             }
         }
-        return __return;
+        }
     }
 }
 

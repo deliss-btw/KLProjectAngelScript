@@ -843,9 +843,11 @@ void GetModelInfo(FEUIViewModelMetaInfo &inout Result)
     Result.GeneratedPropertyStruct = __GeneratedProperties_FVM_CookCostItem;
     FEUIModelMonitorDefine local_26;
     local_26.FunctionName = "__OnCookPropChanged";
+    local_26.MonitorTarget = EEUIModelMonitorTarget(1);
     local_26.ComponentType = FC_CookProp;
     local_26.MonitorPropertyName = FName("CookPropEntity");
-    int local_2_2 = FVM_CookCostItem::__IndexOf_CookPropEntity();
+    int local_30 = FVM_CookCostItem::__IndexOf_CookPropEntity();
+    local_26.MonitorPropertyDirtyIndex = int8(local_30);
     Result.MonitorFunctions.Add(local_26);
     FEUIModelMsgHandleDefine local_40;
     local_40.FunctionName = "__OnInventoryChanged";

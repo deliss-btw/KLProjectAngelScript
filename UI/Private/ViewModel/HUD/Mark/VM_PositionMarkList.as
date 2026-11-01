@@ -194,8 +194,8 @@ void GetModelInfo(FEUIViewModelMetaInfo &inout Result)
     local_22.ApplySort();
     FEUIModelRefPropertyDirty local_30;
     local_30.PropertyName = FName("MarkViewportDisplay");
-    int local_2_2 = FMS_MarkViewportDisplay::ModelId;
-    int local_2_3 = local_22.GetMappingDirtyOffset(1);
+    local_30.PropertyModelId = FMS_MarkViewportDisplay::ModelId;
+    local_30.MappingDirtyOffset = local_22.GetMappingDirtyOffset(1);
     local_30.RelatedDirtyMask.SetBit(FMS_MarkViewportDisplay::__IndexOf_PositionMarks(), true);
     Result.ListeningModelRefDirties.Add(local_30);
     FEUIModelDirtyDefine local_40;

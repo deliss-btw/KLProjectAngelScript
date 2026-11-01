@@ -251,9 +251,11 @@ void GetModelInfo(FEUIModelOnlyMetaInfo &inout Result)
     Result.SetbCanDefaultConstruct(false);
     FEUIModelMonitorDefine local_14;
     local_14.FunctionName = "__DS_OnTeamInfoChanged";
+    local_14.MonitorTarget = EEUIModelMonitorTarget(1);
     local_14.ComponentType = FC_TeamInfo;
     local_14.MonitorPropertyName = FName("TeamEntity");
-    int local_2_2 = FM_CombatTeam::__IndexOf_TeamEntity();
+    int local_21 = FM_CombatTeam::__IndexOf_TeamEntity();
+    local_14.MonitorPropertyDirtyIndex = int8(local_21);
     Result.MonitorFunctions.Add(local_14);
     return;
 }

@@ -38,28 +38,20 @@ class UWidget_SkillInfo_Avatar_ShuiJing : UEUIUserWidget
         }
         else
         {
-            int local_7 = int(::UICommonUtil::GetCurrentInputType(this.GetOwningLocalPlayer()));
-            if (local_7 <= 1)
+            switch (int(::UICommonUtil::GetCurrentInputType(this.GetOwningLocalPlayer())))
             {
-                if (local_7 != 0)
-                {
-                    if (local_7 != 1)
-                    {
-                        return;
-                    }
-                    else
-                    {
-                        this.KeyboardInputPanel.SetVisibility(ESlateVisibility(2));
-                        this.GamepadInputPanel.SetVisibility(ESlateVisibility(0));
-                        return;
-                    }
-                }
-                else
-                {
-                    this.KeyboardInputPanel.SetVisibility(ESlateVisibility(0));
-                    this.GamepadInputPanel.SetVisibility(ESlateVisibility(2));
-                    return;
-                }
+            case 1:
+            {
+                this.KeyboardInputPanel.SetVisibility(ESlateVisibility(2));
+                this.GamepadInputPanel.SetVisibility(ESlateVisibility(0));
+                return;
+            }
+            case 0:
+            {
+                this.KeyboardInputPanel.SetVisibility(ESlateVisibility(0));
+                this.GamepadInputPanel.SetVisibility(ESlateVisibility(2));
+                return;
+            }
             }
         }
     }
@@ -198,6 +190,7 @@ namespace UWidget_SkillInfo_Avatar_ShuiJing
 void GetModelInfo(FEUIWidgetMetaInfo &inout Result)
 {
     Result.WidgetType = UWidget_SkillInfo_Avatar_ShuiJing;
+    Result.ObservedModelChangesSubscriberCount = 1;
     Result.ObservedModelChangesSubscriberNames.Add(FString("OnChargeStateChanged"));
     return;
 }

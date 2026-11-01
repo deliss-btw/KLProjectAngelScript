@@ -311,6 +311,7 @@ namespace UWidget_TalentSkillInfoRightPanel
 void GetModelInfo(FEUIWidgetMetaInfo &inout Result)
 {
     Result.WidgetType = UWidget_TalentSkillInfoRightPanel;
+    Result.ObservedModelChangesSubscriberCount = 3;
     Result.ObservedModelChangesSubscriberNames.Add(FString("OnSkillChanged"));
     Result.ObservedModelChangesSubscriberNames.Add(FString("OnSkillLevelChanged"));
     Result.ObservedModelChangesSubscriberNames.Add(FString("OnEquipChoiceChanged"));

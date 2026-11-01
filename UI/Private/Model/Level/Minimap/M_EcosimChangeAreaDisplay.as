@@ -100,7 +100,7 @@ struct FM_EcosimChangeAreaDisplay : FEUIModel
         }
         if (::MinimapUtils::IsValidHandle(local_3))
         {
-            FVector2D local_96 = FVector2D(::MinimapUtils::GetIconInfo(local_3).WorldPosition);
+            FVector2D local_96 = ::MinimapUtils::GetIconInfo(local_3).WorldPosition;
             TArray<FVector2D> local_100;
             local_100.Add(local_96);
             local_100.Add(::MinimapUtils::GamePositionToMapPosition(this.GetTargetLocation()));
@@ -493,6 +493,7 @@ void GetModelInfo(FEUIModelOnlyMetaInfo &inout Result)
     Result.SetbCanDefaultConstruct(true);
     FEUIModelMonitorDefine local_14;
     local_14.FunctionName = "__DS_OnBossMonsterChangeAreaSummaryChanged";
+    local_14.MonitorTarget = EEUIModelMonitorTarget(2);
     local_14.ComponentType = FCS_BossMonsterChangeAreaSummary;
     Result.MonitorFunctions.Add(local_14);
     return;

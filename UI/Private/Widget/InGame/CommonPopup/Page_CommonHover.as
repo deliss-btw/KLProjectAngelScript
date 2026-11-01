@@ -315,21 +315,20 @@ class UPage_CommonHover : UEUIActivatableWidget
             if (local_23)
             {
                 local_49 = false;
-                int local_37 = local_33;
-                if (local_37 <= 1)
+                switch (local_33)
                 {
-                    if (local_37 != 0)
-                    {
-                        if (local_37 != 1)
-                        {
-                        }
-                    }
-                    else
-                    {
-                        local_49 = ((local_16.X + local_12.Max.X) > local_28.X);
-                        local_56 = local_12.Min.X;
-                        local_49 = ((local_56 - local_16.X) > 0.0);
-                    }
+                case 0:
+                {
+                    local_56 = local_28.X;
+                    local_49 = ((local_16.X + local_12.Max.X) > local_56);
+                    break;
+                }
+                case 1:
+                {
+                    local_56 = local_12.Min.X;
+                    local_49 = ((local_56 - local_16.X) > 0.0);
+                    break;
+                }
                 }
                 if (local_49)
                 {
@@ -342,11 +341,11 @@ class UPage_CommonHover : UEUIActivatableWidget
                     float local_60_2 = local_12.Max.X + local_58;
                 }
                 local_42 = FVector2D();
-                float local_54_4 = local_42.Y;
+                float local_54_5 = local_42.Y;
                 local_56 = local_28.Y;
                 local_58 = local_16.Y;
                 float local_60_3 = local_56 - local_58;
-                local_58 = FMath::Min(local_60_3, local_54_4);
+                local_58 = FMath::Min(local_60_3, local_54_5);
                 local_60_3 = FMath::Max(0.0, local_58);
                 this.ClampFixPoint(local_42, local_28);
                 if (local_49)
@@ -369,25 +368,20 @@ class UPage_CommonHover : UEUIActivatableWidget
             else
             {
                 local_49 = false;
-                local_36 = local_33;
-                if (local_36 <= 3)
+                switch (local_33)
                 {
-                    if (local_36 != 2)
-                    {
-                        if (local_36 != 3)
-                        {
-                        }
-                        else
-                        {
-                            local_56 = local_16.Y + local_12.Max.Y;
-                            local_49 = (local_56 > local_28.Y);
-                        }
-                    }
-                    else
-                    {
-                        local_56 = local_12.Min.Y - local_16.Y;
-                        local_49 = (local_56 > 0.0);
-                    }
+                case 3:
+                {
+                    local_56 = local_16.Y + local_12.Max.Y;
+                    local_49 = (local_56 > local_28.Y);
+                    break;
+                }
+                case 2:
+                {
+                    local_56 = local_12.Min.Y - local_16.Y;
+                    local_49 = (local_56 > 0.0);
+                    break;
+                }
                 }
                 float local_62_2 = local_12.Min.X;
                 local_56 = local_62_2 + local_12.Max.X;
@@ -587,6 +581,7 @@ namespace UPage_CommonHover
 void GetModelInfo(FEUIWidgetMetaInfo &inout Result)
 {
     Result.WidgetType = UPage_CommonHover;
+    Result.ObservedModelChangesSubscriberCount = 1;
     Result.ObservedModelChangesSubscriberNames.Add(FString("OnHoverChainNavigationStateChanged"));
     return;
 }

@@ -39,21 +39,23 @@ struct FStigmataConfig : FDataObject
 
     UScriptStruct GetNodeDataType() const
     {
-        int local_2 = int(this.NodeType);
-        if (local_2 <= 3)
+        UScriptStruct local_6;
+        switch (int(this.NodeType))
         {
-            if (local_2 != 1)
-            {
-                if (local_2 != 3)
-                {
-                }
-            }
-            else
-            {
-                return FGameplayModifierConfig;
-            }
+        case 1:
+        {
+            return FGameplayModifierConfig;
         }
-        return FDataObject;
+        case 3:
+        {
+            return FStigmataAddHealLimitConfig;
+        }
+        default:
+        {
+            local_6 = FDataObject;
+        }
+        }
+        return local_6;
     }
     const TArray<TDataObjectPtr<FServerConditionConfigBase>> GetUnlockCondition() const property
     {

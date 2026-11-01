@@ -21,22 +21,22 @@ int GetTargetValue(const TDataObjectPtr<FConditionConfigBase> &inout ConditionCo
     TDataObjectPtr<FLocalConditionConfigBase> local_188 = local_164.opCall();
     if (local_188)
     {
-        int local_107 = int(local_188.opArrow().LocalConditionType);
-        if (local_107 <= 2)
+        switch (int(local_188.opArrow().LocalConditionType))
         {
-            if (local_107 != 1)
-            {
-                if (local_107 != 2)
-                {
-                }
-            }
-            else
-            {
-                CastTo local_194;
-                return local_194.opCall().opArrow().TargetValue;
-            }
+        case 1:
+        {
+            CastTo local_194;
+            return local_194.opCall().opArrow().TargetValue;
+        }
+        case 2:
+        {
+            return 1;
+        }
         }
         return 0;
+    }
+    else
+    {
     }
     return 0;
 }
@@ -46,19 +46,16 @@ int GetCurrentValue(const FConditionInstanceHandle &inout ConditionInstance)
     {
         return 0;
     }
-    int local_2 = int(ConditionInstance.GetLocalConditionType());
-    if (local_2 <= 2)
+    switch (int(ConditionInstance.GetLocalConditionType()))
     {
-        if (local_2 != 1)
-        {
-            if (local_2 != 2)
-            {
-            }
-        }
-        else
-        {
-            return ConditionUtils_Internal::GetLocalConditionCurrentProgress(ConditionInstance.GetLocalConditionInstanceID());
-        }
+    case 1:
+    {
+        return ConditionUtils_Internal::GetLocalConditionCurrentProgress(ConditionInstance.GetLocalConditionInstanceID());
+    }
+    case 2:
+    {
+        return ConditionGroupUtils::IsReached(ConditionInstance) ? 1 : 0;
+    }
     }
     return 0;
 }
@@ -110,21 +107,18 @@ void UnregisterLocalConditionInstance(const FConditionInstanceHandle &inout Cond
     }
     else
     {
-        int local_3 = int(ConditionInstance.GetLocalConditionType());
-        if (local_3 <= 2)
+        switch (int(ConditionInstance.GetLocalConditionType()))
         {
-            if (local_3 != 1)
-            {
-                if (local_3 != 2)
-                {
-                    return;
-                }
-            }
-            else
-            {
-                ConditionUtils_Internal::UnregisterLocalConditionInstance(ConditionInstance.GetLocalConditionInstanceID());
-                return;
-            }
+        case 1:
+        {
+            ConditionUtils_Internal::UnregisterLocalConditionInstance(ConditionInstance.GetLocalConditionInstanceID());
+            return;
+        }
+        case 2:
+        {
+            ConditionGroupUtils::UnregisterConditionGroupInstance(ConditionInstance);
+            return;
+        }
         }
     }
 }
@@ -390,46 +384,47 @@ bool IsValueReached(const int CurrentValue, const int TargetValue, const ECondCm
 }
 ECondCmpType GetCmpType(const TDataObjectPtr<FConditionConfigBase> &inout ConditionConfig)
 {
-    int local_2 = int(ConditionConfig.opArrow().ConfigType);
-    if (local_2 <= 2)
+    ECondCmpType local_33 = ECondCmpType(0);
+    switch (int(ConditionConfig.opArrow().ConfigType))
     {
-        if (local_2 != 1)
-        {
-            if (local_2 != 2)
-            {
-            }
-            else
-            {
-                CastTo local_8;
-                return ConditionUtils_Internal::GetCmpType(local_8.opCall());
-            }
-        }
-        else
-        {
-            CastTo local_38;
-            return ConditionUtils_Internal::GetCmpType(local_38.opCall());
-        }
+    case 2:
+    {
+        CastTo local_8;
+        return ConditionUtils_Internal::GetCmpType(local_8.opCall());
     }
-    return ECondCmpType::None;
+    case 1:
+    {
+        CastTo local_38;
+        return ConditionUtils_Internal::GetCmpType(local_38.opCall());
+    }
+    default:
+    {
+        local_33 = ECondCmpType::None;
+    }
+    }
+    return local_33;
 }
 ECondCmpType GetCmpType(const TDataObjectPtr<FLocalConditionConfigBase> &inout ConditionConfig)
 {
-    int local_2 = int(ConditionConfig.opArrow().LocalConditionType);
-    if (local_2 <= 2)
+    int local_33 = 0;
+    switch (int(ConditionConfig.opArrow().LocalConditionType))
     {
-        if (local_2 != 1)
-        {
-            if (local_2 != 2)
-            {
-            }
-        }
-        else
-        {
-            CastTo local_8;
-            return ECondCmpType(local_8.opCall().opArrow().CompareType);
-        }
+    case 1:
+    {
+        CastTo local_8;
+        local_33 = int(local_8.opCall().opArrow().CompareType);
+        return ECondCmpType(local_33);
     }
-    return ECondCmpType(0);
+    case 2:
+    {
+        return ECondCmpType(4);
+    }
+    default:
+    {
+        local_33 = 0;
+    }
+    }
+    return ECondCmpType(local_33);
 }
 ECondCmpType GetCmpType(const TDataObjectPtr<FServerConditionConfigBase> &inout ConditionConfig)
 {

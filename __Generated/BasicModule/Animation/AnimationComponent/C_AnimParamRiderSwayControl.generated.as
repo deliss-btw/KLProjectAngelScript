@@ -6,7 +6,7 @@ namespace __INTENRAL_FC_AnimParamRiderSwayControlHistory_NS
 }
 struct FC_AnimParamRiderSwayControlHistory : FECSComponent
 {
-    TInterpoHistory<FC_AnimParamRiderSwayControl, auto> History;
+    TInterpoHistory<FC_AnimParamRiderSwayControl, 30> History;
 
     FC_AnimParamRiderSwayControlHistory()
     {

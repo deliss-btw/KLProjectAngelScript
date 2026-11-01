@@ -271,6 +271,7 @@ namespace UWidget_Inventory
 void GetModelInfo(FEUIWidgetMetaInfo &inout Result)
 {
     Result.WidgetType = UWidget_Inventory;
+    Result.ObservedModelChangesSubscriberCount = 1;
     Result.ObservedModelChangesSubscriberNames.Add(FString("OnSelectListOpenChanged"));
     return;
 }

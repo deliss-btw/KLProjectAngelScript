@@ -6,7 +6,7 @@ namespace __INTENRAL_FC_TuneESMBBFloatValueHistory_NS
 }
 struct FC_TuneESMBBFloatValueHistory : FECSComponent
 {
-    TInterpoHistory<FC_TuneESMBBFloatValue, auto> History;
+    TInterpoHistory<FC_TuneESMBBFloatValue, 30> History;
 
     FC_TuneESMBBFloatValueHistory()
     {

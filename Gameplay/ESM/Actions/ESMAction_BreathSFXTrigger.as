@@ -66,21 +66,16 @@ class UESMAction_BreathSFXTrigger : UESMBPBaseInstantAction
     }
     FString GetTriggerTypeString(const EBreathSFXTriggerType InTriggerType) const
     {
-        FString __return;
-        int local_1 = int(InTriggerType);
-        if (local_1 <= 1)
+        switch (int(InTriggerType))
         {
-            if (local_1 != 0)
-            {
-                if (local_1 != 1)
-                {
-                }
-            }
-            else
-            {
-                __return = "启用";
-                __return = "禁用";
-            }
+        case 0:
+        {
+            return "启用";
+        }
+        case 1:
+        {
+            return "禁用";
+        }
         }
         return "未知";
     }

@@ -6,7 +6,7 @@ namespace __INTENRAL_FC_FlowerWhipToxicLookHistory_NS
 }
 struct FC_FlowerWhipToxicLookHistory : FECSComponent
 {
-    TInterpoHistory<FC_FlowerWhipToxicLook, auto> History;
+    TInterpoHistory<FC_FlowerWhipToxicLook, 30> History;
 
     FC_FlowerWhipToxicLookHistory()
     {

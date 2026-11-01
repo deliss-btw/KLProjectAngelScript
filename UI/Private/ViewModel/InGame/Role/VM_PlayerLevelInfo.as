@@ -462,7 +462,7 @@ void GetModelInfo(FEUIViewModelMetaInfo &inout Result)
     Result.GeneratedPropertyStruct = __GeneratedProperties_FVMS_PlayerLevelInfo;
     FEUIModelWatcherProperty local_19;
     local_19.PropertyName = FName("ServerLevelCapCounterDown");
-    int local_2_2 = FVMS_PlayerLevelInfo::__IndexOf_ServerLevelCapCounterDown();
+    local_19.DirtyBitIndex = FVMS_PlayerLevelInfo::__IndexOf_ServerLevelCapCounterDown();
     Result.WatcherProperties.Add(local_19);
     FEUIModelEffectDefine local_26;
     local_26.FunctionName = "RefreshServerLevelCapCounterDown";

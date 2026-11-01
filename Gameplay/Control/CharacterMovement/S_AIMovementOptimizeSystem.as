@@ -158,10 +158,9 @@ class US_AIMovementOptimizeSystem : UECSScriptSystem
         Has local_4;
         if (!(local_4.opCall()))
         {
-            int local_25 = 1065353216;
             FC_VisualTransformOffset local_24;
             Assign local_10;
-            local_10.opCall(local_24).BlendWeight = local_25;
+            local_10.opCall(local_24).BlendWeight = 1.0f;
         }
         return;
     }
@@ -178,7 +177,7 @@ class US_AIMovementOptimizeSystem : UECSScriptSystem
         if (local_16)
         {
             float32 local_17;
-            float32 local_7 = VisualTransform.BlendWeight + local_8;
+            VisualTransform.BlendWeight += local_8;
             local_17 = 0.0f;
             if (!(local_16.GetbInAir()))
             {
@@ -193,7 +192,7 @@ class US_AIMovementOptimizeSystem : UECSScriptSystem
         }
         else
         {
-            float32 local_7_2 = VisualTransform.BlendWeight - local_8;
+            VisualTransform.BlendWeight = (VisualTransform.BlendWeight - local_8);
             if (VisualTransform.BlendWeight <= 0.0f)
             {
                 Remove local_94;
@@ -201,7 +200,7 @@ class US_AIMovementOptimizeSystem : UECSScriptSystem
                 return;
             }
         }
-        float32 local_7_3 = float32((FMath::Clamp(VisualTransform.BlendWeight, 0.0, 1.0)));
+        VisualTransform.BlendWeight = float32((FMath::Clamp(VisualTransform.BlendWeight, 0.0, 1.0)));
         VisualTransform.PositionOffset.Y = 0.0f;
         VisualTransform.PositionOffset.X = VisualTransform.PositionOffset.Y;
         return;

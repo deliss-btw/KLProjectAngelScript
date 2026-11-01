@@ -689,8 +689,7 @@ class US_CombatSystem : UECSScriptSystem
             local_10.opCall();
             return;
         }
-        FFPTime local_12 = FFPTime(FixedTime.Time);
-        if (local_12.opCmp(WaitHitBreakRecover.GetRecoverTime()) < 0)
+        if (FixedTime.Time.opCmp(WaitHitBreakRecover.GetRecoverTime()) < 0)
         {
             return;
         }

@@ -387,6 +387,7 @@ namespace UWidget_ItemQuickSlot
 void GetModelInfo(FEUIWidgetMetaInfo &inout Result)
 {
     Result.WidgetType = UWidget_ItemQuickSlot;
+    Result.ObservedModelChangesSubscriberCount = 4;
     Result.ObservedModelChangesSubscriberNames.Add(FString("SetupOwnerUserWidget"));
     Result.ObservedModelChangesSubscriberNames.Add(FString("SetupItem"));
     Result.ObservedModelChangesSubscriberNames.Add(FString("SetupDisplayItem"));

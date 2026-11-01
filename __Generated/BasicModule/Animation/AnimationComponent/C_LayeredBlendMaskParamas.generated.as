@@ -6,7 +6,7 @@ namespace __INTENRAL_FC_LayeredBlendMaskHistory_NS
 }
 struct FC_LayeredBlendMaskHistory : FECSComponent
 {
-    TInterpoHistory<FC_LayeredBlendMask, auto> History;
+    TInterpoHistory<FC_LayeredBlendMask, 30> History;
 
     FC_LayeredBlendMaskHistory()
     {

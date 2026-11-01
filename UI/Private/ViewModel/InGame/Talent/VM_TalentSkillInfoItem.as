@@ -224,7 +224,7 @@ struct FVM_TalentSkillInfoItem : FEUIViewModel
         TDataObjectPtr<FSkillInitConfig> local_78 = this.GetSkillInitConfigFromTalent();
         if (local_78 && ((local_78.opArrow().SkillConfig != nullptr)))
         {
-            OutSeconds = int(local_78.opArrow().SkillConfig.DefaultSkillStateConfig.CDConfig.CDDuration.DefaultValue);
+            OutSeconds = local_78.opArrow().SkillConfig.DefaultSkillStateConfig.CDConfig.CDDuration.DefaultValue;
             return true;
         }
         return false;
@@ -252,41 +252,39 @@ struct FVM_TalentSkillInfoItem : FEUIViewModel
     }
     bool GetIsShowPageTypeIsTalentInfoPage() const
     {
-        switch (int(this.GetShowPageType()))
+        switch (this.GetShowPageType())
         {
-        case 0:
+        case ETalentInfoShowPageType::AvatarInfoPage:
         {
             return false;
         }
-        case 1:
+        case ETalentInfoShowPageType::TalentInfoPage:
         {
             return true;
         }
-        case 2:
+        case ETalentInfoShowPageType::SkillChangePage:
         {
             return false;
         }
         }
-        return false;
     }
     bool GetIsShowPageTypeIsSkillChangePage() const
     {
-        switch (int(this.GetShowPageType()))
+        switch (this.GetShowPageType())
         {
-        case 0:
-        {
-            return false;
-        }
-        case 1:
+        case ETalentInfoShowPageType::AvatarInfoPage:
         {
             return false;
         }
-        case 2:
+        case ETalentInfoShowPageType::TalentInfoPage:
+        {
+            return false;
+        }
+        case ETalentInfoShowPageType::SkillChangePage:
         {
             return true;
         }
         }
-        return false;
     }
     void ToggleDoubleStateTalent()
     {
@@ -1604,6 +1602,7 @@ struct __GeneratedProperties_FVM_TalentSkillInfoItem
     UPROPERTY()
     TEUIModelRef<FVM_TalentSkillInfoItem> Self;
 
+
 }
 
 namespace FVM_TalentSkillInfoItem
@@ -1934,8 +1933,8 @@ void GetModelInfo(FEUIViewModelMetaInfo &inout Result)
     local_22.ApplySort();
     FEUIModelRefPropertyDirty local_30;
     local_30.PropertyName = FName("TalentNode");
-    int local_2_2 = FM_TalentNode::ModelId;
-    int local_2_3 = local_22.GetMappingDirtyOffset(0);
+    local_30.PropertyModelId = FM_TalentNode::ModelId;
+    local_30.MappingDirtyOffset = local_22.GetMappingDirtyOffset(0);
     local_30.RelatedDirtyMask.SetBit(FM_TalentNode::__IndexOf_ActiveLevel(), true);
     Result.ListeningModelRefDirties.Add(local_30);
     FEUIModelDirtyDefine local_40;

@@ -2862,6 +2862,7 @@ void GetModelInfo(FEUIViewModelMetaInfo &inout Result)
     Result.GeneratedPropertyStruct = __GeneratedProperties_FVM_AvatarInfo;
     FEUIModelMonitorDefine local_26;
     local_26.FunctionName = "__OnAvatarEquipmentChanged";
+    local_26.MonitorTarget = EEUIModelMonitorTarget(3);
     local_26.ComponentType = FC_DSPlayerAvatarInfo;
     Result.MonitorFunctions.Add(local_26);
     FEUIModelMsgHandleDefine local_38;
@@ -3566,8 +3567,8 @@ void GetModelInfo(FEUIViewModelMetaInfo &inout Result)
     local_22.ApplySort();
     FEUIModelRefPropertyDirty local_30;
     local_30.PropertyName = FName("SelectInfoVM");
-    int local_2_2 = FVM_AvatarDetailInfo_SkillSelect::ModelId;
-    int local_2_3 = local_22.GetMappingDirtyOffset(6);
+    local_30.PropertyModelId = FVM_AvatarDetailInfo_SkillSelect::ModelId;
+    local_30.MappingDirtyOffset = local_22.GetMappingDirtyOffset(6);
     local_30.RelatedDirtyMask.SetBit(FVM_AvatarDetailInfo_SkillSelect::__IndexOf_SkillInfo(), true);
     Result.ListeningModelRefDirties.Add(local_30);
     FEUIModelDirtyDefine local_40;
@@ -3582,6 +3583,7 @@ void GetModelInfo(FEUIViewModelMetaInfo &inout Result)
     Result.MessageHandleFunctions.Add(local_50);
     FEUIModelMonitorDefine local_64;
     local_64.FunctionName = "__Monitor_OnPlayerSkillChange";
+    local_64.MonitorTarget = EEUIModelMonitorTarget(4);
     local_64.ComponentType = FC_Skill;
     Result.MonitorFunctions.Add(local_64);
     local_40.FunctionName = "__DoRefresh";
@@ -3785,13 +3787,14 @@ void GetModelInfo(FEUIViewModelMetaInfo &inout Result)
     local_22.ApplySort();
     FEUIModelRefPropertyDirty local_30;
     local_30.PropertyName = FName("PlayerAvatarData");
-    int local_2_2 = FMS_PlayerAvatarData::ModelId;
-    int local_2_3 = local_22.GetMappingDirtyOffset(4);
+    local_30.PropertyModelId = FMS_PlayerAvatarData::ModelId;
+    local_30.MappingDirtyOffset = local_22.GetMappingDirtyOffset(4);
     local_30.RelatedDirtyMask.SetBit(FMS_PlayerAvatarData::__IndexOf_CurrentAvatars(), true);
     local_30.RelatedDirtyMask.SetBit(FMS_PlayerAvatarData::__IndexOf_OwnedAvatars(), true);
     Result.ListeningModelRefDirties.Add(local_30);
     FEUIModelMonitorDefine local_42;
     local_42.FunctionName = "__OnDSPlayerInfoChanged";
+    local_42.MonitorTarget = EEUIModelMonitorTarget(3);
     local_42.ComponentType = FC_DSPlayerInfo;
     Result.MonitorFunctions.Add(local_42);
     FEUIModelDirtyDefine local_52;

@@ -88,14 +88,14 @@ struct FVM_TeamOperatorBtnItem : FEUIViewModel
         {
             return;
         }
-        switch (int(this.GetButtonType()))
+        switch (this.GetButtonType())
         {
-        case 0:
+        case ETeamOperatorBtnType::InviteTeam:
         {
             this.GetTeamPanel().Get().InviteTeam();
             return;
         }
-        case 1:
+        case ETeamOperatorBtnType::MuteTeam:
         {
             if (this.GetTeamPanel().Get().IsSpecialMapForVoice())
             {
@@ -107,7 +107,7 @@ struct FVM_TeamOperatorBtnItem : FEUIViewModel
             }
             return;
         }
-        case 2:
+        case ETeamOperatorBtnType::SpeakInTeam:
         {
             if (this.GetTeamPanel().Get().IsSpecialMapForVoice())
             {
@@ -119,18 +119,17 @@ struct FVM_TeamOperatorBtnItem : FEUIViewModel
             }
             return;
         }
-        case 3:
+        case ETeamOperatorBtnType::LeaveTeam:
         {
             this.GetTeamPanel().Get().LeaveTeam();
             return;
         }
-        case 4:
+        case ETeamOperatorBtnType::InviteTeamIntoDS:
         {
             this.GetTeamPanel().Get().InviteTeamIntoDS();
             return;
         }
         }
-        return;
     }
     void CloseHoverMenu()
     {

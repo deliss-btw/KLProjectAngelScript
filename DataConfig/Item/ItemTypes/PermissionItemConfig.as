@@ -24,18 +24,19 @@ struct FPermissionItemConfig : FItemConfig
     }
     UScriptStruct GetUnlockDataType() const
     {
-        int local_2 = int(this.PermissionType);
-        if (local_2 <= 1)
+        UScriptStruct local_6;
+        switch (int(this.PermissionType))
         {
-            if (local_2 != 1)
-            {
-            }
-            else
-            {
-                return FDivineSkillConfig;
-            }
+        case 1:
+        {
+            return FDivineSkillConfig;
         }
-        return FDataObject;
+        default:
+        {
+            local_6 = FDataObject;
+        }
+        }
+        return local_6;
     }
     const TDataObjectPtr<FDataObject> GetUnlockData() const property
     {

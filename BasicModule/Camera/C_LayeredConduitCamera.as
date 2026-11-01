@@ -90,7 +90,9 @@ struct FLayerConduitCamera : FCameraRuntimeDataBasic
             FTPCameraStateConfig local_28;
             TDataObjectPtr<FTPCameraStateConfig> local_24 = TDataObjectPtr<FTPCameraStateConfig>(this.CameraConfig);
             FCameraBlendConfig local_104;
+            local_104.BlendInDuration = int(local_28.BlendInDuration);
             local_104.BlendInEasing = local_28.BlendInEasing;
+            local_104.BlendOutDuration = int(local_28.BlendOutToDefaultDuration);
             local_104.BlendOutEasing = local_28.BlendOutEasing;
             return local_104;
         }
@@ -101,7 +103,9 @@ struct FLayerConduitCamera : FCameraRuntimeDataBasic
                 FAnimCameraData local_132;
                 TDataObjectPtr<FAnimCameraData> local_130 = TDataObjectPtr<FAnimCameraData>(this.CameraConfig);
                 FCameraBlendConfig local_104;
+                local_104.BlendInDuration = int(local_132.FadeInDuration);
                 local_104.BlendInEasing = local_132.FadeInType;
+                local_104.BlendOutDuration = int(local_132.FadeOutDuration);
                 local_104.BlendOutEasing = local_132.FadeOutType;
                 return local_104;
             }

@@ -8,19 +8,15 @@ EBodyType GetBodyTypeFromAvatar(const TDataObjectPtr<FAvatarPrefabConfig> &inout
     {
         return EBodyType(1);
     }
-    int local_4 = int(AvatarConfig.Get().GenderType);
-    if (local_4 <= 1)
+    switch (int(AvatarConfig.Get().GenderType))
     {
-        if (local_4 != 0)
-        {
-            if (local_4 != 1)
-            {
-            }
-            else
-            {
-                return EBodyType(2);
-            }
-        }
+    case 1:
+    {
+        return EBodyType(2);
+    }
+    default:
+    {
+    }
     }
     return EBodyType(1);
 }

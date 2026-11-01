@@ -259,6 +259,7 @@ namespace UWidget_CommonItemDetail
 void GetModelInfo(FEUIWidgetMetaInfo &inout Result)
 {
     Result.WidgetType = UWidget_CommonItemDetail;
+    Result.ObservedModelChangesSubscriberCount = 1;
     Result.ObservedModelChangesSubscriberNames.Add(FString("SyncItemVM"));
     return;
 }

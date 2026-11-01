@@ -36,8 +36,10 @@ FECSEntity SpawnTreasureForPlayer(const FECSEntity &inout TreasureConfigEntity, 
         return ENTITY_NULL;
     }
     ModifyOrAdd local_52;
-    if (local_52.opCall())
+    FC_NetRelevancePolicy& local_54 = local_52.opCall();
+    if (local_54)
     {
+        local_54.RelevancePolicyType = ENetRelevancePolicyType(5);
     }
     Get local_60;
     const FC_PlayerController& local_62 = local_60.opCall();

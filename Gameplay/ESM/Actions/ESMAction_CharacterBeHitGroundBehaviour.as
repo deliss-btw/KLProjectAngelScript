@@ -32,8 +32,8 @@ class UESMAction_CharacterBeHitGroundBehaviour : UESMAction_CharacterBeHitBehavi
     {
         int local_10 = 0;
         int local_16 = 0;
-        FFPTime local_2 = FFPTime(Time.ActionLastTime);
-        FFPTime local_4 = FFPTime(Time.ActionTime);
+        FFPTime local_2 = Time.ActionLastTime;
+        FFPTime local_4 = Time.ActionTime;
         float local_20 = (local_2 / Time.ActionDuration);
         float local_18 = (local_4 / Time.ActionDuration);
         float local_28 = FMath::Lerp(0.0, 1.0, local_20);
@@ -265,8 +265,8 @@ class UESMAction_CharacterBeHitAirBehaviour : UESMAction_CharacterBeHitBehaviour
             return;
         }
         local_24.SetbAirborne(true);
-        FFPTime local_38 = FFPTime(Time.ActionLastTime);
-        FFPTime local_40 = FFPTime(Time.ActionTime);
+        FFPTime local_38 = Time.ActionLastTime;
+        FFPTime local_40 = Time.ActionTime;
         if (local_2.MaxCurveHeight == -1.0f)
         {
             local_2.MaxCurveHeight = this.GetMaxCurveZHeight(Context);

@@ -367,12 +367,16 @@ void GetModelInfo(FEUIModelOnlyMetaInfo &inout Result)
     Result.MessageHandleFunctions.Add(local_14);
     FEUIModelProtoRspDefine local_24;
     local_24.FunctionName = "__GS_OnDraftInviteNotify";
+    local_24.ProtoCmdId = uint16(1201);
     Result.ProtoRspDefines.Add(local_24);
     local_24.FunctionName = "__GS_OnDraftInviteReplyRsp";
+    local_24.ProtoCmdId = uint16(1203);
     Result.ProtoRspDefines.Add(local_24);
     local_24.FunctionName = "__GS_OnDraftInviteReplyNotify";
+    local_24.ProtoCmdId = uint16(1204);
     Result.ProtoRspDefines.Add(local_24);
     local_24.FunctionName = "__GS_OnDraftInviteResultNotify";
+    local_24.ProtoCmdId = uint16(1205);
     Result.ProtoRspDefines.Add(local_24);
     return;
 }

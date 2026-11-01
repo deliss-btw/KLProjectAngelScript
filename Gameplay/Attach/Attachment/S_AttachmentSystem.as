@@ -315,8 +315,8 @@ class US_AttachmentSystem : UECSScriptSystem
         if (TransformAttachment.GetAttachToEntity().IsValid())
         {
             GetDefaulted local_6;
-            FFPTime local_16 = (FFPTime(FixedTime.Time) + (local_6.opCall().GetOffsetTime((int(FixedTime.Frame) - 1))));
-            FFPTime local_14 = (local_16 - local_6.opCall().GetOffsetTime((int(FixedTime.Frame) - 1)));
+            FFPTime local_16 = (FFPTime(FixedTime.Time) + (local_6.opCall().GetOffsetTime((FixedTime.Frame - 1))));
+            FFPTime local_14 = (local_16 - local_6.opCall().GetOffsetTime((FixedTime.Frame - 1)));
             FTransform local_44;
             if (int(TransformAttachment.GetAttachmentMode()) == 0)
             {

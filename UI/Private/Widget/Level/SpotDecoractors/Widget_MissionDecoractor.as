@@ -101,6 +101,7 @@ namespace UWidget_MissionDecoractor
 void GetModelInfo(FEUIWidgetMetaInfo &inout Result)
 {
     Result.WidgetType = UWidget_MissionDecoractor;
+    Result.ObservedModelChangesSubscriberCount = 1;
     Result.ObservedModelChangesSubscriberNames.Add(FString("OnMissionTrackingChanged"));
     return;
 }

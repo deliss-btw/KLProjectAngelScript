@@ -610,19 +610,19 @@ class US_DialogueDeliverySystem : UECSScriptSystem
                 {
                     bool local_168;
                     local_168 = false;
-                    switch (int(CurrentDialogue.GetBroadcastScope()))
+                    switch (CurrentDialogue.GetBroadcastScope())
                     {
-                    case 0:
+                    case EDialogueScope::Personal:
                     {
                         local_168 = (local_132 == CurrentDialogue.GetTriggerPlayer());
                         break;
                     }
-                    case 1:
+                    case EDialogueScope::Team:
                     {
                         local_168 = ::FTeamUtils::IsInSameTeam(local_132, CurrentDialogue.GetTriggerPlayer());
                         break;
                     }
-                    case 2:
+                    case EDialogueScope::Global:
                     {
                         local_168 = true;
                         break;

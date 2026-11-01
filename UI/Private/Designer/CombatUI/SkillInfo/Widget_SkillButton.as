@@ -502,6 +502,7 @@ namespace UWidget_SkillButton
 void GetModelInfo(FEUIWidgetMetaInfo &inout Result)
 {
     Result.WidgetType = UWidget_SkillButton;
+    Result.ObservedModelChangesSubscriberCount = 7;
     Result.ObservedModelChangesSubscriberNames.Add(FString("HandleSkillConfigChanged"));
     Result.ObservedModelChangesSubscriberNames.Add(FString("HandleConsumableItemConfigChanged"));
     Result.ObservedModelChangesSubscriberNames.Add(FString("HandleSkillProgressTypeChanged"));

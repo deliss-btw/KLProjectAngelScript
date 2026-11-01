@@ -384,6 +384,7 @@ namespace UWidget_ChatInput
 void GetModelInfo(FEUIWidgetMetaInfo &inout Result)
 {
     Result.WidgetType = UWidget_ChatInput;
+    Result.ObservedModelChangesSubscriberCount = 3;
     Result.ObservedModelChangesSubscriberNames.Add(FString("OnInputStateIndexChanged"));
     Result.ObservedModelChangesSubscriberNames.Add(FString("OnChatInputFocusRequested"));
     Result.ObservedModelChangesSubscriberNames.Add(FString("OnAlreadyInputTextChanged"));

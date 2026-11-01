@@ -42,10 +42,12 @@ struct FMissionAction_RemoveItemCallback
                 FMissionActionInstance& local_38 = local_32.GetValue().ActionInstances[this.ActionIndex];
                 if (int(Result) == 2)
                 {
+                    local_38.ActionStatus = EMissionActionStatus(3);
                     bIsConfirmed = true;
                 }
                 else
                 {
+                    local_38.ActionStatus = EMissionActionStatus(4);
                     bIsConfirmed = false;
                 }
                 break;

@@ -113,15 +113,13 @@ class US_CameraPostProcess : UECSScriptSystem
     UFUNCTION()
     void ClientJob_OutputPostProcess(const FCS_LocalPlayer &inout Player) const
     {
-        AECSPlayerController local_12;
         APXECSPlayerController local_16;
         FECSWorldPtr local_2 = this.GetECSWorld();
         Get local_6;
         const FCS_CameraPostProcess& local_8 = local_6.opCall();
         if (local_8)
         {
-            local_12 = Player.UEPlayerController;
-            local_16 = (Cast<APXECSPlayerController>(local_12));
+            local_16 = (Cast<APXECSPlayerController>(Player.UEPlayerController));
             if (local_16 != nullptr)
             {
                 local_16.PostProcessSettings = local_8.Settings;

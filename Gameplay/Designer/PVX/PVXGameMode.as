@@ -879,7 +879,8 @@ class UPVXGameModeFlow : UGameModeFlow
         XLog(ELog(27), FString().Append("PVX SpawnPVXPlayer ").Append(local_69).Append(local_69).Append(" Faction=").Append(local_56).Append(" BossPrefabIdx="));
         PlayerEntity.GetId();
         FECSWorldPtr local_26_6 = ECS::GetECSWorld();
-        int local_7 = local_6.GetPlayerId();
+        FCE_PlayerSpawnEvent local_100;
+        local_100.PlayerID = local_6.GetPlayerId();
         return;
     }
     void SetupCombatTeamForPlayer(const FECSEntity &inout PlayerEntity) const

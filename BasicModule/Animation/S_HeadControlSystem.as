@@ -96,7 +96,7 @@ class US_HeadControlSystemAS : UECSScriptSystem
         const FC_AnimIdleHeadControlHistory& local_10 = local_8.opCall();
         if (local_10)
         {
-            TInterpoHistory<FC_AnimIdleHeadControl, auto> local_12 = local_10.History;
+            TInterpoHistory<FC_AnimIdleHeadControl, 30> local_12 = local_10.History;
             if (local_12.Num() > 0 && (local_12.PeekBack(0).GetData().Weight <= 0.0f))
             {
                 Remove local_18;

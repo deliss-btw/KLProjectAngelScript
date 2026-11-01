@@ -6,7 +6,7 @@ namespace __INTENRAL_FC_FootIKControlHistory_NS
 }
 struct FC_FootIKControlHistory : FECSComponent
 {
-    TInterpoHistory<FC_FootIKControl, auto> History;
+    TInterpoHistory<FC_FootIKControl, 30> History;
 
     FC_FootIKControlHistory()
     {

@@ -68,19 +68,17 @@ class US_MaterialParamSystem : UECSScriptSystem
         float32 local_2 = 0.0f;
         if (RequestParam.bUseMaterialParameterInfo)
         {
-            int local_5 = int(RequestParam.LayerOrBlendIndex);
         }
         else
         {
         }
         if (RequestParam.bUseMaterialParameterInfo)
         {
-            local_6 = int(RequestParam.ParamAssociation);
+            local_6 = RequestParam.ParamAssociation;
         }
         else
         {
-            int local_7 = 2;
-            local_6 = local_7;
+            local_6 = EMaterialParameterAssociation(2);
         }
         if (GameMaterial::GetFloatParameterDefaultValue(local_2, Mat.Get(), RequestParam.ParamName, EMaterialParameterAssociation(local_6)))
         {
@@ -128,19 +126,17 @@ class US_MaterialParamSystem : UECSScriptSystem
         FLinearColor local_5;
         if (RequestParam.bUseMaterialParameterInfo)
         {
-            int local_7 = int(RequestParam.LayerOrBlendIndex);
         }
         else
         {
         }
         if (RequestParam.bUseMaterialParameterInfo)
         {
-            local_8 = int(RequestParam.ParamAssociation);
+            local_8 = RequestParam.ParamAssociation;
         }
         else
         {
-            int local_9 = 2;
-            local_8 = local_9;
+            local_8 = EMaterialParameterAssociation(2);
         }
         if (GameMaterial::GetVectorParameterDefaultValue(local_5, Mat.Get(), RequestParam.ParamName, EMaterialParameterAssociation(local_8)))
         {
@@ -189,19 +185,17 @@ class US_MaterialParamSystem : UECSScriptSystem
         }
         if (RequestParam.bUseMaterialParameterInfo)
         {
-            int local_6 = int(RequestParam.LayerOrBlendIndex);
         }
         else
         {
         }
         if (RequestParam.bUseMaterialParameterInfo)
         {
-            local_7 = int(RequestParam.ParamAssociation);
+            local_7 = RequestParam.ParamAssociation;
         }
         else
         {
-            int local_8 = 2;
-            local_7 = local_8;
+            local_7 = EMaterialParameterAssociation(2);
         }
         if (GameMaterial::GetTextureParameterDefaultValue(local_4, Mat.Get(), RequestParam.ParamName, EMaterialParameterAssociation(local_7)))
         {
@@ -510,7 +504,7 @@ class US_MaterialParamSystem : UECSScriptSystem
             FFloatParamBlendData& local_110 = local_28.FloatParams[local_25];
             local_110.GetModify_RequestData().ParamName = local_70.ParamName;
             local_110.GetModify_RequestData().bUseMaterialParameterInfo = local_70.bUseMaterialParameterInfo;
-            local_110.GetModify_RequestData().ParamAssociation = (int(local_70.ParamAssociation) != 0);
+            local_110.GetModify_RequestData().ParamAssociation = local_70.ParamAssociation;
             local_110.GetModify_RequestData().LayerOrBlendIndex = int(local_70.LayerOrBlendIndex);
             this.BuildFloatParamForBlendData(Request, local_56, local_70, local_110, RequestData.GetbApplyToAllSlot());
         }
@@ -526,7 +520,7 @@ class US_MaterialParamSystem : UECSScriptSystem
             FVectorParamBlendData& local_178 = local_28.VectorParams[local_71];
             local_178.GetModify_RequestData().ParamName = local_126.ParamName;
             local_178.GetModify_RequestData().bUseMaterialParameterInfo = local_126.bUseMaterialParameterInfo;
-            local_178.GetModify_RequestData().ParamAssociation = (int(local_126.ParamAssociation) != 0);
+            local_178.GetModify_RequestData().ParamAssociation = local_126.ParamAssociation;
             local_178.GetModify_RequestData().LayerOrBlendIndex = int(local_126.LayerOrBlendIndex);
             this.BuildVectorParamForBlendData(Request, local_56, local_126, local_178, RequestData.GetbApplyToAllSlot());
         }
@@ -542,7 +536,7 @@ class US_MaterialParamSystem : UECSScriptSystem
             FTextureParamBlendData& local_230 = local_28.TextureParams[local_25_2];
             local_230.GetModify_RequestData().ParamName = local_192.ParamName;
             local_230.GetModify_RequestData().bUseMaterialParameterInfo = local_192.bUseMaterialParameterInfo;
-            local_230.GetModify_RequestData().ParamAssociation = (int(local_192.ParamAssociation) != 0);
+            local_230.GetModify_RequestData().ParamAssociation = local_192.ParamAssociation;
             local_230.GetModify_RequestData().LayerOrBlendIndex = int(local_192.LayerOrBlendIndex);
             this.BuildTextureParamForBlendData(Request, local_56, local_192, local_230, RequestData.GetbApplyToAllSlot());
         }
@@ -575,7 +569,7 @@ class US_MaterialParamSystem : UECSScriptSystem
             FFloatParamBlendData& local_110 = local_28.FloatParams[local_25];
             local_110.GetModify_RequestData().ParamName = local_70.ParamName;
             local_110.GetModify_RequestData().bUseMaterialParameterInfo = local_70.bUseMaterialParameterInfo;
-            local_110.GetModify_RequestData().ParamAssociation = (int(local_70.ParamAssociation) != 0);
+            local_110.GetModify_RequestData().ParamAssociation = local_70.ParamAssociation;
             local_110.GetModify_RequestData().LayerOrBlendIndex = int(local_70.LayerOrBlendIndex);
             this.BuildFloatParamForBlendData(Request, local_56, local_70, local_110, RequestData.GetbApplyToAllSlot());
         }
@@ -591,7 +585,7 @@ class US_MaterialParamSystem : UECSScriptSystem
             FVectorParamBlendData& local_178 = local_28.VectorParams[local_71];
             local_178.GetModify_RequestData().ParamName = local_126.ParamName;
             local_178.GetModify_RequestData().bUseMaterialParameterInfo = local_126.bUseMaterialParameterInfo;
-            local_178.GetModify_RequestData().ParamAssociation = (int(local_126.ParamAssociation) != 0);
+            local_178.GetModify_RequestData().ParamAssociation = local_126.ParamAssociation;
             local_178.GetModify_RequestData().LayerOrBlendIndex = int(local_126.LayerOrBlendIndex);
             this.BuildVectorParamForBlendData(Request, local_56, local_126, local_178, RequestData.GetbApplyToAllSlot());
         }
@@ -607,7 +601,7 @@ class US_MaterialParamSystem : UECSScriptSystem
             FTextureParamBlendData& local_230 = local_28.TextureParams[local_25_2];
             local_230.GetModify_RequestData().ParamName = local_192.ParamName;
             local_230.GetModify_RequestData().bUseMaterialParameterInfo = local_192.bUseMaterialParameterInfo;
-            local_230.GetModify_RequestData().ParamAssociation = (int(local_192.ParamAssociation) != 0);
+            local_230.GetModify_RequestData().ParamAssociation = local_192.ParamAssociation;
             local_230.GetModify_RequestData().LayerOrBlendIndex = int(local_192.LayerOrBlendIndex);
             this.BuildTextureParamForBlendData(Request, local_56, local_192, local_230, RequestData.GetbApplyToAllSlot());
         }
@@ -979,7 +973,7 @@ class US_MaterialParamSystem : UECSScriptSystem
         FECSViewData_MaterialParam& local_2 = MaterialData.ModifyParamByName(FloatParam.GetRequestData().ParamName);
         if (FloatParam.GetRequestData().bUseMaterialParameterInfo)
         {
-            local_2.ParamInfo.Association = (int(FloatParam.GetRequestData().ParamAssociation) != 0);
+            local_2.ParamInfo.Association = FloatParam.GetRequestData().ParamAssociation;
             local_2.ParamInfo.Index = int(FloatParam.GetRequestData().LayerOrBlendIndex);
         }
         local_2.ParamValue.SetFloatValue(Value);
@@ -990,7 +984,7 @@ class US_MaterialParamSystem : UECSScriptSystem
         FECSViewData_MaterialParam& local_2 = MaterialData.ModifyParamByName(VectorParam.GetRequestData().ParamName);
         if (VectorParam.GetRequestData().bUseMaterialParameterInfo)
         {
-            local_2.ParamInfo.Association = (int(VectorParam.GetRequestData().ParamAssociation) != 0);
+            local_2.ParamInfo.Association = VectorParam.GetRequestData().ParamAssociation;
             local_2.ParamInfo.Index = int(VectorParam.GetRequestData().LayerOrBlendIndex);
         }
         local_2.ParamValue.SetVectorValue(Value);
@@ -1001,7 +995,7 @@ class US_MaterialParamSystem : UECSScriptSystem
         FECSViewData_MaterialParam& local_2 = MaterialData.ModifyParamByName(TextureParam.GetRequestData().ParamName);
         if (TextureParam.GetRequestData().bUseMaterialParameterInfo)
         {
-            local_2.ParamInfo.Association = (int(TextureParam.GetRequestData().ParamAssociation) != 0);
+            local_2.ParamInfo.Association = TextureParam.GetRequestData().ParamAssociation;
             local_2.ParamInfo.Index = int(TextureParam.GetRequestData().LayerOrBlendIndex);
         }
         local_2.ParamValue.SetTextureValue(Value);

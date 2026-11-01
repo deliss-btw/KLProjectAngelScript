@@ -17,6 +17,7 @@ struct FCharacterVaultProbePerHeightLevelConfig
     UPROPERTY()
     FFPTime KeepSteerTime = -1.0;
 
+
 }
 
 struct FCharacterVaultProbeConfig : FDataObject
@@ -75,10 +76,18 @@ struct FCharacterVaultProbeConfig : FDataObject
     UPROPERTY()
     TArray<int> LeapOffLevelSeparationHeights;
 
-    const TArray<int> GetLevelSeparationHeights(const EVaultActionType VaultActionType) const
+
+    const TArray<int>& GetLevelSeparationHeights(const EVaultActionType VaultActionType) const
     {
-        // body not fully recovered — stub [opcode-uncovered]
-        const TArray<int> __r; return __r;
+        switch (int8(VaultActionType))
+        {
+        case 2:
+            return this.VaultLevelSeparationHeights;
+        case 5:
+            return this.LeapOffLevelSeparationHeights;
+        default:
+            return this.UpstairsLevelSeparationHeights;
+        }
     }
     float32 GetMaxReachUpHeight() const property
     {
@@ -108,6 +117,7 @@ struct FC_CharacterVaultingConfig : FECSComponent
     FDataObjectPtr VaultProbeOnWall;
     UPROPERTY()
     FDataObjectPtr VaultProbeInAir;
+
 
     void PostPrefabLoad(const FECSEntity &inout Entity)
     {

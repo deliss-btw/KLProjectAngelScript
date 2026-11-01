@@ -573,12 +573,13 @@ void GetModelInfo(FEUIViewModelMetaInfo &inout Result)
     local_22.ApplySort();
     FEUIModelRefPropertyDirty local_30;
     local_30.PropertyName = FName("PlayerOwnedAvatarInfo");
-    int local_2_2 = FVMS_PlayerOwnedAvatarInfo::ModelId;
-    int local_2_3 = local_22.GetMappingDirtyOffset(1);
+    local_30.PropertyModelId = FVMS_PlayerOwnedAvatarInfo::ModelId;
+    local_30.MappingDirtyOffset = local_22.GetMappingDirtyOffset(1);
     local_30.RelatedDirtyMask.SetBit(FVMS_PlayerOwnedAvatarInfo::__IndexOf_UnLockAvatarList(), true);
     Result.ListeningModelRefDirties.Add(local_30);
     FEUIModelMonitorDefine local_42;
     local_42.FunctionName = "__OnAvatarEquipmentChanged";
+    local_42.MonitorTarget = EEUIModelMonitorTarget(3);
     local_42.ComponentType = FC_DSPlayerAvatarInfo;
     Result.MonitorFunctions.Add(local_42);
     FEUIModelDirtyDefine local_52;

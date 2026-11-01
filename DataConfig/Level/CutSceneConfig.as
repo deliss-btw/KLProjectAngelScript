@@ -11,6 +11,7 @@ struct FCutSceneEntityInfo
     UPROPERTY()
     FRotator EndCameraRotation;
 
+
 }
 
 struct FCutSceneData : FDataObject
@@ -21,11 +22,8 @@ struct FCutSceneData : FDataObject
     UPROPERTY()
     TSoftObjectPtr<ULevelSequence> LevelSequence;
     UPROPERTY()
-    TMap<FName, FCutSceneEntityInfo> EntityInfos;
+    TMap<FName, FCutSceneEntityInfo> EntityInfos = {{n"Player0", FCutSceneEntityInfo()}};
 
-    FCutSceneData()
-    {
-        // body not fully recovered — stub [opcode-uncovered]
-    }
+
 }
 

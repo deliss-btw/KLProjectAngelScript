@@ -26,15 +26,57 @@ struct FLandedImpactConfigSFX : FDataObject
     {
         return;
     }
-    const FLandedImpactSFXData GetDataRaw(const ELandedMaterialType Value) const
+    const FLandedImpactSFXData& GetDataRaw(const ELandedMaterialType Value) const
     {
-        // body not fully recovered — stub [opcode-uncovered]
-        const FLandedImpactSFXData __r; return __r;
+        switch (int8(Value))
+        {
+        case 1:
+            return this.Flesh;
+        case 2:
+            return this.Grass;
+        case 3:
+            return this.LandGrass;
+        case 4:
+            return this.LandSoil;
+        case 5:
+            return this.LandStone;
+        case 6:
+            return this.Metal;
+        case 7:
+            return this.Stone;
+        case 8:
+            return this.Water;
+        case 9:
+            return this.Wood;
+        default:
+            return this.Default;
+        }
     }
-    FLandedImpactSFXData ModifyDataRaw(const ELandedMaterialType Value)
+    FLandedImpactSFXData& ModifyDataRaw(const ELandedMaterialType Value)
     {
-        // body not fully recovered — stub [opcode-uncovered]
-        FLandedImpactSFXData __r; return __r;
+        switch (int8(Value))
+        {
+        case 1:
+            return this.Flesh;
+        case 2:
+            return this.Grass;
+        case 3:
+            return this.LandGrass;
+        case 4:
+            return this.LandSoil;
+        case 5:
+            return this.LandStone;
+        case 6:
+            return this.Metal;
+        case 7:
+            return this.Stone;
+        case 8:
+            return this.Water;
+        case 9:
+            return this.Wood;
+        default:
+            return this.Default;
+        }
     }
     const FLandedImpactSFXData GetDataRawByName(const FName &inout EnumName) const
     {
@@ -128,15 +170,37 @@ struct FLandedImpactConfigSFX : FDataObject
         const FLISStrengthData& local_6 = this.GetDataRawByThirdType(local_4, ELandedStrength(ThirdType));
         return local_6;
     }
-    const FLISCharacterSizeData GetDataRawBySecondType(const FLandedImpactSFXData &inout Data, const EPrefabSize Value) const
+    const FLISCharacterSizeData& GetDataRawBySecondType(const FLandedImpactSFXData &inout Data, const EPrefabSize Value) const
     {
-        // body not fully recovered — stub [opcode-uncovered]
-        const FLISCharacterSizeData __r; return __r;
+        switch (int8(Value))
+        {
+        case 1:
+            return Data.Small;
+        case 2:
+            return Data.Medium;
+        case 3:
+            return Data.Large;
+        case 4:
+            return Data.ExtraLarge;
+        default:
+            return Data.Default;
+        }
     }
-    const FLISStrengthData GetDataRawByThirdType(const FLISCharacterSizeData &inout Data, const ELandedStrength Value) const
+    const FLISStrengthData& GetDataRawByThirdType(const FLISCharacterSizeData &inout Data, const ELandedStrength Value) const
     {
-        // body not fully recovered — stub [opcode-uncovered]
-        const FLISStrengthData __r; return __r;
+        switch (int8(Value))
+        {
+        case 1:
+            return Data.Light;
+        case 2:
+            return Data.Moderate;
+        case 3:
+            return Data.High;
+        case 4:
+            return Data.Extreme;
+        default:
+            return Data.Default;
+        }
     }
     void CopyFallbackData(const ELandedMaterialType Src, const ELandedMaterialType Dst)
     {
@@ -204,15 +268,57 @@ struct FLandedImpactConfigVFX : FDataObject
     {
         return;
     }
-    const FLandedImpactVFXData GetDataRaw(const ELandedMaterialType Value) const
+    const FLandedImpactVFXData& GetDataRaw(const ELandedMaterialType Value) const
     {
-        // body not fully recovered — stub [opcode-uncovered]
-        const FLandedImpactVFXData __r; return __r;
+        switch (int8(Value))
+        {
+        case 1:
+            return this.Flesh;
+        case 2:
+            return this.Grass;
+        case 3:
+            return this.LandGrass;
+        case 4:
+            return this.LandSoil;
+        case 5:
+            return this.LandStone;
+        case 6:
+            return this.Metal;
+        case 7:
+            return this.Stone;
+        case 8:
+            return this.Water;
+        case 9:
+            return this.Wood;
+        default:
+            return this.Default;
+        }
     }
-    FLandedImpactVFXData ModifyDataRaw(const ELandedMaterialType Value)
+    FLandedImpactVFXData& ModifyDataRaw(const ELandedMaterialType Value)
     {
-        // body not fully recovered — stub [opcode-uncovered]
-        FLandedImpactVFXData __r; return __r;
+        switch (int8(Value))
+        {
+        case 1:
+            return this.Flesh;
+        case 2:
+            return this.Grass;
+        case 3:
+            return this.LandGrass;
+        case 4:
+            return this.LandSoil;
+        case 5:
+            return this.LandStone;
+        case 6:
+            return this.Metal;
+        case 7:
+            return this.Stone;
+        case 8:
+            return this.Water;
+        case 9:
+            return this.Wood;
+        default:
+            return this.Default;
+        }
     }
     const FLandedImpactVFXData GetDataRawByName(const FName &inout EnumName) const
     {
@@ -306,15 +412,37 @@ struct FLandedImpactConfigVFX : FDataObject
         const FLIVStrengthData& local_6 = this.GetDataRawByThirdType(local_4, ELandedStrength(ThirdType));
         return local_6;
     }
-    const FLIVCharacterSizeData GetDataRawBySecondType(const FLandedImpactVFXData &inout Data, const EPrefabSize Value) const
+    const FLIVCharacterSizeData& GetDataRawBySecondType(const FLandedImpactVFXData &inout Data, const EPrefabSize Value) const
     {
-        // body not fully recovered — stub [opcode-uncovered]
-        const FLIVCharacterSizeData __r; return __r;
+        switch (int8(Value))
+        {
+        case 1:
+            return Data.Small;
+        case 2:
+            return Data.Medium;
+        case 3:
+            return Data.Large;
+        case 4:
+            return Data.ExtraLarge;
+        default:
+            return Data.Default;
+        }
     }
-    const FLIVStrengthData GetDataRawByThirdType(const FLIVCharacterSizeData &inout Data, const ELandedStrength Value) const
+    const FLIVStrengthData& GetDataRawByThirdType(const FLIVCharacterSizeData &inout Data, const ELandedStrength Value) const
     {
-        // body not fully recovered — stub [opcode-uncovered]
-        const FLIVStrengthData __r; return __r;
+        switch (int8(Value))
+        {
+        case 1:
+            return Data.Light;
+        case 2:
+            return Data.Moderate;
+        case 3:
+            return Data.High;
+        case 4:
+            return Data.Extreme;
+        default:
+            return Data.Default;
+        }
     }
     void CopyFallbackData(const ELandedMaterialType Src, const ELandedMaterialType Dst)
     {

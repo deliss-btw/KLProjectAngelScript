@@ -151,6 +151,7 @@ namespace UWidget_PVX_Main
 void GetModelInfo(FEUIWidgetMetaInfo &inout Result)
 {
     Result.WidgetType = UWidget_PVX_Main;
+    Result.ObservedModelChangesSubscriberCount = 1;
     Result.ObservedModelChangesSubscriberNames.Add(FString("OnDynamicWidgetChanged"));
     return;
 }

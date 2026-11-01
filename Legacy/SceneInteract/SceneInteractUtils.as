@@ -116,22 +116,20 @@ FName RaySceneInteract(bool &inout bTraceResult, const FECSEntity &inout PawnEnt
                 local_175 = float32(local_46);
             }
             FVector local_202(FVector::ZeroVector);
-            int local_74 = int(local_173);
-            if (local_74 <= 2)
+            switch (int(local_173))
             {
                 float local_46;
-                if (local_74 != 0)
-                {
-                    if (local_74 != 2)
-                    {
-                    }
-                }
-                else
-                {
-                    local_46 = local_175;
-                    local_172.AddToTranslation((FVector(FVector::DownVector) * local_46));
-                    local_172.AddToTranslation((FVector(FVector::UpVector) * local_175));
-                }
+            case 0:
+            {
+                local_46 = local_175;
+                local_172.AddToTranslation((FVector(FVector::DownVector) * local_46));
+                break;
+            }
+            case 2:
+            {
+                local_172.AddToTranslation((FVector(FVector::UpVector) * local_175));
+                break;
+            }
             }
         }
         if (local_18.Name.IsNone())

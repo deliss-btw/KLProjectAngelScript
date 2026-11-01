@@ -143,8 +143,9 @@ struct FMS_BossTrackingAreaDisplay : FEUIModelSingleton
         local_56.WorldPosition = TrackingArea.GetWorldCenter();
         local_56.IconSize = FVector2D((TrackingArea.GetRadius() * 2.0f), (TrackingArea.GetRadius() * 2.0f));
         local_56.IconWidget = local_12.BossTrackingAreaIconWidget;
-        local_56.DisplaySettings.ScaleRule = (3 != 0);
+        local_56.DisplaySettings.ScaleRule = EMinimapIconScaleRule(3);
         local_56.DisplaySettings.IconAlignment = FVector2D(0.5, 0.5);
+        local_56.ZOrder = int(local_12.BossTrackingAreaIconZOrder);
         this.SetIconHandle(::MinimapUtils::AddSystemIcon(local_56));
         this.SetbCurrentlyVisible(true);
         XLog(ELog(51), FString().Append("[DIAG-BossTrack] CreateIcon: SUCCESS, handleValid=").Append(::MinimapUtils::IsValidHandle(this.GetIconHandle())));
@@ -281,6 +282,7 @@ void GetModelInfo(FEUIModelOnlyMetaInfo &inout Result)
     Result.SetbCanDefaultConstruct(true);
     FEUIModelMonitorDefine local_14;
     local_14.FunctionName = "__DS_OnBossTrackingAreaChanged";
+    local_14.MonitorTarget = EEUIModelMonitorTarget(2);
     local_14.ComponentType = FCS_BossTrackingArea;
     Result.MonitorFunctions.Add(local_14);
     Result.TickFunction.FunctionName = "__DiagTick";

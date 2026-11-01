@@ -102,6 +102,7 @@ namespace UWidget_LinkSkillEnergyCrossbow
 void GetModelInfo(FEUIWidgetMetaInfo &inout Result)
 {
     Result.WidgetType = UWidget_LinkSkillEnergyCrossbow;
+    Result.ObservedModelChangesSubscriberCount = 1;
     Result.ObservedModelChangesSubscriberNames.Add(FString("OnSmoothedEnergyChanged"));
     return;
 }

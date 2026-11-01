@@ -383,21 +383,16 @@ class UWidget_GameEntryPVP_V2 : UEUIActivatableWidget
     }
     FString GetGameRuleDisplayName(const EPVPGameRuleType RuleType) const
     {
-        FString __return;
-        int local_1 = int(RuleType);
-        if (local_1 <= 2)
+        switch (int(RuleType))
         {
-            if (local_1 != 1)
-            {
-                if (local_1 != 2)
-                {
-                }
-            }
-            else
-            {
-                __return = "乱斗";
-                __return = "TDM";
-            }
+        case 1:
+        {
+            return "乱斗";
+        }
+        case 2:
+        {
+            return "TDM";
+        }
         }
         return "未知";
     }
@@ -522,6 +517,7 @@ namespace UWidget_GameEntryPVP_V2
 void GetModelInfo(FEUIWidgetMetaInfo &inout Result)
 {
     Result.WidgetType = UWidget_GameEntryPVP_V2;
+    Result.ObservedModelChangesSubscriberCount = 0;
     return;
 }
 FEUIWidgetRef CreateWidget(const APlayerController OwningPlayer, const TSoftClassPtr<UEUIUserWidget> &inout WidgetClass)

@@ -101,6 +101,7 @@ class US_SkillSystem : UECSScriptSystem
     {
         int local_6 = 0;
         UDataTable local_86;
+        int local_95;
         int local_122 = 0;
         int local_130 = 0;
         int local_165;
@@ -162,15 +163,18 @@ class US_SkillSystem : UECSScriptSystem
                     GetDataObjectByGSDataId<FTalentConfig> local_264;
                     TDataObjectPtr<FTalentConfig> local_240 = local_264.opImplConv();
                     FSkillInitInfo local_316;
-                    ESkillSlot local_317 = local_164.GetKey();
+                    local_316.Slot = ESkillSlot(local_164.GetKey());
                     local_316.SkillConfig = local_214.Get().SkillConfig;
                     if (local_240)
                     {
-                        int local_94 = local_240.Get().SkillCapabilityLevel;
+                        local_95 = local_240.Get().SkillCapabilityLevel;
                     }
                     else
                     {
+                        local_95 = 1;
                     }
+                    local_316.SkillCapabilityLevel = local_95;
+                    local_116.Add(local_316.Slot, local_316);
                 }
                 break;
             }
@@ -190,7 +194,7 @@ class US_SkillSystem : UECSScriptSystem
                         }
                         FSkillInitInfo local_316;
                         local_316.SkillConfig = local_320.SkillConfig;
-                        ESkillSlot local_317_2 = local_320.DefaultSkillSlot;
+                        local_316.Slot = ESkillSlot(local_320.DefaultSkillSlot);
                         local_116.Add(local_320.DefaultSkillSlot, local_316);
                     }
                 }
@@ -217,7 +221,7 @@ class US_SkillSystem : UECSScriptSystem
             for (auto& local_50 : local_34.GetValue().TriggerItems)
             {
                 FActiveTriggerResult local_66 = FCharacterInputUtils::TestInputTriggerItem(local_50, Input, FixedTime.LastTime, FixedTime.Time, ESMTrigger.Storage);
-                if (local_66.bClear || (local_66.bActive && ((FFPTime(local_66.TriggerTime).opCmp(FixedTime.Time) <= 0)) && ((local_66.GetTriggerExpireTime().opCmp(FixedTime.LastTime) >= 0))))
+                if (local_66.bClear || (local_66.bActive && ((local_66.TriggerTime.opCmp(FixedTime.Time) <= 0)) && ((local_66.GetTriggerExpireTime().opCmp(FixedTime.LastTime) >= 0))))
                 {
                     local_78.ActiveTriggerResultByName.Add(local_50.OutputTrigger, local_66);
                 }
@@ -249,7 +253,7 @@ class US_SkillSystem : UECSScriptSystem
                 }
                 else
                 {
-                    if (local_40.bActive && (FFPTime(local_40.TriggerTime).opCmp(FixedTime.Time) <= 0) && (local_40.GetTriggerExpireTime().opCmp(FixedTime.LastTime) >= 0))
+                    if (local_40.bActive && ((local_40.TriggerTime.opCmp(FixedTime.Time) <= 0)) && (local_40.GetTriggerExpireTime().opCmp(FixedTime.LastTime) >= 0))
                     {
                         if (local_24.TriggersToClear.Num() > 0)
                         {
@@ -356,7 +360,7 @@ class US_SkillSystem : UECSScriptSystem
         }
         else
         {
-            if (local_8.bActive && (FFPTime(local_8.TriggerTime).opCmp(FixedTime.Time) <= 0) && (local_8.GetTriggerExpireTime().opCmp(FixedTime.LastTime) >= 0))
+            if (local_8.bActive && ((local_8.TriggerTime.opCmp(FixedTime.Time) <= 0)) && (local_8.GetTriggerExpireTime().opCmp(FixedTime.LastTime) >= 0))
             {
                 if (Debug::CVar_Debug_SkillNoCD.GetInt() != 0 && (CVar_Skill_AllowPreInputInCD.GetInt() == 0))
                 {
@@ -383,8 +387,8 @@ class US_SkillSystem : UECSScriptSystem
                         }
                     }
                 }
-                FFPTime local_26 = FFPTime(local_8.TriggerTime);
-                FFPTime local_28 = FFPTime(local_8.ValidateTime);
+                FFPTime local_26 = local_8.TriggerTime;
+                FFPTime local_28 = local_8.ValidateTime;
                 FESMBlackboard local_60 = FESMBlackboard::GetBlackboard(Entity);
                 FFPTime local_98;
                 if (local_28.opCmp(0.0) >= 0)
@@ -437,8 +441,8 @@ class US_SkillSystem : UECSScriptSystem
                     }
                     else
                     {
-                        FFPTime local_150 = FFPTime(local_102.Start);
-                        FFPTime local_94 = (FFPTime(local_102.End) - local_102.Start);
+                        FFPTime local_150 = local_102.Start;
+                        FFPTime local_94 = (local_102.End - local_102.Start);
                         FC_EASAbilityInstance& local_154 = FSkillUtils::TryGetSkillAbilityInstance(Entity, SkillIndex);
                         if (local_154)
                         {

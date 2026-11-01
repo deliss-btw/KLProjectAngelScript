@@ -75,12 +75,12 @@ class UTextArgParser_Buff : UBlueprintTextArgParser
     {
         TDataObjectPtr<FTextArgConfig_Buff> local_24 = TDataObjectPtr<FTextArgConfig_Buff>(Config);
         TConstRawPtr<FBuffModifierAttributeDescriptionInfos> local_32 = FInstancedStruct::GetPtr(Arg.GetStructValue()).opCall();
-        if (int(local_32.Get().ValueShowType) == 0)
+        if ((int(local_32.Get().ValueShowType)) == 0)
         {
             FText local_52;
             FText::AsNumber(local_52, (local_32.Get().Value * 100.0f));
             OutResult = FText::Format(FText::FromString("{0}%"), local_52);
-            if (local_32.Get().Value > 0.0f)
+            if ((local_32.Get().Value) > 0.0f)
             {
                 OutResult = FText::Format(FText::FromString("+{0}"), OutResult);
             }

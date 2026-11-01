@@ -708,6 +708,7 @@ class UWidget_LoginOfficial : UEUIActivatableWidget
     void ReportBaseInfo()
     {
         FSDKReportInfo local_38;
+        local_38.AppId = 100012;
         local_38.AppName = "kl";
         local_38.ClientVersion = ::UGameClientConnectionSubsystem::Get().GetClientVersion();
         local_38.Region = this.CachedServerId;
@@ -857,6 +858,7 @@ namespace UWidget_LoginOfficial
 void GetModelInfo(FEUIWidgetMetaInfo &inout Result)
 {
     Result.WidgetType = UWidget_LoginOfficial;
+    Result.ObservedModelChangesSubscriberCount = 4;
     Result.ObservedModelChangesSubscriberNames.Add(FString("OnLoginStateChanged"));
     Result.ObservedModelChangesSubscriberNames.Add(FString("OnStartLoginSDKRequested"));
     Result.ObservedModelChangesSubscriberNames.Add(FString("OnContinueGameRequested"));

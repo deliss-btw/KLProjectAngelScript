@@ -49,8 +49,9 @@ struct FVM_PlayerMinimapIcon : FEUIViewModel
     }
     FWidgetTransform GetRenderTransform() const
     {
-        int local_15 = int(this.GetRotationAngle());
-        return FWidgetTransform();
+        FWidgetTransform local_14;
+        local_14.Angle = int(this.GetRotationAngle());
+        return local_14;
     }
     bool IsSelfIcon() const
     {

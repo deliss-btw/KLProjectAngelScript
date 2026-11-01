@@ -9,7 +9,7 @@ class US_AnimatedCameraSystem : UECSScriptSystem
         OutResult.Position = FVector3f(Pose.Position);
         OutResult.Rotation = Pose.Rotation;
         OutResult.Rotation.Roll = 0;
-        int local_4 = int(Pose.FOV);
+        OutResult.FOV = Pose.FOV;
         return;
     }
     bool SweepCamera(const UWorld UEWorld, const FVector &inout Start, const FVector &inout End, const float32 ProbeSize, const FVector &inout OriginFollowPos, const float32 MuteCollisionDistance, FHitResult &inout OutHit) const
@@ -121,7 +121,7 @@ class US_AnimatedCameraSystem : UECSScriptSystem
         FQuat4f local_20 = FQuat4f::Slerp(AnimA._base_FCameraRuntimeDataBasic.Rotation.Quaternion(), AnimB._base_FCameraRuntimeDataBasic.Rotation.Quaternion(), WeightToB);
         FinalData.Rotation = local_20.Rotator();
         FinalData.Rotation.Roll = 0.0f;
-        float32 local_24 = FMath::Lerp(AnimA._base_FCameraRuntimeDataBasic.FOV, AnimB._base_FCameraRuntimeDataBasic.FOV, WeightToB);
+        FinalData.FOV = FMath::Lerp(AnimA._base_FCameraRuntimeDataBasic.FOV, AnimB._base_FCameraRuntimeDataBasic.FOV, WeightToB);
         return;
     }
     void LerpAsAnimatedCamera(const FAnimatedCameraPresentationData &inout AnimA, const FAnimatedCameraPresentationData &inout AnimB, FCameraResult &inout FinalData, const float32 WeightToB) const
@@ -130,16 +130,28 @@ class US_AnimatedCameraSystem : UECSScriptSystem
         FQuat4f local_20 = FQuat4f::Slerp(AnimA._base_FAnimatedCameraData.Rotation.Quaternion(), AnimB._base_FAnimatedCameraData.Rotation.Quaternion(), WeightToB);
         FinalData.Rotation = local_20.Rotator();
         FinalData.Rotation.Roll = 0.0f;
-        float32 local_24 = FMath::Lerp(AnimA._base_FAnimatedCameraData.FOV, AnimB._base_FAnimatedCameraData.FOV, WeightToB);
+        FinalData.FOV = FMath::Lerp(AnimA._base_FAnimatedCameraData.FOV, AnimB._base_FAnimatedCameraData.FOV, WeightToB);
         return;
     }
     void BlendToAnimatedCamera(const FAnimatedCameraData &inout AnimatedCamera, FCameraInstancedData &inout LastCameraData, FCameraInstancedData &inout CurrentCameraData, const float32 CameraWeight) const
     {
-        // body not fully recovered — stub [argmismatch:argtype]
+        if (int(LastCameraData.RunningCameraType) == 4)
+        {
+            this.LerpAsAnimatedCamera(LastCameraData.GetAnimatedCamera().CameraRuntimeData, AnimatedCamera, CurrentCameraData.CameraResult, CameraWeight);
+            return;
+        }
+        ::PresentationCameraUtils::GenericLerp(LastCameraData.CameraResult, AnimatedCamera._base_FCameraRuntimeDataBasic.CameraResult, CurrentCameraData.CameraResult, CameraWeight);
+        return;
     }
     void BlendToAnimatedCamera(const FAnimatedCameraPresentationData &inout AnimatedCamera, FCameraInstancedData &inout LastCameraData, FCameraInstancedData &inout CurrentCameraData, const float32 CameraWeight) const
     {
-        // body not fully recovered — stub [argmismatch:argtype]
+        if (int(LastCameraData.RunningCameraType) == 4)
+        {
+            this.LerpAsAnimatedCamera(LastCameraData.GetAnimatedCamera().CameraRuntimeData, AnimatedCamera, CurrentCameraData.CameraResult, CameraWeight);
+            return;
+        }
+        ::PresentationCameraUtils::GenericLerp(LastCameraData.CameraResult, AnimatedCamera._base_FAnimatedCameraData._base_FCameraRuntimeDataBasic.CameraResult, CurrentCameraData.CameraResult, CameraWeight);
+        return;
     }
     UFUNCTION()
     void ClientJob_UpdateAnimatedCamera(const FECSEntity &inout Entity, const FCS_LocalPlayer &inout LocalPlayer) const
@@ -219,6 +231,7 @@ class US_AnimatedCameraSystem : UECSScriptSystem
                 local_18._base_FAnimatedCameraData.Position = FVector3f(this.ApplyAnimatedCameraCollisionCorrection(ECS::GetUEWorld(), local_210, local_182.Position, local_204.MuteCollisionDistance, local_16.CollisionCorrectionStrength));
             }
         }
+        this.AnimPoseToCameraResult(local_182, local_18._base_FAnimatedCameraData._base_FCameraRuntimeDataBasic.CameraResult);
         return;
     }
     UFUNCTION()

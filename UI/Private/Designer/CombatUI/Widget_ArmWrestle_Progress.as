@@ -192,6 +192,7 @@ namespace UWidget_ArmWrestle_Progress
 void GetModelInfo(FEUIWidgetMetaInfo &inout Result)
 {
     Result.WidgetType = UWidget_ArmWrestle_Progress;
+    Result.ObservedModelChangesSubscriberCount = 1;
     Result.ObservedModelChangesSubscriberNames.Add(FString("OnStateChanged"));
     return;
 }

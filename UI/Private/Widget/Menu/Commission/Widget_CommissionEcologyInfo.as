@@ -103,6 +103,7 @@ namespace UWidget_CommissionEcologyInfo
 void GetModelInfo(FEUIWidgetMetaInfo &inout Result)
 {
     Result.WidgetType = UWidget_CommissionEcologyInfo;
+    Result.ObservedModelChangesSubscriberCount = 1;
     Result.ObservedModelChangesSubscriberNames.Add(FString("OnSelectedEcologyElementChanged"));
     return;
 }

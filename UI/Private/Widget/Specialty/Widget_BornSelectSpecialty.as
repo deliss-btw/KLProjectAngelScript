@@ -145,6 +145,7 @@ namespace UWidget_BornSelectSpecialty
 void GetModelInfo(FEUIWidgetMetaInfo &inout Result)
 {
     Result.WidgetType = UWidget_BornSelectSpecialty;
+    Result.ObservedModelChangesSubscriberCount = 2;
     Result.ObservedModelChangesSubscriberNames.Add(FString("OnBornAlreadyChanged"));
     Result.ObservedModelChangesSubscriberNames.Add(FString("OnSelectSpecialty"));
     return;

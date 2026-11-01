@@ -775,7 +775,8 @@ class UGameModeFlow : UObject
             ::FGameModeUtils::SpawnAvatarsForPlayer(local_132, local_138, local_14);
             FECSEntity local_164 = FECSEntity(local_132.GetId());
             FECSWorldPtr local_2_3 = ECS::GetECSWorld();
-            int local_152 = local_138.GetPlayerId();
+            FCE_PlayerSpawnEvent local_166;
+            local_166.PlayerID = local_138.GetPlayerId();
         }
         return;
     }

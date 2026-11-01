@@ -127,7 +127,7 @@ class US_AIPathFollowSystem : UECSScriptSystem
         int local_23 = 0;
         for (; local_23 < PathSession.PathPoints.Num(); ++local_23)
         {
-            FVector local_10(PathSession.PathPoints[local_23].Position);
+            FVector local_10 = PathSession.PathPoints[local_23].Position;
             FVector local_38 = (local_10 + local_16);
             FECSDebugDraw::DrawDebugSphere(DebugDrawKey_AIPathFind, local_38, 24.0f, 8, FColor::Green, FColor::Green, 5.0f, uint8(0), 0.0f);
             if (local_23 > 0)
@@ -179,6 +179,7 @@ class US_AIPathFollowSystem : UECSScriptSystem
                 }
             }
         }
+        PathSession.State = EPathSessionState(1);
         return;
     }
     bool HasChainedChildEntity(const FECSEntity &inout Entity) const
@@ -271,7 +272,8 @@ class US_AIPathFollowSystem : UECSScriptSystem
             {
                 break;
             }
-            FVector local_42 = (FVector(local_16.Position) - local_14.Position);
+            FVector local_36 = local_16.Position;
+            FVector local_42 = (local_36 - local_14.Position);
             float local_46 = local_42.Size2D();
             float32 local_9 = float32(local_46);
             FVector local_30 = FVector(local_42.X, local_42.Y, 0.0).GetSafeNormal(9.99999993922529e-9, FVector::ZeroVector);
@@ -419,7 +421,7 @@ class US_AIPathFollowSystem : UECSScriptSystem
     {
         OutPrefixEndIndex = -1;
         TArray<FPathSessionPoint> local_6;
-        FPathSessionPoint local_18 = FPathSessionPoint(PathSession.PathPoints[0]);
+        FPathSessionPoint local_18 = PathSession.PathPoints[0];
         local_18.Position = Samples[0];
         local_6.Add(local_18);
         int local_19 = 1;
@@ -508,18 +510,7 @@ class US_AIPathFollowSystem : UECSScriptSystem
         {
             return false;
         }
-        bool local_4 = PathSession.PathPoints[0].bIsNavLinkStart;
-        if (local_4)
-        {
-            local_4 = true;
-        }
-        else
-        {
-            local_4 = PathSession.PathPoints[1].bIsNavLinkStart;
-        }
-        local_4 = local_4 || !(this.IsGroundPoint(Entity, PathSession.PathPoints[0].Position));
-        local_4 = local_4 || !(this.IsGroundSegment(EPathSegmentType(PathSession.PathPoints[1].SegmentType)));
-        if (local_4)
+        if ((((PathSession.PathPoints[0].bIsNavLinkStart || PathSession.PathPoints[1].bIsNavLinkStart) || !(this.IsGroundPoint(Entity, PathSession.PathPoints[0].Position))) || !(this.IsGroundSegment(EPathSegmentType(PathSession.PathPoints[1].SegmentType)))))
         {
             return false;
         }
@@ -1027,9 +1018,9 @@ class US_AIPathFollowSystem : UECSScriptSystem
         {
             int local_26;
             int local_24;
-            local_24 = int(FollowPurpose.BestPurpose.MovePurposeParam.CommandSetMoveStance);
-            local_26 = int(FollowPurpose.BestPurpose.MovePurposeParam.ForceMoveSimulateType);
-            if ((int(PathFollow.MoveStance) != local_24 || (int(PathFollow.MoveSimulateType) != local_26)))
+            local_24 = FollowPurpose.BestPurpose.MovePurposeParam.CommandSetMoveStance;
+            local_26 = FollowPurpose.BestPurpose.MovePurposeParam.ForceMoveSimulateType;
+            if ((int(PathFollow.MoveStance) != local_24 || ((int(PathFollow.MoveSimulateType) != local_26))))
             {
                 PathFollow.MoveStance = ECharacterMoveStance(local_24);
                 PathFollow.MoveSimulateType = EAIMoveSimulateType(local_26);
@@ -1093,7 +1084,7 @@ class US_AIPathFollowSystem : UECSScriptSystem
             {
                 XError(ELog(14), FString::Format("Best FollowPurpose Not in execution EntityID:{0}", Entity.GetIdValue()));
             }
-            FollowPurpose.BestPurpose.State = true;
+            FollowPurpose.BestPurpose.State = EAIMovePurposeState(1);
             const FC_ControlledByAI& local_84 = local_82.opCall();
             if (local_84)
             {
@@ -1109,7 +1100,7 @@ class US_AIPathFollowSystem : UECSScriptSystem
             {
                 XError(ELog(14), FString::Format("Best FollowPurpose Not in execution EntityID:{0}", Entity.GetIdValue()));
             }
-            FollowPurpose.BestPurpose.State = (2 != 0);
+            FollowPurpose.BestPurpose.State = EAIMovePurposeState(2);
             const FC_ControlledByAI& local_84_2 = local_82.opCall();
             if (local_84_2)
             {
@@ -1357,13 +1348,13 @@ class US_AIPathFollowSystem : UECSScriptSystem
             bool local_15;
             int local_14;
             int local_13;
+            bool local_7;
             TArray<FSimulateData> local_12;
             local_12.Empty(0);
             local_13 = C_AIPathSimulate.GetCurrentFollowPathIndex();
             local_14 = C_AIPathSimulate.GetCurrentFollowPathIndex();
             local_15 = false;
-            bool local_7 = local_13 < 0 || (local_13 >= ActiveSession.PathPoints.Num());
-            if (local_7)
+            if (local_13 < 0 || (local_13 >= ActiveSession.PathPoints.Num()))
             {
                 return;
             }
@@ -1384,8 +1375,7 @@ class US_AIPathFollowSystem : UECSScriptSystem
                 local_4 = FMath::Min(((local_13 + local_1) - 1), (ActiveSession.PathPoints.Num() - 1));
             }
             int local_29 = -1;
-            bool local_16 = local_13 == 0 && PathFollow.bAllowChainedStartEntryPrefix && !(C_AIPathSimulate.GetbChainedStartEntryPrefixTried());
-            if (local_16)
+            if ((local_13 == 0 && PathFollow.bAllowChainedStartEntryPrefix && !(C_AIPathSimulate.GetbChainedStartEntryPrefixTried())))
             {
                 C_AIPathSimulate.SetbChainedStartEntryPrefixTried(true);
                 if (this.TryApplyChainedStartEntryPrefix(Entity, ActiveSession, PathFollow, local_29))
@@ -1425,24 +1415,8 @@ class US_AIPathFollowSystem : UECSScriptSystem
                 const FC_AIStandTurnConfig& local_96 = local_100.opCall();
                 if (local_96)
                 {
-                    if (ActiveSession.PathPoints[0].bIsNavLinkStart)
-                    {
-                        local_16 = true;
-                    }
-                    else
-                    {
-                        if (ActiveSession.PathPoints.Num() <= 1)
-                        {
-                            local_7 = false;
-                        }
-                        else
-                        {
-                            local_7 = ActiveSession.PathPoints[1].bIsNavLinkStart;
-                        }
-                        local_16 = local_7;
-                    }
                     local_102 = local_96.bEnableStartTurn && (ActiveSession.PathPoints.Num() > 1);
-                    if ((local_102 && this.IsGroundPoint(Entity, ActiveSession.PathPoints[0].Position)) && !(local_16))
+                    if ((local_102 && this.IsGroundPoint(Entity, ActiveSession.PathPoints[0].Position)) && !((ActiveSession.PathPoints[0].bIsNavLinkStart || (ActiveSession.PathPoints.Num() > 1 && ActiveSession.PathPoints[1].bIsNavLinkStart))))
                     {
                         FVector local_120 = (FVector(ActiveSession.PathPoints[1].Position) - ActiveSession.PathPoints[0].Position);
                         if (this.ShouldStandTurn(PathFollow.StartDirection, local_120, local_96.StartTurnAngleThreshold))
@@ -1468,7 +1442,8 @@ class US_AIPathFollowSystem : UECSScriptSystem
                     FSimulateData local_158_2 = this.SimulatePathSegments_NomalSegment(local_54, local_162, PathFollow);
                     this.MarkChainedStartEntryPrefixSegmentIfNeeded(local_158_2, local_28_2, local_29);
                     local_12.Add(local_158_2);
-                    local_47 = local_47 + float32(((FVector(local_162.Position) - local_54.Position).Size()));
+                    FVector local_108 = local_162.Position;
+                    local_47 = local_47 + float32(((local_108 - local_54.Position).Size()));
                     local_51 = local_28_2;
                     ++local_28_2;
                 }
@@ -1479,14 +1454,15 @@ class US_AIPathFollowSystem : UECSScriptSystem
                         FSimulateData local_200 = this.SimulatePathSegments_NomalSegment(local_54, local_162, PathFollow);
                         this.MarkChainedStartEntryPrefixSegmentIfNeeded(local_200, local_28_2, local_29);
                         local_12.Add(local_200);
-                        FVector local_120_2 = (FVector(local_54.Position) - local_162.Position);
+                        FVector local_108_2 = local_54.Position;
+                        FVector local_120_2 = (local_108_2 - local_162.Position);
                         local_47 = local_47 + float32(local_120_2.Size2D());
                         local_51 = local_28_2;
                         const FC_AIStandTurnConfig& local_96_2 = local_100.opCall();
                         if (local_96_2)
                         {
-                            FVector local_114 = (FVector(local_162.Position) - local_54.Position);
-                            if (local_96_2.bEnableEndTurn && this.ShouldStandTurn(local_114, PathFollow.TargetDirection, local_96_2.EndTurnAngleThreshold))
+                            local_108_2 = local_162.Position;
+                            if (local_96_2.bEnableEndTurn && this.ShouldStandTurn((local_108_2 - local_54.Position), PathFollow.TargetDirection, local_96_2.EndTurnAngleThreshold))
                             {
                                 FSimulateData local_92_3 = this.MakeStandTurnSegment(PathFollow, PathFollow.TargetDirection, local_162.Position);
                                 local_12.Add(local_92_3);
@@ -1508,16 +1484,16 @@ class US_AIPathFollowSystem : UECSScriptSystem
                         if (local_102 && (((local_28_2 + 1) < ActiveSession.PathPoints.Num())))
                         {
                             local_2_3 = local_28_2 + 1;
-                            FVector local_208 = FVector(ActiveSession.PathPoints[local_2_3].Position);
-                            FVector local_108 = (local_208 - local_162.Position);
-                            local_208 = FVector(local_162.Position);
+                            FVector local_208 = ActiveSession.PathPoints[local_2_3].Position;
+                            FVector local_108_3 = (local_208 - local_162.Position);
+                            local_208 = local_162.Position;
                             FVector local_120_3 = (local_208 - local_54.Position);
                             if (local_120_3.Size() < 500.0)
                             {
                                 FPathSessionPoint& local_214 = ActiveSession.PathPoints[local_28_2 + 1];
                                 FSimulateData local_158_3 = FSimulateData(PathFollow, local_214.Position, EAISimulateMoveType(5));
-                                local_158_3.SetTurnTargetDirection(local_108);
-                                local_208 = FVector(local_162.Position);
+                                local_158_3.SetTurnTargetDirection(local_108_3);
+                                local_208 = local_162.Position;
                                 Get local_218;
                                 FVector local_224 = (local_208 + FVector::UpVector.opMul_r(local_218.opCall().GetScaledHalfHeight()));
                                 local_158_3.SetJumpSorptionTargetLocation(local_224);
@@ -1529,8 +1505,8 @@ class US_AIPathFollowSystem : UECSScriptSystem
                                     XError(ELog(14), FString::Format("SimulatePathSegments: Jump, JumpTargetPoint:{0}", local_214.Position.ToString()));
                                     DebugDraw::DrawDebugSphere(this.GetWorld(), local_54.Position, 15.0f, 8, FColor::Green, false, 5.0f, uint8(0), 0.0f);
                                     DebugDraw::DrawDebugSphere(this.GetWorld(), local_158_3.GetJumpSorptionTargetLocation(), 15.0f, 8, FColor::Blue, false, 5.0f, uint8(0), 0.0f);
-                                    local_208 = FVector(local_162.Position);
-                                    local_120_3 = (local_108.GetSafeNormal(9.99999993922529e-9, FVector::ZeroVector) * 150.0);
+                                    local_208 = local_162.Position;
+                                    local_120_3 = (local_108_3.GetSafeNormal(9.99999993922529e-9, FVector::ZeroVector) * 150.0);
                                     local_224 = (local_208 + local_120_3);
                                     DebugDraw::DrawDebugDirectionalArrow(this.GetWorld(), local_162.Position, local_224, 40.0f, FColor::Blue, false, 5.0f, uint8(0), 0.0f);
                                 }
@@ -1547,21 +1523,21 @@ class US_AIPathFollowSystem : UECSScriptSystem
                                     {
                                         if (local_96_3.bEnableJumpStartTurn)
                                         {
-                                            local_208 = FVector(local_162.Position);
+                                            local_208 = local_162.Position;
                                             local_120_3 = (local_208 - local_54.Position);
-                                            if (this.ShouldStandTurn(local_120_3, local_108, local_96_3.JumpStartTurnAngleThreshold))
+                                            if (this.ShouldStandTurn(local_120_3, local_108_3, local_96_3.JumpStartTurnAngleThreshold))
                                             {
                                                 if (CVar_AI_DebugAIPathRuningPath.GetInt() == 1 || (CVar_AI_DebugAIPathRuningPath.GetInt() == Entity.GetIdValue()))
                                                 {
                                                     DebugDraw::DrawDebugSphere(this.GetWorld(), local_54.Position, 15.0f, 8, FColor::Blue, false, 5.0f, uint8(0), 0.0f);
                                                     DebugDraw::DrawDebugSphere(this.GetWorld(), local_162.Position, 15.0f, 8, FColor::Black, false, 5.0f, uint8(0), 0.0f);
                                                     DebugDraw::DrawDebugSphere(this.GetWorld(), ActiveSession.PathPoints[(local_28_2 + 1)].Position, 15.0f, 8, FColor::White, false, 5.0f, uint8(0), 0.0f);
-                                                    FVector local_114_2 = FVector(local_162.Position);
-                                                    local_208 = (local_108.GetSafeNormal(9.99999993922529e-9, FVector::ZeroVector) * 150.0);
-                                                    FVector local_224_2 = (local_114_2 + local_208);
+                                                    FVector local_114 = local_162.Position;
+                                                    local_208 = (local_108_3.GetSafeNormal(9.99999993922529e-9, FVector::ZeroVector) * 150.0);
+                                                    FVector local_224_2 = (local_114 + local_208);
                                                     DebugDraw::DrawDebugDirectionalArrow(this.GetWorld(), local_162.Position, local_224_2, 80.0f, FColor::Yellow, false, 5.0f, uint8(0), 0.0f);
                                                 }
-                                                FSimulateData local_200_2 = this.MakeStandTurnSegment(PathFollow, local_108, local_162.Position);
+                                                FSimulateData local_200_2 = this.MakeStandTurnSegment(PathFollow, local_108_3, local_162.Position);
                                                 local_12.Add(local_200_2);
                                             }
                                         }
@@ -1588,10 +1564,10 @@ class US_AIPathFollowSystem : UECSScriptSystem
                                 {
                                     if (local_96_4.bEnableMidPathTurn && ((local_28_2 + 1) < ActiveSession.PathPoints.Num()))
                                     {
-                                        FVector local_208_2 = FVector(local_162.Position);
+                                        FVector local_208_2 = local_162.Position;
                                         FVector local_240 = (local_208_2 - local_54.Position);
                                         local_2_3 = local_28_2 + 1;
-                                        FVector local_224_3(ActiveSession.PathPoints[local_2_3].Position);
+                                        FVector local_224_3 = ActiveSession.PathPoints[local_2_3].Position;
                                         local_208_2 = (local_224_3 - local_162.Position);
                                         if (this.ShouldStandTurn(local_240, local_208_2, local_96_4.MidPathTurnAngleThreshold))
                                         {
@@ -1601,7 +1577,7 @@ class US_AIPathFollowSystem : UECSScriptSystem
                                     }
                                 }
                             }
-                            FVector local_224_4(local_54.Position);
+                            FVector local_224_4 = local_54.Position;
                             local_47 = local_47 + (float32(((local_224_4 - local_162.Position).Size2D())));
                             local_51 = local_28_2;
                             ++local_28_2;
@@ -1700,7 +1676,7 @@ class US_AIPathFollowSystem : UECSScriptSystem
             }
             else
             {
-                if (!(int(NextPoint.SegmentType) != 1) && CurrentPoint.bIsNavLinkStart)
+                if (int(NextPoint.SegmentType) == 1 && CurrentPoint.bIsNavLinkStart)
                 {
                     int local_2_4 = 5;
                     local_1 = local_2_4;

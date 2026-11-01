@@ -188,6 +188,7 @@ void GetModelInfo(FEUIViewModelMetaInfo &inout Result)
     Result.GeneratedPropertyStruct = __GeneratedProperties_FVM_DungeonEnterInteract;
     FEUIModelMonitorDefine local_26;
     local_26.FunctionName = "__Monitor_OnPlayerWaitReborn";
+    local_26.MonitorTarget = EEUIModelMonitorTarget(4);
     local_26.ComponentType = FC_LocalInteractWithTeam;
     Result.MonitorFunctions.Add(local_26);
     return;

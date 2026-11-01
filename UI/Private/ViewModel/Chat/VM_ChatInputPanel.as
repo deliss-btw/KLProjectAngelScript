@@ -520,8 +520,8 @@ void GetModelInfo(FEUIViewModelMetaInfo &inout Result)
     local_22.ApplySort();
     FEUIModelRefPropertyDirty local_30;
     local_30.PropertyName = FName("ChatRuntimeData");
-    int local_2_2 = FMS_ChatRuntimeData::ModelId;
-    int local_2_3 = local_22.GetMappingDirtyOffset(0);
+    local_30.PropertyModelId = FMS_ChatRuntimeData::ModelId;
+    local_30.MappingDirtyOffset = local_22.GetMappingDirtyOffset(0);
     local_30.RelatedDirtyMask.SetBit(FMS_ChatRuntimeData::__IndexOf_SelectChannelTab(), true);
     local_30.RelatedDirtyMask.SetBit(FMS_ChatRuntimeData::__IndexOf_SelectedPrivateChatPeerUid(), true);
     local_30.RelatedDirtyMask.SetBit(FMS_ChatRuntimeData::__IndexOf_SelectMainTab(), true);
@@ -544,9 +544,11 @@ void GetModelInfo(FEUIViewModelMetaInfo &inout Result)
     Result.DirtyFunctions.Add(local_54);
     FEUIModelMonitorDefine local_64;
     local_64.FunctionName = "__OnPlayerInTeamChanged";
+    local_64.MonitorTarget = EEUIModelMonitorTarget(3);
     local_64.ComponentType = FC_PlayerInTeam;
     Result.MonitorFunctions.Add(local_64);
     local_64.FunctionName = "__OnPlayerSocialTeamChanged";
+    local_64.MonitorTarget = EEUIModelMonitorTarget(3);
     local_64.ComponentType = FC_DSPlayerInfo;
     Result.MonitorFunctions.Add(local_64);
     return;

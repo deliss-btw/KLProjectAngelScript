@@ -6,7 +6,7 @@ namespace __INTENRAL_FC_FloatInterpolationHistory_NS
 }
 struct FC_FloatInterpolationHistory : FECSComponent
 {
-    TInterpoHistory<FC_FloatInterpolation, auto> History;
+    TInterpoHistory<FC_FloatInterpolation, 30> History;
 
     FC_FloatInterpolationHistory()
     {

@@ -1759,6 +1759,7 @@ namespace UWidget_SwordSkillResource
 void GetModelInfo(FEUIWidgetMetaInfo &inout Result)
 {
     Result.WidgetType = UWidget_SwordSkillResource;
+    Result.ObservedModelChangesSubscriberCount = 3;
     Result.ObservedModelChangesSubscriberNames.Add(FString("OnSuperSwitchChanged"));
     Result.ObservedModelChangesSubscriberNames.Add(FString("OnSecondSlotFullChanged"));
     Result.ObservedModelChangesSubscriberNames.Add(FString("OnFourthSlotFullChanged"));
@@ -1778,6 +1779,7 @@ namespace UWidget_SwordSkillResourceItem
 void GetModelInfo(FEUIWidgetMetaInfo &inout Result)
 {
     Result.WidgetType = UWidget_SwordSkillResourceItem;
+    Result.ObservedModelChangesSubscriberCount = 1;
     Result.ObservedModelChangesSubscriberNames.Add(FString("OnItemPercentChanged"));
     return;
 }
@@ -1795,6 +1797,7 @@ namespace UWidget_SwordSkillResourcePoint
 void GetModelInfo(FEUIWidgetMetaInfo &inout Result)
 {
     Result.WidgetType = UWidget_SwordSkillResourcePoint;
+    Result.ObservedModelChangesSubscriberCount = 2;
     Result.ObservedModelChangesSubscriberNames.Add(FString("OnPointPercentChanged"));
     Result.ObservedModelChangesSubscriberNames.Add(FString("OnPointVisibleChanged"));
     return;
@@ -1813,6 +1816,7 @@ namespace UWidget_WizardSkillResource
 void GetModelInfo(FEUIWidgetMetaInfo &inout Result)
 {
     Result.WidgetType = UWidget_WizardSkillResource;
+    Result.ObservedModelChangesSubscriberCount = 0;
     return;
 }
 FEUIWidgetRef CreateWidget(const APlayerController OwningPlayer, const TSoftClassPtr<UEUIUserWidget> &inout WidgetClass)
@@ -1829,6 +1833,7 @@ namespace UWidget_WizardSkillResourceStarItem
 void GetModelInfo(FEUIWidgetMetaInfo &inout Result)
 {
     Result.WidgetType = UWidget_WizardSkillResourceStarItem;
+    Result.ObservedModelChangesSubscriberCount = 1;
     Result.ObservedModelChangesSubscriberNames.Add(FString("OnMagicUseCountChanged"));
     return;
 }
@@ -1846,6 +1851,7 @@ namespace UWidget_GramherSkillResource
 void GetModelInfo(FEUIWidgetMetaInfo &inout Result)
 {
     Result.WidgetType = UWidget_GramherSkillResource;
+    Result.ObservedModelChangesSubscriberCount = 5;
     Result.ObservedModelChangesSubscriberNames.Add(FString("OnAnyItemFilled"));
     Result.ObservedModelChangesSubscriberNames.Add(FString("OnAllReachLimitChanged"));
     Result.ObservedModelChangesSubscriberNames.Add(FString("OnAnyReachLimitChanged"));
@@ -1867,6 +1873,7 @@ namespace UWidget_GramherSkillResourceItem
 void GetModelInfo(FEUIWidgetMetaInfo &inout Result)
 {
     Result.WidgetType = UWidget_GramherSkillResourceItem;
+    Result.ObservedModelChangesSubscriberCount = 1;
     Result.ObservedModelChangesSubscriberNames.Add(FString("OnItemReachLimitChanged"));
     return;
 }
@@ -1884,6 +1891,7 @@ namespace UWidget_SuiXiSkillResource
 void GetModelInfo(FEUIWidgetMetaInfo &inout Result)
 {
     Result.WidgetType = UWidget_SuiXiSkillResource;
+    Result.ObservedModelChangesSubscriberCount = 5;
     Result.ObservedModelChangesSubscriberNames.Add(FString("OnLeftBarPercentChanged"));
     Result.ObservedModelChangesSubscriberNames.Add(FString("OnRightBarPercentChanged"));
     Result.ObservedModelChangesSubscriberNames.Add(FString("OnChargeNumChanged"));
@@ -1905,6 +1913,7 @@ namespace UWidget_QiongSkillResourceItem
 void GetModelInfo(FEUIWidgetMetaInfo &inout Result)
 {
     Result.WidgetType = UWidget_QiongSkillResourceItem;
+    Result.ObservedModelChangesSubscriberCount = 2;
     Result.ObservedModelChangesSubscriberNames.Add(FString("OnItemPercentChanged"));
     Result.ObservedModelChangesSubscriberNames.Add(FString("OnStopAllAnimChanged"));
     return;
@@ -1923,6 +1932,7 @@ namespace UWidget_QiongSkillResource
 void GetModelInfo(FEUIWidgetMetaInfo &inout Result)
 {
     Result.WidgetType = UWidget_QiongSkillResource;
+    Result.ObservedModelChangesSubscriberCount = 1;
     Result.ObservedModelChangesSubscriberNames.Add(FString("OnChargeEnhanceCountChanged"));
     return;
 }

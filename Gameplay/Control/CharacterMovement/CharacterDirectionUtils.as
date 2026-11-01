@@ -69,7 +69,8 @@ FRotator GetTargetRotation(const FECSEntity &inout Entity, const ECharacterDirec
                     if (local_82)
                     {
                         FC_Transform local_104;
-                        local_82.GetInterpoValue((FFPTime(local_16.Time) - local_18), local_104);
+                        FFPTime local_76 = local_16.Time;
+                        local_82.GetInterpoValue((local_76 - local_18), local_104);
                         local_38 = (FVector(local_104.GetPosition()) - local_8.GetPosition()).Rotation();
                         local_25 = true;
                     }

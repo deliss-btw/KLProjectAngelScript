@@ -173,6 +173,7 @@ namespace UWidget_CommonComponentToggle
 void GetModelInfo(FEUIWidgetMetaInfo &inout Result)
 {
     Result.WidgetType = UWidget_CommonComponentToggle;
+    Result.ObservedModelChangesSubscriberCount = 2;
     Result.ObservedModelChangesSubscriberNames.Add(FString("GenerateEntryDataList"));
     Result.ObservedModelChangesSubscriberNames.Add(FString("OnSelectedIndexChanged"));
     return;

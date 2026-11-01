@@ -110,7 +110,7 @@ class US_TestASMultiThreadingSystem : UECSScriptSystem
     UFUNCTION()
     void ClientJob_TestAsyncDispatchDependencySerialA(const FCS_FixedTime &inout FixedFrame) const
     {
-        int local_1 = int(FixedFrame.Frame);
+        int local_1 = FixedFrame.Frame;
         int local_2 = FECSThreadPool::GetCurrentThreadId();
         FString local_12 = FECSThreadPool::GetCurrentThreadName();
         FDateTime local_16 = FDateTime::Now();

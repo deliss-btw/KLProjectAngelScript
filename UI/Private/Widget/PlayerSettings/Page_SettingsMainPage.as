@@ -642,6 +642,7 @@ namespace UPage_SettingsMainPage
 void GetModelInfo(FEUIWidgetMetaInfo &inout Result)
 {
     Result.WidgetType = UPage_SettingsMainPage;
+    Result.ObservedModelChangesSubscriberCount = 3;
     Result.ObservedModelChangesSubscriberNames.Add(FString("RequireSwitchCategory"));
     Result.ObservedModelChangesSubscriberNames.Add(FString("ActionbarRegister"));
     Result.ObservedModelChangesSubscriberNames.Add(FString("OnKeyMappingsCanRevertChanged"));

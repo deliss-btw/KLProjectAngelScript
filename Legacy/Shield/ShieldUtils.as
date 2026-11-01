@@ -18,7 +18,7 @@ FECSEntity CreateShield(const FECSEntity &inout ShieldOwnerEntity, const FName &
     ModifyOrAdd local_46;
     local_46.opCall().SetOwnerEntity(ShieldOwnerEntity);
     ModifyOrAdd local_50;
-    local_50.opCall().RelevancePolicyType = (4 != 0);
+    local_50.opCall().RelevancePolicyType = ENetRelevancePolicyType(4);
     Get local_56;
     const FC_NetPredict& local_58 = local_56.opCall();
     if (local_58)

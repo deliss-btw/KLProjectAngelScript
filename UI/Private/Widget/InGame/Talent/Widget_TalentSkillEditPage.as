@@ -578,6 +578,7 @@ namespace UWidget_TalentSkillEditPage
 void GetModelInfo(FEUIWidgetMetaInfo &inout Result)
 {
     Result.WidgetType = UWidget_TalentSkillEditPage;
+    Result.ObservedModelChangesSubscriberCount = 4;
     Result.ObservedModelChangesSubscriberNames.Add(FString("OnPendingClose"));
     Result.ObservedModelChangesSubscriberNames.Add(FString("OnSkillListSelectChange"));
     Result.ObservedModelChangesSubscriberNames.Add(FString("OnSelectedDetailTalentChanged"));
@@ -598,6 +599,7 @@ namespace UWidget_TalentSkillEditPageWidget
 void GetModelInfo(FEUIWidgetMetaInfo &inout Result)
 {
     Result.WidgetType = UWidget_TalentSkillEditPageWidget;
+    Result.ObservedModelChangesSubscriberCount = 0;
     return;
 }
 FEUIWidgetRef CreateWidget(const APlayerController OwningPlayer, const TSoftClassPtr<UEUIUserWidget> &inout WidgetClass)

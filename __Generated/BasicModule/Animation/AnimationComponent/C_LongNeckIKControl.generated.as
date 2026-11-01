@@ -6,7 +6,7 @@ namespace __INTENRAL_FC_LongNeckIKControlHistory_NS
 }
 struct FC_LongNeckIKControlHistory : FECSComponent
 {
-    TInterpoHistory<FC_LongNeckIKControl, auto> History;
+    TInterpoHistory<FC_LongNeckIKControl, 30> History;
 
     FC_LongNeckIKControlHistory()
     {

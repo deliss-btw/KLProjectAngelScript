@@ -111,6 +111,7 @@ namespace UWidget_CommissionLeaderBoardPlayer
 void GetModelInfo(FEUIWidgetMetaInfo &inout Result)
 {
     Result.WidgetType = UWidget_CommissionLeaderBoardPlayer;
+    Result.ObservedModelChangesSubscriberCount = 1;
     Result.ObservedModelChangesSubscriberNames.Add(FString("OnPlayerModelChanged"));
     return;
 }

@@ -248,6 +248,7 @@ void GetModelInfo(FEUIModelOnlyMetaInfo &inout Result)
     Result.SetbCanDefaultConstruct(true);
     FEUIModelProtoRspDefine local_10;
     local_10.FunctionName = "__OnGsConditionProgressNotify";
+    local_10.ProtoCmdId = uint16(1701);
     Result.ProtoRspDefines.Add(local_10);
     return;
 }

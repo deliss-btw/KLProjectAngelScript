@@ -26,6 +26,7 @@ class UESMAction_CameraMuteCollision : UESMBPBaseSpanAction
         FC_TPCameraMuteCollisionDistance local_12;
         local_12.StartTime = Time.WorldLastTime;
         local_12.EndTime = -1;
+        local_12.Distance = this.MuteDistance;
         return;
     }
     UFUNCTION()

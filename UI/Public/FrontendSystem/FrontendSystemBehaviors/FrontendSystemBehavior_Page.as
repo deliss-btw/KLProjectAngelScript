@@ -39,18 +39,18 @@ class UFrontendSystemBehavior_OpenPage : UFrontendSystemBehaviorBase
             XError(ELog(52), FString().Append("Page widget not set in ").Append(this));
             return;
         }
-        int local_12 = int(this.PageGroupType);
-        if (local_12 <= 0)
+        switch (int(this.PageGroupType))
         {
-            if (local_12 != 0)
-            {
-            }
-            else
-            {
-                local_10 = Context.SystemPageGroup;
-            }
+        case 0:
+        {
+            local_10 = Context.SystemPageGroup;
+            break;
         }
-        XError(ELog(52), FString().Append("Not Support Page Group Type").Append(this.PageGroupType));
+        default:
+        {
+            XError(ELog(52), FString().Append("Not Support Page Group Type").Append(this.PageGroupType));
+        }
+        }
         TRawPtr<FFrontendSystemBehaviorInstance_OpenPage> local_20 = FInstancedStruct::GetMutablePtr(BehaviorInstance).opCall();
         FECSWorldPtr local_24 = ECS::GetECSWorld();
         local_22.Page = FEUIWidget::Legacy_AddGroupWidgetByClass(local_30.UEPlayerController.GetLocalPlayer(), this.PageWidget, local_10);

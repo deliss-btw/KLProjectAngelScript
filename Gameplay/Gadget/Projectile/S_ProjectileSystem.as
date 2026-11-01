@@ -94,7 +94,7 @@ class US_ProjectileSystemAS : UECSScriptSystem
                 return;
             }
             ModifyOrAdd local_20;
-            local_20.opCall().DestroyType = (2 != 0);
+            local_20.opCall().DestroyType = EDestroyType(2);
             bool local_15 = this.GetECSRuntime().IsServer;
             ::FProjectileUtils::DestroyProjectile(Entity, local_34, local_28.GetDestroyPosition(), local_4, local_28.GetDelayDestroyTime(), local_15);
             Modify local_38;
@@ -109,7 +109,7 @@ class US_ProjectileSystemAS : UECSScriptSystem
         if (local_4.opCmp(FixedTime.Time) <= 0)
         {
             ModifyOrAdd local_10;
-            local_10.opCall().DestroyType = (2 != 0);
+            local_10.opCall().DestroyType = EDestroyType(2);
             ::FProjectileUtils::DestroyProjectile(Entity, ProjectileOwner, ProjectileInfo.GetDestroyPosition(), local_4, ProjectileInfo.GetDelayDestroyTime(), (int(this.GetECSRuntime().IsServer) != 0));
             LifeTime.SetLifeDuration(FFPTime(0));
         }
@@ -535,6 +535,7 @@ class US_ProjectileSystemAS : UECSScriptSystem
                         FVector local_84 = (local_8 - local_72.GetSpawnPosition());
                         local_78.PositionOffset = FVector3f(local_84);
                         local_78.RotationOffset = FQuat4f::Identity;
+                        local_78.BlendWeight = 1.0f;
                         return;
                     }
                 }
@@ -554,6 +555,7 @@ class US_ProjectileSystemAS : UECSScriptSystem
         FC_VisualTransformOffset local_26;
         local_26.PositionOffset = CacheData.PositionOffset;
         local_26.RotationOffset = CacheData.RotationOffset;
+        local_26.BlendWeight = CacheData.BlendWeight;
         return;
     }
     UFUNCTION()
@@ -590,6 +592,7 @@ class US_ProjectileSystemAS : UECSScriptSystem
         else
         {
             FC_ProjectileVisualOffsetCacheData local_44;
+            VisualTransformOffset.BlendWeight = local_27;
             local_44.AddTime = LifeTime.GetSpawnTime();
             local_44.PositionOffset = VisualTransformOffset.PositionOffset;
             local_44.RotationOffset = VisualTransformOffset.RotationOffset;
@@ -952,7 +955,7 @@ class US_ProjectileSystemAS : UECSScriptSystem
                             FFPTime local_308 = local_84.PenetrationSameTargetMinInterval;
                             if (local_308.opCmp(0.0) > 0)
                             {
-                                local_308 = FFPTime(local_222.HitTime);
+                                local_308 = local_222.HitTime;
                                 local_308 = FFPTime((local_308 + local_84.PenetrationSameTargetMinInterval));
                                 FFPTime local_310 = FFPTime(0);
                                 FECSEntityId local_275 = local_222.HitEntity.GetId();
@@ -991,10 +994,9 @@ class US_ProjectileSystemAS : UECSScriptSystem
                                     {
                                         local_166_2 = local_184.GetPenetratedAttenuationRatio();
                                         local_167_2 = local_148 * local_166_2;
-                                        FVector local_332(local_222.HitPoint);
                                         FVector local_96 = (local_140_2 * local_84.PenetrationHitCheckDeltaDistance);
                                         FVector local_108_3 = (local_96 * local_320);
-                                        local_96 = (local_332 + local_108_3);
+                                        local_96 = (local_222.HitPoint + local_108_3);
                                         local_108_3 = (local_96 + (local_140_2 * int(local_84.PenetrationHitCheckDeltaDistance)));
                                         FCollisionQueryParams local_376;
                                         local_376.bTraceComplex = false;
@@ -1072,7 +1074,7 @@ class US_ProjectileSystemAS : UECSScriptSystem
                                     FFPTime local_310_4 = local_84.PenetrationSameTargetMinInterval;
                                     if (local_310_4.opCmp(0.0) > 0)
                                     {
-                                        FFPTime local_308_6 = FFPTime((FFPTime(local_222.HitTime) + local_84.PenetrationSameTargetMinInterval));
+                                        FFPTime local_308_6 = FFPTime((local_222.HitTime + local_84.PenetrationSameTargetMinInterval));
                                         local_310_4 = FFPTime(0);
                                         FECSEntityId local_275_3 = local_222.HitEntity.GetId();
                                         local_184.GetModify_NextPenetrationTimeByEntity().FindOrAdd(local_275_3, local_310_4) = local_308_6;
@@ -1285,9 +1287,8 @@ class US_ProjectileSystemAS : UECSScriptSystem
                                     float local_161_4 = local_606.OverrideLifeTime;
                                     if (local_161_4 > 0.0f)
                                     {
-                                        FFPTime local_310_5 = FFPTime(local_222.HitTime);
                                         FFPTime local_308_10 = FFPTime(int(local_606.OverrideLifeTime));
-                                        LifeTime.SetCustomEndTime((local_310_5 + local_308_10));
+                                        LifeTime.SetCustomEndTime((local_222.HitTime + local_308_10));
                                     }
                                     local_550.opCall(FC_ProjectileHitTestDisableTag());
                                     FC_ProjectileVisualOffsetDisableTag local_614;
@@ -1300,6 +1301,7 @@ class US_ProjectileSystemAS : UECSScriptSystem
                                     Remove local_622;
                                     local_622.opCall();
                                     local_161_4 = 1.0f;
+                                    local_628.BlendWeight = 1.0f;
                                     local_628.PositionOffset = FVector3f(local_222.HitPoint);
                                     local_628.RotationOffset = FQuat4f(Transform.GetRotation());
                                     local_628.bUseOffsetAsTransformDirectly = true;
@@ -1503,8 +1505,7 @@ class US_ProjectileSystemAS : UECSScriptSystem
             }
             local_146.SetSocketName(local_148);
             local_146.SetHitTestFromPos(Result.HitPoint);
-            FVector local_160(Result.HitPoint);
-            local_146.SetHitTestToPos((local_160 + ((Velocity * FixedTime.DeltaTime.ToSeconds()) * 3.0)));
+            local_146.SetHitTestToPos((Result.HitPoint + ((Velocity * FixedTime.DeltaTime.ToSeconds()) * 3.0)));
             local_162.SetInfo(local_146);
             bDestroy = false;
             bCanHitNext = false;

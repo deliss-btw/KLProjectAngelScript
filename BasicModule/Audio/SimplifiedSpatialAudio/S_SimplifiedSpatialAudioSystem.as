@@ -32,24 +32,24 @@ class US_SimplifiedSpatialAudioSystem : UECSScriptSystem
         SpatialAudio.VolumeCenter = local_6;
         ESpatialAudioLODLevel local_25 = ::FSimplifiedSpatialAudioUtils::GetLODLevel(local_6, local_18, local_23);
         SpatialAudio.CurrentLODLevel = ESpatialAudioLODLevel(local_25);
-        switch (int(local_25))
+        switch (local_25)
         {
-        case 0:
+        case ESpatialAudioLODLevel::Disabled:
         {
             SpatialAudio.bIsActive = false;
             break;
         }
-        case 1:
+        case ESpatialAudioLODLevel::Basic3D:
         {
             ::FSimplifiedSpatialAudioUtils::UpdateBasic3DPosition(Entity, Transform, SpatialAudio);
             break;
         }
-        case 2:
+        case ESpatialAudioLODLevel::SimpleReflection:
         {
             ::FSimplifiedSpatialAudioUtils::UpdateSimpleReflections(Entity, Transform, SpatialAudio);
             break;
         }
-        case 3:
+        case ESpatialAudioLODLevel::FullReflection:
         {
             ::FSimplifiedSpatialAudioUtils::UpdateFullReflections(Entity, Transform, SpatialAudio);
             break;

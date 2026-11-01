@@ -92,8 +92,9 @@ struct FVM_TimeOfDay : FEUIViewModelSingleton
     }
     FWidgetTransform GetTimeOfDayPercentageToTransform() const
     {
-        float32 local_15 = this.GetTimeOfDayPercentageToAngle();
-        return FWidgetTransform();
+        FWidgetTransform local_14;
+        local_14.Angle = this.GetTimeOfDayPercentageToAngle();
+        return local_14;
     }
     FDateTime GetTimeOfDay() const
     {
@@ -262,6 +263,7 @@ void GetModelInfo(FEUIViewModelMetaInfo &inout Result)
     Result.GeneratedPropertyStruct = __GeneratedProperties_FVM_TimeOfDay;
     FEUIModelMonitorDefine local_26;
     local_26.FunctionName = "__OnTimeOfDayChanged";
+    local_26.MonitorTarget = EEUIModelMonitorTarget(2);
     local_26.ComponentType = FCS_TimeOfDay;
     Result.MonitorFunctions.Add(local_26);
     return;

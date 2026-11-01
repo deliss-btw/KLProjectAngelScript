@@ -101,6 +101,7 @@ namespace UWidget_ItemFeature_EquipMark
 void GetModelInfo(FEUIWidgetMetaInfo &inout Result)
 {
     Result.WidgetType = UWidget_ItemFeature_EquipMark;
+    Result.ObservedModelChangesSubscriberCount = 1;
     Result.ObservedModelChangesSubscriberNames.Add(FString("RefreshLimitCount"));
     return;
 }

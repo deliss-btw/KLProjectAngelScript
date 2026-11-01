@@ -760,7 +760,7 @@ FECSEntity AddMarkToEntity(const FECSEntity &inout MarkedEntity, const FECSEntit
     local_112.opCall(local_113).SetOwnerEntity(MarkedEntity);
     FC_NetRelevancePolicy local_119;
     Assign local_118;
-    local_118.opCall(local_119).RelevancePolicyType = (3 != 0);
+    local_118.opCall(local_119).RelevancePolicyType = ENetRelevancePolicyType(3);
     FAttachmentUtils::EntityAttachToParent(local_22, MarkedEntity, local_26, n"None", false, local_88, FRotator::ZeroRotator, 0.0f, 0.0f, 0, FVector::ZeroVector, 0.0f, false);
     local_132.MarkPlayers.Add(PlayerEntity);
     return local_22;

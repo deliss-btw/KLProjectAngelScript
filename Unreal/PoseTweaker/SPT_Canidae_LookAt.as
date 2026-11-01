@@ -85,7 +85,7 @@ class USPT_Canidae_LookAt : USPT_Canidae_FootIK_Base
         int local_178 = 0;
         for (; local_178 < local_20; )
         {
-            local_176[local_178] = this.SpineRotationRatio.GetFloatValue(((local_178 + 1) / local_20), 0.0f);
+            local_176[local_178] = this.SpineRotationRatio.GetFloatValue((float32((local_178 + 1)) / local_20), 0.0f);
             local_177 = local_177 + local_176[local_178];
             ++local_178;
         }

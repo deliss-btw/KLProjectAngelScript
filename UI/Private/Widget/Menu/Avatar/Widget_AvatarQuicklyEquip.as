@@ -200,6 +200,7 @@ namespace UWidget_AvatarQuicklyEquip
 void GetModelInfo(FEUIWidgetMetaInfo &inout Result)
 {
     Result.WidgetType = UWidget_AvatarQuicklyEquip;
+    Result.ObservedModelChangesSubscriberCount = 2;
     Result.ObservedModelChangesSubscriberNames.Add(FString("HandleCurEquipmentEquipedUpdate"));
     Result.ObservedModelChangesSubscriberNames.Add(FString("HandleItemTraitComparedChanged"));
     return;

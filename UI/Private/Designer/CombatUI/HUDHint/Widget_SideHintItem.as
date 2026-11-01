@@ -130,6 +130,7 @@ namespace UWidget_SideHintItem
 void GetModelInfo(FEUIWidgetMetaInfo &inout Result)
 {
     Result.WidgetType = UWidget_SideHintItem;
+    Result.ObservedModelChangesSubscriberCount = 1;
     Result.ObservedModelChangesSubscriberNames.Add(FString("HandleHintTextChanged"));
     return;
 }

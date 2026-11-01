@@ -11,7 +11,7 @@ namespace __INTENRAL_FC_AnimAimPoseOutputHistory_NS
 }
 struct FC_AimPoseConfigHistory : FECSComponent
 {
-    TInterpoHistory<FC_AimPoseConfig, auto> History;
+    TInterpoHistory<FC_AimPoseConfig, 30> History;
 
     FC_AimPoseConfigHistory()
     {
@@ -49,7 +49,7 @@ struct FC_AimPoseConfigHistory : FECSComponent
 
 struct FC_AnimAimPoseOutputHistory : FECSComponent
 {
-    TInterpoHistory<FC_AnimAimPoseOutput, auto> History;
+    TInterpoHistory<FC_AnimAimPoseOutput, 30> History;
 
     FC_AnimAimPoseOutputHistory()
     {

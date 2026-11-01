@@ -196,6 +196,7 @@ void GetModelInfo(FEUIViewModelMetaInfo &inout Result)
     Result.GeneratedPropertyStruct = __GeneratedProperties_FVM_AvatarAttributeItem;
     FEUIModelMonitorDefine local_26;
     local_26.FunctionName = "__OnPlayerAttributeChanged";
+    local_26.MonitorTarget = EEUIModelMonitorTarget(4);
     local_26.ComponentType = FC_GameAttributeView;
     Result.MonitorFunctions.Add(local_26);
     return;

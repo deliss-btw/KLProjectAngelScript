@@ -6,7 +6,7 @@ namespace __INTENRAL_FC_RelativeDesiredRotationHistory_NS
 }
 struct FC_RelativeDesiredRotationHistory : FECSComponent
 {
-    TInterpoHistory<FC_RelativeDesiredRotation, auto> History;
+    TInterpoHistory<FC_RelativeDesiredRotation, 30> History;
 
     FC_RelativeDesiredRotationHistory()
     {

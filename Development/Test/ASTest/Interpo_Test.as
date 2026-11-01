@@ -22,7 +22,7 @@ FTestInterpo Interpolate(const FTestInterpo &inout A, const FTestInterpo &inout 
 }
 void Test_Interpo(FUnitTest &inout T)
 {
-    TInterpoHistory<FTestInterpo, auto> local_18;
+    TInterpoHistory<FTestInterpo, 4> local_18;
     T.AssertEquals(0, local_18.Num(), "");
     T.AssertEquals(3, local_18.Space(), "");
     local_18.Enqueue(FTestInterpo(1.0f, 2.0f), FFPTime(1));

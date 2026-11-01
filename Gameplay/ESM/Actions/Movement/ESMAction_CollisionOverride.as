@@ -37,6 +37,7 @@ class UESMAction_CollisionOverride : UESMBPBaseSpanTickAction
         FColor local_1 = FColor(FColor::Green);
         bool local_9 = !((((FFPTime(Time.ActionDuration).opCmp(-1.0) < 0) || ((FFPTime(Time.ActionTime).opCmp(Time.ActionDuration) <= 0))) && ((FFPTime(Time.ActionTime).opCmp(0.0) >= 0))));
         int local_11 = local_9 ? 40 : 128;
+        local_1.A = uint8(local_11);
         GetDefaulted local_40;
         FTransform local_64 = local_40.opCall().ToFTransform();
         if (this.bAdditive == false)
@@ -127,6 +128,7 @@ class UESMAction_CollisionExtra : UESMBPBaseSpanTickAction
         FColor local_1 = FColor(FColor::Green);
         bool local_9 = !((((FFPTime(Time.ActionDuration).opCmp(-1.0) < 0) || ((FFPTime(Time.ActionTime).opCmp(Time.ActionDuration) <= 0))) && ((FFPTime(Time.ActionTime).opCmp(0.0) >= 0))));
         int local_11 = local_9 ? 40 : 128;
+        local_1.A = uint8(local_11);
         GetDefaulted local_40;
         FTransform local_64 = local_40.opCall().ToFTransform();
         int local_65 = 0;

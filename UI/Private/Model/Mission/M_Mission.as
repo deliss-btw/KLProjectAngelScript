@@ -80,44 +80,47 @@ struct FMS_Mission : FEUIModelSingleton
             TArray<uint64> local_52;
             int64 local_54 = MissionConfig.Get().DataId;
             local_52.Add(local_54);
-            int local_2 = int(MissionConfig.Get().MissionType);
-            if (local_2 <= 1)
+            switch (int(MissionConfig.Get().MissionType))
             {
-                if (local_2 != 0)
-                {
-                    if (local_2 != 1)
-                    {
-                    }
-                }
-                else
-                {
-                    ::FMS_RedDotSystem::Get(this.GetContext().Manager).GenerateRedDot(ERedPointEvent(9), local_52);
-                    ::FMS_RedDotSystem::Get(this.GetContext().Manager).GenerateRedDot(ERedPointEvent(10), local_52);
-                }
+            case 0:
+            {
+                ::FMS_RedDotSystem::Get(this.GetContext().Manager).GenerateRedDot(ERedPointEvent(9), local_52);
+                break;
             }
-            XError(ELog(63), FString().Append("[Mission] Generate New Mission RedDot failed, MissionType: ").Append(MissionConfig.Get().MissionType));
+            case 1:
+            {
+                ::FMS_RedDotSystem::Get(this.GetContext().Manager).GenerateRedDot(ERedPointEvent(10), local_52);
+                break;
+            }
+            default:
+            {
+                XError(ELog(63), FString().Append("[Mission] Generate New Mission RedDot failed, MissionType: ").Append(MissionConfig.Get().MissionType));
+            }
+            }
             return;
         }
         if (int(NewStatus) >= 2)
         {
             XLog(ELog(63), FString().Append("[Mission] Consume Mission RedDot: ").Append(MissionConfig.GetDataName()).Append(" => ").Append(NewStatus));
-            int local_2_2 = int(MissionConfig.Get().MissionType);
-            if (local_2_2 <= 1)
+            switch (int(MissionConfig.Get().MissionType))
             {
-                if (local_2_2 != 0)
-                {
-                    if (local_2_2 != 1)
-                    {
-                    }
-                }
-                else
-                {
-                    int64 local_54_2 = MissionConfig.Get().DataId;
-                    ::FMS_RedDotSystem::Get(this.GetContext().Manager).ConsumeRedDot(GameplayTags::RedDotSystem_Mission_NewMainMission, local_54_2);
-                    return;
-                }
+            case 0:
+            {
+                int64 local_54_2 = MissionConfig.Get().DataId;
+                ::FMS_RedDotSystem::Get(this.GetContext().Manager).ConsumeRedDot(GameplayTags::RedDotSystem_Mission_NewMainMission, local_54_2);
+                return;
             }
-            XError(ELog(63), FString().Append("[Mission] Consume Mission RedDot failed, MissionType: ").Append(MissionConfig.Get().MissionType));
+            case 1:
+            {
+                int64 local_54_3 = MissionConfig.Get().DataId;
+                ::FMS_RedDotSystem::Get(this.GetContext().Manager).ConsumeRedDot(GameplayTags::RedDotSystem_Mission_NewSideMission, local_54_3);
+                return;
+            }
+            default:
+            {
+                XError(ELog(63), FString().Append("[Mission] Consume Mission RedDot failed, MissionType: ").Append(MissionConfig.Get().MissionType));
+            }
+            }
         }
         return;
     }
@@ -128,20 +131,18 @@ struct FMS_Mission : FEUIModelSingleton
         TDataObjectPtr<FMissionPresentationRuleConfig> local_48 = ::MissionUtils::GetMissionPresentationRuleConfig(MissionConfig);
         if (local_48.IsSet())
         {
-            int local_74 = int(NewStatus);
-            if (local_74 <= 2)
+            switch (int(NewStatus))
             {
-                if (local_74 != 1)
-                {
-                    if (local_74 != 2)
-                    {
-                    }
-                }
-                else
-                {
-                    local_24 = local_48.Get().GetMissionStartHint();
-                    local_24 = local_48.Get().GetMissionFinishHint();
-                }
+            case 1:
+            {
+                local_24 = local_48.Get().GetMissionStartHint();
+                break;
+            }
+            case 2:
+            {
+                local_24 = local_48.Get().GetMissionFinishHint();
+                break;
+            }
             }
         }
         if (!(local_24.IsSet()))

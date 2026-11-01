@@ -1860,7 +1860,7 @@ class US_DamageSystem : UECSScriptSystem
                             {
                                 local_112.opCall().TrySetHitState(Entity, this.HitBreakState, local_74, false, 0);
                             }
-                            FFPTime local_118 = FFPTime(FixedTime.Time);
+                            FFPTime local_118 = FixedTime.Time;
                             ModifyOrAdd local_124;
                             local_124.opCall().SetRecoverTime((local_118 + FFPTime(HitReactionConfig.BreakTime)));
                             HitReactionComp.SetBreakStartTime(FixedTime.Time);
@@ -2855,7 +2855,7 @@ class US_DamageSystem : UECSScriptSystem
                             int local_135 = int(local_90.AttackType);
                             int local_136 = int(local_16.bAdjustPresentationHitPos);
                             float32 local_137 = local_16.DamageValue;
-                            FFPTime local_130 = FFPTime(FixedTime.Time);
+                            FFPTime local_130 = FixedTime.Time;
                             ::FCombatUtils::ShowDamageNumber(local_122, Entity, FixedTime.Time, (local_130 + FFPTime((local_90.FreezeFrameTime * this.DelayShowDamageNumberRatio))), local_137, local_16.StrikeKey, (local_136 != 0), local_16.Position, EAttackType(local_135), EDamageType(local_134), local_13, local_16.bAttenuated, local_35, local_90.DamageNumberRandomRatio, local_90.GetSpecialDamageTextConfig());
                         }
                     }
@@ -2867,7 +2867,7 @@ class US_DamageSystem : UECSScriptSystem
                         int local_135_2 = int(local_90.AttackType);
                         int local_136_2 = int(local_16.bAdjustPresentationHitPos);
                         float32 local_138 = local_16.DamageValue;
-                        FFPTime local_130_2 = FFPTime(FixedTime.Time);
+                        FFPTime local_130_2 = FixedTime.Time;
                         float32 local_123_2 = local_90.FreezeFrameTime;
                         ::FCombatUtils::ShowDamageNumber(local_28, Entity, local_16.DamageTime, (local_130_2 + FFPTime((local_123_2 * this.DelayShowDamageNumberRatio))), local_138, local_16.StrikeKey, (local_136_2 != 0), local_16.Position, EAttackType(local_135_2), EDamageType(local_134_2), local_16.bHitWeakness, local_16.bAttenuated, local_35, local_137_2, local_90.GetSpecialDamageTextConfig());
                         if (int(local_90.DamageCalculationType) == 3)

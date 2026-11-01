@@ -140,7 +140,6 @@ struct FVM_CommonDisplayDetail : FEUIViewModel
     }
     FText BuildFashionCategoryText(const TDataObjectPtr<FFashionConfig> &inout FashionConfig) const
     {
-        FText __return;
         int local_5 = int(FashionConfig.Get().SlotType);
         FText local_10;
         ::FashionSettings::GetFashionSlotName(local_10);
@@ -154,22 +153,14 @@ struct FVM_CommonDisplayDetail : FEUIViewModel
         {
             return local_10;
         }
-        int local_11 = int(local_66.Get().SeatType);
-        if (local_11 <= 1)
+        switch (int(local_66.Get().SeatType))
         {
-            if (local_11 != 0)
-            {
-                if (local_11 != 1)
-                {
-                }
-                else
-                {
-                    __return = FText::Format(NSLOCTEXT("CommonDisplayDetail_DoubleMountCategory", "双人{0}"), local_10);
-                }
-            }
+        case 1:
+        {
+            return FText::Format(NSLOCTEXT("CommonDisplayDetail_DoubleMountCategory", "双人{0}"), local_10);
         }
-        __return = FText::Format(NSLOCTEXT("CommonDisplayDetail_SingleMountCategory", "单人{0}"), local_10);
-        return __return;
+        }
+        return FText::Format(NSLOCTEXT("CommonDisplayDetail_SingleMountCategory", "单人{0}"), local_10);
     }
     int GetRightInfoSwitcherIndex() const
     {

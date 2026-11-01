@@ -207,6 +207,7 @@ namespace UWidget_AvatarDetails
 void GetModelInfo(FEUIWidgetMetaInfo &inout Result)
 {
     Result.WidgetType = UWidget_AvatarDetails;
+    Result.ObservedModelChangesSubscriberCount = 1;
     Result.ObservedModelChangesSubscriberNames.Add(FString("OnAvatarChanged"));
     return;
 }

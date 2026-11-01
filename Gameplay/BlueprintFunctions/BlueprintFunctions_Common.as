@@ -1437,7 +1437,7 @@ FEntityBBVarOverrideParam MakeEntityBBVarOverrideParam_Enum(const FNameHandle_En
 {
     FEntityBBVar_Enum local_8;
     local_8.Name = Name;
-    local_8.Value = (Value != 0);
+    local_8.Value = uint8(Value);
     FEntityBBVarOverrideParam local_12;
     local_12.ParamValue = FInstancedStruct::Make(local_8);
     return local_12;

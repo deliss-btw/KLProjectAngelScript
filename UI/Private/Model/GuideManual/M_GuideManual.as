@@ -1876,8 +1876,10 @@ void GetModelInfo(FEUIModelOnlyMetaInfo &inout Result)
     Result.SetbCanDefaultConstruct(true);
     FEUIModelProtoRspDefine local_10;
     local_10.FunctionName = "__OnGuideManualDataNotify";
+    local_10.ProtoCmdId = uint16(210);
     Result.ProtoRspDefines.Add(local_10);
     local_10.FunctionName = "__OnGuideManualFinishRsp";
+    local_10.ProtoCmdId = uint16(212);
     Result.ProtoRspDefines.Add(local_10);
     FEUIModelMsgHandleDefine local_22;
     local_22.FunctionName = "__OnConditionProgressUpdated";

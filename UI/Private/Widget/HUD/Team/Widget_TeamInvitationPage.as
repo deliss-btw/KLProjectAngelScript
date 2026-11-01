@@ -182,6 +182,7 @@ namespace UWidget_TeamInvitationPage
 void GetModelInfo(FEUIWidgetMetaInfo &inout Result)
 {
     Result.WidgetType = UWidget_TeamInvitationPage;
+    Result.ObservedModelChangesSubscriberCount = 2;
     Result.ObservedModelChangesSubscriberNames.Add(FString("OnFriendPlayerInfoListChanged"));
     Result.ObservedModelChangesSubscriberNames.Add(FString("OnNearbyPlayerInfoListChanged"));
     return;

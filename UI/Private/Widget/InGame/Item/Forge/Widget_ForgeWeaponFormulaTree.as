@@ -213,6 +213,7 @@ namespace UWidget_ForgeWeaponFormulaTree
 void GetModelInfo(FEUIWidgetMetaInfo &inout Result)
 {
     Result.WidgetType = UWidget_ForgeWeaponFormulaTree;
+    Result.ObservedModelChangesSubscriberCount = 1;
     Result.ObservedModelChangesSubscriberNames.Add(FString("HandleFormulaTreeNodeListChanged"));
     return;
 }

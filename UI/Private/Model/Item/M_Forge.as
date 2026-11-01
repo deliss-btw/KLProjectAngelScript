@@ -1123,10 +1123,13 @@ void GetModelInfo(FEUIModelOnlyMetaInfo &inout Result)
     Result.SetbCanDefaultConstruct(true);
     FEUIModelProtoRspDefine local_10;
     local_10.FunctionName = "__GS_OnPlayerForgeDataNotify";
+    local_10.ProtoCmdId = uint16(1601);
     Result.ProtoRspDefines.Add(local_10);
     local_10.FunctionName = "__GS_OnForgeUnlockNotify";
+    local_10.ProtoCmdId = uint16(1602);
     Result.ProtoRspDefines.Add(local_10);
     local_10.FunctionName = "__GS_OnDoForgeRsp";
+    local_10.ProtoCmdId = uint16(1604);
     Result.ProtoRspDefines.Add(local_10);
     return;
 }

@@ -254,6 +254,7 @@ namespace UWidget_MissionMainPanel
 void GetModelInfo(FEUIWidgetMetaInfo &inout Result)
 {
     Result.WidgetType = UWidget_MissionMainPanel;
+    Result.ObservedModelChangesSubscriberCount = 3;
     Result.ObservedModelChangesSubscriberNames.Add(FString("OnChapterEntryHighlightedChanged"));
     Result.ObservedModelChangesSubscriberNames.Add(FString("OnSelectedMissionTrackedChanged"));
     Result.ObservedModelChangesSubscriberNames.Add(FString("OnShowTrackingButtonChanged"));

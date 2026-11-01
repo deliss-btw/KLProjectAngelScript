@@ -6,7 +6,7 @@ namespace __INTENRAL_FC_FootPlacementHistory_NS
 }
 struct FC_FootPlacementHistory : FECSComponent
 {
-    TInterpoHistory<FC_FootPlacement, auto> History;
+    TInterpoHistory<FC_FootPlacement, 30> History;
 
     FC_FootPlacementHistory()
     {

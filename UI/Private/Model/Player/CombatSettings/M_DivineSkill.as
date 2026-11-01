@@ -490,12 +490,16 @@ void GetModelInfo(FEUIModelOnlyMetaInfo &inout Result)
     Result.SetbCanDefaultConstruct(true);
     FEUIModelProtoRspDefine local_10;
     local_10.FunctionName = "__GS_OnChangeDivineSkillRsp";
+    local_10.ProtoCmdId = uint16(1104);
     Result.ProtoRspDefines.Add(local_10);
     local_10.FunctionName = "__GS_OnChangePvpDivineSkillRsp";
+    local_10.ProtoCmdId = uint16(1140);
     Result.ProtoRspDefines.Add(local_10);
     local_10.FunctionName = "__GS_OnPlayerAvatarDataNotify";
+    local_10.ProtoCmdId = uint16(1101);
     Result.ProtoRspDefines.Add(local_10);
     local_10.FunctionName = "__GS_OnDivineSkillUnlock";
+    local_10.ProtoCmdId = uint16(1102);
     Result.ProtoRspDefines.Add(local_10);
     return;
 }

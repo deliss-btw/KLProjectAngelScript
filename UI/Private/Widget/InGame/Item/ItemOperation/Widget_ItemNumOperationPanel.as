@@ -156,6 +156,7 @@ namespace UWidget_ItemNumOperationPanel
 void GetModelInfo(FEUIWidgetMetaInfo &inout Result)
 {
     Result.WidgetType = UWidget_ItemNumOperationPanel;
+    Result.ObservedModelChangesSubscriberCount = 1;
     Result.ObservedModelChangesSubscriberNames.Add(FString("OnResultPreviewChanged"));
     return;
 }

@@ -6,7 +6,7 @@ namespace __INTENRAL_FC_AniParamNPCBodyPartControlHistory_NS
 }
 struct FC_AniParamNPCBodyPartControlHistory : FECSComponent
 {
-    TInterpoHistory<FC_AniParamNPCBodyPartControl, auto> History;
+    TInterpoHistory<FC_AniParamNPCBodyPartControl, 30> History;
 
     FC_AniParamNPCBodyPartControlHistory()
     {

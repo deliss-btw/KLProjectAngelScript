@@ -268,7 +268,7 @@ class UWidget_MailPanel : UEUIActivatableWidget
             XWarning(ELog(16), FString().Append("Mail hyperlink skipped: local player data is invalid, href=").Append(Info.Href));
             return true;
         }
-        FString local_22 = FString(Info.Href);
+        FString local_22 = Info.Href;
         if (local_4)
         {
             int local_24 = local_10.Get().GetPlayerUid();
@@ -707,6 +707,7 @@ namespace UWidget_MailPanel
 void GetModelInfo(FEUIWidgetMetaInfo &inout Result)
 {
     Result.WidgetType = UWidget_MailPanel;
+    Result.ObservedModelChangesSubscriberCount = 6;
     Result.ObservedModelChangesSubscriberNames.Add(FString("OnSelectedMailIndexChanged"));
     Result.ObservedModelChangesSubscriberNames.Add(FString("OnMailDetailVMChanged"));
     Result.ObservedModelChangesSubscriberNames.Add(FString("OnCanClaimAttachmentChanged"));

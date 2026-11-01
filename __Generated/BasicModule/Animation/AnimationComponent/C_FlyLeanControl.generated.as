@@ -6,7 +6,7 @@ namespace __INTENRAL_FC_FlyLeanControlHistory_NS
 }
 struct FC_FlyLeanControlHistory : FECSComponent
 {
-    TInterpoHistory<FC_FlyLeanControl, auto> History;
+    TInterpoHistory<FC_FlyLeanControl, 30> History;
 
     FC_FlyLeanControlHistory()
     {

@@ -280,6 +280,7 @@ namespace UWidget_BossHpBar
 void GetModelInfo(FEUIWidgetMetaInfo &inout Result)
 {
     Result.WidgetType = UWidget_BossHpBar;
+    Result.ObservedModelChangesSubscriberCount = 4;
     Result.ObservedModelChangesSubscriberNames.Add(FString("HandlePostureBarSegmentChanged"));
     Result.ObservedModelChangesSubscriberNames.Add(FString("HandleCachedVisibilityChanged"));
     Result.ObservedModelChangesSubscriberNames.Add(FString("HandleExecutedStateChanged"));

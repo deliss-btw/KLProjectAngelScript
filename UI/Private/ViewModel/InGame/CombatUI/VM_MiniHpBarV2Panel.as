@@ -687,9 +687,11 @@ void GetModelInfo(FEUIViewModelMetaInfo &inout Result)
     Result.TickFunction.FunctionName = "__Tick";
     FEUIModelMonitorDefine local_26;
     local_26.FunctionName = "__OnPlayerLockTargetChange";
+    local_26.MonitorTarget = EEUIModelMonitorTarget(4);
     local_26.ComponentType = FC_LockTarget;
     Result.MonitorFunctions.Add(local_26);
     local_26.FunctionName = "__OnPlayerViewportSelectTarget";
+    local_26.MonitorTarget = EEUIModelMonitorTarget(4);
     local_26.ComponentType = FC_ViewportSelectTarget;
     Result.MonitorFunctions.Add(local_26);
     FEUIModelEventDefine local_34;

@@ -265,6 +265,7 @@ namespace UWidget_StigmataDetail
 void GetModelInfo(FEUIWidgetMetaInfo &inout Result)
 {
     Result.WidgetType = UWidget_StigmataDetail;
+    Result.ObservedModelChangesSubscriberCount = 2;
     Result.ObservedModelChangesSubscriberNames.Add(FString("OnReadyBreakthroughChanged"));
     Result.ObservedModelChangesSubscriberNames.Add(FString("OnTreeRowsChanged"));
     return;

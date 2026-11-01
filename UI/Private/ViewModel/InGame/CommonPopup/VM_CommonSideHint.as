@@ -64,7 +64,36 @@ struct FVM_CommonSideHintList : FEUIViewModel
     }
     void PostLoad()
     {
-        // body not fully recovered — stub [opcode-uncovered]
+        float32 local_1 = 0.0f;
+        switch (this.GetSideHintListType())
+        {
+        case ECommonSideHintListType::SmallHint:
+        {
+            local_1 = ::CommonPopupSettings::Get().SmallSideHintDisplayInterval;
+            break;
+        }
+        case ECommonSideHintListType::LargeHint:
+        {
+            local_1 = ::CommonPopupSettings::Get().LargeSideHintDisplayInterval;
+            break;
+        }
+        }
+        this.SetSideHintManager(TEUIModelRef<FM_CommonSideHintManager>(::FM_CommonSideHintManager::Create(this.GetContext().Manager, local_1)));
+        switch (this.GetSideHintListType())
+        {
+        case ECommonSideHintListType::SmallHint:
+        {
+            this.GetSideHintManager().opArrow().SetPopupType(GameplayTags::UI_Type_Commonpupop_SideHint_SmallHint);
+            break;
+        }
+        case ECommonSideHintListType::LargeHint:
+        {
+            this.GetSideHintManager().opArrow().SetPopupType(GameplayTags::UI_Type_Commonpupop_SideHint_LargeHint);
+            break;
+        }
+        }
+        this.RegisterSideHintManager(this.GetSideHintManager());
+        return;
     }
     void OnAddSideHint(const FMsg_DisplayCommonSideHint &inout Msg)
     {
@@ -512,7 +541,7 @@ void GetModelInfo(FEUIViewModelMetaInfo &inout Result)
     Result.GeneratedPropertyStruct = __GeneratedProperties_FVM_CommonSideHintList;
     FEUIModelMetaPropertyModelRef local_19;
     local_19.PropertyName = FName("SideHintManager");
-    int local_2_2 = FM_CommonSideHintManager::ModelId;
+    local_19.PropertyRefModelTypeId = FM_CommonSideHintManager::ModelId;
     Result.FunctionalPropertyModelRefs.Add(local_19);
     FEUIModelMsgHandleDefine local_32;
     local_32.FunctionName = "__OnAddSideHint";

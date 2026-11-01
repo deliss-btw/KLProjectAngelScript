@@ -486,6 +486,7 @@ namespace UPage_Minimap
 void GetModelInfo(FEUIWidgetMetaInfo &inout Result)
 {
     Result.WidgetType = UPage_Minimap;
+    Result.ObservedModelChangesSubscriberCount = 3;
     Result.ObservedModelChangesSubscriberNames.Add(FString("OnDisplayPathsChanged"));
     Result.ObservedModelChangesSubscriberNames.Add(FString("OnDisplayBorderChanged"));
     Result.ObservedModelChangesSubscriberNames.Add(FString("OnMinimapCenterChanged"));

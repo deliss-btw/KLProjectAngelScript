@@ -15,8 +15,7 @@ class UESMAction_SetAnimDataSpanTime : UESMBPBaseSpanTickAction
         if (Context.GetEntity().HasEntityBB(local_4))
         {
             FNameHandle_EntityBBVarFloat local_22;
-            FFPTime local_8 = FFPTime(Time.ActionDuration);
-            if (local_8.opCmp(0.0) < 0)
+            if (Time.ActionDuration.opCmp(0.0) < 0)
             {
             }
             else

@@ -6,7 +6,7 @@ namespace __INTENRAL_FC_BipedAimOffsetHistory_NS
 }
 struct FC_BipedAimOffsetHistory : FECSComponent
 {
-    TInterpoHistory<FC_BipedAimOffset, auto> History;
+    TInterpoHistory<FC_BipedAimOffset, 30> History;
 
     FC_BipedAimOffsetHistory()
     {

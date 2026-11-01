@@ -133,11 +133,11 @@ struct FEcosimAIV2DialogueOptionCondition_ConsumeItem : FEcosimAIV2DialogueOptio
     }
     FString ToString() const
     {
-        if (!(this._base_FEcosimAIV2DialogueOptionConditionBase) || !(this._base_FEcosimAIV2DialogueOptionConditionBase.IsSet()))
+        if (!(this.ConsumeItem) || !(this.ConsumeItem.IsSet()))
         {
             return "";
         }
-        return this._base_FEcosimAIV2DialogueOptionConditionBase.Get().ItemName.ToString();
+        return this.ConsumeItem.Get().ItemName.ToString();
     }
 }
 

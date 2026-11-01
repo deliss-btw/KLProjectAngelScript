@@ -49,18 +49,18 @@ struct FStringValidationHelper
             EStringValidationResult local_27 = local_18.ValidateString(this.StringToValidate, local_26);
             this.ValidatorContexts.Add(local_26);
             this.ValidationResults.Add(local_27);
-            switch (int(local_27))
+            switch (local_27)
             {
-            case 0:
+            case EStringValidationResult::Success:
             {
                 break;
             }
-            case 1:
+            case EStringValidationResult::Fail:
             {
                 this.CachedValidationResult = EStringValidationResult(1);
                 return;
             }
-            case 2:
+            case EStringValidationResult::Pending:
             {
                 local_4 = true;
                 break;
@@ -87,18 +87,18 @@ struct FStringValidationHelper
             {
                 EStringValidationResult local_6 = this.Config.Validators[local_3].TickValidation(this.ValidatorContexts[local_3]);
                 this.ValidationResults[local_3] = local_6;
-                switch (int(local_6))
+                switch (local_6)
                 {
-                case 0:
+                case EStringValidationResult::Success:
                 {
                     break;
                 }
-                case 1:
+                case EStringValidationResult::Fail:
                 {
                     this.CachedValidationResult = EStringValidationResult(1);
                     return;
                 }
-                case 2:
+                case EStringValidationResult::Pending:
                 {
                     local_2 = true;
                     break;

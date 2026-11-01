@@ -256,6 +256,7 @@ namespace UWidget_LoginGamma
 void GetModelInfo(FEUIWidgetMetaInfo &inout Result)
 {
     Result.WidgetType = UWidget_LoginGamma;
+    Result.ObservedModelChangesSubscriberCount = 1;
     Result.ObservedModelChangesSubscriberNames.Add(FString("OnCommonSliderRatioChanged"));
     return;
 }

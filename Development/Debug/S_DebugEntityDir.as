@@ -26,7 +26,7 @@ class US_DebugEntityDir : UECSScriptSystem
         float local_8 = Time.DeltaTime.ToSeconds();
         FVector local_16 = Transform.GetPosition();
         local_6.DrawDirectionalArrow(FTransform(Transform.GetRotation().Rotator(), local_16, FVector::OneVector), 100.0f, 5.0f, FLinearColor::Red, 0.0f, ESceneDepthPriorityGroup(1), 0.0f);
-        FFPTime local_56 = FFPTime(Time.Time);
+        FFPTime local_56 = Time.Time;
         Input.State.EnableDisableWarning(true);
         FTransform local_48 = FTransform(FCharacterInputUtils::GetViewInputDir(Entity, local_56).Quaternion(), FCharacterInputUtils::GetViewPosition(Entity, TransformHistory, local_56), FVector::OneVector);
         local_6.DrawDirectionalArrow(local_48, 100.0f, 5.0f, FLinearColor::Blue, 0.0f, ESceneDepthPriorityGroup(1), 0.0f);

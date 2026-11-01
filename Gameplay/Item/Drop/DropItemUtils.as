@@ -762,7 +762,7 @@ FECSEntity SpawnDropItemEntity(const FVector &inout DropInitPosition, const FRot
         if ((!((PlayerEntity == ENTITY_NULL))))
         {
             FC_NetRelevancePolicy local_33;
-            local_32.opCall(local_33).RelevancePolicyType = (5 != 0);
+            local_32.opCall(local_33).RelevancePolicyType = ENetRelevancePolicyType(5);
             FC_DropItemExclusivePlayer local_40;
             Assign local_38;
             local_38.opCall(local_40).PlayerId = local_28.GetPlayerId();
@@ -773,7 +773,7 @@ FECSEntity SpawnDropItemEntity(const FVector &inout DropInitPosition, const FRot
         else
         {
             FC_NetRelevancePolicy local_33;
-            local_32.opCall(local_33).RelevancePolicyType = false;
+            local_32.opCall(local_33).RelevancePolicyType = ENetRelevancePolicyType(0);
         }
         float local_48 = ECS::GetContextTime().ToSeconds();
         float32 local_51 = UGlobalItemSettings::Get().DropItemDefaultAutoDestroySeconds;

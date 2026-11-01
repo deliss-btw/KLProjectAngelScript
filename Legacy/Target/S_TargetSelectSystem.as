@@ -520,7 +520,7 @@ class US_TargetSelectSystem : UECSScriptSystem
                 if (local_24.bNeedConfirm)
                 {
                     FActiveTriggerResult local_40 = FESMInputTriggerItem::GetTriggerResult(local_24.ConfirmInput.CoreTriggerItem, Input.State, FixedTime.LastTime, FixedTime.Time, ESMTrigger.Storage);
-                    if (local_40.bActive && (FFPTime(local_40.TriggerTime).opCmp(FixedTime.Time) <= 0) && (local_40.GetTriggerExpireTime().opCmp(FixedTime.LastTime) >= 0))
+                    if (local_40.bActive && ((local_40.TriggerTime.opCmp(FixedTime.Time) <= 0)) && (local_40.GetTriggerExpireTime().opCmp(FixedTime.LastTime) >= 0))
                     {
                         local_48.opCall().GetModify_DataByRequestName()[local_20.GetKey()].SetbConfirmed(true);
                         if (!(local_24.ConfirmTriggerName.IsNone()))
@@ -537,7 +537,7 @@ class US_TargetSelectSystem : UECSScriptSystem
                         continue;
                     }
                     FActiveTriggerResult local_32 = FESMInputTriggerItem::GetTriggerResult(local_70.GetKey().CoreTriggerItem, Input.State, FixedTime.LastTime, FixedTime.Time, ESMTrigger.Storage);
-                    if (local_32.bActive && (FFPTime(local_32.TriggerTime).opCmp(FixedTime.Time) <= 0) && (local_32.GetTriggerExpireTime().opCmp(FixedTime.LastTime) >= 0))
+                    if (local_32.bActive && ((local_32.TriggerTime.opCmp(FixedTime.Time) <= 0)) && (local_32.GetTriggerExpireTime().opCmp(FixedTime.LastTime) >= 0))
                     {
                         if (int(local_70.GetValue()) == 0)
                         {

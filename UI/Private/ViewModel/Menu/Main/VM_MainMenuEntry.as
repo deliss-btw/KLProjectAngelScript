@@ -101,25 +101,25 @@ struct FVM_MainMenuEntry : FEUIViewModel
             FEUIWidgetTag local_8 = this.GetMenuConfig().opArrow().GetEntranceWidget();
             return;
         }
-        switch (int(this.GetMenuOperation().Function))
+        int local_10 = int(this.GetMenuOperation().Function);
+        switch (EMenuOperationFunction(local_10))
         {
-        case 0:
+        case EMenuOperationFunction::ExitGame:
         {
             ::FVMS_ExitGame::Get(this.GetManager()).ExitGame();
             return;
         }
-        case 1:
+        case EMenuOperationFunction::Unstuck:
         {
             ::FMS_Unstuck::Get(this.GetManager()).Unstuck();
             return;
         }
-        case 2:
+        case EMenuOperationFunction::Feedback:
         {
             ::FMS_Feedback::Get(this.GetManager()).Feedback();
             return;
         }
         }
-        return;
     }
     const TDataObjectPtr<FMenuConfig> GetMenuConfig() const property
     {

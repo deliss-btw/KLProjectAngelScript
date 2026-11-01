@@ -391,8 +391,8 @@ void GetModelInfo(FEUIViewModelMetaInfo &inout Result)
     local_22.ApplySort();
     FEUIModelRefPropertyDirty local_30;
     local_30.PropertyName = FName("EditingAvatar");
-    int local_2_2 = FMS_EditingAvatar::ModelId;
-    int local_2_3 = local_22.GetMappingDirtyOffset(0);
+    local_30.PropertyModelId = FMS_EditingAvatar::ModelId;
+    local_30.MappingDirtyOffset = local_22.GetMappingDirtyOffset(0);
     local_30.RelatedDirtyMask.SetBit(FMS_EditingAvatar::__IndexOf_AvatarConfig(), true);
     Result.ListeningModelRefDirties.Add(local_30);
     FEUIModelDirtyDefine local_40;
@@ -408,6 +408,7 @@ void GetModelInfo(FEUIViewModelMetaInfo &inout Result)
     Result.DirtyFunctions.Add(local_40);
     FEUIModelMonitorDefine local_50;
     local_50.FunctionName = "__OnAvatarEquipmentChanged";
+    local_50.MonitorTarget = EEUIModelMonitorTarget(3);
     local_50.ComponentType = FC_DSPlayerAvatarInfo;
     Result.MonitorFunctions.Add(local_50);
     return;

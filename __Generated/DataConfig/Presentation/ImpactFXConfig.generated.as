@@ -16,15 +16,37 @@ struct FImpactConfigSFX : FDataObject
     {
         return;
     }
-    const FImpactSFXData GetDataRaw(const EImpactType Value) const
+    const FImpactSFXData& GetDataRaw(const EImpactType Value) const
     {
-        // body not fully recovered — stub [opcode-uncovered]
-        const FImpactSFXData __r; return __r;
+        switch (int8(Value))
+        {
+        case 1:
+            return this.Cut;
+        case 2:
+            return this.Stab;
+        case 3:
+            return this.Smash;
+        case 4:
+            return this.BossBattle;
+        default:
+            return this.Default;
+        }
     }
-    FImpactSFXData ModifyDataRaw(const EImpactType Value)
+    FImpactSFXData& ModifyDataRaw(const EImpactType Value)
     {
-        // body not fully recovered — stub [opcode-uncovered]
-        FImpactSFXData __r; return __r;
+        switch (int8(Value))
+        {
+        case 1:
+            return this.Cut;
+        case 2:
+            return this.Stab;
+        case 3:
+            return this.Smash;
+        case 4:
+            return this.BossBattle;
+        default:
+            return this.Default;
+        }
     }
     const FImpactSFXData GetDataRawByName(const FName &inout EnumName) const
     {
@@ -130,15 +152,37 @@ struct FImpactConfigVFX : FDataObject
     {
         return;
     }
-    const FImpactVFXDataWithStrength GetDataRaw(const EImpactType Value) const
+    const FImpactVFXDataWithStrength& GetDataRaw(const EImpactType Value) const
     {
-        // body not fully recovered — stub [opcode-uncovered]
-        const FImpactVFXDataWithStrength __r; return __r;
+        switch (int8(Value))
+        {
+        case 1:
+            return this.Cut;
+        case 2:
+            return this.Stab;
+        case 3:
+            return this.Smash;
+        case 4:
+            return this.BossBattle;
+        default:
+            return this.Default;
+        }
     }
-    FImpactVFXDataWithStrength ModifyDataRaw(const EImpactType Value)
+    FImpactVFXDataWithStrength& ModifyDataRaw(const EImpactType Value)
     {
-        // body not fully recovered — stub [opcode-uncovered]
-        FImpactVFXDataWithStrength __r; return __r;
+        switch (int8(Value))
+        {
+        case 1:
+            return this.Cut;
+        case 2:
+            return this.Stab;
+        case 3:
+            return this.Smash;
+        case 4:
+            return this.BossBattle;
+        default:
+            return this.Default;
+        }
     }
     const FImpactVFXDataWithStrength GetDataRawByName(const FName &inout EnumName) const
     {

@@ -79,7 +79,7 @@ class US_PresentationCameraModificationSystem : UECSScriptSystem
         {
             return;
         }
-        FECSEntity local_18 = FECSEntity(LocalPlayer.PlayerEntity);
+        FECSEntity local_18 = LocalPlayer.PlayerEntity;
         this.ProcessPendingCameraModifierEventDatas(local_18, local_24.Params);
         ::FPresentationCameraModificationUtils::ResolvePresentationCameraLookAt(local_18);
         return;
@@ -157,7 +157,7 @@ class US_PresentationCameraModificationSystem : UECSScriptSystem
         }
         return;
     }
-    void DebugPrintModifierList(const TInlineArray<FTPCameraModifierInstance, auto> &inout Modifiers, const FString &inout Label) const
+    void DebugPrintModifierList(const TInlineArray<FTPCameraModifierInstance, 4> &inout Modifiers, const FString &inout Label) const
     {
         int local_1 = 0;
         for (; local_1 < Modifiers.Num(); )
@@ -216,7 +216,7 @@ class US_PresentationCameraModificationSystem : UECSScriptSystem
         {
             return;
         }
-        FECSEntity local_16 = FECSEntity(LocalPlayer.PlayerEntity);
+        FECSEntity local_16 = LocalPlayer.PlayerEntity;
         FECSEntity local_24 = LocalPlayer.GetCameraViewTargetEntity();
         if (CVar_Debug_PresentationCameraSystemLookAt.GetBool())
         {

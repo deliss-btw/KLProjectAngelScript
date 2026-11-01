@@ -498,6 +498,7 @@ void GetModelInfo(FEUIViewModelMetaInfo &inout Result)
     Result.GeneratedPropertyStruct = __GeneratedProperties_FVM_CommissionTeamerItem;
     FEUIModelMonitorDefine local_26;
     local_26.FunctionName = "__OnLikeTeamer";
+    local_26.MonitorTarget = EEUIModelMonitorTarget(2);
     local_26.ComponentType = FCS_CommissionFinish;
     Result.MonitorFunctions.Add(local_26);
     return;

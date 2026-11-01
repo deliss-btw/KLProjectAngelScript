@@ -776,8 +776,9 @@ struct FVM_NormalSkillBtn : FEUIViewModel
     }
     FWidgetTransform GetCDTransform() const
     {
-        float32 local_16 = this.GetCD() * 360.0f;
-        return FWidgetTransform();
+        FWidgetTransform local_14;
+        local_14.Angle = (this.GetCD() * 360.0f);
+        return local_14;
     }
     ESlateVisibility EnergyVisibility() const
     {
@@ -1258,7 +1259,7 @@ struct FVM_NormalSkillBtn : FEUIViewModel
             this.SetbShowEntityBB(true);
             this.SetShowEntityBBValue(this.GetPresentationEntityBB().GetValue());
         }
-        int local_241 = int(local_128.ExtraPresentationState) & 1;
+        int local_241 = local_128.ExtraPresentationState & 1;
         this.SetbReleaseFree((local_241 != 0));
         this.SetbReleasePersistent(((int(local_128.ExtraPresentationState) & 2) != 0));
         this.SetbShowSpecialCount(local_128.bShowSpecialCount);
@@ -2697,6 +2698,7 @@ struct __GeneratedProperties_FVM_SkillBtnSpecialCountItem
     UPROPERTY()
     TEUIModelRef<FVM_SkillBtnSpecialCountItem> Self;
 
+
 }
 
 struct __GeneratedProperties_FVM_SkillBtnSpecialCounts
@@ -2798,6 +2800,7 @@ struct __GeneratedProperties_FVM_NormalSkillBtn
     FLinearColor RechargingColorTemp;
     UPROPERTY()
     TEUIModelRef<FVM_NormalSkillBtn> Self;
+
 
 }
 
@@ -3259,31 +3262,31 @@ void GetModelInfo(FEUIViewModelMetaInfo &inout Result)
     Result.GeneratedPropertyStruct = __GeneratedProperties_FVM_NormalSkillBtn;
     FEUIModelWatcherProperty local_19;
     local_19.PropertyName = FName("SkillCooldown");
-    int local_2_2 = FVM_NormalSkillBtn::__IndexOf_SkillCooldown();
+    local_19.DirtyBitIndex = FVM_NormalSkillBtn::__IndexOf_SkillCooldown();
     Result.WatcherProperties.Add(local_19);
     local_19.PropertyName = FName("SkillRuntime");
-    int local_2_3 = FVM_NormalSkillBtn::__IndexOf_SkillRuntime();
+    local_19.DirtyBitIndex = FVM_NormalSkillBtn::__IndexOf_SkillRuntime();
     Result.WatcherProperties.Add(local_19);
     local_19.PropertyName = FName("PresentationEntityBB");
-    int local_2_4 = FVM_NormalSkillBtn::__IndexOf_PresentationEntityBB();
+    local_19.DirtyBitIndex = FVM_NormalSkillBtn::__IndexOf_PresentationEntityBB();
     Result.WatcherProperties.Add(local_19);
     local_19.PropertyName = FName("SpecialChargingCount");
-    int local_2_5 = FVM_NormalSkillBtn::__IndexOf_SpecialChargingCount();
+    local_19.DirtyBitIndex = FVM_NormalSkillBtn::__IndexOf_SpecialChargingCount();
     Result.WatcherProperties.Add(local_19);
     local_19.PropertyName = FName("RechargingValue");
-    int local_2_6 = FVM_NormalSkillBtn::__IndexOf_RechargingValue();
+    local_19.DirtyBitIndex = FVM_NormalSkillBtn::__IndexOf_RechargingValue();
     Result.WatcherProperties.Add(local_19);
     local_19.PropertyName = FName("RechargingMaxValue");
-    int local_2_7 = FVM_NormalSkillBtn::__IndexOf_RechargingMaxValue();
+    local_19.DirtyBitIndex = FVM_NormalSkillBtn::__IndexOf_RechargingMaxValue();
     Result.WatcherProperties.Add(local_19);
     local_19.PropertyName = FName("DivineChaosTag");
-    int local_2_8 = FVM_NormalSkillBtn::__IndexOf_DivineChaosTag();
+    local_19.DirtyBitIndex = FVM_NormalSkillBtn::__IndexOf_DivineChaosTag();
     Result.WatcherProperties.Add(local_19);
     local_19.PropertyName = FName("DivineBurstTag");
-    int local_2_9 = FVM_NormalSkillBtn::__IndexOf_DivineBurstTag();
+    local_19.DirtyBitIndex = FVM_NormalSkillBtn::__IndexOf_DivineBurstTag();
     Result.WatcherProperties.Add(local_19);
     local_19.PropertyName = FName("DurationEffectProgress");
-    int local_2_10 = FVM_NormalSkillBtn::__IndexOf_DurationEffectProgress();
+    local_19.DirtyBitIndex = FVM_NormalSkillBtn::__IndexOf_DurationEffectProgress();
     Result.WatcherProperties.Add(local_19);
     FEUIModelEffectDefine local_26;
     local_26.FunctionName = "SyncSkillWatchSources";

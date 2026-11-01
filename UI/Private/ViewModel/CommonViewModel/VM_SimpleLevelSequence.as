@@ -135,7 +135,8 @@ struct FVM_SimpleLevelSequence : FEUIViewModel
         }
         FMovieSceneSequencePlaybackParams local_82;
         FMovieSceneSequencePlayToParams local_83;
-        int local_85 = int(this.GetStopTime());
+        local_82.PositionType = EMovieScenePositionType(1);
+        local_82.Time = int(this.GetStopTime());
         if ((int(this.GetVisibilityMode())) != 0)
         {
             this.SetbVisibilityOverrideActive(true);
@@ -154,8 +155,9 @@ struct FVM_SimpleLevelSequence : FEUIViewModel
             if (this.GetLevelSequencePlayer().IsPlaying())
             {
                 this.GetLevelSequencePlayer().Pause();
-                int local_22 = int(this.GetStopTime());
                 FMovieSceneSequencePlaybackParams local_20;
+                local_20.PositionType = EMovieScenePositionType(1);
+                local_20.Time = int(this.GetStopTime());
                 this.GetLevelSequencePlayer().SetPlaybackPosition(local_20);
             }
             this.GetLevelSequencePlayer().Play();

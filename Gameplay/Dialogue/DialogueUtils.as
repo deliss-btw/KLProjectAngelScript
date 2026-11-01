@@ -17,19 +17,19 @@ bool IsPlayingDialogue(const FECSEntity &inout DialogueEntity)
 }
 EDialogueVoiceType GetDialogueVoiceType(const EDialogueType DialogueType)
 {
-    int local_1 = int(DialogueType);
-    if (local_1 <= 1)
+    switch (int(DialogueType))
     {
-        if (local_1 != 0)
-        {
-            if (local_1 != 1)
-            {
-            }
-        }
-        else
-        {
-            return EDialogueVoiceType(0);
-        }
+    case 0:
+    {
+        return EDialogueVoiceType(0);
+    }
+    case 1:
+    {
+        return EDialogueVoiceType(1);
+    }
+    default:
+    {
+    }
     }
     return EDialogueVoiceType(0);
 }
@@ -408,9 +408,9 @@ bool StartNarrationDialogue(const TDataObjectPtr<FNarrationDialogueConfig> &inou
     const FNarrationDialogueConfig& local_10 = DialogueConfig.Get();
     XLog(ELog(64), FString().Append("[Dialogue] Start Narration Dialogue: ").Append(local_10.GetDataName()).Append(", BroadcastScope=").Append(local_10.BroadcastScope));
     TArray<FECSEntity> local_16;
-    switch (int(local_10.BroadcastScope))
+    switch (local_10.BroadcastScope)
     {
-    case 0:
+    case EDialogueScope::Personal:
     {
         if (!(TriggerPlayer.IsValid()))
         {
@@ -420,7 +420,7 @@ bool StartNarrationDialogue(const TDataObjectPtr<FNarrationDialogueConfig> &inou
         local_16.Add(TriggerPlayer);
         break;
     }
-    case 1:
+    case EDialogueScope::Team:
     {
         if (!(TriggerPlayer.IsValid()))
         {
@@ -440,7 +440,7 @@ bool StartNarrationDialogue(const TDataObjectPtr<FNarrationDialogueConfig> &inou
         }
         break;
     }
-    case 2:
+    case EDialogueScope::Global:
     {
         FECSRuntimeView local_38 = ECS::GetECSWorld().GetRuntimeView(EECSRuntimeViewType(2));
         local_64.opCall();

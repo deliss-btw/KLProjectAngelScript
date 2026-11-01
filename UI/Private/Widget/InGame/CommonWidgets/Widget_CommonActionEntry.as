@@ -221,6 +221,7 @@ namespace UWidget_CommonActionEntry
 void GetModelInfo(FEUIWidgetMetaInfo &inout Result)
 {
     Result.WidgetType = UWidget_CommonActionEntry;
+    Result.ObservedModelChangesSubscriberCount = 1;
     Result.ObservedModelChangesSubscriberNames.Add(FString("OnActionEntryBindingDataChanged"));
     return;
 }

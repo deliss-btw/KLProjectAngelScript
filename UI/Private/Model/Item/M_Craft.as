@@ -214,10 +214,13 @@ void GetModelInfo(FEUIModelOnlyMetaInfo &inout Result)
     Result.SetbCanDefaultConstruct(true);
     FEUIModelProtoRspDefine local_10;
     local_10.FunctionName = "__GS_OnDoCraftRsp";
+    local_10.ProtoCmdId = uint16(904);
     Result.ProtoRspDefines.Add(local_10);
     local_10.FunctionName = "__GS_OnPlayerCraftDataNotify";
+    local_10.ProtoCmdId = uint16(901);
     Result.ProtoRspDefines.Add(local_10);
     local_10.FunctionName = "__GS_OnCraftUnlock";
+    local_10.ProtoCmdId = uint16(902);
     Result.ProtoRspDefines.Add(local_10);
     return;
 }

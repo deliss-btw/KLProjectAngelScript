@@ -26,15 +26,57 @@ struct FSurfaceVFXCode : FDataObject
     {
         return;
     }
-    const FVFXCodeData GetDataRaw(const ESurfaceMaterialType Value) const
+    const FVFXCodeData& GetDataRaw(const ESurfaceMaterialType Value) const
     {
-        // body not fully recovered — stub [opcode-uncovered]
-        const FVFXCodeData __r; return __r;
+        switch (int8(Value))
+        {
+        case 1:
+            return this.Flesh;
+        case 2:
+            return this.Grass;
+        case 3:
+            return this.LandGrass;
+        case 4:
+            return this.LandSoil;
+        case 5:
+            return this.LandStone;
+        case 6:
+            return this.Metal;
+        case 7:
+            return this.Stone;
+        case 8:
+            return this.Water;
+        case 9:
+            return this.Wood;
+        default:
+            return this.Default;
+        }
     }
-    FVFXCodeData ModifyDataRaw(const ESurfaceMaterialType Value)
+    FVFXCodeData& ModifyDataRaw(const ESurfaceMaterialType Value)
     {
-        // body not fully recovered — stub [opcode-uncovered]
-        FVFXCodeData __r; return __r;
+        switch (int8(Value))
+        {
+        case 1:
+            return this.Flesh;
+        case 2:
+            return this.Grass;
+        case 3:
+            return this.LandGrass;
+        case 4:
+            return this.LandSoil;
+        case 5:
+            return this.LandStone;
+        case 6:
+            return this.Metal;
+        case 7:
+            return this.Stone;
+        case 8:
+            return this.Water;
+        case 9:
+            return this.Wood;
+        default:
+            return this.Default;
+        }
     }
     const FVFXCodeData GetDataRawByName(const FName &inout EnumName) const
     {
@@ -180,15 +222,57 @@ struct FSurfaceContactConfigVFX : FDataObject
     {
         return;
     }
-    const FCharacterSizeVFXData GetDataRaw(const ESurfaceMaterialType Value) const
+    const FCharacterSizeVFXData& GetDataRaw(const ESurfaceMaterialType Value) const
     {
-        // body not fully recovered — stub [opcode-uncovered]
-        const FCharacterSizeVFXData __r; return __r;
+        switch (int8(Value))
+        {
+        case 1:
+            return this.Flesh;
+        case 2:
+            return this.Grass;
+        case 3:
+            return this.LandGrass;
+        case 4:
+            return this.LandSoil;
+        case 5:
+            return this.LandStone;
+        case 6:
+            return this.Metal;
+        case 7:
+            return this.Stone;
+        case 8:
+            return this.Water;
+        case 9:
+            return this.Wood;
+        default:
+            return this.Default;
+        }
     }
-    FCharacterSizeVFXData ModifyDataRaw(const ESurfaceMaterialType Value)
+    FCharacterSizeVFXData& ModifyDataRaw(const ESurfaceMaterialType Value)
     {
-        // body not fully recovered — stub [opcode-uncovered]
-        FCharacterSizeVFXData __r; return __r;
+        switch (int8(Value))
+        {
+        case 1:
+            return this.Flesh;
+        case 2:
+            return this.Grass;
+        case 3:
+            return this.LandGrass;
+        case 4:
+            return this.LandSoil;
+        case 5:
+            return this.LandStone;
+        case 6:
+            return this.Metal;
+        case 7:
+            return this.Stone;
+        case 8:
+            return this.Water;
+        case 9:
+            return this.Wood;
+        default:
+            return this.Default;
+        }
     }
     const FCharacterSizeVFXData GetDataRawByName(const FName &inout EnumName) const
     {
@@ -280,10 +364,21 @@ struct FSurfaceContactConfigVFX : FDataObject
         const FImpactFXData& local_4 = this.GetDataRawBySecondType(local_2, ECharacterBodySize(SecondType));
         return local_4;
     }
-    const FImpactFXData GetDataRawBySecondType(const FCharacterSizeVFXData &inout Data, const ECharacterBodySize Value) const
+    const FImpactFXData& GetDataRawBySecondType(const FCharacterSizeVFXData &inout Data, const ECharacterBodySize Value) const
     {
-        // body not fully recovered — stub [opcode-uncovered]
-        const FImpactFXData __r; return __r;
+        switch (int8(Value))
+        {
+        case 1:
+            return Data.Small;
+        case 2:
+            return Data.Medium;
+        case 3:
+            return Data.Large;
+        case 4:
+            return Data.ExtraLarge;
+        default:
+            return Data.Default;
+        }
     }
     void CopyFallbackData(const ESurfaceMaterialType Src, const ESurfaceMaterialType Dst)
     {
@@ -342,15 +437,37 @@ struct FEnvSurfaceHitConfigVFX : FDataObject
     {
         return;
     }
-    const FArealStrikeEnvSurfaceVFXData GetDataRaw(const ECharacterBodySize Value) const
+    const FArealStrikeEnvSurfaceVFXData& GetDataRaw(const ECharacterBodySize Value) const
     {
-        // body not fully recovered — stub [opcode-uncovered]
-        const FArealStrikeEnvSurfaceVFXData __r; return __r;
+        switch (int8(Value))
+        {
+        case 1:
+            return this.Small;
+        case 2:
+            return this.Medium;
+        case 3:
+            return this.Large;
+        case 4:
+            return this.ExtraLarge;
+        default:
+            return this.Default;
+        }
     }
-    FArealStrikeEnvSurfaceVFXData ModifyDataRaw(const ECharacterBodySize Value)
+    FArealStrikeEnvSurfaceVFXData& ModifyDataRaw(const ECharacterBodySize Value)
     {
-        // body not fully recovered — stub [opcode-uncovered]
-        FArealStrikeEnvSurfaceVFXData __r; return __r;
+        switch (int8(Value))
+        {
+        case 1:
+            return this.Small;
+        case 2:
+            return this.Medium;
+        case 3:
+            return this.Large;
+        case 4:
+            return this.ExtraLarge;
+        default:
+            return this.Default;
+        }
     }
     const FArealStrikeEnvSurfaceVFXData GetDataRawByName(const FName &inout EnumName) const
     {

@@ -158,6 +158,7 @@ namespace UWidget_JointCast_Progress
 void GetModelInfo(FEUIWidgetMetaInfo &inout Result)
 {
     Result.WidgetType = UWidget_JointCast_Progress;
+    Result.ObservedModelChangesSubscriberCount = 2;
     Result.ObservedModelChangesSubscriberNames.Add(FString("OnStateChanged"));
     Result.ObservedModelChangesSubscriberNames.Add(FString("OnIsLeaveChanged"));
     return;

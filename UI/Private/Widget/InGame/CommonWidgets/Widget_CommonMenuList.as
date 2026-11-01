@@ -133,6 +133,7 @@ class UWidget_CommonMenuList : UEUIUserWidget
         local_4.SetHorizontalAlignment(EHorizontalAlignment(0));
         local_4.SetVerticalAlignment(EVerticalAlignment(0));
         FSlateChildSize local_8;
+        local_8.SizeRule = ESlateSizeRule(0);
         local_4.SetSize(local_8);
         if (!(bIsDesignTime))
         {
@@ -156,6 +157,7 @@ namespace UWidget_CommonMenuList
 void GetModelInfo(FEUIWidgetMetaInfo &inout Result)
 {
     Result.WidgetType = UWidget_CommonMenuList;
+    Result.ObservedModelChangesSubscriberCount = 0;
     return;
 }
 FEUIWidgetRef CreateWidget(const APlayerController OwningPlayer, const TSoftClassPtr<UEUIUserWidget> &inout WidgetClass)

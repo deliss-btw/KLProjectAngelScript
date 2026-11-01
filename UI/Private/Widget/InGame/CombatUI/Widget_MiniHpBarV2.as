@@ -131,6 +131,7 @@ namespace UWidget_MiniHpBarV2
 void GetModelInfo(FEUIWidgetMetaInfo &inout Result)
 {
     Result.WidgetType = UWidget_MiniHpBarV2;
+    Result.ObservedModelChangesSubscriberCount = 1;
     Result.ObservedModelChangesSubscriberNames.Add(FString("HandleIconActiveChanged"));
     return;
 }

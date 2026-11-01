@@ -195,21 +195,23 @@ struct FVM_MissionListEntry : FEUIViewModel
             return;
         }
         FGameplayTag local_3;
-        int local_5 = int(this.GetMissionConfig().Get().MissionType);
-        if (local_5 <= 1)
+        switch (int(this.GetMissionConfig().Get().MissionType))
         {
-            if (local_5 != 0)
-            {
-                if (local_5 != 1)
-                {
-                }
-            }
-            else
-            {
-                local_3 = GameplayTags::RedDotSystem_Mission_NewSideMission;
-            }
+        case 0:
+        {
+            local_3 = GameplayTags::RedDotSystem_Mission_NewMainMission;
+            break;
         }
-        XError(ELog(63), FString().Append("[Mission] Generate New Mission RedDot failed, MissionType: ").Append(this.GetMissionConfig().Get().MissionType));
+        case 1:
+        {
+            local_3 = GameplayTags::RedDotSystem_Mission_NewSideMission;
+            break;
+        }
+        default:
+        {
+            XError(ELog(63), FString().Append("[Mission] Generate New Mission RedDot failed, MissionType: ").Append(this.GetMissionConfig().Get().MissionType));
+        }
+        }
         this.SetRedDotVM(TEUIModelRef<FVM_RedDot>(::FVM_RedDot::Create(this.GetContext().Manager, FRedDotNodeData(local_3, this.GetMissionConfig().Get().DataId))));
         return;
     }

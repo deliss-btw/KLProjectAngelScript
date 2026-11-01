@@ -160,22 +160,23 @@ struct FVM_PVX_Settlement_PlayerInfo : FEUIViewModel
         if (local_174.IsValid())
         {
             this.SetPlayerFaction(::FGameModeDataBridge::GetPVXPlayerFaction(local_174, this.GetPlayerEntity()));
-            int local_151 = int(this.GetPlayerData().GetFinalState());
-            if (local_151 <= 1)
+            switch (int(this.GetPlayerData().GetFinalState()))
             {
-                if (local_151 != 0)
-                {
-                    if (local_151 != 1)
-                    {
-                    }
-                }
-                else
-                {
-                    this.SetCurrentPlayerStateIndex(0);
-                    this.SetCurrentPlayerStateIndex(1);
-                }
+            case 0:
+            {
+                this.SetCurrentPlayerStateIndex(0);
+                break;
             }
-            this.SetCurrentPlayerStateIndex(2);
+            case 1:
+            {
+                this.SetCurrentPlayerStateIndex(1);
+                break;
+            }
+            default:
+            {
+                this.SetCurrentPlayerStateIndex(2);
+            }
+            }
             this.SetPlayerName(FText::FromString(this.GetPlayerData().GetPlayerName()));
             this.SetPlayerLevel(FText::Format(FText::AsCultureInvariant("Lv.{0}"), this.GetPlayerData().GetLevel()));
             int local_177 = ::PVXGameModeUtils::GetLevelRequiredExp((this.GetPlayerData().GetLevel() + 1), this.GetPlayerFaction());
@@ -592,8 +593,8 @@ void GetModelInfo(FEUIViewModelMetaInfo &inout Result)
     local_22.ApplySort();
     FEUIModelRefPropertyDirty local_30;
     local_30.PropertyName = FName("TeammateInfo");
-    int local_2_2 = FVM_TeammateInfo::ModelId;
-    int local_2_3 = local_22.GetMappingDirtyOffset(0);
+    local_30.PropertyModelId = FVM_TeammateInfo::ModelId;
+    local_30.MappingDirtyOffset = local_22.GetMappingDirtyOffset(0);
     local_30.RelatedDirtyMask.SetBit(FVM_TeammateInfo::__IndexOf_PlayerBasicItem(), true);
     Result.ListeningModelRefDirties.Add(local_30);
     FEUIModelDirtyDefine local_40;

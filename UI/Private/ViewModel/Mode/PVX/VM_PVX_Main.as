@@ -84,25 +84,17 @@ struct FVM_PVX_Main : FEUIViewModel
     }
     FEUIModelContainer CreateMenuPageModel(const EPVXMenuCategoryType Type)
     {
-        FEUIModelContainer __return;
-        int local_1 = int(Type);
-        if (local_1 <= 1)
+        switch (int(Type))
         {
-            if (local_1 != 0)
-            {
-                if (local_1 != 1)
-                {
-                }
-                else
-                {
-                    TEUIModelWeakRef<FM_ModeItem> local_6 = TEUIModelWeakRef<FM_ModeItem>(this.GetMode().Get());
-                    __return = FEUIModelContainer(::FVM_PVX_Match::Create(this.GetContext().Manager, local_6));
-                }
-            }
-            else
-            {
-                __return = FEUIModelContainer(::FVM_PVX_CombatPreparation::Create(this.GetContext().Manager));
-            }
+        case 1:
+        {
+            TEUIModelWeakRef<FM_ModeItem> local_6 = TEUIModelWeakRef<FM_ModeItem>(this.GetMode().Get());
+            return FEUIModelContainer(::FVM_PVX_Match::Create(this.GetContext().Manager, local_6));
+        }
+        case 0:
+        {
+            return FEUIModelContainer(::FVM_PVX_CombatPreparation::Create(this.GetContext().Manager));
+        }
         }
         return FEUIModelContainer();
     }

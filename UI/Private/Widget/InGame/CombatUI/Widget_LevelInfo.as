@@ -196,6 +196,7 @@ namespace UWidget_LevelInfo
 void GetModelInfo(FEUIWidgetMetaInfo &inout Result)
 {
     Result.WidgetType = UWidget_LevelInfo;
+    Result.ObservedModelChangesSubscriberCount = 1;
     Result.ObservedModelChangesSubscriberNames.Add(FString("OnTriggerAddExpAnim"));
     return;
 }

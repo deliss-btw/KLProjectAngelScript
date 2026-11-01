@@ -6,7 +6,7 @@ namespace __INTENRAL_FC_CharacterGroundMovementInfoHistory_NS
 }
 struct FC_CharacterGroundMovementInfoHistory : FECSComponent
 {
-    TInterpoHistory<FC_CharacterGroundMovementInfo, auto> History;
+    TInterpoHistory<FC_CharacterGroundMovementInfo, 30> History;
 
     FC_CharacterGroundMovementInfoHistory()
     {

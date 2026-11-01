@@ -82,6 +82,7 @@ class AKLLevelScriptTutorialCombatBoss : AKLLevelScriptTutorialActor
     int LastStep = 11;
     TArray<FName> StepConfigKeys;
 
+
     UFUNCTION()
     void OnTutorialStep_Implementation(const int InStepIndex)
     {
@@ -278,14 +279,78 @@ class AKLLevelScriptTutorialCombatBoss : AKLLevelScriptTutorialActor
         this.StepConfigKeys[10] = n"CombatTutorialBoss_9_FreePractice";
         return;
     }
-    FTutorialInfo GetStepInfo(const int Step)
+    FTutorialInfo& GetStepInfo(const int Step)
     {
-        // body not fully recovered — stub [opcode-uncovered]
-        FTutorialInfo __r; return __r;
+        switch (Step)
+        {
+        case 2:
+            return this.Step2Info;
+        case 3:
+            return this.Step3Info;
+        case 4:
+            return this.Step4Info;
+        case 5:
+            return this.Step5Info;
+        case 6:
+            return this.Step6Info;
+        case 7:
+            return this.Step7Info;
+        case 8:
+            return this.Step8Info;
+        case 9:
+            return this.Step9Info;
+        case 10:
+            return this.Step10Info;
+        case 11:
+            return this.Step11Info;
+        default:
+            return this.Step1Info;
+        }
     }
     void InitAllStepInfos()
     {
-        // body not fully recovered — stub [opcode-uncovered]
+        this.InitStepConfigKeys();
+        TMap<FName, TDataObjectPtr<FTutorialInfoConfig>> local_20;
+        TDataObjectIterator<FTutorialInfoConfig> local_36;
+        for (; local_36; )
+        {
+            TDataObjectPtr<FTutorialInfoConfig> local_78 = local_36.GetDataPtr();
+            local_20.Add(local_78.GetDataName(), local_78);
+            local_36.Next();
+        }
+        int local_105 = 0;
+        for (; local_105 < this.LastStep; ++local_105)
+        {
+            int local_107 = local_105 + 1;
+            FTutorialInfo& local_110 = this.GetStepInfo(local_107);
+            if (local_20.Contains(this.StepConfigKeys[local_105]))
+            {
+                int local_114;
+                local_110.SetTutorialInfoId(local_20[this.StepConfigKeys[local_105]]);
+                local_107 = local_110.GetTutorialInfoId().Get().Steps.Num();
+                local_110.GetModify_StepProgress().SetNum(local_107);
+                local_114 = 0;
+                for (; local_114 < local_107; )
+                {
+                    int local_116 = local_114 == (local_107 - 1) ? 1 : 0;
+                    local_110.GetModify_StepProgress()[local_114].SetMaxProgress(local_116);
+                    ++local_114;
+                }
+            }
+        }
+        TArray<int> local_120 = {9, 10, this.LastStep};
+        auto local_128 = local_120.Iterator();
+        for (; local_128.CanProceed;)
+        {
+            FTutorialInfo& local_110_2 = this.GetStepInfo(local_128.Proceed());
+            int local_107_2 = 0;
+            for (; local_107_2 < local_110_2.GetModify_StepProgress().Num(); )
+            {
+                local_110_2.GetModify_StepProgress()[local_107_2].SetMaxProgress(0);
+                ++local_107_2;
+            }
+        }
+        return;
     }
     void RegisterAllEvents()
     {
@@ -402,7 +467,7 @@ class AKLLevelScriptTutorialCombatBoss : AKLLevelScriptTutorialActor
     UFUNCTION()
     void OnLockEvent(const FCE_LockTargetChangeEvent &inout Event)
     {
-        FECSEntity local_4 = FECSEntity(Event.TargetEntity);
+        FECSEntity local_4 = Event.TargetEntity;
         if (this.CurrentStep == 1 && !(this.LastLockTarget.IsValid()) && local_4.IsValid())
         {
             this.AdvanceLastProgress();

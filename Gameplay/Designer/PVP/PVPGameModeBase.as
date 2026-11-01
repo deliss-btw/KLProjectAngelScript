@@ -300,6 +300,7 @@ class UPVPGameModeFlowBase : UGameModeFlow
         int local_14 = 0;
         int local_20 = 0;
         int local_146 = 0;
+        FCE_PlayerSpawnEvent local_164;
         FECSWorldPtr local_2 = ECS::GetECSWorld();
         FECSWorldPtr local_2_2 = ECS::GetECSWorld();
         FECSWorldPtr local_2_3 = ECS::GetECSWorld();
@@ -329,8 +330,8 @@ class UPVPGameModeFlowBase : UGameModeFlow
             }
             FECSEntity local_162 = FECSEntity(local_140.GetId());
             FECSWorldPtr local_2_4 = ECS::GetECSWorld();
-            int local_152 = local_146.GetPlayerId();
-            int local_152_2 = local_146.GetTeam();
+            local_164.PlayerID = local_146.GetPlayerId();
+            local_164.Team = local_146.GetTeam();
             ++local_21;
             const TArray<FECSEntity>& local_166 = local_146.GetAllPlayerPawnEntities();
             for (auto& local_180 : local_166)

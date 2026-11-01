@@ -213,8 +213,8 @@ void DestroyExitPlayerEntity(const FECSEntity &inout PlayerEntity)
     FFPTime local_20 = FFPTime(-1);
     if (local_24)
     {
-        int local_21 = local_14.GetPlayerId();
-        int local_21_2 = local_14.GetTeam();
+        local_24.PlayerID = local_14.GetPlayerId();
+        local_24.Team = local_14.GetTeam();
     }
     FECSNetUtils::ResetPlayerEntityNetworkParam(PlayerEntity);
     for (auto& local_40 : local_14.GetAllPlayerPawnEntities())

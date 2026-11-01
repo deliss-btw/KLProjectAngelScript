@@ -304,6 +304,7 @@ namespace UWidget_TeamInfo
 void GetModelInfo(FEUIWidgetMetaInfo &inout Result)
 {
     Result.WidgetType = UWidget_TeamInfo;
+    Result.ObservedModelChangesSubscriberCount = 2;
     Result.ObservedModelChangesSubscriberNames.Add(FString("ShowEmoji"));
     Result.ObservedModelChangesSubscriberNames.Add(FString("HandleDeathStateChanged"));
     return;

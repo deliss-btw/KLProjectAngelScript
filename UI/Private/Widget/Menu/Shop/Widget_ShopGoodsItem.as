@@ -302,6 +302,7 @@ namespace UWidget_ShopGoodsItem
 void GetModelInfo(FEUIWidgetMetaInfo &inout Result)
 {
     Result.WidgetType = UWidget_ShopGoodsItem;
+    Result.ObservedModelChangesSubscriberCount = 2;
     Result.ObservedModelChangesSubscriberNames.Add(FString("SyncItemModel"));
     Result.ObservedModelChangesSubscriberNames.Add(FString("SyncCommonItemModel"));
     return;

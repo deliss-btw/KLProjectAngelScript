@@ -155,7 +155,8 @@ class US_ASGameModeSystemPVB : US_ECSScriptGameModeSystemBase
             ::FGameModeUtils::SpawnAvatarsForPlayer(local_140, local_146, local_20);
             FECSEntity local_156 = FECSEntity(local_140.GetId());
             FECSWorldPtr local_2_4 = this.GetECSWorld();
-            int local_22 = local_146.GetPlayerId();
+            FCE_PlayerSpawnEvent local_158;
+            local_158.PlayerID = local_146.GetPlayerId();
             ++local_21;
         }
         local_8.SetStageType(EFCS_GameStageType(3));

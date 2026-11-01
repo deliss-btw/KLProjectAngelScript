@@ -13,6 +13,7 @@ struct FCompareInteractionTargetParam
     UPROPERTY()
     bool bShowFailFromSource = false;
 
+
 }
 
 struct FInteractSourceCheckBaseParam
@@ -25,6 +26,7 @@ struct FInteractSourceCheckBaseParam
     float32 InteractTipDistance = 0.0f;
     UPROPERTY()
     EInteractSourceType SourceType = EInteractSourceType(1);
+
 
 }
 
@@ -74,6 +76,7 @@ class US_InteractionSystem : UECSScriptSystem
     UPROPERTY()
     float32 MaxInteractTipDistance = 1000.0f;
 
+
     bool CheckInteractTargetPointInScreen(const FVector &inout InteractPointLocation, const FClientInteractSourceCheckParam &inout InteractSourceCheckParam, FVector2D &inout InteractPointScreenRatio) const
     {
         int local_17;
@@ -99,47 +102,120 @@ class US_InteractionSystem : UECSScriptSystem
     }
     bool NeedExcludeInteractTargetEntity(const FECSEntity &inout SourceEntity, const FECSEntity &inout InteractTargetEntity, const EInteractMode InteractMode) const
     {
-        int local_1 = int(InteractMode);
-        if (local_1 <= 1)
+        switch (int(InteractMode))
         {
-            if (local_1 != 0)
+        case 1:
+        {
+            return false;
+        }
+        case 0:
+        {
+            Get local_8;
+            const FC_PawnRiddingMount& local_10 = local_8.opCall();
+            if (local_10)
             {
-                if (local_1 != 1)
+                if ((FECSEntity(local_10.GetMountEntity()) == InteractTargetEntity))
                 {
-                }
-                else
-                {
-                    return false;
+                    return true;
                 }
             }
-            else
+            Get local_18;
+            const FC_RuntimeHookMoveTarget& local_20 = local_18.opCall();
+            if (local_20)
             {
-                Get local_8;
-                const FC_PawnRiddingMount& local_10 = local_8.opCall();
-                if (local_10)
+                if ((FECSEntity(local_20.GetTargetEntity()) == InteractTargetEntity))
                 {
-                    if ((FECSEntity(local_10.GetMountEntity()) == InteractTargetEntity))
-                    {
-                        return true;
-                    }
+                    return true;
                 }
-                Get local_18;
-                const FC_RuntimeHookMoveTarget& local_20 = local_18.opCall();
-                if (local_20)
-                {
-                    if ((FECSEntity(local_20.GetTargetEntity()) == InteractTargetEntity))
-                    {
-                        return true;
-                    }
-                }
-                return false;
             }
+            return false;
+        }
+        default:
+        {
+        }
         }
         return true;
     }
     void GetAutoInteractTargetInfo(const FInteractionCandidateEntity &inout CandidateEntity, const EAutoInteractChannelType AutoInteractChannelType, const EInteractMode InteractMode, const FClientInteractSourceCheckParam &inout InteractSourceCheckParam, TArray<FInteractTargetInfo> &inout AutoInteractTargetInfo) const
     {
-        // body not fully recovered — stub [argmismatch:argtype]
+        int local_10 = 0;
+        FInteractionPointTypeConfig local_18;
+        FECSEntity local_2 = CandidateEntity.Entity;
+        if (!(CandidateEntity.bBestF))
+        {
+            return;
+        }
+        if (!(local_10.HasInteractPointWithMode(EInteractMode(InteractMode))))
+        {
+            return;
+        }
+        int local_11 = 0;
+        for (; local_11 < local_10.InteractionPoints.Num(); ++local_11)
+        {
+            if (!(CandidateEntity.PointIndices.GetBit(local_11)))
+            {
+                continue;
+            }
+            const FInteractionPoint& local_16 = local_10.InteractionPoints[local_11];
+            TDataObjectPtr<FInteractionPointTypeConfig> local_42 = TDataObjectPtr<FInteractionPointTypeConfig>(local_16.PointType);
+            if (int(local_18.InteractMode) != (int(InteractMode)))
+            {
+                continue;
+            }
+            FVector local_50;
+            FQuat local_60;
+            ::FInteractUtils::GetInteractTargetLocationAndRotationForClient(local_2, local_16, local_50, local_60, true, false);
+            FVector2D local_66;
+            if (!(this.CheckInteractTargetPointInScreen(local_50, InteractSourceCheckParam, local_66)))
+            {
+                continue;
+            }
+            int local_67 = 0;
+            for (; local_67 < local_18.Behaviors.Num(); ++local_67)
+            {
+                TSubclassOf<UInteractionBehaviorBase> local_70 = TSubclassOf<UInteractionBehaviorBase>(local_18.Behaviors[local_67]);
+                if ((local_70 == nullptr))
+                {
+                    continue;
+                }
+                UInteractionBehaviorBase local_74 = local_70.GetDefaultObject();
+                if (int(local_74.AutoInteractChannelType) != int(AutoInteractChannelType))
+                {
+                    continue;
+                }
+                if (!(::FInteractUtils::CheckWithinInteractSourceMaxNumber(local_2, local_74, local_11, local_67)))
+                {
+                    continue;
+                }
+                FCompareInteractionTargetParam local_86;
+                if (!(::FInteractUtils::CheckInteractTargetViewDir(local_50, InteractSourceCheckParam, local_16, local_74, local_66, local_86)))
+                {
+                    continue;
+                }
+                if ((local_74.bTraceCheck && local_74.bExtraTraceCheckFromCamera))
+                {
+                    if (!(::FInteractUtils::TraceCheck(InteractSourceCheckParam._base_FInteractSourceCheckBaseParam.InteractSourceEntity, local_2, local_16, InteractSourceCheckParam.ViewPosition, local_50, local_60, local_74.bTraceDynamic)))
+                    {
+                        continue;
+                    }
+                }
+                if (int(::FInteractUtils::EvaluateInteractionBehaviorWithTarget(InteractSourceCheckParam, local_2, local_16, local_74, local_50, local_60, false, local_86)) != 1)
+                {
+                    continue;
+                }
+                bool local_3 = false;
+                if (int(local_74.CheckCustomCondition(local_3, -1, false, local_16, local_2, InteractSourceCheckParam._base_FInteractSourceCheckBaseParam)) != 0)
+                {
+                    continue;
+                }
+                FInteractTargetInfo local_96;
+                local_96.SetTargetEntity(local_2);
+                local_96.GetInteractTargetPointAndBehaviorIndex().SetPointIndex(local_11);
+                local_96.GetInteractTargetPointAndBehaviorIndex().SetBehaviorIndex(local_67);
+                AutoInteractTargetInfo.Add(local_96);
+            }
+        }
+        return;
     }
     TArray<FECSEntity> GetAddingProgressPlayerList(const FECSEntity &inout TargetEntity, const FC_RuntimeInteractTargetStatus &inout RuntimeInteractTargetStatus, const FInteractionPointAndBehaviorIndex &inout PointAndBehaviorIndex) const
     {
@@ -171,7 +247,7 @@ class US_InteractionSystem : UECSScriptSystem
             return;
         }
         FKLFlowEvent_Interact local_7;
-        int local_8 = InteractTargetPointAndBehaviorIndex.GetPointIndex();
+        local_7.InteractPointIndex = InteractTargetPointAndBehaviorIndex.GetPointIndex();
         Get local_12;
         const FC_InteractionTargetConfig& local_14 = local_12.opCall();
         if (local_14)
@@ -198,73 +274,76 @@ class US_InteractionSystem : UECSScriptSystem
         int local_140 = 0;
         if (::FInteractUtils::CheckPassedInteractionCondition(InteractSourceEntity, InteractTargetEntity, InteractTargetPointAndBehaviorIndex, false))
         {
-            ::FASCommonUtils::GetRiderEntity(InteractSourceEntity);
-            int local_11 = int(InteractMode);
-            if (local_11 <= 1)
+            FECSEntity local_6 = ::FASCommonUtils::GetRiderEntity(InteractSourceEntity);
+            switch (int(InteractMode))
             {
-                if (local_11 != 0)
+            case 0:
+            {
+                if (bIsSecondaryInteract)
                 {
-                    if (local_11 != 1)
-                    {
-                    }
+                    local_18.SetInteractType(local_24.GetInteractType());
+                    local_26 = int(local_24.GetSubType());
+                    local_18.SetSubType(EInteractionSubTypeForESM(local_26));
+                    local_18.SetTargetEntity(local_24.GetTargetEntity());
+                    local_18.SetTargetPointAndBehaviorIndex(local_24.GetTargetPointAndBehaviorIndex());
+                }
+                local_24.SetbIsAutoInteract(false);
+                UInteractionBehaviorBase local_34 = ::FInteractUtils::GetInteractionBehaviorFromEntity(InteractTargetEntity, InteractTargetPointAndBehaviorIndex);
+                local_24.SetInteractType(local_34.InteractType);
+                int local_12 = InteractTargetPointAndBehaviorIndex.GetPointIndex();
+                if local_34.bOverrideInteractPointSubType
+                {
+                    local_26 = local_34.OverrideSubType;
                 }
                 else
                 {
-                    if (bIsSecondaryInteract)
-                    {
-                        local_18.SetInteractType(local_24.GetInteractType());
-                        local_26 = int(local_24.GetSubType());
-                        local_18.SetSubType(EInteractionSubTypeForESM(local_26));
-                        local_18.SetTargetEntity(local_24.GetTargetEntity());
-                        local_18.SetTargetPointAndBehaviorIndex(local_24.GetTargetPointAndBehaviorIndex());
-                    }
-                    local_24.SetbIsAutoInteract(false);
-                    UInteractionBehaviorBase local_34 = ::FInteractUtils::GetInteractionBehaviorFromEntity(InteractTargetEntity, InteractTargetPointAndBehaviorIndex);
-                    local_24.SetInteractType(local_34.InteractType);
-                    int local_12 = InteractTargetPointAndBehaviorIndex.GetPointIndex();
-                    if local_34.bOverrideInteractPointSubType
-                    {
-                        local_26 = local_34.OverrideSubType;
-                    }
-                    else
-                    {
-                        FInteractionPoint local_40;
-                        local_26 = local_40.SubType;
-                    }
-                    local_24.SetSubType(EInteractionSubTypeForESM(local_26));
-                    local_24.SetbIsSecondaryInteractSource(local_34.bIsSecondaryInteractSource);
-                    FECSWorldPtr local_44 = InteractSourceEntity.GetWorld();
-                    FFPTime local_54 = FTransformUtils::GetPlayerRollbackTime(InteractSourceEntity, local_50);
-                    FVector local_60;
-                    FQuat local_68;
-                    if (::FInteractUtils::GetInteractTargetLocationAndRotation(InteractTargetEntity, InteractTargetPointAndBehaviorIndex.GetPointIndex(), local_54, local_60, local_68, false))
-                    {
-                        local_24.SetInteractTargetLocation(local_60);
-                        local_24.SetInteractTargetRotation(local_68.Rotator());
-                        Get local_78;
-                        const FC_Transform& local_80 = local_78.opCall();
-                        if (local_80)
-                        {
-                            FVector local_104 = (FVector(local_24.GetInteractTargetLocation()) - FVector(local_80.GetPosition()));
-                            FQuat local_120 = local_80.GetRotation();
-                            local_104 = local_120.UnrotateVector(local_104.GetSafeNormal(9.99999993922529e-9, FVector::ZeroVector));
-                            local_24.SetTargetPointYawToPlayer(float32(local_104.Rotation().Yaw));
-                            local_24.SetTargetPointPitchToPlayer(float32(local_104.Rotation().Pitch));
-                        }
-                    }
-                    local_24.SetTargetPointAndBehaviorIndex(InteractTargetPointAndBehaviorIndex);
-                    local_24.SetTargetEntity(InteractTargetEntity);
-                    local_24.SetExpireTime(local_50.Time);
-                    if (int(ECS::GetRuntimeInfo().IsServer) != 0)
-                    {
-                        local_134.AddPending(InteractTargetPointAndBehaviorIndex.GetPointIndex(), InteractTargetPointAndBehaviorIndex.GetBehaviorIndex());
-                        this.ReportSocialActionTrigger(InteractSourceEntity, InteractTargetEntity, EInteractionSubTypeForESM(local_24.GetSubType()));
-                    }
-                    local_140.TargetEntity = InteractTargetEntity;
-                    local_140.InteractTargetPointAndBehaviorIndex = InteractTargetPointAndBehaviorIndex;
+                    FInteractionPoint local_40;
+                    local_26 = local_40.SubType;
                 }
+                local_24.SetSubType(EInteractionSubTypeForESM(local_26));
+                local_24.SetbIsSecondaryInteractSource(local_34.bIsSecondaryInteractSource);
+                FECSWorldPtr local_44 = InteractSourceEntity.GetWorld();
+                FFPTime local_54 = FTransformUtils::GetPlayerRollbackTime(InteractSourceEntity, local_50);
+                FVector local_60;
+                FQuat local_68;
+                if (::FInteractUtils::GetInteractTargetLocationAndRotation(InteractTargetEntity, InteractTargetPointAndBehaviorIndex.GetPointIndex(), local_54, local_60, local_68, false))
+                {
+                    local_24.SetInteractTargetLocation(local_60);
+                    local_24.SetInteractTargetRotation(local_68.Rotator());
+                    Get local_78;
+                    const FC_Transform& local_80 = local_78.opCall();
+                    if (local_80)
+                    {
+                        FVector local_104 = (FVector(local_24.GetInteractTargetLocation()) - FVector(local_80.GetPosition()));
+                        FQuat local_120 = local_80.GetRotation();
+                        local_104 = local_120.UnrotateVector(local_104.GetSafeNormal(9.99999993922529e-9, FVector::ZeroVector));
+                        local_24.SetTargetPointYawToPlayer(float32(local_104.Rotation().Yaw));
+                        local_24.SetTargetPointPitchToPlayer(float32(local_104.Rotation().Pitch));
+                    }
+                }
+                local_24.SetTargetPointAndBehaviorIndex(InteractTargetPointAndBehaviorIndex);
+                local_24.SetTargetEntity(InteractTargetEntity);
+                local_24.SetExpireTime(local_50.Time);
+                if (int(ECS::GetRuntimeInfo().IsServer) != 0)
+                {
+                    local_134.AddPending(InteractTargetPointAndBehaviorIndex.GetPointIndex(), InteractTargetPointAndBehaviorIndex.GetBehaviorIndex());
+                    this.ReportSocialActionTrigger(InteractSourceEntity, InteractTargetEntity, EInteractionSubTypeForESM(local_24.GetSubType()));
+                }
+                break;
             }
-            return;
+            case 1:
+            {
+                local_140.TargetEntity = InteractTargetEntity;
+                local_140.InteractTargetPointAndBehaviorIndex = InteractTargetPointAndBehaviorIndex;
+                break;
+            }
+            default:
+            {
+                return;
+            }
+            }
+            ::FInteractUtils::ExecuteInteractBeginAction(local_6, InteractTargetEntity, InteractTargetPointAndBehaviorIndex);
+            this.BroadcastKLFlowInteractEvent(KLFlowEventTags::Interact_BeginInteract, local_6, InteractTargetEntity, InteractTargetPointAndBehaviorIndex);
         }
         return;
     }
@@ -681,8 +760,62 @@ class US_InteractionSystem : UECSScriptSystem
     }
     bool IsInteractionCandidateCameraValid(const FInteractionCandidateBehaviorInfo &inout Candidate, const FClientInteractSourceCheckParam &inout InteractSourceCheckParam, const bool bCheckViewDir, float32 &out OutScore) const
     {
-        // body not fully recovered — stub [argmismatch:argtype]
-        bool __r; return __r;
+        int local_10 = 0;
+        int local_16 = 0;
+        int local_24 = 0;
+        OutScore = 0.0f;
+        if (!(Candidate.TargetEntity.IsActive()))
+        {
+            return false;
+        }
+        if (!(local_10) || !(local_16) || !(local_16.IsRuntimePointEnabled(Candidate.PointAndBehaviorIndex.GetPointIndex())))
+        {
+            return false;
+        }
+        if (Candidate.PointAndBehaviorIndex.GetPointIndex() < 0 || (Candidate.PointAndBehaviorIndex.GetPointIndex() >= local_10.InteractionPoints.Num()))
+        {
+            return false;
+        }
+        const FInteractionPoint& local_22 = local_10.InteractionPoints[Candidate.PointAndBehaviorIndex.GetPointIndex()];
+        if (!(local_22.PointType.IsValid()))
+        {
+            return false;
+        }
+        TDataObjectPtr<FInteractionPointTypeConfig> local_48 = TDataObjectPtr<FInteractionPointTypeConfig>(local_22.PointType);
+        if (Candidate.PointAndBehaviorIndex.GetBehaviorIndex() < 0 || (Candidate.PointAndBehaviorIndex.GetBehaviorIndex() >= local_24.Behaviors.Num()))
+        {
+            return false;
+        }
+        TSubclassOf<UInteractionBehaviorBase> local_50 = TSubclassOf<UInteractionBehaviorBase>(local_24.Behaviors[Candidate.PointAndBehaviorIndex.GetBehaviorIndex()]);
+        if ((local_50 == nullptr))
+        {
+            return false;
+        }
+        UInteractionBehaviorBase local_54 = local_50.GetDefaultObject();
+        if (local_54 == nullptr)
+        {
+            return false;
+        }
+        FVector2D local_58;
+        if (!(this.CheckInteractTargetPointInScreen(Candidate.Location, InteractSourceCheckParam, local_58)))
+        {
+            return false;
+        }
+        FCompareInteractionTargetParam local_68;
+        local_68.Score = Candidate.NonCameraScore;
+        if (bCheckViewDir && !(::FInteractUtils::CheckInteractTargetViewDir(Candidate.Location, InteractSourceCheckParam, local_22, local_54, local_58, local_68)))
+        {
+            return false;
+        }
+        if (local_54.bTraceCheck && local_54.bExtraTraceCheckFromCamera)
+        {
+            if (!(::FInteractUtils::TraceCheck(InteractSourceCheckParam._base_FInteractSourceCheckBaseParam.InteractSourceEntity, Candidate.TargetEntity, local_22, InteractSourceCheckParam.ViewPosition, Candidate.Location, Candidate.Rotation, local_54.bTraceDynamic)))
+            {
+                return false;
+            }
+        }
+        OutScore = local_68.Score;
+        return true;
     }
     UFUNCTION()
     void ClientJob_CollectInteractionCandidateEntities(const FECSEntity &inout Entity, const FC_Transform &inout Transform, const FC_InteractSourceConfig &inout InteractSourceConfig) const

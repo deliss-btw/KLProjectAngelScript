@@ -31,7 +31,7 @@ class UESMAction_CameraAutoYaw : UESMBPBaseSpanAction
             FC_CameraAutoYawControl& local_18 = local_16.opCall();
             if (local_18)
             {
-                int local_19 = int(local_18.AutoYawCounter) + 1;
+                local_18.AutoYawCounter = (int(local_18.AutoYawCounter) + 1);
             }
         }
         return;
@@ -48,7 +48,7 @@ class UESMAction_CameraAutoYaw : UESMBPBaseSpanAction
             FC_CameraAutoYawControl& local_18 = local_16.opCall();
             if (local_18)
             {
-                int local_21 = FMath::Max(0, (int(local_18.AutoYawCounter) - 1));
+                local_18.AutoYawCounter = FMath::Max(0, (int(local_18.AutoYawCounter) - 1));
             }
         }
         return;
@@ -88,7 +88,7 @@ class UESMAction_CameraAutoYawEnable : UESMBPBaseSpanAction
             FC_CameraAutoYawControl& local_18 = local_16.opCall();
             if (local_18)
             {
-                int local_19 = int(local_18.EnableCounter) + 1;
+                local_18.EnableCounter = (int(local_18.EnableCounter) + 1);
             }
         }
         return;
@@ -105,7 +105,7 @@ class UESMAction_CameraAutoYawEnable : UESMBPBaseSpanAction
             FC_CameraAutoYawControl& local_18 = local_16.opCall();
             if (local_18)
             {
-                int local_21 = FMath::Max(0, (int(local_18.EnableCounter) - 1));
+                local_18.EnableCounter = FMath::Max(0, (int(local_18.EnableCounter) - 1));
             }
         }
         return;

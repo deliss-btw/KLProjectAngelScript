@@ -215,7 +215,7 @@ struct FMS_PresentationSpotMinimapIconManager : FEUIModelSingleton
         TDataObjectPtr<FMinimapIconConfig> local_32 = ::GetMinimapIconConfig(Spot.opArrow(), local_8);
         IconInfo.DisplaySettings = local_32.opArrow().DisplaySettings;
         IconInfo.IconSize = local_32.opArrow().IconSize;
-        int local_57 = local_32.opArrow().ZOrder;
+        IconInfo.ZOrder = local_32.opArrow().ZOrder;
         IconInfo.IconWidget = this.GetIconWidget(local_32);
         IconInfo.WorldPosition = Spot.opArrow().GetTransform().GetPosition2D();
         FMinimapIconData local_80;
@@ -284,7 +284,7 @@ void GetModelInfo(FEUIModelOnlyMetaInfo &inout Result)
     Result.SetbCanDefaultConstruct(true);
     FEUIModelMetaPropertyModelRef local_6;
     local_6.PropertyName = FName("SpotView");
-    int local_2_2 = FM_SpotView::ModelId;
+    local_6.PropertyRefModelTypeId = FM_SpotView::ModelId;
     Result.FunctionalPropertyModelRefs.Add(local_6);
     FEUIModelMsgHandleDefine local_18;
     local_18.FunctionName = "__OnSpotPresentationDataModified";
